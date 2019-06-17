@@ -5,9 +5,12 @@ import IconBoxTable from './Components/IconBoxTable.js/index.js';
 import IconBox from './Components/IconBox.js/index.js';
 //import './App.css';
 import './assets/css/style.css'
+import {getHomePageData} from './api'
+
 
 class App extends Component {
   render() {
+    console.log(getHomePageData())
     return (
       <div className="App">
         <header className="App-header">
@@ -22,6 +25,7 @@ class App extends Component {
             rel="noopener noreferrer"
           >
             Massenergize Portal Coming Soon
+            {}
           </a>
         </header>
       </div>
