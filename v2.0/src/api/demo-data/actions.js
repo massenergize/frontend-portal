@@ -1,17 +1,30 @@
-module.exports.actions = [
+module.exports.homePageIconBoxes = [
   {
-    title:"Action 1"
+    id:"1",
+    title:"Actions",
+    description:"Click here to see all the Actions you can take",
+    icon: "icon-nature-2",
+    link: "google.com"
   },
   {
-    title:"Action 2"
+    id:"2",
+    title:"Service Providers",
+    description:"Click here to see all the Service Providers",
+    icon: "icon-people-1",
+    link: "google.com"
   },
   {
-    title:"Action 3"
+    id:"3",
+    title:"Testimonials",
+    description:"Click here to see all the great Testimonials we have",
+    icon: "icon-left",
+    link: "google.com"
   },
   {
-    title:"Action 4"
-  },
-  {
-    title:"Action 5"
+    id:"4",
+    title:"Events",
+    description:"Click here to see all the Events coming up",
+    icon: "icon-clock",
+    link: "google.com"
   },
 ]

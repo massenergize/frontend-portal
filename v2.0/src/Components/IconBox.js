@@ -15,4 +15,4 @@ class IconBox extends React.Component{
         );
     }
 }
-export default Action;
+export default IconBox;

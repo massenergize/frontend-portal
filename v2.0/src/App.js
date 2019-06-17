@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './assets/css/style.css';
-import IconBoxTable from './Components/IconBoxTable.js/index.js';
-import IconBox from './Components/IconBox.js/index.js';
+import IconBoxTable from './Components/IconBoxTable.js';
+import IconBox from './Components/IconBox.js';
 //import './App.css';
 import './assets/css/style.css'
-import {getHomePageData} from './api'
+import {getHomePageIconBoxes} from './api'
 
 
 class App extends Component {
   render() {
-    console.log(getHomePageData())
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <IconBoxTable 
             title = "IconBox Table Test"
+            boxes = {getHomePageIconBoxes()}
           />
           <a
             className="App-link"

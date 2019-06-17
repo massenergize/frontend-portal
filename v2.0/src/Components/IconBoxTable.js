@@ -1,5 +1,5 @@
 import React from 'react';
-import IconBox from './IconBox.js/index.js';
+import IconBox from './IconBox.js';
 
 class IconBoxTable extends React.Component {
     renderBoxes(boxes){
@@ -8,13 +8,13 @@ class IconBoxTable extends React.Component {
         }
         return Object.keys(boxes).map(key=> {
             var box = boxes[key];
-            return <IconBox
+            return <div class="col-md-3 col-sm-6 col-x-12"><IconBox
                 key = {box.id}
                 title = {box.title}
                 description = {box.description}
                 icon = {box.icon}
                 link = {box.link}
-                />
+                /></div>
         });
     }
     render() {
@@ -32,4 +32,4 @@ class IconBoxTable extends React.Component {
         );
     }
 }
-export default ActionTable;
+export default IconBoxTable;
