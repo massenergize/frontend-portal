@@ -1,0 +1,159 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?50klmv');
+  src:  url('../fonts/icomoon.eot?50klmv#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?50klmv') format('truetype'),
+    url('../fonts/icomoon.woff?50klmv') format('woff'),
+    url('../fonts/icomoon.svg?50klmv#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-deer:before {
+  content: "\e920";
+}
+.icon-medal:before {
+  content: "\e910";
+}
+.icon-play2:before {
+  content: "\e911";
+}
+.icon-nature-2:before {
+  content: "\e912";
+}
+.icon-fruit:before {
+  content: "\e913";
+}
+.icon-clock:before {
+  content: "\e915";
+}
+.icon-technology:before {
+  content: "\e916";
+}
+.icon-signs2:before {
+  content: "\e917";
+}
+.icon-animals:before {
+  content: "\e918";
+}
+.icon-people3:before {
+  content: "\e919";
+}
+.icon-money:before {
+  content: "\e91a";
+}
+.icon-heart2:before {
+  content: "\e91b";
+}
+.icon-nature-1:before {
+  content: "\e91c";
+}
+.icon-tool:before {
+  content: "\e91d";
+}
+.icon-can:before {
+  content: "\e91e";
+}
+.icon-nature:before {
+  content: "\e91f";
+}
+.icon-dog:before {
+  content: "\e901";
+}
+.icon-hand:before {
+  content: "\e902";
+}
+.icon-location:before {
+  content: "\e903";
+}
+.icon-people:before {
+  content: "\e904";
+}
+.icon-people-1:before {
+  content: "\e905";
+}
+.icon-play:before {
+  content: "\e906";
+}
+.icon-ribbon:before {
+  content: "\e907";
+}
+.icon-shapes:before {
+  content: "\e908";
+}
+.icon-shapes-1:before {
+  content: "\e90a";
+}
+.icon-star:before {
+  content: "\e90b";
+}
+.icon-note:before {
+  content: "\e90c";
+}
+.icon-people2:before {
+  content: "\e90d";
+}
+.icon-phone-call:before {
+  content: "\e90e";
+}
+.icon-signs:before {
+  content: "\e90f";
+}
+.icon-arrows4:before {
+  content: "\e92e";
+}
+.icon-e-mail-envelope:before {
+  content: "\e900";
+}
+.icon-null:before {
+  content: "\e921";
+}
+.icon-multiply:before {
+  content: "\e909";
+}
+.icon-technology2:before {
+  content: "\e914";
+}
+.icon-left3:before {
+  content: "\e92a";
+}
+.icon-left:before {
+  content: "\e929";
+}
+.icon-left-arrow-angle:before {
+  content: "\e926";
+}
+.icon-left-arrow-angle2:before {
+  content: "\e927";
+}
+.icon-left2:before {
+  content: "\e928";
+}
+.icon-download3:before {
+  content: "\e9c7";
+}
+.icon-star-half:before {
+  content: "\e9d8";
+}
+.icon-star-full:before {
+  content: "\e9d9";
+}
+.icon-heart:before {
+  content: "\e9da";
+}
+
