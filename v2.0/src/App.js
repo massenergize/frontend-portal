@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import './assets/css/style.css'
+import {getHomePageData} from './api'
+
 
 class App extends Component {
   render() {
+    console.log(getHomePageData())
     return (
       <div className="App">
         <header className="App-header">
@@ -19,6 +22,7 @@ class App extends Component {
             rel="noopener noreferrer"
           >
             Massenergize Portal Coming Soon
+            {}
           </a>
         </header>
       </div>
