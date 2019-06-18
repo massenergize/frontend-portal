@@ -123,21 +123,21 @@ License URI: http://www.opensource.org/licenses/mit-license.php
 /* Flags */
 
 #en { 
-	background-image: url(../images/flags/gb.png);
+	background-image: url(../images/resource/1.jpg);
 }
 
 #fr { 
-	background-image: url(../images/flags/fr.png);	
+	background-image: url(../images/resource/1.jpg);	
 }
 
 #de { 
-	background-image: url(../images/flags/de.png);	
+	background-image: url(../images/resource/1.jpg);	
 }
 
 #it { 
-	background-image: url(../images/flags/it.png);	
+	background-image: url(../images/resource/1.jpg);	
 }
 
 #es { 
-	background-image: url(../images/flags/es.png);	
+	background-image: url(../images/resource/1.jpg);	
 }

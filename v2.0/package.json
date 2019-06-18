@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "code": "^5.2.4",
+    "helmet": "^3.18.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
-    "react-scripts": "2.1.8"
+    "react-helmet": "^5.2.1",
+    "react-scripts": "2.1.8",
+    "recharts": "^1.6.2"
   },
   "scripts": {
     "start": "react-scripts start",

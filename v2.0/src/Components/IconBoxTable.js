@@ -8,7 +8,7 @@ class IconBoxTable extends React.Component {
         }
         return Object.keys(boxes).map(key=> {
             var box = boxes[key];
-            return <div class="col-md-3 col-sm-6 col-x-12"><IconBox
+            return <div className="col-md-3 col-sm-6 col-x-12" key = {box.id}><IconBox
                 key = {box.id}
                 title = {box.title}
                 description = {box.description}
@@ -19,12 +19,12 @@ class IconBoxTable extends React.Component {
     }
     render() {
         return(
-            <section class="service sec-padd3">
-                <div class="container">
-                    <div class="section-title center">
+            <section className="service sec-padd3">
+                <div className="container">
+                    <div className="section-title center">
                         <h2>{this.props.title}</h2>
                     </div>
-                    <div class="row">
+                    <div className="row">
                         {this.renderBoxes(this.props.boxes)}
                     </div>
                 </div>

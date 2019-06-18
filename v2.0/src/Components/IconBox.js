@@ -8,9 +8,9 @@ class IconBox extends React.Component{
                     <div className="icon-box">
                         <span className={this.props.icon}></span>
                     </div>
-                    <h4>{this.props.name}</h4>
+                    <h4>{this.props.title}</h4>
                     <p>{this.props.description}</p>
-                    <button className="button" >More</button>
+                    <a href={this.props.link}><button className="button" >More</button></a>
                 </div>
         );
     }
