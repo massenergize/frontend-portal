@@ -1640,8 +1640,13 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 ====================================================================
 
 ***/
+.service{
+  background-size:cover;
+  background: #19220e;
+}
 .service .section-title h2 {
-  line-height: 40px;
+  line-height: 20px;
+  color: #aaa;
 }
 .service .service-item {
   margin-bottom: 30px;
@@ -1697,9 +1702,11 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .service .service-item h4 {
   font-size: 20px;
   margin-bottom: 10px;
+  color: #aaa;
 }
-
-
+.service .service-item p {
+  color: #888;
+}
 .service .service-item:hover .icon-box:before {
   border-color: #8dc63f;
   background: #8dc63f;
@@ -2607,7 +2614,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   position: relative;
   width: 144px;
   height: 144px;
-  margin: 0 auto;
+  margin: auto;
   border: 3px solid rgba(255, 255, 255, 0.05);
   text-align: center;
 }
@@ -2652,9 +2659,9 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .fact-counter.style-2{
   position:relative;
-  padding: 70px 0px 40px;
+  padding: 30px 0px 30px;
   background-repeat:no-repeat;
-  background-size:cover;
+  background-size: cover;
   background-position:center center;
   overflow:hidden;
   color:#ffffff;
@@ -2663,19 +2670,20 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .fact-counter.style-2 .auto-container{
   position:relative;
+  width:50%;
   z-index:1;
 }
 
 .fact-counter.style-2 .column{
   position:relative;
-  margin-bottom:40px;
   text-align:center;
-  z-index:5;  
+  z-index:5;
 }
 .fact-counter.style-2 .item {
   position: relative;
   background: #fbfbfb;
-  padding: 17px 0 25px;
+  padding: 0px 0 0px;
+  height:250px;
   border: 1px solid #f4f4f4;
 }
 
@@ -5311,8 +5319,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 ***************************/
 .inner-banner {
   position: relative;
-  background-size: 33.33333333%;
   background-repeat:no-repeat;
+  z-index: 0;
   /* background-image: url(../images/kierans/dandelions.jpg); */
   /* background-image: url(https://images.pexels.com/photos/2355518/pexels-photo-2355518.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260); */
 
@@ -8414,14 +8422,13 @@ article.slide-item.center {}
 }
 
 
+/*** 
 
+====================================================================
+    Custom MassEnergize styles
+====================================================================
 
-
-
-
-
-
-
+***/
 
 
 

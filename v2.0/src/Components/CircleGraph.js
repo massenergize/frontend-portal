@@ -1,17 +1,76 @@
 import React from 'react'
-
+import Chart from 'react-apexcharts'
 class CircleGraph extends React.Component{
-    render(){
-        return(
-            <div>
-                <div className="col-md-4 col-sm-6 col-xs-12 item text-center">
-                    <div className="pie-title-center knob" data-percent={this.props.percent}> 
-                        <span className="pie-value">{this.props.percent+"%"}</span> 
-                    </div>
-                    <p>{this.props.title}</p>
-                </div>
-            </div>
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+          options: {
+            chart: {
+              type: "radialBar",
+              height: 350
+            },
+            series: [67],
+            colors: ["#8dc63f"],
+            plotOptions: {
+              radialBar: {
+                size: this.props.size,
+                hollow: {
+                  margin: 5,
+                  size: "70%",
+                },
+                track: {
+                  dropShadow: {
+                    enabled: true,
+                    top: 2,
+                    left: 0,
+                    blur: 4,
+                    opacity: 0.15
+                  }
+                },
+                dataLabels: {
+                  name: {
+                    offsetY: -3,
+                    color: "#666",
+                    fontSize: "13px",
+                    fontFamily: "Verdana-bold"
+                  },
+                  value: {
+                    offsetY: 3,
+                    color: "#666",
+                    fontSize: "18px",
+                    fontFamily: "Verdana",
+                    show: true,
+                    formatter: () => {
+                        return this.props.num+"/"+ this.props.goal;
+                    }
+                  }
+                }
+              }
+            },
+            fill: {
+              type: "gradient",
+              gradient: {
+                shade: "dark",
+                type: "vertical",
+                gradientToColors: ["#428a36"],
+                stops: [0, 100]
+              }
+            },
+            // stroke: {
+            //   lineCap: "round"
+            // },
+            labels: [this.props.label]
+          },
+          series: [(this.props.num/this.props.goal)*100],
+        }
+      }
+    
+      render() {
+    
+        return (
+            <Chart options={this.state.options} series={this.state.series} type="radialBar" style={{display:"inline-block",margin:"auto"}}/>
         );
-    }
+      }
 }
 export default CircleGraph;

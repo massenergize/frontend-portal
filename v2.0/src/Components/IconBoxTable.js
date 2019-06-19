@@ -19,7 +19,7 @@ class IconBoxTable extends React.Component {
     }
     render() {
         return(
-            <section className="service sec-padd3">
+            <section className="service no_padd">
                 <div className="container">
                     <div className="section-title center">
                         <h2>{this.props.title}</h2>
