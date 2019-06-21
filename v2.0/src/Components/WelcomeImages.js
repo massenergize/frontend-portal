@@ -1,5 +1,5 @@
 import React from 'react'
-import {isMobile, isBrowser} from 'react-device-detect';
+
 class WelcomeImages extends React.Component{
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);

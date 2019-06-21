@@ -174,7 +174,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   background: #8dc63f;
   font-size: 14px;
   line-height: 48px;
-  border-radius: 25px;
+  border-radius: 5px;
   color: #ffffff;
   border: 1px solid #8dc63f;
   text-transform: uppercase;
@@ -185,6 +185,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .thm-btn:hover {
   background: transparent;
+  border-radius: 50px;
   color: #8dc63f;
   transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
@@ -2589,6 +2590,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .fact-counter.style-1 {
   position: relative;
   background-size: cover;
+  background-color: #8dc63f;
   background-repeat: no-repeat;
   background-position: right center;
 }
@@ -2614,7 +2616,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   position: relative;
   width: 144px;
   height: 144px;
-  margin: auto;
+  margin-right: 0px;
+  margin-left: 0px;
   border: 3px solid rgba(255, 255, 255, 0.05);
   text-align: center;
 }
@@ -2627,7 +2630,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   top: 20px;
   bottom: 20px;
   border-radius: 50%;
-  background: rgba(248, 184, 100, 0.11);
+  background: #111;
   border: 3px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -2659,13 +2662,13 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .fact-counter.style-2{
   position:relative;
-  padding: 30px 0px 30px;
+  padding-top: 30px;
+  padding-bottom: 20px;
   background-repeat:no-repeat;
   background-size: cover;
   background-position:center center;
   overflow:hidden;
-  color:#ffffff;
-  margin-bottom: 3px;
+  color:#000;
 }
 
 .fact-counter.style-2 .auto-container{
@@ -2677,14 +2680,18 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .fact-counter.style-2 .column{
   position:relative;
   text-align:center;
+  margin-left: 0px;
+  margin-right:0px;
   z-index:5;
 }
 .fact-counter.style-2 .item {
   position: relative;
-  background: #fbfbfb;
-  padding: 0px 0 0px;
+  background: #fff;
+  margin-left: 0px;
+  margin-right: 0px;
   height:250px;
-  border: 1px solid #f4f4f4;
+  width:100%;
+  border: 1px solid #fff;
 }
 
 .fact-counter.style-2 .column .icon {
@@ -2704,7 +2711,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   position:relative;
   font-size: 40px;
   font-weight: 400;
-  padding: 0px 10px 5px;
+  padding: 0px 0px 0px;
   font-family: 'Roboto Slab', Sans-serif;
   color: #303030;
 }
@@ -2715,7 +2722,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   position:relative;
   font-size: 18px;
   font-weight: 300;
-  color: #8dc63f;
+  color: #666;
 }
 
 
@@ -3172,13 +3179,11 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .event-style1 {
   padding: 80px 0 40px;
-  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
 }
 
 .event-style1 .section-title h2 {
-  color: #fff;
+  color: #666;
 }
 
 .event-style1 .item {
@@ -3224,14 +3229,14 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   line-height: 27px;
   padding-top: 7px;
   z-index: 9;
-  color: #fff;
+  color: #666;
   text-align: center;
 }
 
 .event-style1 .item .date span {
   display: block;
   color: #8dc63f;
-  background: #fff;
+  background: #333;
   margin-top: 5px;
   padding: 6px 0;
 }
@@ -3239,7 +3244,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .event-style1 .item .lower-content .text p{
   margin-bottom: 25px;
   font-size: 14px;
-  color: #fff;
+  color: #666;
 }
 
 .event-style1 .item.style-2 .lower-content .text p {
@@ -3252,7 +3257,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   margin-bottom: 10px;
   line-height: 30px;
   transition: all 300ms ease;
-  color: #fff;
+  color: #3b7840;
   font-size: 22px;
 }
 
@@ -3392,7 +3397,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 
 .event-style2 .section-title h2 {
-  color: #fff;
+  color: #000;
 }
 
 .event-style2 .item {
@@ -5123,6 +5128,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .main-footer .footer-logo {
   margin-bottom: 40px;
   padding-top: 5px;
+  width:110px;
 }
 
 
@@ -8425,12 +8431,21 @@ article.slide-item.center {}
 /*** 
 
 ====================================================================
-    Custom MassEnergize styles
+    Custom styles
 ====================================================================
 
 ***/
 
+.row.no-gutter {
+  margin-left: 0;
+  margin-right: 0;
+}
 
+.row.no-gutter [class*='col-']:not(:first-child),
+.row.no-gutter [class*='col-']:not(:last-child) {
+  padding-right: 0;
+  padding-left: 0;
+}
 
 
 

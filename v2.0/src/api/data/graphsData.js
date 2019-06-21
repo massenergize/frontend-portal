@@ -11,16 +11,10 @@ module.exports.graphsData = [
         goal: 1400,
         size: 100,
     },
-    // {
-    //     title:"Test",
-    //     data: 481,
-    //     goal: 1400,
-    //     size: 100,
-    // },
-    // {
-    //     title:"Test",
-    //     data: 481,
-    //     goal: 1400,
-    //     size: 100,
-    // },
+    {
+        title:"Test",
+        data: 481,
+        goal: 1400,
+        size: 100,
+    },
   ]

@@ -1,23 +1,45 @@
-import { navLinks } from './data/navLinks'
-import { homePageIconBoxes } from './data/IconBoxes';
-import { graphsData } from './data/graphsData.js';
-function getHomePageData(){
-  //for actual deployment, make an api call
-  //TODO
+var apiurl = 'http://localhost:8000/user/'
+//import { homePageData } from './data/homePageData.js';
+export function getHomePageData(){
+  return fetch(apiurl).then(data => {
+    return data.json()
+  })
+  .then(myJson => {
+    console.log(myJson.homePageData);
+    return myJson.homePageData;
+  }).catch(error => {
+    console.log(error);
+    return {};
+  });
 }
-function getHomePageIconBoxes(){
-  return homePageIconBoxes;
-}
-function getNavLinks(){
-  return navLinks;
-}
-function getGraphsData(){
-  return graphsData;
-}
+// function getIconBoxesData(){
+//   getHomePageData().then(response => {
+//     return response.iconBoxesData;
+//   }).catch(error=>{
+//     console.log(error);
+//   })
+// }
+// function getNavLinks(){
+//   getHomePageData().then(response => {
+//     return response.navLinks;
+//   }).catch(error=>{
+//     console.log(error);
+//   })
+// }
+// function getGraphsData(){
+//   console.log(getHomePageData());
+//   return getHomePageData().graphsData;
+// }
+// function getWelcomeImagesData(){
+//   return getHomePageData().welcomeImages;
+// }
+// function getEventsData(){
+//   return getHomePageData().eventsData;
+// }
+// function getFooterData(){
+//   return getHomePageData().footerData;
+// }
 
-export {
-  getHomePageData,
-  getHomePageIconBoxes,
-  getNavLinks,
-  getGraphsData
-}
+// export {
+//   getHomePageData
+// }

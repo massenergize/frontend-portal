@@ -1,48 +1,44 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import {Switch, Route} from 'react-router-dom';
+
 import './assets/css/style.css';
 
-import IconBoxTable from './Components/IconBoxTable.js';
-import NavBar from './Components/NavBar.js';
-import WelcomeImages from './Components/WelcomeImages.js'
-import Graphs from './Components/Graphs';
-import {getNavLinks, getHomePageIconBoxes, getGraphsData} from './api'
-import Footer from './Components/Footer';
+import HomePage from './Components/HomePage.js'
+import ActionsPage from './Components/ActionsPage.js'
 
+// import {
+// 	getNavLinks,
+// 	getWelcomeImagesData,
+// 	getIconBoxesData,
+// 	getGraphsData,
+// 	getEventsData,
+// 	getFooterData
+// } from './api'
 
 class App extends Component {
-//   componentDidMount () {
-//     const script = document.createElement("script");
-
-//     script.src = "./assets/js/custom.js";
-//     script.async = true;
-
-//     document.body.appendChild(script);
-// }
-  render() { 
-    return (
-      <div>
-        <Helmet>
-          <meta charset="UTF-8"/>
-          <title>Mass Energize</title>
-
-          <meta name="viewport" content="width=device-width, initial-scale=1"/>
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        </Helmet>
-
-        <div className="boxed_wrapper">
-          <NavBar navLinks = {getNavLinks()}/>
-          <WelcomeImages/>
-          <Graphs graphs={getGraphsData()}/>
-          <IconBoxTable 
-            title = "IconBox Table Test"
-            boxes = {getHomePageIconBoxes()}
-          />
-          <Footer/>
-        </div>
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Helmet>
+					<meta charset="UTF-8" />
+					<title>Mass Energize</title>
+					<meta name="viewport" content="width=device-width, initial-scale=1" />
+					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+				</Helmet>
+				<Switch>
+					<Route exact path="/" path="/home" component={HomePage} />
+					<Route path="/actions" component={ActionsPage}/>
+					{/*<Route path="/contact" component={Contact} /> */}
+					<Route component={()=>
+						<div>
+							FOUR OR FOR: NO PAGE FOUND
+						</div>
+					}/>
+				</Switch>
+			</div>
+		);
+	}
 }
-
+const fourofour = ()=> <div></div>
 export default App;

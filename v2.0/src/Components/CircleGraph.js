@@ -1,5 +1,13 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
+
+/*
+@props:
+	size
+	num
+	goal
+	label
+*/
 class CircleGraph extends React.Component{
     constructor(props) {
         super(props);
@@ -57,9 +65,9 @@ class CircleGraph extends React.Component{
                 stops: [0, 100]
               }
             },
-            // stroke: {
-            //   lineCap: "round"
-            // },
+            stroke: {
+              lineCap: "round"
+            },
             labels: [this.props.label]
           },
           series: [(this.props.num/this.props.goal)*100],
@@ -69,7 +77,7 @@ class CircleGraph extends React.Component{
       render() {
     
         return (
-            <Chart options={this.state.options} series={this.state.series} type="radialBar" style={{display:"inline-block",margin:"auto"}}/>
+            <Chart options={this.state.options} series={this.state.series} type="radialBar" style={{display:"inline-block",margin:"0px"}}/>
         );
       }
 }
