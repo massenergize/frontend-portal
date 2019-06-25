@@ -7,7 +7,7 @@ import Action from './Action';
 
 var apiurl = 'http://localhost:8000/user/actions'
 
-class ActionsPage extends React.Component {
+class OneActionPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,6 +40,7 @@ class ActionsPage extends React.Component {
             actions,
             sidebar
         } = this.state.pageData;
+        var action = actions[this.props.match.params.id];
         return (
             <div className="boxed_wrapper">
                 <NavBar
@@ -53,7 +54,10 @@ class ActionsPage extends React.Component {
                                     <a href="/home">Home</a>
                                 </li>
                                 <li>
-                                    Actions
+                                    <a href="/actions">Actions</a>
+                                </li>
+                                <li>
+                                    {this.props.match.params.id}
                                 </li>
                             </ul>
                         </div>
@@ -62,19 +66,31 @@ class ActionsPage extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="shop sec-padd">
-                    <div className="container">
-                        <div className="row">
-                            <SideBar
-                                categories={sidebar.categories}
-                                tags={sidebar.tags}
-                                impacts={sidebar.impacts}
-                                difficulties={sidebar.difficulties}
-                                onChange={this.handleChange}
-                            ></SideBar>
-                            <div className="col-md-9 col-sm-12 col-xs-12">
-                                <div className="row" id="actions-container">
-                                    {this.renderActions(actions)}
+                <div>
+                    <div className="shop sec-padd">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-9 col-sm-12 col-xs-12">
+                                    <div className="row" id="actions-container">
+                                        <Action
+                                            id={action.id}
+                                            title={action.title}
+                                            description={action.description}
+                                            image={action.image}
+                                            match={this.props.match}
+
+                                            categories={action.categories}
+                                            tags={action.tags}
+                                            difficulty={action.difficulty}
+                                            impact={action.impact}
+
+                                            // noFilter={this.noFilter}
+                                            allcategories={this.state.pageData.sidebar.categories}
+                                            alltags={this.state.pageData.sidebar.tags}
+                                            alldifficulties={this.state.pageData.sidebar.difficulties}
+                                            allimpacts={this.state.pageData.sidebar.impacts}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -91,32 +107,5 @@ class ActionsPage extends React.Component {
         console.log("fuck");
         this.forceUpdate();
     }
-    // renders all the actions
-    renderActions(actions) {
-        if (!actions) {
-            return <li>No actions to Display</li>;
-        }
-        return Object.keys(actions).map(key => {
-            var action = actions[key];
-            return <Action
-                id={key}
-                title={action.title}
-                description={action.description}
-                image={action.image}
-                match={this.props.match}
-
-                categories={action.categories}
-                tags={action.tags}
-                difficulty={action.difficulty}
-                impact={action.impact}
-
-                // noFilter={this.noFilter}
-                allcategories={this.state.pageData.sidebar.categories}
-                alltags={this.state.pageData.sidebar.tags}
-                alldifficulties={this.state.pageData.sidebar.difficulties}
-                allimpacts={this.state.pageData.sidebar.impacts}
-            />
-        });
-    }
 }
-export default ActionsPage;
+export default OneActionPage;

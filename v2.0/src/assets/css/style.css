@@ -1,5 +1,5 @@
 /***************************************************************************************************************
-||||||||||||||||||||||||||||       MASTER STYLESHEET FOR Ecogreen      ||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||       MATER STYLESHEET FOR Ecogreen      ||||||||||||||||||||||||||||||||||||
 ****************************************************************************************************************
 ||||||||||||||||||||||||||||              TAinnerLE OF CONTENT                  ||||||||||||||||||||||||||||||||||||
 ****************************************************************************************************************
@@ -190,6 +190,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 
+
 .thm-btn.style-2 {
   background: transparent;
   color: #8dc63f;
@@ -211,7 +212,26 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   color: #8dc63f;
   border-color: #fff;
 }
-
+.thm-btn.style-4 {
+  position: relative;
+  background: #8dc63f;
+  font-size: 10px;
+  line-height: 28px;
+  border-radius: 5px;
+  color: #ffffff;
+  border: 1px solid #8dc63f;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-block;
+  padding: 0 10px;
+  transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+.thm-btn.style-4:hover {
+  background: transparent;
+  border-radius: 50px;
+  color: #8dc63f;
+  transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
 
 
 .section-title {
@@ -4382,13 +4402,18 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .blog-sidebar .category-style-one {
   position: relative;
 }
-.blog-sidebar .category-style-one ul {
-  margin-bottom: 50px;
-  margin-top: -15px;
+.blog-sidebar .category-style-one form {
+  margin-bottom: 3em;
+  margin-top: -1em;
 }
-.blog-sidebar .category-style-one ul li {border-bottom: 1px solid #eaeaea;margin: 0;padding-bottom: 0px;}
+.blog-sidebar .category-style-one form label {
+  border-bottom: 1px solid #eaeaea;
+  margin: 0;
+  padding-bottom: 0px;
+  display: block;
+}
 
-.blog-sidebar .category-style-one ul li a {
+.blog-sidebar .category-style-one form label p {
   font-weight: normal;
   color: #848484;
   position: relative;
@@ -4396,13 +4421,15 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   transition: .5s ease;
   line-height: 54px;
   display: block;
+  background: red;
 }
-.blog-sidebar .category-style-one ul li a:hover {
+.blog-sidebar .category-style-one form label p:hover {
   color: #8dc63f;
+  background:red;
   transition: .5s ease;
 }
 
-.blog-sidebar .category-style-one ul li a:before {
+.blog-sidebar .category-style-one form label p:before {
     content: "\f105";
     position: absolute;
     font-size: 16px;
@@ -4411,6 +4438,77 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
     top: 0px;
     -webkit-transition: .5s ease-in-out;
     transition: .5s ease-in-out;
+}
+/* Customize the label (the container) */
+.checkbox-container {
+  position: relative;
+  font-weight: normal;
+  color: #848484;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: .5s ease;
+  display:block;
+  width: 100%;
+  /* -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; */
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input.checkbox{
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #8dc63f;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 8px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 /*post-thumb*/
@@ -5361,8 +5459,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 
 .breadcumb-wrapper {
-  background: #fff;
-  padding: 19px 0;
+  background: rgb(66, 138, 54);
+  padding: 10px 0;
   border-bottom: 1px solid #f4f4f4;
 }
 .breadcumb-wrapper ul,
@@ -7070,6 +7168,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .single-shop-item .img-box {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 175px;
   transition: .5s ease;
   background: #f7f7f7;
   text-align: center;
@@ -7154,7 +7254,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .single-shop-item .content-box a.cart-btn {
   position: relative;
   color: #848484;
-  font-size: 14px;
+  font-size: 12px;
   transition: .7s ease;
 }
 .single-shop-item .content-box a.cart-btn:hover {
@@ -7187,6 +7287,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .single-shop-item .content-box .inner-box {
   border-bottom: 1px dashed #eee;
+  height: 7em;
   padding: 14px 20px;
 }
 .single-shop-item .content-box .price-box {
@@ -7196,7 +7297,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 
 .single-shop-item .content-box h4{
-  font-size: 16px;
+  font-size: 15px;
   margin:0px 0px;
   line-height:1.4em;
   color: #222;
@@ -8135,47 +8236,35 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 
 .shop-sidebar .section-title {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .shop-sidebar .category-style-one {
   position: relative;
 }
-.shop-sidebar .category-style-one ul {
-  margin-bottom: 50px;
-  margin-top: -15px;
+.shop-sidebar .category-style-one form {
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
-.shop-sidebar .category-style-one ul li {border-bottom: 1px solid #eaeaea;margin: 0;padding-bottom: 0px;}
-
-.shop-sidebar .category-style-one ul li a {
+.shop-sidebar .category-style-one form label {
+  border-bottom: 1px solid #eaeaea;
+  margin: 0;
+  padding-bottom: 0px;
+}
+.shop-sidebar .category-style-one form label p {
   font-weight: normal;
   color: #848484;
   position: relative;
+  vertical-align:center;
   width: 100%;
   transition: .5s ease;
-  line-height: 54px;
+  line-height: 20px;
   display: block;
 }
-.shop-sidebar .category-style-one ul li a:hover {
+.shop-sidebar .category-style-one form label p:hover {
   color: #8dc63f;
   transition: .5s ease;
 }
-
-.shop-sidebar .category-style-one ul li a:before {
-    content: "\f105";
-    position: absolute;
-    font-size: 16px;
-    font-family: FontAwesome;
-    right: 0px;
-    top: 0px;
-    -webkit-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
-}
-
-
-
-
-
 .single-shop-item .overlay {
     background-color: rgba(0, 0, 0, 0.49);
     text-align: center;
@@ -8415,12 +8504,9 @@ article.slide-item.center {}
   margin-bottom: 5px;
 }
 
-
 .testimonials-section2 .author p {
   color: #8dc63f;
 }
-
-
 
 .testimonials-section2 .donate-us h2 {
   margin-top: 160px;

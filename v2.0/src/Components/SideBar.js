@@ -6,22 +6,20 @@ import '../assets/css/style.css';
     tags
 */
 class SideBar extends React.Component {
-    renderTags(tags) {
-        if (!tags) {
-            return <li>No tags to Display</li>;
+    renderFilter(filtername,filter) {
+        if (!filter) {
+            return <li>Nothing to Display</li>;
         }
-        return Object.keys(tags).map(key => {
-            var tag = tags[key];
-            return <li><a href={""} className="tran3s">{tag}</a></li>;
-        });
-    }
-    renderCategories(categories) {
-        if (!categories) {
-            return <li>No categories to Display</li>
-        }
-        return Object.keys(categories).map(key => {
-            var category = categories[key];
-            return <li><a href={"?category=" + category}>{category}</a></li>
+        console.log(filtername);
+        return Object.keys(filter).map(key => {
+            var item = filter[key];
+            return (
+                <label className="checkbox-container" onClick={this.props.onChange}>
+                    <p style={{marginLeft:"25px"}}>{item}</p>
+                    <input className="checkbox" type="checkbox" name="boxes" id={filtername+"-"+item} value={item}/>
+                    <span className="checkmark"></span>
+                </label>
+            );
         });
     }
     render() {
@@ -39,96 +37,33 @@ class SideBar extends React.Component {
                         <div className="section-title style-2">
                             <h4>Categories</h4>
                         </div>
-                        <ul className="list">
-                            {this.renderCategories(this.props.categories)}
-                        </ul>
+                        <form className="list">
+                            {this.renderFilter("categories",this.props.categories)}
+                        </form>
                     </div>
-
-                    {/* <div className="price_filter wow fadeInUp">
-                        <div className="section-title style-2">
-                            <h4>Filter By Price</h4>
-                        </div>
-                        <div className="single-sidebar price-ranger">
-                            <div id="slider-range"></div>
-                            <div className="ranger-min-max-block">
-                                <input type="submit" value="Filter"/>
-                                <span>Price:</span>
-                                <input type="text" readonly className="min"/> 
-                                <span>-</span>
-                                <input type="text" readonly className="max"/>
-                            </div>
-                        </div> 
-                    </div>  */}
-
-                    {/* <div className="best_sellers clearfix wow fadeInUp">
-                        <div className="section-title style-2">
-                            <h4>Best Sellers</h4>
-                        </div>
-                        <div className="best-selling-area">
-                            <div className="best_selling_item clearfix border">
-                                <div className="img_holder float_left">
-                                    <a href="shop-single.html"><img src="images/shop/11.jpg" alt="image" /></a>
-                                </div>
-
-                                <div className="text float_left">
-                                    <a href="shop-single.html"><h4>The Innovators</h4></a>
-                                    <span>$34.99</span>
-                                    <ul>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star-half-o" aria-hidden="true"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="best_selling_item clearfix border">
-                                <div className="img_holder float_left">
-                                    <a href="shop-single.html"><img src="images/shop/12.jpg" alt="image" /></a>
-                                </div>
-                                <div className="text float_left">
-                                    <a href="shop-single.html"><h4>Good to Great</h4></a>
-                                    <span>$24.00</span>
-                                    <ul>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="best_selling_item clearfix">
-                                <div className="img_holder float_left">
-                                    <a href="shop-single.html"><img src="images/shop/13.jpg" alt="image" /></a>
-                                </div>
-
-                                <div className="text float_left">
-                                    <a href="shop-single.html"><h4>Built to Last</h4></a>
-                                    <span>$20.00</span>
-                                    <ul>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        <li><i className="fa fa-star-o" aria-hidden="true"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-
-
-                    <div className="sidebar_tags wow fadeInUp">
+                    <div className="category-style-one">
                         <div className="section-title style-2">
                             <h4>Product Tags</h4>
                         </div>
-
-                        <ul>
-                            {this.renderTags(this.props.tags)}
-                        </ul>
+                        <form className="list">
+                            {this.renderFilter("tags",this.props.tags)}
+                        </form>
+                    </div>
+                    <div className="category-style-one">
+                        <div className="section-title style-2">
+                            <h4>Difficulty</h4>
+                        </div>
+                        <form className="list">
+                            {this.renderFilter("difficulties",this.props.difficulties)}
+                        </form>
+                    </div>
+                    <div className="category-style-one">
+                        <div className="section-title style-2">
+                            <h4>Impact</h4>
+                        </div>
+                        <form className="list" id="impacts">
+                            {this.renderFilter("impacts",this.props.impacts)}
+                        </form>
                     </div>
                 </div>
             </div>

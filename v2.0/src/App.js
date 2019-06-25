@@ -6,6 +6,7 @@ import './assets/css/style.css';
 
 import HomePage from './Components/HomePage.js'
 import ActionsPage from './Components/ActionsPage.js'
+import OneActionPage from './Components/OneActionPage.js'
 
 // import {
 // 	getNavLinks,
@@ -27,12 +28,14 @@ class App extends Component {
 					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 				</Helmet>
 				<Switch>
-					<Route exact path="/" path="/home" component={HomePage} />
-					<Route path="/actions" component={ActionsPage}/>
+					<Route exact path="/" component={HomePage} />
+					<Route path="/home" component={HomePage} />
+					<Route exact path="/actions" component={ActionsPage}/>
+					<Route path={"/actions/:id"} component={OneActionPage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>
 						<div>
-							FOUR OR FOR: NO PAGE FOUND
+							FOUR OR FOR: PAGE NOT FOUND
 						</div>
 					}/>
 				</Switch>
@@ -40,5 +43,4 @@ class App extends Component {
 		);
 	}
 }
-const fourofour = ()=> <div></div>
 export default App;
