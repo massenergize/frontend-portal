@@ -177,7 +177,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   border-radius: 5px;
   color: #ffffff;
   border: 1px solid #8dc63f;
-  text-transform: uppercase;
+  
   font-weight: 700;
   display: inline-block;
   padding: 0 38px;
@@ -215,22 +215,25 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .thm-btn.style-4 {
   position: relative;
   background: #8dc63f;
-  font-size: 10px;
-  line-height: 28px;
+  font-size: 9px;
+  font-family: 'oxygen','verdana';
+  line-height: 20px;
+  box-shadow: 2px 2px 2px #101608a2;
   border-radius: 5px;
   color: #ffffff;
   border: 1px solid #8dc63f;
-  text-transform: uppercase;
+  display:inline-block;
+  
+  text-align: center;
   font-weight: 700;
-  display: inline-block;
-  padding: 0 10px;
+  padding: 0 3px;
+  margin-left: 2px;
   transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 .thm-btn.style-4:hover {
   background: transparent;
-  border-radius: 50px;
   color: #8dc63f;
-  transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+  transition: all .3s cubic-bezier(0.4, 0, 1, 1);
 }
 
 
@@ -6412,8 +6415,12 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   padding-bottom: 25px;
 }
 
-.cart-section .cart-outer {
+.cart-outer {
   position: relative;
+  background: #fafafa;
+}
+.cart-outer h1{
+  color:#333;
 }
 .cart-section .cart-outer .select-box:before {
   display: none;
@@ -6421,12 +6428,10 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .cart-section .table-outer {
   position: relative;
   width: 100%;
-  overflow-x: auto;
 }
 
 .cart-section .cart-table {
   width: 100%;
-  min-width: 900px;
 }
 
 .cart-table .cart-header {
@@ -6442,19 +6447,16 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .cart-table thead tr th {
   line-height: 24px;
   padding: 20px 15px;
-  min-width: 120px;
   font-weight: normal;
 }
 
 .cart-table thead tr th.prod-column {
   text-align: left;
-  padding-left: 40px;
 }
 
 .cart-table tbody tr td {
   line-height: 24px;
-  padding: 15px 10px;
-  min-width: 100px;
+  padding: 0px 0px;
   font-size: 16px;
   font-weight: bold;
   color: yellow;
@@ -6462,7 +6464,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .cart-table tbody tr .qty {
   width: 120px;
-  padding-right: 20px;
+  padding-right: 10px;
 }
 
 .cart-table tbody tr .qty .quantity-spinner {
@@ -6471,28 +6473,33 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .cart-table tbody tr .prod-column .column-box {
   position: relative;
-  min-height: 90px;
-  padding-left: 85px;
-  padding-top: 20px;
+  min-height: 70px;
+  overflow: hidden;
+  padding-top: 5px;
   text-align: left;
 }
-
+.cart-table tbody tr .prod-column .column-box .prod-title{
+  color: #333;
+}
 .cart-table tbody tr .prod-column .column-box .prod-thumb {
   position: absolute;
+  height: 70px;
+  max-width: 70px;
   left: 0px;
-  top: 11px;
+  top: 0px;
+  
   padding: 0px;
 }
 
 .cart-table tbody tr .prod-column .column-box .prod-thumb img {
   display: block;
-  max-width: 100%;
+  max-width: 70px;
 }
 
-.cart-table tbody tr .prod-column .column-box h3 {
-  font-size: 18px;
+.cart-table tbody tr .prod-column .column-box h4 {
+  font-size: 15px;
   margin: 0;
-  margin-top: 20px;
+  margin-top: 5px;
   margin-bottom: 5px;
   color: #222;
   text-transform: capitalize;
@@ -6503,25 +6510,28 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   color: #8dc63f;
 }
 
-.cart-table tbody tr .remove-btn {
-  position: relative;
-  font-size: 16px;
-  color: yellow;
-  line-height: 30px;
-  transition: all 500ms ease;
-}
-
-.cart-table tbody tr .remove-btn .fa {
-  position: relative;
-  top: 2px;
-  padding-right: 10px;
+.remove-btn .fa {
+  display: inline-block;
   font-size: 24px;
   line-height: 30px;
   transition: .5s ease;
+  color: red;
+}
+.done-btn .fa {
+  display: inline-block;
+  padding: 5px 5px;
+  font-size: 24px;
+  line-height: 30px;
+  transition: .5s ease;
+  color: green;
 }
 
-.cart-table tbody tr .remove-btn:hover {
-  color: #8dc63f;
+.cart-table tbody tr .done-btn .fa:hover {
+  color: #0a0;
+  transition: .5s ease;
+}
+.cart-table tbody tr .remove-btn .fa:hover {
+  color: #a00;
   transition: .5s ease;
 }
 .cart-table tbody tr .remove-btn span:before {
@@ -7292,9 +7302,18 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .single-shop-item .content-box .price-box {
   padding: 15px 20px 15px;
+  border-bottom: 1px dashed #eee;
 }
-
-
+.action-tags{
+  line-height: 2em;
+  margin:auto;
+}
+.action-tags span{
+  background: #eee;
+  border-radius: 10px;
+  color: #333;
+  padding: 0px 5px;
+}
 
 .single-shop-item .content-box h4{
   font-size: 15px;
@@ -7633,6 +7652,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .product-content-box .img-box {
   text-align: center;
+  margin:auto;
+  width:90%;
 }
 .product-content-box .flexslider .slides img {
   width: auto;
@@ -7686,7 +7707,8 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 
 .product-content-box .content-box {
-  margin-left: -50px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .product-content-box .content-box h3 {
   color: #222;
@@ -8533,5 +8555,23 @@ article.slide-item.center {}
   padding-left: 0;
 }
 
+/* Tooltip text */
+.remove-btn .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
 
+/* Show the tooltip text when you mouse over the tooltip container */
+.remove-btn:hover .tooltiptext {
+  visibility: visible;
+}
 

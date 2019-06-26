@@ -99,7 +99,7 @@ class ActionsPage extends React.Component {
         return Object.keys(actions).map(key => {
             var action = actions[key];
             return <Action
-                id={key}
+                id={action.id}
                 title={action.title}
                 description={action.description}
                 image={action.image}
