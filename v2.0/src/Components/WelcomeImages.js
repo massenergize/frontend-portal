@@ -42,7 +42,7 @@ class WelcomeImages extends React.Component{
             <div className="inner-banner text-center" style={bannerstyle}> 
                 <div className="container">
                     <div className="box">
-                        <h1>MassEnergize</h1>
+                        <h1>{this.props.title}</h1>
                      </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import './assets/css/style.css';
 import HomePage from './Components/HomePage.js'
 import ActionsPage from './Components/ActionsPage.js'
 import OneActionPage from './Components/OneActionPage.js'
+import AboutUsPage from './Components/AboutUsPage.js'
 
 // import {
 // 	getNavLinks,
@@ -31,6 +32,7 @@ class App extends Component {
 					<Route exact path="/" component={HomePage} />
 					<Route path="/home" component={HomePage} />
 					<Route exact path="/actions" component={ActionsPage}/>
+					<Route exact path="/aboutus" component={AboutUsPage}/>
 					<Route path={"/actions/:id"} component={OneActionPage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>

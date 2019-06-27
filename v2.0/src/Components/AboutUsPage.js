@@ -1,14 +1,14 @@
 import React from 'react'
 import NavBar from './NavBar.js';
 import WelcomeImages from './WelcomeImages.js'
-import Graphs from './Graphs';
-import IconBoxTable from './IconBoxTable.js';
-import Events from './Events';
+import Video from './Video.js'
+import TeamMembers from './TeamMembers.js'
+import DonateBar from './DonateBar.js'
 import Footer from './Footer';
 
 var apiurl = 'http://api.massenergize.org/user/'
 
-class HomePage extends React.Component {
+class AboutUs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,36 +29,30 @@ class HomePage extends React.Component {
             return null;
         });
     }
+
     render() {
-        if (!this.state.pageData) return <div></div>;
+        if(!this.state.menuData) return <div>Waiting for server...</div>
         const {
             navLinks,
             footerData
         } = this.state.menuData;
-        const {
-            welcomeImagesData,
-            graphsData,
-            iconBoxesData,
-            eventsData
-        } = this.state.pageData;
+
         return (
             <div className="boxed_wrapper">
                 <NavBar
-                    navLinks={navLinks}
+                    navLinks=""
                 />
                 <WelcomeImages
-                    data={welcomeImagesData} title="MassEnergize"
+                    data="" title="About Us"
                 />
-                <Graphs
-                    graphs={graphsData}
-                />
-                <IconBoxTable
-                    title=""
-                    boxes={iconBoxesData}
-                />
-                <Events
-                    events={eventsData}
-                />
+                <div class="col-sm-12 col-md-6">
+                    <Video link="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <p>This is a paragraph woohoo</p>
+                </div>
+                <TeamMembers data="" />
+                <DonateBar />
                 <Footer
                     data={footerData}
                 />
@@ -66,4 +60,4 @@ class HomePage extends React.Component {
         );
     }
 }
-export default HomePage;
+export default AboutUs;

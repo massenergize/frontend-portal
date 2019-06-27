@@ -5,7 +5,7 @@ import Footer from './Footer';
 import SideBar from './SideBar';
 import Action from './Action';
 
-var apiurl = 'http://localhost:8000/user/actions'
+var apiurl = 'http://api.massenergize.org/user/actions'
 
 class ActionsPage extends React.Component {
     constructor(props) {
