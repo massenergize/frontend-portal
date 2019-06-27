@@ -53,24 +53,7 @@ class ActionsPage extends React.Component {
                 <NavBar
                     navLinks={navLinks}
                 />
-                {/* link path from home>actions */}
-                <div className="breadcumb-wrapper">
-                    <div className="container">
-                        <div className="pull-left">
-                            <ul className="list-inline link-list">
-                                <li>
-                                    <a href="/home">Home</a>
-                                </li>
-                                <li>
-                                    Actions
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="pull-right">
-                            <a href="#" className="get-qoute"><i className="fa fa-arrow-circle-right"></i>Become a Volunteer</a>
-                        </div>
-                    </div>
-                </div>
+            
                 {/* main shop section */}
                 <div className="shop sec-padd">
                     <div className="container">

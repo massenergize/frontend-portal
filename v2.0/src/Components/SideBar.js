@@ -29,11 +29,10 @@ class SideBar extends React.Component {
                 <div className="wrapper shop-sidebar">
                     <div className="sidebar_search">
                         <form action="#">
-                            <input type="text" placeholder="Search...." />
-                            <button className="tran3s color1_bg"><i className="fa fa-search" aria-hidden="true"></i></button>
+                            <input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange}/>
+                            <button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
                         </form>
                     </div> <br /><br />
-
                     <div className="category-style-one">
                         <div className="section-title style-2">
                             <h4>Categories</h4>

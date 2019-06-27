@@ -22,7 +22,7 @@ class Action extends React.Component {
                     <div className="single-shop-item">
                         <div className="img-box">
                             {/* plug in the image here */}
-                            <a href="shop-cart.html"><img src={this.props.image}/></a>
+                            <a href="shop-cart.html"><img src={this.props.image} /></a>
                             {/* animated section on top of the image */}
                             <figcaption className="overlay">
                                 <div className="box">
@@ -72,13 +72,26 @@ class Action extends React.Component {
     }
     //checks the filters to see if the action should render or not
     shouldRender() {
-        //need both the tags and the categories to fit
+        //need both the tags and the categories to fit and search
+        //search fits if the exact string(lowercase) is in the title or description of an action //can make more advanced search later
+        var searchfits = this.searchFits(this.props.title) || this.searchFits(this.props.description);
         var catsfit = this.filterFits("categories", this.props.allcategories, this.props.categories);
         var tagsfit = this.filterFits("tags", this.props.alltags, this.props.tags);
         var difficultyfits = this.filterFits("difficulties", this.props.alldifficulties, [this.props.difficulty]);
         var impactfits = this.filterFits("impacts", this.props.allimpacts, [this.props.impact]);
 
-        return (catsfit && tagsfit && difficultyfits && impactfits); //need the tags and the cats to fit
+        return (searchfits && catsfit && tagsfit && difficultyfits && impactfits); //need the tags and the cats to fit
+    }
+    //checks if the value of the search bar is in the title of the action
+    searchFits(string) {
+        var searchbar = document.getElementById('action-searchbar');
+        if (!searchbar) //if cant find the search bar just render everything
+            return true;
+        if (string.toLowerCase().includes(searchbar.value.toLowerCase() || searchbar.value === '')) {
+            return true;
+        }
+
+        return false;
     }
     //checks if none of the boxes are checked, in which case, all the actions should show
     //takes in the name of the filter, and the filter
@@ -105,6 +118,7 @@ class Action extends React.Component {
         }
         return false;
     }
+
 
     //     //if the action's category is checked
     //     if (!this.props.noFilter(this.props.allcategories)) {
