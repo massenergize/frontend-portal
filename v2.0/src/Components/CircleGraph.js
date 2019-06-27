@@ -2,16 +2,18 @@ import React from 'react'
 import Chart from 'react-apexcharts'
 
 /*
+Circle graph is a graph that displays a progress bar in a circle
 @props:
-	size
-	num
-	goal
-	label
+	size: of the graph
+	num: completed actions or whatever you want to display
+	goal: the number you are trying to get to
+	label: the label in the middle of the circle
 */
 class CircleGraph extends React.Component{
     constructor(props) {
         super(props);
-        
+        //options for the graphs, color, size....
+        //could potentially move this to an api for graphs but probably don't need to
         this.state = {
           options: {
             chart: {

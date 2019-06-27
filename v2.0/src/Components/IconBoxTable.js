@@ -1,6 +1,17 @@
 import React from 'react';
 import IconBox from './IconBox.js';
 
+/**
+ * Renders all the Icon boxs into a row with 3 columns
+ * @props
+ *      title
+ *      boxes
+ *          id
+ *          title
+ *          description
+ *          icon
+ *          link
+ */
 class IconBoxTable extends React.Component {
     renderBoxes(boxes){
         if(!boxes){
@@ -8,13 +19,15 @@ class IconBoxTable extends React.Component {
         }
         return Object.keys(boxes).map(key=> {
             var box = boxes[key];
-            return <div className="col-md-3 col-sm-6 col-x-12" key = {box.id}><IconBox
-                key = {box.id}
-                title = {box.title}
-                description = {box.description}
-                icon = {box.icon}
-                link = {box.link}
-                /></div>
+            return  <div className="col-md-3 col-sm-6 col-x-12" key = {box.id}>
+                        <IconBox
+                            key = {box.id}
+                            title = {box.title}
+                            description = {box.description}
+                            icon = {box.icon}
+                            link = {box.link}
+                        />
+                    </div>
         });
     }
     render() {

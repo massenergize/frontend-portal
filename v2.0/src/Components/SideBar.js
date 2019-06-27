@@ -1,7 +1,8 @@
 import React from 'react';
 import '../assets/css/style.css';
 
-/* @props
+/** Renders the sidebar on the actions page, optons to filter by category, tags, difficulty and impact
+ *  @props
     categories
     tags
 */

@@ -1,8 +1,8 @@
 import React from 'react';
 import logo from '../logo.svg';
 
-/*
-@props.info:
+/** Renders the address/ company contact info in the footer
+ * @props :
     info
         text
         address

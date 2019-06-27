@@ -1,7 +1,8 @@
 import React from 'react'
 
-/*
-@props
+/**
+ *Footer events renders the events in the footer
+ *@props
     events
         title
         day
@@ -9,6 +10,8 @@ import React from 'react'
         year
         link
         image
+    @TODO should have a limiting number of events to show, 
+    and should show the next events happening -need to sort by date or something
 */
 class FooterEvents extends React.Component{
     renderEvents(events){

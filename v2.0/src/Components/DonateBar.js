@@ -1,5 +1,8 @@
 import React from 'react'
-
+/**
+ * A display for donating to the cause
+ * @props : 
+ */
 class DonateBar extends React.Component {
     render() {
         return (

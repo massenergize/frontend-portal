@@ -2,6 +2,13 @@ import React from 'react';
 import logo from '../logo.svg';
 import '../assets/css/style.css';
 
+/**
+ * Renders the Navigation bar 
+ * @props
+ *      navLinks
+ *          link
+ *          name
+ */
 class NavBar extends React.Component{
     renderNavLinks(navLinks){
         if(!navLinks){

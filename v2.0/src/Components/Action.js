@@ -1,16 +1,33 @@
 import React from 'react';
 
+/**
+ * Action Component is a single action for the action page, 
+ * the action displays conditionally based on the filters on the page
+ * @props : 
+    "id": the actions unique id
+    "title": the title of the action
+    "description": a long description to be shown on more info page
+    "image": action's image
+    "impact": level of impact (high medium low)
+    "categories": categories of the action (Home Energy, Clean Transportation...)
+    "difficulty": difficulty (high medium low)
+    "tags": actions' tags (sustainable, heat ...)
+    "match": match is passed from Route
+ */
 class Action extends React.Component {
     render() {
-        if (this.shouldRender()) {
+        if (this.shouldRender()) { //checks if the action should render or not
             return (
                 <div className="col-md-4 col-sm-6 col-xs-12">
                     <div className="single-shop-item">
                         <div className="img-box">
-                            <a href="shop-cart.html"><img src={this.props.image} alt="Awesome Image" /></a>
+                            {/* plug in the image here */}
+                            <a href="shop-cart.html"><img src={this.props.image}/></a>
+                            {/* animated section on top of the image */}
                             <figcaption className="overlay">
                                 <div className="box">
                                     <div className="content">
+                                        {/* link is thisurl/id (links to the OneActionPage) */}
                                         <a href={this.props.match.url + "/" + this.props.id}><i className="fa fa-link" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
@@ -19,8 +36,8 @@ class Action extends React.Component {
                         <div className="content-box">
                             <div className="inner-box">
                                 <h4><a href={this.props.match.url + "/" + this.props.id}>{this.props.title}</a></h4>
-
                             </div>
+                            {/* Impact and Difficulty tags*/}
                             <div className="price-box">
                                 <div className="clearfix">
                                     <div className="float_left">
@@ -31,6 +48,7 @@ class Action extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            {/* buttons for adding todo, marking as complete and getting more info */}
                             <div className="price-box">
                                 <div className="row no-gutter">
                                     <div className="col-sm-4 col-md-4 col-lg-4 col-xs-4">

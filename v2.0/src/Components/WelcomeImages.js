@@ -1,5 +1,7 @@
 import React from 'react'
 
+/** Renders an image banner that has one, two or three images across it based on screen size
+ */
 class WelcomeImages extends React.Component{
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
@@ -12,12 +14,12 @@ class WelcomeImages extends React.Component{
     };
     
     render(){
-        //works best with tall images from online, my images are too phat so they slow it down but these are good
+        //works best with tall images from online, my images are too big(2-5mb) so they slow it down but these are good
         var picture1 = 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60';
         var picture2 = 'https://images.unsplash.com/photo-1420593248178-d88870618ca0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80';
         var picture3 = 'https://images.unsplash.com/photo-1496769336828-c522a3a7e33c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60';
 
-        var bannerstyle;
+        var bannerstyle; //checks the width and changes how many images are displayed based on that
         if(window.innerWidth > 1100){
             bannerstyle = {
                 backgroundImage:`url(${picture1}), url(${picture2}), url(${picture3})`,

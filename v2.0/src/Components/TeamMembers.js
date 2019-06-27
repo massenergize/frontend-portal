@@ -1,5 +1,8 @@
 import React from 'react'
 
+/**
+ * 
+ */
 class TeamMembers extends React.Component {
     render() {
         return (

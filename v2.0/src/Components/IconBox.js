@@ -1,6 +1,14 @@
 import React from 'react'
 import '../assets/css/style.css';
 
+/**
+ * renders a single icon box on the home page
+ * @props
+ *      icon (fa fa-something)
+ *      title
+ *      description
+ *      link
+ */
 class IconBox extends React.Component{
     render(){
         return(

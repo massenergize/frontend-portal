@@ -5,8 +5,14 @@ import Footer from './Footer';
 import SideBar from './SideBar';
 import Action from './Action';
 
-var apiurl = 'http://api.massenergize.org/user/actions'
+//var apiurl = 'http://api.massenergize.org/user/actions'
+var apiurl = 'http://localhost:8000/user/actions'
 
+
+/**
+ * The Actions Page renders all the actions and a sidebar with action filters
+ * @props none - fetch data from api instead of getting data passed to you from props
+ */
 class ActionsPage extends React.Component {
     constructor(props) {
         super(props);
@@ -15,6 +21,7 @@ class ActionsPage extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
     }
+    //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
         fetch(apiurl).then(data => {
             return data.json()
@@ -31,12 +38,13 @@ class ActionsPage extends React.Component {
     }
 
     render() {
+        //avoids trying to render before the promise from the server is fulfilled
         if (!this.state.pageData) return <div>Waiting for a response from the server</div>;
-        const {
+        const { //gets the navLinks and footer data out of menu data
             navLinks,
             footerData
         } = this.state.menuData;
-        const {
+        const { //gets the actions and sidebar data out of page data
             actions,
             sidebar
         } = this.state.pageData;
@@ -45,6 +53,7 @@ class ActionsPage extends React.Component {
                 <NavBar
                     navLinks={navLinks}
                 />
+                {/* link path from home>actions */}
                 <div className="breadcumb-wrapper">
                     <div className="container">
                         <div className="pull-left">
@@ -62,16 +71,19 @@ class ActionsPage extends React.Component {
                         </div>
                     </div>
                 </div>
+                {/* main shop section */}
                 <div className="shop sec-padd">
                     <div className="container">
                         <div className="row">
+                            {/* renders the sidebar */}
                             <SideBar
                                 categories={sidebar.categories}
                                 tags={sidebar.tags}
                                 impacts={sidebar.impacts}
                                 difficulties={sidebar.difficulties}
-                                onChange={this.handleChange}
+                                onChange={this.handleChange} //runs when any category is selected or unselected
                             ></SideBar>
+                            {/* renders the actions */}
                             <div className="col-md-9 col-sm-12 col-xs-12">
                                 <div className="row" id="actions-container">
                                     {this.renderActions(actions)}
@@ -96,6 +108,7 @@ class ActionsPage extends React.Component {
         if (!actions) {
             return <li>No actions to Display</li>;
         }
+        //returns a list of action components
         return Object.keys(actions).map(key => {
             var action = actions[key];
             return <Action
@@ -103,7 +116,7 @@ class ActionsPage extends React.Component {
                 title={action.title}
                 description={action.description}
                 image={action.image}
-                match={this.props.match}
+                match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 categories={action.categories}
                 tags={action.tags}

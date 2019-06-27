@@ -1,5 +1,11 @@
 import React from 'react'
 
+/**
+ * Cart component
+ * renders a list of actions
+ * @props title
+ *      action list: title, image, id
+ */
 class Cart extends React.Component {
     render() {
         return (

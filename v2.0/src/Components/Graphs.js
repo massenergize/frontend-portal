@@ -1,8 +1,8 @@
 import React from 'react'
 import CircleGraph from './CircleGraph'
 
-/*
-@props:
+/** Renders the graphs on the home page and a link to the impact page
+ * @props :
     graphs
         data(num)
         goal
@@ -10,15 +10,13 @@ import CircleGraph from './CircleGraph'
         size
 */
 
-//TODO need to make a link to the graphs page: maybe have three circle graphs and then icon that just takes them to the page
-class Graphs extends React.Component{
 
+class Graphs extends React.Component{
 
     renderGraphs(graphs){
         if(!graphs){
             return <div>No Graphs to Display</div>
         }
-
         return Object.keys(graphs).map(key=> {
             var graph = graphs[key];
             return  <article className="column col-md-3 col-sm-6 col-xs-12" data-wow-duration="0ms">

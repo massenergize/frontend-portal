@@ -1,17 +1,20 @@
 import React from 'react'
-/*
-@props
-    events
+/**
+ * Events section displays upcoming events,
+ * @TODO make a limit number so it only displays that many events
+ * @props
+    events: list of the events to show
         title
         time
         day
         month
         year
-        link
+        link //may need to rethink this/do it more like actions so it links to a single event view by id
         image
         organizer
         address
-*/
+        //may need to add in id
+ */
 class Events extends React.Component{
     renderEvents(events){
         if(!events){

@@ -2,6 +2,9 @@ import React from 'react'
 import FooterInfo from './FooterInfo.js'
 import FooterEvents from './FooterEvents.js'
 import FooterLinks from './FooterLinks.js'
+/**
+ * Footer section has place for links, 
+ */
 class Footer extends React.Component{
     render(){
         return (

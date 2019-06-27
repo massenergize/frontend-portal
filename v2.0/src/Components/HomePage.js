@@ -6,8 +6,12 @@ import IconBoxTable from './IconBoxTable.js';
 import Events from './Events';
 import Footer from './Footer';
 
-var apiurl = 'http://api.massenergize.org/user/'
+//var apiurl = 'http://api.massenergize.org/user/'
+var apiurl = 'http://localhost:8000/user/'
 
+/*
+* The Home Page of the MassEnergize
+*/
 class HomePage extends React.Component {
     constructor(props) {
         super(props);

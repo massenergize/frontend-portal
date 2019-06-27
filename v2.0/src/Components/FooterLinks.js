@@ -1,6 +1,6 @@
 import React from 'react'
 
-/*
+/** Renders the Navigation links in the footer
 @props
     title
     links
