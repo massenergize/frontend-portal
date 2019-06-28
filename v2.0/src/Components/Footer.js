@@ -8,7 +8,7 @@ import FooterLinks from './FooterLinks.js'
 class Footer extends React.Component{
     render(){
         return (
-            <div class="d-flex flex-column">
+            <div className="d-flex flex-column">
                 <footer className="main-footer">
                     {/* <!--Widgets Section--> */}
                     <div className="widgets-section">

@@ -42,16 +42,18 @@ class AboutUs extends React.Component {
         return (
             <div className="boxed_wrapper">
                 <NavBar
-                    navLinks=""
+                    navLinks={navLinks}
                 />
                 <WelcomeImages
                     data="" title="About Us"
                 />
-                <div class="col-sm-12 col-md-6">
-                    <Video link="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <p>This is a paragraph woohoo</p>
+                <div className="row m-0 mt-3">
+                    <div className="col-sm-12 col-md-6">
+                        <Video link="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
+                        <p>This is a paragraph woohoo</p>
+                    </div>
                 </div>
                 <TeamMembers data="" />
                 <DonateBar />
