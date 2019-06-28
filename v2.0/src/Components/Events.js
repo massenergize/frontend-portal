@@ -30,7 +30,7 @@ class Events extends React.Component{
             }
             return (
                 <article className="col-md-6 col-sm-12 col-xs-12">
-                    <div className= {eventStyle}>
+                    <div className={eventStyle}>
                         <div className="clearfix">
                             <div className="img-column">
                                 <figure className="img-holder">

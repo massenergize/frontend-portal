@@ -6,8 +6,8 @@ import TeamMembers from './TeamMembers.js'
 import DonateBar from './DonateBar.js'
 import Footer from './Footer';
 
-//var apiurl = 'http://api.massenergize.org/user/'
-var apiurl = 'http://localhost:8000/user/'
+var apiurl = 'http://api.massenergize.org/user/'
+// var apiurl = 'http://localhost:8000/user/'
 
 
 class AboutUs extends React.Component {

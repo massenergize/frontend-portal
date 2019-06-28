@@ -3,8 +3,8 @@ import NavBar from './NavBar.js';
 import Footer from './Footer';
 import Cart from './Cart';
 
-//var apiurl = 'http://api.massenergize.org/user/actions'
-var apiurl = 'http://localhost:8000/user/actions'
+var apiurl = 'http://api.massenergize.org/user/actions'
+// var apiurl = 'http://localhost:8000/user/actions'
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
