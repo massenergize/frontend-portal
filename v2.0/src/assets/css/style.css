@@ -155,6 +155,10 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   height: 100%;
 }
 
+.height-100vh {
+  height: 100vh;
+}
+
 .thm-color {
   color: #8dc63f;
 }

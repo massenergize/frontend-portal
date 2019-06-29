@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * 
+ * Renders a video element that takes the full width of its container.
  */
 class Video extends React.Component {
     render() {

@@ -1,8 +1,8 @@
 import React from 'react'
-import NavBarBurger from './NavBarBurger'
+import CONST from './Constants.js';
+import LoadingPage from './LoadingPage.js';
+import NavBar from './NavBar'
 import Footer from './Footer'
-
-var apiurl = 'http://localhost:8000/user/menu'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class LoginPage extends React.Component {
     }
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
-        fetch(apiurl).then(data => {
+        fetch(CONST.URL.MENU).then(data => {
             return data.json()
         }).then(myJson => {
             console.log(myJson);
@@ -28,7 +28,7 @@ class LoginPage extends React.Component {
         });
     }
     render() { //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.menuData) return <div>Waiting for a response from the server</div>;
+        if (!this.state.menuData) return <LoadingPage/>;
         const { //gets the navLinks and footer data out of menu data
             navLinks,
             footerData

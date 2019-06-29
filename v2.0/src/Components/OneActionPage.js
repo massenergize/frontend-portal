@@ -1,6 +1,7 @@
 import React from 'react'
 import CONST from './Constants.js';
-import NavBarBurger from './NavBarBurger';
+import LoadingPage from './LoadingPage.js';
+import NavBar from './NavBar.js';
 import Footer from './Footer';
 import Cart from './Cart';
 
@@ -38,7 +39,7 @@ class OneActionPage extends React.Component {
      */
     render() {
         //gets all the data from the server
-        if (!this.state.pageData) return <div>Waiting for a response from the server</div>;
+        if (!this.state.pageData) return <LoadingPage/>;
         const {
             navLinks,
             footerData

@@ -1,5 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
+import LoadingPage from './LoadingPage.js';
 import { Switch, Route } from 'react-router-dom'
 import NavBarBurger from './NavBarBurger';
 import Footer from './Footer';
@@ -39,7 +40,7 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.pageData) return <div>Waiting for a response from the server</div>;
+        if (!this.state.pageData) return <LoadingPage/>;
         const { //gets the navLinks and footer data out of menu data
             navLinks,
             footerData
