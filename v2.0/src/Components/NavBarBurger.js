@@ -206,8 +206,9 @@ class Menu extends React.Component {
     render() {
         const styles = {
             container: {
-                position: 'relative',
-                height: this.state.open ? '100%' : 0,
+                position: 'absolute',
+                width:'100%',
+                height: this.state.open ? '100vh' : 0,
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'white',

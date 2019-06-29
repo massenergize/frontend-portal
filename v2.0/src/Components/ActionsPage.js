@@ -26,7 +26,6 @@ class ActionsPage extends React.Component {
         fetch(CONST.URL.ACTIONS).then(data => {
             return data.json()
         }).then(myJson => {
-            console.log(myJson);
             this.setState({
                 pageData: myJson.pageData,
                 menuData: myJson.menuData,
@@ -85,7 +84,6 @@ class ActionsPage extends React.Component {
     }
     // on change in any category or tag checkbox update the actionsPage
     handleChange() {
-        console.log("fuck");
         this.forceUpdate();
     }
     // renders all the actions

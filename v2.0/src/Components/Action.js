@@ -19,7 +19,7 @@ class Action extends React.Component {
     render() {
         if (this.shouldRender()) { //checks if the action should render or not
             return (
-                <div className="col-md-4 col-sm-6 col-xs-12">
+                <div className="col-lg-4 col-md-6 col-sm-6 col-6">
                     <div className="single-shop-item">
                         <div className="img-box">
                             {/* plug in the image here */}
@@ -52,13 +52,13 @@ class Action extends React.Component {
                             {/* buttons for adding todo, marking as complete and getting more info */}
                             <div className="price-box">
                                 <div className="row no-gutter">
-                                    <div className="col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                                    <div className="col-sm-4 col-md-4 col-lg-4 col-4">
                                         <a href="shop-cart.html" className="thm-btn style-4">More Info</a>
                                     </div>
-                                    <div className="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                    <div className="col-md-4 col-sm-4 col-lg-4 col-4">
                                         <a href={this.props.match.url + "/" + this.props.id} className="thm-btn style-4 ">Add Todo</a>
                                     </div>
-                                    <div className="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                    <div className="col-md-4 col-sm-4 col-lg-4 col-4">
                                         <a href="shop-cart.html" className="thm-btn style-4 ">Done It</a>
                                     </div>
                                 </div>

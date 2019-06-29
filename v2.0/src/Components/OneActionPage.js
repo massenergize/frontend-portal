@@ -88,7 +88,7 @@ class OneActionPage extends React.Component {
                     <div>
                         <div className="product-content-box">
                             <div className="row">
-                                <div className="col-md-6 col-sm-6">
+                                <div className="col-lg-6 col-md-12">
                                     {/* title */}
                                     <div className="content-box">
                                         <h2 style={{ padding: "20px 0px 0px 0px" }}>{action.title}</h2>
@@ -116,7 +116,7 @@ class OneActionPage extends React.Component {
                                     </div>
                                 </div>
                                 {/* action image */}
-                                <div className="col-md-6 col-sm-6"><div className="img-box">
+                                <div className="col-lg-6 col-md-12"><div className="img-box">
                                     <img src={action.image} alt="" data-imagezoom="true" className="img-responsive" style={{ marginTop: "20px" }} />
                                 </div></div>
                             </div>
@@ -148,7 +148,7 @@ class OneActionPage extends React.Component {
                                     if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
                                     if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "active";
                                     if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                                }} data-toggle="tab">Reviews (2)</a></li>
+                                }} data-toggle="tab">Stories </a></li>{/**@TODO make it say number of stories/disapear if none*/}
                             </ul>
                             <div className="tab-content">
                                 {/* description */}

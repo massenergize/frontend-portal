@@ -15,7 +15,7 @@ class Footer extends React.Component{
                         <div className="container">
                             <div className="row">
                                 {/* <!--Big Column--> */}
-                                <div className="big-column col-md-6 col-sm-12 col-xs-12">
+                                <div className="big-column col-lg-6 col-md-12">
                                     <div className="row clearfix">
                                         {/* <!--Footer Column--> */}
                                         <FooterInfo
@@ -29,14 +29,14 @@ class Footer extends React.Component{
                                     </div>
                                 </div>
                                 {/* <!--Big Column--> */}
-                                <div className="big-column col-md-6 col-sm-12 col-xs-12">
+                                <div className="big-column col-lg-6 col-md-12">
                                     <div className="row clearfix">
                                         {/* <!--Footer Column--> */}
                                         <FooterEvents
                                             events={this.props.data.events}
                                         />
                                         {/* <!--Footer Column--> */}
-                                        <div className="col-md-6 col-sm-6 col-xs-12">
+                                        <div className="col-md-6 col-sm-12">
                                             <div className="footer-widget contact-column">
                                                 <div className="section-title">
                                                     <h4>Subscribe Us</h4>
