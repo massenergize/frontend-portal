@@ -15,13 +15,15 @@ class HomePage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
-            menuData: null
+            menuData: null,
+            userData: null,
         }
     }
     componentDidMount() {
         fetch(CONST.URL.USER).then(data => {
             return data.json()
         }).then(myJson => {
+            console.log(myJson);
             this.setState({
                 pageData: myJson.pageData,
                 menuData: myJson.menuData,
@@ -31,6 +33,7 @@ class HomePage extends React.Component {
             console.log(error);
             return null;
         });
+        
     }
     render() {
         if (!this.state.pageData) return <div></div>;

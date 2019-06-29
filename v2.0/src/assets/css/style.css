@@ -1144,8 +1144,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 
 .main-logo {
   margin: 7px 0;
-  width: 150px;
-  height: 50px;
+  width: 9em;
 }
 
 /*=====menu========*/
@@ -1172,14 +1171,16 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .theme_menu .container {
   position: relative;
 }
+.theme_menu .container .thm-btn{
+  /* display: flex; */
+}
 .theme_menu {
   position: relative;
   z-index: 99;
-  padding: 25px 0;
+  padding: 5px 0;
 }
 .theme_menu .menu-column {
   padding-left: 0;
-  padding-right: 90px;
   position: inherit;
 }
 .theme_menu .menuzord {
@@ -1189,8 +1190,6 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .menuzord-menu > li > a {
   position: relative;
-  padding: 20px 18px;
-  text-transform: uppercase;
   color: #303030;
   font-weight: 700;
   font-family: "Open Sans", sans-serif;

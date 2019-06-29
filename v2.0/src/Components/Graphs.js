@@ -27,7 +27,6 @@ class Graphs extends React.Component{
     
     render(){
         var dumbycol ="";
-        console.log(this.props.graphs);
         if(this.props.graphs && Object.keys(this.props.graphs).length === 2){
             dumbycol = <article className={"column col-md-3"}></article>;
         }

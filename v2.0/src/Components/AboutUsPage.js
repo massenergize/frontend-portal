@@ -42,6 +42,7 @@ class AboutUs extends React.Component {
             <div className="boxed_wrapper">
                 <NavBar
                     navLinks={navLinks}
+                    userData={this.state.userData}
                 />
                 <WelcomeImages
                     data="" title="About Us"
