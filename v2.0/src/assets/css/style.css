@@ -1177,22 +1177,21 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 .theme_menu {
   position: relative;
   z-index: 99;
-  padding: 5px 0;
+  padding: 0 0;
 }
 .theme_menu .menu-column {
   padding-left: 0;
   position: inherit;
 }
 .theme_menu .menuzord {
-  padding: 0;
   background: transparent;
-  float: right;
+  float: left;
 }
 .menuzord-menu > li > a {
   position: relative;
   color: #303030;
   font-weight: 700;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Verdana", sans-serif;
 }
 .menuzord-menu > li:hover > a {
     color: #8dc63f;
@@ -1201,7 +1200,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
     padding-left: 0px;
 }
 .menuzord-menu ul.dropdown, .menuzord-menu ul.dropdown li ul.dropdown {
-    padding: 0 20px;
+    padding: 0 10px;
     min-width: 230px;
     background: #fff;
     border-top: 3px solid #8dc63f;
@@ -8594,3 +8593,29 @@ article.slide-item.center {}
   color: #8dc63f;
 }
 
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-2%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    width: 95%;
+  }
+  100% {
+    width: 90%;
+  }
+}

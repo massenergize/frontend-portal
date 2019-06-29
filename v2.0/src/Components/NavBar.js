@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../logo.svg';
 import '../assets/css/style.css';
+import NavBarBurger from './NavBarBurger'
 
 /**
  * Renders the Navigation bar 
@@ -14,9 +15,9 @@ import '../assets/css/style.css';
  *          ...
  */
 class NavBar extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             burger: false,
             collapsed: true
         }
@@ -32,25 +33,27 @@ class NavBar extends React.Component {
     }
     render() {
         return (
-            <nav className="theme_menu navbar stricky">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                            <div className="main-logo">
-                                <a href="index.html"><img src={logo} alt="" /></a>
+            <div>
+                <nav className="theme_menu navbar stricky">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                <div className="main-logo">
+                                    <a href="index.html"><img src={logo} alt="" /></a>
+                                </div>
+                            </div>
+                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12 menu-column">
+                                <nav className="menuzord" id="main_menu">
+                                    <ul className="menuzord-menu">
+                                        {this.renderNavLinks(this.props.navLinks)}
+                                        {this.renderLogin()}
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
-                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12 menu-column">
-                            <nav className="menuzord" id="main_menu">
-                                <ul className="menuzord-menu">
-                                    {this.renderNavLinks(this.props.navLinks)}
-                                    {this.renderLogin()}
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         );
     }
     renderLogin() {
@@ -61,9 +64,9 @@ class NavBar extends React.Component {
         if (loggedIn) {
             return (
                 <li>
-                    <a  style={{color: "#8ec449"}}>
+                    <a style={{ color: "#8ec449" }}>
                         <i className="fa fa-user" />
-                        Welcome: <br/>
+                        Welcome: <br />
                         {name}
                     </a>
                 </li>

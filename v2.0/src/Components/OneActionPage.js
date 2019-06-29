@@ -1,6 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
-import NavBar from './NavBar.js';
+import NavBarBurger from './NavBarBurger';
 import Footer from './Footer';
 import Cart from './Cart';
 
@@ -48,7 +48,7 @@ class OneActionPage extends React.Component {
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBar
+                <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
                 />

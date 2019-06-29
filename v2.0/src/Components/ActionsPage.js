@@ -1,7 +1,7 @@
 import React from 'react'
 import CONST from './Constants.js';
 import { Switch, Route } from 'react-router-dom'
-import NavBar from './NavBar.js';
+import NavBarBurger from './NavBarBurger';
 import Footer from './Footer';
 import SideBar from './SideBar';
 import Action from './Action';
@@ -50,7 +50,7 @@ class ActionsPage extends React.Component {
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBar
+                <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
                 />

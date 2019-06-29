@@ -1,6 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
-import NavBar from './NavBar.js';
+import NavBarBurger from './NavBarBurger';
 import WelcomeImages from './WelcomeImages.js'
 import Video from './Video.js'
 import TeamMembers from './TeamMembers.js'
@@ -40,7 +40,7 @@ class AboutUs extends React.Component {
 
         return (
             <div className="boxed_wrapper">
-                <NavBar
+                <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
                 />

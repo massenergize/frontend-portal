@@ -1,6 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
-import NavBar from './NavBar.js';
+import NavBarBurger from './NavBarBurger.js';
 import WelcomeImages from './WelcomeImages.js'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable.js';
@@ -21,6 +21,7 @@ class HomePage extends React.Component {
     }
     componentDidMount() {
         fetch(CONST.URL.USER).then(data => {
+            console.log(data);
             return data.json()
         }).then(myJson => {
             console.log(myJson);
@@ -49,7 +50,7 @@ class HomePage extends React.Component {
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBar
+                <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
                 />

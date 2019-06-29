@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBar from './NavBar'
+import NavBarBurger from './NavBarBurger'
 import Footer from './Footer'
 
 var apiurl = 'http://localhost:8000/user/menu'
@@ -35,7 +35,7 @@ class LoginPage extends React.Component {
         } = this.state.menuData;
         return (
             <div className="boxed_wrapper">
-                <NavBar
+                <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
                 />
