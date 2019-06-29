@@ -1,5 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
+import LoadingPage from './LoadingPage.js';
 import NavBar from './NavBar.js';
 import WelcomeImages from './WelcomeImages.js'
 import Graphs from './Graphs';
@@ -36,7 +37,7 @@ class HomePage extends React.Component {
         
     }
     render() {
-        if (!this.state.pageData) return <div></div>;
+        if (!this.state.pageData) return <LoadingPage/>;
         const {
             navLinks,
             footerData,

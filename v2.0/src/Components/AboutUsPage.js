@@ -1,5 +1,6 @@
 import React from 'react'
 import CONST from './Constants.js';
+import LoadingPage from './LoadingPage.js';
 import NavBar from './NavBar.js';
 import WelcomeImages from './WelcomeImages.js'
 import Video from './Video.js'
@@ -32,7 +33,7 @@ class AboutUs extends React.Component {
     }
 
     render() {
-        if(!this.state.menuData) return <div>Waiting for server...</div>
+        if(!this.state.menuData) return <LoadingPage/>;
         const {
             navLinks,
             footerData
