@@ -1,10 +1,8 @@
 import React from 'react'
+import CONST from './Constants.js';
 import NavBar from './NavBar.js';
 import Footer from './Footer';
 import Cart from './Cart';
-
-var apiurl = 'http://api.massenergize.org/user/actions'
-// var apiurl = 'http://localhost:8000/user/actions'
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -22,7 +20,7 @@ class OneActionPage extends React.Component {
     }
     //grab the actions page data from the api
     componentDidMount() {
-        fetch(apiurl).then(data => {
+        fetch(CONST.URL.ACTIONS).then(data => {
             return data.json()
         }).then(myJson => {
             this.setState({

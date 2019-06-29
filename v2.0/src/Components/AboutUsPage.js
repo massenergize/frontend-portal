@@ -1,14 +1,11 @@
 import React from 'react'
+import CONST from './Constants.js';
 import NavBar from './NavBar.js';
 import WelcomeImages from './WelcomeImages.js'
 import Video from './Video.js'
 import TeamMembers from './TeamMembers.js'
 import DonateBar from './DonateBar.js'
 import Footer from './Footer';
-
-var apiurl = 'http://api.massenergize.org/user/'
-// var apiurl = 'http://localhost:8000/user/'
-
 
 class AboutUs extends React.Component {
     constructor(props) {
@@ -20,7 +17,7 @@ class AboutUs extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(apiurl).then(data => {
+        fetch(CONST.URL.USER).then(data => {
             return data.json()
         }).then(myJson => {
             this.setState({

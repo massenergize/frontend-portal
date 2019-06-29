@@ -1,13 +1,11 @@
 import React from 'react'
+import CONST from './Constants.js';
 import NavBar from './NavBar.js';
 import WelcomeImages from './WelcomeImages.js'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable.js';
 import Events from './Events';
 import Footer from './Footer';
-
-var apiurl = 'http://api.massenergize.org/user/'
-// var apiurl = 'http://localhost:8000/user/'
 
 /*
 * The Home Page of the MassEnergize
@@ -21,7 +19,7 @@ class HomePage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(apiurl).then(data => {
+        fetch(CONST.URL.USER).then(data => {
             return data.json()
         }).then(myJson => {
             this.setState({

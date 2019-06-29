@@ -1,13 +1,10 @@
 import React from 'react'
+import CONST from './Constants.js';
 import { Switch, Route } from 'react-router-dom'
 import NavBar from './NavBar.js';
 import Footer from './Footer';
 import SideBar from './SideBar';
 import Action from './Action';
-
-var apiurl = 'http://api.massenergize.org/user/actions'
-// var apiurl = 'http://localhost:8000/user/actions'
-
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -25,7 +22,7 @@ class ActionsPage extends React.Component {
     }
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
-        fetch(apiurl).then(data => {
+        fetch(CONST.URL.ACTIONS).then(data => {
             return data.json()
         }).then(myJson => {
             console.log(myJson);
