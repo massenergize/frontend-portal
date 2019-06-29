@@ -1,13 +1,7 @@
 import React from 'react'
-<<<<<<< Updated upstream
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
-import NavBar from './NavBar'
-=======
 import NavBarBurger from './NavBarBurger'
-import CONST from './Constants.js';
-import LoadingPage from './LoadingPage.js';
->>>>>>> Stashed changes
 import Footer from './Footer'
 
 class LoginPage extends React.Component {
