@@ -18,6 +18,8 @@ class ActionsPage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
+            userData: null,
+            menuData: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -29,7 +31,8 @@ class ActionsPage extends React.Component {
             console.log(myJson);
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData
+                menuData: myJson.menuData,
+                userData: myJson.userData,
             });
         }).catch(error => {
             console.log(error);
@@ -52,6 +55,7 @@ class ActionsPage extends React.Component {
             <div className="boxed_wrapper">
                 <NavBar
                     navLinks={navLinks}
+                    userData={this.state.userData}
                 />
             
                 {/* main shop section */}

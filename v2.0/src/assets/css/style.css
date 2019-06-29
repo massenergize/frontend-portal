@@ -181,7 +181,7 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
   position: relative;
   background: #8dc63f;
   font-size: 14px;
-  line-height: 48px;
+  line-height: 30px;
   border-radius: 5px;
   color: #ffffff;
   border: 1px solid #8dc63f;
@@ -193,7 +193,6 @@ input,textarea {font-family: 'Open Sans', sans-serif;display: block; font-size: 
 }
 .thm-btn:hover {
   background: transparent;
-  border-radius: 50px;
   color: #8dc63f;
   transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
@@ -8581,5 +8580,18 @@ article.slide-item.center {}
 /* Show the tooltip text when you mouse over the tooltip container */
 .remove-btn:hover .tooltiptext {
   visibility: visible;
+}
+
+.login-link{
+  position: absolute;
+  color: green;
+  top:20px;
+  right:40px;
+  font-size: 20px;
+  font-family: Verdana, Tahoma, sans-serif;
+}
+
+.login-link:hover{
+  color: #8dc63f;
 }
 

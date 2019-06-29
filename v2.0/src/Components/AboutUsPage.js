@@ -15,7 +15,8 @@ class AboutUs extends React.Component {
         super(props);
         this.state = {
             pageData: null,
-            menuData: null
+            menuData: null,
+            userData: null,
         }
     }
     componentDidMount() {
@@ -24,7 +25,8 @@ class AboutUs extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData
+                menuData: myJson.menuData,
+                userData: myJson.userData,
             });
         }).catch(error => {
             console.log(error);

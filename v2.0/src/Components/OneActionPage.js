@@ -15,6 +15,8 @@ class OneActionPage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
+            menuData: null,
+            userData: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -25,12 +27,54 @@ class OneActionPage extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData
+                menuData: myJson.menuData,
+                userData: myJson.userData,
             });
         }).catch(error => {
             console.log(error);
             return null;
         });
+    }
+    /**
+     * renders a single action from the passes id prop and a cart with todo in it and a cart with done in it
+     */
+    render() {
+        //gets all the data from the server
+        if (!this.state.pageData) return <div>Waiting for a response from the server</div>;
+        const {
+            navLinks,
+            footerData
+        } = this.state.menuData;
+        const {
+            actions,
+        } = this.state.pageData;
+        return (
+            <div className="boxed_wrapper">
+                <NavBar
+                    navLinks={navLinks}
+                    userData={this.state.userData}
+                />
+                <section className="shop-single-area">
+                    <div className="container">
+                        <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                            <div className="col-md-8">
+                                <div className="single-products-details">
+                                    {this.renderAction(actions, this.props.match.params.id)}
+                                </div>
+                            </div>
+                            {/* makes the todo and completed actions carts */}
+                            <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                                <Cart title="To Do List" />
+                                <Cart title="Completed Actions" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <Footer
+                    data={footerData}
+                />
+            </div>
+        );
     }
     /**
      * renders the action on the page
@@ -236,46 +280,7 @@ class OneActionPage extends React.Component {
         }
         return <div> Oops couldn't find action with id: {id}</div>
     }
-    /**
-     * renders a single action from the passes id prop and a cart with todo in it and a cart with done in it
-     */
-    render() {
-        //gets all the data from the server
-        if (!this.state.pageData) return <div>Waiting for a response from the server</div>;
-        const {
-            navLinks,
-            footerData
-        } = this.state.menuData;
-        const {
-            actions,
-        } = this.state.pageData;
-        return (
-            <div className="boxed_wrapper">
-                <NavBar
-                    navLinks={navLinks}
-                />
-                <section className="shop-single-area">
-                    <div className="container">
-                        <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <div className="col-md-8">
-                                <div className="single-products-details">
-                                    {this.renderAction(actions, this.props.match.params.id)}
-                                </div>
-                            </div>
-                            {/* makes the todo and completed actions carts */}
-                            <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                                <Cart title="To Do List" />
-                                <Cart title="Completed Actions" />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <Footer
-                    data={footerData}
-                />
-            </div>
-        );
-    }
+    
     // on change in any category or tag checkbox update the actionsPage
     handleChange() {
         this.forceUpdate();

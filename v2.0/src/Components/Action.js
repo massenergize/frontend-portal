@@ -14,6 +14,7 @@ import React from 'react';
     "tags": actions' tags (sustainable, heat ...)
     "match": match is passed from Route
  */
+
 class Action extends React.Component {
     render() {
         if (this.shouldRender()) { //checks if the action should render or not

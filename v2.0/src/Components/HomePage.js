@@ -26,7 +26,8 @@ class HomePage extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData
+                menuData: myJson.menuData,
+                userData: myJson.userData,
             });
         }).catch(error => {
             console.log(error);
@@ -37,7 +38,7 @@ class HomePage extends React.Component {
         if (!this.state.pageData) return <div></div>;
         const {
             navLinks,
-            footerData
+            footerData,
         } = this.state.menuData;
         const {
             welcomeImagesData,
@@ -49,6 +50,7 @@ class HomePage extends React.Component {
             <div className="boxed_wrapper">
                 <NavBar
                     navLinks={navLinks}
+                    userData={this.state.userData}
                 />
                 <WelcomeImages
                     data={welcomeImagesData} title="MassEnergize"

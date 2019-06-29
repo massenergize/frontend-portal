@@ -8,6 +8,10 @@ import '../assets/css/style.css';
  *      navLinks
  *          link
  *          name
+ *      userData
+ *          name
+ *          email
+ *          ...
  */
 class NavBar extends React.Component{
     renderNavLinks(navLinks){
@@ -24,15 +28,16 @@ class NavBar extends React.Component{
             <section className="theme_menu stricky">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-3">
+                        {this.renderLogin()} 
+                        <div className="col-md-2">
                             <div className="main-logo">
                                 <a href="index.html"><img src={logo} alt=""/></a>
                             </div>
                         </div>
-                        <div className="col-md-9 menu-column">
+                        <div className="col-md-10 menu-column">
                             <nav className="menuzord" id="main_menu">
                                 <ul className="menuzord-menu menuzord-indented scrollable">
-                                    {this.renderNavLinks(this.props.navLinks)}   
+                                    {this.renderNavLinks(this.props.navLinks)}  
                                 </ul>
                             </nav>
                         </div>
@@ -40,6 +45,17 @@ class NavBar extends React.Component{
                 </div>
             </section>
         );
+    }
+    renderLogin(){
+        const { 
+            loggedIn, 
+            name
+         } = this.props.userData
+        if(loggedIn){
+           
+        }else{
+            return <a className="thm-btn float_right" href="/login"><i className="fa fa-user"/> Login</a>;
+        }
     }
 }
 export default NavBar;
