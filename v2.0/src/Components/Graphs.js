@@ -19,17 +19,9 @@ class Graphs extends React.Component{
         }
         return Object.keys(graphs).map(key=> {
             var graph = graphs[key];
-<<<<<<< Updated upstream
             return  <div className="column col-md-3 col-sm-6 col-xs-12" data-wow-duration="0ms">
                         <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={graph.size}/>
                     </div>
-=======
-            return  <article className="column col-md-3 col-sm-6 col-xs-12">
-                        <div className="item">
-                            <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={graph.size}/>
-                        </div>
-                    </article>
->>>>>>> Stashed changes
         });  
     }
     
