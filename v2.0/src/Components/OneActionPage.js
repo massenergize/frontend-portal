@@ -1,7 +1,7 @@
 import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
-import NavBar from './NavBar.js';
+import NavBarBurger from './NavBarBurger';
 import Footer from './Footer';
 import Cart from './Cart';
 

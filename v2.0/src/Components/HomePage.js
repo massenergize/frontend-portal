@@ -1,7 +1,11 @@
 import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
+<<<<<<< Updated upstream
 import NavBar from './NavBar.js';
+=======
+import NavBarBurger from './NavBarBurger';
+>>>>>>> Stashed changes
 import WelcomeImages from './WelcomeImages.js'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable.js';
