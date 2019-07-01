@@ -9,6 +9,7 @@ const CONSTANTS = {
 // ...and dependence on other defined constants
 CONSTANTS.URL["USER"] = CONSTANTS.URL.ROOT + "/user/";
 CONSTANTS.URL["ACTIONS"] = CONSTANTS.URL.USER + "actions";
-CONSTANTS.URL["MENU"] = CONSTANTS.URL.USER + "menu"
+CONSTANTS.URL["MENU"] = CONSTANTS.URL.USER + "menu";
+CONSTANTS.URL["ABOUTUS"] = CONSTANTS.URL.USER + "aboutus"
 
 export default CONSTANTS;

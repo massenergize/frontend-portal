@@ -12,6 +12,7 @@
     "react-device-detect": "^1.6.2",
     "react-dom": "^16.8.5",
     "react-helmet": "^5.2.1",
+    "react-multi-carousel": "^1.4.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
     "recharts": "^1.6.2"

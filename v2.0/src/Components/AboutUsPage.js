@@ -8,6 +8,10 @@ import TeamMembers from './TeamMembers.js'
 import DonateBar from './DonateBar.js'
 import Footer from './Footer';
 
+// Carousel from npm react-multi-carousel
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 class AboutUs extends React.Component {
     constructor(props) {
         super(props);
@@ -15,16 +19,17 @@ class AboutUs extends React.Component {
             pageData: null,
             menuData: null,
             userData: null,
+            aboutUsData: null,
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.USER).then(data => {
+        fetch(CONST.URL.ABOUTUS).then(data => {
             return data.json()
         }).then(myJson => {
             this.setState({
-                pageData: myJson.pageData,
                 menuData: myJson.menuData,
                 userData: myJson.userData,
+                aboutUsData: myJson.aboutUsData,
             });
         }).catch(error => {
             console.log(error);
@@ -39,6 +44,16 @@ class AboutUs extends React.Component {
             footerData
         } = this.state.menuData;
 
+        const {
+            welcomeImagesData,
+            videoLink,
+            paragraphContent,
+            teamMembersData,
+            donateMessage,
+        } = this.state.aboutUsData;
+
+        console.log(teamMembersData);
+
         return (
             <div className="boxed_wrapper">
                 <NavBarBurger
@@ -46,18 +61,17 @@ class AboutUs extends React.Component {
                     userData={this.state.userData}
                 />
                 <WelcomeImages
-                    data="" title="About Us"
+                    data={welcomeImagesData} title="About Us"
                 />
                 <div className="row m-0 mt-3">
                     <div className="col-sm-12 col-md-6">
-                        <Video link="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"/>
+                        <Video link={videoLink}/>
                     </div>
-                    <div className="col-sm-12 col-md-6">
-                        <p>This is a paragraph woohoo</p>
+                    <div className="col-sm-12 col-md-6" dangerouslySetInnerHTML={{__html: paragraphContent}}>
                     </div>
                 </div>
-                <TeamMembers data="" />
-                <DonateBar />
+                <TeamMembers data={teamMembersData} />
+                <DonateBar message={donateMessage}/>
                 <Footer
                     data={footerData}
                 />

@@ -1,120 +1,79 @@
 import React from 'react'
 
+// Carousel from npm react-multi-carousel
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
+
 /**
  * 
  */
 class TeamMembers extends React.Component {
     render() {
+        const carouselResponsive = {
+            desktop: {
+              breakpoint: {max: 5000, min: 992},
+              items: 4,
+            },
+            tablet: {
+              breakpoint: { max: 992, min: 660 },
+              items: 3,
+            },
+            mobile: {
+              breakpoint: { max: 660, min: 0},
+              items: 2,
+            },
+          };
         return (
             <section className="our-team pt-5">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="section-title">
                         <h2>Meet Our Team</h2>
-                        <a href="#" className="thm-btn style-2">VIEW ALL</a>
-                    </div>  
-                    <div className="row">
-                        <article className="col-md-3 col-sm-6 col-xs-12">
-                            <div className="single-team-member">
-                                <figure className="img-box">
-                                    <a href="#"><img src="https://via.placeholder.com/250x150" alt="" /></a>
-                                    <div className="overlay">
-                                        <div className="inner-box">
-                                            <ul className="social">
-                                                <li><a href="#"><i className="fa fa-link"></i></a></li>
-                                            </ul>
-                                        </div>
-                                            
-                                    </div>
-                                </figure>
-                                <div className="author-info">
-                                    <a href="#"><h4>Felicity BNovak</h4></a>
-                                    <p>CEO &amp; Founder</p>
-                                    <ul>
-                                        <li><i className="fa fa-phone-square"></i>Phone: +123-456-7890</li>
-                                        <li><i className="fa fa-envelope-square"></i><a href="#">Felicity@Experts.com</a></li>
-                                    </ul>
-                                </div>
-                                    
-                            </div>
-                        </article>
-                        <article className="col-md-3 col-sm-6 col-xs-12">
-                            <div className="single-team-member">
-                                <figure className="img-box">
-                                    <a href="#"><img src="https://via.placeholder.com/250x150" alt="" /></a>
-                                    <div className="overlay">
-                                        <div className="inner-box">
-                                            <ul className="social">
-                                                <li><a href="#"><i className="fa fa-link"></i></a></li>
-                                            </ul>
-                                        </div>
-                                            
-                                    </div>
-                                </figure>
-                                <div className="author-info">
-                                    <a href="#"><h4>Mark Richarson</h4></a>
-                                    <p>Board of Trustee</p>
-                                    <ul>
-                                        <li><i className="fa fa-phone-square"></i>Phone: +123-456-7890</li>
-                                        <li><i className="fa fa-envelope-square"></i><a href="#">Felicity@Experts.com</a></li>
-                                    </ul>
-                                </div>
-                                    
-                            </div>
-                        </article>
-                        <article className="col-md-3 col-sm-6 col-xs-12">
-                            <div className="single-team-member">
-                                <figure className="img-box">
-                                    <a href="#"><img src="https://via.placeholder.com/250x150" alt="" /></a>
-                                    <div className="overlay">
-                                        <div className="inner-box">
-                                            <ul className="social">
-                                                <li><a href="#"><i className="fa fa-link"></i></a></li>
-                                            </ul>
-                                        </div>
-                                            
-                                    </div>
-                                </figure>
-                                <div className="author-info">
-                                    <a href="#"><h4>Jom Caraleno</h4></a>
-                                    <p>Board of Trustee</p>
-                                    <ul>
-                                        <li><i className="fa fa-phone-square"></i>Phone: +123-456-7890</li>
-                                        <li><i className="fa fa-envelope-square"></i><a href="#">Felicity@Experts.com</a></li>
-                                    </ul>
-                                </div>
-                                    
-                            </div>
-                        </article>
-                        <article className="col-md-3 col-sm-6 col-xs-12">
-                            <div className="single-team-member">
-                                <figure className="img-box">
-                                    <a href="#"><img src="https://via.placeholder.com/250x150" alt="" /></a>
-                                    <div className="overlay">
-                                        <div className="inner-box">
-                                            <ul className="social">
-                                                <li><a href="#"><i className="fa fa-link"></i></a></li>
-                                            </ul>
-                                        </div>
-                                            
-                                    </div>
-                                </figure>
-                                <div className="author-info">
-                                    <a href="#"><h4>Asahtan Marsh</h4></a>
-                                    <p>Board of Advisor</p>
-                                    <ul>
-                                        <li><i className="fa fa-phone-square"></i>Phone: +123-456-7890</li>
-                                        <li><i className="fa fa-envelope-square"></i><a href="#">Felicity@Experts.com</a></li>
-                                    </ul>
-                                </div>
-                                    
-                            </div>
-                        </article>
-                            
                     </div>
+                    <Carousel
+                        swipeable={true}
+                        draggable={false}
+                        showDots={false}
+                        responsive={carouselResponsive}
+                        ssr={true} // means to render carousel on server-side.
+                        slidesToSlide={1}
+                        infinite={true}
+                        autoPlay={true}
+                        autoPlaySpeed={4000}
+                        transitionDuration={500}
+                        containerClass="carousel-container"
+                        removeArrowOnDeviceType={["mobile"]}
+                        deviceType={this.props.deviceType}
+                        itemClass="carousel-item-padding-40-px"
+                        >
+                        {this.renderCarouselElements(this.props.data)}
+                    </Carousel>
                 </div>
 
             </section>
         );
+    }
+
+    renderCarouselElements(teamMembers) {
+        return teamMembers.map(member => {
+            console.log(member);
+            return (
+                <article className="col">
+                    <div className="single-team-member">
+                        <figure className="img-box">
+                            <a><img src={member.imageLink} alt="" /></a>
+                        </figure>
+                        <div className="author-info text-center">
+                            <a href="#"><h4>{member.name}</h4></a>
+                            <p>{member.role}</p>
+                            <p class="font-normal font-italic ">{member.description}</p>
+                            <hr/>
+                        </div>
+                            
+                    </div>
+                </article>
+            )
+        });
     }
 }
 export default TeamMembers;
