@@ -1266,17 +1266,17 @@ textarea {
     background: transparent;
     float: left;
 }
-.menuzord-menu > li a {
+.menuzord-menu > li a:not(.dropdown-item) {
   position: relative;
   color: #303030;
   font-weight: 700;
   font-family: "Verdana", sans-serif;
 }
-.menuzord-menu > li:hover a {
+.menuzord-menu > li:hover a:not(.dropdown-item) {
     color: #8dc63f;
 }
 
-.menuzord-menu>li:first-child a {
+.menuzord-menu>li:first-child a:not(.dropdown-item) {
     padding-left: 0px;
 }
 

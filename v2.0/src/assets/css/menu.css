@@ -53,7 +53,7 @@ License: http://codecanyon.net/licenses
 ======================================*/
 .menuzord,
 .menuzord *{
-	font-family: inherit;
+	/* font-family: inherit; */
 	box-sizing:border-box;
 	-moz-box-sizing:border-box; 
 	-webkit-box-sizing:border-box;
@@ -106,8 +106,8 @@ License: http://codecanyon.net/licenses
 	display: inline-block;
 	float: left;
 }
-.menuzord-menu > li a{
-	padding: 26px 5px;
+.menuzord-menu > li a:not(.dropdown-item){
+	padding: 26px 15px;
 	display: inline-block;
 	text-decoration: none;
 	font-size: 12px;
@@ -119,8 +119,8 @@ License: http://codecanyon.net/licenses
 	-webkit-tap-highlight-color: transparent;
 }
 /* Active/hover state (Menu items) */
-.menuzord-menu > li.active a,
-.menuzord-menu > li:hover a{
+.menuzord-menu > li.active a:not(.dropdown-item),
+.menuzord-menu > li:hover a:not(.dropdown-item){
 	color: #8dc63f;
 }
 

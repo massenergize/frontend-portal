@@ -83,7 +83,7 @@ class NavBarBurger extends React.Component {
                             :
                             <div className="col-xl-9 col-lg-10 col-md-8 col-sm-6 col-6 menu-column">
                                 <div style={styles.container}>
-                                    <nav className="menuzord" style={{ display: 'inline-block' }} id="main_menu" >
+                                    <nav className="menuzord d-flex ml-auto" style={{ display: 'inline-block' }} id="main_menu" >
                                         <ul className="menuzord-menu height-100 d-flex flex-row">
                                             {this.renderNavLinks(this.props.navLinks)}
                                         </ul>
@@ -110,18 +110,20 @@ class NavBarBurger extends React.Component {
                         <Dropdown>
                             <Dropdown.Toggle as={CustomNavLink} navLink={navLink} id="dropdown-custom-components"></Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item eventKey="1">Red</Dropdown.Item>
-                                <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
-                                <Dropdown.Item eventKey="3" active>
-                                    Orange
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
+                                {this.renderDropdownItems(navLink.children)}
                             </Dropdown.Menu>
                         </Dropdown>
                     </li>
                 );
             }
             return <li className="d-flex flex-column justify-content-center" key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
+        });
+    }
+    renderDropdownItems(children) {
+        return children.map((child) => {
+            return (
+                <Dropdown.Item eventKey={child.key} href={child.link} className="small">{child.name}</Dropdown.Item>
+            );
         });
     }
     renderLogin() {
@@ -166,7 +168,7 @@ class CustomNavLink extends React.Component {
         console.log("NavLink: " + this.props.navLink)
       return (
         // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
-            <a href={this.props.navLink.link} onClick={this.handleClick}>{this.props.navLink.name}</a>
+            <a href="#" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></a>
         // </li>
       );
     }
