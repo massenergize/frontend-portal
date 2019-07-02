@@ -2,6 +2,7 @@ import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
 import NavBarBurger from './NavBarBurger';
+import NavBarOffset from './NavBarOffset';
 import WelcomeImages from './WelcomeImages.js'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable.js';
@@ -41,6 +42,7 @@ class HomePage extends React.Component {
         if (!this.state.pageData) return <LoadingPage/>;
         const {
             navLinks,
+            navBarSticky,
             footerData,
         } = this.state.menuData;
         const {
@@ -54,7 +56,9 @@ class HomePage extends React.Component {
                 <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
+                    sticky={navBarSticky}
                 />
+                <NavBarOffset sticky={navBarSticky}/>
                 <WelcomeImages
                     data={welcomeImagesData} title="MassEnergize"
                 />

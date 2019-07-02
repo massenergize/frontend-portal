@@ -1,7 +1,8 @@
 import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
-import NavBarBurger from './NavBarBurger'
+import NavBarBurger from './NavBarBurger';
+import NavBarOffset from './NavBarOffset';
 import Footer from './Footer'
 
 class LoginPage extends React.Component {
@@ -31,6 +32,7 @@ class LoginPage extends React.Component {
         if (!this.state.menuData) return <LoadingPage/>;
         const { //gets the navLinks and footer data out of menu data
             navLinks,
+            navBarSticky,
             footerData
         } = this.state.menuData;
         return (
@@ -38,7 +40,9 @@ class LoginPage extends React.Component {
                 <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
+                    sticky={navBarSticky}
                 />
+                <NavBarOffset sticky={navBarSticky}/>
                 <section class="register-section sec-padd-top">
                     <div class="container">
                         <div class="row">

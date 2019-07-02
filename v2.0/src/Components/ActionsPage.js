@@ -3,6 +3,7 @@ import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
 import { Switch, Route } from 'react-router-dom'
 import NavBarBurger from './NavBarBurger';
+import NavBarOffset from './NavBarOffset';
 import Footer from './Footer';
 import SideBar from './SideBar';
 import Action from './Action';
@@ -42,6 +43,7 @@ class ActionsPage extends React.Component {
         if (!this.state.pageData) return <LoadingPage/>;
         const { //gets the navLinks and footer data out of menu data
             navLinks,
+            navBarSticky,
             footerData
         } = this.state.menuData;
         const { //gets the actions and sidebar data out of page data
@@ -53,8 +55,9 @@ class ActionsPage extends React.Component {
                 <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
+                    sticky={navBarSticky}
                 />
-            
+                <NavBarOffset sticky={navBarSticky}/>
                 {/* main shop section */}
                 <div className="shop sec-padd">
                     <div className="container">

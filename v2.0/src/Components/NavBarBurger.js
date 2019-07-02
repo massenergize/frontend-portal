@@ -62,11 +62,11 @@ class NavBarBurger extends React.Component {
                 </MenuItem>)
         });
         return (
-            <nav className="theme_menu">
+            <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{"height": "100px"}}>
                 <div className="container">
                     <div className="row no-gutter">
-                        <div className="col-xl-3 col-lg-2 col-md-4 col-sm-6 col-6" >
-                            <div className="main-logo" >
+                        <div className="col-xl-3 col-lg-2 col-md-4 col-sm-6 col-6 d-flex align-items-center " >
+                            <div className="main-logo col-8" >
                                 <a href="/"><img src={logo} alt="" /></a>
                             </div>
                         </div>
@@ -84,7 +84,7 @@ class NavBarBurger extends React.Component {
                             <div className="col-xl-9 col-lg-10 col-md-8 col-sm-6 col-6 menu-column">
                                 <div style={styles.container}>
                                     <nav className="menuzord" style={{ display: 'inline-block' }} id="main_menu" >
-                                        <ul className="menuzord-menu">
+                                        <ul className="menuzord-menu height-100 d-flex flex-row">
                                             {this.renderNavLinks(this.props.navLinks)}
                                         </ul>
                                     </nav>
@@ -104,7 +104,7 @@ class NavBarBurger extends React.Component {
         }
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
-            return <li key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
+            return <li className="d-flex flex-column justify-content-center" key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
         });
     }
     renderLogin() {
@@ -122,7 +122,7 @@ class NavBarBurger extends React.Component {
             );
         } else {
             return (
-                <a className="thm-btn float-right" href="/login" style={{ padding: '5px 5px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
+                <a className="thm-btn float-right" href="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
                     <i className="fa fa-user" style={{ padding: "0px 5px" }} />
                     Login
                 </a>

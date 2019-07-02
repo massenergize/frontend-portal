@@ -2,6 +2,7 @@ import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
 import NavBarBurger from './NavBarBurger';
+import NavBarOffset from './NavBarOffset';
 import WelcomeImages from './WelcomeImages.js'
 import Video from './Video.js'
 import TeamMembers from './TeamMembers.js'
@@ -41,6 +42,7 @@ class AboutUs extends React.Component {
         if(!this.state.menuData) return <LoadingPage/>;
         const {
             navLinks,
+            navBarSticky,
             footerData
         } = this.state.menuData;
 
@@ -59,7 +61,9 @@ class AboutUs extends React.Component {
                 <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
+                    sticky={navBarSticky}
                 />
+                <NavBarOffset sticky={navBarSticky}/>
                 <WelcomeImages
                     data={welcomeImagesData} title="About Us"
                 />

@@ -2,6 +2,7 @@ import React from 'react'
 import CONST from './Constants.js';
 import LoadingPage from './LoadingPage.js';
 import NavBarBurger from './NavBarBurger';
+import NavBarOffset from './NavBarOffset';
 import Footer from './Footer';
 import Cart from './Cart';
 
@@ -42,6 +43,7 @@ class OneActionPage extends React.Component {
         if (!this.state.pageData) return <LoadingPage/>;
         const {
             navLinks,
+            navBarSticky,
             footerData
         } = this.state.menuData;
         const {
@@ -52,7 +54,9 @@ class OneActionPage extends React.Component {
                 <NavBarBurger
                     navLinks={navLinks}
                     userData={this.state.userData}
+                    sticky={navBarSticky}
                 />
+                <NavBarOffset sticky={navBarSticky}/>
                 <section className="shop-single-area">
                     <div className="container">
                         <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
