@@ -1,5 +1,6 @@
 import React from 'react';
 import '../assets/css/style.css';
+import Accordian from './Accordian';
 
 /** Renders the sidebar on the actions page, optons to filter by category, tags, difficulty and impact
  *  @props
@@ -18,7 +19,7 @@ class SideBar extends React.Component {
             return (
                 <label className="checkbox-container" onClick={this.props.onChange}>
                     <p style={{ marginLeft: "25px" }}>{item.name}</p>
-                    <input className="checkbox" type="checkbox" name="boxes" id={"filtertag"+item.id} value={item.name} />
+                    <input className="checkbox" type="checkbox" name="boxes" id={"filtertag" + item.id} value={item.name} />
                     <span className="checkmark"></span>
                 </label>
             );
@@ -31,62 +32,39 @@ class SideBar extends React.Component {
         }
         return Object.keys(filters).map(key => {
             var filter = filters[key];
+            const header = (
+                <div className="section-title style-2">
+                    <h4>{filter.collection}</h4>
+                </div>
+            );
+            const content = (
+                <form className="list">
+                    {this.renderFilter(filter.tags)}
+                </form>
+            );
             return (
                 <div className="category-style-one">
-                    <div className="section-title style-2">
-                        <h4>{filter.collection}</h4>
-                    </div>
-                    <form className="list">
-                        {this.renderFilter(filter.tags)}
-                    </form>
-                </div>
+                    <Accordian
+                        header={header}
+                        content = {content}
+                        onChange={this.props.onChange}
+                    />
+                </div >
             )
-        });
-    }
-    render() {
-        return (
-            <div className="wrapper shop-sidebar">
-                <div className="sidebar_search">
-                    <form action="#">
-                        <input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />
-                        <button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
-                    </form>
-                </div>
-                {this.renderFilters(this.props.filters)}
-                {/* <div className="category-style-one">
-                    <div className="section-title style-2">
-                        <h4>Categories</h4>
-                    </div>
-                    <form className="list">
-                        {this.renderFilter("categories", this.props.categories)}
-                    </form>
-                </div>
-                <div className="category-style-one">
-                    <div className="section-title style-2">
-                        <h4>Product Tags</h4>
-                    </div>
-                    <form className="list">
-                        {this.renderFilter("tags", this.props.tags)}
-                    </form>
-                </div>
-                <div className="category-style-one">
-                    <div className="section-title style-2">
-                        <h4>Difficulty</h4>
-                    </div>
-                    <form className="list">
-                        {this.renderFilter("difficulties", this.props.difficulties)}
-                    </form>
-                </div>
-                <div className="category-style-one">
-                    <div className="section-title style-2">
-                        <h4>Impact</h4>
-                    </div>
-                    <form className="list" id="impacts">
-                        {this.renderFilter("impacts", this.props.impacts)}
-                    </form>
-                </div> */}
+    });
+}
+render() {
+    return (
+        <div className="wrapper shop-sidebar">
+            <div className="sidebar_search">
+                <form action="#">
+                    <input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />
+                    <button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
+                </form>
             </div>
-        );
-    }
+            {this.renderFilters(this.props.filters)}
+        </div>
+    );
+}
 }
 export default SideBar;

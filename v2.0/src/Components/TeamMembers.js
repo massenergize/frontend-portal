@@ -49,7 +49,6 @@ class TeamMembers extends React.Component {
                         {this.renderCarouselElements(this.props.data)}
                     </Carousel>
                 </div>
-
             </section>
         );
     }

@@ -100,17 +100,10 @@ class OneActionPage extends React.Component {
                                     <br />
                                     {/* displays the action's info: impact, difficulty, tags and categories*/}
                                     <div className="clearfix" style={{ marginLeft: "40px" }}>
-                                        <p className="action-tags" style={{ fontSize: "20px" }}> Impact: <span>{action.impact}</span> </p>
-                                        <p className="action-tags" style={{ fontSize: "20px" }}> Difficulty: <span>{action.difficulty}</span> </p>
-                                        <p className="action-tags" style={{ fontSize: "20px" }}> Tags: {
+                                        <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br/> 
+                                        {
                                             Object.keys(action.tags).map((key) => {
-                                                return (<span>{action.tags[key]}</span>)
-                                            })
-                                        }
-                                        </p>
-                                        <p className="action-tags" style={{ fontSize: "20px" }}> Categories: {
-                                            Object.keys(action.categories).map((key) => {
-                                                return (<span>{action.categories[key]}</span>)
+                                                return (<span> {action.tags[key].name} </span>);
                                             })
                                         }
                                         </p>

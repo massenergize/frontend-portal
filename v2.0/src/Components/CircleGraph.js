@@ -9,78 +9,83 @@ Circle graph is a graph that displays a progress bar in a circle
 	goal: the number you are trying to get to
 	label: the label in the middle of the circle
 */
-class CircleGraph extends React.Component{
+class CircleGraph extends React.Component {
     constructor(props) {
         super(props);
         //options for the graphs, color, size....
         //could potentially move this to an api for graphs but probably don't need to
         this.state = {
-          options: {
-            chart: {
-              type: "radialBar",
-              height: 350
-            },
-            series: [67],
-            colors: ["#8dc63f"],
-            plotOptions: {
-              radialBar: {
-                size: this.props.size,
-                hollow: {
-                  margin: 5,
-                  size: "70%",
+            options: {
+                chart: {
+                    type: "radialBar",
+                    height: 350
                 },
-                track: {
-                  dropShadow: {
-                    enabled: true,
-                    top: 2,
-                    left: 0,
-                    blur: 4,
-                    opacity: 0.15
-                  }
-                },
-                dataLabels: {
-                  name: {
-                    offsetY: -3,
-                    color: "#666",
-                    fontSize: "13px",
-                    fontFamily: "Verdana-bold"
-                  },
-                  value: {
-                    offsetY: 3,
-                    color: "#666",
-                    fontSize: "18px",
-                    fontFamily: "Verdana",
-                    show: true,
-                    formatter: () => {
-                        return this.props.num+"/"+ this.props.goal;
+                series: [67],
+                colors: ["#8dc63f"],
+                plotOptions: {
+                    radialBar: {
+                        size: this.props.size,
+                        hollow: {
+                            margin: 5,
+                            size: "70%",
+                        },
+                        track: {
+                            dropShadow: {
+                                enabled: true,
+                                top: 2,
+                                left: 0,
+                                blur: 4,
+                                opacity: 0.15
+                            }
+                        },
+                        dataLabels: {
+                            name: {
+                                offsetY: -3,
+                                color: "#666",
+                                fontSize: "13px",
+                                fontFamily: "Verdana-bold"
+                            },
+                            value: {
+                                offsetY: 3,
+                                color: "#666",
+                                fontSize: "18px",
+                                fontFamily: "Verdana",
+                                show: true,
+                                formatter: () => {
+                                    return this.props.num + "/" + this.props.goal;
+                                }
+                            }
+                        }
                     }
-                  }
-                }
-              }
+                },
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        shade: "dark",
+                        type: "vertical",
+                        gradientToColors: ["#428a36"],
+                        stops: [0, 100]
+                    }
+                },
+                stroke: {
+                    lineCap: "round"
+                },
+                labels: [this.props.label]
             },
-            fill: {
-              type: "gradient",
-              gradient: {
-                shade: "dark",
-                type: "vertical",
-                gradientToColors: ["#428a36"],
-                stops: [0, 100]
-              }
-            },
-            stroke: {
-              lineCap: "round"
-            },
-            labels: [this.props.label]
-          },
-          series: [(this.props.num/this.props.goal)*100],
+            series: [(this.props.num / this.props.goal) * 100],
         }
-      }
-    
-      render() {
-    
-        return (
-            <Chart options={this.state.options} series={this.state.series} type="radialBar" style={{display:"inline-block",margin:"0px"}}/>
+    }
+
+    render() {
+
+        return ( <
+            Chart options = { this.state.options }
+            series = { this.state.series }
+            type = "radialBar"
+            style = {
+                { display: "inline-block", margin: "0px" } }
+            />
         );
-      }
+    }
 }
 export default CircleGraph;

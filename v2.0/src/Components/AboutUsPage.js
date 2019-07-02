@@ -10,7 +10,6 @@ import DonateBar from './DonateBar.js'
 import Footer from './Footer';
 
 // Carousel from npm react-multi-carousel
-import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 class AboutUs extends React.Component {
