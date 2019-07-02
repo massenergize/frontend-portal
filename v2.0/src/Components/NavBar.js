@@ -39,7 +39,7 @@ class NavBar extends React.Component {
                         <div className="row">
                             <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                 <div className="main-logo">
-                                    <a href="index.html"><img src={logo} alt="" /></a>
+                                    <a href="/"><img src={logo} alt="" /></a>
                                 </div>
                             </div>
                             <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12 menu-column">

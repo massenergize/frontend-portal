@@ -61,7 +61,7 @@ class TeamMembers extends React.Component {
                 <article className="col">
                     <div className="single-team-member">
                         <figure className="img-box">
-                            <a><img src={member.imageLink} alt="" /></a>
+                            <a className="width-100"><img src={member.imageLink} alt="" className="width-100"/></a>
                         </figure>
                         <div className="author-info text-center">
                             <a href="#"><h4>{member.name}</h4></a>

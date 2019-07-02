@@ -67,7 +67,7 @@ class NavBarBurger extends React.Component {
                     <div className="row no-gutter">
                         <div className="col-xl-3 col-lg-2 col-md-4 col-sm-6 col-6" >
                             <div className="main-logo" >
-                                <a href="index.html"><img src={logo} alt="" /></a>
+                                <a href="/"><img src={logo} alt="" /></a>
                             </div>
                         </div>
                         {this.state.menuBurgered ?
