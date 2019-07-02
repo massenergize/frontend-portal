@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../logo.svg';
-
+import Dropdown from 'react-bootstrap/Dropdown'
 
 class NavBarBurger extends React.Component {
     constructor(props) {
@@ -104,6 +104,23 @@ class NavBarBurger extends React.Component {
         }
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
+            if(navLink.children) {
+                return (
+                    <li className="d-flex flex-column justify-content-center" key={navLink.name}>
+                        <Dropdown>
+                            <Dropdown.Toggle as={CustomNavLink} navLink={navLink} id="dropdown-custom-components"></Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item eventKey="1">Red</Dropdown.Item>
+                                <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
+                                <Dropdown.Item eventKey="3" active>
+                                    Orange
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </li>
+                );
+            }
             return <li className="d-flex flex-column justify-content-center" key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
         });
     }
@@ -130,6 +147,30 @@ class NavBarBurger extends React.Component {
         }
     }
 } export default NavBarBurger;
+
+/* For Navbar Dropdown Link */
+class CustomNavLink extends React.Component {
+    constructor(props, context) {
+      super(props, context);
+  
+      this.handleClick = this.handleClick.bind(this);
+    }
+  
+    handleClick(e) {
+      e.preventDefault();
+  
+      this.props.onClick(e);
+    }
+  
+    render() {
+        console.log("NavLink: " + this.props.navLink)
+      return (
+        // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
+            <a href={this.props.navLink.link} onClick={this.handleClick}>{this.props.navLink.name}</a>
+        // </li>
+      );
+    }
+  }
 
 /* MenuItem.jsx*/
 class MenuItem extends React.Component {

@@ -106,7 +106,7 @@ License: http://codecanyon.net/licenses
 	display: inline-block;
 	float: left;
 }
-.menuzord-menu > li > a{
+.menuzord-menu > li a{
 	padding: 26px 5px;
 	display: inline-block;
 	text-decoration: none;
@@ -119,8 +119,8 @@ License: http://codecanyon.net/licenses
 	-webkit-tap-highlight-color: transparent;
 }
 /* Active/hover state (Menu items) */
-.menuzord-menu > li.active > a,
-.menuzord-menu > li:hover > a{
+.menuzord-menu > li.active a,
+.menuzord-menu > li:hover a{
 	color: #8dc63f;
 }
 

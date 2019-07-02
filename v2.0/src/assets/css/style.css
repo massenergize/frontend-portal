@@ -1266,15 +1266,13 @@ textarea {
     background: transparent;
     float: left;
 }
-
-.menuzord-menu>li>a {
-    position: relative;
-    color: #303030;
-    font-weight: 700;
-    font-family: "Verdana", sans-serif;
+.menuzord-menu > li a {
+  position: relative;
+  color: #303030;
+  font-weight: 700;
+  font-family: "Verdana", sans-serif;
 }
-
-.menuzord-menu>li:hover>a {
+.menuzord-menu > li:hover a {
     color: #8dc63f;
 }
 
@@ -1292,16 +1290,15 @@ textarea {
 }
 
 .menuzord-menu ul.dropdown li a {
-    padding: 14px 0 14px;
-    color: #303030;
-    font-weight: 700;
-    text-transform: capitalize;
-    border-bottom: 1px solid #f4f4f4;
-    transition: .5s ease-in-out;
-    font-size: 14px;
+  padding: 14px 0 14px;
+  color: #303030;
+  font-weight: 700;
+  text-transform: capitalize;
+  border-bottom: 1px solid #f4f4f4;
+  transition: .5s ease-in-out;
+  font-size: 14px;
 }
-
-.menuzord-menu ul.dropdown li:hover>a {
+.menuzord-menu ul.dropdown li:hover a {
     padding-left: 0px;
     padding-right: 0px;
     color: #8dc63f;
