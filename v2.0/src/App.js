@@ -4,11 +4,12 @@ import {Switch, Route} from 'react-router-dom';
 
 import './assets/css/style.css';
 
-import HomePage from './Components/HomePage.js'
-import ActionsPage from './Components/ActionsPage.js'
-import OneActionPage from './Components/OneActionPage.js'
-import AboutUsPage from './Components/AboutUsPage.js'
+import HomePage from './Components/HomePage'
+import ActionsPage from './Components/ActionsPage'
+import OneActionPage from './Components/OneActionPage'
+import AboutUsPage from './Components/AboutUsPage'
 import LoginPage from './Components/LoginPage'
+import EventsPage from './Components/EventsPage'
 
 // import {
 // 	getNavLinks,
@@ -34,8 +35,9 @@ class App extends Component {
 					<Route path="/home" component={HomePage} />
 					<Route exact path="/actions" component={ActionsPage}/>
 					<Route exact path="/aboutus" component={AboutUsPage}/>
-					<Route path= "/actions/:id" component={OneActionPage}/>
-					<Route path= "/login" component={LoginPage}/>
+					<Route path="/actions/:id" component={OneActionPage}/>
+					<Route path="/events" component={EventsPage}/>
+					<Route path="/login" component={LoginPage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>
 						<div>

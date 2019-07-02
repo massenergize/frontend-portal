@@ -11,6 +11,8 @@ import Action from './Action';
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
  * @props none - fetch data from api instead of getting data passed to you from props
+ * 
+ * @todo change the columns for small sizes change button colors bars underneath difficulty and ease instead of "easy, medium, hard"
  */
 class ActionsPage extends React.Component {
     constructor(props) {
@@ -63,13 +65,12 @@ class ActionsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             {/* renders the sidebar */}
+                            <div className="col-md-3 col-sm-12 col-xs-12 sidebar_styleTwo">
                             <SideBar
-                                categories={sidebar.categories}
-                                tags={sidebar.tags}
-                                impacts={sidebar.impacts}
-                                difficulties={sidebar.difficulties}
+                                filters={sidebar}
                                 onChange={this.handleChange} //runs when any category is selected or unselected
                             ></SideBar>
+                            </div>
                             {/* renders the actions */}
                             <div className="col-md-9 col-sm-12 col-xs-12">
                                 <div className="row" id="actions-container">
@@ -104,16 +105,8 @@ class ActionsPage extends React.Component {
                 image={action.image}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
-                categories={action.categories}
                 tags={action.tags}
-                difficulty={action.difficulty}
-                impact={action.impact}
-
-                // noFilter={this.noFilter}
-                allcategories={this.state.pageData.sidebar.categories}
-                alltags={this.state.pageData.sidebar.tags}
-                alldifficulties={this.state.pageData.sidebar.difficulties}
-                allimpacts={this.state.pageData.sidebar.impacts}
+                filters={this.state.pageData.sidebar}
             />
         });
     }

@@ -54,10 +54,10 @@ class Cart extends React.Component {
                                 </td>
                                 <td colspan="1" class="prod-column">
                                     <a href="#" class="done-btn"><i class="fa fa-check"></i>
-                                        
+                                        {/* <span class="tooltiptext">Click to mark as done</span> */}
                                     </a>
                                     <a href="#" class="remove-btn"><i class="fa fa-trash"></i>
-                                        <span class="tooltiptext">FUCKKKK</span>
+                                        {/* <span class="tooltiptext">Click to remove from the cart</span> */}
                                     </a>
                                 </td>
                             </tr>

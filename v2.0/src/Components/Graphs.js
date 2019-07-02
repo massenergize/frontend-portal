@@ -19,7 +19,7 @@ class Graphs extends React.Component{
         }
         return Object.keys(graphs).map(key=> {
             var graph = graphs[key];
-            return  <div className="column col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
+            return  <div className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
                         <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={graph.size}/>
                     </div>
         });  
@@ -36,7 +36,7 @@ class Graphs extends React.Component{
                     <div className="row no-gutter clearfix">
                         {this.dumbycol}
                         {this.renderGraphs(this.props.graphs)}
-                        <article className="column counter-column col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
+                        <article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
                             <div className="item">
                                 <div className="icon"><i className="fa fa-chart-bar"/></div>
                                 <a href="/" className="thm-btn">More</a>
