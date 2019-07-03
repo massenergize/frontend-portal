@@ -165,7 +165,6 @@ class CustomNavLink extends React.Component {
     }
   
     render() {
-        console.log("NavLink: " + this.props.navLink)
       return (
         // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
             <a href="#" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></a>

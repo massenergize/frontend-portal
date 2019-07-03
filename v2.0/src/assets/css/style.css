@@ -3757,6 +3757,10 @@ textarea {
     margin-right: 5px;
 }
 
+.event-style2 .item .lower-content {
+    display: inline-block;
+}
+
 .event-style2 .item .lower-content .default_link {
     text-transform: uppercase;
     color: #222;
@@ -3774,7 +3778,7 @@ textarea {
 }
 
 .event-style2 .item .img-holder {
-    display: block;
+    display: inline-block;
     width: 100%;
     height: 240px;
     overflow: hidden;
@@ -4668,17 +4672,6 @@ textarea {
 .blog-sidebar .category-style-one form label p:hover {
     color: #8dc63f;
     transition: .5s ease;
-}
-
-.blog-sidebar .category-style-one form label p:before {
-    content: "\f105";
-    position: absolute;
-    font-size: 16px;
-    font-family: FontAwesome;
-    right: 0px;
-    top: 0px;
-    -webkit-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
 }
 
 

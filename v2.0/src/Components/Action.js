@@ -79,7 +79,7 @@ class Action extends React.Component {
                 </div>
             );
         } else {
-            return <div></div>
+            return null;
         }
     }
     //checks the filters to see if the action should render or not
