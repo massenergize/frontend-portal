@@ -149,7 +149,7 @@ textarea {
 }
 
 .sec-padd {
-    padding: 80px 0;
+    padding: 20px 0;
 }
 
 .sec-padd2 {
@@ -2002,9 +2002,8 @@ textarea {
 .tabs-style-one .tab-buttons .tab-btn {
     position: relative;
     display: inline-block;
-    padding: 13px 30px;
+    padding: 0px 0px;
     margin: 0px 0px 0px;
-    cursor: pointer;
     font-size: 18px;
     text-align: center;
     color: #848484;
@@ -2014,6 +2013,12 @@ textarea {
     text-transform: capitalize;
     transition: all 300ms ease;
 }
+.tabs-style-one .tab-buttons .tab-btn input{
+    display: inline-block;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+
 
 .tabs-style-one .tab-buttons .tab-btn.active-btn {
     color: #8dc63f;
@@ -3674,10 +3679,35 @@ textarea {
     color: #fff;
     text-align: center;
 }
+.event-style2 .item .date.old {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 65px;
+    height: 65px;
+    background: #999;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    z-index: 9;
+    color: #fff;
+    text-align: center;
+}
 
 .event-style2 .item .date span {
     display: block;
     color: #8dc63f;
+    height: 55px;
+    width: 55px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 5px;
+    padding-top: 7px;
+}
+.event-style2 .item .date.old span {
+    display: block;
+    color: #999;
     height: 55px;
     width: 55px;
     background: #fff;
