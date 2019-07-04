@@ -10,6 +10,7 @@ import OneActionPage from './Components/OneActionPage'
 import AboutUsPage from './Components/AboutUsPage'
 import LoginPage from './Components/LoginPage'
 import EventsPage from './Components/EventsPage'
+import OneEventPage from './Components/OneEventPage';
 
 // import {
 // 	getNavLinks,
@@ -34,9 +35,10 @@ class App extends Component {
 					<Route exact path="/" component={HomePage} />
 					<Route path="/home" component={HomePage} />
 					<Route exact path="/actions" component={ActionsPage}/>
-					<Route exact path="/aboutus" component={AboutUsPage}/>
+					<Route path="/aboutus" component={AboutUsPage}/>
 					<Route path="/actions/:id" component={OneActionPage}/>
-					<Route path="/events" component={EventsPage}/>
+					<Route exact path="/events" component={EventsPage}/>
+					<Route path="/events/:id" component={OneEventPage}/>
 					<Route path="/login" component={LoginPage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>

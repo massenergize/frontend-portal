@@ -62,6 +62,7 @@ render() {
                     <button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
                 </form>
             </div>
+            <h3>Filter by...</h3>
             {this.renderFilters(this.props.filters)}
         </div>
     );

@@ -71,12 +71,6 @@ class EventsPage extends React.Component {
                                 <div class="col-lg-9 col-md-7 col-12">
                                     <div class="outer-box sec-padd event-style2">
                                         {this.renderEvents(events)}
-                                        <ul class="page_pagination">
-                                            <li><a href="#" class="tran3s"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-                                            <li><a href="#" class="active tran3s">1</a></li>
-                                            <li><a href="#" class="tran3s">2</a></li>
-                                            <li><a href="#" class="tran3s"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +138,7 @@ class EventsPage extends React.Component {
                             <div class=" col-lg-8 col-12">
                                 <div class="lower-content">
                                     <p> Organizer: {event.organizer} </p>
-                                    <a href="single-event.html"><h4> {event.title} </h4></a>
+                                    <a href={this.props.match.url + "/" + event.id}><h4> {event.title} </h4></a>
                                     <div class="text">
                                         <p> {event.description} </p>
                                     </div>

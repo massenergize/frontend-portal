@@ -6453,8 +6453,6 @@ textarea {
 
 .single-event {
     border-right: 1px solid #f4f4f4;
-    margin-right: 37px;
-    padding-right: 62px;
 }
 
 .single-event .content {
@@ -6574,6 +6572,7 @@ textarea {
     padding-right: 0;
     margin: 0;
     padding-left: 0;
+    display: inline-block;
 }
 
 .single-event .share .social a {
@@ -6609,6 +6608,16 @@ textarea {
 
 .single-event .img-box {
     position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+.single-event .img-box image {
+    position: relative;
+    margin:  auto auto;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .countdown-timer {
