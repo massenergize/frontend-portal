@@ -10,7 +10,8 @@ import OneActionPage from './Components/Pages/OneActionPage'
 import AboutUsPage from './Components/Pages/AboutUsPage'
 import LoginPage from './Components/Pages/LoginPage'
 import EventsPage from './Components/Pages/EventsPage'
-import OneEventPage from './Components/Pages/OneEventPage';
+import OneEventPage from './Components/Pages/OneEventPage'
+import ProfilePage from './Components/Pages/ProfilePage'
 
 // import {
 // 	getNavLinks,
@@ -40,6 +41,7 @@ class App extends Component {
 					<Route exact path="/events" component={EventsPage}/>
 					<Route path="/events/:id" component={OneEventPage}/>
 					<Route path="/login" component={LoginPage}/>
+					<Route path="/profile" component={ProfilePage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>
 						<div>

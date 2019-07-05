@@ -5,6 +5,7 @@
   "dependencies": {
     "apexcharts": "^3.8.0",
     "code": "^5.2.4",
+    "firebase": "^6.2.4",
     "helmet": "^3.18.0",
     "package.json": "^2.0.1",
     "react": "^16.8.5",
@@ -17,7 +18,8 @@
     "react-multi-carousel": "^1.4.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
-    "recharts": "^1.6.2"
+    "recharts": "^1.6.2",
+    "recompose": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",

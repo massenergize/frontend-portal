@@ -8633,6 +8633,11 @@ textarea {
 .styled-form .form-group .thm-btn {
     line-height: 44px;
 }
+.styled-form .form-group .thm-btn:disabled {
+    background:#aaa;
+    border:#aaa;
+    line-height: 44px;
+}
 
 .styled-form .form-group .adon-icon {
     position: absolute;
