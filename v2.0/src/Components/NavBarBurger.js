@@ -51,27 +51,21 @@ class NavBarBurger extends React.Component {
         }
 
         const menuItems = this.props.navLinks.map((val, index) => {
-            return (
-                <>
-                    <MenuItem
-                        key={index}
-                        delay={`${index * 0.1}s`}
-                        onClick={() => {this.handleLinkClick()}}
-                        href={(!val.children) ? val.link : "#"}
-                    >
-                        {val.name}
-                    </MenuItem>
-                    {(val.children) ? (
-                        <div style={{marginLeft: "1em"}}>
-                            <Menu open={false} submenu={true} className="submenu">
-                                {this.renderSubmenuItems(val.children)}
-                            </Menu>
-                        </div>
-                        )
-                        : null
-                    }
-                </>
+            if(val.children) {
+                return (
+                    <SubMenuItem navlink={val} index={index}></SubMenuItem>
                 )
+            }
+            return (
+                <MenuItem
+                    key={index}
+                    delay={`${index * 0.1}s`}
+                    onClick={() => {this.handleLinkClick()}}
+                    href={val.link}
+                >
+                    {val.name}
+                </MenuItem>
+            )
         });
         return (
             <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{"height": "100px"}}>
@@ -115,18 +109,6 @@ class NavBarBurger extends React.Component {
                 </div>
             </nav >
         )
-    }
-    renderSubmenuItems(items) {
-        return items.map((item) => {
-            return (
-                <MenuItem
-                    onClick={() => { this.handleLinkClick(); }}
-                    href={item.link}
-                >
-                    {item.name}
-                </MenuItem>
-            )
-        });
     }
     renderNavLinks(navLinks) {
         if (!navLinks) {
@@ -179,6 +161,56 @@ class NavBarBurger extends React.Component {
         }
     }
 } export default NavBarBurger;
+
+/**
+ * Renders one navlink and its menu underneath.
+ * @props navlink: The navlink object and its children to render
+ */
+class SubMenuItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.setState({open: !this.state.open});
+    }
+
+    renderSubmenuItems(items) {
+        return items.map((item) => {
+            return (
+                <MenuItem
+                    href={item.link}
+                >
+                    {item.name}
+                </MenuItem>
+            )
+        });
+    }
+
+    render() {
+        return (
+            <>
+                <MenuItem
+                    key={this.props.index}
+                    delay={`${this.props.index * 0.1}s`}
+                    onClick={this.handleClick}
+                    href="#"
+                >
+                    {this.props.navlink.name}
+                </MenuItem>
+                <div style={{marginLeft: "1em"}}>
+                    <Menu open={this.state.open} submenu={true}>
+                        {this.renderSubmenuItems(this.props.navlink.children)}
+                    </Menu>
+                </div>
+            </>
+            )
+    }
+};
 
 /* For Navbar Dropdown Link */
 class CustomNavLink extends React.Component {
@@ -281,7 +313,7 @@ class Menu extends React.Component {
             container: {
                 position: 'absolute',
                 width:'100%',
-                height: this.state.open ? '100vh' : 0,
+                height: this.state.open ? ((!this.props.submenu) ? '100vh' : "100%") : 0,
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'white',
