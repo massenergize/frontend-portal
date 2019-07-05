@@ -52,32 +52,50 @@ class NavBarBurger extends React.Component {
 
         const menuItems = this.props.navLinks.map((val, index) => {
             return (
-                <MenuItem
-                    key={index}
-                    delay={`${index * 0.1}s`}
-                    onClick={() => { this.handleLinkClick(); }}
-                    href={val.link}
-                >
-                    {val.name}
-                </MenuItem>)
+                <>
+                    <MenuItem
+                        key={index}
+                        delay={`${index * 0.1}s`}
+                        onClick={() => {this.handleLinkClick()}}
+                        href={(!val.children) ? val.link : "#"}
+                    >
+                        {val.name}
+                    </MenuItem>
+                    {(val.children) ? (
+                        <div style={{marginLeft: "1em"}}>
+                            <Menu open={false} submenu={true} className="submenu">
+                                {this.renderSubmenuItems(val.children)}
+                            </Menu>
+                        </div>
+                        )
+                        : null
+                    }
+                </>
+                )
         });
         return (
             <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{"height": "100px"}}>
                 <div className="container">
-                    <div className="row no-gutter">
-                        <div className="col-xl-3 col-lg-2 col-md-4 col-sm-6 col-6 d-flex align-items-center " >
-                            <div className="main-logo col-8" >
+                    <div className="row no-gutter width-100">
+                        <div className="col-lg-2 col-md-3 col-sm-4 col d-flex align-items-center" >
+                            <div className="main-logo col" >
                                 <a href="/"><img src={logo} alt="" /></a>
                             </div>
                         </div>
                         {this.state.menuBurgered ?
-                            <div className="col-xl-9 col-lg-10 col-md-8 col-sm-6 col-6 menu-column" >
+                            <div className="col-lg-10 col-md-9 col-sm-8 col menu-column" >
                                 <div style={styles.container}>
                                     <MenuButton open={this.state.menuOpen} onClick={() => this.handleMenuClick()} color='#333' />
                                     {this.renderLogin()}
                                 </div>
                                 <Menu open={this.state.menuOpen}>
+                                    {/* {this.renderLayeredMenu(this.props.navLinks)} */}
                                     {menuItems}
+                                    {/* <div style={{marginLeft: "1em"}}>
+                                        <Menu open={true} submenu={true}>
+                                            {menuItems}
+                                        </Menu>
+                                    </div> */}
                                 </Menu>
                             </div>
                             :
@@ -97,6 +115,18 @@ class NavBarBurger extends React.Component {
                 </div>
             </nav >
         )
+    }
+    renderSubmenuItems(items) {
+        return items.map((item) => {
+            return (
+                <MenuItem
+                    onClick={() => { this.handleLinkClick(); }}
+                    href={item.link}
+                >
+                    {item.name}
+                </MenuItem>
+            )
+        });
     }
     renderNavLinks(navLinks) {
         if (!navLinks) {
@@ -216,6 +246,7 @@ class MenuItem extends React.Component {
         return (
             <div style={styles.container}>
                 <a
+                    className="width-100"
                     style={styles.menuItem}
                     onMouseEnter={() => { this.handleHover(); }}
                     onMouseLeave={() => { this.handleHover(); }}
@@ -259,7 +290,7 @@ class Menu extends React.Component {
                 zIndex: 2,
             },
             menuList: {
-                paddingTop: '3rem',
+                paddingTop: (!this.props.submenu) ? '3rem' : "0",
             }
         }
         return (
