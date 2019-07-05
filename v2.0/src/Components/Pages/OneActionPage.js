@@ -1,10 +1,10 @@
 import React from 'react'
-import CONST from './Constants.js';
-import LoadingPage from './LoadingPage.js';
-import NavBarBurger from './NavBarBurger';
-import NavBarOffset from './NavBarOffset';
-import Footer from './Footer';
-import Cart from './Cart';
+import CONST from '../Constants';
+import LoadingPage from './LoadingPage';
+import NavBarBurger from '../Menu/NavBarBurger';
+import NavBarOffset from '../Menu/NavBarOffset';
+import Footer from '../Menu/Footer';
+import Cart from '../PageSpecific/ActionsPage/Cart';
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed

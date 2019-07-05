@@ -1,9 +1,9 @@
 import React from 'react'
-import CONST from './Constants'
+import CONST from '../Constants'
 import LoadingPage from './LoadingPage'
-import NavBarBurger from './NavBarBurger'
-import NavBarOffset from './NavBarOffset';
-import Footer from './Footer'
+import NavBarBurger from '../Menu/NavBarBurger'
+import NavBarOffset from '../Menu/NavBarOffset';
+import Footer from '../Menu/Footer'
 
 class OneEventPage extends React.Component {
     constructor(props) {

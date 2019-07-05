@@ -1,7 +1,7 @@
 import React from 'react'
-import FooterInfo from './FooterInfo.js'
-import FooterEvents from './FooterEvents.js'
-import FooterLinks from './FooterLinks.js'
+import FooterInfo from './FooterInfo'
+import FooterEvents from './FooterEvents'
+import FooterLinks from './FooterLinks'
 /**
  * Footer section has place for links, 
  */

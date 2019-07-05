@@ -4,13 +4,13 @@ import {Switch, Route} from 'react-router-dom';
 
 import './assets/css/style.css';
 
-import HomePage from './Components/HomePage'
-import ActionsPage from './Components/ActionsPage'
-import OneActionPage from './Components/OneActionPage'
-import AboutUsPage from './Components/AboutUsPage'
-import LoginPage from './Components/LoginPage'
-import EventsPage from './Components/EventsPage'
-import OneEventPage from './Components/OneEventPage';
+import HomePage from './Components/Pages/HomePage'
+import ActionsPage from './Components/Pages/ActionsPage'
+import OneActionPage from './Components/Pages/OneActionPage'
+import AboutUsPage from './Components/Pages/AboutUsPage'
+import LoginPage from './Components/Pages/LoginPage'
+import EventsPage from './Components/Pages/EventsPage'
+import OneEventPage from './Components/Pages/OneEventPage';
 
 // import {
 // 	getNavLinks,

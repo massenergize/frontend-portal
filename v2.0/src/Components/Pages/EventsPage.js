@@ -1,12 +1,12 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import SideBar from './SideBar';
-import CONST from './Constants.js';
-import NavBarBurger from './NavBarBurger'
-import NavBarOffset from './NavBarOffset'
+import SideBar from '../Menu/SideBar';
+import CONST from '../Constants';
+import NavBarBurger from '../Menu/NavBarBurger'
+import NavBarOffset from '../Menu/NavBarOffset'
 import LoadingPage from './LoadingPage'
-import Footer from './Footer'
+import Footer from '../Menu/Footer'
 
 /**
  * Renders the event page

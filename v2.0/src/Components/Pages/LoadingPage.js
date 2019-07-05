@@ -10,7 +10,7 @@ class LoadingPage extends React.Component {
         };
         return (
             <div className="d-flex height-100vh justify-content-center align-items-center">
-                <img src={require('../assets/images/other/loader.gif')} alt="Loading..." style={style}/>
+                <img src={require('../../assets/images/other/loader.gif')} alt="Loading..." style={style}/>
             </div>
         );
     }

@@ -1,13 +1,13 @@
 import React from 'react'
-import CONST from './Constants.js';
-import LoadingPage from './LoadingPage.js';
-import NavBarBurger from './NavBarBurger';
-import NavBarOffset from './NavBarOffset';
-import WelcomeImages from './WelcomeImages.js'
-import Graphs from './Graphs';
-import IconBoxTable from './IconBoxTable.js';
-import Events from './Events';
-import Footer from './Footer';
+import CONST from '../Constants';
+import LoadingPage from './LoadingPage';
+import NavBarBurger from '../Menu/NavBarBurger';
+import NavBarOffset from '../Menu/NavBarOffset';
+import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
+import Graphs from '../PageSpecific/HomePage/Graphs';
+import IconBoxTable from '../PageSpecific/HomePage/IconBoxTable';
+import Events from '../PageSpecific/HomePage/Events';
+import Footer from '../Menu/Footer';
 
 /*
 * The Home Page of the MassEnergize

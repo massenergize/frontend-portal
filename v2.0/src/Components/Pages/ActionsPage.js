@@ -1,12 +1,11 @@
 import React from 'react'
-import CONST from './Constants.js';
-import LoadingPage from './LoadingPage.js';
-import { Switch, Route } from 'react-router-dom'
-import NavBarBurger from './NavBarBurger';
-import NavBarOffset from './NavBarOffset';
-import Footer from './Footer';
-import SideBar from './SideBar';
-import Action from './Action';
+import CONST from '../Constants.js';
+import LoadingPage from './LoadingPage';
+import NavBarBurger from '../Menu/NavBarBurger';
+import NavBarOffset from '../Menu/NavBarOffset';
+import Footer from '../Menu/Footer';
+import SideBar from '../Menu/SideBar';
+import Action from '../PageSpecific/ActionsPage/Action';
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters

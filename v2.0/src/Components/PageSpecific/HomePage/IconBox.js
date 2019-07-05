@@ -1,5 +1,4 @@
 import React from 'react'
-import '../assets/css/style.css';
 
 /**
  * renders a single icon box on the home page

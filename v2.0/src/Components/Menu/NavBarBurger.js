@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
 
 class NavBarBurger extends React.Component {

@@ -1,13 +1,13 @@
 import React from 'react'
-import CONST from './Constants.js';
-import LoadingPage from './LoadingPage.js';
-import NavBarBurger from './NavBarBurger';
-import NavBarOffset from './NavBarOffset';
-import WelcomeImages from './WelcomeImages.js'
-import Video from './Video.js'
-import TeamMembers from './TeamMembers.js'
-import DonateBar from './DonateBar.js'
-import Footer from './Footer';
+import CONST from '../Constants.js';
+import LoadingPage from './LoadingPage';
+import NavBarBurger from '../Menu/NavBarBurger';
+import NavBarOffset from '../Menu/NavBarOffset';
+import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
+import Video from '../PageSpecific/AboutUsPage/Video'
+import TeamMembers from '../PageSpecific/AboutUsPage/TeamMembers'
+import DonateBar from '../PageSpecific/AboutUsPage/DonateBar'
+import Footer from '../Menu/Footer';
 
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
