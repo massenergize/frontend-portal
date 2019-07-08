@@ -3,7 +3,7 @@ import { withFirebase } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { sendSignInSignal } from '../../../redux/actions/authActions'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 /********************************************************************/
 /**                        LOGIN FORM                               */
@@ -49,8 +49,8 @@ class LoginFormBase extends React.Component {
                         </div>
                         <div class="form-group social-links-two padd-top-5 pull-right">
                             Or login with
-                            <a href="#" class="img-circle facebook"><span class="fa fa-facebook-f"></span></a>
-                            <a href="#" class="img-circle google-plus"><span class="fa fa-google"></span></a>
+                            <Link to="#" class="img-circle facebook"><span class="fa fa-facebook-f"></span></Link>
+                            <Link to="#" class="img-circle google-plus"><span class="fa fa-google"></span></Link>
                         </div>
                     </div>
                 </form>

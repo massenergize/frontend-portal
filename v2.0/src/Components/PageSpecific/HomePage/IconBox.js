@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 /**
  * renders a single icon box on the home page
@@ -17,7 +18,7 @@ class IconBox extends React.Component{
                     </div>
                     <h4>{this.props.title}</h4>
                     <p>{this.props.description}</p>
-                    <a href={this.props.link}><button className="button" >More</button></a>
+                    <Link to={this.props.link}><button className="button" >More</button></Link>
                 </div>
         );
     }

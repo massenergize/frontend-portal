@@ -5,6 +5,7 @@ import NavBarBurger from '../Menu/NavBarBurger';
 import NavBarOffset from '../Menu/NavBarOffset';
 import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
 import Footer from '../Menu/Footer';
+import {Link} from 'react-router-dom'
 
 class StoriesPage extends React.Component {
     constructor(props) {
@@ -82,7 +83,7 @@ class StoriesPage extends React.Component {
                             <h4>{story.author}</h4>
                             <p>{story.location}</p>
                         </div>
-                        {(story.actionId) ? <p><a className="font-normal" href={`/actions/${story.actionId}`}><u>Linked Action</u></a></p> : null}
+                        {(story.actionId) ? <p><Link to={`/actions/${story.actionId}`} className="font-normal"><u>Linked Action</u></Link></p> : null}
                     </div>
                 </div>
             );

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 /**
  * Cart component
@@ -27,7 +28,7 @@ class Cart extends React.Component {
                             <tr>
                                 <td colspan="1" class="prod-column">
                                     <div class="column-box">
-                                        <figure class="prod-thumb"><a href="#"><img src="https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" alt="" /></a></figure>
+                                        <figure class="prod-thumb"><Link to="#"><img src="https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" alt="" /></Link></figure>
                                     </div>
                                 </td>
                                 <td colspan="2" class="prod-column">
@@ -36,15 +37,15 @@ class Cart extends React.Component {
                                     </div>
                                 </td>
                                 <td colspan="1" class="prod-column">
-                                    <a href="#" class="done-btn"> <i class="fa fa-check"></i> </a>
-                                    <a href="#" class="remove-btn"> <i class="fa fa-trash"></i> </a>
+                                    <Link to="#" class="done-btn"> <i class="fa fa-check"></i> </Link>
+                                    <Link to="#" class="remove-btn"> <i class="fa fa-trash"></i> </Link>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td colspan="1" class="prod-column">
                                     <div class="column-box">
-                                        <figure class="prod-thumb"><a href="#"><img src="https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" alt="" /></a></figure>
+                                        <figure class="prod-thumb"><Link to="#"><img src="https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" alt="" /></Link></figure>
                                     </div>
                                 </td>
                                 <td colspan="2" class="prod-column">
@@ -53,12 +54,12 @@ class Cart extends React.Component {
                                     </div>
                                 </td>
                                 <td colspan="1" class="prod-column">
-                                    <a href="#" class="done-btn"><i class="fa fa-check"></i>
+                                    <Link to="#" class="done-btn"><i class="fa fa-check"></i>
                                         {/* <span class="tooltiptext">Click to mark as done</span> */}
-                                    </a>
-                                    <a href="#" class="remove-btn"><i class="fa fa-trash"></i>
+                                    </Link>
+                                    <Link to="#" class="remove-btn"><i class="fa fa-trash"></i>
                                         {/* <span class="tooltiptext">Click to remove from the cart</span> */}
-                                    </a>
+                                    </Link>
                                 </td>
                             </tr>
 

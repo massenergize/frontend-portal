@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from '../../logo.svg';
+import {Link} from 'react-router-dom'
+
 
 /** Renders the address/ company contact info in the footer
  * @props :
@@ -18,7 +20,7 @@ class FooterInfo extends React.Component{
         return(
             <div className="col-md-6 col-sm-6 col-xs-12">
                 <div className="footer-widget about-column">
-                    <figure className="footer-logo"><a href="index.html"><img src={logo} alt=""/></a></figure>
+                    <figure className="footer-logo"><Link to="/"><img src={logo} alt=""/></Link></figure>
                     <div className="text"><p>{this.props.info.text}</p></div>
                     <ul className="contact-info">
                         <li><span className="icon-signs"></span> {this.props.info.address}, {this.props.info.city} <br/>{this.props.info.state} {this.props.info.zipcode}, USA</li>

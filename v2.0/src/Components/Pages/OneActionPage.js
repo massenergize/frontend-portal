@@ -5,6 +5,7 @@ import NavBarBurger from '../Menu/NavBarBurger';
 import NavBarOffset from '../Menu/NavBarOffset';
 import Footer from '../Menu/Footer';
 import Cart from '../PageSpecific/ActionsPage/Cart';
+import {Link} from 'react-router-dom'
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -108,8 +109,8 @@ class OneActionPage extends React.Component {
                                         }
                                         </p>
                                         {/* the buttons to add todo or done it */}
-                                        <a href={this.props.match.url + "/" + this.props.id} className="thm-btn style-4 " style={{ fontSize: "15px", marginRight: "20px" }}>Add Todo</a>
-                                        <a href="shop-cart.html" className="thm-btn style-4 " style={{ fontSize: "15px" }}>Done It</a>
+                                        <Link to={this.props.match.url + "/" + this.props.id} className="thm-btn style-4 " style={{ fontSize: "15px", marginRight: "20px" }}>Add Todo</Link>
+                                        <Link to="shop-cart.html" className="thm-btn style-4 " style={{ fontSize: "15px" }}>Done It</Link>
                                     </div>
                                 </div>
                                 {/* action image */}

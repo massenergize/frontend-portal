@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 /**
  * Action Component is a single action for the action page, 
@@ -22,17 +23,17 @@ class Action extends React.Component {
                 <div className="col-lg-4 col-md-6 col-sm-6 col-6" >
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
-                            <a href="shop-cart.html" >
+                            <Link to={this.props.match.url + "/" + this.props.id} >
                                 < img src={this.props.image} />
-                            </a>
+                            </Link>
                             { /* animated section on top of the image */}
                             <figcaption className="overlay" >
                                 <div className="box" >
                                     <div className="content">
                                         { /* link is thisurl/id (links to the OneActionPage) */}
-                                        <a href={this.props.match.url + "/" + this.props.id} >
+                                        <Link to={this.props.match.url + "/" + this.props.id} >
                                             <i className="fa fa-link" aria-hidden="true" ></i>
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </figcaption>
@@ -40,7 +41,7 @@ class Action extends React.Component {
                         <div className="content-box" >
                             <div className="inner-box" >
                                 <h4>
-                                    <a href={this.props.match.url + "/" + this.props.id}> {this.props.title} </a>
+                                    <Link to={this.props.match.url + "/" + this.props.id}> {this.props.title} </Link>
                                 </h4>
                             </div>
                             { /* Impact and Difficulty tags*/}
@@ -59,17 +60,17 @@ class Action extends React.Component {
                                 <div className="row no-gutter">
                                     <div className="col-sm-4 col-md-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <a href={this.props.match.url + "/" + this.props.id} className="thm-btn style-4" > More Info</a>
+                                            <Link to={this.props.match.url + "/" + this.props.id} className="thm-btn style-4" > More Info</Link>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <a href="addtodo" className="thm-btn style-4 " > Add Todo </a>
+                                            <Link to="addtodo" className="thm-btn style-4 " > Add Todo </Link>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            <a href="addtodone" className="thm-btn style-4 "> Done It </a>
+                                            <Link to="addtodone" className="thm-btn style-4 "> Done It </Link>
                                         </div>
                                     </div>
                                 </div>

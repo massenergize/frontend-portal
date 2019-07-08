@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {Link} from 'react-router-dom'
 /**
  *Footer events renders the events in the footer
  *@props
@@ -23,8 +23,8 @@ class FooterEvents extends React.Component{
             return (
                 <li>
                     <div className="post">
-                            <div className="post-thumb"><a href={event.link}><img src={event.image} alt=""/></a></div>
-                            <a href="/"><h5>{event.title}</h5></a>
+                            <div className="post-thumb"><Link to={"/events/" + event.id}><img src={event.image} alt=""/></Link></div>
+                            <Link to={"/events/" + event.id}><h5>{event.title}</h5></Link>
                             <div className="post-info"><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</div>
                         </div>
                 </li>

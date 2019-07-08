@@ -3,6 +3,7 @@ import React from 'react'
 // Carousel from npm react-multi-carousel
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import {Link} from 'react-router-dom'
 
 
 /**
@@ -63,7 +64,7 @@ class TeamMembers extends React.Component {
                             <a className="width-100"><img src={member.imageLink} alt="" className="width-100"/></a>
                         </figure>
                         <div className="author-info text-center">
-                            <a href="#"><h4>{member.name}</h4></a>
+                            <a ><h4>{member.name}</h4></a>
                             <p>{member.role}</p>
                             <p class="font-normal font-italic ">{member.description}</p>
                             <hr/>

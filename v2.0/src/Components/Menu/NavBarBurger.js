@@ -1,6 +1,8 @@
 import React from 'react'
 import logo from '../../logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
+import {Link} from 'react-router-dom'
+
 
 class NavBarBurger extends React.Component {
     constructor(props) {
@@ -73,7 +75,7 @@ class NavBarBurger extends React.Component {
                     <div className="row no-gutter width-100">
                         <div className="col-lg-2 col-md-3 col-sm-4 col d-flex align-items-center" >
                             <div className="main-logo col" >
-                                <a href="/"><img src={logo} alt="" /></a>
+                                <Link to="/"><img src={logo} alt="" /></Link>
                             </div>
                         </div>
                         {this.state.menuBurgered ?
@@ -128,7 +130,7 @@ class NavBarBurger extends React.Component {
                     </li>
                 );
             }
-            return <li className="d-flex flex-column justify-content-center" key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
+            return <li className="d-flex flex-column justify-content-center" key={navLink.name}><Link to={navLink.link}>{navLink.name}</Link></li>
         });
     }
     renderDropdownItems(children) {
@@ -145,18 +147,18 @@ class NavBarBurger extends React.Component {
         } = this.props.userData
         if (loggedIn) {
             return (
-                <a style={{ color: "#8ec449", margin: 'auto 0 auto 10px', fontSize: '12px', display: 'inline-block' }}>
+                <Link style={{ color: "#8ec449", margin: 'auto 0 auto 10px', fontSize: '12px', display: 'inline-block' }}>
                     <i className="fa fa-user" />
                     Welcome: <br />
                     {name}
-                </a>
+                </Link>
             );
         } else {
             return (
-                <a className="thm-btn float-right" href="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
+                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
                     <i className="fa fa-user" style={{ padding: "0px 5px" }} />
                     Login
-                </a>
+                </Link>
             );
         }
     }
@@ -229,7 +231,7 @@ class CustomNavLink extends React.Component {
     render() {
       return (
         // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
-            <a href="#" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></a>
+            <Link to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
         // </li>
       );
     }
@@ -277,16 +279,16 @@ class MenuItem extends React.Component {
         }
         return (
             <div style={styles.container}>
-                <a
+                <Link
                     className="width-100"
                     style={styles.menuItem}
                     onMouseEnter={() => { this.handleHover(); }}
                     onMouseLeave={() => { this.handleHover(); }}
                     onClick={this.props.onClick}
-                    href={this.props.href}
+                    to={this.props.href}
                 >
                     {this.props.children}
-                </a>
+                </Link>
                 <div style={styles.line} />
             </div>
         )

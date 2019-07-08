@@ -7,6 +7,7 @@ import NavBarBurger from '../Menu/NavBarBurger'
 import NavBarOffset from '../Menu/NavBarOffset'
 import LoadingPage from './LoadingPage'
 import Footer from '../Menu/Footer'
+import {Link} from 'react-router-dom'
 
 /**
  * Renders the event page
@@ -129,7 +130,7 @@ class EventsPage extends React.Component {
                             {/* renders the image */}
                             <div class="col-lg-4 col-12">
                                 <figure class="img-holder">
-                                    <a href="single-event.html"><img src={event.image} alt="" /></a>
+                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image} alt="" /></Link>
                                     {/* if the date has passed already the calender div should be all gray */}
                                     <div class={(date - now > 0 || this.isToday(date)) ? "date" : "date old"}><span>{months[event.month]}<br />{event.day}</span></div>
                                 </figure>
@@ -138,7 +139,7 @@ class EventsPage extends React.Component {
                             <div class=" col-lg-8 col-12">
                                 <div class="lower-content">
                                     <p> Organizer: {event.organizer} </p>
-                                    <a href={this.props.match.url + "/" + event.id}><h4> {event.title} </h4></a>
+                                    <Link to={this.props.match.url + "/" + event.id}><h4> {event.title} </h4></Link>
                                     <div class="text">
                                         <p> {event.description} </p>
                                     </div>

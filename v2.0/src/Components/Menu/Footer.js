@@ -2,6 +2,7 @@ import React from 'react'
 import FooterInfo from './FooterInfo'
 import FooterEvents from './FooterEvents'
 import FooterLinks from './FooterLinks'
+import {Link} from 'react-router-dom'
 /**
  * Footer section has place for links, 
  */
@@ -71,7 +72,7 @@ class Footer extends React.Component{
 
                         </div>
                         <div className="pull-right get-text">
-                            <a href="/">Join Us Now!</a>
+                            <Link to="/donate">Donate Now</Link>
                         </div>
                     </div>
                 </section>

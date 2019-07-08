@@ -1,5 +1,6 @@
 import React from 'react'
 import CircleGraph from './CircleGraph'
+import {Link} from 'react-router-dom'
 
 /** Renders the graphs on the home page and a link to the impact page
  * @props :
@@ -39,7 +40,7 @@ class Graphs extends React.Component{
                         <article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
                             <div className="item">
                                 <div className="icon"><i className="fa fa-chart-bar"/></div>
-                                <a href="/" className="thm-btn">More</a>
+                                <Link to="/impact" className="thm-btn">More</Link>
                                 <h4 className="counter-title">See more about our impact in the Community</h4>
                             </div>
                         </article>

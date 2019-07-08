@@ -2,6 +2,7 @@ import React from 'react';
 import logo from '../../logo.svg';
 import '../assets/css/style.css';
 import NavBarBurger from './NavBarBurger'
+import {Link} from 'react-router-dom'
 
 /**
  * Renders the Navigation bar 
@@ -28,7 +29,7 @@ class NavBar extends React.Component {
         }
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
-            return <li key={navLink.name}><a href={navLink.link}>{navLink.name}</a></li>
+            return <li key={navLink.name}><Link to={navLink.link}>{navLink.name}</Link></li>
         });
     }
     render() {
@@ -39,7 +40,7 @@ class NavBar extends React.Component {
                         <div className="row">
                             <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                 <div className="main-logo">
-                                    <a href="/"><img src={logo} alt="" /></a>
+                                    <Link to="/"><img src={logo} alt="" /></Link>
                                 </div>
                             </div>
                             <div className="col-lg-10 col-md-10 col-sm-10 col-xs-12 menu-column">
@@ -74,10 +75,10 @@ class NavBar extends React.Component {
         } else {
             return (
                 <li >
-                    <a className="thm-btn float-right" href="/login">
+                    <Link to="/login" className="thm-btn float-right" >
                         <i className="fa fa-user" style={{ padding: "0px 5px" }} />
                         Login
-                    </a>
+                    </Link>
                 </li>);
         }
     }

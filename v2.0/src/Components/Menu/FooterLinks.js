@@ -1,4 +1,6 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+
 
 /** Renders the Navigation links in the footer
 @props
@@ -16,7 +18,7 @@ class FooterLinks extends React.Component{
             var link = links[key];
             return (
                 <li>
-                    <a href={link.link}>{link.name}</a>
+                    <Link to={link.link}>{link.name}</Link>
                 </li>
             );
         });

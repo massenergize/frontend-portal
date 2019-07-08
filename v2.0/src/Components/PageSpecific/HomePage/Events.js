@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 /**
  * Events section displays upcoming events,
  * @TODO make a limit number so it only displays that many events
@@ -34,13 +35,13 @@ class Events extends React.Component {
                             <div className="clearfix">
                                 <div className="img-column">
                                     <figure className="img-holder">
-                                        <a href={event.link}><img src={event.image} alt="" /></a>
+                                        <Link to={event.link}><img src={event.image} alt="" /></Link>
                                     </figure>
                                 </div>
                                 <div className="text-column">
                                     <div className="lower-content">
                                         <p>Organizer: {event.organizer}</p>
-                                        <a href={event.link}><h4>{event.title}</h4></a>
+                                        <Link to={event.link}><h4>{event.title}</h4></Link>
                                         <div className="text">
                                             <p>{event.text}</p>
                                         </div>
@@ -68,7 +69,7 @@ class Events extends React.Component {
                             </div>
                         </div>
                         <div className="col-md-3 col-sm-2 col-xs-12">
-                            <a href="#" className="thm-btn float_right">All Events</a>
+                            <Link to="#" className="thm-btn float_right">All Events</Link>
                         </div>
                     </div>
                     <div className="row">

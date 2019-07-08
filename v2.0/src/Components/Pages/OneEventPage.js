@@ -4,6 +4,7 @@ import LoadingPage from './LoadingPage'
 import NavBarBurger from '../Menu/NavBarBurger'
 import NavBarOffset from '../Menu/NavBarOffset';
 import Footer from '../Menu/Footer'
+import {Link} from 'react-router-dom'
 
 class OneEventPage extends React.Component {
     constructor(props) {
@@ -120,24 +121,24 @@ class OneEventPage extends React.Component {
                                         <h3>Our Sponsors</h3>
                                     </div>
                                     <ul class="brand-carousel2">
-                                        <li><a href="#"><img src="images/event/b1.jpg" alt="" /></a></li>
-                                        <li><a href="#"><img src="images/event/b2.jpg" alt="" /></a></li>
-                                        <li><a href="#"><img src="images/event/b3.jpg" alt="" /></a></li>
-                                        <li><a href="#"><img src="images/event/b4.jpg" alt="" /></a></li>
+                                        <li><Link to="#"><img src="images/event/b1.jpg" alt="" /></Link></li>
+                                        <li><Link to="#"><img src="images/event/b2.jpg" alt="" /></Link></li>
+                                        <li><Link to="#"><img src="images/event/b3.jpg" alt="" /></Link></li>
+                                        <li><Link to="#"><img src="images/event/b4.jpg" alt="" /></Link></li>
                                     </ul>
                                 </div>
                                 <div class="share clearfix">
                                     <div class="social-box float_left">
                                         <span>Share <i class="fa fa-share-alt"></i></span>
                                         <ul class="list-inline social">
-                                            <li><a href="/"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="/"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a href="/"><i class="fa fa-google-plus"></i></a></li>
-                                            <li><a href="/"><i class="fa fa-pinterest"></i></a></li>
+                                            <li><Link to="/"><i class="fa fa-facebook"></i></Link></li>
+                                            <li><Link to="/"><i class="fa fa-twitter"></i></Link></li>
+                                            <li><Link to="/"><i class="fa fa-google-plus"></i></Link></li>
+                                            <li><Link to="/"><i class="fa fa-pinterest"></i></Link></li>
                                         </ul>
                                     </div>
                                     <div class="float_right">
-                                        <a href="/donate" class="thm-btn style-2 donate-box-btn">Donate</a>
+                                        <Link to="/donate" class="thm-btn style-2 donate-box-btn">Donate</Link>
                                     </div>
                                 </div>
                             </div>
