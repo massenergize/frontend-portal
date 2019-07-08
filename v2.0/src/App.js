@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import './assets/css/style.css'
 import {getHomePageData} from './api'
-
+import {Link, Route} from 'react-router-dom';
+import LoginPage from './pages/LoginPage'
 
 class App extends Component {
   render() {
@@ -15,16 +16,13 @@ class App extends Component {
           <p>
             Hey! <code>Welcome</code> to the Portal
           </p>
-          <a
-            className="App-link"
-            href="https://massenergize.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <Link className="App-link" to="/login">
             Massenergize Portal Coming Soon
             {}
-          </a>
+          </Link>
         </header>
+        <Route path="/login" component={LoginPage} exact />
+
       </div>
     );
   }

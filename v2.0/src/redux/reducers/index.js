@@ -2,10 +2,12 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import { connectRouter } from 'connected-react-router'
 import history from '../history';
+import {firebaseReducer } from 'react-redux-firebase'
 
 export default combineReducers({
   user: authReducer,
-  router: connectRouter(history)
+  router: connectRouter(history),
+  firebase: firebaseReducer
 });
 
 
