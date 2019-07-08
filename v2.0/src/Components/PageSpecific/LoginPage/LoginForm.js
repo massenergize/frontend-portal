@@ -75,7 +75,9 @@ class LoginFormBase extends React.Component {
         //firebase prop comes from the withFirebase higher component
         this.props.firebase
           .signInWithEmailAndPassword(email, password)
-          .then(() => {
+          .then(authUser => {
+            console.log(authUser);
+            /**@TODO take uid and email from authUser maybe sessionID and post to the backend */
             this.setState({ ...INITIAL_STATE }); //reset the login boxes
             this.props.history.push('/profile'); //from with router, pushing to history routes the user to the pushed route
           })
