@@ -19,6 +19,8 @@ class HomePage extends React.Component {
             pageData: null,
             menuData: null,
             userData: null,
+            eventsData: null,
+            impactData: null
         }
     }
     componentDidMount() {
@@ -31,6 +33,8 @@ class HomePage extends React.Component {
                 pageData: myJson.pageData,
                 menuData: myJson.menuData,
                 userData: myJson.userData,
+                eventsData: myJson.eventsData,
+                impactData: myJson.impactData,
             });
         }).catch(error => {
             console.log(error);
@@ -47,10 +51,12 @@ class HomePage extends React.Component {
         } = this.state.menuData;
         const {
             welcomeImagesData,
-            graphsData,
             iconBoxesData,
-            eventsData
         } = this.state.pageData;
+
+        const {impactData} = this.state.impactData;
+        const {eventsData} = this.state.eventsData;
+
         return (
             <div className="boxed_wrapper">
                 <NavBarBurger
@@ -63,7 +69,7 @@ class HomePage extends React.Component {
                     data={welcomeImagesData} title="MassEnergize"
                 />
                 <Graphs
-                    graphs={graphsData}
+                    graphs={impactData}
                 />
                 <IconBoxTable
                     title=""

@@ -48,7 +48,7 @@ class Events extends React.Component {
                                 </div>
                             </div>
                             <ul className="post-meta list_inline">
-                                <li><i class="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
+                                <li><i className="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
                             <li><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</li> |&nbsp;&nbsp;&nbsp;
                             <li><i className="fa fa-map-marker"></i> {event.address}</li>
                             </ul>
