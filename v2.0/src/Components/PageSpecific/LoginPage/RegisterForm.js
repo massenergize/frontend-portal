@@ -84,6 +84,7 @@ class RegisterFormBase extends React.Component {
         this.props.firebase
             .createUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
+                console.log(authUser);
                 this.setState({ ...INITIAL_STATE });
                 this.props.history.push('/profile'); // routes the user home on a successful login //history prop comes from withRouter
             })
