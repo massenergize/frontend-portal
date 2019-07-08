@@ -1,9 +1,6 @@
 import React from 'react'
 import CONST from '../Constants.js';
 import LoadingPage from './LoadingPage';
-import NavBarBurger from '../Menu/NavBarBurger';
-import NavBarOffset from '../Menu/NavBarOffset';
-import Footer from '../Menu/Footer';
 import SideBar from '../Menu/SideBar';
 import Action from '../PageSpecific/ActionsPage/Action';
 
@@ -19,7 +16,6 @@ class ActionsPage extends React.Component {
         this.state = {
             pageData: null,
             userData: null,
-            menuData: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -30,7 +26,6 @@ class ActionsPage extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData,
                 userData: myJson.userData,
             });
         }).catch(error => {
@@ -42,23 +37,12 @@ class ActionsPage extends React.Component {
     render() {
         //avoids trying to render before the promise from the server is fulfilled
         if (!this.state.pageData) return <LoadingPage/>;
-        const { //gets the navLinks and footer data out of menu data
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
         const { //gets the actions and sidebar data out of page data
             actions,
             sidebar
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky}/>
                 {/* main shop section */}
                 <div className="shop sec-padd">
                     <div className="container">
@@ -79,9 +63,6 @@ class ActionsPage extends React.Component {
                         </div>
                     </div>
                 </div>
-                <Footer
-                    data={footerData}
-                />
             </div>
         );
     }

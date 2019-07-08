@@ -1,9 +1,6 @@
 import React from 'react'
 import CONST from '../Constants'
 import LoadingPage from './LoadingPage'
-import NavBarBurger from '../Menu/NavBarBurger'
-import NavBarOffset from '../Menu/NavBarOffset';
-import Footer from '../Menu/Footer'
 import {Link} from 'react-router-dom'
 
 class OneEventPage extends React.Component {
@@ -11,7 +8,6 @@ class OneEventPage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
-            menuData: null,
             userData: null,
         }
     }
@@ -22,7 +18,6 @@ class OneEventPage extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData,
                 userData: myJson.userData,
             });
         }).catch(error => {
@@ -34,21 +29,12 @@ class OneEventPage extends React.Component {
         //waits for the data from the server
         if (!this.state.pageData) return <LoadingPage />;
         const {
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
-        const {
             events,
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky} />
+               
+                
                 <section className="shop-single-area">
                     <div className="container">
                         <div className="single-products-details">
@@ -56,9 +42,7 @@ class OneEventPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer
-                    data={footerData}
-                />
+                
             </div>
         );
     }

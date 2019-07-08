@@ -2,8 +2,6 @@ import React from 'react'
 import CONST from '../Constants'
 import LoadingPage from './LoadingPage'
 import NavBarBurger from '../Menu/NavBarBurger'
-import NavBarOffset from '../Menu/NavBarOffset'
-import Footer from '../Menu/Footer'
 import RegisterForm from '../PageSpecific/LoginPage/RegisterForm'
 import LoginForm from '../PageSpecific/LoginPage/LoginForm'
 
@@ -11,7 +9,6 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuData: null,
             userData: null,
         }
     }
@@ -21,7 +18,6 @@ class LoginPage extends React.Component {
             return data.json()
         }).then(myJson => {
             this.setState({
-                menuData: myJson.menuData,
                 userData: myJson.userData,
             });
         }).catch(error => {
@@ -31,20 +27,11 @@ class LoginPage extends React.Component {
     }
 
     render() { //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.menuData) return <LoadingPage />;
-        const { //gets the navLinks and footer data out of menu data
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
+        if (!this.state.userData) return <LoadingPage />;
+        
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky} />
+                
                 <section class="register-section sec-padd-top">
                     <div class="container">
                         <div class="row">
@@ -59,9 +46,7 @@ class LoginPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer
-                    data={footerData}
-                />
+                
             </div>
         );
     }

@@ -3,10 +3,7 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import SideBar from '../Menu/SideBar';
 import CONST from '../Constants';
-import NavBarBurger from '../Menu/NavBarBurger'
-import NavBarOffset from '../Menu/NavBarOffset'
 import LoadingPage from './LoadingPage'
-import Footer from '../Menu/Footer'
 import {Link} from 'react-router-dom'
 
 /**
@@ -20,7 +17,6 @@ class EventsPage extends React.Component {
             endDate: null,   //when selected, they filter the actions to be between them
             pageData: null,
             userData: null,
-            menuData: null,
         }
         this.selectStartDate = this.selectStartDate.bind(this);
         this.selectEndDate = this.selectEndDate.bind(this);
@@ -34,7 +30,6 @@ class EventsPage extends React.Component {
         }).then(myJson => {
             this.setState({
                 pageData: myJson.pageData,
-                menuData: myJson.menuData,
                 userData: myJson.userData,
             });
         }).catch(error => {
@@ -45,22 +40,11 @@ class EventsPage extends React.Component {
     render() {
         //avoids trying to render before the promise from the server is fulfilled
         if (!this.state.pageData) return <LoadingPage />;
-        const { //gets the navLinks and footer data out of menu data
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
         const { //gets the actions and sidebar data out of page data
             events
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky} />
                 {/* renders the sidebar and events columns */}
                 <div className="boxed-wrapper">
                     <section class="eventlist">
@@ -78,10 +62,6 @@ class EventsPage extends React.Component {
                         </div>
                     </section>
                 </div>
-
-                <Footer
-                    data={footerData}
-                />
             </div>
         );
     }

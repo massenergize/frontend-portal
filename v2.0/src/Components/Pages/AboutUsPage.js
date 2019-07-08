@@ -1,13 +1,10 @@
 import React from 'react'
 import CONST from '../Constants.js';
 import LoadingPage from './LoadingPage';
-import NavBarBurger from '../Menu/NavBarBurger';
-import NavBarOffset from '../Menu/NavBarOffset';
 import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
 import Video from '../PageSpecific/AboutUsPage/Video'
 import TeamMembers from '../PageSpecific/AboutUsPage/TeamMembers'
 import DonateBar from '../PageSpecific/AboutUsPage/DonateBar'
-import Footer from '../Menu/Footer';
 
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
@@ -17,7 +14,6 @@ class AboutUsPage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
-            menuData: null,
             userData: null,
         }
     }
@@ -26,7 +22,6 @@ class AboutUsPage extends React.Component {
             return data.json()
         }).then(myJson => {
             this.setState({
-                menuData: myJson.menuData,
                 userData: myJson.userData,
                 pageData: myJson.pageData,
             });
@@ -37,13 +32,7 @@ class AboutUsPage extends React.Component {
     }
 
     render() {
-        if(!this.state.menuData) return <LoadingPage/>;
-        const {
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
-
+        if(!this.state.pageData) return <LoadingPage/>;
         const {
             welcomeImagesData,
             videoLink,
@@ -56,12 +45,7 @@ class AboutUsPage extends React.Component {
 
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky}/>
+                
                 <WelcomeImages
                     data={welcomeImagesData} title="About Us"
                 />
@@ -74,9 +58,7 @@ class AboutUsPage extends React.Component {
                 </div>
                 <TeamMembers data={teamMembersData} />
                 <DonateBar message={donateMessage}/>
-                <Footer
-                    data={footerData}
-                />
+                
             </div>
         );
     }

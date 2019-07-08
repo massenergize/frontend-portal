@@ -1,13 +1,10 @@
 import React from 'react'
 import CONST from '../Constants';
 import LoadingPage from './LoadingPage';
-import NavBarBurger from '../Menu/NavBarBurger';
-import NavBarOffset from '../Menu/NavBarOffset';
 import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
 import Graphs from '../PageSpecific/HomePage/Graphs';
 import IconBoxTable from '../PageSpecific/HomePage/IconBoxTable';
 import Events from '../PageSpecific/HomePage/Events';
-import Footer from '../Menu/Footer';
 
 /*
 * The Home Page of the MassEnergize
@@ -45,11 +42,6 @@ class HomePage extends React.Component {
     render() {
         if (!this.state.pageData) return <LoadingPage/>;
         const {
-            navLinks,
-            navBarSticky,
-            footerData,
-        } = this.state.menuData;
-        const {
             welcomeImagesData,
             iconBoxesData,
         } = this.state.pageData;
@@ -59,12 +51,7 @@ class HomePage extends React.Component {
 
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky}/>
+                
                 <WelcomeImages
                     data={welcomeImagesData} title="MassEnergize"
                 />
@@ -78,9 +65,7 @@ class HomePage extends React.Component {
                 <Events
                     events={eventsData}
                 />
-                <Footer
-                    data={footerData}
-                />
+                
             </div>
         );
     }

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import {Switch, Route} from 'react-router-dom';
-
+import CONST from './Components/Constants'
+import NavBarBurger from './Components/Menu/NavBarBurger'
+import NavBarOffset from './Components/Menu/NavBarOffset'
+import Footer from './Components/Menu/Footer'
+import LoadingPage from './Components/Pages/LoadingPage'
 import './assets/css/style.css';
 
 import HomePage from './Components/Pages/HomePage'
@@ -15,15 +19,49 @@ import OneEventPage from './Components/Pages/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage'
 
 class App extends Component {
+
+	constructor(props) {
+        super(props);
+        this.state = {
+            menuData: null,
+            userData: null,
+        }
+    }
+    componentDidMount() {
+        fetch(CONST.URL.MENU).then(data => {
+            return data.json()
+        }).then(myJson => {
+            this.setState({
+                menuData: myJson.menuData,
+                userData: myJson.userData,
+            });
+        }).catch(error => {
+            console.log(error);
+            return null;
+        });
+        
+    }
 	render() {
+		if (!this.state.menuData) return <LoadingPage/>;
+        const {
+            navLinks,
+            navBarSticky,
+            footerData,
+        } = this.state.menuData;
 		return (
-			<div>
+			<div className="boxed-wrapper">
 				<Helmet>
 					<meta charset="UTF-8" />
 					<title>Mass Energize</title>
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 				</Helmet>
+				<NavBarBurger
+                    navLinks={navLinks}
+                    userData={this.state.userData}
+                    sticky={navBarSticky}
+                />
+                <NavBarOffset sticky={navBarSticky}/>
 				<Switch>
 					<Route exact path="/" component={HomePage} />
 					<Route path="/home" component={HomePage} />
@@ -42,6 +80,9 @@ class App extends Component {
 						</div>
 					}/>
 				</Switch>
+				<Footer
+                    data={footerData}
+                />
 			</div>
 		);
 	}

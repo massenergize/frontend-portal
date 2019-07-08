@@ -1,10 +1,7 @@
 import React from 'react'
 import CONST from '../Constants.js';
 import LoadingPage from './LoadingPage';
-import NavBarBurger from '../Menu/NavBarBurger';
-import NavBarOffset from '../Menu/NavBarOffset';
 import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
-import Footer from '../Menu/Footer';
 import {Link} from 'react-router-dom'
 
 class StoriesPage extends React.Component {
@@ -12,7 +9,6 @@ class StoriesPage extends React.Component {
         super(props);
         this.state = {
             pageData: null,
-            menuData: null,
             userData: null,
         }
     }
@@ -21,7 +17,6 @@ class StoriesPage extends React.Component {
             return data.json()
         }).then(myJson => {
             this.setState({
-                menuData: myJson.menuData,
                 userData: myJson.userData,
                 pageData: myJson.pageData,
             });
@@ -32,13 +27,8 @@ class StoriesPage extends React.Component {
     }
 
     render() {
-        if(!this.state.menuData) return <LoadingPage/>;
-        const {
-            navLinks,
-            navBarSticky,
-            footerData
-        } = this.state.menuData;
-
+        if(!this.state.pageData) return <LoadingPage/>;
+        
         const {
             welcomeImagesData,
             stories
@@ -46,12 +36,7 @@ class StoriesPage extends React.Component {
 
         return (
             <div className="boxed_wrapper">
-                <NavBarBurger
-                    navLinks={navLinks}
-                    userData={this.state.userData}
-                    sticky={navBarSticky}
-                />
-                <NavBarOffset sticky={navBarSticky}/>
+                
                 <WelcomeImages
                     data={welcomeImagesData} title="Stories"
                 />
@@ -62,9 +47,7 @@ class StoriesPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer
-                    data={footerData}
-                />
+                
             </div>
         );
     }
