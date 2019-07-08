@@ -1,8 +1,11 @@
 import { 
-  LOGIN
+  LOGIN,
+  LOGOUT
 } from '../actions/types';
 
-const initialState = null;
+const initialState = {
+  user:null
+};
 
 
 export default function(state = initialState, action) {
@@ -10,8 +13,13 @@ export default function(state = initialState, action) {
     case LOGIN:
       return {
         ...state,
-        user: action.payload
+        user: action.payload.user
       };
+    case LOGOUT:
+      return {
+        ...state,
+        user: null
+      }
     default:
       return {
         ...state,

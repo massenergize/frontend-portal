@@ -1,7 +1,10 @@
-import React from 'react'
-import { withFirebase } from '../../Firebase';
-import { withRouter } from 'react-router-dom';
-import {compose} from 'recompose';
+import React from 'react';
+import { withFirebase } from 'react-redux-firebase';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { sendSignInSignal } from '../../../redux/actions/authActions'
+import { Redirect } from 'react-router-dom'
+
 /********************************************************************/
 /**                        LOGIN FORM                               */
 /********************************************************************/
@@ -22,11 +25,9 @@ class LoginFormBase extends React.Component {
     }
 
     render() {
-        const {
-            email,
-            password,
-            error
-        } = this.state;
+        const { email, password, error } = this.state;
+        const { auth } = this.props;
+        if(auth.uid)return <Redirect to='/profile' />;
         return (
             < div class="styled-form login-form" >
                 <div class="section-title style-2">
@@ -71,31 +72,32 @@ class LoginFormBase extends React.Component {
     };
 
     onSubmit(event) {
-        const { email, password } = this.state;
         //firebase prop comes from the withFirebase higher component
-        this.props.firebase
-          .signInWithEmailAndPassword(email, password)
-          .then(authUser => {
-            console.log(authUser);
-            /**@TODO take uid and email from authUser maybe sessionID and post to the backend */
-            this.setState({ ...INITIAL_STATE }); //reset the login boxes
-            this.props.history.push('/profile'); //from with router, pushing to history routes the user to the pushed route
-          })
-          .catch(error => {
-            this.setState({ error });
-          });
-    
+        this.props.firebase.auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(authUser => {
+                console.log(authUser);
+                this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
+                this.setState({ ...INITIAL_STATE }); //reset the login boxes
+            })
+            .catch(err => {
+                this.setState({ error: err.message });
+            });
+
         event.preventDefault();
     };
 }
 
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 const LoginForm = compose(
-    withRouter,
     withFirebase
 )(LoginFormBase);
 
-export default LoginFormBase;
-export{ LoginForm };
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default  connect(mapStoreToProps, {sendSignInSignal})(LoginForm);
 
 

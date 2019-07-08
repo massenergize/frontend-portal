@@ -1,12 +1,11 @@
 import React from 'react'
-import CONST from '../Constants';
-import LoadingPage from './LoadingPage';
-import NavBarBurger from '../Menu/NavBarBurger';
-import NavBarOffset from '../Menu/NavBarOffset';
+import CONST from '../Constants'
+import LoadingPage from './LoadingPage'
+import NavBarBurger from '../Menu/NavBarBurger'
+import NavBarOffset from '../Menu/NavBarOffset'
 import Footer from '../Menu/Footer'
-import {RegisterForm} from '../PageSpecific/LoginPage/RegisterForm'
-import {LoginForm} from '../PageSpecific/LoginPage/LoginForm'
-
+import RegisterForm from '../PageSpecific/LoginPage/RegisterForm'
+import LoginForm from '../PageSpecific/LoginPage/LoginForm'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -21,7 +20,6 @@ class LoginPage extends React.Component {
         fetch(CONST.URL.MENU).then(data => {
             return data.json()
         }).then(myJson => {
-            console.log(myJson);
             this.setState({
                 menuData: myJson.menuData,
                 userData: myJson.userData,
@@ -31,7 +29,6 @@ class LoginPage extends React.Component {
             return null;
         });
     }
-
 
     render() { //avoids trying to render before the promise from the server is fulfilled
         if (!this.state.menuData) return <LoadingPage />;

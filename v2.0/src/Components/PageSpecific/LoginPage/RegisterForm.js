@@ -1,8 +1,9 @@
-
-import React from 'react';
-import { withFirebase } from '../../Firebase';
-import { withRouter } from 'react-router-dom';
-import {compose} from 'recompose';
+import React from 'react'
+import { withFirebase } from 'react-redux-firebase'
+import { Redirect } from 'react-router-dom'
+import {compose} from 'recompose'
+import { connect } from 'react-redux'
+import { sendSignInSignal } from '../../../redux/actions/authActions'
 
 const INITIAL_STATE = {
     name: '',
@@ -29,7 +30,8 @@ class RegisterFormBase extends React.Component {
             passwordTwo,
             error,
         } = this.state;
-
+        const { auth } = this.props;
+        if(auth.uid)return <Redirect to='/profile' />;
         return (
             < div class="styled-form register-form" >
                 <div class="section-title style-2">
@@ -81,12 +83,11 @@ class RegisterFormBase extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         const { name, email, passwordOne } = this.state;
-        this.props.firebase
+        this.props.firebase.auth()
             .createUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
-                console.log(authUser);
+                this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
                 this.setState({ ...INITIAL_STATE });
-                this.props.history.push('/profile'); // routes the user home on a successful login //history prop comes from withRouter
             })
             .catch(err => {
                 this.setState({ error: err.message });
@@ -97,8 +98,11 @@ class RegisterFormBase extends React.Component {
 //makes the register form have firebase and router so it can route the user if the login is successful
 const RegisterForm = compose(
     withFirebase,
-    withRouter,
 )(RegisterFormBase);
 
-export default RegisterFormBase;
-export{ RegisterForm };
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default  connect(mapStoreToProps, {sendSignInSignal})(RegisterForm);
