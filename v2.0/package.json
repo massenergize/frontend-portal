@@ -20,8 +20,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.8",
     "recharts": "^1.6.2",
-    "recompose": "^0.30.0"
-
+    "recompose": "^0.30.0",
     "react-redux": "^7.1.0",
     "react-redux-firebase": "^2.2.6",
     "redux": "^4.0.1",
