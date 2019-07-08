@@ -4,15 +4,9 @@ import LoadingPage from './LoadingPage';
 import NavBarBurger from '../Menu/NavBarBurger';
 import NavBarOffset from '../Menu/NavBarOffset';
 import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
-import Video from '../PageSpecific/AboutUsPage/Video'
-import TeamMembers from '../PageSpecific/AboutUsPage/TeamMembers'
-import DonateBar from '../PageSpecific/AboutUsPage/DonateBar'
 import Footer from '../Menu/Footer';
 
-// Carousel from npm react-multi-carousel
-import 'react-multi-carousel/lib/styles.css';
-
-class AboutUsPage extends React.Component {
+class StoriesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +16,7 @@ class AboutUsPage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.ABOUTUS).then(data => {
+        fetch(CONST.URL.STORIES).then(data => {
             return data.json()
         }).then(myJson => {
             this.setState({
@@ -46,13 +40,8 @@ class AboutUsPage extends React.Component {
 
         const {
             welcomeImagesData,
-            videoLink,
-            paragraphContent,
-            teamMembersData,
-            donateMessage,
+            stories
         } = this.state.pageData;
-
-        console.log(teamMembersData);
 
         return (
             <div className="boxed_wrapper">
@@ -63,22 +52,40 @@ class AboutUsPage extends React.Component {
                 />
                 <NavBarOffset sticky={navBarSticky}/>
                 <WelcomeImages
-                    data={welcomeImagesData} title="About Us"
+                    data={welcomeImagesData} title="Stories"
                 />
-                <div className="row m-0 mt-3">
-                    <div className="col-sm-12 col-md-6">
-                        <Video link={videoLink}/>
+                <section className="testimonial2">
+                    <div className="container">
+                        <div className="row masonary-layout">
+                            {this.renderStories(stories)}
+                        </div>
                     </div>
-                    <div className="col-sm-12 col-md-6" dangerouslySetInnerHTML={{__html: paragraphContent}}>
-                    </div>
-                </div>
-                <TeamMembers data={teamMembersData} />
-                <DonateBar message={donateMessage}/>
+                </section>
                 <Footer
                     data={footerData}
                 />
             </div>
         );
     }
+
+    renderStories(stories) {
+        return stories.map(story => {
+            return (
+                <div className="col-md-4 col-sm-6 col-xs-12">
+                    <div className="item center">
+                        <div className="quote">
+                            <i className="fa fa-quote-left"></i>
+                        </div>
+                        <h4 className="title p-2">{story.title}</h4>
+                        <p className="p-1">{story.description}</p>
+                        <div className="author">
+                            <h4>{story.author}</h4>
+                            <p>{story.location}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+    }
 }
-export default AboutUsPage;
+export default StoriesPage;
