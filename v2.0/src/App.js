@@ -13,15 +13,6 @@ import EventsPage from './Components/Pages/EventsPage'
 import OneEventPage from './Components/Pages/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage'
 
-// import {
-// 	getNavLinks,
-// 	getWelcomeImagesData,
-// 	getIconBoxesData,
-// 	getGraphsData,
-// 	getEventsData,
-// 	getFooterData
-// } from './api'
-
 class App extends Component {
 	render() {
 		return (
