@@ -82,6 +82,7 @@ class StoriesPage extends React.Component {
                             <h4>{story.author}</h4>
                             <p>{story.location}</p>
                         </div>
+                        {(true) ? <p><a className="font-normal" href={`/actions/${story.actionId}`}><u>Linked Action</u></a></p> : null}
                     </div>
                 </div>
             );
