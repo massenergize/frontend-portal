@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "connected-react-router": "^6.5.0",
+    "firebase": "^6.2.4",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-redux": "^7.1.0",
