@@ -25,9 +25,9 @@ class FooterLinks extends React.Component{
     }
     render(){
         return(
-            <div className="col-md-6 col-sm-6 col-xs-12">
+            <div className="col-5 col-md-4">
                 <div className="footer-widget link-column">
-                    <div className="section-title">
+                    <div className="section-title d-none d-md-block">
                         <h4>{this.props.title}</h4>
                     </div>
                     <div className="widget-content">

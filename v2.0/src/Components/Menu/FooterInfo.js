@@ -18,7 +18,7 @@ import {Link} from 'react-router-dom'
 class FooterInfo extends React.Component{
     render(){
         return(
-            <div className="col-md-6 col-sm-6 col-xs-12">
+            <div className="col-7 col-md-4">
                 <div className="footer-widget about-column">
                     <figure><Link to="/"><img src={logo} alt="" className="col-10 p-0"/></Link></figure>
                     <ul className="contact-info">
