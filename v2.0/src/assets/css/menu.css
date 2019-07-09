@@ -123,6 +123,9 @@ License: http://codecanyon.net/licenses
 .menuzord-menu > li:hover a:not(.dropdown-item){
 	color: #8dc63f;
 }
+.menuzord-menu .dropdown-item {
+    border-bottom: 1px solid #eee;
+}
 
 /* 4 - DROPDOWN
 ======================================*/

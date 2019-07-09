@@ -118,6 +118,11 @@ class NavBarBurger extends React.Component {
         if (!navLinks) {
             return <li>No PageLinks to Display</li>
         }
+        const style = {
+            borderTop: "5px solid #8dc63f",
+            borderRadius: "0",
+            padding: "0",
+        };
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
             if(navLink.children) {
@@ -125,7 +130,7 @@ class NavBarBurger extends React.Component {
                     <li className="d-flex flex-column justify-content-center" key={navLink.name}>
                         <Dropdown onSelect={() => null}>
                             <Dropdown.Toggle as={CustomNavLink} navLink={navLink} id="dropdown-custom-components"></Dropdown.Toggle>
-                            <Dropdown.Menu>
+                            <Dropdown.Menu style={style}>
                                 {this.renderDropdownItems(navLink.children)}
                             </Dropdown.Menu>
                         </Dropdown>
@@ -138,7 +143,7 @@ class NavBarBurger extends React.Component {
     renderDropdownItems(children) {
         return children.map((child) => {
             return (
-                <Link to={child.link} className="dropdown-item p-2 pl-3 small" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
+                <Link to={child.link} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
             );
         });
     }
