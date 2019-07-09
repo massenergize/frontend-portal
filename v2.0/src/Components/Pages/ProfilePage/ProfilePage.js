@@ -1,5 +1,5 @@
 import React from 'react'
-import SignOutButton from '../PageSpecific/ProfilePage/SignOutButton'
+import SignOutButton from './SignOutButton'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 

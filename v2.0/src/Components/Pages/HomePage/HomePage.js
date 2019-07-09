@@ -1,10 +1,10 @@
 import React from 'react'
-import CONST from '../Constants';
-import LoadingPage from './LoadingPage';
-import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
-import Graphs from '../PageSpecific/HomePage/Graphs';
-import IconBoxTable from '../PageSpecific/HomePage/IconBoxTable';
-import Events from '../PageSpecific/HomePage/Events';
+import CONST from '../../Constants';
+import LoadingCircle from '../../Shared/LoadingCircle';
+import WelcomeImages from '../../Shared/WelcomeImages'
+import Graphs from './Graphs';
+import IconBoxTable from './IconBoxTable';
+import Events from './Events';
 
 /*
 * The Home Page of the MassEnergize
@@ -40,7 +40,7 @@ class HomePage extends React.Component {
         
     }
     render() {
-        if (!this.state.pageData) return <LoadingPage/>;
+        if (!this.state.pageData) return <LoadingCircle/>;
         const {
             welcomeImagesData,
             iconBoxesData,

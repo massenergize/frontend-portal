@@ -1,8 +1,8 @@
 import React from 'react'
-import CONST from '../Constants.js';
-import LoadingPage from './LoadingPage';
-import SideBar from '../Menu/SideBar';
-import Action from '../PageSpecific/ActionsPage/Action';
+import CONST from '../../Constants.js';
+import LoadingCircle from '../../Shared/LoadingCircle';
+import SideBar from '../../Menu/SideBar';
+import Action from './Action';
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -36,7 +36,7 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.pageData) return <LoadingPage/>;
+        if (!this.state.pageData) return <LoadingCircle/>;
         const { //gets the actions and sidebar data out of page data
             actions,
             sidebar

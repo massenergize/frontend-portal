@@ -5,18 +5,18 @@ import CONST from './Components/Constants'
 import NavBarBurger from './Components/Menu/NavBarBurger'
 import NavBarOffset from './Components/Menu/NavBarOffset'
 import Footer from './Components/Menu/Footer'
-import LoadingPage from './Components/Pages/LoadingPage'
+import LoadingCircle from './Components/Shared/LoadingCircle'
 import './assets/css/style.css';
 
-import HomePage from './Components/Pages/HomePage'
-import ActionsPage from './Components/Pages/ActionsPage'
-import OneActionPage from './Components/Pages/OneActionPage'
-import AboutUsPage from './Components/Pages/AboutUsPage'
-import StoriesPage from './Components/Pages/StoriesPage'
-import LoginPage from './Components/Pages/LoginPage'
-import EventsPage from './Components/Pages/EventsPage'
-import OneEventPage from './Components/Pages/OneEventPage'
-import ProfilePage from './Components/Pages/ProfilePage'
+import HomePage from './Components/Pages/HomePage/HomePage'
+import ActionsPage from './Components/Pages/ActionsPage/ActionsPage'
+import OneActionPage from './Components/Pages/ActionsPage/OneActionPage'
+import AboutUsPage from './Components/Pages/AboutUsPage/AboutUsPage'
+import StoriesPage from './Components/Pages/StoriesPage/StoriesPage'
+import LoginPage from './Components/Pages/LoginPage/LoginPage'
+import EventsPage from './Components/Pages/EventsPage/EventsPage'
+import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
+import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
 
 class App extends Component {
 
@@ -42,7 +42,7 @@ class App extends Component {
         
     }
 	render() {
-		if (!this.state.menuData) return <LoadingPage/>;
+		if (!this.state.menuData) return <LoadingCircle/>;
         const {
             navLinks,
             navBarSticky,

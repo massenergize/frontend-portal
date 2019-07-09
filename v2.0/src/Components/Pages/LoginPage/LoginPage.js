@@ -1,9 +1,8 @@
 import React from 'react'
-import CONST from '../Constants'
-import LoadingPage from './LoadingPage'
-import NavBarBurger from '../Menu/NavBarBurger'
-import RegisterForm from '../PageSpecific/LoginPage/RegisterForm'
-import LoginForm from '../PageSpecific/LoginPage/LoginForm'
+import CONST from '../../Constants'
+import LoadingCircle from '../../Shared/LoadingCircle'
+import RegisterForm from './RegisterForm'
+import LoginForm from './LoginForm'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -27,7 +26,7 @@ class LoginPage extends React.Component {
     }
 
     render() { //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.userData) return <LoadingPage />;
+        if (!this.state.userData) return <LoadingCircle />;
         
         return (
             <div className="boxed_wrapper">

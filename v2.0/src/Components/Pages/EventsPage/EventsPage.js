@@ -1,9 +1,9 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
-import SideBar from '../Menu/SideBar';
-import CONST from '../Constants';
-import LoadingPage from './LoadingPage'
+import SideBar from '../../Menu/SideBar';
+import CONST from '../../Constants';
+import LoadingCircle from '../../Shared/LoadingCircle'
 import {Link} from 'react-router-dom'
 
 /**
@@ -39,7 +39,7 @@ class EventsPage extends React.Component {
     }
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.pageData) return <LoadingPage />;
+        if (!this.state.pageData) return <LoadingCircle />;
         const { //gets the actions and sidebar data out of page data
             events
         } = this.state.pageData;

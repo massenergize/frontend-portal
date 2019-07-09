@@ -1,7 +1,7 @@
 import React from 'react'
-import CONST from '../Constants.js';
-import LoadingPage from './LoadingPage';
-import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
+import CONST from '../../Constants.js';
+import LoadingPage from '../../Shared/LoadingCircle';
+import WelcomeImages from '../../Shared/WelcomeImages'
 import {Link} from 'react-router-dom'
 
 class StoriesPage extends React.Component {

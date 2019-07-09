@@ -1,5 +1,5 @@
 import React from 'react';
-import IconBox from './IconBox.js';
+import IconBox from '../../Pages/HomePage/IconBox.js/index.js';
 
 /**
  * Renders all the Icon boxs into a row with 3 columns

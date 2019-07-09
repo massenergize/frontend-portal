@@ -1,10 +1,10 @@
 import React from 'react'
-import CONST from '../Constants.js';
-import LoadingPage from './LoadingPage';
-import WelcomeImages from '../PageSpecific/HomePage/WelcomeImages'
-import Video from '../PageSpecific/AboutUsPage/Video'
-import TeamMembers from '../PageSpecific/AboutUsPage/TeamMembers'
-import DonateBar from '../PageSpecific/AboutUsPage/DonateBar'
+import CONST from '../../Constants.js';
+import LoadingCircle from '../../Shared/LoadingCircle';
+import WelcomeImages from '../../Shared/WelcomeImages'
+import Video from './Video'
+import TeamMembers from './TeamMembers'
+import DonateBar from './DonateBar'
 
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
@@ -32,7 +32,7 @@ class AboutUsPage extends React.Component {
     }
 
     render() {
-        if(!this.state.pageData) return <LoadingPage/>;
+        if(!this.state.pageData) return <LoadingCircle/>;
         const {
             welcomeImagesData,
             videoLink,

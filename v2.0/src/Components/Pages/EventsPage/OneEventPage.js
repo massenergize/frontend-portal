@@ -1,6 +1,6 @@
 import React from 'react'
-import CONST from '../Constants'
-import LoadingPage from './LoadingPage'
+import CONST from '../../Constants'
+import LoadingPage from '../../Shared/LoadingCircle'
 import {Link} from 'react-router-dom'
 
 class OneEventPage extends React.Component {

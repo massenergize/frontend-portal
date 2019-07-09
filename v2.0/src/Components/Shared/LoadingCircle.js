@@ -3,7 +3,7 @@ import React from 'react'
 /**
  * Renders the loading screen that shows when server is still responding
  */
-class LoadingPage extends React.Component {
+class LoadingCircle extends React.Component {
     render() {
         let style = {
             width: "10em"
@@ -15,4 +15,4 @@ class LoadingPage extends React.Component {
         );
     }
 }
-export default LoadingPage;
+export default LoadingCircle;
