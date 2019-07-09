@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { sendSignInSignal } from '../../../redux/actions/authActions'
 import { Redirect, Link } from 'react-router-dom'
+import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 
 /********************************************************************/
 /**                        LOGIN FORM                               */
@@ -27,7 +28,7 @@ class LoginFormBase extends React.Component {
     render() {
         const { email, password, error } = this.state;
         const { auth } = this.props;
-        if(auth.uid)return <Redirect to='/profile' />;
+        if (auth.uid) return <Redirect to='/profile' />;
         return (
             < div class="styled-form login-form" >
                 <div class="section-title style-2">
@@ -49,8 +50,8 @@ class LoginFormBase extends React.Component {
                         </div>
                         <div class="form-group social-links-two padd-top-5 pull-right">
                             Or login with
-                            <Link to="#" class="img-circle facebook"><span class="fa fa-facebook-f"></span></Link>
-                            <Link to="#" class="img-circle google-plus"><span class="fa fa-google"></span></Link>
+                            <button onClick={this.signInWithFacebook} id="facebook" class="img-circle facebook"><span class="fa fa-facebook-f"></span></button>
+                            <button onClick={this.signInWithGoogle} id="google" class="img-circle google"><span class="fa fa-google"></span></button>
                         </div>
                     </div>
                 </form>
@@ -83,9 +84,36 @@ class LoginFormBase extends React.Component {
             .catch(err => {
                 this.setState({ error: err.message });
             });
-
         event.preventDefault();
     };
+
+    //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
+    //WOULD NOT DELETE DATA I THINK?
+    signInWithGoogle = () => {
+        this.props.firebase.auth()
+            .signInWithPopup(googleProvider)
+            .then(authUser => {
+                console.log(authUser);
+                this.props.sendSignInSignal(authUser);
+                this.setState({ ...INITIAL_STATE });
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({ error: err.message });
+            });
+    }
+    signInWithFacebook = () => {
+        this.props.firebase.auth()
+            .signInWithPopup(facebookProvider)
+            .then(authUser => {
+                console.log(authUser);
+                this.props.sendSignInSignal(authUser);
+                this.setState({ ...INITIAL_STATE });
+            })
+            .catch(err => {
+                this.setState({ error: err.message });
+            });
+    }
 }
 
 //composes the login form by using higher order components to make it have routing and firebase capabilities
@@ -98,6 +126,6 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth
     }
 }
-export default  connect(mapStoreToProps, {sendSignInSignal})(LoginForm);
+export default connect(mapStoreToProps, { sendSignInSignal })(LoginForm);
 
 

@@ -1,10 +1,9 @@
 import React from 'react'
 import CONST from '../../Constants'
 import LoadingCircle from '../../Shared/LoadingCircle'
-import RegisterForm from '../RegisterPage/RegisterForm'
-import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
 
-class LoginPage extends React.Component {
+class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,19 +29,17 @@ class LoginPage extends React.Component {
         
         return (
             <div className="boxed_wrapper">
-                
                 <section class="register-section sec-padd-top">
                     <div class="container">
                         <div class="row">
                             {/* <!--Form Column--> */}
                             <div class="form-column column col-md-6 col-12 offset-md-3">
-                                <LoginForm />
+                                <RegisterForm />
                             </div>
                         </div>
                     </div>
                 </section>
-                
             </div>
         );
     }
-} export default LoginPage;
+} export default RegisterPage;
