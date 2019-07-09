@@ -16,9 +16,14 @@ class SideBar extends React.Component {
         }
         return Object.keys(filter).map(key => {
             var item = filter[key];
+            const style = {
+                marginLeft: "25px",
+                marginBottom: "0",
+                padding: "4px 0 5px 0"
+            };
             return (
                 <label className="checkbox-container" onClick={this.props.onChange}>
-                    <p style={{ marginLeft: "25px" }}>{item.name}</p>
+                    <p style={style}>{item.name}</p>
                     <input className="checkbox" type="checkbox" name="boxes" id={"filtertag" + item.id} value={item.name} />
                     <span className="checkmark"></span>
                 </label>
@@ -33,8 +38,8 @@ class SideBar extends React.Component {
         return Object.keys(filters).map(key => {
             var filter = filters[key];
             const header = (
-                <div className="section-title style-2">
-                    <h4>{filter.collection}</h4>
+                <div className="section-title w-100">
+                    <span>{filter.collection}</span>
                 </div>
             );
             const content = (
@@ -55,14 +60,15 @@ class SideBar extends React.Component {
 }
 render() {
     return (
-        <div className="wrapper shop-sidebar">
+        <div className="wrapper shop-sidebar mb-5">
             <div className="sidebar_search">
                 <form action="#">
                     <input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />
                     <button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
                 </form>
             </div>
-            <h3>Filter by...</h3>
+            <br/>
+            <h4>Filter by...</h4>
             {this.renderFilters(this.props.filters)}
         </div>
     );

@@ -66,7 +66,7 @@
    ============================== */
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Verdana", "Open Sans", sans-serif;
     color: #999;
 }
 
@@ -8763,7 +8763,7 @@ textarea {
 }
 
 .shop-sidebar .section-title {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .shop-sidebar .category-style-one {
@@ -9157,12 +9157,8 @@ article.slide-item.center {}
     cursor:pointer;
     border-bottom:1px solid #aaa; 
     border-radius:3px;
+    padding: 10px 0;
 }
-.accordian-header i{
-    float:right;
-    text-align: center center;
-}
-
 .accordian-content.hidden {
     display: none;
 }

@@ -10,12 +10,11 @@ class Accordian extends React.Component {
     render() {
         return (
             <div>
-                <div className="accordian-header" onClick={this.handleClick}>
+                <div className="accordian-header d-flex flex-row align-items-center" onClick={this.handleClick}>
+                    {this.props.header}
                     {this.state.open ?
                         <i className="fa fa-caret-up"></i> : <i className="fa fa-caret-down"></i>
                     }
-                    {this.props.header}
-
                 </div>
                 <div className= {this.state.open? 'accordian-content':'accordian-content hidden' }>
                     {this.props.content}
