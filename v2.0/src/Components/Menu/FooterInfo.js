@@ -20,12 +20,11 @@ class FooterInfo extends React.Component{
         return(
             <div className="col-md-6 col-sm-6 col-xs-12">
                 <div className="footer-widget about-column">
-                    <figure className="footer-logo"><Link to="/"><img src={logo} alt=""/></Link></figure>
-                    <div className="text"><p>{this.props.info.text}</p></div>
+                    <figure><Link to="/"><img src={logo} alt="" className="col-10 p-0"/></Link></figure>
                     <ul className="contact-info">
-                        <li><span className="icon-signs"></span> {this.props.info.address}, {this.props.info.city} <br/>{this.props.info.state} {this.props.info.zipcode}, USA</li>
-                        <li><span className="icon-phone-call"></span> Phone: {this.props.info.phone}</li>
-                        <li><span className="icon-note"></span>{this.props.info.email}</li>
+                        <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li>
+                        <li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
+                        <li><span className="icon-people3"></span><Link to={this.props.info.contactPersonLink} target="_blank" className="font-normal"><u>{this.props.info.contactPerson}</u></Link></li>
                     </ul>
                 </div>
             </div>

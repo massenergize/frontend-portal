@@ -66,7 +66,7 @@ class TeamMembers extends React.Component {
                         <div className="author-info text-center">
                             <a ><h4>{member.name}</h4></a>
                             <p>{member.role}</p>
-                            <p class="font-normal font-italic ">{member.description}</p>
+                            <p className="font-normal font-italic ">{member.description}</p>
                             <hr/>
                         </div>
                             

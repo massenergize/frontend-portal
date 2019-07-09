@@ -11,6 +11,7 @@ class NavBarBurger extends React.Component {
             menuBurgered: window.innerWidth < 992,
             menuOpen: false,
         }
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
@@ -28,7 +29,8 @@ class NavBarBurger extends React.Component {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
     handleLinkClick() {
-        this.setState({ menuOpen: false });
+        console.log("menuOpen: " + this.state.menuOpen);
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
     render() {
         const styles =
@@ -55,7 +57,7 @@ class NavBarBurger extends React.Component {
         const menuItems = this.props.navLinks.map((val, index) => {
             if(val.children) {
                 return (
-                    <SubMenuItem navlink={val} index={index}></SubMenuItem>
+                    <SubMenuItem navlink={val} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
                 )
             }
             return (
@@ -121,7 +123,7 @@ class NavBarBurger extends React.Component {
             if(navLink.children) {
                 return (
                     <li className="d-flex flex-column justify-content-center" key={navLink.name}>
-                        <Dropdown>
+                        <Dropdown onSelect={() => null}>
                             <Dropdown.Toggle as={CustomNavLink} navLink={navLink} id="dropdown-custom-components"></Dropdown.Toggle>
                             <Dropdown.Menu>
                                 {this.renderDropdownItems(navLink.children)}
@@ -136,7 +138,7 @@ class NavBarBurger extends React.Component {
     renderDropdownItems(children) {
         return children.map((child) => {
             return (
-                <Dropdown.Item eventKey={child.key} href={child.link} className="small">{child.name}</Dropdown.Item>
+                <Link to={child.link} className="dropdown-item p-2 pl-3 small" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
             );
         });
     }
@@ -186,6 +188,7 @@ class SubMenuItem extends React.Component {
             return (
                 <MenuItem
                     href={item.link}
+                    onClick={this.props.clickHandler}
                 >
                     {item.name}
                 </MenuItem>

@@ -199,7 +199,7 @@ textarea {
 
 .font-normal {
     color: #999 !important;
-    font-size: 14px !important;
+    font-size: inherit !important;
 }
 
 .width-100 {
@@ -5492,7 +5492,7 @@ textarea {
 }
 
 .main-footer .section-title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .main-footer .section-title:after,
@@ -5541,7 +5541,7 @@ textarea {
 
 .main-footer .link-column li {
     position: relative;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .main-footer .link-column li a {

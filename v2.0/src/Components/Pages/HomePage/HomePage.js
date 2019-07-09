@@ -47,7 +47,7 @@ class HomePage extends React.Component {
         } = this.state.pageData;
 
         const {impactData} = this.state.impactData;
-        const {eventsData} = this.state.eventsData;
+        const {events} = this.state.eventsData;
 
         return (
             <div className="boxed_wrapper">
@@ -63,7 +63,7 @@ class HomePage extends React.Component {
                     boxes={iconBoxesData}
                 />
                 <Events
-                    events={eventsData}
+                    events={events}
                 />
                 
             </div>
