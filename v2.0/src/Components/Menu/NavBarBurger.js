@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '../../logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
 import {Link} from 'react-router-dom'
-
+import {connect} from 'react-redux'
 
 class NavBarBurger extends React.Component {
     constructor(props) {
@@ -149,27 +149,32 @@ class NavBarBurger extends React.Component {
     }
     renderLogin() {
         const {
-            loggedIn,
-            name
-        } = this.props.userData
-        if (loggedIn) {
+            auth,  
+        } = this.props
+        if (auth.uid) {
             return (
-                <Link style={{ color: "#8ec449", margin: 'auto 0 auto 10px', fontSize: '12px', display: 'inline-block' }}>
-                    <i className="fa fa-user" />
-                    Welcome: <br />
-                    {name}
+                <Link className="thm-btn float-right" to="/profile" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
+                    <i className="fa fa-user" />{'\u00A0'}
+                     My Profile
                 </Link>
             );
         } else {
             return (
-                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
-                    <i className="fa fa-user" style={{ padding: "0px 5px" }} />
-                    Login
+                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px',fontWeight:600 }}>
+                    <i className="fa fa-user" style={{ padding: "0px 5px" }} />{'\u00A0'}
+                     Login
                 </Link>
             );
         }
     }
-} export default NavBarBurger;
+} 
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default connect(mapStoreToProps,null)(NavBarBurger);
+// export default NavBarBurger;
 
 /**
  * Renders one navlink and its menu underneath.

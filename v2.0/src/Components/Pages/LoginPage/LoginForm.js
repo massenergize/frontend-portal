@@ -55,6 +55,7 @@ class LoginFormBase extends React.Component {
                         </div>
                     </div>
                 </form>
+                <p> Don't have an account? <Link to="/register">Register Here</Link> </p>
             </div >
         );
     }
