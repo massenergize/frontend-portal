@@ -5484,7 +5484,7 @@ textarea {
 .main-footer {
     position: relative;
     background: #111709;
-    padding: 25px 0 80px;
+    /* padding: 25px 0 80px; */
 }
 
 .main-footer .footer-widget {

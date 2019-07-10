@@ -35,7 +35,7 @@ class RegisterFormBase extends React.Component {
         return (
             < div class="styled-form register-form" >
                 <div class="section-title style-2">
-                    <h3>Register Now</h3>
+                    <h3>Register</h3>
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div class="form-group">
@@ -55,6 +55,7 @@ class RegisterFormBase extends React.Component {
                         <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" />
                     </div>
                     {error && <p style={{ color: "red" }}> {error} </p>}
+                    <div><p><i>Note: This account can be used across all MassEnergize communities.</i></p></div>
                     <div class="clearfix">
                         <div class="form-group pull-left">
                             <button type="submit" disabled={this.isInvalid()} class="thm-btn">Register</button>

@@ -38,7 +38,7 @@ class StoriesPage extends React.Component {
             <div className="boxed_wrapper">
                 
                 <WelcomeImages
-                    data={welcomeImagesData} title="Stories"
+                    data={welcomeImagesData} title="Testimonials"
                 />
                 <section className="testimonial2">
                     <div className="container">

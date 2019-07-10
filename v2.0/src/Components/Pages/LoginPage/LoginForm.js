@@ -31,7 +31,7 @@ class LoginFormBase extends React.Component {
         return (
             < div class="styled-form login-form" >
                 <div class="section-title style-2">
-                    <h3>Login Now</h3>
+                    <h3>Login</h3>
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div class="form-group">
