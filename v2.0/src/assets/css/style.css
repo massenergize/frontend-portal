@@ -9162,3 +9162,7 @@ article.slide-item.center {}
 .accordian-content.hidden {
     display: none;
 }
+
+.apexcharts-canvas { 
+    margin: auto;
+}

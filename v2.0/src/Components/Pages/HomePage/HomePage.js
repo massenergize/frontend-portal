@@ -57,6 +57,7 @@ class HomePage extends React.Component {
                 />
                 <Graphs
                     graphs={impactData}
+                    size={120}
                 />
                 <IconBoxTable
                     title=""

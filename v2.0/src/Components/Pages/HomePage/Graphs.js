@@ -1,5 +1,5 @@
 import React from 'react'
-import CircleGraph from './CircleGraph'
+import CircleGraph from '../../Shared/CircleGraph'
 import {Link} from 'react-router-dom'
 
 /** Renders the graphs on the home page and a link to the impact page
@@ -19,9 +19,9 @@ class Graphs extends React.Component{
             return <div>No Graphs to Display</div>
         }
         return Object.keys(graphs).map(key=> {
-            var graph = graphs[key];
+            var graph = graphs[key]; 
             return  <div className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
-                        <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={graph.size}/>
+                        <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={this.props.size}/>
                     </div>
         });  
     }
