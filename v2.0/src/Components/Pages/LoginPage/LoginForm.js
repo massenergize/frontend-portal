@@ -30,28 +30,28 @@ class LoginFormBase extends React.Component {
         const { auth } = this.props;
         if (auth.uid) return <Redirect to='/profile' />;
         return (
-            < div class="styled-form login-form" >
-                <div class="section-title style-2">
+            < div className="styled-form login-form" >
+                <div className="section-title style-2">
                     <h3>Login Now</h3>
                 </div>
                 <form onSubmit={this.onSubmit}>
-                    <div class="form-group">
-                        <span class="adon-icon"><span class="fa fa-envelope-o"></span></span>
+                    <div className="form-group">
+                        <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
                         <input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter email" />
                     </div>
-                    <div class="form-group">
-                        <span class="adon-icon"><span class="fa fa-unlock-alt"></span></span>
+                    <div className="form-group">
+                        <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
                         <input type="password" name="password" value={password} onChange={this.onChange} placeholder="Enter Password" />
                     </div>
                     {error && <p style={{ color: "red" }}> {error} </p>}
-                    <div class="clearfix">
-                        <div class="form-group pull-left">
-                            <button type="submit" disabled={this.isInvalid()} class="thm-btn thm-tran-bg">Login</button>
+                    <div className="clearfix">
+                        <div className="form-group pull-left">
+                            <button type="submit" disabled={this.isInvalid()} className="thm-btn thm-tran-bg">Login</button>
                         </div>
-                        <div class="form-group social-links-two padd-top-5 pull-right">
+                        <div className="form-group social-links-two padd-top-5 pull-right">
                             Or login with
-                            <button onClick={this.signInWithFacebook} id="facebook" class="img-circle facebook"><span class="fa fa-facebook-f"></span></button>
-                            <button onClick={this.signInWithGoogle} id="google" class="img-circle google"><span class="fa fa-google"></span></button>
+                            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button>
+                            <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"></span></button>
                         </div>
                     </div>
                 </form>

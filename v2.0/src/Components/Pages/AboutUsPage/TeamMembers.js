@@ -3,8 +3,6 @@ import React from 'react'
 // Carousel from npm react-multi-carousel
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import {Link} from 'react-router-dom'
-
 
 /**
  * 
@@ -55,16 +53,16 @@ class TeamMembers extends React.Component {
     }
 
     renderCarouselElements(teamMembers) {
-        return teamMembers.map(member => {
+        return teamMembers.map((member, key) => {
             console.log(member);
             return (
-                <article className="col">
+                <article className="col" key={key}>
                     <div className="single-team-member">
                         <figure className="img-box">
-                            <a className="width-100"><img src={member.imageLink} alt="" className="width-100"/></a>
+                            <img src={member.imageLink} alt="" className="width-100"/>
                         </figure>
                         <div className="author-info text-center">
-                            <a ><h4>{member.name}</h4></a>
+                            <h4>{member.name}</h4>
                             <p>{member.role}</p>
                             <p className="font-normal font-italic ">{member.description}</p>
                             <hr/>

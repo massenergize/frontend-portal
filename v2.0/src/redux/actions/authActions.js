@@ -3,7 +3,6 @@
  * @param {*} transferId 
  */
 import {LOGIN, LOGOUT} from './types'
-import {sendToBackend} from '../../api/index'
 
 export const sendSignInSignal = (user)  => dispatch => {
     return dispatch({

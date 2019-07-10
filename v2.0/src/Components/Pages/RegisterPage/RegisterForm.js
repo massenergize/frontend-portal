@@ -4,9 +4,8 @@ import { Redirect } from 'react-router-dom'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { sendSignInSignal } from '../../../redux/actions/authActions'
-import { sendToBackEnd } from '../../../api'
-import CONST from '../../Constants'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
+//import { sendToBackEnd } from '../../../api'
 
 const INITIAL_STATE = {
     email: '',
@@ -46,55 +45,55 @@ class RegisterFormBase extends React.Component {
         } = this.state;
 
         const { auth } = this.props;
-        if (auth.uid && form == 1) return <Redirect to='/profile' />;
+        if (auth.uid && form === 1) return <Redirect to='/profile' />;
         return (
-            < div class="styled-form register-form" >
-                <div class="section-title style-2">
+            < div className="styled-form register-form" >
+                <div className="section-title style-2">
                     <h3>Register with Google or Facebook</h3>
                 </div>
-                <div class="form-group social-links-three padd-top-5">
-                    <button onClick={this.signInWithFacebook} id="facebook" class="img-circle facebook"><span class="fa fa-facebook-f"> Register with Facebook</span></button>
-                    <button onClick={this.signInWithGoogle} id="google" class="img-circle google"><span class="fa fa-google"> Register with Google</span></button>
+                <div className="form-group social-links-three padd-top-5">
+                    <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
+                    <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
                 </div>
                 <div style = {{ width: '100%', height: '0px', borderBottom:'solid 1px black', marginBottom:'15px'}}> 
 
                 </div>
-                <div class="section-title style-2">
+                <div className="section-title style-2">
                     <h3>Register With Email and Password</h3>
                 </div>
                 {form === 1 ?
                     <form onSubmit={this.onSubmit}>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-envelope-o"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
                             <input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
                         </div>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-unlock-alt"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
                             <input type="password" name="passwordOne" value={passwordOne} onChange={this.onChange} placeholder="Enter your password" required />
                         </div>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-unlock-alt"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
                             <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
                         </div>
                         {error && <p style={{ color: "red" }}> {error} </p>}
-                        <div class="clearfix">
-                            <div class="form-group pull-left">
-                                <button type="submit" disabled={this.isInvalid()} class="thm-btn">Register</button>
+                        <div className="clearfix">
+                            <div className="form-group pull-left">
+                                <button type="submit" disabled={this.isInvalid()} className="thm-btn">Register</button>
                             </div>
                         </div>
                     </form>
                     :
                     <form onSubmit={this.onFinalSubmit}>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-user"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-user"></span></span>
                             <input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
                         </div>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-user"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-user"></span></span>
                             <input type="text" name="lastName" value={lastName} onChange={this.onChange} placeholder="Last Name" required />
                         </div>
-                        <div class="form-group">
-                            <span class="adon-icon"><span class="fa fa-envelope-o"></span></span>
+                        <div className="form-group">
+                            <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
                             <input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
                         </div>
                         <label className="checkbox-container">
@@ -102,9 +101,9 @@ class RegisterFormBase extends React.Component {
                             <input className="checkbox" type="checkbox" name="serviceProvider" onClick={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
                             <span className="checkmark"></span>
                         </label>
-                        <div class="clearfix">
-                            <div class="form-group pull-left">
-                                <button type="submit" class="thm-btn">Register</button>
+                        <div className="clearfix">
+                            <div className="form-group pull-left">
+                                <button type="submit" className="thm-btn">Register</button>
                             </div>
                         </div>
                     </form>
@@ -143,20 +142,18 @@ class RegisterFormBase extends React.Component {
     };
     onFinalSubmit(event) {
         event.preventDefault();
-        const { auth } = this.props;
-        const { firstName, lastName, preferredName, serviceProvider } = this.state;
-        const fullName = firstName + " " + lastName;
-        console.log(fullName);
-        const user = {
-            'full_name': fullName,
-            'email': auth.email,
-            'firebase_user_info': auth,
-            'preferred_name': (preferredName !== "") ? preferredName : firstName,
-            'is_service_provider': serviceProvider,
-            'communities': [],
-            'households': 1,
-        }
-        console.log("doing this now");
+        /** Collects the form data and sends it to the backend */
+        // const { firstName, lastName, preferredName, serviceProvider } = this.state;
+        // const { auth } = this.props;
+        // const user = {
+        //     'full_name': fullName,
+        //     'email': auth.email,
+        //     'firebase_user_info': auth,
+        //     'preferred_name': (preferredName !== "") ? preferredName : firstName,
+        //     'is_service_provider': serviceProvider,
+        //     'communities': [],
+        //     'households': 1,
+        // }
         // sendToBackEnd(user, CONST.URL.USER + 'create/account');
         this.setState({ ...INITIAL_STATE });
     }

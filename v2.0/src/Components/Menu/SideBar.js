@@ -22,7 +22,7 @@ class SideBar extends React.Component {
                 padding: "4px 0 5px 0"
             };
             return (
-                <label className="checkbox-container" onClick={this.props.onChange}>
+                <label className="checkbox-container" onClick={this.props.onChange} key={key}>
                     <p style={style}>{item.name}</p>
                     <input className="checkbox" type="checkbox" name="boxes" id={"filtertag" + item.id} value={item.name} />
                     <span className="checkmark"></span>
@@ -48,7 +48,7 @@ class SideBar extends React.Component {
                 </form>
             );
             return (
-                <div className="category-style-one">
+                <div className="category-style-one" key={key}>
                     <Accordian
                         header={header}
                         content = {content}

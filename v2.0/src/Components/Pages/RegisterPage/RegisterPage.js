@@ -29,11 +29,11 @@ class RegisterPage extends React.Component {
         
         return (
             <div className="boxed_wrapper">
-                <section class="register-section sec-padd-top">
-                    <div class="container">
-                        <div class="row">
+                <section className="register-section sec-padd-top">
+                    <div className="container">
+                        <div className="row">
                             {/* <!--Form Column--> */}
-                            <div class="form-column column col-md-6 col-12 offset-md-3">
+                            <div className="form-column column col-md-6 col-12 offset-md-3">
                                 <RegisterForm />
                             </div>
                         </div>

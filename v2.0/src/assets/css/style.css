@@ -8341,7 +8341,7 @@ textarea {
     margin-bottom: -1px;
 }
 
-.product-tab-box .tab-menu li a {
+.product-tab-box .tab-menu li button{
     border: 1px solid transparent;
     border-radius: 0;
     display: block;
@@ -8356,8 +8356,8 @@ textarea {
     transition: all 500ms ease;
 }
 
-.product-tab-box .tab-menu li.active a,
-.product-tab-box .tab-menu li:hover a {
+.product-tab-box .tab-menu li.active button,
+.product-tab-box .tab-menu li:hover button {
     background: #8dc63f;
     color: #fff;
     border-color: #8dc63f;

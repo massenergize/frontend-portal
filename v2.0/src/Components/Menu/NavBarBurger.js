@@ -57,7 +57,7 @@ class NavBarBurger extends React.Component {
         const menuItems = this.props.navLinks.map((val, index) => {
             if(val.children) {
                 return (
-                    <SubMenuItem navlink={val} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
+                    <SubMenuItem key={index} navlink={val} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
                 )
             }
             return (
@@ -116,7 +116,7 @@ class NavBarBurger extends React.Component {
     }
     renderNavLinks(navLinks) {
         if (!navLinks) {
-            return <li>No PageLinks to Display</li>
+            return <li key="noLinks">No PageLinks to Display</li>
         }
         const style = {
             borderTop: "5px solid #8dc63f",
@@ -141,9 +141,9 @@ class NavBarBurger extends React.Component {
         });
     }
     renderDropdownItems(children) {
-        return children.map((child) => {
+        return children.map((child,key) => {
             return (
-                <Link to={child.link} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
+                <Link key={key} to={child.link} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
             );
         });
     }
@@ -194,9 +194,9 @@ class SubMenuItem extends React.Component {
     }
 
     renderSubmenuItems(items) {
-        return items.map((item) => {
+        return items.map((item, key) => {
             return (
-                <MenuItem
+                <MenuItem key = {key}
                     href={item.link}
                     onClick={this.props.clickHandler}
                 >
@@ -378,7 +378,7 @@ class MenuButton extends React.Component {
                 marginLeft: 'auto',
                 height: '32px',
                 width: '32px',
-                justifyContent: 'center',
+                // justifyContent: 'center',
                 cursor: 'pointer',
                 padding: '4px',
             },

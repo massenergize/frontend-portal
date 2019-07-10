@@ -17,7 +17,7 @@ class FooterLinks extends React.Component{
         return Object.keys(links).map(key=> {
             var link = links[key];
             return (
-                <li>
+                <li key = {link.name}>
                     <Link to={link.link}>{link.name}</Link>
                 </li>
             );

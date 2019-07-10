@@ -1,6 +1,5 @@
 import React from 'react'
 import FooterInfo from './FooterInfo'
-import FooterEvents from './FooterEvents'
 import FooterLinks from './FooterLinks'
 import {Link} from 'react-router-dom'
 /**
