@@ -18,6 +18,7 @@ import EventsPage from './Components/Pages/EventsPage/EventsPage'
 import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
 import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
+import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 
 class App extends Component {
 
@@ -64,18 +65,19 @@ class App extends Component {
                 />
                 <NavBarOffset sticky={navBarSticky}/>
 				<Switch>
-					<Route exact path="/" 			component={HomePage} />
-					<Route path="/home" 			component={HomePage} />
-					<Route exact path="/actions"	component={ActionsPage}/>
-					<Route path="/aboutus" 			component={AboutUsPage}/>
-					<Route path="/actions/:id" 		component={OneActionPage}/>
-					<Route path="/stories" 			component={StoriesPage}/>
-					<Route exact path="/events" 	component={EventsPage}/>
-					<Route path="/events/:id" 		component={OneEventPage}/>
-					<Route path="/login" 			component={LoginPage}/>
-					<Route path="/profile" 			component={ProfilePage}/>
-					<Route path="/impact" 			component={ImpactPage}/>
+					<Route exact path="/" component={HomePage} />
+					<Route path="/home" component={HomePage} />
+					<Route exact path="/actions" component={ActionsPage}/>
+					<Route path="/aboutus" component={AboutUsPage}/>
+					<Route path="/actions/:id" component={OneActionPage}/>
+					<Route path="/testimonials" component={StoriesPage}/>
+					<Route exact path="/events" component={EventsPage}/>
+					<Route path="/events/:id" component={OneEventPage}/>
+					<Route path="/login" component={LoginPage}/>
+					<Route path="/register" component={RegisterPage}/>
+					<Route path="/profile" component={ProfilePage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
+      
 					<Route component={()=>
 						<div>
 							FOUR OR FOR: PAGE NOT FOUND

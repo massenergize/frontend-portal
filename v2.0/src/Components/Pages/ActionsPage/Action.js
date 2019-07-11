@@ -24,7 +24,7 @@ class Action extends React.Component {
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
                             <Link to={this.props.match.url + "/" + this.props.id} >
-                                < img src={this.props.image} />
+                                < img src={this.props.image} alt = ""/>
                             </Link>
                             { /* animated section on top of the image */}
                             <figcaption className="overlay" >
@@ -48,10 +48,10 @@ class Action extends React.Component {
                             <div className="price-box2" >
                                 <div className="clearfix" >
                                     <div className="float_left">
-                                        <p>Impact:<span>{this.renderTagBar(this.getTag("impacts"))}</span></p>
+                                        Impact:<span>{this.renderTagBar(this.getTag("impacts"))}</span>
                                     </div>
                                     <div className="float_right" >
-                                        <p> Difficulty:<span> {this.renderTagBar(this.getTag("difficulties"))} </span></p>
+                                        Difficulty:<span> {this.renderTagBar(this.getTag("difficulties"))} </span>
                                     </div>
                                 </div>
                             </div>

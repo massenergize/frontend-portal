@@ -85,11 +85,7 @@ class OneActionPage extends React.Component {
                                     {/* displays the action's info: impact, difficulty, tags and categories*/}
                                     <div className="clearfix" style={{ marginLeft: "40px" }}>
                                         <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br/> 
-                                        {
-                                            Object.keys(action.tags).map((key) => {
-                                                return (<span> {action.tags[key].name} </span>);
-                                            })
-                                        }
+                                        { this.renderTags(action.tags) }
                                         </p>
                                         {/* the buttons to add todo or done it */}
                                         <Link to={this.props.match.url + "/" + this.props.id} className="thm-btn style-4 " style={{ fontSize: "15px", marginRight: "20px" }}>Add Todo</Link>
@@ -106,30 +102,30 @@ class OneActionPage extends React.Component {
                         <div className="product-tab-box">
                             <ul className="nav nav-tabs tab-menu">
                                 {/* tab switching system, may be a better way to do this */}
-                                <li id="desctab" className="active"><a onClick={() => {
+                                <li id="desctab" className="active"><button onClick={() => {
                                     if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane active";
                                     if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                                     if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
                                     if (document.getElementById("desctab")) document.getElementById("desctab").className = "active";
                                     if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                                     if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                                }} data-toggle="tab">Description</a></li>
-                                <li id="stepstab"><a onClick={() => {
+                                }} data-toggle="tab">Description</button></li>
+                                <li id="stepstab"><button onClick={() => {
                                     if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                                     if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                                     if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane active";
                                     if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
                                     if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                                     if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "active";
-                                }} data-toggle="tab">Steps to Take</a></li>
-                                <li id="reviewtab"><a onClick={() => {
+                                }} data-toggle="tab">Steps to Take</button></li>
+                                <li id="reviewtab"><button onClick={() => {
                                     if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                                     if (document.getElementById("review")) document.getElementById("review").className = "tab-pane active";
                                     if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
                                     if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
                                     if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "active";
                                     if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                                }} data-toggle="tab">Stories </a></li>{/**@TODO make it say number of stories/disapear if none*/}
+                                }} data-toggle="tab">Stories </button></li>{/**@TODO make it say number of stories/disapear if none*/}
                             </ul>
                             <div className="tab-content">
                                 {/* description */}
@@ -157,7 +153,7 @@ class OneActionPage extends React.Component {
                                         {/* <!--Start single review box--> */}
                                         <div className="single-review-box">
                                             <div className="img-holder">
-                                                <img src="images/shop/thumb1.jpg" alt="Awesome Image" />
+                                                <img src="images/shop/thumb1.jpg" alt="" />
                                             </div>
                                             <div className="text-holder">
                                                 <div className="top">
@@ -184,7 +180,7 @@ class OneActionPage extends React.Component {
                                         {/* <!--Start single review box--> */}
                                         <div className="single-review-box">
                                             <div className="img-holder">
-                                                <img src="images/shop/thumb2.jpg" alt="Awesome Image" />
+                                                <img src="images/shop/thumb2.jpg" alt="" />
                                             </div>
                                             <div className="text-holder">
                                                 <div className="top">
@@ -260,7 +256,11 @@ class OneActionPage extends React.Component {
         }
         return <div> Oops couldn't find action with id: {id}</div>
     }
-    
+    renderTags(tags){
+        return Object.keys(tags).map((key) => {
+            return <span key={key}> {tags[key].name} </span>;
+        })
+    }
     // on change in any category or tag checkbox update the actionsPage
     handleChange() {
         this.forceUpdate();

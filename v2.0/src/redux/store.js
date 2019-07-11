@@ -12,7 +12,7 @@ const store = createStore(
   compose(
     applyMiddleware(...middleware),
     // reactReduxFirebase(firebase, {userProfile: 'users',firebaseStateName: 'firebase'}),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
 
