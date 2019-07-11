@@ -26,7 +26,7 @@ class BarGraph extends React.Component {
                     color: '#263238'
                 },
             },
-            colors: ["#428A36"],
+            colors: this.props.colors,
             chart: {
                 id: "basic-bar"
             },
@@ -34,13 +34,10 @@ class BarGraph extends React.Component {
                 categories: this.props.categories
             }
         }
-        const series = [
-            this.props.series
-        ]
         return (
             <Chart style={{ margin: 'auto' }}
                 options={options}
-                series={series}
+                series={this.props.series}
                 type="bar"
                 // width="80%"
             />

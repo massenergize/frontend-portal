@@ -21,7 +21,7 @@ class CircleGraph extends React.Component {
                     // height: 010
                 },
                 series: [67],
-                colors: ["#428a36"],
+                colors: this.props.colors,
                 plotOptions: {
                     radialBar: {
                         size: this.props.size,
