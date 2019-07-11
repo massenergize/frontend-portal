@@ -1,7 +1,7 @@
 import React from 'react'
 import CONST from '../../Constants'
 import LoadingPage from '../../Shared/LoadingCircle'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class OneEventPage extends React.Component {
     constructor(props) {
@@ -33,8 +33,8 @@ class OneEventPage extends React.Component {
         } = this.state.pageData;
         return (
             <div className="boxed_wrapper">
-               
-                
+
+
                 <section className="shop-single-area">
                     <div className="container">
                         <div className="single-products-details">
@@ -42,7 +42,7 @@ class OneEventPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                
+
             </div>
         );
     }
@@ -53,22 +53,22 @@ class OneEventPage extends React.Component {
             if (event.id === parseInt(id)) {
                 const date = new Date(event.year, event.month - 1, event.day, event.hour, event.minute);
                 return (
-                    <section class="event-section style-3">
-                        <div class="container">
-                            <div class="single-event sec-padd">
+                    <section className="event-section style-3">
+                        <div className="container">
+                            <div className="single-event sec-padd">
                                 <div className="row">
                                     <div className="col-12 col-lg-6">
-                                        <div class="img-box">
+                                        <div className="img-box">
                                             <img src={event.image} alt="" />
-                                            <div class="countdown-timer">
-                                                <div class="default-coundown">
-                                                    <div class="countdown time-countdown-two" data-countdown-time="2017/07/07"></div>
+                                            <div className="countdown-timer">
+                                                <div className="default-coundown">
+                                                    <div className="countdown time-countdown-two" data-countdown-time="2017/07/07"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 col-lg-6">
-                                        <div class="text">
+                                        <div className="text">
                                             <p>Organizer: {event.organizer}</p>
                                             <h3>{event.title}</h3>
                                             <p>{event.description}</p>
@@ -77,52 +77,48 @@ class OneEventPage extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="content">
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="event-timeline">
-                                                <div class="section-title style-2">
+                                <div className="content">
+                                    <div className="row">
+                                        <div className="col-md-6 col-sm-6 col-xs-12">
+                                            <div className="event-timeline">
+                                                <div className="section-title style-2">
                                                     <h3>Event Schedule</h3>
                                                 </div>
                                                 <ul>
-                                                    <li><i class="fa fa-clock-o"></i><b>Time:</b> {date.toLocaleString()}</li>
-                                                    <li><i class="fa fa-map-marker"></i><b>Venue:</b> {event.address}</li>
+                                                    <li key='time'><i className="fa fa-clock-o"></i><b>Time:</b> {date.toLocaleString()}</li>
+                                                    <li key='venue'><i className="fa fa-map-marker"></i><b>Venue:</b> {event.address}</li>
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="section-title style-2">
+                                        <div className="col-md-6 col-sm-6 col-xs-12">
+                                            <div className="section-title style-2">
                                                 <h3>Event Details</h3>
                                             </div>
-                                            <ul class="list2">
-                                                {Object.keys(event.details).map(key => {
-                                                    return <li><i class="fa fa-check-circle"></i>{event.details[key]}</li>
-                                                })}
+                                            <ul className="list2">
+                                                {this.renderDetails(event.details)}
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="section-title style-2">
+                                    <div className="section-title style-2">
                                         <h3>Our Sponsors</h3>
                                     </div>
-                                    <ul class="brand-carousel2">
-                                        <li><Link to="#"><img src="images/event/b1.jpg" alt="" /></Link></li>
-                                        <li><Link to="#"><img src="images/event/b2.jpg" alt="" /></Link></li>
-                                        <li><Link to="#"><img src="images/event/b3.jpg" alt="" /></Link></li>
-                                        <li><Link to="#"><img src="images/event/b4.jpg" alt="" /></Link></li>
+                                    <ul className="brand-carousel2">
+                                        <li key='0'><Link to="#"><img src="images/event/b1.jpg" alt="" /></Link></li>
+                                        <li key='1'><Link to="#"><img src="images/event/b2.jpg" alt="" /></Link></li>
+                                        <li key='2'><Link to="#"><img src="images/event/b3.jpg" alt="" /></Link></li>
+                                        <li key='3'><Link to="#"><img src="images/event/b4.jpg" alt="" /></Link></li>
                                     </ul>
                                 </div>
-                                <div class="share clearfix">
-                                    <div class="social-box float_left">
-                                        <span>Share <i class="fa fa-share-alt"></i></span>
-                                        <ul class="list-inline social">
-                                            <li><Link to="/"><i class="fa fa-facebook"></i></Link></li>
-                                            <li><Link to="/"><i class="fa fa-twitter"></i></Link></li>
-                                            <li><Link to="/"><i class="fa fa-google-plus"></i></Link></li>
-                                            <li><Link to="/"><i class="fa fa-pinterest"></i></Link></li>
+                                <div className="share clearfix">
+                                    <div className="social-box float_left">
+                                        <span>Share <i className="fa fa-share-alt"></i></span>
+                                        <ul className="list-inline social">
+                                            <li key='fb'><Link to="/"><i className="fa fa-facebook"></i></Link></li>
+                                            <li key='g'><Link to="/"><i className="fa fa-google-plus"></i></Link></li>
                                         </ul>
                                     </div>
-                                    <div class="float_right">
-                                        <Link to="/donate" class="thm-btn style-2 donate-box-btn">Donate</Link>
+                                    <div className="float_right">
+                                        <Link to="/donate" className="thm-btn style-2 donate-box-btn">Donate</Link>
                                     </div>
                                 </div>
                             </div>
@@ -133,5 +129,10 @@ class OneEventPage extends React.Component {
             }
         }
         return <div> ...oops couldn't find event with id: {id}</div>
+    }
+    renderDetails(details) {
+        return Object.keys(details).map(key => {
+            return <li key={key}><i className="fa fa-check-circle"></i>{details[key]}</li>
+        })
     }
 } export default OneEventPage;

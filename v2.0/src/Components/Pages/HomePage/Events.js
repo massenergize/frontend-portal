@@ -31,31 +31,32 @@ class Events extends React.Component {
                 }
 
                 return (
-                        <div className={eventStyle}>
-                            <div className="clearfix">
-                                <div className="img-column">
-                                    <figure className="img-holder">
-                                        <Link to={event.link}><img src={event.image} alt="" /></Link>
-                                    </figure>
-                                </div>
-                                <div className="text-column">
-                                    <div className="lower-content">
-                                        <p>Organizer: {event.organizer}</p>
-                                        <Link to={event.link}><h4>{event.title}</h4></Link>
-                                        <div className="text">
-                                            <p>{event.text}</p>
-                                        </div>
+                    <div key={key} className={eventStyle}>
+                        <div className="clearfix">
+                            <div className="img-column">
+                                <figure className="img-holder">
+                                    <Link to={'events/'+event.id}><img src={event.image} alt="" /></Link>
+                                </figure>
+                            </div>
+                            <div className="text-column">
+                                <div className="lower-content">
+                                    <p>Organizer: {event.organizer}</p>
+                                    <Link to={'events/'+event.id}><h4>{event.title}</h4></Link>
+                                    <div className="text">
+                                        <p>{event.text}</p>
                                     </div>
                                 </div>
                             </div>
-                            <ul className="post-meta list_inline">
-                                <li><i className="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
-                            <li><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</li> |&nbsp;&nbsp;&nbsp;
-                            <li><i className="fa fa-map-marker"></i> {event.address}</li>
-                            </ul>
                         </div>
+                        <ul className="post-meta list_inline">
+                            <li><i className="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
+                        <li><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</li> |&nbsp;&nbsp;&nbsp;
+                        <li><i className="fa fa-map-marker"></i> {event.address}</li>
+                        </ul>
+                    </div>
                 );
             }
+            return null;
         });
     }
     render() {

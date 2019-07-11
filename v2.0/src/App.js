@@ -17,6 +17,7 @@ import LoginPage from './Components/Pages/LoginPage/LoginPage'
 import EventsPage from './Components/Pages/EventsPage/EventsPage'
 import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
+import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 
 class App extends Component {
 
@@ -72,6 +73,7 @@ class App extends Component {
 					<Route exact path="/events" component={EventsPage}/>
 					<Route path="/events/:id" component={OneEventPage}/>
 					<Route path="/login" component={LoginPage}/>
+					<Route path="/register" component={RegisterPage}/>
 					<Route path="/profile" component={ProfilePage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
 					<Route component={()=>

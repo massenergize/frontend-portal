@@ -6,13 +6,10 @@ import {Link} from 'react-router-dom'
 /** Renders the address/ company contact info in the footer
  * @props :
     info
-        text
-        address
-        city
-        state
-        zipcode
         phone
         email
+        contactPerson
+        contactPersonLink
 */
 
 class FooterInfo extends React.Component{

@@ -47,14 +47,14 @@ class EventsPage extends React.Component {
             <div className="boxed_wrapper">
                 {/* renders the sidebar and events columns */}
                 <div className="boxed-wrapper">
-                    <section class="eventlist">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-5 col-12">
+                    <section className="eventlist">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-lg-3 col-md-5 col-12">
                                     {this.renderSideBar()}
                                 </div>
-                                <div class="col-lg-9 col-md-7 col-12">
-                                    <div class="outer-box sec-padd event-style2">
+                                <div className="col-lg-9 col-md-7 col-12">
+                                    <div className="outer-box sec-padd event-style2">
                                         {this.renderEvents(events)}
                                     </div>
                                 </div>
@@ -88,11 +88,11 @@ class EventsPage extends React.Component {
         const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const now = new Date();
         //reads events into a list
-        var events = Object.keys(events).map(key => {
+        var eventsList = Object.keys(events).map(key => {
             return events[key];
         });
         //sorts the list
-        var sortedEvents = events.sort((eventA, eventB) => {
+        var sortedEvents = eventsList.sort((eventA, eventB) => {
             const dateA = new Date(eventA.year, eventA.month - 1, eventA.day, eventA.hour, eventA.minute);
             const dateB = new Date(eventB.year, eventB.month - 1, eventB.day, eventB.hour, eventB.minute);
             if (((dateA - now) > 0 || this.isToday(dateA)) && ((dateB - now) > 0 || this.isToday(dateB))) {
@@ -105,31 +105,31 @@ class EventsPage extends React.Component {
             const date = new Date(event.year, event.month - 1, event.day, event.hour, event.minute);
             if (this.shouldRender(event)) {
                 return (
-                    <div class="item style-1 clearfix">
-                        <div class="row no-gutter">
+                    <div className="item style-1 clearfix" key={event.id}>
+                        <div className="row no-gutter">
                             {/* renders the image */}
-                            <div class="col-lg-4 col-12">
-                                <figure class="img-holder">
+                            <div className="col-lg-4 col-12">
+                                <figure className="img-holder">
                                     <Link to={this.props.match.url + "/" + event.id}><img src={event.image} alt="" /></Link>
                                     {/* if the date has passed already the calender div should be all gray */}
-                                    <div class={(date - now > 0 || this.isToday(date)) ? "date" : "date old"}><span>{months[event.month]}<br />{event.day}</span></div>
+                                    <div className={(date - now > 0 || this.isToday(date)) ? "date" : "date old"}><span>{months[event.month]}<br />{event.day}</span></div>
                                 </figure>
                             </div>
                             {/* renders the event text */}
-                            <div class=" col-lg-8 col-12">
-                                <div class="lower-content">
+                            <div className=" col-lg-8 col-12">
+                                <div className="lower-content">
                                     <p> Organizer: {event.organizer} </p>
                                     <Link to={this.props.match.url + "/" + event.id}><h4> {event.title} </h4></Link>
-                                    <div class="text">
+                                    <div className="text">
                                         <p> {event.description} </p>
                                     </div>
                                 </div>
                             </div>
                             {/* renders the  date time and location of the event */}
-                            <div class="col-12">
-                                <ul class="post-meta list_inline">
-                                    <li><i class="fa fa-clock-o"></i> {date.toLocaleString()} </li> |&nbsp;&nbsp;&nbsp;
-                                    <li><i class="fa fa-map-marker"></i> {event.address}</li>
+                            <div className="col-12">
+                                <ul className="post-meta list_inline">
+                                    <li><i className="fa fa-clock-o"></i> {date.toLocaleString()} </li> |&nbsp;&nbsp;&nbsp;
+                                    <li><i className="fa fa-map-marker"></i> {event.address}</li>
                                 </ul>
                             </div>
                         </div>
@@ -144,9 +144,9 @@ class EventsPage extends React.Component {
      */
     isToday(someDate) {
         const today = new Date()
-        return someDate.getDate() == today.getDate() &&
-            someDate.getMonth() == today.getMonth() &&
-            someDate.getFullYear() == today.getFullYear()
+        return someDate.getDate() === today.getDate() &&
+            someDate.getMonth() === today.getMonth() &&
+            someDate.getFullYear() === today.getFullYear()
     }
     /**
      * changes the start date to the date chosen by the date selector
@@ -255,28 +255,28 @@ class EventsPage extends React.Component {
     }
 
     renderSideBar() {
-        return (<div class="blog-sidebar sec-padd">
-            <div class="event-filter">
-                <div class="section-title style-2">
+        return (<div className="blog-sidebar sec-padd">
+            <div className="event-filter">
+                <div className="section-title style-2">
                     <h4>Event Filter</h4>
                 </div>
-                <div class="tabs-outer">
+                <div className="tabs-outer">
                     {/* <!--Tabs Box--> */}
-                    <div class="tabs-box tabs-style-one">
+                    <div className="tabs-box tabs-style-one">
                         {/* <!--Tab Buttons--> */}
-                        <form class="tab-buttons">
-                            <div class="tab-btn"><input type="radio" name="tabs" id="show-all-button" onClick={this.resetDates} /> All</div>
-                            <div class="tab-btn"><input type="radio" name="tabs" id="show-upcoming-button" onClick={this.resetDates} /> Upcoming</div>
+                        <form className="tab-buttons">
+                            <div className="tab-btn"><input type="radio" name="tabs" id="show-all-button" onClick={this.resetDates} /> All</div>
+                            <div className="tab-btn"><input type="radio" name="tabs" id="show-upcoming-button" onClick={this.resetDates} /> Upcoming</div>
                         </form>
 
                         {/* <!--Tabs Content--> */}
-                        <div class="tabs-content">
+                        <div className="tabs-content">
                             {/* <!--Tab / Active Tab--> */}
-                            <div class="tab active-tab" id="tab-two" style={{ display: 'block' }}>
-                                <div class="default-form-area all">
-                                    <form id="contact-form" name="contact_form" class="default-form style-5" action="inc/sendmail.php" method="post">
-                                        <div class="clearfix">
-                                            <div class="form-group">
+                            <div className="tab active-tab" id="tab-two" style={{ display: 'block' }}>
+                                <div className="default-form-area all">
+                                    <form id="contact-form" name="contact_form" className="default-form style-5" action="inc/sendmail.php" method="post">
+                                        <div className="clearfix">
+                                            <div className="form-group">
                                                 <p>
                                                     Find events between:
                                                 </p>
