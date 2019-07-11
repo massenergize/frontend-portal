@@ -42,7 +42,7 @@ class BarGraph extends React.Component {
                 options={options}
                 series={series}
                 type="bar"
-                width="80%"
+                // width="80%"
             />
         );
     }

@@ -37,14 +37,14 @@ class FooterLinks extends React.Component{
                     <div className="row">
                         <div className="col-12 col-md-6">
                             <div className="widget-content">
-                                <ul className="list">
+                                <ul className="list mb-0">
                                     {this.renderLinks(leftSide)}
                                 </ul>
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="widget-content">
-                                <ul className="list">
+                                <ul className="list mb-0">
                                     {this.renderLinks(rightSide)}
                                 </ul>
                             </div>

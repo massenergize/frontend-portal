@@ -585,6 +585,22 @@ textarea {
     color: #8dc63f;
 }
 
+/*============= cards ===============*/
+.card {
+    margin-bottom: 30px;
+}
+
+/*============= graphs ===============*/
+.apex-chart.circle-graph {
+    margin-bottom: -100px;
+}
+
+@media (max-width: 992px) { 
+    .apex-chart.circle-graph {
+        margin-bottom: 0px;
+    }
+}
+
 
 /*============= default-form ===============*/
 

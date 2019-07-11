@@ -75,13 +75,13 @@ class NavBarBurger extends React.Component {
             <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{"height": "100px"}}>
                 <div className="container">
                     <div className="row no-gutter width-100">
-                        <div className="col-lg-2 col-md-3 col-sm-4 col d-flex align-items-center" >
+                        <div className="col-lg-2 col-md-3 col d-flex align-items-center" >
                             <div className="main-logo col" >
                                 <Link to="/"><img src={logo} alt="" /></Link>
                             </div>
                         </div>
                         {this.state.menuBurgered ?
-                            <div className="col-lg-10 col-md-9 col-sm-8 col menu-column" >
+                            <div className="col-lg-10 col-md-9 col menu-column" >
                                 <div style={styles.container}>
                                     <MenuButton open={this.state.menuOpen} onClick={() => this.handleMenuClick()} color='#333' />
                                     {this.renderLogin()}

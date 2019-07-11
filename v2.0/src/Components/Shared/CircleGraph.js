@@ -18,7 +18,7 @@ class CircleGraph extends React.Component {
             options: {
                 chart: {
                     type: "radialBar",
-                    height: 350
+                    // height: 010
                 },
                 series: [67],
                 colors: ["#428a36"],
@@ -84,9 +84,7 @@ class CircleGraph extends React.Component {
             Chart options = { this.state.options }
             series = { this.state.series }
             type = "radialBar"
-            style = {
-                { display: "inline-block", margin: "0px" } }
-            />
+            className="apex-chart circle-graph"/>
         );
     }
 }
