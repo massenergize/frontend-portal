@@ -30,9 +30,15 @@ class LoginFormBase extends React.Component {
         const { auth } = this.props;
         if (auth.uid) return <Redirect to='/profile' />;
         return (
+<<<<<<< HEAD
             < div className="styled-form login-form" >
                 <div className="section-title style-2">
+                    <h3>Login Now</h3>
+=======
+            < div class="styled-form login-form" >
+                <div class="section-title style-2">
                     <h3>Login</h3>
+>>>>>>> development
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">

@@ -69,7 +69,7 @@ class App extends Component {
 					<Route exact path="/actions" component={ActionsPage}/>
 					<Route path="/aboutus" component={AboutUsPage}/>
 					<Route path="/actions/:id" component={OneActionPage}/>
-					<Route path="/stories" component={StoriesPage}/>
+					<Route path="/testimonials" component={StoriesPage}/>
 					<Route exact path="/events" component={EventsPage}/>
 					<Route path="/events/:id" component={OneEventPage}/>
 					<Route path="/login" component={LoginPage}/>

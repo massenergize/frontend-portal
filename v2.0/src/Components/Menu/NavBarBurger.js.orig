@@ -160,9 +160,15 @@ class NavBarBurger extends React.Component {
             );
         } else {
             return (
-                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
+<<<<<<< HEAD
+                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px',fontWeight:600 }}>
                     <i className="fa fa-user" style={{ padding: "0px 5px" }} />{'\u00A0'}
+                     Login
+=======
+                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0', fontSize: '14px' }}>
+                    <i className="fa fa-user" style={{ padding: "0px 5px" }} />
                     Sign In
+>>>>>>> development
                 </Link>
             );
         }

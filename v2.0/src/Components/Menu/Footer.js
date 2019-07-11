@@ -28,10 +28,9 @@ class Footer extends React.Component{
                                     {/* <!--Footer Column--> */}
                                     <div className="col-12 col-md-4">
                                         <div className="footer-widget contact-column text-center text-md-left">
-                                            <div className="section-title d-none d-md-block">
-                                                <h4>Subscribe Us</h4>
+                                            <div className="section-title">
+                                                <b className="text-white">Subscribe to Newsletter</b>
                                             </div>
-                                            <h5>Subscribe to our newsletter!</h5>
                                             <form action="/">
                                                 <input type="email" placeholder="Email address...."/>
                                                 <button type="submit"><i className="fa fa-paper-plane"></i></button>
