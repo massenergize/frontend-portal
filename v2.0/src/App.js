@@ -17,6 +17,7 @@ import LoginPage from './Components/Pages/LoginPage/LoginPage'
 import EventsPage from './Components/Pages/EventsPage/EventsPage'
 import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
+import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 
 class App extends Component {
@@ -76,6 +77,7 @@ class App extends Component {
 					<Route path="/register" component={RegisterPage}/>
 					<Route path="/profile" component={ProfilePage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
+      
 					<Route component={()=>
 						<div>
 							FOUR OR FOR: PAGE NOT FOUND
