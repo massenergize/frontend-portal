@@ -1,7 +1,7 @@
 import React from 'react'
 import CONST from '../../Constants';
 import LoadingPage from '../../Shared/LoadingCircle';
-import Cart from './Cart';
+import Cart from '../../Shared/Cart';
 import {Link} from 'react-router-dom'
 
 /**
