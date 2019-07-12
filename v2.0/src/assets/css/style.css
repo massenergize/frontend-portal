@@ -94,6 +94,12 @@ h5 {
 ul {
     list-style-type: none;
 }
+ul.normal {
+    list-style-type: disc;
+}
+ul.normal li {
+    margin-left: 2em;
+}
 
 p {
     font-family: 'Open Sans', sans-serif;
