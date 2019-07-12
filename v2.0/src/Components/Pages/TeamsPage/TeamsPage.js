@@ -64,7 +64,7 @@ class TeamsPage extends React.Component {
             return (
                 <tr>
                     <td>{obj.teamName} &nbsp;
-                        <OverlayTrigger trigger="hover" placement="right" overlay={popover}><span className="fa fa-info-circle"></span></OverlayTrigger>
+                        <OverlayTrigger trigger="hover" placement="right" overlay={popover}><span className="fa fa-info-circle" style={{color: "#428a36"}}></span></OverlayTrigger>
                     </td>
                     <td>{obj.numHouseholds}</td>
                     <td>{obj.numActionsCompleted}</td>
