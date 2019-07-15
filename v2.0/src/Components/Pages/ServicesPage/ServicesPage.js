@@ -49,7 +49,7 @@ class ServicesPage extends React.Component {
     renderVendors(vendors) {
         return vendors.map((vendor) => {
             return (
-                <div className="col-12 col-md-6 col-lg-4">
+                <div className="col-12 col-md-6 col-lg-4" key={vendor.vendor}>
                     <div className="card rounded-0">
                         <div className="card-body">
                             <div className="col-12 text-center">
@@ -57,7 +57,7 @@ class ServicesPage extends React.Component {
                                 <h3 className="pt-3">{vendor.vendor}</h3>
                                 <p className="action-tags">
                                     {vendor.categories.map((category) => {
-                                        return (<span>{category}</span>)  
+                                        return (<span key={category}>{category}</span>)  
                                     })}
                                 </p>
                             </div>
@@ -65,7 +65,7 @@ class ServicesPage extends React.Component {
                                 <span><b>Services:</b></span>
                                 <ul className="normal">
                                     {vendor.services.map((action) => {
-                                        return <li><Link to={"/actions/" + action.id}><u>{action.title}</u></Link></li>;
+                                        return <li key={vendor.vendor + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.title}</u></Link></li>;
                                     })}
                                 </ul>
                             </div>
