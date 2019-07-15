@@ -50,7 +50,7 @@ class ServicesPage extends React.Component {
         return vendors.map((vendor) => {
             return (
                 <div className="col-12 col-md-6 col-lg-4" key={vendor.vendor}>
-                    <div className="card rounded-0">
+                    <div className="card rounded-0 spacing">
                         <div className="card-body">
                             <div className="col-12 text-center">
                                 <img className="w-100" src={vendor.logo}/>
