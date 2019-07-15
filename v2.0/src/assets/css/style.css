@@ -592,7 +592,7 @@ textarea {
 }
 
 /*============= cards ===============*/
-.card {
+.card.spacing {
     margin-bottom: 30px;
 }
 

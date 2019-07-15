@@ -1,6 +1,7 @@
 import React from 'react'
 import CONST from '../../Constants.js';
 import LoadingPage from '../../Shared/LoadingCircle';
+import PageTitle from '../../Shared/PageTitle';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
@@ -35,7 +36,7 @@ class TeamsPage extends React.Component {
 
         return (
             <div className="boxed_wrapper p-5">
-                <h1 className="text-center pb-3">Teams Leaderboard</h1>
+                <PageTitle>Teams Leaderboard</PageTitle>
                 <Table bordered hover responsive>
                     <thead>
                         <tr>

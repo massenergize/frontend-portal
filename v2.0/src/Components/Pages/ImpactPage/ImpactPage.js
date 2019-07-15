@@ -1,6 +1,7 @@
 import React from 'react'
 import BarGraph from '../../Shared/BarGraph'
 import CircleGraph from '../../Shared/CircleGraph';
+import PageTitle from '../../Shared/PageTitle';
 
 class ImpactPage extends React.Component {
     render() {
@@ -20,9 +21,7 @@ class ImpactPage extends React.Component {
         return (
             <div className='boxed-wrapper'>
                 <div className="container bg-light p-5">
-                    <div className="row text-center justify-content-center mb-5 border-bottom">
-                        <h1>Our Community's Impact</h1>
-                    </div>
+                    <PageTitle>Our Community's Impact</PageTitle>
                     <div className="row">
                         <div className="col-12 col-lg-4">
                             <div className="card rounded-0">

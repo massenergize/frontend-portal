@@ -21,6 +21,7 @@ import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
 import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
 import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
+import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 
 class App extends Component {
 
@@ -81,6 +82,7 @@ class App extends Component {
 					<Route path="/login" component={LoginPage}/>
 					<Route path="/register" component={RegisterPage}/>
 					<Route path="/profile" component={ProfilePage}/>
+					<Route path="/policies" component={PoliciesPage}/>
 					{/*<Route path="/contact" component={Contact} /> */}
       
 					<Route component={()=>
