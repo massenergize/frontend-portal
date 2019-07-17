@@ -94,6 +94,12 @@ h5 {
 ul {
     list-style-type: none;
 }
+ul.normal {
+    list-style-type: disc;
+}
+ul.normal li {
+    margin-left: 2em;
+}
 
 p {
     font-family: 'Open Sans', sans-serif;
@@ -583,6 +589,22 @@ textarea {
     right: 11px;
     top: 6px;
     color: #8dc63f;
+}
+
+/*============= cards ===============*/
+.card.spacing {
+    margin-bottom: 30px;
+}
+
+/*============= graphs ===============*/
+.apex-chart.circle-graph {
+    margin-bottom: -100px;
+}
+
+@media (max-width: 992px) { 
+    .apex-chart.circle-graph {
+        margin-bottom: 0px;
+    }
 }
 
 
@@ -9211,4 +9233,7 @@ article.slide-item.center {}
 }
 .profile-table td button{
     margin: 5px auto;
+
+.apexcharts-canvas { 
+    margin: auto;
 }

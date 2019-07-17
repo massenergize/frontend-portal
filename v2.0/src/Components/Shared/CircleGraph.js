@@ -18,26 +18,28 @@ class CircleGraph extends React.Component {
             options: {
                 chart: {
                     type: "radialBar",
-                    height: 350
+                    // height: 010
                 },
                 series: [67],
-                colors: ["#8dc63f"],
+                colors: this.props.colors,
                 plotOptions: {
                     radialBar: {
                         size: this.props.size,
-                        hollow: {
-                            margin: 5,
-                            size: "70%",
-                        },
+                        // hollow: {
+                        //     margin: 5,
+                        //     size: "60%",
+                        // },
                         track: {
-                            dropShadow: {
-                                enabled: true,
-                                top: 2,
-                                left: 0,
-                                blur: 4,
-                                opacity: 0.15
-                            }
-                        },
+                            show: true,
+                            width: '100px'
+                        //     dropShadow: {
+                        //         enabled: true,
+                        //         top: 2,
+                        //         left: 0,
+                        //         blur: 4,
+                        //         opacity: 0.15
+                        //     }
+                         },
                         dataLabels: {
                             name: {
                                 offsetY: -3,
@@ -58,15 +60,15 @@ class CircleGraph extends React.Component {
                         }
                     }
                 },
-                fill: {
-                    type: "gradient",
-                    gradient: {
-                        shade: "dark",
-                        type: "vertical",
-                        gradientToColors: ["#428a36"],
-                        stops: [0, 100]
-                    }
-                },
+                // fill: {
+                //     type: "gradient",
+                //     gradient: {
+                //         shade: "dark",
+                //         type: "vertical",
+                //         gradientToColors: ["#428a36"],
+                //         stops: [0, 100]
+                //     }
+                // },
                 stroke: {
                     lineCap: "round"
                 },
@@ -82,9 +84,7 @@ class CircleGraph extends React.Component {
             Chart options = { this.state.options }
             series = { this.state.series }
             type = "radialBar"
-            style = {
-                { display: "inline-block", margin: "0px" } }
-            />
+            className="apex-chart circle-graph"/>
         );
     }
 }
