@@ -4,20 +4,42 @@ import { Redirect } from 'react-router-dom'
 
 import SignOutButton from './SignOutButton'
 import Cart from '../../Shared/Cart'
+import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
+// import { threadId } from 'worker_threads'
+import URLS, { getJson } from '../../api_v2'
 
 
 
 class ProfilePage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loaded: false
+        }
+    }
+    componentDidMount() {
+        getJson(URLS.USERS + "?email=" + this.props.auth.email).then(myJson => {
+            console.log(myJson);
+            this.setState({
+                user: myJson.data[0],
+                loaded: true
+            })
+        }).catch(err => {
+            console.log(err)
+        });
+    }
     render() {
+        if (!this.state.loaded) return <LoadingCircle />;
         const { auth } = this.props;
+        const { user } = this.state;
         if (!auth.uid) return <Redirect to='/login' />
         return (
             <div className='boxed_wrapper'>
                 <div className="container">
                     <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                         <div className="col-lg-8 col-md-7  col-12">
-                            <h3> <span style={{ color: "#8dc63f" }}>Welcome</span> {"Kieran O'Day"} </h3>
+                            <h3> <span style={{ color: "#8dc63f" }}>Welcome</span> {user.full_name} </h3>
                             <section className="fact-counter style-2 sec-padd" >
                                 <div className="container">
                                     <div className="counter-outer" style={{ background: "#333", width: "100%" }}>

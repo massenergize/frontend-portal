@@ -5,42 +5,33 @@ import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './Events';
+import URLS, { getJson } from '../../api_v2'
+
 
 /*
 * The Home Page of the MassEnergize
 */
 class HomePage extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            pageData: null,
-            menuData: null,
-            userData: null,
-            eventsData: null,
-            impactData: null
-        }
-    }
-    componentDidMount() {
-        fetch(CONST.URL.USER).then(data => {
-            console.log(data);
-            return data.json()
-        }).then(myJson => {
-            console.log(myJson);
-            this.setState({
-                pageData: myJson.pageData,
-                menuData: myJson.menuData,
-                userData: myJson.userData,
-                eventsData: myJson.eventsData,
-                impactData: myJson.impactData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
-        });
-        
-    }
-    render() {
-        if (!this.state.pageData) return <LoadingCircle/>;
+		super(props);
+		this.state = {
+			loaded: false
+		}
+	}
+	componentDidMount() {
+		Promise.all([
+			getJson(URLS.EVENTS + "?community=1"),
+		]).then(myJsons => {
+			this.setState({
+				events: myJsons[0].data[0].content,
+				loaded: true
+			})
+		}).catch(err => {
+			console.log(err)
+		});
+	}
+	render() {
+		if (!this.state.loaded) return <LoadingCircle />;
         const {
             welcomeImagesData,
             iconBoxesData,
