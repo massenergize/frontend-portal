@@ -2895,18 +2895,14 @@ textarea {
 .fact-counter.style-2 .column {
     position: relative;
     text-align: center;
-    margin-left: 0px;
-    margin-right: 0px;
     z-index: 5;
 }
 
 .fact-counter.style-2 .item {
     position: relative;
     background: #fff;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin:10px 10px 10px 10px;
     height: 250px;
-    width: 100%;
     border: 1px solid #fff;
 }
 
@@ -6770,8 +6766,9 @@ textarea {
     background: #fafafa;
 }
 
-.cart-outer h1 {
-    color: #333;
+.cart-outer h3 {
+    color: #FFF;
+    background: #428A36;
 }
 
 .cart-section .cart-outer .select-box:before {
@@ -6871,6 +6868,13 @@ textarea {
     transition: .5s ease;
     color: red;
 }
+.edit-btn .fa {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 30px;
+    transition: .5s ease;
+    color: green;
+}
 
 .done-btn .fa {
     display: inline-block;
@@ -6881,13 +6885,16 @@ textarea {
     color: green;
 }
 
-.cart-table tbody tr .done-btn .fa:hover {
-    color: #0a0;
+ .done-btn .fa:hover {
+    color: darkgreen;
     transition: .5s ease;
 }
-
-.cart-table tbody tr .remove-btn .fa:hover {
-    color: #a00;
+.edit-btn .fa:hover {
+    color: darkgreen;
+    transition: .5s ease;
+}
+.remove-btn .fa:hover {
+    color: darkred;
     transition: .5s ease;
 }
 
@@ -9117,7 +9124,6 @@ article.slide-item.center {}
     padding-left: 0;
 }
 
-
 /* Tooltip text */
 
 .remove-btn .tooltiptext {
@@ -9214,6 +9220,19 @@ article.slide-item.center {}
 .accordian-content.hidden {
     display: none;
 }
+
+.profile-table {
+    margin: auto;
+    border: solid 1px #aaa;
+}
+.profile-table th{
+    background: #eee;
+}
+.profile-table td{
+    border: solid 1px #aaa;
+}
+.profile-table td button{
+    margin: 5px auto;
 
 .apexcharts-canvas { 
     margin: auto;

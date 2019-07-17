@@ -7,7 +7,7 @@ class SignOutButton extends React.Component{
     render(){
         return(
             //firebase prop from withFirebase higher component
-            <button type="button" onClick={this.onClick}>
+            <button className="thm-btn" type="button" onClick={this.onClick}>
                 Sign Out
             </button>
         );

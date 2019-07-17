@@ -12,7 +12,7 @@ class Cart extends React.Component {
         return (
             // <!--Cart Outer-->
             <div className="cart-outer">
-                <h1 className="center">{this.props.title}</h1>
+                <h3 className="center">{this.props.title}</h3>
                 <div className="table-outer">
                     <table className="cart-table">
                         <thead className="cart-header">
