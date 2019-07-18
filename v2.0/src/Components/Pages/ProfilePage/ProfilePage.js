@@ -8,6 +8,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS, { getJson } from '../../api_v2'
+import { watchFile } from 'fs';
 
 
 
@@ -19,27 +20,37 @@ class ProfilePage extends React.Component {
         }
     }
     componentDidMount() {
-        getJson(URLS.USERS + "?email=" + this.props.auth.email).then(myJson => {
-            console.log(myJson);
-            this.setState({
-                user: myJson.data[0],
-                loaded: true
-            })
-        }).catch(err => {
-            console.log(err)
-        });
+        if (!this.props.auth)
+            console.log("nope");
+        else {
+            getJson(URLS.USERS + "?email=" + this.props.auth.email).then(myJson => {
+                this.setState({
+                    user: myJson.data[0],
+                    loaded: true
+                })
+            }).catch(err => {
+                console.log(err)
+            });
+        }
     }
     render() {
         if (!this.state.loaded) return <LoadingCircle />;
         const { auth } = this.props;
         const { user } = this.state;
         if (!auth.uid) return <Redirect to='/login' />
+        if (!user) return <Redirect to='/register?form=2'/>
         return (
             <div className='boxed_wrapper'>
                 <div className="container">
                     <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                         <div className="col-lg-8 col-md-7  col-12">
-                            <h3> <span style={{ color: "#8dc63f" }}>Welcome</span> {user.full_name} </h3>
+                            <h3>{user ?
+                                <div>
+                                    <span style={{ color: "#8dc63f" }}>Welcome</span> {user.full_name}
+                                </div>
+                                :
+                                "Your Profile"
+                            } </h3>
                             <section className="fact-counter style-2 sec-padd" >
                                 <div className="container">
                                     <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
@@ -61,39 +72,47 @@ class ProfilePage extends React.Component {
                                 <div className="row">
                                     <div className="col-lg-6 col-12">
                                         <table className="profile-table">
-                                            <th> Your Communities </th>
-                                            <th></th>
-                                            <tr>
-                                                <td>Wayland</td>
-                                                <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Concord</td>
-                                                <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}><button className="thm-btn">Join another Community</button></td>
-                                            </tr>
+                                            <tbody>
+                                                <tr>
+                                                    <th> Your Communities </th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                    <td>Wayland</td>
+                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Concord</td>
+                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={2}><button className="thm-btn">Join another Community</button></td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div className="col-lg-6 col-12">
                                         <table className="profile-table">
-                                            <th> Your Households </th>
-                                            <th></th>
-                                            <th></th>
-                                            <tr>
-                                                <td>Home</td>
-                                                <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
-                                                <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Guest</td>
-                                                <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
-                                                <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={3}><button className="thm-btn">Add Another Household</button></td>
-                                            </tr>
+                                            <tbody>
+                                                <tr>
+                                                    <th> Your Households </th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                    <td>Home</td>
+                                                    <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
+                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Guest</td>
+                                                    <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
+                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={3}><button className="thm-btn">Add Another Household</button></td>
+                                                </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

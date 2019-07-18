@@ -33,9 +33,9 @@ class App extends Component {
 	}
 	componentDidMount() {
 		Promise.all([
-			getJson(URLS.MENU + "?name=Portal-FooterQuickLinks"),
-			getJson(URLS.MENU + "?name=Portal-MainNavBar"),
-			getJson(URLS.MENU + "?name=Portal-FooterInfo")
+			getJson(URLS.MENUS + "?name=PortalFooterQuickLinks"),
+			getJson(URLS.MENUS + "?name=PortalMainNavLinks"),
+			getJson(URLS.MENUS + "?name=PortalFooterContactInfo")
 		]).then(myJsons => {
 			this.setState({
 				footerLinks: myJsons[0].data[0].content,
