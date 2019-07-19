@@ -30,6 +30,8 @@ class Events extends React.Component {
                     eventStyle = "item style-1";
                 }
 
+                var date = new Date(event.start_date_and_time);
+
                 return (
                     <div key={key} className={eventStyle}>
                         <div className="clearfix">
@@ -41,17 +43,17 @@ class Events extends React.Component {
                             <div className="text-column">
                                 <div className="lower-content">
                                     <p>Organizer: {event.organizer}</p>
-                                    <Link to={'events/'+event.id}><h4>{event.title}</h4></Link>
+                                    <Link to={'events/'+event.id}><h4>{event.name}</h4></Link>
                                     <div className="text">
-                                        <p>{event.text}</p>
+                                        <p>{event.description}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <ul className="post-meta list_inline">
-                            <li><i className="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
-                        <li><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</li> |&nbsp;&nbsp;&nbsp;
-                        <li><i className="fa fa-map-marker"></i> {event.address}</li>
+                            <li><i className="fa fa-clock-o"></i>{date.toLocaleTimeString()}</li>  |&nbsp;&nbsp;&nbsp;
+                        <li><i className="fa fa-calendar"></i>{date.toString().substring(4, 10)}, {date.getFullYear().toString()}</li> |&nbsp;&nbsp;&nbsp;
+                        <li><i className="fa fa-map-marker"></i> {event.location.street}, {event.location.city}, {event.location.state} {event.location.zip}</li>
                         </ul>
                     </div>
                 );

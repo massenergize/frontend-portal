@@ -23,7 +23,7 @@ class Graphs extends React.Component {
             var graph = graphs[key]; 
             return (
                     <div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
-                        <CircleGraph num={graph.data} goal={graph.goal} label={graph.title} size={this.props.size}/>
+                        <CircleGraph num={graph.data[0].value} goal={graph.data[0].denominator} label={graph.title} size={this.props.size}/>
                     </div>
             );
         });
