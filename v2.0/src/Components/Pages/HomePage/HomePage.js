@@ -1,5 +1,4 @@
 import React from 'react'
-import CONST from '../../Constants';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
@@ -15,15 +14,23 @@ class HomePage extends React.Component {
     constructor(props) {
 		super(props);
 		this.state = {
+            welcomeImagesData: null,
+            impactData: null,
+            iconQuickLinks: null,
+            events: null,
 			loaded: false
 		}
 	}
 	componentDidMount() {
 		Promise.all([
-			getJson(URLS.EVENTS + "?community=1"),
+            getJson(URLS.PAGES + "?name=Home"),
+            getJson(URLS.EVENTS),
 		]).then(myJsons => {
 			this.setState({
-				events: myJsons[0].data[0].content,
+                welcomeImagesData: myJsons[0].data[0].sections[0].slider.slides,
+                impactData: myJsons[0].data[0].sections[1].graphs,
+                iconQuickLinks: myJsons[0].data[0].sections[2].cards,
+                events: myJsons[1].data,
 				loaded: true
 			})
 		}).catch(err => {
@@ -34,11 +41,10 @@ class HomePage extends React.Component {
 		if (!this.state.loaded) return <LoadingCircle />;
         const {
             welcomeImagesData,
-            iconBoxesData,
-        } = this.state.pageData;
-
-        const {impactData} = this.state.impactData;
-        const {events} = this.state.eventsData;
+            impactData,
+            iconQuickLinks,
+            events
+        } = this.state;
 
         return (
             <div className="boxed_wrapper">
@@ -52,7 +58,7 @@ class HomePage extends React.Component {
                 />
                 <IconBoxTable
                     title=""
-                    boxes={iconBoxesData}
+                    boxes={iconQuickLinks}
                 />
                 <Events
                     events={events}
