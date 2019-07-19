@@ -1,8 +1,10 @@
 import React from 'react'
-import CONST from '../../Constants.js';
+import URLS, {getJson} from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
+import { connect } from 'react-redux'
+
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -14,20 +16,22 @@ class ActionsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageData: null,
-            userData: null,
+            loaded: false,
         }
         this.handleChange = this.handleChange.bind(this);
     }
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
-        fetch(CONST.URL.ACTIONS).then(data => {
-            return data.json()
-        }).then(myJson => {
+        Promise.all([
+            getJson(URLS.USERS + "?email=" + this.props.auth.email),
+            getJson(URLS.ACTIONS), //need to add community to this
+        ]).then(myJsons => {
             this.setState({
-                pageData: myJson.pageData,
-                userData: myJson.userData,
-            });
+                ...this.state,
+                loaded:true,
+                user: myJsons[0].data[0],
+                actions: myJsons[1].data
+            })
         }).catch(error => {
             console.log(error);
             return null;
@@ -36,11 +40,7 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.pageData) return <LoadingCircle/>;
-        const { //gets the actions and sidebar data out of page data
-            actions,
-            sidebar
-        } = this.state.pageData;
+        if (!this.state.loaded) return <LoadingCircle/>;
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -49,15 +49,15 @@ class ActionsPage extends React.Component {
                         <div className="row">
                             {/* renders the sidebar */}
                             <div className="col-md-3 col-sm-12 col-xs-12 sidebar_styleTwo">
-                            <SideBar
-                                filters={sidebar}
+                            {/* <SideBar
+                                //filters={sidebar}
                                 onChange={this.handleChange} //runs when any category is selected or unselected
-                            ></SideBar>
+                            ></SideBar> */}
                             </div>
                             {/* renders the actions */}
                             <div className="col-md-9 col-sm-12 col-xs-12">
                                 <div className="row" id="actions-container">
-                                    {this.renderActions(actions)}
+                                    {this.renderActions(this.state.actions)}
                                 </div>
                             </div>
                         </div>
@@ -86,9 +86,14 @@ class ActionsPage extends React.Component {
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
-                filters={this.state.pageData.sidebar}
+                //filters={this.state.pageData.sidebar}
             />
         });
     }
 }
-export default ActionsPage;
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default connect(mapStoreToProps, null)(ActionsPage);

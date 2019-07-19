@@ -6860,7 +6860,18 @@ textarea {
     font-weight: 400;
     color: #8dc63f;
 }
-
+.done-btn{
+    display:inline-block;
+    margin:auto;
+}
+.remove-btn{
+    display:inline-block;
+    margin:auto;
+}
+.edit-btn{
+    display:inline-block;
+    margin:auto;
+}
 .remove-btn .fa {
     display: inline-block;
     font-size: 24px;
@@ -9232,6 +9243,7 @@ article.slide-item.center {}
     border: solid 1px #aaa;
 }
 .profile-table td button{
+    display: block;
     margin: 5px auto;
 }
 .apexcharts-canvas { 

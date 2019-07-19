@@ -8,7 +8,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS, { getJson } from '../../api_v2'
-import { watchFile } from 'fs';
+// import { watchFile } from 'fs';
 
 
 
@@ -36,19 +36,6 @@ class ProfilePage extends React.Component {
         if (!auth.uid) return <Redirect to='/login' />
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
-        if (!this.state.todo || !this.state.done) {
-            Promise.all([
-                getJson(URLS.USER + "/" + this.state.user.id + "/actions?status=TODO"),
-                getJson(URLS.USER + "/" + this.state.user.id + "/actions?status=DONE"),
-            ]).then(myJsons => {
-                this.setState({
-                    ...this.state,
-                    todo: myJsons[0].data,
-                    done: myJsons[1].data
-                });
-                console.log("ahhhhhhhh");
-            });
-        }
         return (
             <div className='boxed_wrapper'>
                 <div className="container">
@@ -133,8 +120,8 @@ class ProfilePage extends React.Component {
                         </div>
                         {/* makes the todo and completed actions carts */}
                         <div className="col-lg-4 col-md-5 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <Cart title="To Do List" />
-                            <Cart title="Completed Actions" />
+                            <Cart title="To Do List" uid = {user.id} status="TODO"/>
+                            <Cart title="Completed Actions" uid ={user.id} status="DONE"/>
                         </div>
                     </div>
                 </div>
