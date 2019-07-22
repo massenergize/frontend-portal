@@ -128,6 +128,5 @@ class Cart extends React.Component {
         }).catch(err =>{
             console.log(err)
         })
-        this.forceUpdate()
     }
 } export default Cart;

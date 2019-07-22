@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "massenergize-auth",
   storageBucket: "",
   messagingSenderId: "72842344535",
-  appId: "1:72842344535:web:9b1517b1b3d2e818"
+  appId: "1:72842344535:web:9b1517b1b3d2e818",
 }
 
 firebase.initializeApp(firebaseConfig);

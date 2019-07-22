@@ -1,11 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import {isLoaded} from 'react-redux-firebase'
 import URLS, { getJson } from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart'
+
 
 
 /**
@@ -44,7 +46,9 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.loaded) return <LoadingCircle />;
+        if (!isLoaded(this.props.auth) || !this.state.loaded) return <LoadingCircle />;
+        if (this.props.auth && !this.state.user)
+            this.componentDidMount();
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -121,9 +125,10 @@ class ActionsPage extends React.Component {
         }).then(response =>{
             return response.json()
         }).then(json=>{
-            console.log(json)
+            if(json.success){
+                this.componentDidMount()
+            }
         });
-        this.forceUpdate()
     }
 }
 const mapStoreToProps = (store) => {
