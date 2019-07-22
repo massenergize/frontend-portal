@@ -37,7 +37,7 @@ class Events extends React.Component {
                         <div className="clearfix">
                             <div className="img-column">
                                 <figure className="img-holder">
-                                    <Link to={'events/'+event.id}><img src={event.image} alt="" /></Link>
+                                    <Link to={'events/'+event.id}><img src={event.image? event.image.file : ""} alt="" /></Link>
                                 </figure>
                             </div>
                             <div className="text-column">

@@ -82,7 +82,7 @@ class ActionsPage extends React.Component {
                 id={action.id}
                 title={action.title}
                 description={action.description}
-                image={action.image}
+                image= {action.image? action.image.file : ""}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
