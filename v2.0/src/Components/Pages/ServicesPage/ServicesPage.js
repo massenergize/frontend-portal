@@ -1,5 +1,5 @@
 import React from 'react'
-import CONST from '../../Constants.js';
+import URLS, { getJson } from '../../api_v2'
 import LoadingPage from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages';
 import {Link} from 'react-router-dom';
@@ -12,16 +12,30 @@ class ServicesPage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.SERVICES).then(data => {
-            return data.json()
-        }).then(myJson => {
-            this.setState({
-                pageData: myJson.pageData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
+        Promise.all([
+            getJson(URLS.VENDORS + "?name=Home"),
+		]).then(myJsons => {
+			this.setState({
+                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
+                impactData: myJsons[0].data[0].sections[1].graphs,
+                iconQuickLinks: myJsons[0].data[0].sections[2].cards,
+                events: myJsons[1].data,
+				loaded: true
+			})
+		}).catch(err => {
+			console.log(err)
         });
+        
+        // fetch(CONST.URL.SERVICES).then(data => {
+        //     return data.json()
+        // }).then(myJson => {
+        //     this.setState({
+        //         pageData: myJson.pageData,
+        //     });
+        // }).catch(error => {
+        //     console.log(error);
+        //     return null;
+        // });
     }
 
     render() {
