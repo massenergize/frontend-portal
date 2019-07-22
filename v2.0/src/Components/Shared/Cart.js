@@ -113,12 +113,13 @@ class Cart extends React.Component {
     }
 
     moveToDone(actionRel) {
+        console.log(URLS.USER + "/" + this.props.uid + "/action/" + actionRel.id);
         fetch(URLS.USER + "/" + this.props.uid + "/action/" + actionRel.id, {
             method: 'post',
             body : JSON.stringify({
                 status: "DONE",
                 action: actionRel.action.id,
-                real_estate_unit:actionRel.real_estate_unit,
+                real_estate_unit:actionRel.real_estate_unit.id,
             })
         }).then(response => {
             return response.json()
@@ -127,5 +128,6 @@ class Cart extends React.Component {
         }).catch(err =>{
             console.log(err)
         })
+        this.forceUpdate()
     }
 } export default Cart;

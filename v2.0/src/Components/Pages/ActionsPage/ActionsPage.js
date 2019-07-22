@@ -1,9 +1,11 @@
 import React from 'react'
-import URLS, {getJson} from '../../api_v2';
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import URLS, { getJson } from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
-import { connect } from 'react-redux'
+import Cart from '../../Shared/Cart'
 
 
 /**
@@ -29,7 +31,7 @@ class ActionsPage extends React.Component {
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
-                loaded:true,
+                loaded: true,
                 user: myJsons[0].data[0],
                 actions: myJsons[1].data,
                 tagCols: myJsons[2].data,
@@ -42,7 +44,7 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.loaded) return <LoadingCircle/>;
+        if (!this.state.loaded) return <LoadingCircle />;
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -50,14 +52,26 @@ class ActionsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             {/* renders the sidebar */}
-                            <div className="col-md-3 col-sm-12 col-xs-12 sidebar_styleTwo">
-                            <SideBar
-                                tagCols={this.state.tagCols}
-                                onChange={this.handleChange} //runs when any category is selected or unselected
-                            ></SideBar>
+                            <div className="col-lg-4 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
+                                <SideBar
+                                    tagCols={this.state.tagCols}
+                                    onChange={this.handleChange} //runs when any category is selected or unselected
+                                ></SideBar>
+                                {this.state.user ?
+                                    <div>
+                                        <Cart title="To Do List" uid={this.state.user.id} status="TODO"/>
+                                        <Cart title="Completed Actions" uid={this.state.user.id} status="DONE" />
+                                    </div>
+                                    :
+                                    <div>
+                                        <p>
+                                            <Link to='/login'> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                        </p>
+                                    </div>
+                                }
                             </div>
                             {/* renders the actions */}
-                            <div className="col-md-9 col-sm-12 col-xs-12">
+                            <div className="col-lg-8 col-md-7 col-sm-12 col-xs-12">
                                 <div className="row" id="actions-container">
                                     {this.renderActions(this.state.actions)}
                                 </div>
@@ -80,17 +94,36 @@ class ActionsPage extends React.Component {
         //returns a list of action components
         return Object.keys(actions).map(key => {
             var action = actions[key];
-            return <Action key= {key}
+            return <Action key={key}
                 id={action.id}
                 title={action.title}
                 description={action.about}
-                image= {action.image? action.image.file : ""}
+                image={action.image ? action.image.file : ""}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
                 tagCols={this.state.tagCols}
+
+                user={this.state.user}
+                addToCart = {(id,status) => this.addToCart(id,status)}
             />
         });
+    }
+    addToCart = (id, status)  => {
+        fetch(URLS.USER+"/"+this.state.user.id+"/actions", {
+            method:'post',
+            body: JSON.stringify({
+                action: id,
+                status: status,
+                real_estate_unit: 1
+            })
+        
+        }).then(response =>{
+            return response.json()
+        }).then(json=>{
+            console.log(json)
+        });
+        this.forceUpdate()
     }
 }
 const mapStoreToProps = (store) => {

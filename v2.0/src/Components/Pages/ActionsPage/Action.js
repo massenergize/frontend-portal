@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import URLS from '../../api_v2'
 
 /**
  * Action Component is a single action for the action page, 
@@ -20,7 +21,7 @@ class Action extends React.Component {
     render() {
         if (this.shouldRender()) { //checks if the action should render or not
             return (
-                <div className="col-lg-4 col-md-6 col-sm-6 col-6" >
+                <div className="col-lg-6 col-md-12 col-sm-12 col-12" >
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
                             <Link to={this.props.match.url + "/" + this.props.id} >
@@ -65,12 +66,12 @@ class Action extends React.Component {
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <Link to="addtodo" className="thm-btn style-4 " > Add Todo </Link>
+                                            <button disabled={!this.props.user} className="thm-btn style-4 " onClick ={()=>this.props.addToCart(this.props.id,"TODO")}> Add Todo </button>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            <Link to="addtodone" className="thm-btn style-4 "> Done It </Link>
+                                            <button disabled={!this.props.user} className="thm-btn style-4 " onClick ={()=>this.props.addToCart(this.props.id,"DONE")}> Done It </button>
                                         </div>
                                     </div>
                                 </div>
