@@ -27,7 +27,7 @@ class HomePage extends React.Component {
             getJson(URLS.EVENTS),
 		]).then(myJsons => {
 			this.setState({
-                welcomeImagesData: myJsons[0].data[0].sections[0].slider.slides,
+                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
                 impactData: myJsons[0].data[0].sections[1].graphs,
                 iconQuickLinks: myJsons[0].data[0].sections[2].cards,
                 events: myJsons[1].data,

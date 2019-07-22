@@ -4,6 +4,7 @@ const URLS = {
 	// ROOT: "http://localhost:8000"
 	//ROOT: "http://10.0.0.187:8000"
 }
+const COMM_ID = "2";
 
 /**
  * These are all the api URLS, minus a few that need to have ids in the middle ie: v2/household/hid/actions
@@ -15,6 +16,8 @@ const URLS = {
  */
 // ...and dependence on other defined URLS
 URLS["V2"] = URLS.ROOT + "/v2/";
+URLS["COMMUNITY"] = URLS.V2 + "community/" + COMM_ID + "/"; //add the id after this
+
 URLS["ACTIONS"] = URLS.V2 + "actions";
 URLS["ACTION"] = URLS.V2 + "action"; //add the id after this
 URLS["ACTION-PROPERTIES"] = URLS.V2 + "action-properties";
@@ -22,7 +25,6 @@ URLS["ACTION-PROPERTY"] = URLS.V2 + "action-property"; //add the id after this
 URLS["BILLING-STATEMENTS"] = URLS.V2 + "billing-statements";
 URLS["BILLING-STATEMENT"] = URLS.V2 + "billing-statement"; //add the id after this
 URLS["COMMUNITIES"] = URLS.V2 + "communities";
-URLS["COMMUNITY"] = URLS.V2 + "community"; //add the id after this
 URLS["COMMUNITY-ADMINS"] = URLS.V2 + "community-admins";
 URLS["COMMUNITY-ADMIN"] = URLS.V2 + "community-admin"; //add the id after this
 URLS["DATA"] = URLS.V2 + "data"; //can add the id after this or not, either way
@@ -42,8 +44,8 @@ URLS["LOCATION"] = URLS.V2 + "location"; //add the id after this
 URLS["MEDIA"] = URLS.V2 + "media"; //can add the id after this or not, either way
 URLS["MENUS"] = URLS.V2 + "menus";
 URLS["MENU"] = URLS.V2 + "menu";
-URLS["PAGES"] = URLS.V2 + "pages";
-URLS["PAGE"] = URLS.V2 + "page";  //add the id after this
+URLS["PAGES"] = URLS.COMMUNITY + "pages";
+URLS["PAGE"] = URLS.COMMUNITY + "page";  //add the id after this
 URLS["PAGE-SECTIONS"] = URLS.V2 + "page-sections";
 URLS["PAGE-SECTION"] = URLS.V2 + "page-section";  //add the id after this
 URLS["PERMISSIONS"] = URLS.V2 + "permissions";
