@@ -14,10 +14,10 @@ class PoliciesPage extends React.Component {
     }
     componentDidMount() {
         Promise.all([
-            getJson(URLS.PAGES + "?name=Policies"),
+            getJson(URLS.PAGE + "/2"),
 		]).then(myJsons => {
 			this.setState({
-                policies: myJsons[0].data[0].sections,
+                policies: myJsons[0].data.sections,
 				loaded: true
 			})
 		}).catch(err => {
