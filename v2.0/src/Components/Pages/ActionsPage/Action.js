@@ -96,9 +96,9 @@ class Action extends React.Component {
             tagSet.add(tag.id);
         });
 
-        for (var i in this.props.filters) {
-            var filter = this.props.filters[i]; //if any filter does not fit, return false
-            if (!this.filterFits(filter.tags, tagSet)) {
+        for (var i in this.props.tagCols) {
+            var tagCol = this.props.tagCols[i]; //if any filter does not fit, return false
+            if (!this.filterFits(tagCol.tags, tagSet)) {
                 return false;
             }
         }
@@ -107,9 +107,11 @@ class Action extends React.Component {
     //checks if the value of the search bar is in the title of the action
     searchFits(string) {
         var searchbar = document.getElementById('action-searchbar');
-        if (!searchbar) //if cant find the search bar just render everything
+        if (!searchbar || searchbar.value === '') //if cant find the search bar just render everything
             return true;
-        if (searchbar.value === '' || string.toLowerCase().includes(searchbar.value.toLowerCase())) {
+        if(!string)
+            return false;
+        if (string.toLowerCase().includes(searchbar.value.toLowerCase())) {
             return true;
         }
         return false;

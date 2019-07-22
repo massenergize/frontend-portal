@@ -103,7 +103,7 @@ ul.normal li {
 
 p {
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: large;
     color: #999;
     line-height: 26px;
     font-weight: 400;
@@ -255,7 +255,10 @@ textarea {
     padding: 0 38px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
-
+.thm-btn:disabled {
+    background:#aaa;
+    border:#aaa;
+}
 .thm-btn:hover {
     background: transparent;
     color: #8dc63f;
@@ -301,6 +304,11 @@ textarea {
     padding: 0 3px;
     margin-left: 2px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.style-4:disabled {
+    background:#aaa;
+    border:#aaa;
 }
 
 .thm-btn.style-4:hover {

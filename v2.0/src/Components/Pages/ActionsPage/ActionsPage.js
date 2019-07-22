@@ -25,12 +25,14 @@ class ActionsPage extends React.Component {
         Promise.all([
             getJson(URLS.USERS + "?email=" + this.props.auth.email),
             getJson(URLS.ACTIONS), //need to add community to this
+            getJson(URLS.TAG_COLLECTIONS), //need to add community to this too
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
                 loaded:true,
                 user: myJsons[0].data[0],
-                actions: myJsons[1].data
+                actions: myJsons[1].data,
+                tagCols: myJsons[2].data,
             })
         }).catch(error => {
             console.log(error);
@@ -49,10 +51,10 @@ class ActionsPage extends React.Component {
                         <div className="row">
                             {/* renders the sidebar */}
                             <div className="col-md-3 col-sm-12 col-xs-12 sidebar_styleTwo">
-                            {/* <SideBar
-                                //filters={sidebar}
+                            <SideBar
+                                tagCols={this.state.tagCols}
                                 onChange={this.handleChange} //runs when any category is selected or unselected
-                            ></SideBar> */}
+                            ></SideBar>
                             </div>
                             {/* renders the actions */}
                             <div className="col-md-9 col-sm-12 col-xs-12">
@@ -81,12 +83,12 @@ class ActionsPage extends React.Component {
             return <Action key= {key}
                 id={action.id}
                 title={action.title}
-                description={action.description}
+                description={action.about}
                 image= {action.image? action.image.file : ""}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
-                //filters={this.state.pageData.sidebar}
+                tagCols={this.state.tagCols}
             />
         });
     }
