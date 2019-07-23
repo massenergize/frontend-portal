@@ -4,7 +4,7 @@ import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './Events';
-import URLS, { getJson } from '../../api_v2';
+import URLS, {getJson, section} from '../../api_v2';
 
 
 /*
@@ -27,9 +27,9 @@ class HomePage extends React.Component {
             getJson(URLS.EVENTS),
         ]).then(myJsons => {
             this.setState({
-                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
-                impactData: myJsons[0].data[0].sections[1].graphs,
-                iconQuickLinks: myJsons[0].data[0].sections[2].cards,
+                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
+                impactData: section(myJsons[0], "Graph Section").graphs,
+                iconQuickLinks: section(myJsons[0], "IconQuickLinks").cards,
                 events: myJsons[1].data,
                 loaded: true
             })

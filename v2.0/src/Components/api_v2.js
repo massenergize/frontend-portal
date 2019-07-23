@@ -26,7 +26,7 @@ URLS["BILLING_STATEMENTS"] = URLS.V2 + "billing-statements";
 URLS["BILLING_STATEMENT"] = URLS.V2 + "billing-statement"; //add the id after this
 URLS["COMMUNITIES"] = URLS.V2 + "communities";
 URLS["COMMUNITY_ADMINS"] = URLS.V2 + "community-admins";
-URLS["COMMUNITY_ADMIN"] = URLS.V2 + "community-admin"; //add the id after this
+URLS["COMMUNITY_ADMIN_GROUP"] = URLS.V2 + "community-admin-group" + "/" + COMM_ID; //add the id after this
 URLS["DATA"] = URLS.V2 + "data"; //can add the id after this or not, either way
 URLS["EMAIL_CATEGORIES"] = URLS.V2 + "email-categories";
 URLS["EMAIL_CATEGORY"] = URLS.V2 + "email-category"; //add the id after this
@@ -95,4 +95,10 @@ export const getJson = async (url) => {
 		console.log(error);
 		return null;
 	}
+}
+
+// Takes out the section that matches with the name given
+export const section = (json, section) => {
+	let sections = json.data[0].sections;
+	return sections.filter(x => x.name == section)[0];
 }

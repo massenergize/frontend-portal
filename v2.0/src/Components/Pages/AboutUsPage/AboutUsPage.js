@@ -1,5 +1,5 @@
 import React from 'react'
-import CONST from '../../Constants.js';
+import URLS, {getJson, section} from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Video from './Video'
@@ -18,30 +18,32 @@ class AboutUsPage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.ABOUTUS).then(data => {
-            return data.json()
-        }).then(myJson => {
-            this.setState({
-                userData: myJson.userData,
-                pageData: myJson.pageData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
+        Promise.all([
+            getJson(URLS.PAGES + "?name=AboutUs"),
+            getJson(URLS.COMMUNITY_ADMIN_GROUP)
+		]).then(myJsons => {
+			this.setState({
+                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
+                videoLink: section(myJsons[0], "AboutUsVideo").image.file,
+                paragraphContent: section(myJsons[0], "AboutUsDescription").description,
+                teamMembersData: myJsons[1].data.members,
+                donateMessage: section(myJsons[0], "DonateBar").description,
+				loaded: true
+			})
+		}).catch(err => {
+			console.log(err)
         });
     }
 
     render() {
-        if(!this.state.pageData) return <LoadingCircle/>;
+        if(!this.state.loaded) return <LoadingCircle/>;
         const {
             welcomeImagesData,
             videoLink,
             paragraphContent,
             teamMembersData,
             donateMessage,
-        } = this.state.pageData;
-
-        console.log(teamMembersData);
+        } = this.state;
 
         return (
             <div className="boxed_wrapper">
