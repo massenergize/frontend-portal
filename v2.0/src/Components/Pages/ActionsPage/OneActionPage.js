@@ -15,6 +15,12 @@ class OneActionPage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
+            user: null,
+            action: null, 
+            tagCols: [],
+            todo: [],
+            done: [],
+            cartLoaded:false
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -59,7 +65,7 @@ class OneActionPage extends React.Component {
             return <LoadingCircle />;
         }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth && !this.state.user) {
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
             this.componentDidMount();
             return <LoadingCircle />;
         }
