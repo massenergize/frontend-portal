@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {isLoaded} from 'react-redux-firebase'
+import { isLoaded } from 'react-redux-firebase'
 import URLS, { getJson } from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
-import CartContainer from '../../Shared/CartContainer';
+import Cart from '../../Shared/Cart';
 
 
 
@@ -33,22 +33,47 @@ class ActionsPage extends React.Component {
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
-                loaded: true,
                 user: myJsons[0].data[0],
                 actions: myJsons[1].data,
                 tagCols: myJsons[2].data,
+                loaded:true,
             })
         }).catch(error => {
             console.log(error);
-            return null;
+        });
+    }
+
+    loadCart() {
+        Promise.all([
+            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=TODO"),
+            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=DONE"),
+        ]).then(myJsons => {
+            this.setState({
+                todo: myJsons[0].data,
+                done: myJsons[1].data,
+                cartLoaded: true,
+            })
+            console.log(this.state);
+        }).catch(err => {
+            console.log(err)
         });
     }
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth) || !this.state.loaded) return <LoadingCircle />;
-        if (this.props.auth && !this.state.user)
+        if (!isLoaded(this.props.auth)){ //if the auth isn't loaded wait for a bit
+            return <LoadingCircle/>;
+        }
+        //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
+        if (isLoaded(this.props.auth) && this.props.auth && !this.state.user) { 
             this.componentDidMount();
+            return <LoadingCircle />;
+        }
+        //if there is a user from the server and the cart is not loaded load the cart
+        if (this.state.user && !this.state.cartLoaded) {
+            this.loadCart();
+            return <LoadingCircle />;
+        }
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -63,7 +88,8 @@ class ActionsPage extends React.Component {
                                 ></SideBar>
                                 {this.state.user ?
                                     <div>
-                                        <CartContainer user = {this.state.user}/>
+                                        <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
+                                        <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
                                     </div>
                                     :
                                     <div>
@@ -101,32 +127,105 @@ class ActionsPage extends React.Component {
                 id={action.id}
                 title={action.title}
                 description={action.about}
-                image={action.image ? action.image.file : ""}
+                image={action.image ? action.image.file : null}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
                 tagCols={this.state.tagCols}
 
                 user={this.state.user}
-                addToCart = {(id,status) => this.addToCart(id,status)}
+                addToCart={(id, status) => this.addToCart(id, status)}
+                inCart={(actionId, cart) => this.inCart(actionId,cart)}
+                moveToDone={(actionId) => this.moveToDoneByActionId(actionId)}
             />
         });
     }
-    addToCart = (id, status)  => {
-        fetch(URLS.USER+"/"+this.state.user.id+"/actions", {
-            method:'post',
+
+
+
+
+
+
+
+    /**
+     * These are the cart functions
+     */
+    inCart = (actionId, cart) => {
+        console.log(cart);
+        const checkTodo = this.state.todo.filter(actionRel => {return actionRel.action.id === actionId});
+        if(cart==="TODO"){ return checkTodo.length > 0; } 
+
+        const checkDone = this.state.done.filter(actionRel => {return actionRel.action.id === actionId});
+        if(cart==="DONE") return checkDone.length > 0;
+
+        return checkTodo.length >0 || checkDone.length > 0;
+    }
+    moveToDone = (actionRel) => {
+        fetch(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, {
+            method: 'post',
+            body: JSON.stringify({
+                status: "DONE",
+                action: actionRel.action.id,
+                real_estate_unit: actionRel.real_estate_unit.id,
+            })
+        }).then(response => {
+            return response.json()
+        }).then(json => {
+            console.log(json);
+            if(json.success){
+                this.setState({
+                    //delete from todo by filtering for not matching ids
+                    todo: this.state.todo.filter(actionRel => {return actionRel.id !== json.data[0].id}), 
+                    //add to done by assigning done to a spread of what it already has and the one from data
+                    done: [
+                        ...this.state.done,
+                        json.data[0]
+                    ]
+                })
+            }
+            //just update the state here
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+    moveToDoneByActionId(actionId){
+        const actionRel = this.state.todo.filter(actionRel => {return actionRel.action.id === actionId})[0];
+        if(actionRel)
+            this.moveToDone(actionRel);
+        
+    }
+    addToCart = (id, status) => {
+        fetch(URLS.USER + "/" + this.state.user.id + "/actions", {
+            method: 'post',
             body: JSON.stringify({
                 action: id,
                 status: status,
                 real_estate_unit: 1
             })
-        
-        }).then(response =>{
+        }).then(response => {
             return response.json()
-        }).then(json=>{
-            if(json.success){
-                this.componentDidMount()
+        }).then(json => {
+            if (json.success) {
+                //set the state here
+                if(status="TODO"){
+                    this.setState({
+                        todo: [
+                            ...this.state.todo,
+                            json.data
+                        ]
+                    })
+                }
+                else if(status="DONE"){
+                    this.setState({
+                        done: [
+                            ...this.state.done,
+                            json.data
+                        ]
+                    })
+                }
             }
+        }).catch(error =>{
+            console.log(error);
         });
     }
 }

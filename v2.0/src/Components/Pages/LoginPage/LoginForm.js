@@ -79,7 +79,7 @@ class LoginFormBase extends React.Component {
             .signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(authUser => {
                 console.log(authUser);
-                this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
+                //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
                 this.setState({ ...INITIAL_STATE }); //reset the login boxes
             })
             .catch(err => {
@@ -95,7 +95,7 @@ class LoginFormBase extends React.Component {
             .signInWithPopup(googleProvider)
             .then(authUser => {
                 console.log(authUser);
-                this.props.sendSignInSignal(authUser);
+                //this.props.sendSignInSignal(authUser);
                 this.setState({ ...INITIAL_STATE });
             })
             .catch(err => {
@@ -108,7 +108,7 @@ class LoginFormBase extends React.Component {
             .signInWithPopup(facebookProvider)
             .then(authUser => {
                 console.log(authUser);
-                this.props.sendSignInSignal(authUser);
+                //this.props.sendSignInSignal(authUser);
                 this.setState({ ...INITIAL_STATE });
             })
             .catch(err => {

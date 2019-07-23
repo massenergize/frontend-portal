@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import URLS from '../../api_v2'
 
 /**
@@ -25,7 +25,7 @@ class Action extends React.Component {
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
                             <Link to={this.props.match.url + "/" + this.props.id} >
-                                < img src={this.props.image} alt = ""/>
+                                < img src={this.props.image} alt="" />
                             </Link>
                             { /* animated section on top of the image */}
                             <figcaption className="overlay" >
@@ -66,12 +66,24 @@ class Action extends React.Component {
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <button disabled={!this.props.user} className="thm-btn style-4 " onClick ={()=>this.props.addToCart(this.props.id,"TODO")}> Add Todo </button>
+                                            {!this.props.inCart(this.props.id) ?
+                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "TODO")}> Add Todo </button>
+                                                :
+                                                null
+                                            }
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            <button disabled={!this.props.user} className="thm-btn style-4 " onClick ={()=>this.props.addToCart(this.props.id,"DONE")}> Done It </button>
+                                            {!this.props.inCart(this.props.id) ?
+                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "DONE")}> Done It </button>
+                                                : null
+                                            }
+                                            {this.props.inCart(this.props.id, "TODO") ?
+                                                <button className="thm-btn style-4" onClick={() => this.props.moveToDone(this.props.id)}> Done It </button>
+                                                :
+                                                null
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +122,7 @@ class Action extends React.Component {
         var searchbar = document.getElementById('action-searchbar');
         if (!searchbar || searchbar.value === '') //if cant find the search bar just render everything
             return true;
-        if(!string)
+        if (!string)
             return false;
         if (string.toLowerCase().includes(searchbar.value.toLowerCase())) {
             return true;

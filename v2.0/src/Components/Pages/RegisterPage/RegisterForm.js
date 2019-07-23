@@ -139,7 +139,7 @@ class RegisterFormBase extends React.Component {
         this.props.firebase.auth()
             .createUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
-                this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
+                //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
                 this.setState({ ...INITIAL_STATE, form: 2 });
             })
             .catch(err => {
@@ -167,17 +167,6 @@ class RegisterFormBase extends React.Component {
         }).then(json => {
             console.log(json);
         })
-
-        // const user = {
-        //     'full_name': fullName,
-        //     'email': auth.email,
-        //     'firebase_user_info': auth,
-        //     'preferred_name': (preferredName !== "") ? preferredName : firstName,
-        //     'is_service_provider': serviceProvider,
-        //     'communities': [],
-        //     'households': 1,
-        // }
-
         this.setState({ ...INITIAL_STATE });
     }
 
@@ -188,7 +177,7 @@ class RegisterFormBase extends React.Component {
             .signInWithPopup(googleProvider)
             .then(authUser => {
                 console.log(authUser);
-                this.props.sendSignInSignal(authUser);
+                //this.props.sendSignInSignal(authUser);
                 this.setState({ ...INITIAL_STATE, form: 2 });
             })
             .catch(err => {
@@ -201,7 +190,7 @@ class RegisterFormBase extends React.Component {
             .signInWithPopup(facebookProvider)
             .then(authUser => {
                 console.log(authUser);
-                this.props.sendSignInSignal(authUser);
+                //this.props.sendSignInSignal(authUser);
                 this.setState({ ...INITIAL_STATE });
             })
             .catch(err => {

@@ -12,7 +12,6 @@ export const sendSignInSignal = (user)  => dispatch => {
 }
 
 export const sendSignOutSignal = ()  => dispatch => {
-  console.log("did this");
   return dispatch({
     type: LOGOUT,
   });
