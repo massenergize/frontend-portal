@@ -6,7 +6,7 @@ import URLS, { getJson } from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
-import Cart from '../../Shared/Cart'
+import CartContainer from '../../Shared/CartContainer';
 
 
 
@@ -63,8 +63,7 @@ class ActionsPage extends React.Component {
                                 ></SideBar>
                                 {this.state.user ?
                                     <div>
-                                        <Cart title="To Do List" uid={this.state.user.id} status="TODO"/>
-                                        <Cart title="Completed Actions" uid={this.state.user.id} status="DONE" />
+                                        <CartContainer user = {this.state.user}/>
                                     </div>
                                     :
                                     <div>

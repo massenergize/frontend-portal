@@ -1,9 +1,10 @@
 import React from 'react'
 import URLS, { getJson } from '../../api_v2';
 import LoadingCircle from '../../Shared/LoadingCircle';
-import Cart from '../../Shared/Cart';
+import {isLoaded} from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import CartContainer from '../../Shared/CartContainer';
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -41,7 +42,9 @@ class OneActionPage extends React.Component {
     */
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.loaded) return <LoadingCircle />;
+        if (!isLoaded(this.props.auth) || !this.state.loaded) return <LoadingCircle />;
+        if (this.props.auth && !this.state.user)
+            this.componentDidMount();
         return (
             <div className="boxed_wrapper">
 
@@ -56,8 +59,7 @@ class OneActionPage extends React.Component {
                             {/* makes the todo and completed actions carts */}
                             {this.state.user ?
                                 <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                                    <Cart title="To Do List" uid={this.state.user.id} status="TODO" />
-                                    <Cart title="Completed Actions" uid={this.state.user.id} status="DONE" />
+                                    <CartContainer user = {this.state.user}/>
                                 </div>
                                 :
                                 <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
