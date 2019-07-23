@@ -18,12 +18,12 @@ class Footer extends React.Component{
                                 <div className="row clearfix">
                                     {/* <!--Footer Column--> */}
                                     <FooterInfo
-                                        info={this.props.data? this.props.data.footerInfo : {}}
+                                        info={this.props.footerInfo? this.props.footerInfo : {}}
                                     />
                                     {/* <!--Footer Column--> */}
                                     <FooterLinks
-                                        title={this.props.data.footerLinks.title}
-                                        links={this.props.data.footerLinks.links}
+                                        title="Quick Links"
+                                        links={this.props.footerLinks}
                                     />
                                     {/* <!--Footer Column--> */}
                                     <div className="col-12 col-md-4">

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 /**
  * Events section displays upcoming events,
  * @TODO make a limit number so it only displays that many events
@@ -30,28 +30,32 @@ class Events extends React.Component {
                     eventStyle = "item style-1";
                 }
 
+                var date = new Date(event.start_date_and_time);
+
                 return (
                     <div key={key} className={eventStyle}>
                         <div className="clearfix">
                             <div className="img-column">
                                 <figure className="img-holder">
-                                    <Link to={'events/'+event.id}><img src={event.image} alt="" /></Link>
+                                    <Link to={'events/' + event.id}><img src={event.image ? event.image.file : ""} alt="" /></Link>
                                 </figure>
                             </div>
                             <div className="text-column">
                                 <div className="lower-content">
-                                    <p>Organizer: {event.organizer}</p>
-                                    <Link to={'events/'+event.id}><h4>{event.title}</h4></Link>
+                                    <Link to={'events/' + event.id}><h4>{event.name}</h4></Link>
                                     <div className="text">
-                                        <p>{event.text}</p>
+                                        <p>{event.description}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <ul className="post-meta list_inline">
-                            <li><i className="fa fa-clock-o"></i>{event.time}</li>  |&nbsp;&nbsp;&nbsp;
-                        <li><i className="fa fa-calendar"></i>{event.day} {event.month}, {event.year}</li> |&nbsp;&nbsp;&nbsp;
-                        <li><i className="fa fa-map-marker"></i> {event.address}</li>
+                            <li><i className="fa fa-clock-o"></i>{date.toLocaleTimeString()}</li>  |&nbsp;&nbsp;&nbsp;
+                        <li><i className="fa fa-calendar"></i>{date.toString().substring(4, 10)}, {date.getFullYear().toString()}</li> 
+                            {event.location ?
+                                <li>&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker"></i> {event.location.street}, {event.location.city}, {event.location.state} {event.location.zip}</li>
+                                : null
+                            }
                         </ul>
                     </div>
                 );
@@ -74,10 +78,10 @@ class Events extends React.Component {
                         </div>
                     </div>
                     <div className="row">
-                        <article className = "col-md-6 col-sm-12 col-xs-12">
+                        <article className="col-md-6 col-sm-12 col-xs-12">
                             {this.renderEvents(this.props.events, 0, 1)}
                         </article>
-                        <article className = "col-md-6 col-sm-12 col-xs-12">
+                        <article className="col-md-6 col-sm-12 col-xs-12">
                             {this.renderEvents(this.props.events, 1, 3)}
                         </article>
                     </div>

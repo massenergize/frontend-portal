@@ -17,11 +17,11 @@ class IconBoxTable extends React.Component {
         if(!boxes){
             return <div>No Icon Boxes to Display</div>
         }
-        return Object.keys(boxes).map(key=> {
+        return Object.keys(boxes).map((key, index)=> {
             var box = boxes[key];
-            return  <div className="col-lg-3 col-md-6 col-sm-6 col-12" key = {box.id}>
+            return  <div className="col-lg-3 col-md-6 col-sm-6 col-12" key = {index}>
                         <IconBox
-                            key = {box.id}
+                            key = {index}
                             title = {box.title}
                             description = {box.description}
                             icon = {box.icon}

@@ -1,10 +1,11 @@
 import React from 'react'
-import CONST from '../../Constants';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './Events';
+import URLS, {getJson, section} from '../../api_v2';
+
 
 /*
 * The Home Page of the MassEnergize
@@ -13,60 +14,64 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageData: null,
-            menuData: null,
-            userData: null,
-            eventsData: null,
-            impactData: null
+            welcomeImagesData: null,
+            impactData: null,
+            iconQuickLinks: null,
+            events: null,
+            loaded: false
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.USER).then(data => {
-            console.log(data);
-            return data.json()
-        }).then(myJson => {
-            console.log(myJson);
+        Promise.all([
+            getJson(URLS.PAGES + "?name=Home"),
+            getJson(URLS.EVENTS),
+        ]).then(myJsons => {
             this.setState({
-                pageData: myJson.pageData,
-                menuData: myJson.menuData,
-                userData: myJson.userData,
-                eventsData: myJson.eventsData,
-                impactData: myJson.impactData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
+                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
+                impactData: section(myJsons[0], "Graph Section").graphs,
+                iconQuickLinks: section(myJsons[0], "IconQuickLinks").cards,
+                events: myJsons[1].data,
+                loaded: true
+            })
+        }).catch(err => {
+            console.log(err)
         });
-        
     }
     render() {
-        if (!this.state.pageData) return <LoadingCircle/>;
+        if (!this.state.loaded) return <LoadingCircle />;
         const {
             welcomeImagesData,
-            iconBoxesData,
-        } = this.state.pageData;
-
-        const {impactData} = this.state.impactData;
-        const {events} = this.state.eventsData;
+            impactData,
+            iconQuickLinks,
+            events
+        } = this.state;
 
         return (
             <div className="boxed_wrapper">
-                
-                <WelcomeImages
-                    data={welcomeImagesData} title="MassEnergize"
-                />
-                <Graphs
-                    graphs={impactData}
-                    size={120}
-                />
-                <IconBoxTable
-                    title=""
-                    boxes={iconBoxesData}
-                />
-                <Events
-                    events={events}
-                />
-                
+
+                {welcomeImagesData ?
+                    <WelcomeImages
+                        data={welcomeImagesData} title="MassEnergize"
+                    /> : null
+                }
+                {impactData ?
+                    <Graphs
+                        graphs={impactData}
+                        size={120}
+                    /> : null
+                }
+                {iconQuickLinks ?
+                    <IconBoxTable
+                        title=""
+                        boxes={iconQuickLinks}
+                    /> : null
+                }
+                {events ?
+                    <Events
+                        events={events}
+                    /> : null
+                }
+
             </div>
         );
     }

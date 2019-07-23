@@ -103,7 +103,7 @@ ul.normal li {
 
 p {
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: large;
     color: #999;
     line-height: 26px;
     font-weight: 400;
@@ -255,7 +255,10 @@ textarea {
     padding: 0 38px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
-
+.thm-btn:disabled {
+    background:#aaa;
+    border:#aaa;
+}
 .thm-btn:hover {
     background: transparent;
     color: #8dc63f;
@@ -303,6 +306,15 @@ textarea {
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 
+.thm-btn.style-4:disabled {
+    background:#aaa;
+    border:#aaa;
+}
+.thm-btn.style-4:disabled:hover {
+    background:#aaa;
+    border:#aaa;
+    color:white;
+}
 .thm-btn.style-4:hover {
     background: transparent;
     color: #8dc63f;
@@ -6860,7 +6872,18 @@ textarea {
     font-weight: 400;
     color: #8dc63f;
 }
-
+.done-btn{
+    display:inline-block;
+    margin:auto;
+}
+.remove-btn{
+    display:inline-block;
+    margin:auto;
+}
+.edit-btn{
+    display:inline-block;
+    margin:auto;
+}
 .remove-btn .fa {
     display: inline-block;
     font-size: 24px;
@@ -9232,6 +9255,7 @@ article.slide-item.center {}
     border: solid 1px #aaa;
 }
 .profile-table td button{
+    display: block;
     margin: 5px auto;
 }
 .apexcharts-canvas { 

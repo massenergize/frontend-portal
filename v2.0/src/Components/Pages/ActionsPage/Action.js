@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import URLS from '../../api_v2'
 
 /**
  * Action Component is a single action for the action page, 
@@ -20,11 +21,11 @@ class Action extends React.Component {
     render() {
         if (this.shouldRender()) { //checks if the action should render or not
             return (
-                <div className="col-lg-4 col-md-6 col-sm-6 col-6" >
+                <div className="col-lg-6 col-md-12 col-sm-12 col-12" >
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
                             <Link to={this.props.match.url + "/" + this.props.id} >
-                                < img src={this.props.image} alt = ""/>
+                                < img src={this.props.image} alt="" />
                             </Link>
                             { /* animated section on top of the image */}
                             <figcaption className="overlay" >
@@ -65,12 +66,24 @@ class Action extends React.Component {
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <Link to="addtodo" className="thm-btn style-4 " > Add Todo </Link>
+                                            {!this.props.inCart(this.props.id) ?
+                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "TODO")}> Add Todo </button>
+                                                :
+                                                null
+                                            }
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            <Link to="addtodone" className="thm-btn style-4 "> Done It </Link>
+                                            {!this.props.inCart(this.props.id) ?
+                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "DONE")}> Done It </button>
+                                                : null
+                                            }
+                                            {this.props.inCart(this.props.id, "TODO") ?
+                                                <button className="thm-btn style-4" onClick={() => this.props.moveToDone(this.props.id)}> Done It </button>
+                                                :
+                                                null
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -96,9 +109,9 @@ class Action extends React.Component {
             tagSet.add(tag.id);
         });
 
-        for (var i in this.props.filters) {
-            var filter = this.props.filters[i]; //if any filter does not fit, return false
-            if (!this.filterFits(filter.tags, tagSet)) {
+        for (var i in this.props.tagCols) {
+            var tagCol = this.props.tagCols[i]; //if any filter does not fit, return false
+            if (!this.filterFits(tagCol.tags, tagSet)) {
                 return false;
             }
         }
@@ -107,9 +120,11 @@ class Action extends React.Component {
     //checks if the value of the search bar is in the title of the action
     searchFits(string) {
         var searchbar = document.getElementById('action-searchbar');
-        if (!searchbar) //if cant find the search bar just render everything
+        if (!searchbar || searchbar.value === '') //if cant find the search bar just render everything
             return true;
-        if (searchbar.value === '' || string.toLowerCase().includes(searchbar.value.toLowerCase())) {
+        if (!string)
+            return false;
+        if (string.toLowerCase().includes(searchbar.value.toLowerCase())) {
             return true;
         }
         return false;

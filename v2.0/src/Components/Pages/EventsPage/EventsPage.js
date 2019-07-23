@@ -1,10 +1,11 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
-import SideBar from '../../Menu/SideBar';
-import CONST from '../../Constants';
+import "react-datepicker/dist/react-datepicker.css"
+import SideBar from '../../Menu/SideBar'
+import URLS, { getJson } from '../../api_v2'
 import LoadingCircle from '../../Shared/LoadingCircle'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 /**
  * Renders the event page
@@ -15,7 +16,6 @@ class EventsPage extends React.Component {
         this.state = {
             startDate: null, //these start and end dates are selected by the datepickers in the sidebar
             endDate: null,   //when selected, they filter the actions to be between them
-            pageData: null,
             userData: null,
         }
         this.selectStartDate = this.selectStartDate.bind(this);
@@ -25,24 +25,27 @@ class EventsPage extends React.Component {
     }
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
-        fetch(CONST.URL.EVENTS).then(data => {
-            return data.json()
-        }).then(myJson => {
+        Promise.all([
+            getJson(URLS.USERS + "?email=" + this.props.auth.email),
+            getJson(URLS.EVENTS), //need to add community to this
+            getJson(URLS.TAG_COLLECTIONS + "?name=Categories"), //need to add community to this too
+        ]).then(myJsons => {
             this.setState({
-                pageData: myJson.pageData,
-                userData: myJson.userData,
-            });
+                ...this.state,
+                loaded: true,
+                user: myJsons[0].data[0],
+                events: myJsons[1].data,
+                tagCols: myJsons[2].data,
+            })
         }).catch(error => {
             console.log(error);
             return null;
         });
     }
+
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.pageData) return <LoadingCircle />;
-        const { //gets the actions and sidebar data out of page data
-            events
-        } = this.state.pageData;
+        if (!this.state.loaded) return <LoadingCircle />;
         return (
             <div className="boxed_wrapper">
                 {/* renders the sidebar and events columns */}
@@ -55,7 +58,7 @@ class EventsPage extends React.Component {
                                 </div>
                                 <div className="col-lg-9 col-md-7 col-12">
                                     <div className="outer-box sec-padd event-style2">
-                                        {this.renderEvents(events)}
+                                        {this.renderEvents(this.state.events)}
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +88,7 @@ class EventsPage extends React.Component {
      * @param events - json list of events
      */
     renderEvents(events) {
-        const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const now = new Date();
         //reads events into a list
         var eventsList = Object.keys(events).map(key => {
@@ -93,16 +96,20 @@ class EventsPage extends React.Component {
         });
         //sorts the list
         var sortedEvents = eventsList.sort((eventA, eventB) => {
-            const dateA = new Date(eventA.year, eventA.month - 1, eventA.day, eventA.hour, eventA.minute);
-            const dateB = new Date(eventB.year, eventB.month - 1, eventB.day, eventB.hour, eventB.minute);
-            if (((dateA - now) > 0 || this.isToday(dateA)) && ((dateB - now) > 0 || this.isToday(dateB))) {
-                return dateA - dateB; //if both dates are coming up (or are today), sort by oldest(closest to current date) to newest (furthest away from current date)
+            const dateA = new Date(eventA.start_date_and_time);
+            const dateAEnd = new Date(eventA.end_date_and_time);
+            const dateB = new Date(eventB.start_date_and_time);
+            const dateBEnd = new Date(eventB.end_date_and_time);
+
+            if (((dateA - now) > 0 || (dateAEnd - now) > 0) && ((dateB - now) > 0 || (dateBEnd - now) > 0)) {
+                return dateA - dateB; //if both dates are coming up/ are not over, sort by oldest(closest to current date) to newest (furthest away from current date)
             }
             return (dateB - now) - (dateA - now); //otherwise sort newest(most recently occured or upcoming) to oldest(least recently occured)
         });
         //maps the list to react/html code that renders each element
         return sortedEvents.map(event => {
-            const date = new Date(event.year, event.month - 1, event.day, event.hour, event.minute);
+            const date = new Date(event.start_date_and_time);
+            const endDate = new Date(event.end_date_and_time);
             if (this.shouldRender(event)) {
                 return (
                     <div className="item style-1 clearfix" key={event.id}>
@@ -110,16 +117,15 @@ class EventsPage extends React.Component {
                             {/* renders the image */}
                             <div className="col-lg-4 col-12">
                                 <figure className="img-holder">
-                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image} alt="" /></Link>
+                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image ? event.image.file : null} alt="" /></Link>
                                     {/* if the date has passed already the calender div should be all gray */}
-                                    <div className={(date - now > 0 || this.isToday(date)) ? "date" : "date old"}><span>{months[event.month]}<br />{event.day}</span></div>
+                                    <div className={(endDate - now > 0) ? "date" : "date old"}><span>{months[date.getMonth()]}<br />{date.getDate()}</span></div>
                                 </figure>
                             </div>
                             {/* renders the event text */}
                             <div className=" col-lg-8 col-12">
                                 <div className="lower-content">
-                                    <p> Organizer: {event.organizer} </p>
-                                    <Link to={this.props.match.url + "/" + event.id}><h4> {event.title} </h4></Link>
+                                    <Link to={this.props.match.url + "/" + event.id}><h4> {event.name} </h4></Link>
                                     <div className="text">
                                         <p> {event.description} </p>
                                     </div>
@@ -128,8 +134,19 @@ class EventsPage extends React.Component {
                             {/* renders the  date time and location of the event */}
                             <div className="col-12">
                                 <ul className="post-meta list_inline">
-                                    <li><i className="fa fa-clock-o"></i> {date.toLocaleString()} </li> |&nbsp;&nbsp;&nbsp;
-                                    <li><i className="fa fa-map-marker"></i> {event.address}</li>
+                                    {this.sameDay(date, endDate) ?
+                                        <li><i className="fa fa-clock-o"></i> {date.toLocaleString()} - {endDate.toLocaleTimeString()}</li>
+                                        :
+                                        <li><i className="fa fa-clock-o"></i> {date.toLocaleString()} - {endDate.toLocaleString()}</li>
+                                    }
+                                    {event.location ?
+                                        <li>
+                                            &nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
+                                            {event.location.street + ", " + event.location.city + " " + event.location.state}
+                                        </li>
+                                        :
+                                        null
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -139,14 +156,13 @@ class EventsPage extends React.Component {
         });
     }
     /**
-     * checks if a date is today ignoring time
+     * checks if a two dates are on the same day ignoring time
      * @param  someDate 
      */
-    isToday(someDate) {
-        const today = new Date()
-        return someDate.getDate() === today.getDate() &&
-            someDate.getMonth() === today.getMonth() &&
-            someDate.getFullYear() === today.getFullYear()
+    sameDay(someDate, someOtherDate) {
+        return someDate.getDate() === someOtherDate.getDate() &&
+            someDate.getMonth() === someOtherDate.getMonth() &&
+            someDate.getFullYear() === someOtherDate.getFullYear()
     }
     /**
      * changes the start date to the date chosen by the date selector
@@ -185,21 +201,22 @@ class EventsPage extends React.Component {
      * @param {*} event 
      */
     shouldRender(event) {
-        var date = new Date(event.year, event.month - 1, event.day, event.hour, event.minute);
+        var date = new Date(event.start_date_and_time);
+        var endDate = new Date(event.end_date_and_time);
 
         if (!(this.searchFits(event.title) || this.searchFits(event.description)))
             return false;
-        if (!this.showButtonFits(date))
+        if (!this.showButtonFits(date, endDate))
             return false;
-        if (!this.dateFits(date))
+        if (!this.dateFits(date, endDate))
             return false;
 
         var tagSet = new Set(); //create a set of the action's tag ids
         event.tags.forEach(tag => {
             tagSet.add(tag.id);
         });
-        for (var i in this.state.pageData.sidebar) {
-            var filter = this.state.pageData.sidebar[i]; //if any filter does not fit, return false
+        for (var i in this.state.tagsCols) {
+            var filter = this.tagCols[i]; //if any filter does not fit, return false
             if (!this.filterFits(filter.tags, tagSet)) { //only one tag in a filter collection needs to fit to make the filter fit
                 return false;
             }
@@ -218,7 +235,7 @@ class EventsPage extends React.Component {
 
         return false;
     }
-    showButtonFits(date) {
+    showButtonFits(date, endDate) {
         var now = new Date();
         var showAll = document.getElementById('show-all-button');
         var showUpcoming = document.getElementById('show-upcoming-button');
@@ -227,17 +244,17 @@ class EventsPage extends React.Component {
         if ((!showUpcoming.checked && !showAll.checked) || showAll.checked)
             return true;
         else if (showUpcoming.checked)
-            return (date - now > 0 || this.isToday(date));
+            return (date - now > 0 || endDate - now > 0);
         return false;
     }
-    dateFits(date) {
+    dateFits(startDate, endDate) {
         if (!this.state.startDate && !this.state.endDate)
             return true;
         if (!this.state.endDate)
-            return date.setHours(0, 0, 0, 0) >= this.state.startDate.setHours(0, 0, 0, 0);
+            return startDate >= this.state.startDate;
         if (!this.state.startDate)
-            return date.setHours(0, 0, 0, 0) <= this.state.endDate.setHours(0, 0, 0, 0);
-        return date.setHours(0, 0, 0, 0) >= this.state.startDate.setHours(0, 0, 0, 0) && date.setHours(0, 0, 0, 0) <= this.state.endDate.setHours(0, 0, 0, 0)
+            return endDate <= this.state.endDate.setHours(23, 59, 59, 99);
+        return endDate >= this.state.startDate && endDate <= this.state.endDate.setHours(23, 59, 59, 99)
     }
     //checks if any of the options are checked off in the filter
     //takes in the the filter and the actions' options for that filter
@@ -306,7 +323,7 @@ class EventsPage extends React.Component {
                     </div>
                 </div>
                 <SideBar
-                    filters={this.state.pageData.sidebar}
+                    tagCols={this.state.tagCols}
                     onChange={this.handleChange} //runs when any category is selected or unselected
                 />
             </div>
@@ -315,7 +332,7 @@ class EventsPage extends React.Component {
     handleChange() {
         this.forceUpdate();
     }
-    resetDates(){
+    resetDates() {
         this.setState({
             endDate: null,
             startDate: null,
@@ -323,4 +340,11 @@ class EventsPage extends React.Component {
         this.forceUpdate();
     }
 
-} export default EventsPage;
+}
+
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default connect(mapStoreToProps, null)(EventsPage);
