@@ -54,7 +54,6 @@ class TeamMembers extends React.Component {
 
     renderCarouselElements(teamMembers) {
         return teamMembers.map((member, key) => {
-            console.log(member);
             return (
                 <article className="col" key={key}>
                     <div className="single-team-member">
@@ -62,7 +61,7 @@ class TeamMembers extends React.Component {
                             <img src={member.imageLink} alt="" className="width-100"/>
                         </figure>
                         <div className="author-info text-center">
-                            <h4>{member.name}</h4>
+                            <h4>{member.full_name}</h4>
                             <p>{member.role}</p>
                             <p className="font-normal font-italic ">{member.description}</p>
                             <hr/>
