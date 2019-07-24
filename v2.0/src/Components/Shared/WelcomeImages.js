@@ -15,9 +15,9 @@ class WelcomeImages extends React.Component{
     
     render(){
         //works best with tall images from online, my images are too big(2-5mb) so they slow it down but these are good
-        var picture1 = this.props.data[0].image.file;
-        var picture2 = this.props.data[1].image.file;
-        var picture3 = this.props.data[2].image.file;
+        var picture1 = this.props.data[0].image.url;
+        var picture2 = this.props.data[1].image.url;
+        var picture3 = this.props.data[2].image.url;
 
         var bannerstyle; //checks the width and changes how many images are displayed based on that
         if(window.innerWidth > 1100){

@@ -4,7 +4,7 @@ const URLS = {
 	// ROOT: "http://localhost:8000"
 	//ROOT: "http://10.0.0.187:8000"
 }
-const COMM_ID = "2";
+const COMM_ID = "3";
 
 /**
  * These are all the api URLS, minus a few that need to have ids in the middle ie: v2/household/hid/actions

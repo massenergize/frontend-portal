@@ -24,7 +24,7 @@ class AboutUsPage extends React.Component {
 		]).then(myJsons => {
 			this.setState({
                 welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
-                videoLink: section(myJsons[0], "AboutUsVideo").image.file,
+                videoLink: section(myJsons[0], "AboutUsVideo").image.url,
                 paragraphContent: section(myJsons[0], "AboutUsDescription").description,
                 teamMembersData: myJsons[1].data.members,
                 donateMessage: section(myJsons[0], "DonateBar").description,
