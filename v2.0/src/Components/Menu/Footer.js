@@ -1,12 +1,13 @@
 import React from 'react'
 import FooterInfo from './FooterInfo'
 import FooterLinks from './FooterLinks'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import SubscribeForm from './SubscribeForm';
 /**
  * Footer section has place for links, 
  */
-class Footer extends React.Component{
-    render(){
+class Footer extends React.Component {
+    render() {
         return (
             <div className="d-flex flex-column">
                 <footer className="main-footer">
@@ -18,7 +19,7 @@ class Footer extends React.Component{
                                 <div className="row clearfix">
                                     {/* <!--Footer Column--> */}
                                     <FooterInfo
-                                        info={this.props.footerInfo? this.props.footerInfo : {}}
+                                        info={this.props.footerInfo ? this.props.footerInfo : {}}
                                     />
                                     {/* <!--Footer Column--> */}
                                     <FooterLinks
@@ -27,25 +28,7 @@ class Footer extends React.Component{
                                     />
                                     {/* <!--Footer Column--> */}
                                     <div className="col-12 col-md-4">
-                                        <div className="footer-widget contact-column text-center text-md-left">
-                                            <div className="section-title">
-                                                <b className="text-white">Subscribe to Newsletter</b>
-                                            </div>
-                                            <form action="/">
-                                                <input type="email" placeholder="Email address...."/>
-                                                <button type="submit"><i className="fa fa-paper-plane"></i></button>
-                                            </form>
-                                            <p>We don’t do mail to spam and your mail id is confidential.</p>
-
-                                            <ul className="social-icon">
-                                                <li><a href="/"><i className="fa fa-facebook"></i></a></li>
-                                                <li><a href="/"><i className="fa fa-twitter"></i></a></li>
-                                                <li><a href="/"><i className="fa fa-google-plus"></i></a></li>
-                                                <li><a href="/"><i className="fa fa-linkedin"></i></a></li>
-                                                <li><a href="/"><i className="fa fa-feed"></i></a></li>
-                                                <li><a href="/"><i className="fa fa-skype"></i></a></li>
-                                            </ul>
-                                        </div>
+                                        <SubscribeForm/>
                                     </div>
                                 </div>
                             </div>
