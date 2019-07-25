@@ -1,5 +1,5 @@
 import React from 'react'
-import CONST from '../../Constants.js';
+import URLS, {getJson, section} from '../../api_v2';
 import LoadingPage from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import {Link} from 'react-router-dom'
@@ -13,25 +13,26 @@ class StoriesPage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.STORIES).then(data => {
-            return data.json()
-        }).then(myJson => {
+        Promise.all([
+            getJson(URLS.PAGES + "?name=Testimonials"),
+            getJson(URLS.TESTIMONIALS),
+        ]).then(myJsons => {
             this.setState({
-                userData: myJson.userData,
-                pageData: myJson.pageData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
+                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
+                stories: myJsons[1].data,
+                loaded: true
+            })
+        }).catch(err => {
+            console.log(err)
         });
     }
 
     render() {
-        if(!this.state.pageData) return <LoadingPage/>;
+        if(!this.state.loaded) return <LoadingPage/>;
         
         const {
             welcomeImagesData,
-            stories
+            stories,
         } = this.state.pageData;
 
         return (
@@ -61,7 +62,7 @@ class StoriesPage extends React.Component {
                             <i className="fa fa-quote-left"></i>
                         </div>
                         <h4 className="title p-2">{story.title}</h4>
-                        <p className="p-1">{story.description}</p>
+                        <p className="p-1">{story.body}</p>
                         <div className="author">
                             <h4>{story.author}</h4>
                             <p>{story.location}</p>

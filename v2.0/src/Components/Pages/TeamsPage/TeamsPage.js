@@ -1,5 +1,5 @@
 import React from 'react'
-import CONST from '../../Constants.js';
+import URLS, {getJson, section} from '../../api_v2';
 import LoadingPage from '../../Shared/LoadingCircle';
 import PageTitle from '../../Shared/PageTitle';
 import Table from 'react-bootstrap/Table';
@@ -15,24 +15,24 @@ class TeamsPage extends React.Component {
         }
     }
     componentDidMount() {
-        fetch(CONST.URL.TEAMS).then(data => {
-            return data.json()
-        }).then(myJson => {
+        Promise.all([
+            getJson(URLS.TEAMS),
+        ]).then(myJsons => {
             this.setState({
-                pageData: myJson.pageData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
+                teams: myJsons[0].data,
+                loaded: true
+            })
+        }).catch(err => {
+            console.log(err)
         });
     }
 
     render() {
-        if(!this.state.pageData) return <LoadingPage/>;
+        if(!this.state.loaded) return <LoadingPage/>;
         
         const {
             teams
-        } = this.state.pageData;
+        } = this.state;
 
         return (
             <div className="boxed_wrapper p-5">
@@ -58,8 +58,8 @@ class TeamsPage extends React.Component {
     renderTeamsData(teamsData) {        
         return teamsData.map((obj) => {
             const popover = (
-                <Popover title={obj.teamName}>
-                    {obj.teamDescription}
+                <Popover title={obj.name}>
+                    {obj.description}
                 </Popover>
             );
             return (

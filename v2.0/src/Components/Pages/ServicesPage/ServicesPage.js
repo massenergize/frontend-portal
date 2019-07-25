@@ -1,5 +1,5 @@
 import React from 'react'
-import URLS, { getJson } from '../../api_v2'
+import URLS, { getJson, section} from '../../api_v2'
 import LoadingPage from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages';
 import {Link} from 'react-router-dom';
