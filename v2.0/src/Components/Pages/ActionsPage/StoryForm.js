@@ -7,7 +7,7 @@ import URLS from '../../api_v2'
 const INITIAL_STATE = {
     title: '',
     body: '',
-    message: 'Your mail id is confidential'
+    message: 'Add your own story'
 };
 
 class StoryForm extends React.Component {
@@ -23,18 +23,18 @@ class StoryForm extends React.Component {
         return (
             <div className="review-form">
                 <div className="tab-title-h4">
-                    <h4>Add Your Own Story</h4>
+                    <h4>{this.state.message}</h4>
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="field-label">
                         <p>Story Title*</p>
-                        <input type="text" name="fname" name="title" value={this.state.title} onChange={this.onChange} />
+                        <input type="text" name="fname" name="title" value={this.state.title} onChange={this.onChange} required/>
                     </div>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="field-label">
                                 <p>Your Story*</p>
-                                <textarea name="review" name="body" value={this.state.body} onChange={this.onChange}></textarea>
+                                <textarea name="review" name="body" value={this.state.body} onChange={this.onChange} required></textarea>
                             </div>
                         </div>
                     </div>
@@ -75,6 +75,19 @@ class StoryForm extends React.Component {
             return response.json()
         }).then(json => {
             console.log(json);
+            if(json.success){
+                this.setState({
+                    ...INITIAL_STATE,
+                    message: "Thank you for submitting your story!"
+                })
+                this.props.addStory(json.data);
+            }else{
+                this.setState({
+                    ...INITIAL_STATE,
+                    message: "We are sorry, but you can only submit one story about this Action"
+                })
+            }
+
         })
     }
 }

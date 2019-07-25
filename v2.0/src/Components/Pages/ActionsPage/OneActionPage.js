@@ -111,8 +111,6 @@ class OneActionPage extends React.Component {
     }
     /**
      * renders the action on the page
-     * @param {render} actions  the list of actions to search through
-     * @param {*} id            the id of the action we are going to diplay
      */
     renderAction(action) {
         return (
@@ -163,7 +161,7 @@ class OneActionPage extends React.Component {
                         </div>
                         {/* action image */}
                         <div className="col-lg-6 col-md-12"><div className="img-box">
-                            <img src={action.image ? action.image.file : null} alt="" data-imagezoom="true" className="img-responsive" style={{ marginTop: "20px" }} />
+                            <img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive" style={{ marginTop: "20px" }} />
                         </div></div>
                     </div>
                 </div>
@@ -220,7 +218,7 @@ class OneActionPage extends React.Component {
                             </div>
                             {/* form to fill out to tell your own story */}
                             {this.state.user?
-                            <StoryForm uid={this.state.user.id} aid={action.id} /> 
+                            <StoryForm uid={this.state.user.id} aid={action.id} addStory={this.addStory}/> 
                             :
                             <p>
                                 <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
@@ -239,6 +237,16 @@ class OneActionPage extends React.Component {
         })
     }
 
+
+
+    addStory = (story) => { 
+        this.setState({
+            stories: [
+                ...this.state.stories,
+                story
+            ]
+        })
+    }
     renderStories(stories) {
         if (stories.length === 0)
             return <p> No stories about this action yet </p>;
@@ -249,11 +257,11 @@ class OneActionPage extends React.Component {
                 </div> */}
                 {Object.keys(stories).map((key) => {
                     const story = stories[key];
-                    const date = new Date(story.date);
+                    const date = new Date(story.created_at);
                     return (
                         <div className="single-review-box" key={key}>
                             <div className="img-holder">
-                                <img src="images/shop/thumb1.jpg" alt="" />
+                                <img src="" alt="" />
                             </div>
                             <div className="text-holder">
                                 <div className="top">
