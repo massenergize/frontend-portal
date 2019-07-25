@@ -74,7 +74,7 @@ class Events extends React.Component {
                             </div>
                         </div>
                         <div className="col-md-3 col-sm-2 col-xs-12">
-                            <Link to="#" className="thm-btn float_right">All Events</Link>
+                            <Link to="events" className="thm-btn float_right">All Events</Link>
                         </div>
                     </div>
                     <div className="row">
