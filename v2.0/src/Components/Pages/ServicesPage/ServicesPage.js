@@ -13,13 +13,12 @@ class ServicesPage extends React.Component {
     }
     componentDidMount() {
         Promise.all([
-            getJson(URLS.VENDORS + "?name=Home"),
+            getJson(URLS.PAGES + "?name=Services"),
+            getJson(URLS.VENDORS),
 		]).then(myJsons => {
 			this.setState({
-                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
-                impactData: myJsons[0].data[0].sections[1].graphs,
-                iconQuickLinks: myJsons[0].data[0].sections[2].cards,
-                events: myJsons[1].data,
+                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
+                vendors: myJsons[1].data,
 				loaded: true
 			})
 		}).catch(err => {
@@ -39,12 +38,12 @@ class ServicesPage extends React.Component {
     }
 
     render() {
-        if(!this.state.pageData) return <LoadingPage/>;
+        if(!this.state.loaded) return <LoadingPage/>;
         
         const {
             welcomeImagesData,
             vendors
-        } = this.state.pageData;
+        } = this.state;
 
         return (
             <div className="boxed_wrapper">
@@ -67,28 +66,29 @@ class ServicesPage extends React.Component {
                     <div className="card rounded-0 spacing">
                         <div className="card-body">
                             <div className="col-12 text-center">
-                                <img className="w-100" src={vendor.logo}/>
-                                <h3 className="pt-3">{vendor.vendor}</h3>
-                                <p className="action-tags">
+                                <img className="w-100" src={vendor.logo.url}/>
+                                <h3 className="pt-3">{vendor.name}</h3>
+                                {/* <p className="action-tags">
                                     {vendor.categories.map((category) => {
                                         return (<span key={category}>{category}</span>)  
                                     })}
-                                </p>
+                                </p> */}
                             </div>
                             <div className="col-12 mt-3">
                                 <span><b>Services:</b></span>
                                 <ul className="normal">
                                     {vendor.services.map((action) => {
-                                        return <li key={vendor.vendor + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.title}</u></Link></li>;
+                                        // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;
+                                        return <li key={vendor.name + "-" + action.id}>{action.name}</li>;
                                     })}
                                 </ul>
                             </div>
                             <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
-                                <span className="fa fa-map-pin"></span> {vendor.geographicServiceArea}
+                                <span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
                             </div>
                             <div className="w-100 p-2 text-center">
-                                <a href={"//" + vendor.website} target="_blank" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
-                                <a href={"mail://" + vendor.contactEmail} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span>&nbsp;<span>{vendor.contactEmail}</span></a>
+                                <a href={"//" + vendor.key_contact.user_info.website} target="_blank" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
+                                <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
                             </div>
                         </div>
                     </div>

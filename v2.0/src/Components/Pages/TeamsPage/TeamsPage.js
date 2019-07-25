@@ -16,7 +16,7 @@ class TeamsPage extends React.Component {
     }
     componentDidMount() {
         Promise.all([
-            getJson(URLS.TEAMS),
+            getJson(URLS.TEAMS_STATS),
         ]).then(myJsons => {
             this.setState({
                 teams: myJsons[0].data,
@@ -55,22 +55,34 @@ class TeamsPage extends React.Component {
         );
     }
 
-    renderTeamsData(teamsData) {        
-        return teamsData.map((obj) => {
+    renderTeamsData(teamsData) {
+        var teamsSorted = teamsData.slice(0);
+        for(let i = 0; i < teamsSorted.length; i++) {
+            let households = teamsSorted[i].households;
+            let actions_completed = teamsSorted[i].actions_completed;
+            const avrg = parseInt(Number(households) / Number(actions_completed));
+            teamsSorted[i]["avrgActionsPerHousehold"] = (!isNaN(avrg)) ? avrg : 0;
+        }        
+
+        teamsSorted = teamsSorted.sort((a, b) => {
+            return b.avrgActionsPerHousehold - a.avrgActionsPerHousehold;
+        });
+
+        return teamsSorted.map((obj) => {
             const popover = (
-                <Popover title={obj.name}>
-                    {obj.description}
+                <Popover title={obj.team.name}>
+                    {obj.team.description}
                 </Popover>
             );
             return (
                 <tr>
-                    <td>{obj.teamName} &nbsp;
+                    <td>{obj.team.name} &nbsp;
                         <OverlayTrigger trigger="hover" placement="right" overlay={popover}><span className="fa fa-info-circle" style={{color: "#428a36"}}></span></OverlayTrigger>
                     </td>
-                    <td>{obj.numHouseholds}</td>
-                    <td>{obj.numActionsCompleted}</td>
-                    <td>{obj.avrgNumActions}</td>
-                    <td>{obj.ghgSaved}</td>
+                    <td>{obj.households}</td>
+                    <td>{obj.actions_completed}</td>
+                    <td>{obj.avrgActionsPerHousehold}</td>
+                    {/* <td>{obj.ghgSaved}</td> */}
                 </tr>
             )
         });

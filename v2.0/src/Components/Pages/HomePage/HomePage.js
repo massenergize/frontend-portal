@@ -28,7 +28,7 @@ class HomePage extends React.Component {
         ]).then(myJsons => {
             this.setState({
                 welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
-                impactData: section(myJsons[0], "Graph Section").graphs,
+                impactData: section(myJsons[0], "Graph Section").graphs[0],
                 iconQuickLinks: section(myJsons[0], "IconQuickLinks").cards,
                 events: myJsons[1].data,
                 loaded: true

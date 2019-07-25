@@ -1,7 +1,7 @@
 // Defining URLS object for manipulation...
 const URLS = {
-	//ROOT: "http://api.massenergize.org"
-	ROOT: "http://localhost:8000"
+	ROOT: "http://api.massenergize.org"
+	// ROOT: "http://localhost:8000"
 	//ROOT: "http://10.0.0.187:8000"
 }
 const COMM_ID = "3";
@@ -74,6 +74,7 @@ URLS["TAG_COLLECTIONS"] = URLS.V2 + "tag-collections";
 URLS["TAG_COLLECTION"] = URLS.V2 + "tag-collection";  //add the id after this
 URLS["TEAMS"] = URLS.COMMUNITY + "teams";
 URLS["TEAM"] = URLS.COMMUNITY + "team"; //add the id after this
+URLS["TEAMS_STATS"] = URLS.V2 + "teams/stats?community__id=" + COMM_ID;
 URLS["TESTIMONIALS"] = URLS.V2 + "testimonials";
 URLS["TESTIMONIAL"] = URLS.V2 + "testimonial"; //add the id after this
 URLS["USERS"] = URLS.V2 + "users";

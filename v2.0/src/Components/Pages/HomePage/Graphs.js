@@ -20,7 +20,7 @@ class Graphs extends React.Component {
             return <div>No Graphs to Display</div>
         }
         return Object.keys(graphs).map(key=> {
-            var graph = graphs[key][0]; 
+            var graph = graphs[key]; 
             if(graph.data == null) {
                 console.log(graph);
             }
