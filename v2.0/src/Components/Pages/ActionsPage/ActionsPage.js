@@ -59,7 +59,6 @@ class ActionsPage extends React.Component {
                 done: myJsons[1].data,
                 cartLoaded: true,
             })
-            console.log(this.state);
         }).catch(err => {
             console.log(err)
         });
@@ -100,7 +99,7 @@ class ActionsPage extends React.Component {
                                     :
                                     <div>
                                         <p>
-                                            <Link to='/login'> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                            <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
                                         </p>
                                     </div>
                                 }
@@ -133,7 +132,7 @@ class ActionsPage extends React.Component {
                 id={action.id}
                 title={action.title}
                 description={action.about}
-                image={action.image ? action.image.file : null}
+                image={action.image ? action.image.url : null}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
 
                 tags={action.tags}
@@ -157,7 +156,6 @@ class ActionsPage extends React.Component {
      * These are the cart functions
      */
     inCart = (actionId, cart) => {
-        console.log(cart);
         const checkTodo = this.state.todo.filter(actionRel => {return actionRel.action.id === actionId});
         if(cart==="TODO"){ return checkTodo.length > 0; } 
 

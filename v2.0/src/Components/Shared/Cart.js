@@ -46,7 +46,7 @@ class Cart extends React.Component {
                 <tr key={key}>
                     <td colSpan="1" className="prod-column">
                         <div className="column-box">
-                            <figure className="prod-thumb"><Link to={"/actions/" + action.id}><img src={action.image? action.image.file : null} alt="" /></Link></figure>
+                            <figure className="prod-thumb"><Link to={"/actions/" + action.id}><img src={action.image? action.image.url : null} alt="" /></Link></figure>
                         </div>
                     </td>
                     <td colSpan="2" className="prod-column">

@@ -60,12 +60,7 @@ class OneEventPage extends React.Component {
                         <div className="row">
                             <div className="col-12 col-lg-6">
                                 <div className="img-box">
-                                    <img src={event.image} alt="" />
-                                    <div className="countdown-timer">
-                                        <div className="default-coundown">
-                                            <div className="countdown time-countdown-two" data-countdown-time="2017/07/07"></div>
-                                        </div>
-                                    </div>
+                                    <img src={event.image ? event.image.url : null} alt="" />
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6">
@@ -88,9 +83,16 @@ class OneEventPage extends React.Component {
                                         </div>
                                         <ul>
                                             <li key='time'><i className="fa fa-clock-o"></i><b>Date:</b>{date.toLocaleString()}
-                                                                                            <b> - </b>{endDate.toLocaleString()}
+                                                <b> - </b>{endDate.toLocaleString()}
                                             </li>
-                                            <li key='venue'><i className="fa fa-map-marker"></i><b>Venue:</b> {event.address}</li>
+                                            {event.location ?
+                                                <li>
+                                                    <i className="fa fa-map-marker" />
+                                                    <b>Venue:</b> {event.location.street + ", " + event.location.city + " " + event.location.state}
+                                                </li>
+                                                :
+                                                null
+                                            }
                                         </ul>
                                     </div>
                                 </div>

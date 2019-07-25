@@ -5,6 +5,7 @@ import { isLoaded } from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Cart from '../../Shared/Cart';
+import StoryForm from './StoryForm';
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -16,11 +17,11 @@ class OneActionPage extends React.Component {
         this.state = {
             loaded: false,
             user: null,
-            action: null, 
-            tagCols: [],
+            action: null,
             todo: [],
             done: [],
-            cartLoaded:false
+            stories: [],
+            cartLoaded: false
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -29,13 +30,13 @@ class OneActionPage extends React.Component {
         Promise.all([
             getJson(URLS.USERS + "?email=" + this.props.auth.email),
             getJson(URLS.ACTION + "/" + this.props.match.params.id), //need to add community to this
-            getJson(URLS.TAG_COLLECTIONS), //need to add community to this too
+            getJson(URLS.ACTION + "/" + this.props.match.params.id + "/testimonials"), //need to add community to this
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
                 user: myJsons[0].data[0],
                 action: myJsons[1].data,
-                tagCols: myJsons[2].data,
+                stories: myJsons[2].data,
                 loaded: true,
             })
         }).catch(error => {
@@ -49,11 +50,11 @@ class OneActionPage extends React.Component {
             getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=DONE"),
         ]).then(myJsons => {
             this.setState({
+                ...this.state,
                 todo: myJsons[0].data,
                 done: myJsons[1].data,
                 cartLoaded: true,
             })
-            console.log(this.state);
         }).catch(err => {
             console.log(err)
         });
@@ -61,11 +62,11 @@ class OneActionPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
-            return <LoadingCircle />;
+        if (!isLoaded(this.props.auth)){ //if the auth isn't loaded wait for a bit
+            return <LoadingCircle/>;
         }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) { 
             this.componentDidMount();
             return <LoadingCircle />;
         }
@@ -74,9 +75,12 @@ class OneActionPage extends React.Component {
             this.loadCart();
             return <LoadingCircle />;
         }
+        if(!this.state.action){
+            this.componentDidMount();
+            return <LoadingCircle />;
+        }
         return (
             <div className="boxed_wrapper">
-
                 <section className="shop-single-area">
                     <div className="container">
                         <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
@@ -94,7 +98,7 @@ class OneActionPage extends React.Component {
                                 :
                                 <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
                                     <p>
-                                        <Link to='/login'> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                        <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
                                     </p>
                                 </div>
                             }
@@ -209,110 +213,21 @@ class OneActionPage extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {/* Reviews */}
                         <div className="tab-pane" id="review">
                             <div className="review-box">
-                                <div className="tab-title-h4">
-                                    <h4>2 Reviews For Bedroom Lamp</h4>
-                                </div>
-                                {/* <!--Start single review box--> */}
-                                <div className="single-review-box">
-                                    <div className="img-holder">
-                                        <img src="images/shop/thumb1.jpg" alt="" />
-                                    </div>
-                                    <div className="text-holder">
-                                        <div className="top">
-                                            <div className="name pull-left">
-                                                <h4>Steven Rich – Sep 17, 2016:</h4>
-                                            </div>
-                                            <div className="review-box pull-right">
-                                                <ul>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="text">
-                                            <p>How all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!--End single review box-->    */}
-
-                                {/* <!--Start single review box--> */}
-                                <div className="single-review-box">
-                                    <div className="img-holder">
-                                        <img src="images/shop/thumb2.jpg" alt="" />
-                                    </div>
-                                    <div className="text-holder">
-                                        <div className="top">
-                                            <div className="name pull-left">
-                                                <h4>William Cobus – Aug 21, 2016:</h4>
-                                            </div>
-                                            <div className="review-box pull-right">
-                                                <ul>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                    <li><i className="fa fa-star"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="text">
-                                            <p>there anyone who loves or pursues or desires to obtain pain itself, because it is pain, but because occasionally circumstances occur some great pleasure.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!--End single review box-->    */}
+                                {/* Reviews */}
+                                {this.renderStories(this.state.stories)}
                             </div>
                             {/* form to fill out to tell your own story */}
-                            <div className="review-form">
-                                <div className="tab-title-h4">
-                                    <h4>Add Your Own Story</h4>
-                                </div>
-                                <form action="#">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="field-label">
-                                                <p>First Name*</p>
-                                                <input type="text" name="fname" placeholder="" />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="field-label">
-                                                <p>Last Name*</p>
-                                                <input type="text" name="lname" placeholder="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="field-label">
-                                                <p>Email*</p>
-                                                <input type="text" name="email" placeholder="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="field-label">
-                                                <p>Your Review*</p>
-                                                <textarea name="review" placeholder=""></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <button className="thm-btn bg-cl-1" type="submit">Submit Now</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                            {this.state.user?
+                            <StoryForm uid={this.state.user.id} aid={action.id} /> 
+                            :
+                            <p>
+                                <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
+                            </p>
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -322,6 +237,40 @@ class OneActionPage extends React.Component {
         return Object.keys(tags).map((key) => {
             return <span key={key}> {tags[key].name} </span>;
         })
+    }
+
+    renderStories(stories) {
+        if (stories.length === 0)
+            return <p> No stories about this action yet </p>;
+        return (
+            <>
+                {/* <div className="tab-title-h4">
+                    <h4>{stories.length} Stories about this Action</h4>
+                </div> */}
+                {Object.keys(stories).map((key) => {
+                    const story = stories[key];
+                    const date = new Date(story.date);
+                    return (
+                        <div className="single-review-box" key={key}>
+                            <div className="img-holder">
+                                <img src="images/shop/thumb1.jpg" alt="" />
+                            </div>
+                            <div className="text-holder">
+                                <div className="top">
+                                    <div className="name pull-left">
+                                        <h4>{story.user.full_name} – {date.toLocaleDateString()}:</h4>
+                                    </div>
+                                </div>
+                                <div className="text">
+                                    <h6>{story.title}</h6>
+                                    <p>{story.body}</p>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </>
+        );
     }
     // on change in any category or tag checkbox update the actionsPage
     handleChange() {
@@ -345,7 +294,6 @@ class OneActionPage extends React.Component {
      */
 
     inCart = (actionId, cart) => {
-        console.log(cart);
         const checkTodo = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "TODO") { return checkTodo.length > 0; }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 import SignOutButton from './SignOutButton'
 import Cart from '../../Shared/Cart'
@@ -9,6 +9,7 @@ import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS, { getJson } from '../../api_v2'
 import { isLoaded } from 'react-redux-firebase';
+import AddingHouseholdForm from './AddingHouseholdForm';
 // import { watchFile } from 'fs';
 
 
@@ -22,21 +23,21 @@ class ProfilePage extends React.Component {
             todo: [],
             done: [],
             households: [],
+            selectedHousehold: null,
+            addingHH: false,
+            addingCom: false,
         }
     }
     componentDidMount() {
         Promise.all([
-            getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            getJson(URLS.USER + "/e/"+this.props.auth.email+"/actions"+"?status=TODO"),
-            getJson(URLS.USER + "/e/"+this.props.auth.email+"/actions"+"?status=DONE"),
-            getJson(URLS.USER + "/e/"+this.props.auth.email+"/households")
+            getJson(URLS.USER + "/e/" + this.props.auth.email),
+            getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
+            getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
         ]).then(myJsons => {
-            console.log(myJsons[0]);
             this.setState({
-                user: myJsons[0].data[0],
+                user: myJsons[0].data,
                 todo: myJsons[1].data,
                 done: myJsons[2].data,
-                households: myJsons[3].data,
                 loaded: true
             })
         }).catch(err => {
@@ -45,18 +46,17 @@ class ProfilePage extends React.Component {
     }
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)){ //if the auth isn't loaded wait for a bit
-            return <LoadingCircle/>;
+        if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
+            return <LoadingCircle />;
         }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) { 
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
             this.componentDidMount();
-            return <LoadingCircle/>;
+            return <LoadingCircle />;
         }
         if (!this.state.loaded) return <LoadingCircle />;
         const { auth } = this.props;
         const { user } = this.state;
-        console.log(this.state.households);
         if (!auth.uid) return <Redirect to='/login' />
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
@@ -71,7 +71,7 @@ class ProfilePage extends React.Component {
                                 </div>
                                 :
                                 "Your Profile"
-                            } </h3>
+                            } <SignOutButton className="float_right" /> </h3> 
                             <section className="fact-counter style-2 sec-padd" >
                                 <div className="container">
                                     <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
@@ -83,7 +83,7 @@ class ProfilePage extends React.Component {
                                                 <Counter end={this.state.todo.length} icon={"icon-money"} title={"Actions To Do"} />
                                             </div>
                                             <div className="column counter-column col-lg-4 col-6"  >
-                                                <Counter end={this.state.done.length*10} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+                                                <Counter end={this.state.done.length * 10} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
                                             </div>
                                         </div>
                                     </div>
@@ -92,47 +92,46 @@ class ProfilePage extends React.Component {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-lg-6 col-12">
-                                        <table className="profile-table">
+                                        <table className="profile-table" style = {{width: '100%'}}>
                                             <tbody>
                                                 <tr>
                                                     <th> Your Communities </th>
                                                     <th></th>
                                                 </tr>
+                                                {this.renderCommunities(user.communities)}
                                                 <tr>
-                                                    <td>Wayland</td>
-                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Concord</td>
-                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={2}><button className="thm-btn">Join another Community</button></td>
+                                                    <td colSpan={2}><button className="thm-btn" disabled>Join another Community</button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                     <div className="col-lg-6 col-12">
-                                        <table className="profile-table">
+                                        <table className="profile-table" style = {{width: '100%'}}>
                                             <tbody>
                                                 <tr>
+                                                    <th />
                                                     <th> Your Households </th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th />
+                                                    <th />
                                                 </tr>
+                                                {this.renderHouseholds(user.households)}
                                                 <tr>
-                                                    <td>Home</td>
-                                                    <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
-                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                                                    <td colSpan={4}>
+                                                        {this.state.addingHH ?
+                                                            <>
+                                                                <AddingHouseholdForm user={this.state.user} addHousehold={this.addHousehold} />
+                                                                <button
+                                                                    className="thm-btn"
+                                                                    onClick={() => this.setState({ addingHH: !this.state.addingHH })}
+                                                                    style={{ width: '99%' }}>Cancel
+                                                                    </button>
+                                                            </>
+                                                            :
+                                                            <button className="thm-btn" onClick={() => this.setState({ addingHH: !this.state.addingHH })}>Add Another Household</button>
+                                                        }
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Guest</td>
-                                                    <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
-                                                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={3}><button className="thm-btn">Add Another Household</button></td>
-                                                </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -140,21 +139,55 @@ class ProfilePage extends React.Component {
                             </div>
                             <br />
                             <br />
-                            <SignOutButton className="float_right" />
                         </div>
                         {/* makes the todo and completed actions carts */}
                         <div className="col-lg-4 col-md-5 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                        <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
-                                        <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
+                            <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
+                            <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
                         </div>
                     </div>
                 </div>
             </div>
         );
     }
+    renderCommunities(communities) {
+        return Object.keys(communities).map(key => {
+            const community = communities[key]
+            return (<tr key={key}>
+                <td> <a href={'//' + community.subdomain + '.massenergize.org'}> {community.name} </a></td>
+                <td> <button className="remove-btn"> <i className="fa fa-trash"></i></button> </td>
+            </tr>
+            );
+        })
+    }
+
+    renderHouseholds(households) {
+        return Object.keys(households).map(key => {
+            const house = households[key]
+            return (
+                <tr key={key}>
+                    <td><input type='radio' /></td>
+                    <td>{house.name}</td>
+                    <td><button className="edit-btn"> <i className="fa fa-edit"></i> </button></td>
+                    <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                </tr>
+            );
+        })
+    }
 
 
+    addHousehold = (household) => {
+        this.setState({
+            user: {
+                ...this.state.user,
+                households: [
+                    ...this.state.user.households,
+                    household
+                ]
 
+            }
+        });
+    }
     /**
      * Cart Functions
      */

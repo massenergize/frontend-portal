@@ -117,7 +117,7 @@ class EventsPage extends React.Component {
                             {/* renders the image */}
                             <div className="col-lg-4 col-12">
                                 <figure className="img-holder">
-                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image ? event.image.file : null} alt="" /></Link>
+                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image ? event.image.url : null} alt="" /></Link>
                                     {/* if the date has passed already the calender div should be all gray */}
                                     <div className={(endDate - now > 0) ? "date" : "date old"}><span>{months[date.getMonth()]}<br />{date.getDate()}</span></div>
                                 </figure>

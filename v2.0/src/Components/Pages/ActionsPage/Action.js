@@ -49,10 +49,10 @@ class Action extends React.Component {
                             <div className="price-box2" >
                                 <div className="clearfix" >
                                     <div className="float_left">
-                                        Impact:<span>{this.renderTagBar(this.getTag("impacts"))}</span>
+                                        Impact:<span>{this.renderTagBar(this.getTag(3))}</span>
                                     </div>
                                     <div className="float_right" >
-                                        Difficulty:<span> {this.renderTagBar(this.getTag("difficulties"))} </span>
+                                        Difficulty:<span> {this.renderTagBar(this.getTag(2))} </span>
                                     </div>
                                 </div>
                             </div>
@@ -145,16 +145,13 @@ class Action extends React.Component {
     }
 
     getTag(collection) {
-        for (var i in this.props.tags) {
-            var tag = this.props.tags[i];
-            if (tag.collection === collection)
-                return tag.name;
-        }
-        return "";
+       const tags = this.props.tags.filter(tag => tag.tag_collection===collection);
+       console.log(tags);
+       return tags? tags[0] : null
     }
 
     renderTagBar(tag) {
-        if (tag === "Low") {
+        if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
             return (
                 <div>
                     <div className="tag-bar one">
@@ -162,7 +159,7 @@ class Action extends React.Component {
                 </div>
             );
         }
-        if (tag === "Medium") {
+        if (tag.name.toLowerCase() === "medium") {
             return (
                 <div>
                     <div className="tag-bar one" />
@@ -170,7 +167,7 @@ class Action extends React.Component {
                 </div>
             );
         }
-        if (tag === "High") {
+        if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase()==="hard") {
             return (
                 <div>
                     <div className="tag-bar one" > </div>

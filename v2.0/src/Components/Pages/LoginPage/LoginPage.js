@@ -2,34 +2,21 @@ import React from 'react'
 import CONST from '../../Constants'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import LoginForm from './LoginForm'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router'
 
 class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userData: null,
-        }
-    }
-    //gets the data from the api url and puts it in pagedata and menudata
-    componentDidMount() {
-        fetch(CONST.URL.MENU).then(data => {
-            return data.json()
-        }).then(myJson => {
-            this.setState({
-                userData: myJson.userData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
-        });
-    }
-
     render() { //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.userData) return <LoadingCircle />;
-        
+        //pull form from the url
+        const params = new URLSearchParams(this.props.location.search)
+        const returnpath = params.get('returnpath');
+        console.log(returnpath)
+        if(returnpath){
+            if (this.props.auth.uid) return <Redirect to={returnpath} />;
+        }
+        if (this.props.auth.uid) return <Redirect to='/profile' />;
         return (
             <div className="boxed_wrapper">
-                
                 <section className="register-section sec-padd-top">
                     <div className="container">
                         <div className="row">
@@ -44,4 +31,11 @@ class LoginPage extends React.Component {
             </div>
         );
     }
-} export default LoginPage;
+}
+
+const mapStoreToProps = (store) => {
+    return {
+        auth: store.firebase.auth
+    }
+}
+export default connect(mapStoreToProps)(LoginPage);
