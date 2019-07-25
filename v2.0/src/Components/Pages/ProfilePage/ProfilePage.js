@@ -34,12 +34,19 @@ class ProfilePage extends React.Component {
             getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
             getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
         ]).then(myJsons => {
-            this.setState({
-                user: myJsons[0].data,
-                todo: myJsons[1].data,
-                done: myJsons[2].data,
-                loaded: true
-            })
+            if(myJsons[0].success && myJsons[0].data){
+                this.setState({
+                    user: myJsons[0].data,
+                    todo: myJsons[1].data,
+                    done: myJsons[2].data,
+                    loaded: true
+                })
+            }else{
+                if(isLoaded(this.props.auth))
+                    this.setState({
+                        notRegistered: true
+                    });
+            }
         }).catch(err => {
             console.log(err)
         });
@@ -49,6 +56,10 @@ class ProfilePage extends React.Component {
         if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
             return <LoadingCircle />;
         }
+        if (!this.props.auth.uid) return <Redirect to='/login' />
+
+        if(this.state.notRegistered)
+            return <Redirect to='/register?form=2'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
         if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
             this.componentDidMount();
@@ -57,7 +68,6 @@ class ProfilePage extends React.Component {
         if (!this.state.loaded) return <LoadingCircle />;
         const { auth } = this.props;
         const { user } = this.state;
-        if (!auth.uid) return <Redirect to='/login' />
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
         return (

@@ -153,7 +153,7 @@ class RegisterFormBase extends React.Component {
         const { auth } = this.props;
         const body = {
             "full_name": firstName + ' ' +  lastName,
-            "preferred_name": preferredName,
+            "preferred_name": preferredName === ""? firstName : preferredName,
             "email": auth.email,
             // "id": auth.uid,
             "is_vendor": serviceProvider,
