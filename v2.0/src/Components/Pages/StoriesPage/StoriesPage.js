@@ -8,8 +8,7 @@ class StoriesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageData: null,
-            userData: null,
+            loaded: null,
         }
     }
     componentDidMount() {
@@ -18,7 +17,7 @@ class StoriesPage extends React.Component {
             getJson(URLS.TESTIMONIALS),
         ]).then(myJsons => {
             this.setState({
-                welcomeImagesData: myJsons[0].data[0].sections[0].slider[0].slides,
+                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
                 stories: myJsons[1].data,
                 loaded: true
             })
@@ -33,7 +32,7 @@ class StoriesPage extends React.Component {
         const {
             welcomeImagesData,
             stories,
-        } = this.state.pageData;
+        } = this.state;
 
         return (
             <div className="boxed_wrapper">
@@ -64,10 +63,10 @@ class StoriesPage extends React.Component {
                         <h4 className="title p-2">{story.title}</h4>
                         <p className="p-1">{story.body}</p>
                         <div className="author">
-                            <h4>{story.author}</h4>
-                            <p>{story.location}</p>
+                            <h4>{story.user.full_name}</h4>
+                            {/* <p>{story.location}</p> */}
                         </div>
-                        {(story.actionId) ? <p><Link to={`/actions/${story.actionId}`} className="font-normal"><u>Linked Action</u></Link></p> : null}
+                        {(story.action) ? <p><Link to={`/actions/${story.action.id}`} className="font-normal"><u>Linked Action</u></Link></p> : null}
                     </div>
                 </div>
             );
