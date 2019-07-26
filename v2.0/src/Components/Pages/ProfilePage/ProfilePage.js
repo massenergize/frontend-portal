@@ -21,7 +21,6 @@ class ProfilePage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
-            user: null,
             todo: [],
             done: [],
             households: [],
@@ -32,15 +31,13 @@ class ProfilePage extends React.Component {
     }
     componentDidMount() {
         Promise.all([
-            getJson(URLS.USER + "/e/" + this.props.auth.email),
             getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
             getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
         ]).then(myJsons => {
             if(myJsons[0].success && myJsons[0].data){
                 this.setState({
-                    user: myJsons[0].data,
-                    todo: myJsons[1].data,
-                    done: myJsons[2].data,
+                    todo: myJsons[0].data,
+                    done: myJsons[1].data,
                     loaded: true
                 })
             }else{
@@ -63,13 +60,13 @@ class ProfilePage extends React.Component {
         if(this.state.notRegistered)
             return <Redirect to='/register?form=2'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
             this.componentDidMount();
             return <LoadingCircle />;
         }
         if (!this.state.loaded) return <LoadingCircle />;
         const { auth } = this.props;
-        const { user } = this.state;
+        const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
         return (
@@ -131,7 +128,7 @@ class ProfilePage extends React.Component {
                                                     <td colSpan={4}>
                                                         {this.state.addingHH ?
                                                             <>
-                                                                <AddingHouseholdForm user={this.state.user} addHousehold={this.addHousehold} />
+                                                                <AddingHouseholdForm user={this.props.user} addHousehold={this.addHousehold} />
                                                                 <button
                                                                     className="thm-btn"
                                                                     onClick={() => this.setState({ addingHH: !this.state.addingHH })}
@@ -191,9 +188,9 @@ class ProfilePage extends React.Component {
     addHousehold = (household) => {
         this.setState({
             user: {
-                ...this.state.user,
+                ...this.props.user,
                 households: [
-                    ...this.state.user.households,
+                    ...this.props.user.households,
                     household
                 ]
 
@@ -209,7 +206,7 @@ class ProfilePage extends React.Component {
             action: actionRel.action.id,
             real_estate_unit: actionRel.real_estate_unit.id,
         }
-        postJson(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, body).then(json => {
+        postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
             console.log(json);
             if (json.success) {
                 this.setState({
@@ -230,7 +227,8 @@ class ProfilePage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.user.info
     }
 }
 export default connect(mapStoreToProps, null)(ProfilePage);

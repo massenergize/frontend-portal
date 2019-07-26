@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux';
-import authReducer from './authReducer';
 import { connectRouter } from 'connected-react-router'
 import history from '../history';
 import { firebaseReducer } from 'react-redux-firebase'
 
+import userReducer from './userReducer';
+import pageReducer from './pageReducer';
+
 export default combineReducers({
-  auth: authReducer,
+  user: userReducer,
+  page: pageReducer,
   router: connectRouter(history),
   firebase: firebaseReducer
 });

@@ -6,7 +6,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { getJson } from '../../../api/functions';
 import URLS from '../../../api/urls'
-import { reduxLogin } from '../../../redux/actions/authActions';
+import { reduxLogin } from '../../../redux/actions/userActions';
 
 
 

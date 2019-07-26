@@ -34,7 +34,7 @@ class LoginPage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
-        user: store.auth.user
+        user: store.user.info
     }
 }
 export default connect(mapStoreToProps)(LoginPage);

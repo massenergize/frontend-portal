@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import { postJson } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { reduxLogin } from '../../../redux/actions/authActions';
+import { reduxLogin } from '../../../redux/actions/userActions';
 
 
 const INITIAL_STATE = {
