@@ -76,7 +76,7 @@ class ServicesPage extends React.Component {
                                 </p> */}
                             </div>
                             <div className="col-12 mt-3">
-                                <span><b>Services:</b></span>
+                                <span><b>Services</b></span>
                                 <ul className="normal">
                                     {vendor.services.map((action) => {
                                         // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;

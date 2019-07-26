@@ -1,5 +1,6 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
+import Tooltip from './Tooltip';
 
 /*
 Circle graph is a graph that displays a progress bar in a circle
@@ -54,7 +55,13 @@ class CircleGraph extends React.Component {
                                 fontFamily: "Verdana",
                                 show: true,
                                 formatter: () => {
-                                    return this.props.num + "/" + this.props.goal;
+                                    // return this.props.num + "/" + this.props.goal;
+                                    return this.props.num;
+                                    // return `
+                                    //     <Tooltip text="Out of our goal of ${this.props.goal}, we have ${this.props.num} ${this.props.label.toLowerCase()}" dir="top">
+                                    //         <span class="has-tooltip">${this.props.num}</span>
+                                    //     </Tooltip>
+                                    // `;
                                 }
                             }
                         }

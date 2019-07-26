@@ -5441,6 +5441,11 @@ textarea {
 
 ***/
 
+span.has-tooltip {
+    border-bottom: 1px dotted gray;
+    cursor: help;
+}
+
 .clients-section .section-title {
     margin-bottom: 10px;
 }

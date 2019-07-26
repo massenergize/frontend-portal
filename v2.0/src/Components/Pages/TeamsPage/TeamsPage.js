@@ -3,9 +3,8 @@ import URLS from '../../../api/urls';
 import {getJson} from '../../../api/functions'
 import LoadingPage from '../../Shared/LoadingCircle';
 import PageTitle from '../../Shared/PageTitle';
+import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
-import Popover from 'react-bootstrap/Popover';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 class TeamsPage extends React.Component {
     constructor(props) {
@@ -44,7 +43,11 @@ class TeamsPage extends React.Component {
                             <th># Households</th>
                             <th># Actions Completed</th>
                             <th>Average # Actions/Household</th>
-                            <th>GHG Saved</th>
+                            <th>
+                                <Tooltip text="Brad's paragraph here" dir="left">
+                                    <span className="has-tooltip">Carbon Impact</span>
+                                </Tooltip>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,15 +73,12 @@ class TeamsPage extends React.Component {
         });
 
         return teamsSorted.map((obj) => {
-            const popover = (
-                <Popover title={obj.team.name}>
-                    {obj.team.description}
-                </Popover>
-            );
             return (
                 <tr>
                     <td>{obj.team.name} &nbsp;
-                        <OverlayTrigger trigger="hover" placement="right" overlay={popover}><span className="fa fa-info-circle" style={{color: "#428a36"}}></span></OverlayTrigger>
+                        <Tooltip title={obj.team.name} text={obj.team.description} dir="right">
+                            <span className="fa fa-info-circle" style={{color: "#428a36"}}></span>
+                        </Tooltip>
                     </td>
                     <td>{obj.households}</td>
                     <td>{obj.actions_completed}</td>
