@@ -10,8 +10,8 @@ class LoginPage extends React.Component {
         //pull form from the url
         const params = new URLSearchParams(this.props.location.search)
         const returnpath = params.get('returnpath');
-        console.log(this.props)
-        if(this.props.user)
+        console.log(this.props.user)
+        if(this.props.user && this.props.user.todo && this.props.user.done)
             return <Redirect to='/profile'/>
         return (
             <div className="boxed_wrapper">
@@ -34,7 +34,7 @@ class LoginPage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
-        user: store.user.info
+        user: store.user
     }
 }
 export default connect(mapStoreToProps)(LoginPage);

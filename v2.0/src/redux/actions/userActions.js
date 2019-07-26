@@ -95,6 +95,11 @@ export const reduxAddHousehold = (houseRel) => dispatch => {
   });
 }
 
+export const reduxMoveToDone = (houseRel) => {
+  reduxRemoveFromTodo(houseRel);
+  reduxAddToDone(houseRel);
+}
+
 export const reduxRemoveHousehold = (houseRel) => dispatch => {
   return dispatch({
     type: REMOVE_HOUSEHOLD,

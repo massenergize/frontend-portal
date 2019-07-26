@@ -12,6 +12,7 @@ import { getJson, postJson } from '../../../api/functions'
 
 import { isLoaded } from 'react-redux-firebase';
 import AddingHouseholdForm from './AddingHouseholdForm';
+import { reduxMoveToDone, reduxAddHousehold} from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
 
 
@@ -86,13 +87,13 @@ class ProfilePage extends React.Component {
                                     <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
                                         <div className="row no-gutter">
                                             <div className="column counter-column col-lg-4 col-6 ">
-                                                <Counter end={this.state.done.length} icon={"icon-money"} title={"Actions Completed"} />
+                                                <Counter end={this.props.done.length} icon={"icon-money"} title={"Actions Completed"} />
                                             </div>
                                             <div className="column counter-column  d-lg-block d-none col-4 ">
-                                                <Counter end={this.state.todo.length} icon={"icon-money"} title={"Actions To Do"} />
+                                                <Counter end={this.props.todo.length} icon={"icon-money"} title={"Actions To Do"} />
                                             </div>
                                             <div className="column counter-column col-lg-4 col-6"  >
-                                                <Counter end={this.state.done.length * 10} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+                                                <Counter end={this.props.done.length * 10} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
                                             </div>
                                         </div>
                                     </div>
@@ -151,8 +152,8 @@ class ProfilePage extends React.Component {
                         </div>
                         {/* makes the todo and completed actions carts */}
                         <div className="col-lg-4 col-md-5 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
-                            <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
+                            <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
+                            <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
                         </div>
                     </div>
                 </div>
@@ -184,19 +185,10 @@ class ProfilePage extends React.Component {
         })
     }
 
-
     addHousehold = (household) => {
-        this.setState({
-            user: {
-                ...this.props.user,
-                households: [
-                    ...this.props.user.households,
-                    household
-                ]
-
-            }
-        });
+        this.props.reduxAddHousehold(household);
     }
+
     /**
      * Cart Functions
      */
@@ -209,15 +201,7 @@ class ProfilePage extends React.Component {
         postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
             console.log(json);
             if (json.success) {
-                this.setState({
-                    //delete from todo by filtering for not matching ids
-                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data[0].id }),
-                    //add to done by assigning done to a spread of what it already has and the one from data
-                    done: [
-                        ...this.state.done,
-                        json.data[0]
-                    ]
-                })
+                this.props.reduxMoveToDone(json.data);
             }
             //just update the state here
         }).catch(err => {
@@ -228,7 +212,11 @@ class ProfilePage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
-        user: store.user.info
+        user: store.user.info,
+        todo: store.user.todo,
+        done: store.user.done,
+        communities: store.user.info.communities,
+        households: store.user.info.households
     }
 }
-export default connect(mapStoreToProps, null)(ProfilePage);
+export default connect(mapStoreToProps, {reduxMoveToDone, reduxAddHousehold})(ProfilePage);

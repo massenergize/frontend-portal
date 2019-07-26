@@ -1,26 +1,24 @@
-import { 
-  LOGIN, 
-  LOGOUT, 
+import {
+  LOGIN,
+  LOGOUT,
   REMOVE_FROM_DONE,
-  REMOVE_FROM_TODO, 
-  ADD_TO_TODO, 
-  ADD_TO_DONE, 
-  LOAD_TODO, 
-  LOAD_DONE, 
-  LOAD_HOUSEHOLDS, 
+  REMOVE_FROM_TODO,
+  ADD_TO_TODO,
+  ADD_TO_DONE,
+  LOAD_TODO,
+  LOAD_DONE,
+  LOAD_HOUSEHOLDS,
   LOAD_COMMUNITIES,
-  ADD_HOUSEHOLD, 
-  REMOVE_HOUSEHOLD, 
-  ADD_COMMUNITY, 
-  REMOVE_COMMUNITY 
+  ADD_HOUSEHOLD,
+  REMOVE_HOUSEHOLD,
+  ADD_COMMUNITY,
+  REMOVE_COMMUNITY
 } from '../actions/types';
 
 const initialState = {
   info: null,
   todo: null,
   done: null,
-  households: null,
-  communities: null
 };
 
 
@@ -79,39 +77,58 @@ export default function (state = initialState, action) {
     case LOAD_HOUSEHOLDS:
       return {
         ...state,
-        households: action.payload
+        info: {
+          ...state.info,
+          households: action.payload
+        }
       }
     case ADD_HOUSEHOLD:
       return {
         ...state,
-        households: [
-          ...state.households,
-          action.payload
-        ]
+        info: {
+          ...state.info,
+          households: [
+            ...state.households,
+            action.payload
+          ]
+        }
+
       }
     case REMOVE_HOUSEHOLD:
       return {
         ...state,
-        households: state.households.filter(element => element !== action.payload)
+        info: {
+          ...state.info,
+          households: state.info.households.filter(element => element !== action.payload)
+        }
       }
     /**************************/
     case LOAD_COMMUNITIES:
       return {
         ...state,
-        communities: action.payload
+        info: {
+          ...state.info,
+          communities: action.payload
+        }
       }
     case ADD_COMMUNITY:
       return {
         ...state,
-        communities: [
-          ...state.communities,
-          action.payload
-        ]
+        info: {
+          ...state.info,
+          communities: [
+            ...state.info.communities,
+            action.payload
+          ]
+        }
       }
     case REMOVE_COMMUNITY:
       return {
         ...state,
-        communities: state.communities.filter(element => element !== action.payload)
+        info: {
+          ...state.info,
+          communities: state.info.communities.filter(element => element !== action.payload)
+        }
       }
     /**************************/
     default:

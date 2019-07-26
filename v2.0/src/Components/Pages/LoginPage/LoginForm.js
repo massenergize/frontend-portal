@@ -6,7 +6,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { getJson } from '../../../api/functions';
 import URLS from '../../../api/urls'
-import { reduxLogin } from '../../../redux/actions/userActions';
+import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 
 
 
@@ -22,7 +22,8 @@ const INITIAL_STATE = {
 class LoginFormBase extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE, persistence: props.firebase.auth.Auth.Persistence.NONE
+        this.state = {
+            ...INITIAL_STATE, persistence: props.firebase.auth.Auth.Persistence.NONE
         };
 
         this.onChange = this.onChange.bind(this);
@@ -84,7 +85,7 @@ class LoginFormBase extends React.Component {
                 .then(auth => {
                     console.log(auth.user);
                     this.fetchAndLogin(auth.user.email).then(success => {
-                        if(success)
+                        if (success)
                             console.log('yay');
                     });
                     this.setState({ ...INITIAL_STATE }); //reset the login boxes
@@ -105,7 +106,7 @@ class LoginFormBase extends React.Component {
                 .then(auth => {
                     console.log(auth);
                     this.fetchAndLogin(auth.user.email).then(success => {
-                        if(success)
+                        if (success)
                             console.log('yay');
                     });
                     this.setState({ ...INITIAL_STATE });
@@ -122,8 +123,9 @@ class LoginFormBase extends React.Component {
                 .signInWithPopup(facebookProvider)
                 .then(auth => {
                     this.fetchAndLogin(auth.user.email).then(success => {
-                        if(success)
-                            console.log('yay');
+                        if (success) {
+
+                        }
                     });
                     this.setState({ ...INITIAL_STATE });
                 })
@@ -132,12 +134,17 @@ class LoginFormBase extends React.Component {
                 });
         });
     }
-    
+
     fetchAndLogin = async (email) => {
         try {
             const json = await getJson(`${URLS.USER}/e/${email}`);
             if (json.success && json.data) {
                 this.props.reduxLogin(json.data);
+
+                const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
+                this.props.reduxLoadTodo(todo.data);
+                const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
+                this.props.reduxLoadDone(done.data);
                 return true;
             }
             console.log('fetch and login failed');
@@ -161,6 +168,6 @@ const mapStoreToProps = (store) => {
     }
 }
 
-export default connect(mapStoreToProps, { reduxLogin })(LoginForm);
+export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(LoginForm);
 
 

@@ -16,7 +16,7 @@ class Cart extends React.Component {
                 <h3 className="center">{this.props.title}</h3>
                 <div className="table-outer">
                     {this.props.actionRels ?
-                        <table className="cart-table">
+                        <table className="cart-table" style = {{width:'100%'}}>
                             <thead className="cart-header">
                                 <tr>
                                     <th className="prod-column">Image</th>
