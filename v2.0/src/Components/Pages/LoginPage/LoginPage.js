@@ -10,11 +10,9 @@ class LoginPage extends React.Component {
         //pull form from the url
         const params = new URLSearchParams(this.props.location.search)
         const returnpath = params.get('returnpath');
-        console.log(returnpath)
-        if(returnpath){
-            if (this.props.auth.uid) return <Redirect to={returnpath} />;
-        }
-        if (this.props.auth.uid) return <Redirect to='/profile' />;
+        console.log(this.props)
+        if(this.props.user)
+            return <Redirect to='/profile'/>
         return (
             <div className="boxed_wrapper">
                 <section className="register-section sec-padd-top">
@@ -35,7 +33,8 @@ class LoginPage extends React.Component {
 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.auth.user
     }
 }
 export default connect(mapStoreToProps)(LoginPage);

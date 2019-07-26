@@ -2,9 +2,13 @@ import React from 'react';
 import { withFirebase } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { sendSignInSignal } from '../../../redux/actions/authActions'
 import { Redirect, Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
+import { getJson } from '../../../api/functions';
+import URLS from '../../../api/urls'
+import { reduxLogin } from '../../../redux/actions/authActions';
+
+
 
 /********************************************************************/
 /**                        LOGIN FORM                               */
@@ -18,7 +22,8 @@ const INITIAL_STATE = {
 class LoginFormBase extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE };
+        this.state = { ...INITIAL_STATE, persistence: props.firebase.auth.Auth.Persistence.NONE
+        };
 
         this.onChange = this.onChange.bind(this);
         this.isInvalid = this.isInvalid.bind(this);
@@ -74,45 +79,74 @@ class LoginFormBase extends React.Component {
 
     onSubmit(event) {
         //firebase prop comes from the withFirebase higher component
-        this.props.firebase.auth()
-            .signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(authUser => {
-                console.log(authUser);
-                //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
-                this.setState({ ...INITIAL_STATE }); //reset the login boxes
-            })
-            .catch(err => {
-                this.setState({ error: err.message });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(auth => {
+                    console.log(auth.user);
+                    this.fetchAndLogin(auth.user.email).then(success => {
+                        if(success)
+                            console.log('yay');
+                    });
+                    this.setState({ ...INITIAL_STATE }); //reset the login boxes
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
         event.preventDefault();
     };
 
     //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
     //WOULD NOT DELETE DATA I THINK?
     signInWithGoogle = () => {
-        this.props.firebase.auth()
-            .signInWithPopup(googleProvider)
-            .then(authUser => {
-                console.log(authUser);
-                //this.props.sendSignInSignal(authUser);
-                this.setState({ ...INITIAL_STATE });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({ error: err.message });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then(auth => {
+                    console.log(auth);
+                    this.fetchAndLogin(auth.user.email).then(success => {
+                        if(success)
+                            console.log('yay');
+                    });
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({ error: err.message });
+                });
+        });
     }
     signInWithFacebook = () => {
-        this.props.firebase.auth()
-            .signInWithPopup(facebookProvider)
-            .then(authUser => {
-                console.log(authUser);
-                //this.props.sendSignInSignal(authUser);
-                this.setState({ ...INITIAL_STATE });
-            })
-            .catch(err => {
-                this.setState({ error: err.message });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(facebookProvider)
+                .then(auth => {
+                    this.fetchAndLogin(auth.user.email).then(success => {
+                        if(success)
+                            console.log('yay');
+                    });
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
+    }
+    
+    fetchAndLogin = async (email) => {
+        try {
+            const json = await getJson(`${URLS.USER}/e/${email}`);
+            if (json.success && json.data) {
+                this.props.reduxLogin(json.data);
+                return true;
+            }
+            console.log('fetch and login failed');
+            return false;
+        }
+        catch (err) {
+            console.log(err);
+            return false;
+        }
     }
 }
 
@@ -126,6 +160,7 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth
     }
 }
-export default connect(mapStoreToProps, { sendSignInSignal })(LoginForm);
+
+export default connect(mapStoreToProps, { reduxLogin })(LoginForm);
 
 

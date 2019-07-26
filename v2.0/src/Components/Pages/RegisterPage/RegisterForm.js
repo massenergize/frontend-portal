@@ -1,13 +1,13 @@
-import React from 'react'
-import { withFirebase } from 'react-redux-firebase'
-import { Redirect } from 'react-router-dom'
-import { compose } from 'recompose'
-import { connect } from 'react-redux'
-import { sendSignInSignal } from '../../../redux/actions/authActions'
-import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-//import { sendToBackEnd } from '../../../api'
-import URLS from '../../../api/urls'
+import React from 'react';
+import { connect } from 'react-redux';
+import { withFirebase } from 'react-redux-firebase';
+import { Redirect } from 'react-router-dom';
+import { compose } from 'recompose';
 import { postJson } from '../../../api/functions';
+import URLS from '../../../api/urls';
+import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
+import { reduxLogin } from '../../../redux/actions/authActions';
+
 
 const INITIAL_STATE = {
     email: '',
@@ -25,7 +25,10 @@ const INITIAL_STATE = {
 class RegisterFormBase extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE, form: props.form ? props.form : 1 };
+        this.state = { ...INITIAL_STATE,
+            persistence:this.props.firebase.auth.Auth.Persistence.NONE,
+            form: props.form ? props.form : 1 
+        }
 
         this.onChange = this.onChange.bind(this);
         this.isInvalid = this.isInvalid.bind(this);
@@ -137,15 +140,17 @@ class RegisterFormBase extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         const { email, passwordOne } = this.state;
-        this.props.firebase.auth()
-            .createUserWithEmailAndPassword(email, passwordOne)
-            .then(authUser => {
-                //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
-                this.setState({ ...INITIAL_STATE, form: 2 });
-            })
-            .catch(err => {
-                this.setState({ error: err.message });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .createUserWithEmailAndPassword(email, passwordOne)
+                .then(authUser => {
+                    //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
     };
     onFinalSubmit(event) {
         event.preventDefault();
@@ -153,8 +158,8 @@ class RegisterFormBase extends React.Component {
         const { firstName, lastName, preferredName, serviceProvider } = this.state;
         const { auth } = this.props;
         const body = {
-            "full_name": firstName + ' ' +  lastName,
-            "preferred_name": preferredName === ""? firstName : preferredName,
+            "full_name": firstName + ' ' + lastName,
+            "preferred_name": preferredName === "" ? firstName : preferredName,
             "email": auth.email,
             // "id": auth.uid,
             "is_vendor": serviceProvider,
@@ -168,29 +173,33 @@ class RegisterFormBase extends React.Component {
     //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
     //WOULD NOT DELETE DATA I THINK?
     signInWithGoogle = () => {
-        this.props.firebase.auth()
-            .signInWithPopup(googleProvider)
-            .then(authUser => {
-                console.log(authUser);
-                //this.props.sendSignInSignal(authUser);
-                this.setState({ ...INITIAL_STATE, form: 2 });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({ ...INITIAL_STATE, form: 2 });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then(authUser => {
+                    console.log(authUser);
+                    //this.props.sendSignInSignal(authUser);
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                });
+        });
     }
     signInWithFacebook = () => {
-        this.props.firebase.auth()
-            .signInWithPopup(facebookProvider)
-            .then(authUser => {
-                console.log(authUser);
-                //this.props.sendSignInSignal(authUser);
-                this.setState({ ...INITIAL_STATE });
-            })
-            .catch(err => {
-                this.setState({ error: err.message });
-            });
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(facebookProvider)
+                .then(authUser => {
+                    console.log(authUser);
+                    //this.props.sendSignInSignal(authUser);
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
     }
 }
 
@@ -204,4 +213,4 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth
     }
 }
-export default connect(mapStoreToProps, { sendSignInSignal })(RegisterForm);
+export default connect(mapStoreToProps, { reduxLogin })(RegisterForm);

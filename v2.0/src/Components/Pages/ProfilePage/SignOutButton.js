@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {sendSignOutSignal} from '../../../redux/actions/authActions'
 import { withFirebase } from 'react-redux-firebase';
+import { reduxLogout } from '../../../redux/actions/authActions';
+
 
 class SignOutButton extends React.Component{
     render(){
@@ -14,8 +15,8 @@ class SignOutButton extends React.Component{
     }
     onClick = () => {
         this.props.firebase.auth().signOut();
-        this.props.sendSignOutSignal();
+        // this.props.sendSignOutSignal();
     }
 }
 
-export default connect(null, {sendSignOutSignal})(withFirebase(SignOutButton));
+export default connect(null, {reduxLogout})(withFirebase(SignOutButton));
