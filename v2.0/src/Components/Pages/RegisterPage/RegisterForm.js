@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import { sendSignInSignal } from '../../../redux/actions/authActions'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 //import { sendToBackEnd } from '../../../api'
-import URLS from '../../api_v2'
+import URLS from '../../../api/urls'
+import { postJson } from '../../../api/functions';
 
 const INITIAL_STATE = {
     email: '',
@@ -158,13 +159,7 @@ class RegisterFormBase extends React.Component {
             // "id": auth.uid,
             "is_vendor": serviceProvider,
         }
-        fetch(URLS.USERS, {
-            method: 'post',
-            body: JSON.stringify(body),
-            //headers: put the csrf token here I guess
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        postJson(URLS.USERS, body).then(json => {
             console.log(json);
         })
         this.setState({ ...INITIAL_STATE });

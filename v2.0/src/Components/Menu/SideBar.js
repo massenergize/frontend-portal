@@ -1,8 +1,6 @@
 import React from 'react';
 import '../../assets/css/style.css';
 import Accordian from './Accordian';
-import URLS, { getJson } from '../api_v2'
-import LoadingCircle from '../Shared/LoadingCircle'
 
 /** Renders the sidebar on the actions page, optons to filter by category, tags, difficulty and impact
  *  @props

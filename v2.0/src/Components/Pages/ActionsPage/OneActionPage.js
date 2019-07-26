@@ -1,5 +1,6 @@
 import React from 'react'
-import URLS, { getJson } from '../../api_v2';
+import URLS from '../../../api/urls';
+import { getJson, postJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import { isLoaded } from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
@@ -311,16 +312,12 @@ class OneActionPage extends React.Component {
         return checkTodo.length > 0 || checkDone.length > 0;
     }
     moveToDone = (actionRel) => {
-        fetch(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, {
-            method: 'post',
-            body: JSON.stringify({
-                status: "DONE",
-                action: actionRel.action.id,
-                real_estate_unit: actionRel.real_estate_unit.id,
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        const body = {
+            status: "DONE",
+            action: actionRel.action.id,
+            real_estate_unit: actionRel.real_estate_unit.id,
+        }
+        postJson(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, body).then(json => {
             console.log(json);
             if (json.success) {
                 this.setState({
@@ -345,16 +342,12 @@ class OneActionPage extends React.Component {
 
     }
     addToCart = (id, status) => {
-        fetch(URLS.USER + "/" + this.state.user.id + "/actions", {
-            method: 'post',
-            body: JSON.stringify({
-                action: id,
-                status: status,
-                real_estate_unit: 1
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        const body = {
+            action: id,
+            status: status,
+            real_estate_unit: 1
+        }
+        postJson(URLS.USER + "/" + this.state.user.id + "/actions", body).then(json => {
             if (json.success) {
                 //set the state here
                 if (status = "TODO") {

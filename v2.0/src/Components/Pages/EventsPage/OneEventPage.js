@@ -1,5 +1,6 @@
 import React from 'react'
-import URLS, { getJson } from '../../api_v2'
+import URLS from '../../../api/urls'
+import  { getJson }  from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import URLS from '../../api_v2'
 
 /**
  * Action Component is a single action for the action page, 

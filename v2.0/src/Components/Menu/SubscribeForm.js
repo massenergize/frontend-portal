@@ -1,5 +1,6 @@
 import React from 'react';
-import URLS from '../api_v2'
+import URLS from '../../api/urls'
+import { postJson } from '../../api/functions';
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -65,13 +66,7 @@ class SubscribeForm extends React.Component {
             "name": this.state.name,
             "community": 1,
         }
-        fetch(URLS.SUBSCRIBERS, {
-            method: 'post',
-            body: JSON.stringify(body),
-            //headers: put the csrf token here I guess
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        postJson(URLS.SUBSCRIBERS, body).then(json => {
             console.log(json);
             if (json.success) {
                 this.setState({ ...INITIAL_STATE, message: `Success! ${this.state.email} is now subscribed to our Community's Newsletter` });

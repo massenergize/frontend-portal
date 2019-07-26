@@ -1,5 +1,6 @@
 import React from 'react';
-import URLS from '../../api_v2'
+import URLS from '../../../api/urls'
+import {postJson} from '../../../api/functions'
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -55,17 +56,13 @@ class AddingHouseholdForm extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault();
+        const body = {
+            "name": this.state.name,
+            "unit_type": this.state.unittype,
+            "location": this.state.location
+        }
         /** Collects the form data and sends it to the backend */
-        fetch(URLS.USER + "/" + this.props.user.id + "/households", {
-            method: 'post',
-            body: JSON.stringify({
-                "name": this.state.name,
-                "unit_type": this.state.unittype,
-                "location": this.state.location
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        postJson(URLS.USER + "/" + this.props.user.id + "/households", body).then(json => {
             console.log(json);
             // this.props.addHousehold(json.data);
             // if (json.success) {

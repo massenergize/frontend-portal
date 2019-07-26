@@ -1,5 +1,6 @@
 import React from 'react'
-import URLS, {getJson, section} from '../../api_v2';
+import URLS from '../../../api/urls';
+import {getJson, section} from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Video from './Video'

@@ -9,7 +9,7 @@ export const sendToBackEnd = (dataToSend, destinationUrl) => {
     console.log("csrf iis " + csrfToken)
     return fetch(destinationUrl, {
       credentials: 'include',
-      method: 'POST',
+      method: 'post',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

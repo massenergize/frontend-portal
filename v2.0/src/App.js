@@ -22,7 +22,8 @@ import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 
-import URLS, { getJson } from './Components/api_v2'
+import URLS from './api/urls'
+import {getJson} from './api/functions'
 
 class App extends Component {
 	constructor(props) {

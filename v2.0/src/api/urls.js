@@ -86,20 +86,4 @@ URLS["VENDOR"] = URLS.V2 + "vendor"; //add the id after this
 
 export default URLS;
 
-export const getJson = async (url) => {
-	try {
-		const data = await fetch(url);
-		const myJson = await data.json();
-		return myJson;
-	}
-	catch (error) {
-		console.log(error);
-		return null;
-	}
-}
 
-// Takes out the section that matches with the name given
-export const section = (json, section) => {
-	let sections = json.data[0].sections;
-	return sections.filter(x => x.name == section)[0];
-}

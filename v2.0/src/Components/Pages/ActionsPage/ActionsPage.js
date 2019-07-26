@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { isLoaded } from 'react-redux-firebase'
-import URLS, { getJson } from '../../api_v2';
+import URLS from '../../../api/urls';
+import { getJson, postJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
@@ -26,7 +27,7 @@ class ActionsPage extends React.Component {
             tagCols: [],
             todo: [],
             done: [],
-            cartLoaded:false
+            cartLoaded: false
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -42,7 +43,7 @@ class ActionsPage extends React.Component {
                 user: myJsons[0].data[0],
                 actions: myJsons[1].data,
                 tagCols: myJsons[2].data,
-                loaded:true,
+                loaded: true,
             })
         }).catch(error => {
             console.log(error);
@@ -66,11 +67,11 @@ class ActionsPage extends React.Component {
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)){ //if the auth isn't loaded wait for a bit
-            return <LoadingCircle/>;
+        if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
+            return <LoadingCircle />;
         }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) { 
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
             this.componentDidMount();
             return <LoadingCircle />;
         }
@@ -140,7 +141,7 @@ class ActionsPage extends React.Component {
 
                 user={this.state.user}
                 addToCart={(id, status) => this.addToCart(id, status)}
-                inCart={(actionId, cart) => this.inCart(actionId,cart)}
+                inCart={(actionId, cart) => this.inCart(actionId, cart)}
                 moveToDone={(actionId) => this.moveToDoneByActionId(actionId)}
             />
         });
@@ -156,30 +157,26 @@ class ActionsPage extends React.Component {
      * These are the cart functions
      */
     inCart = (actionId, cart) => {
-        const checkTodo = this.state.todo.filter(actionRel => {return actionRel.action.id === actionId});
-        if(cart==="TODO"){ return checkTodo.length > 0; } 
+        const checkTodo = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId });
+        if (cart === "TODO") { return checkTodo.length > 0; }
 
-        const checkDone = this.state.done.filter(actionRel => {return actionRel.action.id === actionId});
-        if(cart==="DONE") return checkDone.length > 0;
+        const checkDone = this.state.done.filter(actionRel => { return actionRel.action.id === actionId });
+        if (cart === "DONE") return checkDone.length > 0;
 
-        return checkTodo.length >0 || checkDone.length > 0;
+        return checkTodo.length > 0 || checkDone.length > 0;
     }
     moveToDone = (actionRel) => {
-        fetch(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, {
-            method: 'post',
-            body: JSON.stringify({
-                status: "DONE",
-                action: actionRel.action.id,
-                real_estate_unit: actionRel.real_estate_unit.id,
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        const body = {
+            status: "DONE",
+            action: actionRel.action.id,
+            real_estate_unit: actionRel.real_estate_unit.id,
+        }
+        postJson(URLS.USER+'/'+this.state.user.id+'/action/'+actionRel.id ,body).then(json => {
             console.log(json);
-            if(json.success){
+            if (json.success) {
                 this.setState({
                     //delete from todo by filtering for not matching ids
-                    todo: this.state.todo.filter(actionRel => {return actionRel.id !== json.data[0].id}), 
+                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data[0].id }),
                     //add to done by assigning done to a spread of what it already has and the one from data
                     done: [
                         ...this.state.done,
@@ -192,26 +189,22 @@ class ActionsPage extends React.Component {
             console.log(err)
         })
     }
-    moveToDoneByActionId(actionId){
-        const actionRel = this.state.todo.filter(actionRel => {return actionRel.action.id === actionId})[0];
-        if(actionRel)
+    moveToDoneByActionId(actionId) {
+        const actionRel = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
+        if (actionRel)
             this.moveToDone(actionRel);
-        
+
     }
     addToCart = (id, status) => {
-        fetch(URLS.USER + "/" + this.state.user.id + "/actions", {
-            method: 'post',
-            body: JSON.stringify({
-                action: id,
-                status: status,
-                real_estate_unit: 1
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        const body = {
+            action: id,
+            status:status,
+            real_estate_unit: 1
+        }
+        postJson(URLS.USER + "/" + this.state.user.id + "/actions", body).then(json => {
             if (json.success) {
                 //set the state here
-                if(status="TODO"){
+                if (status = "TODO") {
                     this.setState({
                         todo: [
                             ...this.state.todo,
@@ -219,7 +212,7 @@ class ActionsPage extends React.Component {
                         ]
                     })
                 }
-                else if(status="DONE"){
+                else if (status = "DONE") {
                     this.setState({
                         done: [
                             ...this.state.done,
@@ -228,7 +221,7 @@ class ActionsPage extends React.Component {
                     })
                 }
             }
-        }).catch(error =>{
+        }).catch(error => {
             console.log(error);
         });
     }

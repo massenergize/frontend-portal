@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import SignOutButton from './SignOutButton'
 import Cart from '../../Shared/Cart'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
 // import { threadId } from 'worker_threads'
-import URLS, { getJson } from '../../api_v2'
+import URLS from '../../../api/urls'
+import { getJson, postJson } from '../../../api/functions'
+
 import { isLoaded } from 'react-redux-firebase';
 import AddingHouseholdForm from './AddingHouseholdForm';
 // import { watchFile } from 'fs';
@@ -202,16 +204,12 @@ class ProfilePage extends React.Component {
      * Cart Functions
      */
     moveToDone = (actionRel) => {
-        fetch(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, {
-            method: 'post',
-            body: JSON.stringify({
-                status: "DONE",
-                action: actionRel.action.id,
-                real_estate_unit: actionRel.real_estate_unit.id,
-            })
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        const body = {
+            status: "DONE",
+            action: actionRel.action.id,
+            real_estate_unit: actionRel.real_estate_unit.id,
+        }
+        postJson(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, body).then(json => {
             console.log(json);
             if (json.success) {
                 this.setState({

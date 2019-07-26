@@ -1,5 +1,6 @@
 import React from 'react';
-import URLS from '../../api_v2'
+import URLS from '../../../api/urls'
+import { postJson } from '../../../api/functions';
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -66,14 +67,7 @@ class StoryForm extends React.Component {
             "body": this.state.body,
             "title": this.state.title,
         }
-        console.log(body);
-        fetch(URLS.TESTIMONIALS, {
-            method: 'post',
-            body: JSON.stringify(body),
-            //headers: put the csrf token here I guess
-        }).then(response => {
-            return response.json()
-        }).then(json => {
+        postJson(URLS.TESTIMONIALS, body).then(json => {
             console.log(json);
             if(json.success){
                 this.setState({

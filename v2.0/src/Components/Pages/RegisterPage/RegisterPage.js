@@ -1,27 +1,15 @@
 import React from 'react'
-import CONST from '../../Constants'
-import LoadingCircle from '../../Shared/LoadingCircle'
 import RegisterForm from './RegisterForm'
 
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            userData: null,
-        }
+       this.state= {
+           form: null,
+       }
     }
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
-        fetch(CONST.URL.MENU).then(data => {
-            return data.json()
-        }).then(myJson => {
-            this.setState({
-                userData: myJson.userData,
-            });
-        }).catch(error => {
-            console.log(error);
-            return null;
-        });
         //pull form from the url
         const params = new URLSearchParams(this.props.location.search)
         this.setState({
@@ -30,9 +18,7 @@ class RegisterPage extends React.Component {
         })
     }
 
-    render() { //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.userData) return <LoadingCircle />;
-        
+    render() { //avoids trying to render before the promise from the server is fulfilled        
         return (
             <div className="boxed_wrapper">
                 <section className="register-section sec-padd-top">

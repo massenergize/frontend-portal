@@ -1,9 +1,9 @@
 import React from 'react'
-import URLS, {getJson, section} from '../../api_v2';
+import URLS from '../../../api/urls';
+import {getJson} from '../../../api/functions'
 import LoadingPage from '../../Shared/LoadingCircle';
 import PageTitle from '../../Shared/PageTitle';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
@@ -60,8 +60,9 @@ class TeamsPage extends React.Component {
         for(let i = 0; i < teamsSorted.length; i++) {
             let households = teamsSorted[i].households;
             let actions_completed = teamsSorted[i].actions_completed;
-            const avrg = parseInt(Number(households) / Number(actions_completed));
-            teamsSorted[i]["avrgActionsPerHousehold"] = (!isNaN(avrg)) ? avrg : 0;
+            const avrg =  Number(actions_completed)/Number(households);
+            avrg = (!isNaN(avrg)) ? avrg.toFixed(1) : 0;
+            teamsSorted[i]["avrgActionsPerHousehold"] = avrg;
         }        
 
         teamsSorted = teamsSorted.sort((a, b) => {

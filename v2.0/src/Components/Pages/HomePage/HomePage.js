@@ -4,7 +4,8 @@ import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './Events';
-import URLS, {getJson, section} from '../../api_v2';
+import URLS from '../../../api/urls';
+import { getJson, section } from '../../../api/functions'
 
 
 /*
