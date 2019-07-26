@@ -193,7 +193,7 @@ class OneActionPage extends React.Component {
                             if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
                             if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "active";
                             if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                        }} data-toggle="tab">Stories </button></li>{/**@TODO make it say number of stories/disapear if none*/}
+                        }} data-toggle="tab">Testimonials </button></li>{/**@TODO make it say number of stories/disapear if none*/}
                     </ul>
                     <div className="tab-content">
                         {/* description */}

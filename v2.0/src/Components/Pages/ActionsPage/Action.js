@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Tooltip from '../../Shared/Tooltip';
 
 /**
  * Action Component is a single action for the action page, 
@@ -48,10 +49,13 @@ class Action extends React.Component {
                             <div className="price-box2" >
                                 <div className="clearfix" >
                                     <div className="float_left">
-                                        Impact:<span>{this.renderTagBar(this.getTag(3))}</span>
+                                        <Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
+                                            <span className="has-tooltip">Impact</span>
+                                        </Tooltip>
+                                        <span>{this.renderTagBar(this.getTag(3))}</span>
                                     </div>
                                     <div className="float_right" >
-                                        Difficulty:<span> {this.renderTagBar(this.getTag(2))} </span>
+                                        Difficulty<span> {this.renderTagBar(this.getTag(2))} </span>
                                     </div>
                                 </div>
                             </div>

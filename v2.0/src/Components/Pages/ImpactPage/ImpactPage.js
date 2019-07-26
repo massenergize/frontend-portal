@@ -52,7 +52,7 @@ class ImpactPage extends React.Component {
                         <div className="col-12 col-lg-8">
                             <div className="card rounded-0 mb-4">
                                 <div className="card-header text-center bg-white">
-                                    <h4>Graph of Households Engaged by Category</h4>
+                                    <h4>Households Engaged by Category</h4>
                                 </div>
                                 <div className="card-body">
                                     <BarGraph
@@ -77,7 +77,7 @@ class ImpactPage extends React.Component {
 
                             <div className="card rounded-0 mb-4">
                                 <div className="card-header text-center bg-white">
-                                    <h4>Graph of Communities and their Impacts</h4>
+                                    <h4>Communities and their Impacts</h4>
                                 </div>
                                 <div className="card-body">
                                     <BarGraph

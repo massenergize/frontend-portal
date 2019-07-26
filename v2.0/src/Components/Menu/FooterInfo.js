@@ -21,7 +21,7 @@ class FooterInfo extends React.Component{
                     <ul className="contact-info">
                         <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li>
                         <li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
-                        <li><span className="icon-people3"></span><Link to={this.props.info.contactPersonLink} target="_blank" className="font-normal"><u>{this.props.info.contactPerson}</u></Link></li>
+                        <li><span className="icon-people3"></span><Link to={this.props.info.contactPersonLink} target="_blank" className="font-normal"><u>{this.props.info.contactPerson}, <i>Community Contact</i></u></Link></li>
                     </ul>
                 </div>
             </div>
