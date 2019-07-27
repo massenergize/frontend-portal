@@ -45,13 +45,18 @@ class RegisterFormBase extends React.Component {
             lastName,
             preferredName,
             serviceProvider,
-            form,
             error,
         } = this.state;
 
-        const { auth } = this.props;
-        console.log("AUTUTUTHTH: " + JSON.stringify(auth));
-        if (auth.uid && form === 1) return <Redirect to='/profile' />;
+        var form;
+        if(this.props.auth.isEmpty)
+            form=1;
+        else
+            form=2;
+
+        if (this.props.user.info && this.props.user.todo && this.props.user.done){
+            return <Redirect to='/profile' />;
+        }
         return (
             <div>
                 {form === 1 ?
@@ -210,7 +215,8 @@ const RegisterForm = compose(
 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.user
     }
 }
 export default connect(mapStoreToProps, { reduxLogin })(RegisterForm);

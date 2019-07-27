@@ -53,13 +53,13 @@ class ProfilePage extends React.Component {
     }
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
+        if (!this.props.auth.isLoaded) { //if the auth isn't loaded wait for a bit
             return <LoadingCircle />;
         }
-        if (!this.props.auth.uid) return <Redirect to='/login' />
+        if (this.props.auth.isEmpty) return <Redirect to='/login' />
 
-        if(this.state.notRegistered)
-            return <Redirect to='/register?form=2'> </Redirect>
+        if(!this.props.user)
+            return <Redirect to='/register'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
         if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
             this.componentDidMount();
@@ -215,8 +215,8 @@ const mapStoreToProps = (store) => {
         user: store.user.info,
         todo: store.user.todo,
         done: store.user.done,
-        communities: store.user.info.communities,
-        households: store.user.info.households
+        communities: store.user.info? store.user.info.communities : null,
+        households: store.user.info? store.user.info.households : null
     }
 }
 export default connect(mapStoreToProps, {reduxMoveToDone, reduxAddHousehold})(ProfilePage);

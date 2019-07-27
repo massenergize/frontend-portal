@@ -124,7 +124,7 @@ class LoginFormBase extends React.Component {
                 .then(auth => {
                     this.fetchAndLogin(auth.user.email).then(success => {
                         if (success) {
-
+                            console.log('yay')
                         }
                     });
                     this.setState({ ...INITIAL_STATE });

@@ -10,9 +10,12 @@ class LoginPage extends React.Component {
         //pull form from the url
         const params = new URLSearchParams(this.props.location.search)
         const returnpath = params.get('returnpath');
-        console.log(this.props.user)
-        if(this.props.user && this.props.user.todo && this.props.user.done)
+        if(this.props.user.info && this.props.user.todo && this.props.user.done)
             return <Redirect to='/profile'/>
+        if(this.props.auth.isLoaded && !this.props.auth.isEmpty)
+            if(!this.props.user.info)
+                return <Redirect to='/register'/>
+
         return (
             <div className="boxed_wrapper">
                 <section className="register-section sec-padd-top">
