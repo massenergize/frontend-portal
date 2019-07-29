@@ -22,9 +22,9 @@ class ProfilePage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
-            todo: [],
-            done: [],
-            households: [],
+            //todo: [],
+            //done: [],
+            //households: [],
             selectedHousehold: null,
             addingHH: false,
             addingCom: false,

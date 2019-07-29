@@ -189,9 +189,12 @@ class RegisterFormBase extends React.Component {
         this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
             this.props.firebase.auth()
                 .signInWithPopup(googleProvider)
-                .then(authUser => {
-                    console.log(authUser);
-                    //this.props.sendSignInSignal(authUser);
+                .then(auth => {
+                    console.log(auth);
+                    this.fetchAndLogin(auth.user.email).then(success => {
+                        if (success)
+                            console.log('yay');
+                    });
                     this.setState({ ...INITIAL_STATE, form: 2 });
                 })
                 .catch(err => {
@@ -204,9 +207,12 @@ class RegisterFormBase extends React.Component {
         this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
             this.props.firebase.auth()
                 .signInWithPopup(facebookProvider)
-                .then(authUser => {
-                    console.log(authUser);
-                    //this.props.sendSignInSignal(authUser);
+                .then(auth => {
+                    console.log(auth);
+                    this.fetchAndLogin(auth.user.email).then(success => {
+                        if (success)
+                            console.log('yay');
+                    });
                     this.setState({ ...INITIAL_STATE });
                 })
                 .catch(err => {
