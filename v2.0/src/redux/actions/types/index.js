@@ -14,6 +14,8 @@ export const LOAD_DONE = 'LOAD_DONE'
 export const ADD_TO_DONE = 'ADD_TO_DONE'
 export const REMOVE_FROM_DONE = 'REMOVE_FROM_DONE'
 
+export const MOVE_TO_DONE = 'MOVE_TO_DONE'
+
 export const LOAD_HOUSEHOLDS = 'LOAD_HOUSEHOLDS'
 export const ADD_HOUSEHOLD = 'ADD_HOUSEHOLD'
 export const REMOVE_HOUSEHOLD = 'DELETE_HOUSHOLD'

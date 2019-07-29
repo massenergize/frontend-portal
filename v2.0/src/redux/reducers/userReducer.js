@@ -1,6 +1,7 @@
 import {
   LOGIN,
   LOGOUT,
+  MOVE_TO_DONE,
   REMOVE_FROM_DONE,
   REMOVE_FROM_TODO,
   ADD_TO_TODO,
@@ -72,6 +73,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         done: state.done.filter(element => element !== action.payload)
+      }
+
+    case MOVE_TO_DONE:
+      return {
+        ...state,
+        done: [
+          ...state.done,
+          action.payload
+        ],
+        todo: state.todo.filter(element => element.id !== action.payload.id)
       }
     /**************************/
     case LOAD_HOUSEHOLDS:

@@ -22,8 +22,28 @@ import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 
+import {
+	reduxLoadHomePage,
+	reduxLoadActionsPage,
+	reduxLoadServiceProvidersPage,
+	reduxLoadTestimonialsPage,
+	reduxLoadTeamsPage,
+	reduxLoadAboutUsPage,
+	reduxLoadImpactPage,
+	reduxLoadDonatePage,
+	reduxLoadEventsPage,
+	reduxLoadMenu,
+	reduxLoadActions,
+	reduxLoadEvents,
+	reduxLoadServiceProviders,
+	reduxLoadTestimonials
+} from './redux/actions/pageActions'
+import { reduxLogin } from './redux/actions/userActions';
+
 import URLS from './api/urls'
-import {getJson} from './api/functions'
+import { getJson } from './api/functions'
+import { connect } from 'react-redux';
+import { isLoaded } from 'react-redux-firebase';
 
 class App extends Component {
 	constructor(props) {
@@ -33,23 +53,62 @@ class App extends Component {
 		}
 	}
 	componentDidMount() {
+		console.log("here");
 		Promise.all([
-			getJson(URLS.MENUS + "?name=PortalFooterQuickLinks"),
-			getJson(URLS.MENUS + "?name=PortalMainNavLinks"),
-			getJson(URLS.MENUS + "?name=PortalFooterContactInfo")
+			getJson(URLS.PAGES + "?name=Home"),
+			getJson(URLS.PAGES + "?name=Actions"),
+			getJson(URLS.PAGES + "?name=ServiceProviders"),
+			getJson(URLS.PAGES + "?name=Testimonials"),
+			getJson(URLS.PAGES + "?name=Teams"),
+			getJson(URLS.PAGES + "?name=AboutUse"),
+			getJson(URLS.PAGES + "?name=Impact"),
+			getJson(URLS.PAGES + "?name=Donate"),
+			getJson(URLS.PAGES + "?name=Events"),
+			getJson(URLS.EVENTS),
+			getJson(URLS.ACTIONS),
+			getJson(URLS.VENDORS),
+			getJson(URLS.TESTIMONIALS),
+			getJson(URLS.MENUS),
 		]).then(myJsons => {
-			this.setState({
-				footerLinks: myJsons[0].data[0].content,
-				navLinks: myJsons[1].data[0].content,
-				footerInfo: myJsons[2].data[0].content,
-				loaded: true
-			})
+			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
+			this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
+			this.props.reduxLoadServiceProvidersPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
+			this.props.reduxLoadTestimonialsPage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
+			this.props.reduxLoadTeamsPage(myJsons[4].data.length > 0 ? myJsons[4].data[0] : null)
+			this.props.reduxLoadAboutUsPage(myJsons[5].data.length > 0 ? myJsons[5].data[0] : null)
+			this.props.reduxLoadImpactPage(myJsons[6].data.length > 0 ? myJsons[6].data[0] : null)
+			this.props.reduxLoadDonatePage(myJsons[7].data.length > 0 ? myJsons[7].data[0] : null)
+			this.props.reduxLoadEventsPage(myJsons[8].data.length > 0 ? myJsons[8].data[0] : null)
+			this.props.reduxLoadActions(myJsons[9].data)
+			this.props.reduxLoadEvents(myJsons[10].data)
+			this.props.reduxLoadServiceProviders(myJsons[11].data)
+			this.props.reduxLoadTestimonials(myJsons[12].data)
+			this.props.reduxLoadMenu(myJsons[13].data)
 		}).catch(err => {
 			console.log(err)
 		});
 	}
+	getUser(email) {
+		return getJson(`${URLS.USER}/e/${email}`).then(json => {
+			if (json.success && json.data) {
+				reduxLogin(json.data);
+				return true;
+			} else {
+				console.log('no user');
+				return false;
+			}
+		})
+	}
 	render() {
-		if (!this.state.loaded) return <LoadingCircle />;
+		if (!isLoaded(this.props.auth)) {
+			return <LoadingCircle />;
+		}
+		if (!this.props.auth.isEmpty && !this.props.user.info)
+			this.getUser(this.props.auth.email).then(success => {
+				if (!success)
+					console.log("darn");
+			})
+		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
 				<Helmet>
@@ -58,10 +117,10 @@ class App extends Component {
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 				</Helmet>
-				{this.state.navLinks ?
+				{this.props.menu ?
 					<div>
 						<NavBarBurger
-							navLinks={this.state.navLinks}
+							navLinks={this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content}
 						/>
 						<NavBarOffset />
 					</div> : <LoadingCircle />
@@ -90,14 +149,38 @@ class App extends Component {
 						</div>
 					} />
 				</Switch>
-				{this.state.footerLinks ?
+				{this.props.menu ?
 					<Footer
-						footerLinks={this.state.footerLinks}
-						footerInfo={this.state.footerInfo}
+						footerLinks={this.props.menu.filter(menu => {return menu.name === 'PortalFooterQuickLinks'})[0].content}
+						footerInfo={this.props.menu.filter(menu => {return menu.name === 'PortalFooterContactInfo'})[0].content}
 					/> : <LoadingCircle />
 				}
 			</div>
 		);
 	}
 }
-export default App;
+const mapStoreToProps = (store) => {
+	return {
+		auth: store.firebase.auth,
+		user: store.user.info,
+		menu: store.page.menu
+	}
+}
+const mapDispatchToProps = {
+	reduxLoadHomePage,
+	reduxLoadActionsPage,
+	reduxLoadServiceProvidersPage,
+	reduxLoadTestimonialsPage,
+	reduxLoadTeamsPage,
+	reduxLoadAboutUsPage,
+	reduxLoadImpactPage,
+	reduxLoadDonatePage,
+	reduxLoadEventsPage,
+	reduxLoadMenu,
+	reduxLoadActions,
+	reduxLoadEvents,
+	reduxLoadServiceProviders,
+	reduxLoadTestimonials
+}
+export default connect(mapStoreToProps, mapDispatchToProps)(App);
+//export default App;

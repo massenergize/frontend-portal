@@ -5,6 +5,7 @@
 import { 
   LOGIN, 
   LOGOUT, 
+  MOVE_TO_DONE,
   REMOVE_FROM_DONE, 
   REMOVE_FROM_TODO, 
   ADD_TO_TODO, 
@@ -95,9 +96,11 @@ export const reduxAddHousehold = (houseRel) => dispatch => {
   });
 }
 
-export const reduxMoveToDone = (houseRel) => {
-  reduxRemoveFromTodo(houseRel);
-  reduxAddToDone(houseRel);
+export const reduxMoveToDone = (houseRel) => dispatch => {
+  return dispatch({
+    type: MOVE_TO_DONE,
+    payload: houseRel
+  })
 }
 
 export const reduxRemoveHousehold = (houseRel) => dispatch => {

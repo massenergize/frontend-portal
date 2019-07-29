@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { isLoaded } from 'react-redux-firebase'
 import URLS from '../../../api/urls';
 import { getJson, postJson } from '../../../api/functions'
+import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
@@ -52,8 +53,8 @@ class ActionsPage extends React.Component {
 
     loadCart() {
         Promise.all([
-            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=TODO"),
-            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=DONE"),
+            getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=TODO"),
+            getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=DONE"),
         ]).then(myJsons => {
             this.setState({
                 todo: myJsons[0].data,
@@ -71,12 +72,12 @@ class ActionsPage extends React.Component {
             return <LoadingCircle />;
         }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) {
+        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
             this.componentDidMount();
             return <LoadingCircle />;
         }
         //if there is a user from the server and the cart is not loaded load the cart
-        if (this.state.user && !this.state.cartLoaded) {
+        if (this.props.user && !this.state.cartLoaded) {
             this.loadCart();
             return <LoadingCircle />;
         }
@@ -92,10 +93,10 @@ class ActionsPage extends React.Component {
                                     tagCols={this.state.tagCols}
                                     onChange={this.handleChange} //runs when any category is selected or unselected
                                 ></SideBar>
-                                {this.state.user ?
+                                {this.props.user ?
                                     <div>
-                                        <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
-                                        <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
+                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
+                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
                                     </div>
                                     :
                                     <div>
@@ -139,7 +140,7 @@ class ActionsPage extends React.Component {
                 tags={action.tags}
                 tagCols={this.state.tagCols}
 
-                user={this.state.user}
+                user={this.props.user}
                 addToCart={(id, status) => this.addToCart(id, status)}
                 inCart={(actionId, cart) => this.inCart(actionId, cart)}
                 moveToDone={(actionId) => this.moveToDoneByActionId(actionId)}
@@ -157,10 +158,14 @@ class ActionsPage extends React.Component {
      * These are the cart functions
      */
     inCart = (actionId, cart) => {
-        const checkTodo = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId });
+        if(!this.props.todo)
+            return false;
+        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
-        const checkDone = this.state.done.filter(actionRel => { return actionRel.action.id === actionId });
+        if(!this.props.done)
+            return false;
+        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "DONE") return checkDone.length > 0;
 
         return checkTodo.length > 0 || checkDone.length > 0;
@@ -174,15 +179,7 @@ class ActionsPage extends React.Component {
         postJson(URLS.USER+'/'+this.state.user.id+'/action/'+actionRel.id ,body).then(json => {
             console.log(json);
             if (json.success) {
-                this.setState({
-                    //delete from todo by filtering for not matching ids
-                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data[0].id }),
-                    //add to done by assigning done to a spread of what it already has and the one from data
-                    done: [
-                        ...this.state.done,
-                        json.data[0]
-                    ]
-                })
+                this.props.reduxMoveToDone(json.data[0]);
             }
             //just update the state here
         }).catch(err => {
@@ -190,7 +187,7 @@ class ActionsPage extends React.Component {
         })
     }
     moveToDoneByActionId(actionId) {
-        const actionRel = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
+        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
         if (actionRel)
             this.moveToDone(actionRel);
 
@@ -204,21 +201,11 @@ class ActionsPage extends React.Component {
         postJson(URLS.USER + "/" + this.state.user.id + "/actions", body).then(json => {
             if (json.success) {
                 //set the state here
-                if (status = "TODO") {
-                    this.setState({
-                        todo: [
-                            ...this.state.todo,
-                            json.data
-                        ]
-                    })
+                if (status === "TODO") {
+                    this.props.reduxAddToTodo(json.data);
                 }
-                else if (status = "DONE") {
-                    this.setState({
-                        done: [
-                            ...this.state.done,
-                            json.data
-                        ]
-                    })
+                else if (status === "DONE") {
+                    this.props.reduxAddToDone(json.data);
                 }
             }
         }).catch(error => {
@@ -228,7 +215,12 @@ class ActionsPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.user.info,
+        todo: store.user.todo,
+        done: store.user.done,
     }
 }
-export default connect(mapStoreToProps, null)(ActionsPage);
+
+const mapDispatchToProps = {reduxAddToDone, reduxAddToTodo, reduxMoveToDone}
+export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);
