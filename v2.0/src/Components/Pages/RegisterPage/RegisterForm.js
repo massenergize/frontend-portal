@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
-import { postJson } from '../../../api/functions';
+import { postJson, getJson } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { reduxLogin } from '../../../redux/actions/userActions';
+import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 
 
 const INITIAL_STATE = {
@@ -25,9 +25,10 @@ const INITIAL_STATE = {
 class RegisterFormBase extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { ...INITIAL_STATE,
-            persistence:this.props.firebase.auth.Auth.Persistence.NONE,
-            form: props.form ? props.form : 1 
+        this.state = {
+            ...INITIAL_STATE,
+            persistence: this.props.firebase.auth.Auth.Persistence.NONE,
+            form: props.form ? props.form : 1
         }
 
         this.onChange = this.onChange.bind(this);
@@ -49,12 +50,12 @@ class RegisterFormBase extends React.Component {
         } = this.state;
 
         var form;
-        if(this.props.auth.isEmpty)
-            form=1;
+        if (this.props.auth.isEmpty)
+            form = 1;
         else
-            form=2;
+            form = 2;
 
-        if (this.props.user.info && this.props.user.todo && this.props.user.done){
+        if (this.props.user.info && this.props.user.todo && this.props.user.done) {
             return <Redirect to='/profile' />;
         }
         return (
@@ -171,6 +172,13 @@ class RegisterFormBase extends React.Component {
         }
         postJson(URLS.USERS, body).then(json => {
             console.log(json);
+            if (json.success && json.data) {
+                this.fetchAndLogin(json.data.email).then(success => {
+                    if (success) {
+                        console.log('yay')
+                    }
+                });
+            }
         })
         this.setState({ ...INITIAL_STATE });
     }
@@ -206,6 +214,27 @@ class RegisterFormBase extends React.Component {
                 });
         });
     }
+
+    fetchAndLogin = async (email) => {
+        try {
+            const json = await getJson(`${URLS.USER}/e/${email}`);
+            if (json.success && json.data) {
+                this.props.reduxLogin(json.data);
+
+                const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
+                this.props.reduxLoadTodo(todo.data);
+                const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
+                this.props.reduxLoadDone(done.data);
+                return true;
+            }
+            console.log('fetch and login failed');
+            return false;
+        }
+        catch (err) {
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 //makes the register form have firebase and router so it can route the user if the login is successful
@@ -219,4 +248,4 @@ const mapStoreToProps = (store) => {
         user: store.user
     }
 }
-export default connect(mapStoreToProps, { reduxLogin })(RegisterForm);
+export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);

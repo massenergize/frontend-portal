@@ -1,6 +1,4 @@
 import React from 'react'
-import CONST from '../../Constants'
-import LoadingCircle from '../../Shared/LoadingCircle'
 import LoginForm from './LoginForm'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router'
@@ -8,8 +6,8 @@ import {Redirect} from 'react-router'
 class LoginPage extends React.Component {
     render() { //avoids trying to render before the promise from the server is fulfilled
         //pull form from the url
-        const params = new URLSearchParams(this.props.location.search)
-        const returnpath = params.get('returnpath');
+        // const params = new URLSearchParams(this.props.location.search)
+        // const returnpath = params.get('returnpath');
         if(this.props.user.info && this.props.user.todo && this.props.user.done)
             return <Redirect to='/profile'/>
         if(this.props.auth.isLoaded && !this.props.auth.isEmpty)
