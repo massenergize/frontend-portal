@@ -265,6 +265,29 @@ textarea {
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 
+.thm-btn.red {
+    position: relative;
+    background:red;
+    font-size: 14px;
+    line-height: 30px;
+    border-radius: 5px;
+    color: #ffffff;
+    border: 1px solid red;
+    font-weight: 700;
+    display: inline-block;
+    padding: 0 38px;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+.thm-btn.red:disabled {
+    background:#aaa;
+    border:#aaa;
+}
+.thm-btn.red:hover {
+    background: transparent;
+    color: red;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
 .thm-btn.style-2 {
     background: transparent;
     color: #8dc63f;

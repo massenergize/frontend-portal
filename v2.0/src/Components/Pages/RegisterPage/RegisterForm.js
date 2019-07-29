@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { Redirect } from 'react-router-dom';
+import { Link,Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
 import { postJson, getJson } from '../../../api/functions';
 import URLS from '../../../api/urls';
@@ -27,7 +27,7 @@ class RegisterFormBase extends React.Component {
         super(props);
         this.state = {
             ...INITIAL_STATE,
-            persistence: this.props.firebase.auth.Auth.Persistence.NONE,
+            persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
             form: props.form ? props.form : 1
         }
 
@@ -62,16 +62,7 @@ class RegisterFormBase extends React.Component {
             <div>
                 {form === 1 ?
                     < div className="styled-form register-form" >
-                        <div className="section-title style-2">
-                            <h3>Register with Google or Facebook</h3>
-                        </div>
-                        <div className="form-group social-links-three padd-top-5">
-                            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
-                            <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
-                        </div>
-                        <div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
-
-                        </div>
+                        
                         <div className="section-title style-2">
                             <h3>Register With Email and Password</h3>
                         </div>
@@ -91,10 +82,20 @@ class RegisterFormBase extends React.Component {
                             {error && <p style={{ color: "red" }}> {error} </p>}
                             <div className="clearfix">
                                 <div className="form-group pull-left">
-                                    <button type="submit" disabled={this.isInvalid()} className="thm-btn">Register</button>
+                                    <button type="submit" disabled={this.isInvalid()} className="thm-btn">Create Account</button>
                                 </div>
                             </div>
                         </form>
+                        <div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
+                        </div>
+                        <div className="section-title style-2">
+                            <h3>Register with Google or Facebook</h3>
+                        </div>
+                        <div className="form-group social-links-three padd-top-5">
+                            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
+                            <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
+                        </div>
+                        Already have an account? <Link to='/login'>Sign In</Link>
                     </div>
                     :
                     < div className="styled-form register-form" >
@@ -118,7 +119,9 @@ class RegisterFormBase extends React.Component {
                             </label>
                             <div className="clearfix">
                                 <div className="form-group pull-left">
-                                    <button type="submit" className="thm-btn">Register</button>
+                                    <button type="submit" className="thm-btn">
+                                        Finish Creating Account
+                                    </button> <button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
                                 </div>
                             </div>
                         </form>
@@ -181,6 +184,11 @@ class RegisterFormBase extends React.Component {
             }
         })
         this.setState({ ...INITIAL_STATE });
+    }
+
+    deleteFirebaseAccount = () => {
+        this.props.firebase.auth().currentUser.delete();
+        this.props.firebase.auth().signOut();
     }
 
     //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 

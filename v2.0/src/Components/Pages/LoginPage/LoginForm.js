@@ -23,7 +23,7 @@ class LoginFormBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ...INITIAL_STATE, persistence: props.firebase.auth.Auth.Persistence.NONE
+            ...INITIAL_STATE, persistence: props.firebase.auth.Auth.Persistence.SESSION
         };
 
         this.onChange = this.onChange.bind(this);

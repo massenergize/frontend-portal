@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NavBarBurger from './Components/Menu/NavBarBurger'
 import NavBarOffset from './Components/Menu/NavBarOffset'
 import Footer from './Components/Menu/Footer'
@@ -38,7 +38,7 @@ import {
 	reduxLoadServiceProviders,
 	reduxLoadTestimonials
 } from './redux/actions/pageActions'
-import { reduxLogin } from './redux/actions/userActions';
+import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 
 import URLS from './api/urls'
 import { getJson } from './api/functions'
@@ -49,7 +49,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loaded: false
+			triedLogin: false
 		}
 	}
 	componentDidMount() {
@@ -88,26 +88,32 @@ class App extends Component {
 			console.log(err)
 		});
 	}
-	getUser(email) {
-		return getJson(`${URLS.USER}/e/${email}`).then(json => {
-			if (json.success && json.data) {
-				reduxLogin(json.data);
-				return true;
-			} else {
-				console.log('no user');
-				return false;
-			}
-		})
+	async getUser(email) {
+		const json = await getJson(`${URLS.USER}/e/${email}`);
+		if (json.success && json.data) {
+			this.props.reduxLogin(json.data);
+			const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
+			this.props.reduxLoadTodo(todo.data);
+			const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
+			this.props.reduxLoadDone(done.data);
+			return true;
+		}
+		else {
+			console.log('no user');
+			return false;
+		}
 	}
 	render() {
 		if (!isLoaded(this.props.auth)) {
 			return <LoadingCircle />;
 		}
-		if (!this.props.auth.isEmpty && !this.props.user.info)
+		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
 			this.getUser(this.props.auth.email).then(success => {
-				if (!success)
-					console.log("darn");
+				this.setState({
+					triedLogin: true
+				})
 			})
+		}
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
@@ -125,34 +131,40 @@ class App extends Component {
 						<NavBarOffset />
 					</div> : <LoadingCircle />
 				}
-				<Switch>
-					<Route exact path="/" component={HomePage} />
-					<Route path="/home" component={HomePage} />
-					<Route exact path="/actions" component={ActionsPage} />
-					<Route path="/aboutus" component={AboutUsPage} />
-					<Route path="/services" component={ServicesPage} />
-					<Route path="/actions/:id" component={OneActionPage} />
-					<Route path="/testimonials" component={StoriesPage} />
-					<Route path="/teams" component={TeamsPage} />
-					<Route path="/impact" component={ImpactPage} />
-					<Route exact path="/events" component={EventsPage} />
-					<Route path="/events/:id" component={OneEventPage} />
-					<Route path="/login" component={LoginPage} />
-					<Route path="/register" component={RegisterPage} />
-					<Route path="/profile" component={ProfilePage} />
-					<Route path="/policies" component={PoliciesPage} />
-					{/*<Route path="/contact" component={Contact} /> */}
-
-					<Route component={() =>
-						<div>
-							FOUR OR FOR: PAGE NOT FOUND
-						</div>
-					} />
-				</Switch>
+				{ /**if theres a half finsished account the only place a user can go is the register page */
+					this.state.triedLogin && !this.props.user && this.props.auth.uid?
+						<Switch> 
+							<Route component={RegisterPage} />
+						</Switch>
+						:
+						<Switch>
+							<Route exact path="/" component={HomePage} />
+							<Route path="/home" component={HomePage} />
+							<Route exact path="/actions" component={ActionsPage} />
+							<Route path="/aboutus" component={AboutUsPage} />
+							<Route path="/services" component={ServicesPage} />
+							<Route path="/actions/:id" component={OneActionPage} />
+							<Route path="/testimonials" component={StoriesPage} />
+							<Route path="/teams" component={TeamsPage} />
+							<Route path="/impact" component={ImpactPage} />
+							<Route exact path="/events" component={EventsPage} />
+							<Route path="/events/:id" component={OneEventPage} />
+							<Route path="/login" component={LoginPage} />
+							<Route path="/register" component={RegisterPage} />
+							<Route path="/profile" component={ProfilePage} />
+							<Route path="/policies" component={PoliciesPage} />
+							{/*<Route path="/contact" component={Contact} /> */}
+							<Route component={() => {
+								return <div>
+									FOUR OR FOR: PAGE NOT FOUND
+								</div>
+							}} />
+						</Switch>
+				}
 				{this.props.menu ?
 					<Footer
-						footerLinks={this.props.menu.filter(menu => {return menu.name === 'PortalFooterQuickLinks'})[0].content}
-						footerInfo={this.props.menu.filter(menu => {return menu.name === 'PortalFooterContactInfo'})[0].content}
+						footerLinks={this.props.menu.filter(menu => { return menu.name === 'PortalFooterQuickLinks' })[0].content}
+						footerInfo={this.props.menu.filter(menu => { return menu.name === 'PortalFooterContactInfo' })[0].content}
 					/> : <LoadingCircle />
 				}
 			</div>
@@ -180,7 +192,10 @@ const mapDispatchToProps = {
 	reduxLoadActions,
 	reduxLoadEvents,
 	reduxLoadServiceProviders,
-	reduxLoadTestimonials
+	reduxLoadTestimonials,
+	reduxLogin,
+	reduxLoadTodo,
+	reduxLoadDone
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(App);
 //export default App;

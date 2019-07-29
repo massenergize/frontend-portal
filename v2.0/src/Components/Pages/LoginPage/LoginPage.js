@@ -11,8 +11,7 @@ class LoginPage extends React.Component {
         if(this.props.user.info && this.props.user.todo && this.props.user.done)
             return <Redirect to='/profile'/>
         if(this.props.auth.isLoaded && !this.props.auth.isEmpty)
-            if(!this.props.user.info)
-                return <Redirect to='/register'/>
+            return <Redirect to='/register'/>
 
         return (
             <div className="boxed_wrapper">

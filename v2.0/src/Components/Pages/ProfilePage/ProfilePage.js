@@ -56,10 +56,8 @@ class ProfilePage extends React.Component {
         if (!this.props.auth.isLoaded) { //if the auth isn't loaded wait for a bit
             return <LoadingCircle />;
         }
-        if (this.props.auth.isEmpty) return <Redirect to='/login' />
-
         if(!this.props.user)
-            return <Redirect to='/register'> </Redirect>
+            return <Redirect to='/login'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
         if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
             this.componentDidMount();

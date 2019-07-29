@@ -32,10 +32,7 @@ export default function (state = initialState, action) {
         info: action.payload
       }
     case LOGOUT:
-      return {
-        ...state,
-        info: null
-      }
+      return initialState;
     /**************************/
     case LOAD_TODO:
       return {
