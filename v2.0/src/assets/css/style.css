@@ -5542,7 +5542,7 @@ span.has-tooltip {
 
 .main-footer {
     position: relative;
-    background: #111709;
+    background: #111709f6;
     /* padding: 25px 0 80px; */
 }
 
@@ -5735,8 +5735,8 @@ span.has-tooltip {
 /*===========footer bottom ================*/
 
 .footer-bottom {
-    background: #111709;
-    border-top: 1px solid #19220e;
+    background: #111709f6;
+    border-top: 1px solid #2b2f25;
     padding: 21px 0;
 }
 

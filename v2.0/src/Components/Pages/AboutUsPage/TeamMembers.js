@@ -58,12 +58,11 @@ class TeamMembers extends React.Component {
                 <article className="col" key={key}>
                     <div className="single-team-member">
                         <figure className="img-box">
-                            <img src={member.profile_picture.url} alt="" className="width-100"/>
+                            <img src={(member.profile_picture) ? member.profile_picture.url : "https://i.imgur.com/VXqFXUC.jpg"} alt="" className="width-100"/>
                         </figure>
                         <div className="author-info text-center">
                             <h4>{member.full_name}</h4>
-                            <p>{member.user_info.role}</p>
-                            <p className="font-normal font-italic ">{member.user_info.description}</p>
+                            {(member.user_info) ? <><p>{member.user_info.role}</p><p className="font-normal font-italic ">{member.user_info.description}</p></> : null}
                             <hr/>
                         </div>
                             
