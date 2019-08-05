@@ -21,6 +21,7 @@ import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
 import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
+import DonatePage from './Components/Pages/DonatePage/DonatePage'
 
 import {
 	reduxLoadHomePage,
@@ -150,6 +151,7 @@ class App extends Component {
 							<Route path="/testimonials" component={StoriesPage} />
 							<Route path="/teams" component={TeamsPage} />
 							<Route path="/impact" component={ImpactPage} />
+							<Route path="/donate" component={DonatePage} />
 							<Route exact path="/events" component={EventsPage} />
 							<Route path="/events/:id" component={OneEventPage} />
 							<Route path="/login" component={LoginPage} />
