@@ -38,6 +38,7 @@ export const LOAD_IMPACT_PAGE = 'LOAD_IMPACT_PAGE' //impact_page
 export const LOAD_DONATE_PAGE = 'LOAD_DONATE_PAGE' //donate_page
 export const LOAD_EVENTS_PAGE = 'LOAD_EVENTS_PAGE' //events_page
 export const LOAD_MENU = 'LOAD_MENU' //menu (technically not a page but useful to store)
+export const LOAD_POLICIES = 'LOAD_POLICIES' //events_page/events
 
 /** these actions load data that is not stored in the page data in the database into our redux pages*/
 export const LOAD_ACTIONS = 'LOAD_ACTIONS' //actions_page/actions

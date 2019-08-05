@@ -7,8 +7,10 @@ import { postJson, getJson } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-
+/* Modal config */
 const INITIAL_STATE = {
     email: '',
     passwordOne: '',
@@ -18,10 +20,14 @@ const INITIAL_STATE = {
     lastName: '',
     preferredName: '',
     serviceProvider: false,
+    termsAndServices: false,
+    showTOSError: false,
+    showTOSModal: false,
 
     form: 1,
     error: null,
 };
+
 class RegisterFormBase extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +41,7 @@ class RegisterFormBase extends React.Component {
         this.isInvalid = this.isInvalid.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onFinalSubmit = this.onFinalSubmit.bind(this);
+        this.showTOS = this.showTOS.bind(this);
     }
 
     render() {
@@ -46,6 +53,9 @@ class RegisterFormBase extends React.Component {
             lastName,
             preferredName,
             serviceProvider,
+            termsAndServices,
+            showTOSError,
+            showTOSModal,
             error,
         } = this.state;
 
@@ -59,76 +69,99 @@ class RegisterFormBase extends React.Component {
             return <Redirect to='/profile' />;
         }
         return (
-            <div>
-                {form === 1 ?
-                    < div className="styled-form register-form" >
-                        
-                        <div className="section-title style-2">
-                            <h3>Register With Email and Password</h3>
-                        </div>
-                        <form onSubmit={this.onSubmit}>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
-                                <input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
+            <>
+                <div>
+                    {form === 1 ?
+                        < div className="styled-form register-form" >
+                            
+                            <div className="section-title style-2">
+                                <h3>Register With Email and Password</h3>
                             </div>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
-                                <input type="password" name="passwordOne" value={passwordOne} onChange={this.onChange} placeholder="Enter your password" required />
-                            </div>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
-                                <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
-                            </div>
-                            {error && <p style={{ color: "red" }}> {error} </p>}
-                            <div className="clearfix">
-                                <div className="form-group pull-left">
-                                    <button type="submit" disabled={this.isInvalid()} className="thm-btn">Create Account</button>
+                            <form onSubmit={this.onSubmit}>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
+                                    <input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
                                 </div>
-                            </div>
-                        </form>
-                        <div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
-                        </div>
-                        <div className="section-title style-2">
-                            <h3>Register with Google or Facebook</h3>
-                        </div>
-                        <div className="form-group social-links-three padd-top-5">
-                            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
-                            <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
-                        </div>
-                        Already have an account? <Link to='/login'>Sign In</Link>
-                    </div>
-                    :
-                    < div className="styled-form register-form" >
-                        <form onSubmit={this.onFinalSubmit}>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-user"></span></span>
-                                <input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
-                            </div>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-user"></span></span>
-                                <input type="text" name="lastName" value={lastName} onChange={this.onChange} placeholder="Last Name" required />
-                            </div>
-                            <div className="form-group">
-                                <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
-                                <input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
-                            </div>
-                            <label className="checkbox-container">
-                                <p style={{ marginLeft: "25px" }}>Are you a Service Provider?</p>
-                                <input className="checkbox" type="checkbox" name="serviceProvider" onClick={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
-                                <span className="checkmark"></span>
-                            </label>
-                            <div className="clearfix">
-                                <div className="form-group pull-left">
-                                    <button type="submit" className="thm-btn">
-                                        Finish Creating Account
-                                    </button> <button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
+                                    <input type="password" name="passwordOne" value={passwordOne} onChange={this.onChange} placeholder="Enter your password" required />
                                 </div>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
+                                    <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
+                                </div>
+                                {error && <p style={{ color: "red" }}> {error} </p>}
+                                <div className="clearfix">
+                                    <div className="form-group pull-left">
+                                        <button type="submit" disabled={this.isInvalid()} className="thm-btn">Create Account</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
                             </div>
-                        </form>
-                    </div>
-                }
-            </div>
+                            <div className="section-title style-2">
+                                <h3>Register with Google or Facebook</h3>
+                            </div>
+                            <div className="form-group social-links-three padd-top-5">
+                                <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
+                                <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
+                            </div>
+                            Already have an account? <Link to='/login'>Sign In</Link>
+                        </div>
+                        :
+                        < div className="styled-form register-form" >
+                            <form onSubmit={this.onFinalSubmit}>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-user"></span></span>
+                                    <input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
+                                </div>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-user"></span></span>
+                                    <input type="text" name="lastName" value={lastName} onChange={this.onChange} placeholder="Last Name" required />
+                                </div>
+                                <div className="form-group">
+                                    <span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
+                                    <input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
+                                </div>
+                                <label className="checkbox-container">
+                                    <input className="checkbox" type="checkbox" name="serviceProvider" onClick={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
+                                    <span className="checkmark"></span>
+                                    <p style={{ marginLeft: "25px" }}>Are you a Service Provider?</p>
+                                </label>
+                                <label className="checkbox-container">
+                                    <input className="checkbox" type="checkbox" name="termsAndServices" onClick={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
+                                    <span className="checkmark"></span>
+                                    <p style={{ marginLeft: "25px" }}>I agree to the <a href="#" onClick={this.showTOS}>Terms of Service</a>.</p>
+                                    <span className="text-danger mb-3 small" style={{display: (this.state.showTOSError) ? "block" : "none"}}>You need to agree to the terms of service!</span>
+                                </label>
+                                <div className="clearfix">
+                                    <div className="form-group pull-left">
+                                        <button type="submit" className="thm-btn">
+                                            Finish Creating Account
+                                        </button> <button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                </div>
+                <Modal show={this.state.showTOSModal} onHide={() => this.setState({showTOSModal: false})} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Terms of Service</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body dangerouslySetInnerHTML={{__html: this.props.policies.filter(x => x.name == "Terms of Service")[0].description}} style={{maxHeight: "50vh", overflowY: "scroll"}}></Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.setState({showTOSModal: false})}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </>
         );
+    }
+
+    showTOS() {
+        this.setState({showTOSModal: true});
     }
 
     onChange(event) {
@@ -164,7 +197,11 @@ class RegisterFormBase extends React.Component {
     onFinalSubmit(event) {
         event.preventDefault();
         /** Collects the form data and sends it to the backend */
-        const { firstName, lastName, preferredName, serviceProvider } = this.state;
+        const { firstName, lastName, preferredName, serviceProvider, termsAndServices} = this.state;
+        if(!termsAndServices) {
+            this.setState({showTOSError: true});
+            return;
+        }
         const { auth } = this.props;
         const body = {
             "full_name": firstName + ' ' + lastName,
@@ -172,6 +209,7 @@ class RegisterFormBase extends React.Component {
             "email": auth.email,
             // "id": auth.uid,
             "is_vendor": serviceProvider,
+            "accept_tos": termsAndServices
         }
         postJson(URLS.USERS, body).then(json => {
             console.log(json);
@@ -259,7 +297,8 @@ const RegisterForm = compose(
 const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
-        user: store.user
+        user: store.user,
+        policies: store.page.policies,
     }
 }
 export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);

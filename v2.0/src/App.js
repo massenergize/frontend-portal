@@ -33,6 +33,7 @@ import {
 	reduxLoadDonatePage,
 	reduxLoadEventsPage,
 	reduxLoadMenu,
+	reduxLoadPolicies,
 	reduxLoadActions,
 	reduxLoadEvents,
 	reduxLoadServiceProviders,
@@ -69,6 +70,7 @@ class App extends Component {
 			getJson(URLS.VENDORS),
 			getJson(URLS.TESTIMONIALS),
 			getJson(URLS.MENUS),
+			getJson(URLS.POLICIES)
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
 			this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
@@ -84,6 +86,7 @@ class App extends Component {
 			this.props.reduxLoadServiceProviders(myJsons[11].data)
 			this.props.reduxLoadTestimonials(myJsons[12].data)
 			this.props.reduxLoadMenu(myJsons[13].data)
+			this.props.reduxLoadPolicies(myJsons[14].data)
 		}).catch(err => {
 			console.log(err)
 		});
@@ -189,6 +192,7 @@ const mapDispatchToProps = {
 	reduxLoadDonatePage,
 	reduxLoadEventsPage,
 	reduxLoadMenu,
+	reduxLoadPolicies,
 	reduxLoadActions,
 	reduxLoadEvents,
 	reduxLoadServiceProviders,

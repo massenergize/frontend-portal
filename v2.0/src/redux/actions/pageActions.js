@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS_PAGE, LOAD_MENU, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_TESTIMONIALS_PAGE, LOAD_TESTIMONIALS, LOAD_EVENTS } from './types'
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS_PAGE, LOAD_MENU, LOAD_POLICIES, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_TESTIMONIALS_PAGE, LOAD_TESTIMONIALS, LOAD_EVENTS } from './types'
 
 export const reduxLoadHomePage = (page) => dispatch => {
     return dispatch({
@@ -67,6 +67,13 @@ export const reduxLoadMenu = (menu) => dispatch => {
     return dispatch({
         type: LOAD_MENU,
         payload: menu
+    })
+}
+
+export const reduxLoadPolicies = (policies) => dispatch => {
+    return dispatch({
+        type: LOAD_POLICIES,
+        payload: policies
     })
 }
 

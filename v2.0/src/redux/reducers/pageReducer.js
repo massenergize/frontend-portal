@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_MENU } from '../actions/types';
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_MENU, LOAD_POLICIES} from '../actions/types';
 
 const initialState = {
     //page data for each page
@@ -13,6 +13,7 @@ const initialState = {
     eventsPage: null,
     //menu, navbar footer...
     menu: null,
+    policies: null,
     //objects to be loaded
     actions: null,
     events: null,
@@ -74,6 +75,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 menu: action.payload
+            }
+        case LOAD_POLICIES:
+            return {
+                ...state,
+                policies: action.payload
             }
         case LOAD_ACTIONS:
             return {
