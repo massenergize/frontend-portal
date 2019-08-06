@@ -12,8 +12,8 @@ class Cart extends React.Component {
     render(){
         return (
             // <!--Cart Outer-->
-            <div className="cart-outer">
-                <h3 className="center">{this.props.title}</h3>
+            <div className="cart-outer mb-5">
+                <h3 className="center m-0">{this.props.title}</h3>
                 <div className="table-outer">
                     {this.props.actionRels ?
                         <table className="cart-table" style = {{width:'100%'}}>
@@ -35,8 +35,10 @@ class Cart extends React.Component {
         );
     }
     renderActions(actionRelations) {
-        if (!actionRelations) {
-            return <li>Empty</li>;
+        if (!actionRelations || actionRelations.length <= 0) {
+            return (
+                <tr key="1"><td colspan="100%"><p class="m-0 p-2 w-100 text-center">Nothing here, yet!</p></td></tr>
+            );
         }
         //returns a list of action components
         return Object.keys(actionRelations).map(key => {

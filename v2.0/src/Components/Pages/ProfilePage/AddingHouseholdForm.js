@@ -22,23 +22,27 @@ class AddingHouseholdForm extends React.Component {
     render() {
         return (
             <form onSubmit={this.onSubmit}>
-                <p>Unit name*</p>
-                <input type="text" name="name" value={this.state.name} onChange={this.onChange} />
-                <p> Unit Type </p>
-                <div className="row">
-                    <div className="col">
-                        <input type='radio' name="unittype" value="RESIDENTIAL" defaultChecked onClick={this.onChange} />
-                        <p>Residential</p>
+                <div className="col">
+                    <p>Unit Name <span className="text-danger">*</span></p>
+                    <input type="text" name="name" value={this.state.name} onChange={this.onChange} />
+                </div>
+                <div className="col">
+                    <p>Unit Type</p>
+                    <div className="col-6 d-flex">
+                        <input type='radio' name="unittype" id="unit_residential" value="RESIDENTIAL" defaultChecked onClick={this.onChange} />
+                        <label className="ml-2" for="unit_residential">Residential</label>
                     </div>
-                    <div className="col">
-                        <input type='radio' name="unittype" value="COMMERCIAL" onClick={this.onChange} />
-                        <p>Commercial</p>
+                    <div className="col-6 d-flex">
+                        <input type='radio' name="unittype" id="unit_commercial" value="COMMERCIAL" onClick={this.onChange} />
+                        <label className="ml-2" for="unit_commercial">Commercial</label>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-12">
-                        <button disabled className="thm-btn bg-cl-1" type="submit" style={{ width: '99%' }}>Add household</button>
-                    </div>
+                <div className="col">
+                    <p>Location</p>
+                    <input type="text" name="location" value={this.state.location} onChange={this.onChange} />
+                </div>
+                <div className="col p-0">
+                    <button className="thm-btn bg-cl-1" type="submit" style={{ width: '99%' }}>Add household</button>
                 </div>
             </form>
         );
@@ -51,7 +55,6 @@ class AddingHouseholdForm extends React.Component {
             error: null
         });
         console.log(this.state.unittype)
-
     };
 
     onSubmit = (event) => {
@@ -64,29 +67,28 @@ class AddingHouseholdForm extends React.Component {
         /** Collects the form data and sends it to the backend */
         postJson(URLS.USER + "/" + this.props.user.id + "/households", body).then(json => {
             console.log(json);
-            // this.props.addHousehold(json.data);
-            // if (json.success) {
-            //     var oldhouseholds = [];
-            //     this.props.user.households.forEach(household => {
-            //         oldhouseholds.push(household.id);
-            //     })
-            //     fetch(URLS.USER + "/" + this.props.user.id, {
-            //         method: 'post',
-            //         body: JSON.stringify({
-            //             "preferred_name": this.props.user.preferred_name,
-            //             "email": this.props.user.email,
-            //             "full_name": this.props.user.full_name,
-            //             "real_estate_units": [
-            //                 ...oldhouseholds,
-            //                 json.data.id
-            //             ]
-            //         })
-            //     }).then(response => {
-            //         return response.json()
-            //     }).then(json => {
-            //         console.log(json);
-            //     });
-            // }
+            if (json.success) {
+                this.props.addHousehold(json.data);
+                var householdIds = [];
+                this.props.user.households.forEach(household => {
+                    householdIds.push(household.id);
+                })
+                fetch(URLS.USER + "/" + this.props.user.id, {
+                    method: 'post',
+                    body: JSON.stringify({
+                        "preferred_name": this.props.user.preferred_name,
+                        "email": this.props.user.email,
+                        "full_name": this.props.user.full_name,
+                        "real_estate_units": [
+                            ...householdIds
+                        ]
+                    })
+                }).then(response => {
+                    return response.json()
+                }).then(json => {
+                    console.log(json);
+                });
+            }
         }).catch(error => {
             console.log(error);
         })

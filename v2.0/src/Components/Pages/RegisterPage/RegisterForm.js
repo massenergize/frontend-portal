@@ -9,6 +9,7 @@ import { facebookProvider, googleProvider } from '../../../config/firebaseConfig
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import LoadingCircle from '../../Shared/LoadingCircle';
 
 /* Modal config */
 const INITIAL_STATE = {
@@ -45,6 +46,8 @@ class RegisterFormBase extends React.Component {
     }
 
     render() {
+        if(!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
+
         const {
             email,
             passwordOne,

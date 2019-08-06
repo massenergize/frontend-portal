@@ -96,7 +96,7 @@ export default function (state = initialState, action) {
         info: {
           ...state.info,
           households: [
-            ...state.households,
+            ...state.info.households,
             action.payload
           ]
         }
