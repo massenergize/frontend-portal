@@ -87,6 +87,7 @@ class AddingHouseholdForm extends React.Component {
                     return response.json()
                 }).then(json => {
                     console.log(json);
+                    if(json.success) this.props.closeForm();
                 });
             }
         }).catch(error => {

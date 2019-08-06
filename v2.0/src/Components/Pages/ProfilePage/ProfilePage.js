@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import SignOutButton from './SignOutButton'
 import Cart from '../../Shared/Cart'
@@ -127,7 +127,7 @@ class ProfilePage extends React.Component {
                                                     <td colSpan={4}>
                                                         {this.state.addingHH ?
                                                             <>
-                                                                <AddingHouseholdForm user={this.props.user} addHousehold={this.addHousehold} />
+                                                                <AddingHouseholdForm user={this.props.user} addHousehold={this.addHousehold} closeForm={() => this.setState({ addingHH: false })}/>
                                                                 <button
                                                                     className="thm-btn"
                                                                     onClick={() => this.setState({ addingHH: !this.state.addingHH })}
@@ -152,6 +152,9 @@ class ProfilePage extends React.Component {
                         <div className="col-lg-4 col-md-5 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
                             <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
                             <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
+                            <div className="col-12 text-center">
+                                <Link to="actions"><button class="thm-btn">Discover All Actions</button></Link>
+                            </div>
                         </div>
                     </div>
                 </div>
