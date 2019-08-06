@@ -60,7 +60,7 @@ class AboutUsPage extends React.Component {
                     </div>
                 </div>
                 <TeamMembers data={teamMembersData} />
-                <DonateBar message={donateMessage}/>
+                <DonateBar/>
                 
             </div>
         );

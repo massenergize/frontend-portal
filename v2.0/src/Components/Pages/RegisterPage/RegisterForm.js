@@ -209,7 +209,7 @@ class RegisterFormBase extends React.Component {
             "email": auth.email,
             // "id": auth.uid,
             "is_vendor": serviceProvider,
-            // "accept_tos": termsAndServices
+            "accepts_terms_and_conditions": termsAndServices
         }
         postJson(URLS.USERS, body).then(json => {
             console.log(json);

@@ -36,8 +36,13 @@ export const postJson = async (url, body) => {
 	}
 }
 
-// Takes out the section that matches with the name given
-export const section = (json, section) => {
-	let sections = json.data[0].sections;
+/**
+ * Takes out the section that matches with the name given
+ * @param {JSONObject | JSONArray} json : the json object of either the page data or the json array of the sections
+ * @param {String} section : the name of the section to extract
+ * @param {Boolean} sectionOnly : specifying if the json provided is json array of sections or page data
+ */
+export const section = (json, section, sectionOnly) => {
+	let sections = (sectionOnly) ? json : json.data[0].sections;
 	return sections.filter(x => x.name == section)[0];
 }
