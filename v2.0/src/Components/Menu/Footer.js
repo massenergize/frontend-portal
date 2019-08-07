@@ -46,6 +46,23 @@ class Footer extends React.Component {
                         </div>
                     </div>
                 </section>
+                <section className="coders">
+                    <div class="container">
+                        <span>Made with&nbsp;
+                            <span class="fa fa-heart text-danger"></span> by&nbsp;
+                            <a href="#" class="normal">
+                                <u>Sam Opoku-Agyemang</u>
+                            </a>,&nbsp;
+                            <a href="#" class="normal">
+                                <u>Kieran O'Day</u> 
+                            </a>,&nbsp;
+                            <a href="#" class="normal">
+                                <u>Mingle Li</u>
+                            </a>
+                            .
+                        </span>
+                    </div>
+                </section>
             </div>
         );
     }

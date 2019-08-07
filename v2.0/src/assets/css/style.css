@@ -236,6 +236,11 @@ textarea {
     border-bottom: 1px solid #f7f7f7;
 }
 
+.normal {
+    color: inherit;
+    font-size: inherit;
+}
+
 @media (min-width: 1200px) {
     .container {
         padding: 0;
@@ -5742,12 +5747,10 @@ span.has-tooltip {
 
 .footer-bottom .copy-text {
     color: #848484;
-    font-size: 14px;
 }
 
 .footer-bottom .copy-text a {
     color: #8dc63f;
-    font-size: 14px;
 }
 
 .footer-bottom a {
@@ -5756,6 +5759,13 @@ span.has-tooltip {
     transition: .3s ease;
 }
 
+/*===========footer bottom ================*/
+.coders {
+    background-color: #0e1307f6;
+    padding: 1em;
+    color: #444;
+    text-align: center;
+}
 
 /************************** 
 * Inner Banner styles 
