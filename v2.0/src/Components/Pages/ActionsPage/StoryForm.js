@@ -8,7 +8,7 @@ import { postJson } from '../../../api/functions';
 const INITIAL_STATE = {
     title: '',
     body: '',
-    message: 'Add your own story'
+    message: 'Tell Us Your Story'
 };
 
 class StoryForm extends React.Component {

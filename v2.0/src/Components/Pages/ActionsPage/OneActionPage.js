@@ -322,11 +322,11 @@ class OneActionPage extends React.Component {
             if (json.success) {
                 this.setState({
                     //delete from todo by filtering for not matching ids
-                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data[0].id }),
+                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data.id }),
                     //add to done by assigning done to a spread of what it already has and the one from data
                     done: [
                         ...this.state.done,
-                        json.data[0]
+                        json.data
                     ]
                 })
             }
