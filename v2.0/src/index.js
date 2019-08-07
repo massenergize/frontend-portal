@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './assets/css/style.css';
 import App from './App';
+import ScrollToTop from './ScrollToTop';
 import * as serviceWorker from './serviceWorker';
 
 import store from './redux/store';
@@ -24,7 +25,9 @@ ReactDOM.render(
 	<Provider store={store}>
 		<ReactReduxFirebaseProvider {...rrfProps}>
 			<ConnectedRouter history={history}>
-				<App />
+				<ScrollToTop>
+					<App />
+				</ScrollToTop>
 			</ConnectedRouter>
 		</ReactReduxFirebaseProvider>
 	</Provider>,
