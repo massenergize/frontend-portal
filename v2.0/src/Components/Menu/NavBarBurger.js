@@ -3,7 +3,37 @@ import logo from '../../logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import SignOutLink from '../Shared/SignOutLink';
 
+/**
+ * Renders entire navbar
+ * 
+ * Normal state:
+ * <nav>
+ *  <ul>
+ *      <li>
+ *          <Dropdown> // if necessary
+ *              <Link />
+ *          </Dropdown>
+ *      </li>
+ *  </ul>
+ * </nav>
+ * 
+ * Burgered state:
+ * <Menu>
+ *  <MenuItem></MenuItem>
+ *  <SubMenuItem></SubMenuItem> // for if has children only
+ * </Menu>
+ * 
+ * where SubMenuItem renders:
+ * <MenuItem></MenuItem>
+ * <div>
+ *  <Menu>
+ *      <MenuItem></MenuItem>
+ *      <MenuItem></MenuItem>
+ *  </Menu>
+ * </div>
+ */
 class NavBarBurger extends React.Component {
     constructor(props) {
         super(props);
@@ -54,6 +84,7 @@ class NavBarBurger extends React.Component {
             },
         }
 
+        // Only for burgered
         const menuItems = this.props.navLinks.map((val, index) => {
             if(val.children) {
                 return (
@@ -80,7 +111,7 @@ class NavBarBurger extends React.Component {
                                 <Link to="/"><img src={logo} alt="" /></Link>
                             </div>
                         </div>
-                        {this.state.menuBurgered ?
+                        {this.state.menuBurgered ? // BURGERED STATE
                             <div className="col-lg-10 col-md-9 col menu-column" >
                                 <div style={styles.container}>
                                     <MenuButton open={this.state.menuOpen} onClick={() => this.handleMenuClick()} color='#333' />
@@ -114,6 +145,7 @@ class NavBarBurger extends React.Component {
             </nav >
         )
     }
+    // NORMAL STATE
     renderNavLinks(navLinks) {
         if (!navLinks) {
             return <li key="noLinks">No PageLinks to Display</li>
@@ -150,13 +182,21 @@ class NavBarBurger extends React.Component {
     renderLogin() {
         const {
             auth,  
-        } = this.props
+        } = this.props;
+        const style = {
+            borderTop: "5px solid #8dc63f",
+            borderRadius: "0",
+            padding: "0",
+        };
         if (auth.uid) {
             return (
-                <Link className="thm-btn float-right" to="/profile" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
-                    <i className="fa fa-user" />{'\u00A0'}
-                     My Profile
-                </Link>
+                <Dropdown onSelect={() => null} className="d-flex">
+                    <Dropdown.Toggle as={ProfileBtnDropdown} userName={this.props.auth.displayName.split(" ")[0]} id="dropdown-custom-components"></Dropdown.Toggle>
+                    <Dropdown.Menu style={style}>
+                        <Link to="profile" className="dropdown-item p-3 small font-weight-bold">My Profile</Link>
+                        <Link className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></Link>
+                    </Dropdown.Menu>
+                </Dropdown>
             );
         } else {
             return (
@@ -176,8 +216,55 @@ const mapStoreToProps = (store) => {
 export default connect(mapStoreToProps,null)(NavBarBurger);
 // export default NavBarBurger;
 
+class ProfileBtnDropdown extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.handleClick = this.handleClick.bind(this);
+    }
+    handleClick(e) {
+        e.preventDefault();
+
+        this.props.onClick(e);
+    }
+
+    render() {
+        return (
+            <Link className="thm-btn float-right" onClick={this.handleClick} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
+                <i className="fa fa-user" />{'\u00A0'}
+                    Hello, {this.props.userName}
+                <span className="fa fa-angle-down text-white ml-1"></span>
+            </Link>
+        );
+    }
+}
+
+/* For Navbar (Normal) Dropdown Link */
+class CustomNavLink extends React.Component {
+    constructor(props, context) {
+      super(props, context);
+  
+      this.handleClick = this.handleClick.bind(this);
+    }
+  
+    handleClick(e) {
+      e.preventDefault();
+  
+      this.props.onClick(e);
+    }
+  
+    render() {
+      return (
+        // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
+            <Link to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
+        // </li>
+      );
+    }
+  }
+
+  // ======================== BURGERED vvv =========================== //
+
 /**
- * Renders one navlink and its menu underneath.
+ * Renders one navlink and its menu underneath in Burgered menu
  * @props navlink: The navlink object and its children to render
  */
 class SubMenuItem extends React.Component {
@@ -227,30 +314,9 @@ class SubMenuItem extends React.Component {
     }
 };
 
-/* For Navbar Dropdown Link */
-class CustomNavLink extends React.Component {
-    constructor(props, context) {
-      super(props, context);
-  
-      this.handleClick = this.handleClick.bind(this);
-    }
-  
-    handleClick(e) {
-      e.preventDefault();
-  
-      this.props.onClick(e);
-    }
-  
-    render() {
-      return (
-        // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
-            <Link to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
-        // </li>
-      );
-    }
-  }
-
-/* MenuItem.jsx*/
+/**
+ * Renders just one navlink in Burgered menu
+ */
 class MenuItem extends React.Component {
     constructor(props) {
         super(props);

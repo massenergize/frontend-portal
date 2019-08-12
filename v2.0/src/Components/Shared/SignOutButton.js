@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { reduxLogout } from '../../../redux/actions/userActions';
+import { reduxLogout } from '../../redux/actions/userActions';
 
 
 class SignOutButton extends React.Component{

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
-import SignOutButton from './SignOutButton'
+import SignOutButton from '../../Shared/SignOutButton'
 import Cart from '../../Shared/Cart'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'

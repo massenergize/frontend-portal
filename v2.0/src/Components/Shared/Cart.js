@@ -37,7 +37,7 @@ class Cart extends React.Component {
     renderActions(actionRelations) {
         if (!actionRelations || actionRelations.length <= 0) {
             return (
-                <tr key="1"><td colspan="100%"><p class="m-0 p-2 w-100 text-center">Nothing here, yet!</p></td></tr>
+                <tr key="1"><td colSpan="100%"><p class="m-0 p-2 w-100 text-center">Nothing here, yet!</p></td></tr>
             );
         }
         //returns a list of action components
