@@ -8,6 +8,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+
 /**
  * Renders the event page
  */
@@ -27,16 +28,16 @@ class EventsPage extends React.Component {
     //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
         Promise.all([
-            getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            getJson(URLS.EVENTS), //need to add community to this
-            getJson(URLS.TAG_COLLECTIONS + "?name=Categories"), //need to add community to this too
+            //getJson(URLS.USERS + "?email=" + this.props.auth.email),
+            //getJson(URLS.EVENTS), //need to add community to this
+            getJson(URLS.TAG_COLLECTIONS + "?name=Category"), //need to add community to this too
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
                 loaded: true,
-                user: myJsons[0].data[0],
-                events: myJsons[1].data,
-                tagCols: myJsons[2].data,
+                //user: myJsons[0].data[0],
+                //events: myJsons[1].data,
+                tagCols: myJsons[0].data,
             })
         }).catch(error => {
             console.log(error);
@@ -45,8 +46,10 @@ class EventsPage extends React.Component {
     }
 
     render() {
+        if(!this.props.events){
+            return <LoadingCircle/>
+        }
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.loaded) return <LoadingCircle />;
         return (
             <div className="boxed_wrapper">
                 {/* renders the sidebar and events columns */}
@@ -55,11 +58,12 @@ class EventsPage extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-3 col-md-5 col-12">
-                                    {this.renderSideBar()}
+                                    {this.state.tagCols?
+                                    this.renderSideBar() : <LoadingCircle/>}
                                 </div>
                                 <div className="col-lg-9 col-md-7 col-12">
                                     <div className="outer-box sec-padd event-style2">
-                                        {this.renderEvents(this.state.events)}
+                                        {this.renderEvents(this.props.events)}
                                     </div>
                                 </div>
                             </div>
@@ -345,7 +349,10 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth, 
+        user: store.user.info,
+        events: store.page.events,
+
     }
 }
 export default connect(mapStoreToProps, null)(EventsPage);

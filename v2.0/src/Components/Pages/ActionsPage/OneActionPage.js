@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Cart from '../../Shared/Cart';
 import StoryForm from './StoryForm';
+import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'
+
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -15,71 +17,18 @@ import StoryForm from './StoryForm';
 class OneActionPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loaded: false,
-            user: null,
-            action: null,
-            todo: [],
-            done: [],
-            stories: [],
-            cartLoaded: false
-        }
+       
         this.handleChange = this.handleChange.bind(this);
     }
-    //gets the data from the api url and puts it in pagedata and menudata
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            getJson(URLS.ACTION + "/" + this.props.match.params.id), //need to add community to this
-            getJson(URLS.ACTION + "/" + this.props.match.params.id + "/testimonials"), //need to add community to this
-        ]).then(myJsons => {
-            this.setState({
-                ...this.state,
-                user: myJsons[0].data[0],
-                action: myJsons[1].data,
-                stories: myJsons[2].data,
-                loaded: true,
-            })
-        }).catch(error => {
-            console.log(error);
-        });
-    }
-
-    loadCart() {
-        Promise.all([
-            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=TODO"),
-            getJson(URLS.USER + "/" + this.state.user.id + "/actions" + "?status=DONE"),
-        ]).then(myJsons => {
-            this.setState({
-                ...this.state,
-                todo: myJsons[0].data,
-                done: myJsons[1].data,
-                cartLoaded: true,
-            })
-        }).catch(err => {
-            console.log(err)
-        });
-    }
-
+    
     render() {
-        //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)){ //if the auth isn't loaded wait for a bit
-            return <LoadingCircle/>;
-        }
-        //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.state.user) { 
-            this.componentDidMount();
+        if(!this.props.actions){
             return <LoadingCircle />;
         }
-        //if there is a user from the server and the cart is not loaded load the cart
-        if (this.state.user && !this.state.cartLoaded) {
-            this.loadCart();
-            return <LoadingCircle />;
-        }
-        if(!this.state.action){
-            this.componentDidMount();
-            return <LoadingCircle />;
-        }
+        const action = this.props.actions.filter(action => {
+            return action.id === Number(this.props.match.params.id)
+        })[0]
+
         return (
             <div className="boxed_wrapper">
                 <section className="shop-single-area">
@@ -87,14 +36,14 @@ class OneActionPage extends React.Component {
                         <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                             <div className="col-md-8">
                                 <div className="single-products-details">
-                                    {this.renderAction(this.state.action)}
+                                    {this.renderAction(action)}
                                 </div>
                             </div>
                             {/* makes the todo and completed actions carts */}
-                            {this.state.user ?
+                            {this.props.user ?
                                 <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                                    <Cart title="To Do List" actionRels={this.state.todo} status="TODO" moveToDone={this.moveToDone} />
-                                    <Cart title="Completed Actions" actionRels={this.state.done} status="DONE" moveToDone={this.moveToDone} />
+                                    <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
+                                    <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
                                 </div>
                                 :
                                 <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
@@ -114,6 +63,12 @@ class OneActionPage extends React.Component {
      * renders the action on the page
      */
     renderAction(action) {
+        if(!this.props.stories){
+            return <LoadingCircle/>
+        }
+        const stories = this.props.stories.filter(story => {
+            return story.action.id === Number(this.props.match.params.id)
+        })
         return (
             <div>
                 <div className="product-content-box">
@@ -132,7 +87,7 @@ class OneActionPage extends React.Component {
                                 {/* the buttons to add todo or done it */}
                                 {!this.inCart(action.id) ?
                                     <button
-                                        disabled={!this.state.user}
+                                        disabled={!this.props.user}
                                         className="thm-btn style-4 "
                                         style={{ fontSize: "15px", marginRight: "20px" }}
                                         onClick={() => this.addToCart(action.id, "TODO")}
@@ -141,7 +96,7 @@ class OneActionPage extends React.Component {
                                 }
                                 {!this.inCart(action.id) ?
                                     <button
-                                        disabled={!this.state.user}
+                                        disabled={!this.props.user}
                                         className="thm-btn style-4 "
                                         style={{ fontSize: "15px" }}
                                         onClick={() => this.addToCart(action.id, "DONE")}
@@ -149,7 +104,7 @@ class OneActionPage extends React.Component {
                                     :
                                     <>{!this.inCart(action.id, "DONE") ?
                                         <button
-                                            disabled={!this.state.user}
+                                            disabled={!this.props.user}
                                             className="thm-btn style-4 "
                                             style={{ fontSize: "15px" }}
                                             onClick={() => this.moveToDoneByActionId(action.id)}
@@ -215,11 +170,11 @@ class OneActionPage extends React.Component {
                         <div className="tab-pane" id="review">
                             <div className="review-box">
                                 {/* Reviews */}
-                                {this.renderStories(this.state.stories)}
+                                {this.renderStories(stories)}
                             </div>
                             {/* form to fill out to tell your own story */}
-                            {this.state.user?
-                            <StoryForm uid={this.state.user.id} aid={action.id} addStory={this.addStory}/> 
+                            {this.props.user?
+                            <StoryForm uid={this.props.user.id} aid={action.id} addStory={this.addStory}/> 
                             :
                             <p>
                                 <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
@@ -237,13 +192,10 @@ class OneActionPage extends React.Component {
             return <span key={key}> {tags[key].name} </span>;
         })
     }
-
-
-
     addStory = (story) => { 
         this.setState({
             stories: [
-                ...this.state.stories,
+                ...this.props.stories,
                 story
             ]
         })
@@ -285,28 +237,20 @@ class OneActionPage extends React.Component {
     handleChange() {
         this.forceUpdate();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * These are the Cart functions
      */
 
+    /**
+     * These are the cart functions
+     */
     inCart = (actionId, cart) => {
-        const checkTodo = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId });
+        if(!this.props.todo) return false;
+        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
-        const checkDone = this.state.done.filter(actionRel => { return actionRel.action.id === actionId });
+        if(!this.props.done) return false;
+        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "DONE") return checkDone.length > 0;
 
         return checkTodo.length > 0 || checkDone.length > 0;
@@ -314,21 +258,13 @@ class OneActionPage extends React.Component {
     moveToDone = (actionRel) => {
         const body = {
             status: "DONE",
-            action: actionRel.action.id,
+            action_id: actionRel.action.id,
             real_estate_unit: actionRel.real_estate_unit.id,
         }
-        postJson(URLS.USER + "/" + this.state.user.id + "/action/" + actionRel.id, body).then(json => {
+        postJson(URLS.USER+'/'+this.props.user.id+'/action/'+actionRel.id ,body).then(json => {
             console.log(json);
             if (json.success) {
-                this.setState({
-                    //delete from todo by filtering for not matching ids
-                    todo: this.state.todo.filter(actionRel => { return actionRel.id !== json.data.id }),
-                    //add to done by assigning done to a spread of what it already has and the one from data
-                    done: [
-                        ...this.state.done,
-                        json.data
-                    ]
-                })
+                this.props.reduxMoveToDone(json.data);
             }
             //just update the state here
         }).catch(err => {
@@ -336,7 +272,7 @@ class OneActionPage extends React.Component {
         })
     }
     moveToDoneByActionId(actionId) {
-        const actionRel = this.state.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
+        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
         if (actionRel)
             this.moveToDone(actionRel);
 
@@ -347,24 +283,14 @@ class OneActionPage extends React.Component {
             status: status,
             real_estate_unit: 1
         }
-        postJson(URLS.USER + "/" + this.state.user.id + "/actions", body).then(json => {
+        postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
             if (json.success) {
                 //set the state here
-                if (status = "TODO") {
-                    this.setState({
-                        todo: [
-                            ...this.state.todo,
-                            json.data
-                        ]
-                    })
+                if (status === "TODO") {
+                    this.props.reduxAddToTodo(json.data);
                 }
-                else if (status = "DONE") {
-                    this.setState({
-                        done: [
-                            ...this.state.done,
-                            json.data
-                        ]
-                    })
+                else if (status === "DONE") {
+                    this.props.reduxAddToDone(json.data);
                 }
             }
         }).catch(error => {
@@ -374,7 +300,14 @@ class OneActionPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.user.info,
+        todo: store.user.todo,
+        done: store.user.done,
+        actions: store.page.actions,
+        stories: store.page.testimonials
     }
 }
-export default connect(mapStoreToProps, null)(OneActionPage);
+const mapDispatchToProps = {reduxAddToDone, reduxAddToTodo, reduxMoveToDone}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);

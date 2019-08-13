@@ -5,43 +5,47 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 class OneEventPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loaded: false,
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         loaded: false,
+    //     }
+    // }
     //gets the data from the api url and puts it in pagedata and menudata
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            getJson(URLS.EVENT + "/" + this.props.match.params.id),
-        ]).then(myJsons => {
-            console.log(myJsons[1]);
-            this.setState({
-                ...this.state,
-                loaded: true,
-                user: myJsons[0].data[0],
-                event: myJsons[1].data,
-            })
-        }).catch(error => {
-            console.log(error);
-            return null;
-        });
-    }
+    // componentDidMount() {
+    //     Promise.all([
+    //         getJson(URLS.USERS + "?email=" + this.props.auth.email),
+    //         getJson(URLS.EVENT + "/" + this.props.match.params.id),
+    //     ]).then(myJsons => {
+    //         console.log(myJsons[1]);
+    //         this.setState({
+    //             ...this.state,
+    //             loaded: true,
+    //             user: myJsons[0].data[0],
+    //             event: myJsons[1].data,
+    //         })
+    //     }).catch(error => {
+    //         console.log(error);
+    //         return null;
+    //     });
+    // }
 
     /**
     * renders a single event from the passes id prop 
     */
     render() {
+        if (!this.props.events) return <LoadingCircle />;
+
+        const event = this.props.events.filter(event => {
+            return event.id === Number(this.props.match.params.id)
+        })[0]
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.state.loaded) return <LoadingCircle />;
         return (
             <div className="boxed_wrapper">
                 <section className="shop-single-area">
                     <div className="container">
                         <div className="single-products-details">
-                            {this.renderEvent(this.state.event)}
+                            {this.renderEvent(event)}
                         </div>
                     </div>
                 </section>
@@ -147,7 +151,10 @@ class OneEventPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth, 
+        user: store.user.info,
+        events: store.page.events,
+
     }
 }
 export default connect(mapStoreToProps, null)(OneEventPage);

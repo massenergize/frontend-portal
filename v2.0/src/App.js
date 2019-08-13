@@ -62,7 +62,7 @@ class App extends Component {
 			getJson(URLS.PAGES + "?name=ServiceProviders"),
 			getJson(URLS.PAGES + "?name=Testimonials"),
 			getJson(URLS.TEAMS_STATS),
-			getJson(URLS.PAGES + "?name=AboutUse"),
+			getJson(URLS.PAGES + "?name=AboutUs"),
 			getJson(URLS.PAGES + "?name=Impact"),
 			getJson(URLS.PAGES + "?name=Donate"),
 			getJson(URLS.PAGES + "?name=Events"),
@@ -82,8 +82,8 @@ class App extends Component {
 			this.props.reduxLoadImpactPage(myJsons[6].data.length > 0 ? myJsons[6].data[0] : null)
 			this.props.reduxLoadDonatePage(myJsons[7].data.length > 0 ? myJsons[7].data[0] : null)
 			this.props.reduxLoadEventsPage(myJsons[8].data.length > 0 ? myJsons[8].data[0] : null)
-			this.props.reduxLoadActions(myJsons[9].data)
-			this.props.reduxLoadEvents(myJsons[10].data)
+			this.props.reduxLoadEvents(myJsons[9].data)
+			this.props.reduxLoadActions(myJsons[10].data)
 			this.props.reduxLoadServiceProviders(myJsons[11].data)
 			this.props.reduxLoadTestimonials(myJsons[12].data)
 			this.props.reduxLoadMenu(myJsons[13].data)

@@ -8,20 +8,14 @@ import { connect } from 'react-redux';
  */
 class DonateBar extends React.Component {
     render() {
-        const pageSections = this.props.donatePage.sections;
-        const header = section(pageSections, "DonatePageHeader", true);
         return (
             <div className="donate-us center p-5" style={{backgroundColor: "#eee"}}>
-                <h2>{header.title}</h2>
+                <h2>{this.props.donateMessage}</h2>
                 <br/>
                 <Link to="donate"><button className="thm-btn donate-box-btn">Donate</button></Link>
             </div>
         );
     }
 }
-const mapStoreToProps = (store) => {
-    return {
-        donatePage: store.page.donatePage,
-    }
-}
-export default connect(mapStoreToProps, null)(DonateBar);
+
+export default DonateBar;

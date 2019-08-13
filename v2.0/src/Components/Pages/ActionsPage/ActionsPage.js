@@ -23,27 +23,22 @@ class ActionsPage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
-            user: null,
-            actions: [],
             tagCols: [],
-            todo: [],
-            done: [],
-            cartLoaded: false
         }
         this.handleChange = this.handleChange.bind(this);
     }
-    //gets the data from the api url and puts it in pagedata and menudata
+    // //gets the data from the api url and puts it in pagedata and menudata
     componentDidMount() {
         Promise.all([
-            getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            getJson(URLS.ACTIONS), //need to add community to this
+            // getJson(URLS.USERS + "?email=" + this.props.auth.email),
+            // getJson(URLS.ACTIONS), //need to add community to this
             getJson(URLS.TAG_COLLECTIONS), //need to add community to this too
         ]).then(myJsons => {
             this.setState({
                 ...this.state,
-                user: myJsons[0].data[0],
-                actions: myJsons[1].data,
-                tagCols: myJsons[2].data,
+                // user: myJsons[0].data[0],
+                // actions: myJsons[1].data,
+                tagCols: myJsons[0].data,
                 loaded: true,
             })
         }).catch(error => {
@@ -51,36 +46,38 @@ class ActionsPage extends React.Component {
         });
     }
 
-    loadCart() {
-        Promise.all([
-            getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=TODO"),
-            getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=DONE"),
-        ]).then(myJsons => {
-            this.setState({
-                todo: myJsons[0].data,
-                done: myJsons[1].data,
-                cartLoaded: true,
-            })
-        }).catch(err => {
-            console.log(err)
-        });
-    }
+    // loadCart() {
+    //     Promise.all([
+    //         getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=TODO"),
+    //         getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=DONE"),
+    //     ]).then(myJsons => {
+    //         this.setState({
+    //             todo: myJsons[0].data,
+    //             done: myJsons[1].data,
+    //             cartLoaded: true,
+    //         })
+    //     }).catch(err => {
+    //         console.log(err)
+    //     });
+    // }
 
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
-            return <LoadingCircle />;
-        }
+        // if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
+        //     return <LoadingCircle />;
+        // }
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
-            this.componentDidMount();
-            return <LoadingCircle />;
-        }
+        // if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
+        //     this.componentDidMount();
+        //     return <LoadingCircle />;
+        // }
         //if there is a user from the server and the cart is not loaded load the cart
-        if (this.props.user && !this.state.cartLoaded) {
-            this.loadCart();
-            return <LoadingCircle />;
-        }
+        // if (this.props.user && !this.state.cartLoaded) {
+        //     this.loadCart();
+        //     return <LoadingCircle />;
+        // }
+        if(!this.state.loaded)
+            return <LoadingCircle/>;
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -109,7 +106,7 @@ class ActionsPage extends React.Component {
                             {/* renders the actions */}
                             <div className="col-lg-8 col-md-7 col-sm-12 col-xs-12">
                                 <div className="row" id="actions-container">
-                                    {this.renderActions(this.state.actions)}
+                                    {this.renderActions(this.props.actions)}
                                 </div>
                             </div>
                         </div>
@@ -148,23 +145,15 @@ class ActionsPage extends React.Component {
         });
     }
 
-
-
-
-
-
-
     /**
      * These are the cart functions
      */
     inCart = (actionId, cart) => {
-        if(!this.props.todo)
-            return false;
+        if(!this.props.todo) return false;
         const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
-        if(!this.props.done)
-            return false;
+        if(!this.props.done) return false;
         const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === actionId });
         if (cart === "DONE") return checkDone.length > 0;
 
@@ -176,10 +165,10 @@ class ActionsPage extends React.Component {
             action: actionRel.action.id,
             real_estate_unit: actionRel.real_estate_unit.id,
         }
-        postJson(URLS.USER+'/'+this.state.user.id+'/action/'+actionRel.id ,body).then(json => {
+        postJson(URLS.USER+'/'+this.props.user.id+'/action/'+actionRel.id ,body).then(json => {
             console.log(json);
             if (json.success) {
-                this.props.reduxMoveToDone(json.data[0]);
+                this.props.reduxMoveToDone(json.data);
             }
             //just update the state here
         }).catch(err => {
@@ -198,7 +187,9 @@ class ActionsPage extends React.Component {
             status:status,
             real_estate_unit: 1
         }
-        postJson(URLS.USER + "/" + this.state.user.id + "/actions", body).then(json => {
+        console.log(this.props.user.id)        
+        postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
+            console.log(json)
             if (json.success) {
                 //set the state here
                 if (status === "TODO") {
@@ -219,6 +210,8 @@ const mapStoreToProps = (store) => {
         user: store.user.info,
         todo: store.user.todo,
         done: store.user.done,
+        actions: store.page.actions,
+        pageData: store.page.actionsPage
     }
 }
 

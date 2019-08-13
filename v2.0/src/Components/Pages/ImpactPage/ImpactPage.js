@@ -2,6 +2,7 @@ import React from 'react'
 import BarGraph from '../../Shared/BarGraph'
 import CircleGraph from '../../Shared/CircleGraph';
 import PageTitle from '../../Shared/PageTitle';
+import { connect } from 'react-redux';
 
 class ImpactPage extends React.Component {
     render() {
@@ -95,4 +96,9 @@ class ImpactPage extends React.Component {
     }
 }
 
-export default ImpactPage;
+const mapStoreToProps = (store) => { 
+    return {
+        pageData: store.page.impactPage
+    }
+}
+export default connect(mapStoreToProps, null)(ImpactPage);

@@ -6,46 +6,50 @@ import IconBoxTable from './IconBoxTable';
 import Events from './Events';
 import URLS from '../../../api/urls';
 import { getJson, section } from '../../../api/functions'
+import { connect } from 'react-redux'
 
 
 /*
 * The Home Page of the MassEnergize
 */
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            welcomeImagesData: null,
-            impactData: null,
-            iconQuickLinks: null,
-            events: null,
-            loaded: false
-        }
-    }
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.PAGES + "?name=Home"),
-            getJson(URLS.EVENTS),
-        ]).then(myJsons => {
-            this.setState({
-                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
-                impactData: section(myJsons[0], "Graph Section").graphs[0],
-                iconQuickLinks: section(myJsons[0], "IconQuickLinks").cards,
-                events: myJsons[1].data,
-                loaded: true
-            })
-        }).catch(err => {
-            console.log(err)
-        });
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         welcomeImagesData: null,
+    //         impactData: null,
+    //         iconQuickLinks: null,
+    //         events: null,
+    //         loaded: false
+    //     }
+    // }
+    // componentDidMount() {
+    //     Promise.all([
+    //         getJson(URLS.PAGES + "?name=Home"),
+    //         getJson(URLS.EVENTS),
+    //     ]).then(myJsons => {
+    //         this.setState({
+                
+    //             loaded: true
+    //         })
+    //     }).catch(err => {
+    //         console.log(err)
+    //     });
+    // }
     render() {
-        if (!this.state.loaded) return <LoadingCircle />;
-        const {
-            welcomeImagesData,
-            impactData,
-            iconQuickLinks,
-            events
-        } = this.state;
+        if (!this.props.pageData) return <LoadingCircle />;
+        
+        const {pageData, events} = this.props;
+        const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
+        const impactData = section(pageData, "Graph Section").graphs[0];
+        const iconQuickLinks = section(pageData, "IconQuickLinks").cards;
+
+        // const {
+        //     welcomeImagesData,
+        //     impactData,
+        //     iconQuickLinks,
+        //     events
+        // } = this.state;
 
         return (
             <div className="boxed_wrapper">
@@ -77,4 +81,11 @@ class HomePage extends React.Component {
         );
     }
 }
-export default HomePage;
+
+const mapStoreToProps = (store) => { 
+    return {
+        pageData: store.page.homePage,
+        events: store.page.events
+    }
+}
+export default connect(mapStoreToProps, null)(HomePage);

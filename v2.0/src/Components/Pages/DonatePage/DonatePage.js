@@ -10,6 +10,8 @@ class DonatePage extends React.Component {
     }
 
     render() {
+        if(!this.props.donatePage) return <LoadingCircle/>;
+
         const pageSections = this.props.donatePage.sections;
         if(pageSections == null) return <LoadingCircle/>
 

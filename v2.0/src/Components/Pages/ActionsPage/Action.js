@@ -148,37 +148,39 @@ class Action extends React.Component {
     }
 
     getTag(collection) {
-       const tags = this.props.tags.filter(tag => tag.tag_collection===collection);
-       console.log(tags);
-       return tags? tags[0] : null
+        const tags = this.props.tags.filter(tag => tag.tag_collection === collection);
+        return tags && tags.length > 0 ? tags[0] : null
     }
 
     renderTagBar(tag) {
-        if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
-            return (
-                <div>
-                    <div className="tag-bar one">
+        if (tag) {
+            if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
+                return (
+                    <div>
+                        <div className="tag-bar one">
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
+            if (tag.name.toLowerCase() === "medium") {
+                return (
+                    <div>
+                        <div className="tag-bar one" />
+                        <div className="tag-bar two" />
+                    </div>
+                );
+            }
+            if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase() === "hard") {
+                return (
+                    <div>
+                        <div className="tag-bar one" > </div>
+                        <div className="tag-bar two" > </div>
+                        <div className="tag-bar three" > </div>
+                    </div>
+                );
+            }
         }
-        if (tag.name.toLowerCase() === "medium") {
-            return (
-                <div>
-                    <div className="tag-bar one" />
-                    <div className="tag-bar two" />
-                </div>
-            );
-        }
-        if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase()==="hard") {
-            return (
-                <div>
-                    <div className="tag-bar one" > </div>
-                    <div className="tag-bar two" > </div>
-                    <div className="tag-bar three" > </div>
-                </div>
-            );
-        }
+        return null;
     }
 }
 export default Action;
