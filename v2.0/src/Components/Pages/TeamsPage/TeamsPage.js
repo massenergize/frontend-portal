@@ -1,37 +1,18 @@
 import React from 'react'
-import URLS from '../../../api/urls';
-import {getJson} from '../../../api/functions'
-import LoadingPage from '../../Shared/LoadingCircle';
+import { connect } from 'react-redux';
 import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
+import LoadingCircle from '../../Shared/LoadingCircle';
 
 class TeamsPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            pageData: null,
-        }
-    }
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.TEAMS_STATS),
-        ]).then(myJsons => {
-            this.setState({
-                teams: myJsons[0].data,
-                loaded: true
-            })
-        }).catch(err => {
-            console.log(err)
-        });
     }
 
-    render() {
-        if(!this.state.loaded) return <LoadingPage/>;
-        
-        const {
-            teams
-        } = this.state;
+    render() {        
+        const teams = this.props.teamsPage;
+        if(teams == null) return <LoadingCircle/>
 
         return (
             <div className="boxed_wrapper p-5">
@@ -89,4 +70,9 @@ class TeamsPage extends React.Component {
         });
     }
 }
-export default TeamsPage;
+const mapStoreToProps = (store) => {
+    return {
+        teamsPage: store.page.teamsPage,
+    }
+}
+export default connect(mapStoreToProps, null)(TeamsPage);

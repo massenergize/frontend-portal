@@ -19,7 +19,6 @@ const initialState = {
     events: null,
     serviceProviders: null,
     testimonials: null,
-    teams: null,
 };
 
 

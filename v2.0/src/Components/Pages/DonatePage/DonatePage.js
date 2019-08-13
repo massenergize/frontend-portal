@@ -2,6 +2,7 @@ import React from 'react';
 import PageTitle from '../../Shared/PageTitle';
 import { section } from '../../../api/functions';
 import { connect } from 'react-redux';
+import LoadingCircle from '../../Shared/LoadingCircle';
 
 class DonatePage extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class DonatePage extends React.Component {
 
     render() {
         const pageSections = this.props.donatePage.sections;
+        if(pageSections == null) return <LoadingCircle/>
 
         const header = section(pageSections, "DonatePageHeader", true);
         const button = section(pageSections, "DonatePageButton", true);

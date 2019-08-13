@@ -1,50 +1,24 @@
 import React from 'react'
 import URLS from '../../../api/urls'
 import { getJson, section } from '../../../api/functions'
-import LoadingPage from '../../Shared/LoadingCircle';
+import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages';
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux'
 
 class ServicesPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            pageData: null
-        }
-    }
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.PAGES + "?name=Services"),
-            getJson(URLS.VENDORS),
-		]).then(myJsons => {
-			this.setState({
-                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
-                vendors: myJsons[1].data,
-				loaded: true
-			})
-		}).catch(err => {
-			console.log(err)
-        });
-        
-        // fetch(CONST.URL.SERVICES).then(data => {
-        //     return data.json()
-        // }).then(myJson => {
-        //     this.setState({
-        //         pageData: myJson.pageData,
-        //     });
-        // }).catch(error => {
-        //     console.log(error);
-        //     return null;
-        // });
     }
 
     render() {
-        if(!this.state.loaded) return <LoadingPage/>;
-        
         const {
-            welcomeImagesData,
-            vendors
-        } = this.state;
+            pageData,
+            serviceProviders
+        } = this.props;
+
+        if(pageData == null || serviceProviders == null) return <LoadingCircle/>;
+
+        const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
         return (
             <div className="boxed_wrapper">
@@ -53,7 +27,7 @@ class ServicesPage extends React.Component {
                 />
                 <div className="container">
                     <div className="row pt-3 pb-3">
-                        {this.renderVendors(vendors)}
+                        {this.renderVendors(serviceProviders)}
                     </div>
                 </div>
             </div>
@@ -98,4 +72,10 @@ class ServicesPage extends React.Component {
         });
     }
 }
-export default ServicesPage;
+const mapStoreToProps = (store) => {
+    return {
+        pageData: store.page.serviceProvidersPage,
+        serviceProviders: store.page.serviceProviders
+    }
+}
+export default connect(mapStoreToProps, null)(ServicesPage);

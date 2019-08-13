@@ -1,39 +1,23 @@
 import React from 'react'
-import URLS from '../../../api/urls';
-import { getJson, section } from '../../../api/functions'
-import LoadingPage from '../../Shared/LoadingCircle';
+import { section } from '../../../api/functions'
+import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux';
 
 class StoriesPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loaded: null,
-        }
-    }
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.PAGES + "?name=Testimonials"),
-            getJson(URLS.TESTIMONIALS),
-        ]).then(myJsons => {
-            this.setState({
-                welcomeImagesData: section(myJsons[0], "WelcomeImages").slider[0].slides,
-                stories: myJsons[1].data,
-                loaded: true
-            })
-        }).catch(err => {
-            console.log(err)
-        });
     }
 
     render() {
-        if(!this.state.loaded) return <LoadingPage/>;
-        
         const {
-            welcomeImagesData,
-            stories,
-        } = this.state;
+            pageData,
+            stories
+        } = this.props;
+        if(pageData == null || stories == null) return <LoadingCircle/>;
+
+        const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
         return (
             <div className="boxed_wrapper">
@@ -74,4 +58,10 @@ class StoriesPage extends React.Component {
         });
     }
 }
-export default StoriesPage;
+const mapStoreToProps = (store) => {
+    return {
+        pageData: store.page.testimonialsPage,
+        stories: store.page.testimonials
+    }
+}
+export default connect(mapStoreToProps, null)(StoriesPage);
