@@ -43,6 +43,6 @@ export const postJson = async (url, body) => {
  * @param {Boolean} sectionOnly : specifying if the json provided is json array of sections or page data
  */
 export const section = (json, section, sectionOnly) => {
-	let sections = (sectionOnly) ? json : json.data[0].sections;
+	let sections = (sectionOnly) ? json : json.sections;
 	return sections.filter(x => x.name == section)[0];
 }
