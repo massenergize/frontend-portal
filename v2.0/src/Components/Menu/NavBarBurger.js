@@ -182,16 +182,17 @@ class NavBarBurger extends React.Component {
     renderLogin() {
         const {
             auth,  
+            user
         } = this.props;
         const style = {
             borderTop: "5px solid #8dc63f",
             borderRadius: "0",
             padding: "0",
         };
-        if (auth.uid) {
+        if (auth.uid && user.info) {
             return (
                 <Dropdown onSelect={() => null} className="d-flex">
-                    <Dropdown.Toggle as={ProfileBtnDropdown} userName={this.props.auth.displayName.split(" ")[0]} id="dropdown-custom-components"></Dropdown.Toggle>
+                    <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.full_name.split(" ")[0]} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
                         <Link to="profile" className="dropdown-item p-3 small font-weight-bold">My Profile</Link>
                         <Link className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></Link>
@@ -210,7 +211,8 @@ class NavBarBurger extends React.Component {
 } 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        user: store.user
     }
 }
 export default connect(mapStoreToProps,null)(NavBarBurger);
