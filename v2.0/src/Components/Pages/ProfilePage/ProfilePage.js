@@ -8,11 +8,11 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS from '../../../api/urls'
-import { getJson, postJson } from '../../../api/functions'
+import { getJson, postJson, deleteJson } from '../../../api/functions'
 
 import { isLoaded } from 'react-redux-firebase';
 import AddingHouseholdForm from './AddingHouseholdForm';
-import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold} from '../../../redux/actions/userActions'
+import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold } from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
 
 
@@ -165,7 +165,7 @@ class ProfilePage extends React.Component {
         );
     }
     renderCommunities(communities) {
-        if(!communities) return null;
+        if (!communities) return null;
         return Object.keys(communities).map(key => {
             const community = communities[key]
             return (<tr key={key}>
@@ -204,7 +204,7 @@ class ProfilePage extends React.Component {
                         <tr key={key}>
                             <td>{house.name}</td>
                             <td><button className="edit-btn"> <i className="fa fa-edit" onClick={() => this.setState({ editingHH: house.id, addingHH: false })}></i> </button></td>
-                            <td><button className="remove-btn"> <i className="fa fa-trash"></i> </button></td>
+                            <td><button className="remove-btn"> <i className="fa fa-trash" onClick={() => this.deleteHousehold(house)}></i> </button></td>
                         </tr>
                     }
                 </>
@@ -217,6 +217,16 @@ class ProfilePage extends React.Component {
     }
     editHousehold = (household) => {
         this.props.reduxEditHousehold(household);
+    }
+
+    deleteHousehold = (household) => {
+        deleteJson(`${URLS.HOUSEHOLD}/${household.id}`).then(json => {
+            console.log(json);
+            if (json.success) {
+                this.props.reduxRemoveHousehold(household);
+            }
+        }
+        )
     }
 
     /**
@@ -249,5 +259,5 @@ const mapStoreToProps = (store) => {
         households: store.user.info ? store.user.info.households : null
     }
 }
-const mapDispatchToProps = { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold };
+const mapDispatchToProps = { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold };
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);

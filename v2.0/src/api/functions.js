@@ -36,6 +36,21 @@ export const postJson = async (url, body) => {
 	}
 }
 
+export const deleteJson = async (url) => {
+	try {
+		const data = await fetch(url, {
+			method: 'DELETE',
+			credentials: 'include',
+		  });
+		const myJson = await data.json();
+		return myJson;
+	}
+	catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
 /**
  * Takes out the section that matches with the name given
  * @param {JSONObject | JSONArray} json : the json object of either the page data or the json array of the sections
