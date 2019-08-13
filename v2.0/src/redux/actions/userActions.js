@@ -15,6 +15,7 @@ import {
   LOAD_HOUSEHOLDS, 
   LOAD_COMMUNITIES,
   ADD_HOUSEHOLD, 
+  EDIT_HOUSEHOLD,
   REMOVE_HOUSEHOLD, 
   ADD_COMMUNITY, 
   REMOVE_COMMUNITY 
@@ -58,6 +59,7 @@ export const reduxRemoveFromTodo = (item) => dispatch => {
     payload: item
   });
 }
+
 /** stores the done actions*/
 export const reduxLoadDone = (done) => dispatch => { 
   return dispatch({
@@ -66,8 +68,6 @@ export const reduxLoadDone = (done) => dispatch => {
   });
 }
 
-
-/** removes an action from a todo */
 export const reduxAddToDone = (item) => dispatch => {
   return dispatch({
     type: ADD_TO_DONE,
@@ -82,26 +82,34 @@ export const reduxRemoveFromDone = (item) => dispatch => {
   });
 }
 
-export const reduxLoadHouseholds = (houseRels) => dispatch => {
-  return dispatch({
-    type: LOAD_HOUSEHOLDS,
-    payload: houseRels
-  });
-}
-
-export const reduxAddHousehold = (houseRel) => dispatch => {
-  return dispatch({
-    type: ADD_HOUSEHOLD,
-    payload: houseRel
-  });
-}
-
-export const reduxMoveToDone = (houseRel) => dispatch => {
+export const reduxMoveToDone = (item) => dispatch => {
   return dispatch({
     type: MOVE_TO_DONE,
-    payload: houseRel
+    payload: item
   })
 }
+
+export const reduxLoadHouseholds = (houses) => dispatch => {
+  return dispatch({
+    type: LOAD_HOUSEHOLDS,
+    payload: houses
+  });
+}
+
+export const reduxAddHousehold = (house) => dispatch => {
+  return dispatch({
+    type: ADD_HOUSEHOLD,
+    payload: house
+  });
+}
+
+export const reduxEditHousehold = (house) => dispatch => {
+  return dispatch({
+    type: EDIT_HOUSEHOLD,
+    payload: house
+  });
+}
+
 
 export const reduxRemoveHousehold = (houseRel) => dispatch => {
   return dispatch({

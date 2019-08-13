@@ -11,6 +11,7 @@ import {
   LOAD_HOUSEHOLDS,
   LOAD_COMMUNITIES,
   ADD_HOUSEHOLD,
+  EDIT_HOUSEHOLD,
   REMOVE_HOUSEHOLD,
   ADD_COMMUNITY,
   REMOVE_COMMUNITY
@@ -21,7 +22,6 @@ const initialState = {
   todo: null,
   done: null,
 };
-
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -101,6 +101,17 @@ export default function (state = initialState, action) {
           ]
         }
 
+      }
+    case EDIT_HOUSEHOLD:
+      return {
+        ...state,
+        info: { 
+          ...state.info,
+          households: [
+            ...state.info.households.filter(element => element.id !== action.payload.id),
+            action.payload
+          ]
+        }
       }
     case REMOVE_HOUSEHOLD:
       return {
