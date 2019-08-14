@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_MENU, LOAD_POLICIES} from '../actions/types';
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP } from '../actions/types';
 
 const initialState = {
     //page data for each page
@@ -111,14 +111,34 @@ export default function (state = initialState, action) {
         case REMOVE_TESTIMONIAL:
             return {
                 ...state,
-                testimonials: state.testimonials.filter( testimonial => testimonial.id !== action.payload.id)
+                testimonials: state.testimonials.filter(testimonial => testimonial.id !== action.payload.id)
             }
-        case JOIN_TEAM:
+        case LOAD_EVENT_RSVPS:
             return {
                 ...state,
-                homePage: action.payload
+                rsvps: action.payload
             }
-        
+        case ADD_RSVP:
+            return {
+                ...state,
+                rsvps: [
+                    ...state.rsvps,
+                    action.payload
+                ]
+            }
+        case REMOVE_RSVP:
+            return {
+                ...state,
+                rsvps: state.rsvps.filter(rsvp => { return rsvp.id !== action.payload.id })
+            }
+        case CHANGE_RSVP:
+            return {
+                ...state,
+                rsvps:[
+                    ...state.rsvps.filter(rsvp => { return rsvp.id !== action.payload.id }),
+                    action.payload
+                ]
+            }
         /**************************/
         default:
             return {

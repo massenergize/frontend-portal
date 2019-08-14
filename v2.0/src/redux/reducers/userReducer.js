@@ -14,7 +14,8 @@ import {
   EDIT_HOUSEHOLD,
   REMOVE_HOUSEHOLD,
   ADD_COMMUNITY,
-  REMOVE_COMMUNITY
+  REMOVE_COMMUNITY,
+  JOIN_TEAM
 } from '../actions/types';
 
 const initialState = {
@@ -105,7 +106,7 @@ export default function (state = initialState, action) {
     case EDIT_HOUSEHOLD:
       return {
         ...state,
-        info: { 
+        info: {
           ...state.info,
           households: [
             ...state.info.households.filter(element => element.id !== action.payload.id),
@@ -149,6 +150,18 @@ export default function (state = initialState, action) {
           communities: state.info.communities.filter(element => element !== action.payload)
         }
       }
+    case JOIN_TEAM:
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          teams: [
+            ...state.info.teams,
+            action.payload
+          ]
+        }
+      }
+
     /**************************/
     default:
       return {

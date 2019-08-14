@@ -33,6 +33,7 @@ URLS["EMAIL_CATEGORY"] = URLS.V2 + "email-category"; //add the id after this
 URLS["EVENTS"] = URLS.V2 + "events";
 URLS["EVENT"] = URLS.V2 + "event"; //add the id after this
 URLS["EVENT_ATTENDEES"] = URLS.V2 + "event-attendees";
+URLS["EVENT_ATTENDEE"] = URLS.V2 + "event-attendee"
 URLS["GOALS"] = URLS.V2 + "goals";
 URLS["GOAL"] = URLS.V2 + "goal"; //add the id after this
 URLS["GRAPHS"] = URLS.V2 + "graphs";

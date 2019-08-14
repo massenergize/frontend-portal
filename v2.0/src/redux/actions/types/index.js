@@ -25,6 +25,8 @@ export const LOAD_COMMUNITIES = 'LOAD_COMMUNITIES'
 export const ADD_COMMUNITY = 'ADD_COMMUNITY'
 export const REMOVE_COMMUNITY = 'LEAVE_COMMUNITY'
 
+export const JOIN_TEAM = 'JOIN_TEAM'
+
 /** PAGE ACTIONS
  * these actions load the database data for the pages
  * find the pagedata at store.pages.[pagename]
@@ -47,10 +49,14 @@ export const LOAD_EVENTS = 'LOAD_EVENTS' //events_page/events
 export const LOAD_SERVICE_PROVIDERS= 'LOAD_SERVICE_PROVIDERS' //service_providers_page/service_providers
 export const LOAD_TESTIMONIALS = 'LOAD_TESTIMONIALS' //testimonials_page/testimonials
 
+export const LOAD_EVENT_RSVPS = 'LOAD_EVENT_RSVPS' //load the user's rsvps
+export const ADD_RSVP = 'ADD_RSVP'
+export const REMOVE_RSVP = 'REMOVE_RSVP'
+export const CHANGE_RSVP = 'CHANGE_RSVP'
+
 /** these actions will change page data */
 export const ADD_TESTIMONIAL = 'ADD_TESTIMONIAL'
 export const REMOVE_TESTIMONIAL = 'REMOVE_TESTIMONIAL'
 
-export const JOIN_TEAM = 'JOIN_TEAM'
 
 

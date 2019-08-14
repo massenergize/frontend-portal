@@ -38,7 +38,8 @@ import {
 	reduxLoadActions,
 	reduxLoadEvents,
 	reduxLoadServiceProviders,
-	reduxLoadTestimonials
+	reduxLoadTestimonials,
+	reduxLoadRSVPs
 } from './redux/actions/pageActions'
 import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 
@@ -71,7 +72,8 @@ class App extends Component {
 			getJson(URLS.VENDORS),
 			getJson(URLS.TESTIMONIALS),
 			getJson(URLS.MENUS),
-			getJson(URLS.POLICIES)
+			getJson(URLS.POLICIES),
+			getJson(URLS.EVENT_ATTENDEES)
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
 			this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
@@ -88,6 +90,7 @@ class App extends Component {
 			this.props.reduxLoadTestimonials(myJsons[12].data)
 			this.props.reduxLoadMenu(myJsons[13].data)
 			this.props.reduxLoadPolicies(myJsons[14].data)
+			this.props.reduxLoadRSVPs(myJsons[15].data)
 		}).catch(err => {
 			console.log(err)
 		});
@@ -201,7 +204,8 @@ const mapDispatchToProps = {
 	reduxLoadTestimonials,
 	reduxLogin,
 	reduxLoadTodo,
-	reduxLoadDone
+	reduxLoadDone,
+	reduxLoadRSVPs
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(App);
 //export default App;

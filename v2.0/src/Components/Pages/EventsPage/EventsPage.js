@@ -3,10 +3,11 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../Menu/SideBar'
 import URLS from '../../../api/urls'
-import  { getJson } from '../../../api/functions'
+import { getJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import RSVPForm from './RSVPForm';
 
 
 /**
@@ -46,8 +47,8 @@ class EventsPage extends React.Component {
     }
 
     render() {
-        if(!this.props.events){
-            return <LoadingCircle/>
+        if (!this.props.events) {
+            return <LoadingCircle />
         }
         //avoids trying to render before the promise from the server is fulfilled
         return (
@@ -58,8 +59,8 @@ class EventsPage extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-3 col-md-5 col-12">
-                                    {this.state.tagCols?
-                                    this.renderSideBar() : <LoadingCircle/>}
+                                    {this.state.tagCols ?
+                                        this.renderSideBar() : <LoadingCircle />}
                                 </div>
                                 <div className="col-lg-9 col-md-7 col-12">
                                     <div className="outer-box sec-padd event-style2">
@@ -93,6 +94,7 @@ class EventsPage extends React.Component {
      * @param events - json list of events
      */
     renderEvents(events) {
+        if(!this.props.eventRSVPs) return <LoadingCircle/>;
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const now = new Date();
         //reads events into a list
@@ -134,6 +136,18 @@ class EventsPage extends React.Component {
                                     <div className="text">
                                         <p> {event.description} </p>
                                     </div>
+                                    {this.props.user ?
+                                        <RSVPForm
+                                            eventid={event.id}
+                                            userid={this.props.user.id}
+                                            //value={this.userRSVPvalue(event.id)}
+                                            rsvp={this.userRSVP(event.id)}
+                                        />
+                                        :
+                                        <p>
+                                            <Link to='/login'>Sign In</Link> to RSVP to events
+                                        </p>
+                                    }
                                 </div>
                             </div>
                             {/* renders the  date time and location of the event */}
@@ -160,9 +174,25 @@ class EventsPage extends React.Component {
             } else return null;
         });
     }
+
+    // userRSVPvalue(event_id){
+    //     if(!this.props.user || !this.props.eventRSVPs) return '--';
+    //     console.log(this.props.eventRSVPs);
+    //     const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id)})
+    //     if(RSVPs.length < 1) return '--';
+    //     return RSVPs[0].value;
+    // }
+    userRSVP(event_id){
+        if(!this.props.user || !this.props.eventRSVPs) return null;
+        const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id)})
+        if(RSVPs.length < 1) return null;
+        console.log(RSVPs[0]);
+        return RSVPs[0];
+    }
+
     /**
      * checks if a two dates are on the same day ignoring time
-     * @param  someDate 
+     * @param  someDate
      */
     sameDay(someDate, someOtherDate) {
         return someDate.getDate() === someOtherDate.getDate() &&
@@ -172,8 +202,8 @@ class EventsPage extends React.Component {
     /**
      * changes the start date to the date chosen by the date selector
      * also removes checks from the radio buttons all and upcoming
-     * @param {*} newdate 
-     */
+* @param {*} newdate
+        */
     selectStartDate(newdate) {
         this.setState({
             startDate: newdate
@@ -191,8 +221,8 @@ class EventsPage extends React.Component {
     /**
      * changes the end date to the date chosen by the date selector
      * also removes checks from the radio buttons all and upcoming
-     * @param {*} newdate 
-     */
+* @param {*} newdate
+            */
     selectEndDate(newdate) {
         this.setState({
             endDate: newdate
@@ -203,8 +233,8 @@ class EventsPage extends React.Component {
 
     /**
      * checks the filters in the sidebar to see if an event should render or not
-     * @param {*} event 
-     */
+* @param {*} event
+        */
     shouldRender(event) {
         var date = new Date(event.start_date_and_time);
         var endDate = new Date(event.end_date_and_time);
@@ -277,62 +307,64 @@ class EventsPage extends React.Component {
     }
 
     renderSideBar() {
-        return (<div className="blog-sidebar sec-padd">
-            <div className="event-filter">
-                <div className="section-title style-2">
-                    <h4>Event Filter</h4>
-                </div>
-                <div className="tabs-outer">
-                    {/* <!--Tabs Box--> */}
-                    <div className="tabs-box tabs-style-one">
-                        {/* <!--Tab Buttons--> */}
-                        <form className="tab-buttons">
-                            <div className="tab-btn"><input type="radio" name="tabs" id="show-all-button" onClick={this.resetDates} /> All</div>
-                            <div className="tab-btn"><input type="radio" name="tabs" id="show-upcoming-button" onClick={this.resetDates} /> Upcoming</div>
-                        </form>
+        return (
+            <div className="blog-sidebar sec-padd">
+                <div className="event-filter">
+                    <div className="section-title style-2">
+                        <h4>Event Filter</h4>
+                    </div>
+                    <div className="tabs-outer">
+                        {/* <!--Tabs Box--> */}
+                        <div className="tabs-box tabs-style-one">
+                            {/* <!--Tab Buttons--> */}
+                            <form className="tab-buttons">
+                                <div className="tab-btn"><input type="radio" name="tabs" id="show-all-button" onClick={this.resetDates} /> All</div>
+                                <div className="tab-btn"><input type="radio" name="tabs" id="show-upcoming-button" onClick={this.resetDates} /> Upcoming</div>
+                            </form>
 
-                        {/* <!--Tabs Content--> */}
-                        <div className="tabs-content">
-                            {/* <!--Tab / Active Tab--> */}
-                            <div className="tab active-tab" id="tab-two" style={{ display: 'block' }}>
-                                <div className="default-form-area all">
-                                    <form id="contact-form" name="contact_form" className="default-form style-5" action="inc/sendmail.php" method="post">
-                                        <div className="clearfix">
-                                            <div className="form-group">
-                                                <p>
-                                                    Find events between:
+                            {/* <!--Tabs Content--> */}
+                            <div className="tabs-content">
+                                {/* <!--Tab / Active Tab--> */}
+                                <div className="tab active-tab" id="tab-two" style={{ display: 'block' }}>
+                                    <div className="default-form-area all">
+                                        <form id="contact-form" name="contact_form" className="default-form style-5" action="inc/sendmail.php" method="post">
+                                            <div className="clearfix">
+                                                <div className="form-group">
+                                                    <p>
+                                                        Find events between:
                                                 </p>
-                                                <DatePicker
-                                                    selected={this.state.startDate}
-                                                    selectsStart
-                                                    startDate={this.state.startDate}
-                                                    endDate={this.state.endDate}
-                                                    onChange={this.selectStartDate}
-                                                    placeholderText="Enter a starting date"
-                                                />
-                                                <DatePicker
-                                                    selected={this.state.endDate}
-                                                    selectsEnd
-                                                    startDate={this.state.startDate}
-                                                    endDate={this.state.endDate}
-                                                    onChange={this.selectEndDate}
-                                                    minDate={this.state.startDate}
-                                                    placeholderText="Enter an ending date"
-                                                />
+                                                    <DatePicker
+                                                        selected={this.state.startDate}
+                                                        selectsStart
+                                                        startDate={this.state.startDate}
+                                                        endDate={this.state.endDate}
+                                                        onChange={this.selectStartDate}
+                                                        placeholderText="Enter a starting date"
+                                                    />
+                                                    <DatePicker
+                                                        selected={this.state.endDate}
+                                                        selectsEnd
+                                                        startDate={this.state.startDate}
+                                                        endDate={this.state.endDate}
+                                                        onChange={this.selectEndDate}
+                                                        minDate={this.state.startDate}
+                                                        placeholderText="Enter an ending date"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <SideBar
+                        tagCols={this.state.tagCols}
+                        onChange={this.handleChange} //runs when any category is selected or unselected
+                    />
                 </div>
-                <SideBar
-                    tagCols={this.state.tagCols}
-                    onChange={this.handleChange} //runs when any category is selected or unselected
-                />
             </div>
-        </div>);
+        );
     }
     handleChange() {
         this.forceUpdate();
@@ -349,10 +381,10 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth, 
+        auth: store.firebase.auth,
         user: store.user.info,
         events: store.page.events,
-
+        eventRSVPs: store.page.rsvps
     }
 }
 export default connect(mapStoreToProps, null)(EventsPage);

@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS_PAGE, LOAD_MENU, LOAD_POLICIES, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_TESTIMONIALS_PAGE, LOAD_TESTIMONIALS, LOAD_EVENTS } from './types'
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS_PAGE, LOAD_MENU, LOAD_POLICIES, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, JOIN_TEAM, LOAD_TESTIMONIALS_PAGE, LOAD_TESTIMONIALS, LOAD_EVENTS, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP } from './types'
 
 export const reduxLoadHomePage = (page) => dispatch => {
     return dispatch({
@@ -119,9 +119,30 @@ export const reduxRemoveTestimonial = (testimonial) => dispatch => {
     })
 }
 
-export const reduxJoinTeam = (teamMembership) => dispatch => {
+export const reduxLoadRSVPs = (RSVPs) => dispatch => {
     return dispatch({
-        type: JOIN_TEAM,
-        payload: teamMembership
+        type: LOAD_EVENT_RSVPS, 
+        payload: RSVPs
+    })
+}
+
+export const reduxAddRSVP = (RSVP) => dispatch => {
+    return dispatch({
+        type: ADD_RSVP, 
+        payload: RSVP
+    })
+}
+
+export const reduxRemoveRSVP = (RSVP) => dispatch => {
+    return dispatch({
+        type: REMOVE_RSVP, 
+        payload: RSVP
+    })
+}
+
+export const reduxChangeRSVP = (RSVP) => dispatch => {
+    return dispatch({
+        type: CHANGE_RSVP, 
+        payload: RSVP
     })
 }
