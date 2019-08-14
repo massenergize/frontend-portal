@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
 
 class DonatePage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    
     render() {
         if(!this.props.donatePage) return <LoadingCircle/>;
 

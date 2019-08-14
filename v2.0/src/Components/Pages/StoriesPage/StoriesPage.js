@@ -6,10 +6,6 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 
 class StoriesPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {
             pageData,

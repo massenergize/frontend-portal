@@ -1,6 +1,5 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
-import Tooltip from './Tooltip';
 
 /*
 Circle graph is a graph that displays a progress bar in a circle

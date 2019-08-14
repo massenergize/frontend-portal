@@ -8,7 +8,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS from '../../../api/urls'
-import { getJson, postJson, deleteJson } from '../../../api/functions'
+import { postJson, deleteJson } from '../../../api/functions'
 
 import { isLoaded } from 'react-redux-firebase';
 import AddingHouseholdForm from './AddingHouseholdForm';
@@ -31,32 +31,32 @@ class ProfilePage extends React.Component {
             addingCom: false,
         }
     }
-    componentDidMount() {
-        Promise.all([
-            getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
-            getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
-        ]).then(myJsons => {
-            if (myJsons[0].success && myJsons[0].data) {
-                this.setState({
-                    todo: myJsons[0].data,
-                    done: myJsons[1].data,
-                    loaded: true
-                })
-            } else {
-                if (isLoaded(this.props.auth))
-                    this.setState({
-                        notRegistered: true
-                    });
-            }
-        }).catch(err => {
-            console.log(err)
-        });
-    }
+    // componentDidMount() {
+    //     Promise.all([
+    //         //getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
+    //         //getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
+    //     ]).then(myJsons => {
+    //         if (myJsons[0].success && myJsons[0].data) {
+    //             this.setState({
+    //                 todo: myJsons[0].data,
+    //                 done: myJsons[1].data,
+    //                 loaded: true
+    //             })
+    //         } else {
+    //             if (isLoaded(this.props.auth))
+    //                 this.setState({
+    //                     notRegistered: true
+    //                 });
+    //         }
+    //     }).catch(err => {
+    //         console.log(err)
+    //     });
+    // }
     render() {
         //avoids trying to render before the promise from the server is fulfilled
-        if (!this.props.auth.isLoaded) { //if the auth isn't loaded wait for a bit
-            return <LoadingCircle />;
-        }
+        // if (!this.props.auth.isLoaded) { //if the auth isn't loaded wait for a bit
+        //     return <LoadingCircle />;
+        // }
         if (!this.props.user)
             return <Redirect to='/login'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
@@ -64,8 +64,6 @@ class ProfilePage extends React.Component {
             this.componentDidMount();
             return <LoadingCircle />;
         }
-        if (!this.state.loaded) return <LoadingCircle />;
-        const { auth } = this.props;
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
@@ -156,7 +154,7 @@ class ProfilePage extends React.Component {
                             <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
                             <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
                             <div className="col-12 text-center">
-                                <Link to="actions"><button class="thm-btn">Discover All Actions</button></Link>
+                                <Link to="actions"><button className="thm-btn">Discover All Actions</button></Link>
                             </div>
                         </div>
                     </div>
@@ -179,36 +177,37 @@ class ProfilePage extends React.Component {
     renderHouseholds(households) {
         return Object.keys(households).map(key => {
             const house = households[key]
-            return (
-                <>
-                    {this.state.editingHH === house.id ?
-                        <tr>
-                            <td colSpan={3}>
-                                <AddingHouseholdForm
-                                    householdID={house.id}
-                                    name={house.name}
-                                    location={house.location}
-                                    unittype={house.unit_type}
-                                    user={this.props.user}
-                                    editHousehold={this.editHousehold}
-                                    closeForm={() => this.setState({ editingHH: null })}
-                                />
-                                <button
-                                    className="thm-btn"
-                                    onClick={() => this.setState({ addingHH: false, editingHH: null })}
-                                    style={{ width: '99%' }}>Cancel
+
+            if (this.state.editingHH === house.id) {
+                return (
+                    <tr key={key}>
+                        <td colSpan={3}>
+                            <AddingHouseholdForm
+                                householdID={house.id}
+                                name={house.name}
+                                location={house.location}
+                                unittype={house.unit_type}
+                                user={this.props.user}
+                                editHousehold={this.editHousehold}
+                                closeForm={() => this.setState({ editingHH: null })}
+                            />
+                            <button
+                                className="thm-btn"
+                                onClick={() => this.setState({ addingHH: false, editingHH: null })}
+                                style={{ width: '99%' }}>Cancel
                         </button>
-                            </td>
-                        </tr>
-                        :
-                        <tr key={key}>
-                            <td>{house.name}</td>
-                            <td><button className="edit-btn"> <i className="fa fa-edit" onClick={() => this.setState({ editingHH: house.id, addingHH: false })}></i> </button></td>
-                            <td><button className="remove-btn"> <i className="fa fa-trash" onClick={() => this.deleteHousehold(house)}></i> </button></td>
-                        </tr>
-                    }
-                </>
-            );
+                        </td>
+                    </tr>
+                )
+            } else {
+                return (
+                    <tr key={key}>
+                        <td>{house.name}</td>
+                        <td><button className="edit-btn"> <i className="fa fa-edit" onClick={() => this.setState({ editingHH: house.id, addingHH: false })}></i> </button></td>
+                        <td><button className="remove-btn"> <i className="fa fa-trash" onClick={() => this.deleteHousehold(house)}></i> </button></td>
+                    </tr>
+                )
+            }
         })
     }
 

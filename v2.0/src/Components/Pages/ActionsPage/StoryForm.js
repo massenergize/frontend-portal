@@ -29,13 +29,13 @@ class StoryForm extends React.Component {
                 <form onSubmit={this.onSubmit}>
                     <div className="field-label">
                         <p>Story Title*</p>
-                        <input type="text" name="fname" name="title" value={this.state.title} onChange={this.onChange} required/>
+                        <input type="text" name="title" value={this.state.title} onChange={this.onChange} required/>
                     </div>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="field-label">
                                 <p>Your Story*</p>
-                                <textarea name="review" name="body" value={this.state.body} onChange={this.onChange} required></textarea>
+                                <textarea name="body" value={this.state.body} onChange={this.onChange} required></textarea>
                             </div>
                         </div>
                     </div>

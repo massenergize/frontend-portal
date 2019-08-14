@@ -11,11 +11,7 @@ Bar graph
         name: label for the series
 */
 class BarGraph extends React.Component {
-    constructor(props) {
-        super(props);
-        //options for the graphs, color, size....
-
-    }
+    
     render() {
         const options = {
             title: {

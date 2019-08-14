@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import NavBarBurger from './Components/Menu/NavBarBurger'
 import NavBarOffset from './Components/Menu/NavBarOffset'
 import Footer from './Components/Menu/Footer'
@@ -121,6 +121,8 @@ class App extends Component {
 				})
 			})
 		}
+		if(!this.state.triedLogin) return <LoadingCircle/>;
+
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">

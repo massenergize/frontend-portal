@@ -57,8 +57,6 @@ class RegisterFormBase extends React.Component {
             preferredName,
             serviceProvider,
             termsAndServices,
-            showTOSError,
-            showTOSModal,
             error,
         } = this.state;
 
@@ -127,14 +125,14 @@ class RegisterFormBase extends React.Component {
                                     <input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
                                 </div>
                                 <label className="checkbox-container">
-                                    <input className="checkbox" type="checkbox" name="serviceProvider" onClick={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
+                                    <input className="checkbox" type="checkbox" name="serviceProvider" onChange={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
                                     <span className="checkmark"></span>
                                     <p style={{ marginLeft: "25px" }}>Are you a Service Provider?</p>
                                 </label>
                                 <label className="checkbox-container">
-                                    <input className="checkbox" type="checkbox" name="termsAndServices" onClick={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
+                                    <input className="checkbox" type="checkbox" name="termsAndServices" onChange={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
                                     <span className="checkmark"></span>
-                                    <p style={{ marginLeft: "25px" }}>I agree to the <a href="#" onClick={this.showTOS}>Terms of Service</a>.</p>
+                                    <p style={{ marginLeft: "25px" }}>I agree to the <button onClick={this.showTOS}>Terms of Service</button>.</p>
                                     <span className="text-danger mb-3 small" style={{display: (this.state.showTOSError) ? "block" : "none"}}>You need to agree to the terms of service!</span>
                                 </label>
                                 <div className="clearfix">
@@ -152,7 +150,7 @@ class RegisterFormBase extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Terms of Service</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body dangerouslySetInnerHTML={{__html: this.props.policies.filter(x => x.name == "Terms of Service")[0].description}} style={{maxHeight: "50vh", overflowY: "scroll"}}></Modal.Body>
+                    <Modal.Body dangerouslySetInnerHTML={{__html: this.props.policies.filter(x => x.name === "Terms of Service")[0].description}} style={{maxHeight: "50vh", overflowY: "scroll"}}></Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.setState({showTOSModal: false})}>
                             Close

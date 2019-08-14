@@ -4,8 +4,7 @@ import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './Events';
-import URLS from '../../../api/urls';
-import { getJson, section } from '../../../api/functions'
+import { section } from '../../../api/functions'
 import { connect } from 'react-redux'
 
 

@@ -59,5 +59,5 @@ export const deleteJson = async (url) => {
  */
 export const section = (json, section, sectionOnly) => {
 	let sections = (sectionOnly) ? json : json.sections;
-	return sections.filter(x => x.name == section)[0];
+	return sections.filter(x => x.name === section)[0];
 }

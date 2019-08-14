@@ -195,7 +195,7 @@ class NavBarBurger extends React.Component {
                     <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.full_name.split(" ")[0]} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
                         <Link to="profile" className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
-                        <Link className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></Link>
+                        <button className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></button>
                     </Dropdown.Menu>
                 </Dropdown>
             );
@@ -231,11 +231,11 @@ class ProfileBtnDropdown extends React.Component {
 
     render() {
         return (
-            <Link className="thm-btn float-right" onClick={this.handleClick} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
+            <button className="thm-btn float-right" onClick={this.handleClick} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
                 <i className="fa fa-user" />{'\u00A0'}
                     Hello, {this.props.userName}
                 <span className="fa fa-angle-down text-white ml-1"></span>
-            </Link>
+            </button>
         );
     }
 }

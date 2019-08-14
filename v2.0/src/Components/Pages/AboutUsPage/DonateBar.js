@@ -1,7 +1,5 @@
 import React from 'react';
-import { section } from '../../../api/functions';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 /**
  * A display for donating to the cause
  * @props : 

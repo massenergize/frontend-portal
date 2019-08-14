@@ -6,10 +6,6 @@ import Table from 'react-bootstrap/Table';
 import LoadingCircle from '../../Shared/LoadingCircle';
 
 class TeamsPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const teams = this.props.teamsPage;
         if (teams == null) return <LoadingCircle />
@@ -45,7 +41,7 @@ class TeamsPage extends React.Component {
         for (let i = 0; i < teamsSorted.length; i++) {
             let households = teamsSorted[i].households;
             let actions_completed = teamsSorted[i].actions_completed;
-            const avrg = Number(actions_completed) / Number(households);
+            var avrg = Number(actions_completed) / Number(households);
             avrg = (!isNaN(avrg)) ? avrg.toFixed(1) : 0;
             teamsSorted[i]["avrgActionsPerHousehold"] = avrg;
         }

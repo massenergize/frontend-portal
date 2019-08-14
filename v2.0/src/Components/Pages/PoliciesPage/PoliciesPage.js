@@ -1,6 +1,4 @@
 import React from 'react';
-import URLS from '../../../api/urls';
-import { getJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import PageTitle from '../../Shared/PageTitle';
 import Accordion from 'react-bootstrap/Accordion';

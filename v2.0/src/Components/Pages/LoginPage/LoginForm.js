@@ -2,7 +2,7 @@ import React from 'react';
 import { withFirebase } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { getJson } from '../../../api/functions';
 import URLS from '../../../api/urls'
@@ -33,7 +33,6 @@ class LoginFormBase extends React.Component {
 
     render() {
         const { email, password, error } = this.state;
-        const { auth } = this.props;
         return (
             < div className="styled-form login-form" >
                 <div className="section-title style-2">

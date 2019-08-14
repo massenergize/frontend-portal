@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { isLoaded } from 'react-redux-firebase'
 import URLS from '../../../api/urls';
 import { getJson, postJson } from '../../../api/functions'
 import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'

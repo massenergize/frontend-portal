@@ -1,8 +1,7 @@
 import React from 'react'
 import URLS from '../../../api/urls';
-import { getJson, postJson } from '../../../api/functions'
+import { postJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
-import { isLoaded } from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Cart from '../../Shared/Cart';
