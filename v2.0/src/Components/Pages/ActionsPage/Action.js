@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import Tooltip from '../../Shared/Tooltip';
+import ChooseHHForm from './ChooseHHForm'
 
 /**
  * Action Component is a single action for the action page, 
@@ -18,21 +19,28 @@ import Tooltip from '../../Shared/Tooltip';
  */
 
 class Action extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: null,
+        }
+    }
     render() {
+        if (!this.props.HHFormOpen && this.state.status) this.setState({ status: null });
         if (this.shouldRender()) { //checks if the action should render or not
             return (
                 <div className="col-lg-6 col-md-12 col-sm-12 col-12" >
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
-                            <Link to={this.props.match.url + "/" + this.props.id} >
-                                < img src={this.props.image} alt="" />
+                            <Link to={this.props.match.url + "/" + this.props.action.id} >
+                                < img src={this.props.action.image ? this.props.action.image.url : null} alt="" />
                             </Link>
                             { /* animated section on top of the image */}
                             <figcaption className="overlay" >
                                 <div className="box" >
                                     <div className="content">
                                         { /* link is thisurl/id (links to the OneActionPage) */}
-                                        <Link to={this.props.match.url + "/" + this.props.id} >
+                                        <Link to={this.props.match.url + "/" + this.props.action.id} >
                                             <i className="fa fa-link" aria-hidden="true" ></i>
                                         </Link>
                                     </div>
@@ -42,7 +50,7 @@ class Action extends React.Component {
                         <div className="content-box" >
                             <div className="inner-box" >
                                 <h4>
-                                    <Link to={this.props.match.url + "/" + this.props.id}> {this.props.title} </Link>
+                                    <Link to={this.props.match.url + "/" + this.props.action.id}> {this.props.action.title} </Link>
                                 </h4>
                             </div>
                             { /* Impact and Difficulty tags*/}
@@ -64,29 +72,52 @@ class Action extends React.Component {
                                 <div className="row no-gutter">
                                     <div className="col-sm-4 col-md-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <Link to={this.props.match.url + "/" + this.props.id} className="thm-btn style-4" > More Info</Link>
+                                            <Link to={this.props.match.url + "/" + this.props.action.id} className="thm-btn style-4" > More Info</Link>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            {!this.props.inCart(this.props.id) ?
-                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "TODO")}> Add Todo </button>
-                                                :
-                                                null
-                                            }
+                                            <button
+                                                disabled={!this.props.user}
+                                                className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                                onClick={() => this.openForm("TODO")}
+                                            > Add Todo </button>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            {!this.props.inCart(this.props.id) ?
-                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.id, "DONE")}> Done It </button>
+                                            <button
+                                                disabled={!this.props.user}
+                                                className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                                onClick={() => this.openForm("DONE")}
+                                            > Done It </button>
+                                            {/* {!this.props.inCart(this.props.action.id) ?
+                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.action.id, "DONE")}> Done It </button>
                                                 : null
                                             }
-                                            {this.props.inCart(this.props.id, "TODO") ?
-                                                <button className="thm-btn style-4" onClick={() => this.props.moveToDone(this.props.id)}> Done It </button>
+                                            {this.props.inCart(this.props.action.id, "TODO") ?
+                                                <button className="thm-btn style-4" onClick={() => this.props.moveToDone(this.props.action.id)}> Done It </button>
                                                 :
                                                 null
-                                            }
+                                            } */}
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+
+                                        <div className="col-centered">
+                                            <br></br>
+                                            <ChooseHHForm
+                                                aid={this.props.action.id}
+                                                status={this.state.status}
+
+                                                open={this.props.HHFormOpen}
+                                                user={this.props.user}
+                                                addToCart={(aid, hid, status) => this.props.addToCart(aid, hid, status)}
+                                                inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
+                                                moveToDone={(aid, hid) => this.props.moveToDoneByActionId(aid, hid)}
+                                                closeForm={this.closeForm}
+                                            />
+
                                         </div>
                                     </div>
                                 </div>
@@ -99,16 +130,29 @@ class Action extends React.Component {
             return null;
         }
     }
+
+    openForm = (status) => {
+        this.setState({
+            status: status
+        })
+        this.props.openHHForm(this.props.action.id)
+    }
+    closeForm = () => {
+        this.setState({
+            status: null
+        })
+        this.props.closeHHForm();
+    }
     //checks the filters to see if the action should render or not
     shouldRender() {
         //if the search does not fit return false
         //search fits if the exact string(lowercase) is in the title or description of an action
         //can make more advanced search later
-        if (!(this.searchFits(this.props.title) || this.searchFits(this.props.description)))
+        if (!(this.searchFits(this.props.action.title) || this.searchFits(this.props.action.description)))
             return false;
 
         var tagSet = new Set(); //create a set of the action's tag ids
-        this.props.tags.forEach(tag => {
+        this.props.action.tags.forEach(tag => {
             tagSet.add(tag.id);
         });
 
@@ -148,7 +192,7 @@ class Action extends React.Component {
     }
 
     getTag(collection) {
-        const tags = this.props.tags.filter(tag => tag.tag_collection === collection);
+        const tags = this.props.action.tags.filter(tag => tag.tag_collection === collection);
         return tags && tags.length > 0 ? tags[0] : null
     }
 

@@ -23,6 +23,7 @@ class ActionsPage extends React.Component {
         this.state = {
             loaded: false,
             tagCols: [],
+            openAddForm: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -127,19 +128,25 @@ class ActionsPage extends React.Component {
         return Object.keys(actions).map(key => {
             var action = actions[key];
             return <Action key={key}
-                id={action.id}
-                title={action.title}
-                description={action.about}
-                image={action.image ? action.image.url : null}
-                match={this.props.match} //passed from the Route, need to forward to the action for url matching
+                action={action}
 
-                tags={action.tags}
+                // id={action.id}
+                // title={action.title}
+                // description={action.about}
+                // image={action.image ? action.image.url : null}
+                // tags={action.tags}
+
                 tagCols={this.state.tagCols}
-
+                match={this.props.match} //passed from the Route, need to forward to the action for url matching
                 user={this.props.user}
-                addToCart={(id, status) => this.addToCart(id, status)}
-                inCart={(actionId, cart) => this.inCart(actionId, cart)}
+
+                addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+                inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
                 moveToDone={(actionId) => this.moveToDoneByActionId(actionId)}
+
+                HHFormOpen = {this.state.openAddForm === action.id}
+                closeHHForm = {() => this.setState({ openAddForm: null })}
+                openHHForm = {(aid) => this.setState({ openAddForm: aid})}
             />
         });
     }
@@ -147,13 +154,14 @@ class ActionsPage extends React.Component {
     /**
      * These are the cart functions
      */
-    inCart = (actionId, cart) => {
+    inCart = (aid, hid, cart) => {
+        console.log("huh");
         if(!this.props.todo) return false;
-        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId });
+        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
         if(!this.props.done) return false;
-        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === actionId });
+        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
         if (cart === "DONE") return checkDone.length > 0;
 
         return checkTodo.length > 0 || checkDone.length > 0;
@@ -174,17 +182,17 @@ class ActionsPage extends React.Component {
             console.log(err)
         })
     }
-    moveToDoneByActionId(actionId) {
-        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === actionId })[0];
+    moveToDoneByActionId(aid, hid) {
+        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid })[0];
         if (actionRel)
             this.moveToDone(actionRel);
 
     }
-    addToCart = (id, status) => {
+    addToCart = (aid,hid, status) => {
         const body = {
-            action: id,
+            action: aid,
             status:status,
-            real_estate_unit: 1
+            real_estate_unit: hid
         }
         console.log(this.props.user.id)        
         postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
