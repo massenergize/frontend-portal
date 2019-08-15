@@ -142,7 +142,7 @@ class ActionsPage extends React.Component {
 
                 addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
                 inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
-                moveToDone={(actionId) => this.moveToDoneByActionId(actionId)}
+                moveToDone={(aid, hid) => this.moveToDoneByActionId(aid,hid)}
 
                 HHFormOpen = {this.state.openAddForm === action.id}
                 closeHHForm = {() => this.setState({ openAddForm: null })}
@@ -155,13 +155,12 @@ class ActionsPage extends React.Component {
      * These are the cart functions
      */
     inCart = (aid, hid, cart) => {
-        console.log("huh");
         if(!this.props.todo) return false;
-        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
+        const checkTodo = this.props.todo.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
         if(!this.props.done) return false;
-        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
+        const checkDone = this.props.done.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "DONE") return checkDone.length > 0;
 
         return checkTodo.length > 0 || checkDone.length > 0;
@@ -183,7 +182,11 @@ class ActionsPage extends React.Component {
         })
     }
     moveToDoneByActionId(aid, hid) {
-        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid })[0];
+        console.log(aid + " " + hid)
+        const actionRel = this.props.todo.filter(actionRel => {
+            return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid)
+            })[0];
+        console.log(actionRel);
         if (actionRel)
             this.moveToDone(actionRel);
 

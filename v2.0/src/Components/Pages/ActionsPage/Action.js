@@ -114,7 +114,7 @@ class Action extends React.Component {
                                                 user={this.props.user}
                                                 addToCart={(aid, hid, status) => this.props.addToCart(aid, hid, status)}
                                                 inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
-                                                moveToDone={(aid, hid) => this.props.moveToDoneByActionId(aid, hid)}
+                                                moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
                                                 closeForm={this.closeForm}
                                             />
 

@@ -256,13 +256,12 @@ class OneActionPage extends React.Component {
      * These are the cart functions
      */
     inCart = (aid, hid, cart) => {
-        console.log("huh");
         if(!this.props.todo) return false;
-        const checkTodo = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
+        const checkTodo = this.props.todo.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
         if(!this.props.done) return false;
-        const checkDone = this.props.done.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid });
+        const checkDone = this.props.done.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "DONE") return checkDone.length > 0;
 
         return checkTodo.length > 0 || checkDone.length > 0;
@@ -284,7 +283,10 @@ class OneActionPage extends React.Component {
         })
     }
     moveToDoneByActionId(aid, hid) {
-        const actionRel = this.props.todo.filter(actionRel => { return actionRel.action.id === aid && actionRel.real_estate_unit.id === hid })[0];
+        const actionRel = this.props.todo.filter(actionRel => {
+            return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid)
+            })[0];
+        console.log(actionRel);
         if (actionRel)
             this.moveToDone(actionRel);
 

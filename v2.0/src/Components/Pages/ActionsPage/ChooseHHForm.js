@@ -18,7 +18,13 @@ class ChooseHHForm extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.status !== this.props.status) {
+            this.setState({ error: null })
+        }
+    }
     render() {
+        this.checkHouseholds();
         return (
             <>
                 {this.props.open ?
@@ -26,9 +32,10 @@ class ChooseHHForm extends React.Component {
                         {this.state.error ? <p className='text-danger'> {this.state.error} </p> : null}
                         <form onSubmit={this.handleSubmit}>
                             {this.renderRadios(this.props.user.households)}
-                            
-                            <button className='thm-btn style-4' type='submit'>Submit</button>
-                            <button className='thm-btn style-4 red' onClick={this.props.closeForm}> Cancel </button>
+                            <div>
+                                <button className='thm-btn style-4' type='submit' disabled={this.state.error ? true : false}>Submit</button>
+                                <button className='thm-btn style-4 red' onClick={this.props.closeForm}> Cancel </button>
+                            </div>
                         </form>
                     </div>
                     :
@@ -40,13 +47,9 @@ class ChooseHHForm extends React.Component {
 
 
     handleSubmit = (event) => {
-        event.preventDefault();
+        if (event) event.preventDefault();
 
-        console.log(this.props.aid)
-        console.log(this.state.choice)
-        console.log(this.props.status)
-
-        if(!this.state.choice){
+        if (!this.state.choice) {
             this.setState({
                 error: "Please select a household"
             })
@@ -54,17 +57,17 @@ class ChooseHHForm extends React.Component {
         }
 
         if (this.props.status === "TODO") {
-            if(!this.props.inCart(this.props.aid, this.state.choice)){
+            if (!this.props.inCart(this.props.aid, this.state.choice)) {
                 console.log('adding to todo')
                 this.props.addToCart(this.props.aid, this.state.choice, this.props.status);
                 this.props.closeForm();
             }
         } else if (this.props.status === "DONE") {
-            if(!this.props.inCart(this.props.aid, this.state.choice)){
+            if (!this.props.inCart(this.props.aid, this.state.choice)) {
                 console.log('adding to done')
                 this.props.addToCart(this.props.aid, this.state.choice, this.props.status);
                 this.props.closeForm();
-            }else if (this.props.inCart(this.props.aid, this.state.choice, "TODO")){
+            } else if (this.props.inCart(this.props.aid, this.state.choice, "TODO")) {
                 console.log('moving to done')
                 this.props.moveToDone(this.props.aid, this.state.choice);
                 this.props.closeForm();
@@ -75,14 +78,16 @@ class ChooseHHForm extends React.Component {
     renderRadios(households) {
         return Object.keys(households).map(key => {
             const household = households[key];
-            return (
-                <div key={key} style ={{display: 'inline-block'}}>
-                    <input id ={''+ household.name + key} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} style={{ display: 'inline-block' }} />
-                    &nbsp;
-                    <label for={''+ household.name + key}> {household.name} </label>
-                    &nbsp;&nbsp;&nbsp;
-                </div>
-            );
+            if((this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) || (this.props.status==="TODO" && !this.props.inCart(this.props.aid, household.id))){
+                return (
+                    <div key={key} style={{ display: 'inline-block' }}>
+                        <input id={'' + household.name + key} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} style={{ display: 'inline-block' }} />
+                        &nbsp;
+                            <label htmlFor={'' + household.name + key}> {household.name} </label>
+                        &nbsp;&nbsp;&nbsp;
+                        </div>
+                );
+            }
         })
     }
     //updates the state when form elements are changed
@@ -93,6 +98,32 @@ class ChooseHHForm extends React.Component {
         });
     };
 
+    checkHouseholds = () => {
+        if (this.props.open) {
+            var housesAvailable = [];
+            for (var i = 0; i < this.props.user.households.length; i++) {
+                var household = this.props.user.households[i];
+                if (!this.props.inCart(this.props.aid, household.id, this.props.status)) {
+                    housesAvailable.push(household.id)
+                }
+            }
+            if (!this.state.error && !this.state.choice) {
+                if (housesAvailable.length === 0) {
+                    this.setState({ error: `You have already added this action to ${this.props.status.toLowerCase()} for all of your households` });
+                } else if (housesAvailable.length === 1) {
+                    if (this.props.status === "TODO") {
+                        if (this.props.inCart(this.props.aid, household.id)) {
+                            this.setState({ error: `You have already added this action to done for all of your households` });
+                        } else {
+                            this.setState({ choice: housesAvailable[0] });
+                        }
+                    } else if (!this.props.inCart(this.props.aid, household.id, "DONE")) {
+                        this.setState({ choice: housesAvailable[0] });
+                    }
+                }
+            }
+        }
+    }
 }
 export default (ChooseHHForm);
 
