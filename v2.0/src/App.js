@@ -112,6 +112,7 @@ class App extends Component {
 	}
 	render() {
 		if (!isLoaded(this.props.auth)) {
+			console.log("Waiting for firebase auth to load...")
 			return <LoadingCircle />;
 		}
 		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
@@ -121,7 +122,10 @@ class App extends Component {
 				})
 			})
 		}
-		if(!this.state.triedLogin) return <LoadingCircle/>;
+		if(this.props.auth.uid && !this.state.triedLogin){
+			console.log("Waiting to retrieve user from the database...")
+			return <LoadingCircle/>;
+		} 
 
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (

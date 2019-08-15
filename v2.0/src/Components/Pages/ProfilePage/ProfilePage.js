@@ -60,15 +60,17 @@ class ProfilePage extends React.Component {
         if (!this.props.user)
             return <Redirect to='/login'> </Redirect>
         //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
-            this.componentDidMount();
-            return <LoadingCircle />;
+        // if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
+        //     return <LoadingCircle />;
+        // }
+        if (this.props.user.households.length === 0) {
+            this.addDefaultHousehold();
         }
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
         return (
-            <div className='boxed_wrapper'>
+            <div className='boxed_wrapper' onClick = {this.clearError}>
                 <div className="container">
                     <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                         <div className="col-lg-8 col-md-7  col-12">
@@ -113,6 +115,9 @@ class ProfilePage extends React.Component {
                                         </table>
                                     </div>
                                     <div className="col-lg-6 col-12">
+                                        {this.state.deletingHHError ?
+                                            <p className='text-danger'> {this.state.deletingHHError}</p> : null
+                                        }
                                         <table className="profile-table" style={{ width: '100%' }}>
                                             <tbody>
                                                 <tr>
@@ -219,15 +224,26 @@ class ProfilePage extends React.Component {
     }
 
     deleteHousehold = (household) => {
-        deleteJson(`${URLS.HOUSEHOLD}/${household.id}`).then(json => {
-            console.log(json);
-            if (json.success) {
-                this.props.reduxRemoveHousehold(household);
+        if (this.props.user.households.length > 1) {
+            deleteJson(`${URLS.HOUSEHOLD}/${household.id}`).then(json => {
+                console.log(json);
+                if (json.success) {
+                    this.props.reduxRemoveHousehold(household);
+                }
             }
+            )
+        } else {
+            this.setState({
+                deletingHHError: 'You need to have at least one household. Try editing the name and location or adding another household before deleting this one'
+            })
         }
-        )
     }
 
+    clearError = () => {
+        if (this.state.deletingHHError){
+            this.setState({deletingHHError: null})
+        }
+    }
     /**
      * Cart Functions
      */
@@ -245,6 +261,43 @@ class ProfilePage extends React.Component {
             //just update the state here
         }).catch(err => {
             console.log(err)
+        })
+    }
+
+    addDefaultHousehold = () => {
+        const body = {
+            "name": 'Home',
+            "unit_type": 'RESIDENTIAL',
+            "location": ''
+        }
+        var postURL = URLS.USER + "/" + this.props.user.id + "/households";
+        /** Collects the form data and sends it to the backend */
+        postJson(postURL, body).then(json => {
+            console.log(json);
+            if (json.success) {
+                this.addHousehold(json.data);
+                var householdIds = [];
+                this.props.user.households.forEach(household => {
+                    householdIds.push(household.id);
+                })
+                fetch(URLS.USER + "/" + this.props.user.id, {
+                    method: 'post',
+                    body: JSON.stringify({
+                        "preferred_name": this.props.user.preferred_name,
+                        "email": this.props.user.email,
+                        "full_name": this.props.user.full_name,
+                        "real_estate_units": [
+                            ...householdIds
+                        ]
+                    })
+                }).then(response => {
+                    return response.json()
+                }).then(json => {
+                    console.log(json);
+                });
+            }
+        }).catch(error => {
+            console.log(error);
         })
     }
 }
