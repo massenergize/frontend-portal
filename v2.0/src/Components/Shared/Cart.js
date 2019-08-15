@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Tooltip from '../Shared/Tooltip'
 
 /**
  * Cart component
@@ -9,22 +10,23 @@ import { Link } from 'react-router-dom'
  * 
  */
 class Cart extends React.Component {
-    render(){
+    render() {
         return (
             // <!--Cart Outer-->
             <div className="cart-outer mb-5">
                 <h3 className="center m-0">{this.props.title}</h3>
                 <div className="table-outer">
                     {this.props.actionRels ?
-                        <table className="cart-table" style = {{width:'100%'}}>
-                            <thead className="cart-header">
-                                <tr>
+                        <table className="cart-table" style={{ width: '100%' }}>
+                            {/* <thead className="cart-header"> */}
+                            {/* <tr>
                                     <th className="prod-column">Image</th>
                                     <th className="prod-column">Action</th>
                                     <th className="prod-column"></th>
-                                    <th className="prod-column">Remove</th>
-                                </tr>
-                            </thead>
+                                    <th className="prod-column"></th>
+                                    <th className="prod-column"></th>
+                                </tr> */}
+                            {/* </thead> */}
                             <tbody>
                                 {this.renderActions(this.props.actionRels)}
                             </tbody>
@@ -46,26 +48,38 @@ class Cart extends React.Component {
             var action = actionRel.action;
             return (
                 <tr key={key}>
-                    <td colSpan="1" className="prod-column">
-                        <div className="column-box">
-                            <figure className="prod-thumb"><Link to={"/actions/" + action.id}><img src={action.image? action.image.url : null} alt="" /></Link></figure>
-                        </div>
+                    {/* <td colSpan="2" className="prod-column">
+                        <img className="thumbnail" src={action.image? action.image.url : null} alt="" />
+                    </td> */}
+                    <td>
+                        <Tooltip title='Household' text={actionRel.real_estate_unit.name}>
+                            <div className="column-box">
+                                <span className='has-tooltip fa fa-home' style={{ textAlign: 'center', fontSize: '18px' }}></span>
+                            </div>
+                        </Tooltip>
                     </td>
                     <td colSpan="2" className="prod-column">
                         <div className="column-box">
-                            <h4 className="prod-title padd-top-20">{action.title}</h4>
+                            <Link to={'/actions/' + action.id}>
+                                <h4 className="prod-title padd-top-20">{action.title}</h4>
+                            </Link>
                         </div>
                     </td>
                     <td colSpan="1" className="prod-column">
                         {actionRel.status.toLowerCase() === "todo" ?
                             <div>
-                                <button onClick={() => this.props.moveToDone(actionRel)} className="done-btn"> <i className="fa fa-check"></i> </button>
-                                <button className="remove-btn"> <i className="fa fa-trash"></i> </button>
+                                <Tooltip text='Move to Done'>
+                                    <button onClick={() => this.props.moveToDone(actionRel)} className="done-btn has-tooltip"> <i className="fa fa-check"></i> </button>
+                                </Tooltip>
+                                <Tooltip text='Remove from Todo'>
+                                    <button className="remove-btn has-tooltip"> <i className="fa fa-trash"></i> </button>
+                                </Tooltip>
                             </div>
                             :
                             null
                         }
                     </td>
+
                 </tr>
             );
         });

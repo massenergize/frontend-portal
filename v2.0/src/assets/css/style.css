@@ -9299,3 +9299,9 @@ article.slide-item.center {}
 .apexcharts-canvas { 
     margin: auto;
 }
+
+.thumbnail { 
+    width: 50px;
+    height: 50px;
+
+}
