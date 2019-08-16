@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP } from '../actions/types';
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP, ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER } from '../actions/types';
 
 const initialState = {
     //page data for each page
@@ -134,11 +134,44 @@ export default function (state = initialState, action) {
         case CHANGE_RSVP:
             return {
                 ...state,
-                rsvps:[
+                rsvps: [
                     ...state.rsvps.filter(rsvp => { return rsvp.id !== action.payload.id }),
                     action.payload
                 ]
             }
+        case ADD_TEAM_MEMBER:
+            var team = state.teamsPage.filter(stats => {return stats.team.id === action.payload.team.id})[0]
+            const newTeam = {
+                ...team,
+                households: team.households + action.payload.member.households,
+                actions: team.actions + action.payload.member.actions,
+                actions_completed: team.actions_completed + action.payload.member.actions_completed,
+                actions_todo: team.actions_todo + action.payload.member.actions_todo
+            }
+            console.log(team)
+            console.log(newTeam)
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => {return stats.team.id !== action.payload.team.id}),
+                    newTeam
+                ]
+            }
+            case REMOVE_TEAM_MEMBER:
+                    var team = state.teamsPage.filter(stats => {return stats.team.id === action.payload.team.id})[0]
+                    return {
+                        ...state,
+                        teamsPage: [
+                            ...state.teamsPage.filter(stats => {return stats.team.id !== action.payload.team.id}),
+                            {
+                                ...team,
+                                households: team.households - action.payload.member.households,
+                                actions: team.actions - action.payload.member.actions,
+                                actions_completed: team.actions_completed - action.payload.membe.actions_completed,
+                                actions_todo: team.actions_todo - action.payload.member.actions_todo
+                            }
+                        ]
+                    }
         /**************************/
         default:
             return {

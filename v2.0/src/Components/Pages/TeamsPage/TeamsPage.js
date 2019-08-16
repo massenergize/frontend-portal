@@ -4,6 +4,13 @@ import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
 import LoadingCircle from '../../Shared/LoadingCircle';
+import {postJson} from '../../../api/functions'
+import URLS from '../../../api/urls'
+import {reduxJoinTeam} from '../../../redux/actions/userActions'
+import {reduxAddTeamMember} from '../../../redux/actions/pageActions'
+import {Link} from 'react-router-dom'
+
+
 
 class TeamsPage extends React.Component {
     render() {
@@ -62,13 +69,22 @@ class TeamsPage extends React.Component {
                     <td>{obj.actions_completed}</td>
                     <td>{obj.avrgActionsPerHousehold}</td>
                     <td>...</td>
+                    {this.props.user?
                     <td>
                         {this.inTeam(obj.team.id) ?
                             <button className='thm-btn red'><i className='fa fa-hand-peace-o'> </i> Leave</button>
                             :
-                            <button className='thm-btn'><i className='fa fa-user-plus' onClick={() => this.joinTeam(obj.team)}> </i> Join </button>
+                            <button className='thm-btn' onClick={() => {
+                                console.log('clicked')
+                                this.joinTeam(obj.team)
+                            }}><i className='fa fa-user-plus' > </i> Join </button>
                         }
                     </td>
+                    :
+                    <td>
+                        <p><Link to='/login'>Sign In</Link> to join a team</p>
+                    </td>
+                    }
                     {/* <td>{obj.ghgSaved}</td> */}
                 </tr>
             )
@@ -82,14 +98,40 @@ class TeamsPage extends React.Component {
         console.log(this.props.user.teams);
         return this.props.user.teams.filter(team => { return team.id === team_id }).length > 0;
     }
+
     joinTeam = (team) => {
-        
+        console.log('woah')
+        const body={
+            members: this.props.user.id,
+        }
+        postJson(`${URLS.TEAM}/${team.id}`, body).then(json => {
+            console.log(json)
+            if(json.success){
+                this.props.reduxJoinTeam(team);
+                
+                this.props.reduxAddTeamMember({
+                    team: team,
+                    member: {
+                        households: this.props.user.households.length,
+                        actions: this.props.todo.length+this.props.done.length,
+                        actions_completed: this.props.done.length,
+                        actions_todo: this.props.todo.length
+                    }
+                });
+            }
+        })
     }
 }
 const mapStoreToProps = (store) => {
     return {
         user: store.user.info,
+        todo: store.user.todo,
+        done: store.user.done,
         teamsPage: store.page.teamsPage,
     }
 }
-export default connect(mapStoreToProps, null)(TeamsPage);
+const mapDispatchToProps = {
+    reduxJoinTeam,
+    reduxAddTeamMember
+}
+export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);

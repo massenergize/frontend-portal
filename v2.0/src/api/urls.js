@@ -73,8 +73,8 @@ URLS["TAGS"] = URLS.V2 + "tags";
 URLS["TAG"] = URLS.V2 + "tag";  //add the id after this
 URLS["TAG_COLLECTIONS"] = URLS.V2 + "tag-collections";
 URLS["TAG_COLLECTION"] = URLS.V2 + "tag-collection";  //add the id after this
-URLS["TEAMS"] = URLS.COMMUNITY + "teams";
-URLS["TEAM"] = URLS.COMMUNITY + "team"; //add the id after this
+URLS["TEAMS"] = URLS.V2 + "teams";
+URLS["TEAM"] = URLS.V2 + "team"; //add the id after this
 URLS["TEAMS_STATS"] = URLS.V2 + "teams/stats?community__id=" + COMM_ID;
 URLS["TESTIMONIALS"] = URLS.V2 + "testimonials";
 URLS["TESTIMONIAL"] = URLS.V2 + "testimonial"; //add the id after this
