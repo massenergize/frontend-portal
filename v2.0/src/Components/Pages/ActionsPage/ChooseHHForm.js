@@ -51,11 +51,13 @@ class ChooseHHForm extends React.Component {
 
         if (!this.state.choice) {
             this.setState({
+                choice: null,
                 error: "Please select a household"
             })
             return;
         }
 
+        
         if (this.props.status === "TODO") {
             if (!this.props.inCart(this.props.aid, this.state.choice)) {
                 console.log('adding to todo')
@@ -74,14 +76,17 @@ class ChooseHHForm extends React.Component {
 
             }
         }
+        this.setState({
+            choice: null,
+        })
     }
     renderRadios(households) {
         return Object.keys(households).map(key => {
             const household = households[key];
-            if((this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) || (this.props.status==="TODO" && !this.props.inCart(this.props.aid, household.id))){
+            if ((this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) || (this.props.status === "TODO" && !this.props.inCart(this.props.aid, household.id))) {
                 return (
                     <div key={key} style={{ display: 'inline-block' }}>
-                        <input id={'' + household.name + key} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} style={{ display: 'inline-block' }} />
+                        <input id={'' + household.name + key} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} checked={Number(this.state.choice) === Number(household.id)} style={{ display: 'inline-block' }} />
                         &nbsp;
                             <label htmlFor={'' + household.name + key}> {household.name} </label>
                         &nbsp;&nbsp;&nbsp;
@@ -92,10 +97,12 @@ class ChooseHHForm extends React.Component {
     }
     //updates the state when form elements are changed
     onChange(event) {
+        console.log(event.target.value)
         this.setState({
             error: null,
             choice: event.target.value,
         });
+        console.log(this.state)
     };
 
     checkHouseholds = () => {
@@ -103,26 +110,23 @@ class ChooseHHForm extends React.Component {
             var housesAvailable = [];
             for (var i = 0; i < this.props.user.households.length; i++) {
                 var household = this.props.user.households[i];
-                if (!this.props.inCart(this.props.aid, household.id, this.props.status)) {
+                if ((this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) ||
+                    (this.props.status === "TODO" && !this.props.inCart(this.props.aid, household.id))
+                ) {
                     housesAvailable.push(household.id)
                 }
             }
+            console.log(housesAvailable)
             if (!this.state.error && !this.state.choice) {
                 if (housesAvailable.length === 0) {
-                    this.setState({ error: `You have already added this action to ${this.props.status.toLowerCase()} for all of your households` });
-                } else if (housesAvailable.length === 1) {
-                    if (this.props.status === "TODO") {
-                        if (this.props.inCart(this.props.aid, household.id)) {
-                            this.setState({ error: `You have already added this action to done for all of your households` });
-                        } else {
-                            this.setState({ choice: housesAvailable[0] });
-                        }
-                    } else if (!this.props.inCart(this.props.aid, household.id, "DONE")) {
-                        this.setState({ choice: housesAvailable[0] });
-                    }
+                    this.setState({ error: `You have already added this action for all of your households` });
+                } else {
+                    console.log( housesAvailable[0])
+                    this.setState({ choice: housesAvailable[0] });
                 }
             }
         }
+
     }
 }
 export default (ChooseHHForm);

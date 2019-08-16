@@ -140,7 +140,7 @@ export default function (state = initialState, action) {
                 ]
             }
         case ADD_TEAM_MEMBER:
-            var team = state.teamsPage.filter(stats => {return stats.team.id === action.payload.team.id})[0]
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
             const newTeam = {
                 ...team,
                 households: team.households + action.payload.member.households,
@@ -153,25 +153,25 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 teamsPage: [
-                    ...state.teamsPage.filter(stats => {return stats.team.id !== action.payload.team.id}),
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.team.id }),
                     newTeam
                 ]
             }
-            case REMOVE_TEAM_MEMBER:
-                    var team = state.teamsPage.filter(stats => {return stats.team.id === action.payload.team.id})[0]
-                    return {
-                        ...state,
-                        teamsPage: [
-                            ...state.teamsPage.filter(stats => {return stats.team.id !== action.payload.team.id}),
-                            {
-                                ...team,
-                                households: team.households - action.payload.member.households,
-                                actions: team.actions - action.payload.member.actions,
-                                actions_completed: team.actions_completed - action.payload.membe.actions_completed,
-                                actions_todo: team.actions_todo - action.payload.member.actions_todo
-                            }
-                        ]
+        case REMOVE_TEAM_MEMBER:
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.team.id }),
+                    {
+                        ...team,
+                        households: team.households - action.payload.member.households,
+                        actions: team.actions - action.payload.member.actions,
+                        actions_completed: team.actions_completed - action.payload.membe.actions_completed,
+                        actions_todo: team.actions_todo - action.payload.member.actions_todo
                     }
+                ]
+            }
         /**************************/
         default:
             return {
