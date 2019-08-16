@@ -3,7 +3,7 @@ class Accordian extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: props.open? props.open : false
         }
         this.handleClick = this.handleClick.bind(this);
     }

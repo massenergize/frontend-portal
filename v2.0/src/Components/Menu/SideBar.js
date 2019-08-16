@@ -65,6 +65,7 @@ class SideBar extends React.Component {
             return (
                 <div className="category-style-one" key={key}>
                     <Accordian
+                        open={tagCol.name === "Category"}
                         header={header}
                         content={content}
                         onChange={this.props.onChange}

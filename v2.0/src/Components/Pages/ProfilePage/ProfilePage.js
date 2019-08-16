@@ -14,6 +14,7 @@ import { isLoaded } from 'react-redux-firebase';
 import AddingHouseholdForm from './AddingHouseholdForm';
 import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold } from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
+import Tooltip from '../../Shared/Tooltip'
 
 
 
@@ -70,10 +71,10 @@ class ProfilePage extends React.Component {
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         if (!user) return <Redirect to='/register?form=2' />
         return (
-            <div className='boxed_wrapper' onClick = {this.clearError}>
+            <div className='boxed_wrapper' onClick={this.clearError}>
                 <div className="container">
                     <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                        <div className="col-lg-8 col-md-7  col-12">
+                        <div className="col-lg-6 col-md-6  col-12">
                             <h3>{user ?
                                 <div>
                                     <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
@@ -98,64 +99,74 @@ class ProfilePage extends React.Component {
                                     </div>
                                 </div>
                             </section>
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-lg-6 col-12">
-                                        <table className="profile-table" style={{ width: '100%' }}>
-                                            <tbody>
-                                                <tr>
-                                                    <th> Your Communities </th>
-                                                    <th></th>
-                                                </tr>
-                                                {this.renderCommunities(user.communities)}
-                                                <tr>
-                                                    <td colSpan={2}><button className="thm-btn" disabled>Join another Community</button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div className="col-lg-6 col-12">
-                                        {this.state.deletingHHError ?
-                                            <p className='text-danger'> {this.state.deletingHHError}</p> : null
-                                        }
-                                        <table className="profile-table" style={{ width: '100%' }}>
-                                            <tbody>
-                                                <tr>
-                                                    <th> Your Households </th>
-                                                    <th />
-                                                    <th />
-                                                </tr>
-                                                {this.renderHouseholds(user.households)}
-                                                <tr>
-                                                    <td colSpan={3}>
-                                                        {this.state.addingHH ?
-                                                            <>
-                                                                <AddingHouseholdForm
-                                                                    user={this.props.user}
-                                                                    addHousehold={this.addHousehold}
-                                                                    closeForm={() => this.setState({ addingHH: false })}
-                                                                />
-                                                                <button
-                                                                    className="thm-btn"
-                                                                    onClick={() => this.setState({ addingHH: false })}
-                                                                    style={{ width: '99%' }}>Cancel
+
+                            <table className="profile-table" style={{ width: '100%' }}>
+                                <tbody>
+                                    <tr>
+                                        <th> Your Households </th>
+                                        <th />
+                                        <th />
+                                    </tr>
+                                    {this.renderHouseholds(user.households)}
+                                    <tr>
+                                        <td colSpan={3}>
+                                            {this.state.addingHH ?
+                                                <>
+                                                    <AddingHouseholdForm
+                                                        user={this.props.user}
+                                                        addHousehold={this.addHousehold}
+                                                        closeForm={() => this.setState({ addingHH: false })}
+                                                    />
+                                                    <button
+                                                        className="thm-btn"
+                                                        onClick={() => this.setState({ addingHH: false })}
+                                                        style={{ width: '99%' }}>Cancel
                                                                     </button>
-                                                            </>
-                                                            :
-                                                            <button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>Add Another Household</button>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                                                </>
+                                                :
+                                                <button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <table className="profile-table" style={{ width: '100%' }}>
+                                <tbody>
+                                    <tr>
+                                        <th> Your teams </th>
+                                        <th></th>
+                                    </tr>
+                                    {this.renderTeams(user.teams)}
+                                    <tr>
+                                        <td colSpan={2} align='center'><Link class="thm-btn" to='/teams' style={{ margin: '5px' }}>Join another Team</Link></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <table className="profile-table" style={{ width: '100%' }}>
+                                <tbody>
+                                    <tr>
+                                        <th> Your Communities </th>
+                                        <th></th>
+                                    </tr>
+                                    {this.renderCommunities(user.communities)}
+                                    <tr>
+                                        <td colSpan={2}><button className="thm-btn" disabled>Join another Community</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            {this.state.deletingHHError ?
+                                <p className='text-danger'> {this.state.deletingHHError}</p> : null
+                            }
+
+
                             <br />
                             <br />
                         </div>
                         {/* makes the todo and completed actions carts */}
-                        <div className="col-lg-4 col-md-5 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                        <div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
                             <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
                             <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
                             <div className="col-12 text-center">
@@ -168,11 +179,27 @@ class ProfilePage extends React.Component {
         );
     }
     renderCommunities(communities) {
-        if (!communities) return null;
+        if (!communities) return <tr><td colSpan={2}>You haven't joined any communities yet</td></tr>;
         return Object.keys(communities).map(key => {
             const community = communities[key]
             return (<tr key={key}>
                 <td> <a href={'//' + community.subdomain + '.massenergize.org'}> {community.name} </a></td>
+                <td> <button className="remove-btn"> <i className="fa fa-trash"></i></button> </td>
+            </tr>
+            );
+        })
+    }
+    renderTeams(teams) {
+        if (!teams) return null;
+        return Object.keys(teams).map(key => {
+            const team = teams[key]
+            return (<tr key={key}>
+                <td>
+                    {team.name} &nbsp;
+                    <Tooltip title={team.name} text={team.description} dir="right">
+                        <span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
+                    </Tooltip>
+                </td>
                 <td> <button className="remove-btn"> <i className="fa fa-trash"></i></button> </td>
             </tr>
             );
@@ -207,7 +234,14 @@ class ProfilePage extends React.Component {
             } else {
                 return (
                     <tr key={key}>
-                        <td>{house.name}</td>
+                        <td>
+                            {house.name} &nbsp;
+                            <Tooltip title={house.name} text={
+                                house.location ? "Location: "+house.location+ ", Type: " + house.unit_type: "No location for this household, Type: "+house.unit_type
+                        } dir="right">
+                                <span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
+                            </Tooltip>
+                        </td>
                         <td><button className="edit-btn"> <i className="fa fa-edit" onClick={() => this.setState({ editingHH: house.id, addingHH: false })}></i> </button></td>
                         <td><button className="remove-btn"> <i className="fa fa-trash" onClick={() => this.deleteHousehold(house)}></i> </button></td>
                     </tr>
@@ -240,8 +274,8 @@ class ProfilePage extends React.Component {
     }
 
     clearError = () => {
-        if (this.state.deletingHHError){
-            this.setState({deletingHHError: null})
+        if (this.state.deletingHHError) {
+            this.setState({ deletingHHError: null })
         }
     }
     /**

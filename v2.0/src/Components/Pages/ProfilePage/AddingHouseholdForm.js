@@ -27,11 +27,11 @@ class AddingHouseholdForm extends React.Component {
         return (
             <form onSubmit={this.onSubmit}>
                 <div className="col">
-                    <p>Unit Name <span className="text-danger">*</span></p>
+                    <p>Name <span className="text-danger">*</span></p>
                     <input type="text" name="name" value={this.state.name} onChange={this.onChange} required />
                 </div>
                 <div className="col">
-                    <p>Unit Type</p>
+                    <p>Type</p>
                     <div className="col-6 d-flex">
                         <input type='radio' name="unittype" id="unit_residential" value="RESIDENTIAL" checked={this.state.unittype ==='RESIDENTIAL'} onClick={this.onChange} />
                         <label className="ml-2" value="unit_residential">Residential</label>

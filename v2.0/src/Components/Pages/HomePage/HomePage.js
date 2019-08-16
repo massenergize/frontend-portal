@@ -58,6 +58,7 @@ class HomePage extends React.Component {
                         data={welcomeImagesData} title="MassEnergize"
                     /> : null
                 }
+                <h3 align='center' style={{background: '#f7f7f7'}}> Our Community Slogan is very Catchy and Great! </h3>
                 {impactData ?
                     <Graphs
                         graphs={impactData}
@@ -66,7 +67,7 @@ class HomePage extends React.Component {
                 }
                 {iconQuickLinks ?
                     <IconBoxTable
-                        title=""
+                        title="Get started - See your local options!"
                         boxes={iconQuickLinks}
                     /> : null
                 }

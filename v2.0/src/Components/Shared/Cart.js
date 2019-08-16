@@ -18,15 +18,6 @@ class Cart extends React.Component {
                 <div className="table-outer">
                     {this.props.actionRels ?
                         <table className="cart-table" style={{ width: '100%' }}>
-                            {/* <thead className="cart-header"> */}
-                            {/* <tr>
-                                    <th className="prod-column">Image</th>
-                                    <th className="prod-column">Action</th>
-                                    <th className="prod-column"></th>
-                                    <th className="prod-column"></th>
-                                    <th className="prod-column"></th>
-                                </tr> */}
-                            {/* </thead> */}
                             <tbody>
                                 {this.renderActions(this.props.actionRels)}
                             </tbody>
@@ -39,7 +30,7 @@ class Cart extends React.Component {
     renderActions(actionRelations) {
         if (!actionRelations || actionRelations.length <= 0) {
             return (
-                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet!</p></td></tr>
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/actions'> actions </Link></p></td></tr>
             );
         }
         //returns a list of action components
@@ -58,14 +49,14 @@ class Cart extends React.Component {
                             </div>
                         </Tooltip>
                     </td>
-                    <td colSpan="2" className="prod-column">
+                    <td className="prod-column">
                         <div className="column-box">
                             <Link to={'/actions/' + action.id}>
                                 <h4 className="prod-title padd-top-20">{action.title}</h4>
                             </Link>
                         </div>
                     </td>
-                    <td colSpan="1" className="prod-column">
+                    <td className="prod-column">
                         {actionRel.status.toLowerCase() === "todo" ?
                             <div>
                                 <Tooltip text='Move to Done'>

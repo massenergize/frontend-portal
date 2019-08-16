@@ -22,6 +22,9 @@ class OneActionPage extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
     }
+    componentDidMount() {
+        window.addEventListener("resize", this.chooseFontSize);
+    }
 
     render() {
         if (!this.props.actions) {
@@ -30,7 +33,7 @@ class OneActionPage extends React.Component {
         const action = this.props.actions.filter(action => {
             return action.id === Number(this.props.match.params.id)
         })[0]
-
+        this.chooseFontSize();
         return (
             <div className="boxed_wrapper">
                 <section className="shop-single-area">
@@ -86,11 +89,13 @@ class OneActionPage extends React.Component {
                                 <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
                                     {this.renderTags(action.tags)}
                                 </p>
+                                <br/>
                                 <button
                                     disabled={!this.props.user}
-                                    className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                    className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4 "}
                                     onClick={() => this.openForm("TODO")}
                                 >Add Todo</button>
+                                &nbsp;
                                 <button
                                     disabled={!this.props.user}
                                     className= {this.state.status ==="DONE"? "thm-btn style-4 selected" : "thm-btn style-4"}
@@ -124,7 +129,7 @@ class OneActionPage extends React.Component {
                 <div className="product-tab-box">
                     <ul className="nav nav-tabs tab-menu">
                         {/* tab switching system, may be a better way to do this */}
-                        <li id="desctab" className="active"><button onClick={() => {
+                        <li id="desctab" className="active"><button style={{fontSize: this.state.fontSize}} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane active";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
@@ -132,7 +137,7 @@ class OneActionPage extends React.Component {
                             if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                             if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
                         }} data-toggle="tab">Description</button></li>
-                        <li id="stepstab"><button onClick={() => {
+                        <li id="stepstab"><button  style={{fontSize: this.state.fontSize}} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane active";
@@ -140,7 +145,7 @@ class OneActionPage extends React.Component {
                             if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                             if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "active";
                         }} data-toggle="tab">Steps to Take</button></li>
-                        <li id="reviewtab"><button onClick={() => {
+                        <li id="reviewtab"><button style={{fontSize: this.state.fontSize}} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane active";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
@@ -186,7 +191,17 @@ class OneActionPage extends React.Component {
             </div>
         );
     }
-
+    chooseFontSize = () => {
+        var fontSize = '16px'
+        if(window.innerWidth < 500){
+             fontSize = '12px';
+        }
+        if( fontSize !== this.state.fontSize){
+            this.setState({
+                fontSize: fontSize
+            })
+        }
+    }
     openForm = (status) => {
         this.setState({
             status: status
@@ -199,6 +214,7 @@ class OneActionPage extends React.Component {
     }
 
     renderTags(tags) {
+        console.log(tags);
         return Object.keys(tags).map((key) => {
             return <span key={key}> {tags[key].name} </span>;
         })

@@ -239,7 +239,7 @@ class EventsPage extends React.Component {
         var date = new Date(event.start_date_and_time);
         var endDate = new Date(event.end_date_and_time);
 
-        if (!(this.searchFits(event.title) || this.searchFits(event.description)))
+        if (!(this.searchFits(event.name) || this.searchFits(event.description)))
             return false;
         if (!this.showButtonFits(date, endDate))
             return false;

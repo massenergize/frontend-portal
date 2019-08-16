@@ -8457,6 +8457,7 @@ span.has-tooltip {
     margin-top: -50px;
     margin-bottom: 33px;
     position: relative;
+    width: 500px;
     left: -31px;
 }
 
@@ -8471,11 +8472,10 @@ span.has-tooltip {
     border-radius: 0;
     display: block;
     margin-right: 10px;
-    padding: 13px 35px;
+    padding: 13px 5px;
     color: #1f1f1f;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: capitalize;
     font-family: 'Montserrat', sans-serif;
     background: #f7f7f7;
     transition: all 500ms ease;
