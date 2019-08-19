@@ -1,6 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../Shared/Tooltip'
+import { connect } from 'react-redux'
+import {reduxMoveToDone, reduxRemoveFromTodo } from '../../redux/actions/userActions'
+import URLS from '../../api/urls'
+import {postJson, deleteJson} from '../../api/functions'
 
 /**
  * Cart component
@@ -60,10 +64,10 @@ class Cart extends React.Component {
                         {actionRel.status.toLowerCase() === "todo" ?
                             <div>
                                 <Tooltip text='Move to Done'>
-                                    <button onClick={() => this.props.moveToDone(actionRel)} className="done-btn has-tooltip"> <i className="fa fa-check"></i> </button>
+                                    <button onClick={() => this.moveToDone(actionRel)} className="done-btn has-tooltip"> <i className="fa fa-check"></i> </button>
                                 </Tooltip>
                                 <Tooltip text='Remove from Todo'>
-                                    <button className="remove-btn has-tooltip"> <i className="fa fa-trash"></i> </button>
+                                    <button className="remove-btn has-tooltip" onClick ={() => this.removeFromTodo(actionRel)}> <i className="fa fa-trash"></i> </button>
                                 </Tooltip>
                             </div>
                             :
@@ -76,4 +80,45 @@ class Cart extends React.Component {
         });
     }
 
-} export default Cart;
+    /**
+     * Cart Functions
+     */
+    moveToDone = (actionRel) => {
+        const body = {
+            status: "DONE",
+            action: actionRel.action.id,
+            real_estate_unit: actionRel.real_estate_unit.id,
+        }
+        postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
+            console.log(json);
+            if (json.success) {
+                this.props.reduxMoveToDone(json.data);
+            }
+            //just update the state here
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    removeFromTodo = (actionRel) => {
+        deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
+            console.log(json);
+            if(json.success){
+                this.props.reduxRemoveFromTodo(actionRel);
+            }
+        })
+    }
+}
+const mapStoreToProps = (store) => {
+    return {
+        user: store.user.info, 
+        todo: store.user.todo,
+        done: store.user.done
+    }
+} 
+
+const mapDispatchToProps = {
+    reduxMoveToDone, reduxRemoveFromTodo
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(Cart);

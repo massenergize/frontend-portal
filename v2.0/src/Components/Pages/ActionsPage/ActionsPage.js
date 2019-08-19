@@ -92,8 +92,8 @@ class ActionsPage extends React.Component {
                                 ></SideBar>
                                 {this.props.user ?
                                     <div>
-                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
-                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
+                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />
+                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE"/>
                                     </div>
                                     :
                                     <div>

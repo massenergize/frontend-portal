@@ -167,8 +167,8 @@ class ProfilePage extends React.Component {
                         </div>
                         {/* makes the todo and completed actions carts */}
                         <div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
-                            <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
+                            <Cart title="To Do List" actionRels={this.props.todo} status="TODO"/>
+                            <Cart title="Completed Actions" actionRels={this.props.done} status="DONE"/>
                             <div className="col-12 text-center">
                                 <Link to="actions"><button className="thm-btn">Discover All Actions</button></Link>
                             </div>
@@ -278,26 +278,7 @@ class ProfilePage extends React.Component {
             this.setState({ deletingHHError: null })
         }
     }
-    /**
-     * Cart Functions
-     */
-    moveToDone = (actionRel) => {
-        const body = {
-            status: "DONE",
-            action: actionRel.action.id,
-            real_estate_unit: actionRel.real_estate_unit.id,
-        }
-        postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
-            console.log(json);
-            if (json.success) {
-                this.props.reduxMoveToDone(json.data);
-            }
-            //just update the state here
-        }).catch(err => {
-            console.log(err)
-        })
-    }
-
+    
     addDefaultHousehold = () => {
         const body = {
             "name": 'Home',

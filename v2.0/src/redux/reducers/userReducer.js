@@ -51,7 +51,7 @@ export default function (state = initialState, action) {
     case REMOVE_FROM_TODO:
       return {
         ...state,
-        todo: state.todo.filter(element => element !== action.payload)
+        todo: state.todo.filter(element => element.id !== action.payload.id)
       }
     /**************************/
     case LOAD_DONE:
@@ -70,7 +70,7 @@ export default function (state = initialState, action) {
     case REMOVE_FROM_DONE:
       return {
         ...state,
-        done: state.done.filter(element => element !== action.payload)
+        done: state.done.filter(element => element.id !== action.payload.id)
       }
 
     case MOVE_TO_DONE:
