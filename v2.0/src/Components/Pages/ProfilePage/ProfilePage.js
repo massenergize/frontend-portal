@@ -12,9 +12,10 @@ import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 
-import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold } from '../../../redux/actions/userActions'
+import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold, reduxLeaveCommunity } from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
 import Tooltip from '../../Shared/Tooltip'
+import JoiningCommunityForm from './JoiningCommunityForm';
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -22,16 +23,16 @@ class ProfilePage extends React.Component {
         this.state = {
             loaded: false,
 
-            editingProfile: false,
             selectedHousehold: null,
-            addingHH: false,
             editingHH: null,
-            addingCom: false,
+
+            joiningCom: false,
+            addingHH: false,
+            editingProfile: false,
         }
     }
 
     render() {
-
         if (!this.props.user)
             return <Redirect to='/login'> </Redirect>
 
@@ -62,10 +63,10 @@ class ProfilePage extends React.Component {
                                 </>
                                 :
                                 <>
-                                    <EditingProfileForm 
+                                    <EditingProfileForm
                                         full_name={this.props.user.full_name}
                                         preferred_name={this.props.user.preferred_name}
-                                        closeForm = {()=>this.setState({editingProfile: false})}
+                                        closeForm={() => this.setState({ editingProfile: false })}
                                     />
                                 </>
                             }
@@ -126,7 +127,7 @@ class ProfilePage extends React.Component {
                                     </tr>
                                     {this.renderTeams(user.teams)}
                                     <tr>
-                                        <td colSpan={2} align='center'><Link class="thm-btn" to='/teams' style={{ margin: '5px' }}>Join another Team</Link></td>
+                                        <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>Join another Team</Link></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -139,7 +140,16 @@ class ProfilePage extends React.Component {
                                     </tr>
                                     {this.renderCommunities(user.communities)}
                                     <tr>
-                                        <td colSpan={2}><button className="thm-btn" disabled>Join another Community</button></td>
+                                        {this.state.joiningCom ?
+                                            <td colSpan={2}>
+                                                <JoiningCommunityForm closeForm={() => this.setState({joiningCom:false})}/> 
+                                                
+                                            </td>
+                                            :
+                                            <td colSpan={2}>
+                                                <button className="thm-btn" onClick={()=> this.setState({joiningCom: true})}>Join another Community</button>
+                                                </td>
+                                        }
                                     </tr>
                                 </tbody>
                             </table>
@@ -158,7 +168,7 @@ class ProfilePage extends React.Component {
                             <h3 className="col-12 text-right">
                                 <SignOutButton style={{ display: 'inline-block' }} />
                             </h3>
-                            <br/>
+                            <br />
                             <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />
                             <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" />
 
@@ -174,7 +184,7 @@ class ProfilePage extends React.Component {
             const community = communities[key]
             return (<tr key={key}>
                 <td> <a href={'//' + community.subdomain + '.massenergize.org'}> {community.name} </a></td>
-                <td> <button className="remove-btn"> <i className="fa fa-trash"></i></button> </td>
+                <td> <button className="remove-btn" onClick={()=>this.leaveCommunity(community)}> <i className="fa fa-trash"></i></button> </td>
             </tr>
             );
         })
@@ -263,6 +273,20 @@ class ProfilePage extends React.Component {
         }
     }
 
+    leaveCommunity = (community) => {
+        if(this.props.user.communities.length > 1) {
+            const body = {
+                communities: this.props.user.communities.filter(com => com.id !== community.id)
+            }
+            postJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
+                console.log(json)
+                if(json.success){
+                    this.props.reduxLeaveCommunity(community);
+                }
+            })
+        }
+    }
+
     clearError = () => {
         if (this.state.deletingHHError) {
             this.setState({ deletingHHError: null })
@@ -316,5 +340,11 @@ const mapStoreToProps = (store) => {
         households: store.user.info ? store.user.info.households : null
     }
 }
-const mapDispatchToProps = { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold };
+const mapDispatchToProps = { 
+    reduxMoveToDone, 
+    reduxAddHousehold, 
+    reduxEditHousehold,
+    reduxRemoveHousehold, 
+    reduxLeaveCommunity
+};
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);

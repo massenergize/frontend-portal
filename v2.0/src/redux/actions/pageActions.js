@@ -21,7 +21,8 @@ import {
     REMOVE_RSVP, 
     CHANGE_RSVP,
     ADD_TEAM_MEMBER,
-    REMOVE_TEAM_MEMBER
+    REMOVE_TEAM_MEMBER,
+    LOAD_COMMUNITIES
 } from './types'
 
 export const reduxLoadHomePage = (page) => dispatch => {
@@ -126,6 +127,13 @@ export const reduxLoadTestimonials = (testimonials) => dispatch => {
     return dispatch({
         type: LOAD_TESTIMONIALS,
         payload: testimonials
+    })
+}
+
+export const reduxLoadCommunities = (communities) => dispatch => {
+    return dispatch({
+        type: LOAD_COMMUNITIES,
+        payload: communities
     })
 }
 

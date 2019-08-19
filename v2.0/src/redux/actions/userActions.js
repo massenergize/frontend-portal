@@ -13,7 +13,7 @@ import {
   LOAD_TODO, 
   LOAD_DONE,
   LOAD_HOUSEHOLDS, 
-  LOAD_COMMUNITIES,
+  LOAD_USER_COMMUNITIES,
   ADD_HOUSEHOLD, 
   EDIT_HOUSEHOLD,
   REMOVE_HOUSEHOLD, 
@@ -119,9 +119,9 @@ export const reduxRemoveHousehold = (houseRel) => dispatch => {
   });
 }
 
-export const reduxLoadCommunities = (communities) => dispatch => {
+export const reduxLoadUserCommunities = (communities) => dispatch => {
   return dispatch({
-    type: LOAD_COMMUNITIES,
+    type: LOAD_USER_COMMUNITIES,
     payload: communities
   });
 }

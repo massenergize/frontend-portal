@@ -21,7 +21,7 @@ export const ADD_HOUSEHOLD = 'ADD_HOUSEHOLD'
 export const EDIT_HOUSEHOLD = 'EDIT_HOUSEHOLD'
 export const REMOVE_HOUSEHOLD = 'DELETE_HOUSHOLD'
 
-export const LOAD_COMMUNITIES = 'LOAD_COMMUNITIES'
+export const LOAD_USER_COMMUNITIES = 'LOAD_USER_COMMUNITIES'
 export const ADD_COMMUNITY = 'ADD_COMMUNITY'
 export const REMOVE_COMMUNITY = 'LEAVE_COMMUNITY'
 
@@ -48,6 +48,7 @@ export const LOAD_ACTIONS = 'LOAD_ACTIONS' //actions_page/actions
 export const LOAD_EVENTS = 'LOAD_EVENTS' //events_page/events
 export const LOAD_SERVICE_PROVIDERS= 'LOAD_SERVICE_PROVIDERS' //service_providers_page/service_providers
 export const LOAD_TESTIMONIALS = 'LOAD_TESTIMONIALS' //testimonials_page/testimonials
+export const LOAD_COMMUNITIES = 'LOAD_COMMUNITIES'
 
 export const LOAD_EVENT_RSVPS = 'LOAD_EVENT_RSVPS' //load the user's rsvps
 export const ADD_RSVP = 'ADD_RSVP'

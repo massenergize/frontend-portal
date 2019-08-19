@@ -9,7 +9,7 @@ import {
   LOAD_TODO,
   LOAD_DONE,
   LOAD_HOUSEHOLDS,
-  LOAD_COMMUNITIES,
+  LOAD_USER_COMMUNITIES,
   ADD_HOUSEHOLD,
   EDIT_HOUSEHOLD,
   REMOVE_HOUSEHOLD,
@@ -123,7 +123,7 @@ export default function (state = initialState, action) {
         }
       }
     /**************************/
-    case LOAD_COMMUNITIES:
+    case LOAD_USER_COMMUNITIES:
       return {
         ...state,
         info: {
