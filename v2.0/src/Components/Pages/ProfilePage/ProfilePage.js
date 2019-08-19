@@ -96,6 +96,7 @@ class ProfilePage extends React.Component {
                                         <th />
                                     </tr>
                                     {this.renderHouseholds(user.households)}
+                                    {!this.state.editingHH?
                                     <tr>
                                         <td colSpan={3}>
                                             {this.state.addingHH ?
@@ -116,8 +117,13 @@ class ProfilePage extends React.Component {
                                             }
                                         </td>
                                     </tr>
+                                    : null }
+
                                 </tbody>
                             </table>
+                            {this.state.deletingHHError ?
+                                <p className='text-danger'> {this.state.deletingHHError}</p> : null
+                            }
                             <br />
                             <table className="profile-table" style={{ width: '100%' }}>
                                 <tbody>
@@ -142,23 +148,18 @@ class ProfilePage extends React.Component {
                                     <tr>
                                         {this.state.joiningCom ?
                                             <td colSpan={2}>
-                                                <JoiningCommunityForm closeForm={() => this.setState({joiningCom:false})}/> 
-                                                
+                                                <JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
+
                                             </td>
                                             :
                                             <td colSpan={2}>
-                                                <button className="thm-btn" onClick={()=> this.setState({joiningCom: true})}>Join another Community</button>
-                                                </td>
+                                                <button className="thm-btn" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
+                                            </td>
                                         }
                                     </tr>
                                 </tbody>
                             </table>
                             <br />
-                            {this.state.deletingHHError ?
-                                <p className='text-danger'> {this.state.deletingHHError}</p> : null
-                            }
-
-
                             <br />
                             <br />
                         </div>
@@ -184,7 +185,7 @@ class ProfilePage extends React.Component {
             const community = communities[key]
             return (<tr key={key}>
                 <td> <a href={'//' + community.subdomain + '.massenergize.org'}> {community.name} </a></td>
-                <td> <button className="remove-btn" onClick={()=>this.leaveCommunity(community)}> <i className="fa fa-trash"></i></button> </td>
+                <td> <button className="remove-btn" onClick={() => this.leaveCommunity(community)}> <i className="fa fa-trash"></i></button> </td>
             </tr>
             );
         })
@@ -274,11 +275,11 @@ class ProfilePage extends React.Component {
     }
 
     leaveCommunity = (community) => {
-        if(this.props.user.communities.length > 1) {
+        if (this.props.user.communities.length > 1) {
             var newCommunityIds = [];
 
             this.props.user.communities.forEach(com => {
-                if(com.id !== community.id){
+                if (com.id !== community.id) {
                     newCommunityIds.push(com.id);
                 }
             });
@@ -287,7 +288,7 @@ class ProfilePage extends React.Component {
             }
             postJson(`${URLS.USER}/${this.props.user.id}`, body).then(json => {
                 console.log(json)
-                if(json.success){
+                if (json.success) {
                     this.props.reduxLeaveCommunity(community);
                 }
             })
@@ -347,11 +348,11 @@ const mapStoreToProps = (store) => {
         households: store.user.info ? store.user.info.households : null
     }
 }
-const mapDispatchToProps = { 
-    reduxMoveToDone, 
-    reduxAddHousehold, 
+const mapDispatchToProps = {
+    reduxMoveToDone,
+    reduxAddHousehold,
     reduxEditHousehold,
-    reduxRemoveHousehold, 
+    reduxRemoveHousehold,
     reduxLeaveCommunity
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);
