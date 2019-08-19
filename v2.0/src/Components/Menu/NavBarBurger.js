@@ -396,7 +396,7 @@ class Menu extends React.Component {
             container: {
                 position: 'absolute',
                 width:'100%',
-                height: this.state.open ? ((!this.props.submenu) ? '100vh' : "100%") : 0,
+                height: this.state.open ? ((!this.props.submenu) ? 'calc(100vh - 100px)' : "100%") : 0,
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'white',

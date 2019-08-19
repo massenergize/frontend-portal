@@ -54,8 +54,8 @@ class LoginFormBase extends React.Component {
                         </div>
                         <div className="form-group social-links-two padd-top-5 pull-right">
                             Or login with
-                            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button>
-                            <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"></span></button>
+                            <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button>
+                            <button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google"><span className="fa fa-google"></span></button>
                         </div>
                     </div>
                 </form>
