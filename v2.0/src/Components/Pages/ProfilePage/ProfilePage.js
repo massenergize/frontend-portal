@@ -275,10 +275,17 @@ class ProfilePage extends React.Component {
 
     leaveCommunity = (community) => {
         if(this.props.user.communities.length > 1) {
+            var newCommunityIds = [];
+
+            this.props.user.communities.forEach(com => {
+                if(com.id !== community.id){
+                    newCommunityIds.push(com.id);
+                }
+            });
             const body = {
-                communities: this.props.user.communities.filter(com => com.id !== community.id)
+                communities: newCommunityIds
             }
-            postJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
+            postJson(`${URLS.USER}/${this.props.user.id}`, body).then(json => {
                 console.log(json)
                 if(json.success){
                     this.props.reduxLeaveCommunity(community);
