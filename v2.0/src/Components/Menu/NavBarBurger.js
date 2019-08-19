@@ -192,7 +192,7 @@ class NavBarBurger extends React.Component {
         if (auth.uid && user.info) {
             return (
                 <Dropdown onSelect={() => null} className="d-flex">
-                    <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.full_name.split(" ")[0]} id="dropdown-custom-components"></Dropdown.Toggle>
+                    <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
                         <Link to="/profile" className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
                         <button className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></button>

@@ -2,86 +2,73 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 
-import SignOutButton from '../../Shared/SignOutButton'
-import Cart from '../../Shared/Cart'
-import LoadingCircle from '../../Shared/LoadingCircle'
-import Counter from './Counter'
 // import { threadId } from 'worker_threads'
 import URLS from '../../../api/urls'
 import { postJson, deleteJson } from '../../../api/functions'
 
-import { isLoaded } from 'react-redux-firebase';
-import AddingHouseholdForm from './AddingHouseholdForm';
+import SignOutButton from '../../Shared/SignOutButton'
+import Cart from '../../Shared/Cart'
+import Counter from './Counter'
+import AddingHouseholdForm from './AddingHouseholdForm'
+import EditingProfileForm from './EditingProfileForm'
+
 import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold } from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
 import Tooltip from '../../Shared/Tooltip'
-
-
 
 class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loaded: false,
-            //todo: [],
-            //done: [],
-            //households: [],
+
+            editingProfile: false,
             selectedHousehold: null,
             addingHH: false,
             editingHH: null,
             addingCom: false,
         }
     }
-    // componentDidMount() {
-    //     Promise.all([
-    //         //getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=TODO"),
-    //         //getJson(URLS.USER + "/e/" + this.props.auth.email + "/actions" + "?status=DONE"),
-    //     ]).then(myJsons => {
-    //         if (myJsons[0].success && myJsons[0].data) {
-    //             this.setState({
-    //                 todo: myJsons[0].data,
-    //                 done: myJsons[1].data,
-    //                 loaded: true
-    //             })
-    //         } else {
-    //             if (isLoaded(this.props.auth))
-    //                 this.setState({
-    //                     notRegistered: true
-    //                 });
-    //         }
-    //     }).catch(err => {
-    //         console.log(err)
-    //     });
-    // }
+
     render() {
-        //avoids trying to render before the promise from the server is fulfilled
-        // if (!this.props.auth.isLoaded) { //if the auth isn't loaded wait for a bit
-        //     return <LoadingCircle />;
-        // }
+
         if (!this.props.user)
             return <Redirect to='/login'> </Redirect>
-        //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        // if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
-        //     return <LoadingCircle />;
-        // }
+
         if (this.props.user.households.length === 0) {
             this.addDefaultHousehold();
         }
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
-        if (!user) return <Redirect to='/register?form=2' />
+        //if (!user) return <Redirect to='/register?form=2' />
         return (
             <div className='boxed_wrapper' onClick={this.clearError}>
                 <div className="container">
                     <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                         <div className="col-lg-6 col-md-6  col-12">
-                            <h3>{user ?
-                                <div>
-                                    <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
-                                </div>
+                            {!this.state.editingProfile ?
+                                <>
+                                    <h3>{user ?
+                                        <div style={{ display: 'inline-block' }}>
+                                            <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
+                                        </div>
+                                        :
+                                        "Your Profile"
+                                    }
+                                        &nbsp;&nbsp;
+                                    <button style={{ display: 'inline-block', color: 'green' }} onClick={() => this.setState({ editingProfile: true })}> <i className='fa fa-edit' /></button>
+                                        &nbsp;&nbsp;
+                                    </h3>
+                                </>
                                 :
-                                "Your Profile"
-                            } <SignOutButton className="float_right" /> </h3>
+                                <>
+                                    <EditingProfileForm 
+                                        full_name={this.props.user.full_name}
+                                        preferred_name={this.props.user.preferred_name}
+                                        closeForm = {()=>this.setState({editingProfile: false})}
+                                    />
+                                </>
+                            }
                             <section className="fact-counter style-2 sec-padd" >
                                 <div className="container">
                                     <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
@@ -167,11 +154,14 @@ class ProfilePage extends React.Component {
                         </div>
                         {/* makes the todo and completed actions carts */}
                         <div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <Cart title="To Do List" actionRels={this.props.todo} status="TODO"/>
-                            <Cart title="Completed Actions" actionRels={this.props.done} status="DONE"/>
-                            <div className="col-12 text-center">
-                                <Link to="actions"><button className="thm-btn">Discover All Actions</button></Link>
-                            </div>
+
+                            <h3 className="col-12 text-right">
+                                <SignOutButton style={{ display: 'inline-block' }} />
+                            </h3>
+                            <br/>
+                            <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />
+                            <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" />
+
                         </div>
                     </div>
                 </div>
@@ -237,8 +227,8 @@ class ProfilePage extends React.Component {
                         <td>
                             {house.name} &nbsp;
                             <Tooltip title={house.name} text={
-                                house.location ? "Location: "+house.location+ ", Type: " + house.unit_type: "No location for this household, Type: "+house.unit_type
-                        } dir="right">
+                                house.location ? "Location: " + house.location + ", Type: " + house.unit_type : "No location for this household, Type: " + house.unit_type
+                            } dir="right">
                                 <span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
                             </Tooltip>
                         </td>
@@ -278,7 +268,7 @@ class ProfilePage extends React.Component {
             this.setState({ deletingHHError: null })
         }
     }
-    
+
     addDefaultHousehold = () => {
         const body = {
             "name": 'Home',

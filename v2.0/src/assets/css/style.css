@@ -259,6 +259,7 @@ textarea {
     display: inline-block;
     padding: 0 38px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+    margin: 2px;
 }
 .thm-btn:disabled {
     background:#aaa;
