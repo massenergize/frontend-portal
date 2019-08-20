@@ -4,7 +4,7 @@ import {
     LOAD_SERVICE_PROVIDERS_PAGE, 
     LOAD_TEAMS_PAGE, 
     LOAD_ABOUT_US_PAGE, 
-    LOAD_IMPACT_PAGE, 
+    LOAD_COMMUNITIES_STATS, 
     LOAD_DONATE_PAGE, 
     LOAD_EVENTS_PAGE, 
     LOAD_MENU, 
@@ -76,9 +76,9 @@ export const reduxLoadAboutUsPage = (page) => dispatch => {
     })
 }
 
-export const reduxLoadImpactPage = (page) => dispatch => {
+export const reduxLoadCommunitiesStats = (page) => dispatch => {
     return dispatch({
-        type: LOAD_IMPACT_PAGE,
+        type: LOAD_COMMUNITIES_STATS,
         payload: page
     })
 }

@@ -27,6 +27,7 @@ URLS["BILLING_STATEMENT"] = URLS.V2 + "billing-statement"; //add the id after th
 URLS["COMMUNITIES"] = URLS.V2 + "communities";
 URLS["COMMUNITY_ADMINS"] = URLS.V2 + "community-admins";
 URLS["COMMUNITY_ADMIN_GROUP"] = URLS.V2 + "community-admin-group/" + COMM_ID; //add the id after this
+URLS["COMMUNITIES_STATS"] = URLS.V2 + "communities/stats";
 URLS["DATA"] = URLS.V2 + "data"; //can add the id after this or not, either way
 URLS["EMAIL_CATEGORIES"] = URLS.V2 + "email-categories";
 URLS["EMAIL_CATEGORY"] = URLS.V2 + "email-category"; //add the id after this
