@@ -57,10 +57,15 @@ class ServicesPage extends React.Component {
                             <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
                                 <span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
                             </div>
-                            <div className="w-100 p-2 text-center">
-                                <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
-                                <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
-                            </div>
+                            
+                            {vendor.key_contact != null ? (
+                                <div className="w-100 p-2 text-center">
+                                    <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a> 
+                                    <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
+                                </div>
+                                )
+                                : null}
+                            
                         </div>
                     </div>
                 </div>
