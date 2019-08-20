@@ -24,6 +24,7 @@ import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './Components/Pages/DonatePage/DonatePage'
 
 import {
+	reduxLoadCommunitySubdomain,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
 	reduxLoadServiceProvidersPage,
@@ -57,21 +58,25 @@ class App extends Component {
 		}
 	}
 	componentDidMount() {
-		console.log("here");
+		
+		var host = window.location.hostname.split(".")
+		var subdomain = host.length>2? host[0] : 'wayland'
+		this.props.reduxLoadCommunitySubdomain(subdomain);
+		
 		Promise.all([
-			getJson(URLS.PAGES + "?name=Home"),
-			getJson(URLS.PAGES + "?name=Actions"),
-			getJson(URLS.PAGES + "?name=ServiceProviders"),
-			getJson(URLS.PAGES + "?name=Testimonials"),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Actions'),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=ServiceProviders'),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Testimonials'),
 			getJson(URLS.TEAMS_STATS),
-			getJson(URLS.PAGES + "?name=AboutUs"),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			getJson(URLS.COMMUNITIES_STATS),
-			getJson(URLS.PAGES + "?name=Donate"),
-			getJson(URLS.PAGES + "?name=Events"),
-			getJson(URLS.EVENTS),
-			getJson(URLS.ACTIONS),
-			getJson(URLS.VENDORS),
-			getJson(URLS.TESTIMONIALS),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
+			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Events'),
+			getJson(URLS.COMMUNITY + subdomain + '/events'),
+			getJson(URLS.COMMUNITY + subdomain + '/actions'),
+			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
+			getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
@@ -196,6 +201,7 @@ const mapStoreToProps = (store) => {
 	}
 }
 const mapDispatchToProps = {
+	reduxLoadCommunitySubdomain,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
 	reduxLoadServiceProvidersPage,

@@ -16,7 +16,7 @@ const COMM_ID = "3";
  */
 // ...and dependence on other defined URLS
 URLS["V2"] = URLS.ROOT + "/v2/";
-URLS["COMMUNITY"] = URLS.V2 + "community/" + COMM_ID + "/"; //add the id after this
+URLS["COMMUNITY"] = URLS.V2 + "community/";
 
 URLS["ACTIONS"] = URLS.V2 + "actions";
 URLS["ACTION"] = URLS.V2 + "action"; //add the id after this

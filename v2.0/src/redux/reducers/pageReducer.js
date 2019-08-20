@@ -1,7 +1,8 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_COMMUNITIES_STATS, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP, ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER, LOAD_COMMUNITIES } from '../actions/types';
+import { LOAD_COMMUNITY_SUBDOMAIN, LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_COMMUNITIES_STATS, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP, ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER, LOAD_COMMUNITIES } from '../actions/types';
 
 const initialState = {
     //page data for each page
+    communitySubDomain: null,
     homePage: null,
     actionsPage: null,
     serviceProvidersPage: null,
@@ -25,6 +26,11 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
         /**************************/
+        case LOAD_COMMUNITY_SUBDOMAIN:
+            return {
+                ...state,
+                communitySubDomain: action.payload
+            }   
         case LOAD_HOME_PAGE:
             return {
                 ...state,
