@@ -30,7 +30,7 @@ import {
 	reduxLoadTestimonialsPage,
 	reduxLoadTeamsPage,
 	reduxLoadAboutUsPage,
-	reduxLoadImpactPage,
+	reduxLoadCommunitiesStats,
 	reduxLoadDonatePage,
 	reduxLoadEventsPage,
 	reduxLoadMenu,
@@ -65,7 +65,7 @@ class App extends Component {
 			getJson(URLS.PAGES + "?name=Testimonials"),
 			getJson(URLS.TEAMS_STATS),
 			getJson(URLS.PAGES + "?name=AboutUs"),
-			getJson(URLS.PAGES + "?name=Impact"),
+			getJson(URLS.COMMUNITIES_STATS),
 			getJson(URLS.PAGES + "?name=Donate"),
 			getJson(URLS.PAGES + "?name=Events"),
 			getJson(URLS.EVENTS),
@@ -83,7 +83,7 @@ class App extends Component {
 			this.props.reduxLoadTestimonialsPage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
 			this.props.reduxLoadTeamsPage(myJsons[4].data.length > 0 ? myJsons[4].data : null)
 			this.props.reduxLoadAboutUsPage(myJsons[5].data.length > 0 ? myJsons[5].data[0] : null)
-			this.props.reduxLoadImpactPage(myJsons[6].data.length > 0 ? myJsons[6].data[0] : null)
+			this.props.reduxLoadCommunitiesStats(myJsons[6].data.length > 0 ? myJsons[6].data : null)
 			this.props.reduxLoadDonatePage(myJsons[7].data.length > 0 ? myJsons[7].data[0] : null)
 			this.props.reduxLoadEventsPage(myJsons[8].data.length > 0 ? myJsons[8].data[0] : null)
 			this.props.reduxLoadEvents(myJsons[9].data)
@@ -202,7 +202,7 @@ const mapDispatchToProps = {
 	reduxLoadTestimonialsPage,
 	reduxLoadTeamsPage,
 	reduxLoadAboutUsPage,
-	reduxLoadImpactPage,
+	reduxLoadCommunitiesStats,
 	reduxLoadDonatePage,
 	reduxLoadEventsPage,
 	reduxLoadMenu,

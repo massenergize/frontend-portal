@@ -1,4 +1,4 @@
-import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_IMPACT_PAGE, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP, ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER, LOAD_COMMUNITIES } from '../actions/types';
+import { LOAD_HOME_PAGE, LOAD_ACTIONS_PAGE, LOAD_EVENTS_PAGE, LOAD_SERVICE_PROVIDERS_PAGE, LOAD_TESTIMONIALS_PAGE, LOAD_TEAMS_PAGE, LOAD_ABOUT_US_PAGE, LOAD_COMMUNITIES_STATS, LOAD_DONATE_PAGE, LOAD_EVENTS, LOAD_ACTIONS, LOAD_SERVICE_PROVIDERS, LOAD_TESTIMONIALS, ADD_TESTIMONIAL, REMOVE_TESTIMONIAL, LOAD_MENU, LOAD_POLICIES, LOAD_EVENT_RSVPS, ADD_RSVP, REMOVE_RSVP, CHANGE_RSVP, ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER, LOAD_COMMUNITIES } from '../actions/types';
 
 const initialState = {
     //page data for each page
@@ -8,7 +8,6 @@ const initialState = {
     testimonialsPage: null,
     teamsPage: null,
     aboutUsPage: null,
-    impactPage: null,
     donatePage: null,
     eventsPage: null,
     //menu, navbar footer...
@@ -19,6 +18,7 @@ const initialState = {
     events: null,
     serviceProviders: null,
     testimonials: null,
+    communitiesStats: null,
 };
 
 
@@ -55,10 +55,10 @@ export default function (state = initialState, action) {
                 ...state,
                 aboutUsPage: action.payload
             }
-        case LOAD_IMPACT_PAGE:
+        case LOAD_COMMUNITIES_STATS:
             return {
                 ...state,
-                impactPage: action.payload
+                communitiesStats: action.payload
             }
         case LOAD_DONATE_PAGE:
             return {

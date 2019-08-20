@@ -3,22 +3,44 @@ import BarGraph from '../../Shared/BarGraph'
 import CircleGraph from '../../Shared/CircleGraph';
 import PageTitle from '../../Shared/PageTitle';
 import { connect } from 'react-redux';
+import LoadingCircle from '../../Shared/LoadingCircle';
 
 class ImpactPage extends React.Component {
     render() {
-        const communityImpact = {
-            "categories": ["Wayland", "Weston", "Lincoln", "Concord", "Framingham", "Newton"],
+        if(!this.props.communitiesStats || this.props.communitiesStats.length <= 0) return <LoadingCircle/>
+        let stats = this.props.communitiesStats.slice(0);
+        
+        // TODO: Render sidebar graphs
+
+        // Replace Households Engaged by Categories with Actions Completed by Category
+
+        stats = stats.sort((a, b) => {
+            return b.actions_completed - a.actions_completed;
+        });
+
+        let communityImpact = {
+            // "categories": ["Wayland", "Weston", "Lincoln", "Concord", "Framingham", "Newton"],
+            "categories": [],
             "series": [
                 {
                     name: "Households Engaged",
-                    data: [100, 90, 80, 70, 60, 50]
+                    // data: [100, 90, 80, 70, 60, 50]
+                    data: []
                 },
                 {
                     name: "Actions Completed",
-                    data: [300, 250, 200, 150, 100, 50]
+                    // data: [300, 250, 200, 150, 100, 50]
+                    data: []
                 }
             ]
         };
+
+        stats.forEach(comm => {
+            communityImpact.categories.push(comm.community.name);
+            communityImpact.series[0].data.push(comm.households_engaged);
+            communityImpact.series[1].data.push(comm.actions_completed);
+        });
+
         return (
             <div className='boxed-wrapper'>
                 <div className="container bg-light p-5">
@@ -98,7 +120,7 @@ class ImpactPage extends React.Component {
 
 const mapStoreToProps = (store) => { 
     return {
-        pageData: store.page.impactPage
+        communitiesStats: store.page.communitiesStats
     }
 }
 export default connect(mapStoreToProps, null)(ImpactPage);
