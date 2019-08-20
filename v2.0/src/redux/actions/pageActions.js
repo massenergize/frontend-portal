@@ -22,8 +22,17 @@ import {
     CHANGE_RSVP,
     ADD_TEAM_MEMBER,
     REMOVE_TEAM_MEMBER,
-    LOAD_COMMUNITIES
+    LOAD_COMMUNITIES,
+    LOAD_COMMUNITY_SUBDOMAIN
 } from './types'
+
+
+export const reduxLoadCommunitySubdomain = (subdomain) => dispatch => {
+    return dispatch({
+        type: LOAD_COMMUNITY_SUBDOMAIN,
+        payload: subdomain
+    })
+}
 
 export const reduxLoadHomePage = (page) => dispatch => {
     return dispatch({

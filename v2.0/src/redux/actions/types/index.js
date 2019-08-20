@@ -31,6 +31,8 @@ export const JOIN_TEAM = 'JOIN_TEAM' //adds the team to the users list of teams
  * these actions load the database data for the pages
  * find the pagedata at store.pages.[pagename]
  */
+export const LOAD_COMMUNITY_SUBDOMAIN = 'LOAD_COMMUNITY_SUBDOMAIN'
+
 export const LOAD_HOME_PAGE = 'LOAD_HOME_PAGE' //home_page
 export const LOAD_ACTIONS_PAGE = 'LOAD_ACTIONS_PAGE' //actions_page
 export const LOAD_SERVICE_PROVIDERS_PAGE = 'LOAD_SERVICE_PROVIDERS_PAGE' //service_provider_page

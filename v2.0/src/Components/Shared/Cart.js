@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../Shared/Tooltip'
 import { connect } from 'react-redux'
-import {reduxMoveToDone, reduxRemoveFromTodo } from '../../redux/actions/userActions'
+import { reduxMoveToDone, reduxRemoveFromTodo } from '../../redux/actions/userActions'
 import URLS from '../../api/urls'
-import {postJson, deleteJson} from '../../api/functions'
+import { postJson, deleteJson } from '../../api/functions'
 
 /**
  * Cart component
@@ -20,13 +20,22 @@ class Cart extends React.Component {
             <div className="cart-outer mb-5">
                 <h3 className="center m-0">{this.props.title}</h3>
                 <div className="table-outer">
-                    {this.props.actionRels ?
-                        <table className="cart-table" style={{ width: '100%' }}>
-                            <tbody>
-                                {this.renderActions(this.props.actionRels)}
-                            </tbody>
-                        </table> : null
-                    }
+                    <table className="cart-table" style={{ width: '100%' }}>
+                        {this.props.info ?
+                            <thead className='cart-header'>
+                                <tr>
+                                    <th>Household</th>
+                                    <th>Action</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            : null}
+                        <tbody>
+                            {this.props.info ? this.renderActionsMoreInfo(this.props.actionRels) : this.renderActions(this.props.actionRels)}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
@@ -67,7 +76,7 @@ class Cart extends React.Component {
                                     <button onClick={() => this.moveToDone(actionRel)} className="done-btn has-tooltip"> <i className="fa fa-check"></i> </button>
                                 </Tooltip>
                                 <Tooltip text='Remove from Todo'>
-                                    <button className="remove-btn has-tooltip" onClick ={() => this.removeFromTodo(actionRel)}> <i className="fa fa-trash"></i> </button>
+                                    <button className="remove-btn has-tooltip" onClick={() => this.removeFromTodo(actionRel)}> <i className="fa fa-trash"></i> </button>
                                 </Tooltip>
                             </div>
                             :
@@ -75,6 +84,55 @@ class Cart extends React.Component {
                         }
                     </td>
 
+                </tr>
+            );
+        });
+    }
+
+    renderActionsMoreInfo(actionRelations) {
+        if (!actionRelations || actionRelations.length <= 0) {
+            return (
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/actions'> actions </Link></p></td></tr>
+            );
+        }
+        //returns a list of action components
+        return Object.keys(actionRelations).map(key => {
+            var actionRel = actionRelations[key];
+            var action = actionRel.action;
+            return (
+                <tr key={key}>
+                    <td>
+                        <div className="column-box">
+                            <p>{actionRel.real_estate_unit.name}</p>
+                        </div>
+                    </td>
+                    <td className="prod-column">
+                        <div className="column-box">
+                            <h4>{action.title}</h4>
+                            <p>{action.about}</p>
+                        </div>
+                    </td>
+                    <td className="prod-column">
+                        <div className="column-box">
+                            {action.vendor? 
+                            <p> {action.vendor.name} </p>
+                        : 'MassEnergize'}
+                        </div>
+                    </td>
+                    <td className="prod-column">
+                        <div className="column-box">
+                            {action.vendor? 
+                            <p> {action.vendor.key_contact? action.vendor.key_contact.phone : null} </p>
+                        : '123-456-7890'}
+                        </div>
+                    </td>
+                    <td className="prod-column">
+                        <div className="column-box">
+                            {action.vendor? 
+                            <p> {action.vendor.key_contact? action.vendor.key_contact.email : null} </p>
+                        : 'info@massenergize.org'}
+                        </div>
+                    </td>
                 </tr>
             );
         });
@@ -103,7 +161,7 @@ class Cart extends React.Component {
     removeFromTodo = (actionRel) => {
         deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
             console.log(json);
-            if(json.success){
+            if (json.success) {
                 this.props.reduxRemoveFromTodo(actionRel);
             }
         })
@@ -111,11 +169,11 @@ class Cart extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        user: store.user.info, 
+        user: store.user.info,
         todo: store.user.todo,
         done: store.user.done
     }
-} 
+}
 
 const mapDispatchToProps = {
     reduxMoveToDone, reduxRemoveFromTodo
