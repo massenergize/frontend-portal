@@ -9366,3 +9366,15 @@ article.slide-item.center {}
     width: 50px;
     height: 50px;
 }
+
+button.as-link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #007bff;
+    cursor: pointer;
+}
+
+button.as-link:hover {
+    color: #0056b3;
+}

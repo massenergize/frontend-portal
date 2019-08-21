@@ -50,7 +50,7 @@ class LoginFormBase extends React.Component {
                     {error && <p style={{ color: "red" }}> {error} </p>}
                     <div className="clearfix">
                         <div className="form-group pull-left">
-                            <button type="submit" disabled={this.isInvalid()} className="thm-btn thm-tran-bg">Login</button>
+                            <button type="submit" disabled={this.isInvalid()} className="thm-btn">Login</button>
                         </div>
                         <div className="form-group social-links-two padd-top-5 pull-right">
                             Or login with
@@ -59,11 +59,26 @@ class LoginFormBase extends React.Component {
                         </div>
                     </div>
                 </form>
+                <p><button className="as-link" onClick={this.forgotPassword}> Forgot Password </button></p>
                 <p> Don't have an account? <Link to="/register">Register Here</Link> </p>
             </div >
         );
     }
 
+    forgotPassword = () => {
+        if(this.state.email !== ''){
+        this.props.firebase.auth().sendPasswordResetEmail(this.state.email)
+          .then(function (user) {
+            alert('Please check your email...')
+          }).catch(function (e) {
+            console.log(e)
+          })
+        }else{
+            this.setState({
+                error: 'Enter your email to reset your password'
+            })
+        }
+      }
     //checks if the login info is invalid, if so, the submit button will be disabled
     isInvalid() {
         const { password, email } = this.state;
