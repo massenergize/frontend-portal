@@ -77,20 +77,37 @@ class Action extends React.Component {
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <button
-                                                disabled={!this.props.user}
-                                                className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
-                                                onClick={() => this.openForm("TODO")}
-                                            > Add Todo </button>
+                                            {!this.props.user ?
+                                                <Tooltip text='Sign in to make a TODO list'>
+                                                    <p className='has-tooltip thm-btn style-4 disabled'>
+                                                        Add Todo 
+                                                    </p>
+                                                </Tooltip>
+                                                :
+                                                <button
+                                                    className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                                    onClick={() => this.openForm("TODO")}
+                                                > Add Todo </button>
+                                            }
+
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                            <button
-                                                disabled={!this.props.user}
+                                        {!this.props.user ?
+                                                <Tooltip text='Sign in to mark actions as completed'>
+                                                    <p className='has-tooltip thm-btn style-4 disabled'>
+                                                        Done It 
+                                                    </p>
+                                                </Tooltip>
+                                                :
+                                                <button
                                                 className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
                                                 onClick={() => this.openForm("DONE")}
                                             > Done It </button>
+                                            }
+
+                                            
                                             {/* {!this.props.inCart(this.props.action.id) ?
                                                 <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.action.id, "DONE")}> Done It </button>
                                                 : null

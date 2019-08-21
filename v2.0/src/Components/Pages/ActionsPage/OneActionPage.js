@@ -8,6 +8,7 @@ import Cart from '../../Shared/Cart';
 import StoryForm from './StoryForm';
 import ChooseHHForm from './ChooseHHForm';
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
+import Tooltip from '../../Shared/Tooltip'
 
 
 /**
@@ -18,7 +19,7 @@ class OneActionPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status:null,
+            status: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -89,34 +90,48 @@ class OneActionPage extends React.Component {
                                 <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
                                     {this.renderTags(action.tags)}
                                 </p>
-                                <br/>
-                                <button
-                                    disabled={!this.props.user}
-                                    className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4 "}
-                                    onClick={() => this.openForm("TODO")}
-                                >Add Todo</button>
-                                &nbsp;
-                                <button
-                                    disabled={!this.props.user}
-                                    className= {this.state.status ==="DONE"? "thm-btn style-4 selected" : "thm-btn style-4"}
-                                    onClick={() => this.openForm("DONE")}
-                                >Done It</button>
-                                {this.state.status?
-                                <div style ={{paddingTop:'20px'}}>
-                                <ChooseHHForm
-                                    aid={action.id}
-                                    status={this.state.status}
-
-                                    open={this.state.status? true : false}
-                                    user={this.props.user}
-                                    addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
-                                    inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
-                                    moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-                                    closeForm={this.closeForm}
-                                    /> </div>
-                                    :null 
+                                <br />
+                                {!this.props.user ?
+                                    <Tooltip text='Sign in to make a TODO list'>
+                                        <p className='has-tooltip thm-btn style-4 disabled'>
+                                            Add Todo
+                                                    </p>
+                                    </Tooltip>
+                                    :
+                                    <button
+                                        className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                        onClick={() => this.openForm("TODO")}
+                                    > Add Todo </button>
                                 }
-                                
+                                &nbsp;
+                                {!this.props.user ?
+                                    <Tooltip text='Sign in to mark actions as completed'>
+                                        <p className='has-tooltip thm-btn style-4 disabled'>
+                                            Done It
+                                                    </p>
+                                    </Tooltip>
+                                    :
+                                    <button
+                                        className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                        onClick={() => this.openForm("DONE")}
+                                    > Done It </button>
+                                }
+                                {this.state.status ?
+                                    <div style={{ paddingTop: '20px' }}>
+                                        <ChooseHHForm
+                                            aid={action.id}
+                                            status={this.state.status}
+
+                                            open={this.state.status ? true : false}
+                                            user={this.props.user}
+                                            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+                                            inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+                                            moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
+                                            closeForm={this.closeForm}
+                                        /> </div>
+                                    : null
+                                }
+
                             </div>
                         </div>
                         {/* action image */}
@@ -129,7 +144,7 @@ class OneActionPage extends React.Component {
                 <div className="product-tab-box">
                     <ul className="nav nav-tabs tab-menu">
                         {/* tab switching system, may be a better way to do this */}
-                        <li id="desctab" className="active"><button style={{fontSize: this.state.fontSize}} onClick={() => {
+                        <li id="desctab" className="active"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane active";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
@@ -137,7 +152,7 @@ class OneActionPage extends React.Component {
                             if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                             if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
                         }} data-toggle="tab">Description</button></li>
-                        <li id="stepstab"><button  style={{fontSize: this.state.fontSize}} onClick={() => {
+                        <li id="stepstab"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane active";
@@ -145,7 +160,7 @@ class OneActionPage extends React.Component {
                             if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
                             if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "active";
                         }} data-toggle="tab">Steps to Take</button></li>
-                        <li id="reviewtab"><button style={{fontSize: this.state.fontSize}} onClick={() => {
+                        <li id="reviewtab"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
                             if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
                             if (document.getElementById("review")) document.getElementById("review").className = "tab-pane active";
                             if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
@@ -193,10 +208,10 @@ class OneActionPage extends React.Component {
     }
     chooseFontSize = () => {
         var fontSize = '16px'
-        if(window.innerWidth < 500){
-             fontSize = '12px';
+        if (window.innerWidth < 500) {
+            fontSize = '12px';
         }
-        if( fontSize !== this.state.fontSize){
+        if (fontSize !== this.state.fontSize) {
             this.setState({
                 fontSize: fontSize
             })
@@ -272,11 +287,11 @@ class OneActionPage extends React.Component {
      * These are the cart functions
      */
     inCart = (aid, hid, cart) => {
-        if(!this.props.todo) return false;
+        if (!this.props.todo) return false;
         const checkTodo = this.props.todo.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "TODO") { return checkTodo.length > 0; }
 
-        if(!this.props.done) return false;
+        if (!this.props.done) return false;
         const checkDone = this.props.done.filter(actionRel => { return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid) });
         if (cart === "DONE") return checkDone.length > 0;
 
@@ -288,7 +303,7 @@ class OneActionPage extends React.Component {
             action: actionRel.action.id,
             real_estate_unit: actionRel.real_estate_unit.id,
         }
-        postJson(URLS.USER+'/'+this.props.user.id+'/action/'+actionRel.id ,body).then(json => {
+        postJson(URLS.USER + '/' + this.props.user.id + '/action/' + actionRel.id, body).then(json => {
             console.log(json);
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
@@ -301,19 +316,19 @@ class OneActionPage extends React.Component {
     moveToDoneByActionId(aid, hid) {
         const actionRel = this.props.todo.filter(actionRel => {
             return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid)
-            })[0];
+        })[0];
         console.log(actionRel);
         if (actionRel)
             this.moveToDone(actionRel);
 
     }
-    addToCart = (aid,hid, status) => {
+    addToCart = (aid, hid, status) => {
         const body = {
             action: aid,
-            status:status,
+            status: status,
             real_estate_unit: hid
         }
-        console.log(this.props.user.id)        
+        console.log(this.props.user.id)
         postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
             console.log(json)
             if (json.success) {
