@@ -88,9 +88,7 @@ class SubscribeForm extends React.Component {
 
 const mapStoreToProps = (store) => {
     return {
-        community: store.page.communities? store.page.communities.filter(com => {
-            return com.subdomain === store.page.communitySubDomain
-        })[0] : null,
+        community: store.page.community,
     }
 }
 //composes the login form by using higher order components to make it have routing and firebase capabilities

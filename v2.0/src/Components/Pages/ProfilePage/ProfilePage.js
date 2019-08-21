@@ -12,7 +12,7 @@ import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 
-import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold, reduxLeaveCommunity } from '../../../redux/actions/userActions'
+import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold, reduxLeaveCommunity, reduxLoadUserCommunities } from '../../../redux/actions/userActions'
 // import { watchFile } from 'fs';
 import Tooltip from '../../Shared/Tooltip'
 import JoiningCommunityForm from './JoiningCommunityForm';
@@ -41,6 +41,10 @@ class ProfilePage extends React.Component {
 
         if (this.props.user.households.length === 0) {
             this.addDefaultHousehold();
+        }
+        if (this.props.user.communities.filter(com=>{return com.id === this.props.community.id}).length === 0) {
+            if(this.props.community)
+                this.addDefaultCommunity();
         }
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
@@ -142,7 +146,7 @@ class ProfilePage extends React.Component {
                                         </tr>
                                         {this.renderTeams(user.teams)}
                                         <tr>
-                                            <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>Join another Team</Link></td>
+                                            <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -168,6 +172,9 @@ class ProfilePage extends React.Component {
                                         </tr>
                                     </tbody>
                                 </table>
+                                {this.state.leaveComError ?
+                                    <p className='text-danger'> {this.state.leaveComError}</p> : null
+                                }
                                 <br />
                                 <br />
                                 <br />
@@ -285,7 +292,7 @@ class ProfilePage extends React.Component {
     }
 
     leaveCommunity = (community) => {
-        if (this.props.user.communities.length > 1) {
+        if (community.id !== this.props.community.id) {
             var newCommunityIds = [];
 
             this.props.user.communities.forEach(com => {
@@ -302,13 +309,39 @@ class ProfilePage extends React.Component {
                     this.props.reduxLeaveCommunity(community);
                 }
             })
+        }else{
+            this.setState({
+                leaveComError: "You can't leave your home community"
+            })
         }
     }
 
     clearError = () => {
         if (this.state.deletingHHError) {
-            this.setState({ deletingHHError: null })
+            this.setState({ 
+                deletingHHError: null,
+            })
         }
+        if ( this.state.leaveComError) {
+            this.setState({ 
+                leaveComError: null,
+            })
+        }
+    }
+    addDefaultCommunity = () => {
+        const body = {
+            "communities": this.props.community.id,
+        }
+        var postURL = URLS.USER + "/" + this.props.user.id;
+        /** Collects the form data and sends it to the backend */
+        postJson(postURL, body).then(json => {
+            console.log(json);
+            if (json.success) {
+                this.props.reduxLoadUserCommunities(json.data.communities);
+            }
+        }).catch(error => {
+            console.log(error);
+        })
     }
 
     addDefaultHousehold = () => {
@@ -355,6 +388,7 @@ const mapStoreToProps = (store) => {
         todo: store.user.todo,
         done: store.user.done,
         communities: store.user.info ? store.user.info.communities : null,
+        community: store.page.community,
         households: store.user.info ? store.user.info.households : null
     }
 }
@@ -363,6 +397,7 @@ const mapDispatchToProps = {
     reduxAddHousehold,
     reduxEditHousehold,
     reduxRemoveHousehold,
-    reduxLeaveCommunity
+    reduxLeaveCommunity, 
+    reduxLoadUserCommunities,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);

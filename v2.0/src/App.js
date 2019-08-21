@@ -24,7 +24,7 @@ import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './Components/Pages/DonatePage/DonatePage'
 
 import {
-	reduxLoadCommunitySubdomain,
+	reduxLoadCommunity,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
 	reduxLoadServiceProvidersPage,
@@ -62,7 +62,6 @@ class App extends Component {
 		
 		var host = window.location.hostname.split(".")
 		var subdomain = host.length>2? host[0] : 'wayland'
-		this.props.reduxLoadCommunitySubdomain(subdomain);
 		
 		Promise.all([
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
@@ -101,6 +100,9 @@ class App extends Component {
 			this.props.reduxLoadPolicies(myJsons[14].data)
 			this.props.reduxLoadRSVPs(myJsons[15].data)
 			this.props.reduxLoadCommunities(myJsons[16].data)
+			this.props.reduxLoadCommunity(myJsons[16].data.filter(com => {
+				return com.subdomain === subdomain
+			})[0])
 			this.props.reduxLoadTagCols(myJsons[17].data)
 		}).catch(err => {
 			console.log(err)
@@ -207,7 +209,7 @@ const mapStoreToProps = (store) => {
 	}
 }
 const mapDispatchToProps = {
-	reduxLoadCommunitySubdomain,
+	reduxLoadCommunity,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
 	reduxLoadServiceProvidersPage,
