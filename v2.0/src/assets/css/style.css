@@ -368,7 +368,16 @@ textarea {
     background:#aaa;
     border:#aaa;
 }
+.thm-btn.style-4.disabled {
+    background:#aaa;
+    border:#aaa;
+}
 .thm-btn.style-4:disabled:hover {
+    background:#aaa;
+    border:#aaa;
+    color:white;
+}
+.thm-btn.style-4.disabled:hover {
     background:#aaa;
     border:#aaa;
     color:white;
