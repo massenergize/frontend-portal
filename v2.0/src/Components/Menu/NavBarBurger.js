@@ -394,9 +394,9 @@ class Menu extends React.Component {
     render() {
         const styles = {
             container: {
-                position: 'absolute',
-                width:'100%',
-                height: this.state.open ? ((!this.props.submenu) ? 'calc(100vh - 100px)' : "100%") : 0,
+                position: !this.props.submenu ? 'absolute' : 'relative',
+                width: !this.props.submenu ? '50%' : '100%',
+                height: this.state.open ? (!this.props.submenu ? 'calc(100vh - 100px)' : '100%') : 0,
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'white',
@@ -408,6 +408,13 @@ class Menu extends React.Component {
                 paddingTop: (!this.props.submenu) ? '3rem' : "0",
             }
         }
+        
+        if(!this.props.submenu) {
+            // this is the main parent menu
+            document.body.className = (this.state.open) ? "burger-menu-open" : "";
+        }
+        
+        
         return (
             <div style={styles.container}>
                 {

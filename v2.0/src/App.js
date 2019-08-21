@@ -119,6 +119,8 @@ class App extends Component {
 		}
 	}
 	render() {
+		document.body.style.overflowX = 'hidden';
+
 		if (!isLoaded(this.props.auth)) {
 			console.log("Waiting for firebase auth to load...")
 			return <LoadingCircle />;
@@ -138,6 +140,7 @@ class App extends Component {
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
+				<div class="burger-menu-overlay"></div>
 				<Helmet>
 					<meta charset="UTF-8" />
 					<title>Mass Energize</title>
