@@ -4,6 +4,8 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import SignOutLink from '../Shared/SignOutLink';
+import { withFirebase } from 'react-redux-firebase';
+import { reduxLogout } from '../../redux/actions/userActions';
 
 /**
  * Renders entire navbar
@@ -195,7 +197,7 @@ class NavBarBurger extends React.Component {
                     <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
                         <Link to="/profile" className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
-                        <button className="dropdown-item p-3 small font-weight-bold"><SignOutLink>Sign Out</SignOutLink></button>
+                        <button className="dropdown-item p-3 small font-weight-bold" onClick={() => {this.props.firebase.auth().signOut(); this.props.reduxLogout();}}><SignOutLink>Sign Out</SignOutLink></button>
                     </Dropdown.Menu>
                 </Dropdown>
             );
@@ -215,7 +217,7 @@ const mapStoreToProps = (store) => {
         user: store.user
     }
 }
-export default connect(mapStoreToProps,null)(NavBarBurger);
+export default connect(mapStoreToProps,{reduxLogout})(withFirebase(NavBarBurger));
 // export default NavBarBurger;
 
 class ProfileBtnDropdown extends React.Component {
