@@ -109,27 +109,33 @@ class Cart extends React.Component {
                     <td className="prod-column">
                         <div className="column-box">
                             <h4>{action.title}</h4>
-                            <p>{action.about}</p>
                         </div>
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendor? 
-                            <p> {action.vendor.name} </p>
+                            {action.vendors?
+                            Object.keys(action.vendors).map(key => { 
+                                return (<p> {action.vendors[key].name} </p>)
+                            })
                         : 'MassEnergize'}
                         </div>
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendor? 
-                            <p> {action.vendor.key_contact? action.vendor.key_contact.phone : null} </p>
+                            {action.vendors?
+                            Object.keys(action.vendors).map(key => { 
+                                return (<p> {<p> {action.vendors[key].key_contact? action.vendors[key].key_contact.phone : null} </p>} </p>)
+                            })
+                            
                         : '123-456-7890'}
                         </div>
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendor? 
-                            <p> {action.vendor.key_contact? action.vendor.key_contact.email : null} </p>
+                            {action.vendors?
+                            Object.keys(action.vendors).map(key => { 
+                                return (<p> {<p> {action.vendors[key].key_contact? action.vendors[key].key_contact.email : null} </p>} </p>)
+                            })
                         : 'info@massenergize.org'}
                         </div>
                     </td>

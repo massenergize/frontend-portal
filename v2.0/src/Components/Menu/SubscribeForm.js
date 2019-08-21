@@ -1,6 +1,7 @@
 import React from 'react';
 import URLS from '../../api/urls'
 import { postJson } from '../../api/functions';
+import { connect } from 'react-redux'
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -64,7 +65,7 @@ class SubscribeForm extends React.Component {
         const body = {
             "email": this.state.email,
             "name": this.state.name,
-            "community": 1,
+            "community": this.props.community? this.props.community.id : null,
         }
         postJson(URLS.SUBSCRIBERS, body).then(json => {
             console.log(json);
@@ -85,7 +86,14 @@ class SubscribeForm extends React.Component {
     }
 }
 
+const mapStoreToProps = (store) => {
+    return {
+        community: store.page.communities? store.page.communities.filter(com => {
+            return com.subdomain === store.page.communitySubDomain
+        })[0] : null,
+    }
+}
 //composes the login form by using higher order components to make it have routing and firebase capabilities
-export default SubscribeForm;
+export default  connect(mapStoreToProps)(SubscribeForm);
 
 
