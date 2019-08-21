@@ -22,62 +22,11 @@ class ActionsPage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
-            tagCols: [],
             openAddForm: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
-    // //gets the data from the api url and puts it in pagedata and menudata
-    componentDidMount() {
-        Promise.all([
-            // getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            // getJson(URLS.ACTIONS), //need to add community to this
-            getJson(URLS.TAG_COLLECTIONS), //need to add community to this too
-        ]).then(myJsons => {
-            this.setState({
-                ...this.state,
-                // user: myJsons[0].data[0],
-                // actions: myJsons[1].data,
-                tagCols: myJsons[0].data,
-                loaded: true,
-            })
-        }).catch(error => {
-            console.log(error);
-        });
-    }
-
-    // loadCart() {
-    //     Promise.all([
-    //         getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=TODO"),
-    //         getJson(URLS.USER + "/" + this.props.user.id + "/actions" + "?status=DONE"),
-    //     ]).then(myJsons => {
-    //         this.setState({
-    //             todo: myJsons[0].data,
-    //             done: myJsons[1].data,
-    //             cartLoaded: true,
-    //         })
-    //     }).catch(err => {
-    //         console.log(err)
-    //     });
-    // }
-
     render() {
-        //avoids trying to render before the promise from the server is fulfilled
-        // if (!isLoaded(this.props.auth)) { //if the auth isn't loaded wait for a bit
-        //     return <LoadingCircle />;
-        // }
-        //if the auth is loaded and there is a user logged in but the user has not been fetched from the server remount
-        // if (isLoaded(this.props.auth) && this.props.auth.uid && !this.props.user) {
-        //     this.componentDidMount();
-        //     return <LoadingCircle />;
-        // }
-        //if there is a user from the server and the cart is not loaded load the cart
-        // if (this.props.user && !this.state.cartLoaded) {
-        //     this.loadCart();
-        //     return <LoadingCircle />;
-        // }
-        if(!this.state.loaded)
-            return <LoadingCircle/>;
         return (
             <div className="boxed_wrapper">
                 {/* main shop section */}
@@ -87,7 +36,7 @@ class ActionsPage extends React.Component {
                             {/* renders the sidebar */}
                             <div className="col-lg-4 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
                                 <SideBar
-                                    tagCols={this.state.tagCols}
+                                    tagCols={this.props.tagCols}
                                     onChange={this.handleChange} //runs when any category is selected or unselected
                                 ></SideBar>
                                 {this.props.user ?
@@ -136,7 +85,7 @@ class ActionsPage extends React.Component {
                 // image={action.image ? action.image.url : null}
                 // tags={action.tags}
 
-                tagCols={this.state.tagCols}
+                tagCols={this.props.tagCols}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
                 user={this.props.user}
 
@@ -221,6 +170,7 @@ const mapStoreToProps = (store) => {
         todo: store.user.todo,
         done: store.user.done,
         actions: store.page.actions,
+        tagCols: store.page.tagCols,
         pageData: store.page.actionsPage
     }
 }

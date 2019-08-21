@@ -231,7 +231,11 @@ class OneActionPage extends React.Component {
     renderTags(tags) {
         console.log(tags);
         return Object.keys(tags).map((key) => {
-            return <span key={key}> {tags[key].name} </span>;
+            var tagColName=''
+            if(tags[key].tag_collection.name !== 'Category'){
+                tagColName=tags[key].tag_collection.name +'-';
+            }
+            return <span key={key}> {tagColName}<i>{tags[key].name}</i> </span>;
         })
     }
     addStory = (story) => {

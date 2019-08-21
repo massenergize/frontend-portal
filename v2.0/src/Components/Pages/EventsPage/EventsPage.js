@@ -26,30 +26,8 @@ class EventsPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.resetDates = this.resetDates.bind(this);
     }
-    //gets the data from the api url and puts it in pagedata and menudata
-    componentDidMount() {
-        Promise.all([
-            //getJson(URLS.USERS + "?email=" + this.props.auth.email),
-            //getJson(URLS.EVENTS), //need to add community to this
-            getJson(URLS.TAG_COLLECTIONS + "?name=Category"), //need to add community to this too
-        ]).then(myJsons => {
-            this.setState({
-                ...this.state,
-                loaded: true,
-                //user: myJsons[0].data[0],
-                //events: myJsons[1].data,
-                tagCols: myJsons[0].data,
-            })
-        }).catch(error => {
-            console.log(error);
-            return null;
-        });
-    }
 
     render() {
-        if (!this.props.events) {
-            return <LoadingCircle />
-        }
         //avoids trying to render before the promise from the server is fulfilled
         return (
             <div className="boxed_wrapper">
@@ -58,11 +36,11 @@ class EventsPage extends React.Component {
                     <section className="eventlist">
                         <div className="container">
                             <div className="row">
-                                <div className="col-lg-3 col-md-5 col-12">
-                                    {this.state.tagCols ?
+                                <div className="col-lg-4 col-md-5 col-12">
+                                    {this.props.tagCols ?
                                         this.renderSideBar() : <LoadingCircle />}
                                 </div>
-                                <div className="col-lg-9 col-md-7 col-12">
+                                <div className="col-lg-8 col-md-7 col-12">
                                     <div className="outer-box sec-padd event-style2">
                                         {this.renderEvents(this.props.events)}
                                     </div>
@@ -94,7 +72,13 @@ class EventsPage extends React.Component {
      * @param events - json list of events
      */
     renderEvents(events) {
-        if(!this.props.eventRSVPs) return <LoadingCircle/>;
+        if (!this.props.events) {
+            return (
+                <div className='text-center'>
+                    <h2> No Events Coming up </h2>
+                </div>
+            );
+        }
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const now = new Date();
         //reads events into a list
@@ -182,10 +166,10 @@ class EventsPage extends React.Component {
     //     if(RSVPs.length < 1) return '--';
     //     return RSVPs[0].value;
     // }
-    userRSVP(event_id){
-        if(!this.props.user || !this.props.eventRSVPs) return null;
-        const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id)})
-        if(RSVPs.length < 1) return null;
+    userRSVP(event_id) {
+        if (!this.props.user || !this.props.eventRSVPs) return null;
+        const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id) })
+        if (RSVPs.length < 1) return null;
         console.log(RSVPs[0]);
         return RSVPs[0];
     }
@@ -250,8 +234,8 @@ class EventsPage extends React.Component {
         event.tags.forEach(tag => {
             tagSet.add(tag.id);
         });
-        for (var i in this.state.tagsCols) {
-            var filter = this.tagCols[i]; //if any filter does not fit, return false
+        for (var i in this.props.tagsCols) {
+            var filter = this.props.tagCols[i]; //if any filter does not fit, return false
             if (!this.filterFits(filter.tags, tagSet)) { //only one tag in a filter collection needs to fit to make the filter fit
                 return false;
             }
@@ -359,7 +343,7 @@ class EventsPage extends React.Component {
                         </div>
                     </div>
                     <SideBar
-                        tagCols={this.state.tagCols}
+                        tagCols={this.props.tagCols}
                         onChange={this.handleChange} //runs when any category is selected or unselected
                     />
                 </div>
@@ -384,7 +368,8 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth,
         user: store.user.info,
         events: store.page.events,
-        eventRSVPs: store.page.rsvps
+        eventRSVPs: store.page.rsvps, 
+        tagCols: store.page.tagCols? store.page.tagCols.filter( col => { return col.name === 'Category'}) : null
     }
 }
 export default connect(mapStoreToProps, null)(EventsPage);

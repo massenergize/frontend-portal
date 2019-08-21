@@ -23,7 +23,8 @@ import {
     ADD_TEAM_MEMBER,
     REMOVE_TEAM_MEMBER,
     LOAD_COMMUNITIES,
-    LOAD_COMMUNITY_SUBDOMAIN
+    LOAD_COMMUNITY_SUBDOMAIN,
+    LOAD_TAG_COLS
 } from './types'
 
 
@@ -143,6 +144,13 @@ export const reduxLoadCommunities = (communities) => dispatch => {
     return dispatch({
         type: LOAD_COMMUNITIES,
         payload: communities
+    })
+}
+
+export const reduxLoadTagCols = (tagCols) => dispatch => {
+    return dispatch({
+        type: LOAD_TAG_COLS, 
+        payload: tagCols
     })
 }
 

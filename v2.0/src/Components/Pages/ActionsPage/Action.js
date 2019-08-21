@@ -106,17 +106,6 @@ class Action extends React.Component {
                                                 onClick={() => this.openForm("DONE")}
                                             > Done It </button>
                                             }
-
-                                            
-                                            {/* {!this.props.inCart(this.props.action.id) ?
-                                                <button disabled={!this.props.user} className="thm-btn style-4 " onClick={() => this.props.addToCart(this.props.action.id, "DONE")}> Done It </button>
-                                                : null
-                                            }
-                                            {this.props.inCart(this.props.action.id, "TODO") ?
-                                                <button className="thm-btn style-4" onClick={() => this.props.moveToDone(this.props.action.id)}> Done It </button>
-                                                :
-                                                null
-                                            } */}
                                         </div>
                                     </div>
                                     <div className="col-12">
