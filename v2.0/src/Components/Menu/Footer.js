@@ -48,7 +48,7 @@ class Footer extends React.Component {
                 </section>
                 <section className="coders">
                     <div className="container">
-                        <span>Made with&nbsp;
+                        <p style={{fontSize:'12px'}}>Made with&nbsp;
                             <span className="fa fa-heart text-danger"></span> by&nbsp;
                             <a href="/" className="normal">
                                 <u>Sam Opoku-Agyemang</u>
@@ -60,7 +60,7 @@ class Footer extends React.Component {
                                 <u>Mingle Li</u>
                             </a>
                             .
-                        </span>
+                        </p>
                     </div>
                 </section>
             </div>

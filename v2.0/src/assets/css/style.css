@@ -1892,7 +1892,7 @@ textarea {
 
 .service {
     background-size: cover;
-    background: #19220e;
+    background: #003000;
 }
 
 .service .section-title h2 {
@@ -5609,7 +5609,7 @@ span.has-tooltip {
 
 .main-footer {
     position: relative;
-    background: #111709f6;
+    background: #003000;
     /* padding: 25px 0 80px; */
 }
 
@@ -5802,7 +5802,7 @@ span.has-tooltip {
 /*===========footer bottom ================*/
 
 .footer-bottom {
-    background: #111709f6;
+    background: #003000;
     border-top: 1px solid #2b2f25;
     padding: 21px 0;
 }
@@ -5823,9 +5823,8 @@ span.has-tooltip {
 
 /*===========footer bottom ================*/
 .coders {
-    background-color: #0e1307f6;
+    background-color: #003000;
     padding: 1em;
-    color: #444;
     text-align: center;
 }
 
