@@ -151,6 +151,7 @@ class LoginFormBase extends React.Component {
 
     fetchAndLogin = async (email) => {
         try {
+            this.props.tryingToLogin(true);
             const json = await getJson(`${URLS.USER}/e/${email}`);
             if (json.success && json.data) {
                 this.props.reduxLogin(json.data);
@@ -159,13 +160,16 @@ class LoginFormBase extends React.Component {
                 this.props.reduxLoadTodo(todo.data);
                 const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
                 this.props.reduxLoadDone(done.data);
+                this.props.tryingToLogin(false);
                 return true;
             }
             console.log('fetch and login failed');
+            this.props.tryingToLogin(false);
             return false;
         }
         catch (err) {
             console.log(err);
+            this.props.tryingToLogin(false);
             return false;
         }
     }

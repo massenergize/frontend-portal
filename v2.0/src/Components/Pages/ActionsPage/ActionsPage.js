@@ -41,8 +41,10 @@ class ActionsPage extends React.Component {
                                 ></SideBar>
                                 {this.props.user ?
                                     <div>
-                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />
-                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE"/>
+                                        {this.props.todo?
+                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />: null }
+                                        {this.props.done?
+                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE"/> : null } 
                                     </div>
                                     :
                                     <div>
@@ -139,7 +141,7 @@ class ActionsPage extends React.Component {
         if (actionRel)
             this.moveToDone(actionRel);
 
-    }
+    } 
     addToCart = (aid,hid, status) => {
         const body = {
             action: aid,

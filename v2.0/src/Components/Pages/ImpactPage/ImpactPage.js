@@ -4,10 +4,21 @@ import CircleGraph from '../../Shared/CircleGraph';
 import PageTitle from '../../Shared/PageTitle';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
+import {getJson} from '../../../api/functions'
+import URLS from '../../../api/urls'
+import {reduxLoadCommunitiesStats} from '../../../redux/actions/pageActions'
 
 class ImpactPage extends React.Component {
     render() {
-        if(!this.props.communitiesStats || this.props.communitiesStats.length <= 0) return <LoadingCircle/>
+        if(!this.props.communitiesStats || this.props.communitiesStats.length <= 0){
+            getJson(URLS.COMMUNITIES_STATS).then(json => {
+                console.log(json);
+                if(json.success){
+                    this.props.reduxLoadCommunitiesStats(json.data.length>0? json.data : null)
+                }
+            })
+            return <LoadingCircle/>
+        } 
         let stats = this.props.communitiesStats.slice(0);
         
         // TODO: Render sidebar graphs
@@ -123,4 +134,4 @@ const mapStoreToProps = (store) => {
         communitiesStats: store.page.communitiesStats
     }
 }
-export default connect(mapStoreToProps, null)(ImpactPage);
+export default connect(mapStoreToProps, {reduxLoadCommunitiesStats})(ImpactPage);

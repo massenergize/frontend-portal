@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../Shared/Tooltip'
 import { connect } from 'react-redux'
-import { reduxMoveToDone, reduxRemoveFromTodo } from '../../redux/actions/userActions'
+import { reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
 import URLS from '../../api/urls'
 import { postJson, deleteJson } from '../../api/functions'
 
@@ -76,11 +76,13 @@ class Cart extends React.Component {
                                     <button onClick={() => this.moveToDone(actionRel)} className="done-btn has-tooltip"> <i className="fa fa-check"></i> </button>
                                 </Tooltip>
                                 <Tooltip text='Remove from Todo'>
-                                    <button className="remove-btn has-tooltip" onClick={() => this.removeFromTodo(actionRel)}> <i className="fa fa-trash"></i> </button>
+                                    <button className="remove-btn has-tooltip" onClick={() => this.removeFromCart(actionRel)}> <i className="fa fa-trash"></i> </button>
                                 </Tooltip>
                             </div>
                             :
-                            null
+                            <Tooltip text="Oops. This action was added to done by mistake. Remove from our community's impact">
+                                <button className="remove-btn has-tooltip" onClick={() => this.removeFromCart(actionRel)}> <i className="fa fa-undo"></i> </button>
+                            </Tooltip>
                         }
                     </td>
 
@@ -113,30 +115,30 @@ class Cart extends React.Component {
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendors?
-                            Object.keys(action.vendors).map(key => { 
-                                return (<p> {action.vendors[key].name} </p>)
-                            })
-                        : 'MassEnergize'}
+                            {action.vendors ?
+                                Object.keys(action.vendors).map(key => {
+                                    return (<p> {action.vendors[key].name} </p>)
+                                })
+                                : 'MassEnergize'}
                         </div>
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendors?
-                            Object.keys(action.vendors).map(key => { 
-                                return (<p> {<p> {action.vendors[key].key_contact? action.vendors[key].key_contact.phone : null} </p>} </p>)
-                            })
-                            
-                        : '123-456-7890'}
+                            {action.vendors ?
+                                Object.keys(action.vendors).map(key => {
+                                    return (<p> {<p> {action.vendors[key].key_contact ? action.vendors[key].key_contact.phone : null} </p>} </p>)
+                                })
+
+                                : '123-456-7890'}
                         </div>
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            {action.vendors?
-                            Object.keys(action.vendors).map(key => { 
-                                return (<p> {<p> {action.vendors[key].key_contact? action.vendors[key].key_contact.email : null} </p>} </p>)
-                            })
-                        : 'info@massenergize.org'}
+                            {action.vendors ?
+                                Object.keys(action.vendors).map(key => {
+                                    return (<p> {<p> {action.vendors[key].key_contact ? action.vendors[key].key_contact.email : null} </p>} </p>)
+                                })
+                                : 'info@massenergize.org'}
                         </div>
                     </td>
                 </tr>
@@ -158,17 +160,20 @@ class Cart extends React.Component {
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
             }
-            //just update the state here
         }).catch(err => {
             console.log(err)
         })
     }
 
-    removeFromTodo = (actionRel) => {
+    removeFromCart = (actionRel) => {
+        const status = actionRel.status;
         deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
             console.log(json);
             if (json.success) {
-                this.props.reduxRemoveFromTodo(actionRel);
+                if (status === 'TODO')
+                    this.props.reduxRemoveFromTodo(actionRel);
+                if (status === 'DONE')
+                    this.props.reduxRemoveFromDone(actionRel);
             }
         })
     }
@@ -182,7 +187,7 @@ const mapStoreToProps = (store) => {
 }
 
 const mapDispatchToProps = {
-    reduxMoveToDone, reduxRemoveFromTodo
+    reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(Cart);

@@ -88,13 +88,13 @@ class ProfilePage extends React.Component {
                                         <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
                                             <div className="row no-gutter">
                                                 <div className="column counter-column col-lg-4 col-6 ">
-                                                    <Counter end={this.props.done.length} icon={"icon-money"} title={"Actions Completed"} />
+                                                    <Counter end={this.props.done? this.props.done.length:0} icon={"icon-money"} title={"Actions Completed"} />
                                                 </div>
                                                 <div className="column counter-column  d-lg-block d-none col-4 ">
-                                                    <Counter end={this.props.todo.length} icon={"icon-money"} title={"Actions To Do"} />
+                                                    <Counter end={this.props.todo? this.props.todo.length:0} icon={"icon-money"} title={"Actions To Do"} />
                                                 </div>
                                                 <div className="column counter-column col-lg-4 col-6"  >
-                                                    <Counter end={this.props.done.length * 10} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+                                                    <Counter end={this.props.done? this.props.done.length * 10: 0} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
                                                 </div>
                                             </div>
                                         </div>
@@ -186,8 +186,10 @@ class ProfilePage extends React.Component {
                                     <SignOutButton style={{ display: 'inline-block' }} />
                                 </h3>
                                 <br />
-                                <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />
-                                <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" />
+                                {this.props.todo?
+                                <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />:null}
+                                {this.props.done?
+                                <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" />:null}
                                 <button className='thm-btn text-center' onClick={() => this.setState({ printing: true })}> Summarize your actions</button>
                             </div>
                         </div>
