@@ -70,7 +70,6 @@ class App extends Component {
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Testimonials'),
 			getJson(URLS.TEAMS_STATS),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
-			//getJson(URLS.COMMUNITIES_STATS),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Events'),
 			getJson(URLS.COMMUNITY + subdomain + '/events'),
@@ -81,7 +80,8 @@ class App extends Component {
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
 			getJson(URLS.COMMUNITIES),
-			getJson(URLS.TAG_COLLECTIONS)
+			getJson(URLS.TAG_COLLECTIONS),
+			getJson(URLS.COMMUNITY+subdomain+'/data'),
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
 			this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
@@ -145,7 +145,7 @@ class App extends Component {
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
-				<div class="burger-menu-overlay"></div>
+				<div className="burger-menu-overlay"></div>
 				<Helmet>
 					<meta charset="UTF-8" />
 					<title>Mass Energize</title>

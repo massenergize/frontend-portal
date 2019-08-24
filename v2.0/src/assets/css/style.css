@@ -1903,7 +1903,8 @@ textarea {
 .service .service-item {
     margin-bottom: 30px;
     border: 1px solid #f4f4f4;
-    padding: 28px 14px 25px;
+    border-radius: 3px;
+    padding: 28px 14px 5px;
     position: relative;
 }
 
