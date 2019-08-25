@@ -14,10 +14,22 @@ const INITIAL_STATE = {
 class AddingHouseholdForm extends React.Component {
     constructor(props) {
         super(props);
+        var address = '';
+        var city = '';
+        var state = 'MA';
+        if (props.location && props.location != '') {
+            var locationparts = props.location.split(', ')
+            address = locationparts[0];
+            city = locationparts[1];
+            state = locationparts[2];
+        }
         this.state = {
             name: props.name ? props.name : INITIAL_STATE.name,
             unittype: props.unittype ? props.unittype : INITIAL_STATE.unittype,
-            location: props.location ? props.location : INITIAL_STATE.location
+
+            address: address,
+            city: city,
+            state: state,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -25,7 +37,7 @@ class AddingHouseholdForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit} className='householdForm'>
                 <div className="col">
                     <p>Name <span className="text-danger">*</span></p>
                     <input type="text" name="name" value={this.state.name} onChange={this.onChange} required />
@@ -33,17 +45,78 @@ class AddingHouseholdForm extends React.Component {
                 <div className="col">
                     <p>Type</p>
                     <div className="col-6 d-flex">
-                        <input type='radio' name="unittype" id="unit_residential" value="RESIDENTIAL" checked={this.state.unittype ==='RESIDENTIAL'} onClick={this.onChange} />
-                        <label className="ml-2" value="unit_residential">Residential</label>
+                        <input type='radio' name="unittype" id="unit_residential" value="RESIDENTIAL" checked={this.state.unittype === 'RESIDENTIAL'} onChange={this.onChange} />
+                        <label htmlFor='unit_residential' className="ml-2" value="unit_residential">Residential</label>
                     </div>
                     <div className="col-6 d-flex">
-                        <input type='radio' name="unittype" id="unit_commercial" value="COMMERCIAL" checked={this.state.unittype ==='COMMERCIAL'} onClick={this.onChange} />
-                        <label className="ml-2" value="unit_commercial">Commercial</label>
+                        <input type='radio' name="unittype" id="unit_commercial" value="COMMERCIAL" checked={this.state.unittype === 'COMMERCIAL'} onChange={this.onChange} />
+                        <label htmlFor='unit_commercial' className="ml-2" value="unit_commercial">Commercial</label>
                     </div>
                 </div>
                 <div className="col">
-                    <p>Location</p>
-                    <input type="text" name="location" value={this.state.location ? this.state.location : ""} onChange={this.onChange} />
+                    <p>Street Address</p>
+                    <input type="text" name="address" value={this.state.address ? this.state.address : ""} onChange={this.onChange} />
+                </div>
+                <div className="col">
+                    <p>City / Town</p>
+                    <input type="text" name="city" value={this.state.city ? this.state.city : ""} onChange={this.onChange} />
+                </div>
+                <div className="col">
+                    <p>State</p>
+                    <select value={this.state.state} onChange={event => this.setState({ state: event.target.value })}>
+                        <option value=""  >--</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District Of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
                 </div>
                 <div className="col p-0">
                     <button className="thm-btn bg-cl-1" type="submit" style={{ width: '99%' }}>{!this.props.householdID ? "Add household" : "Submit Changes"}</button>
@@ -63,10 +136,11 @@ class AddingHouseholdForm extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault();
+        const location = this.state.address + ', ' + this.state.city + ', ' + this.state.state;
         const body = {
             "name": this.state.name,
             "unit_type": this.state.unittype,
-            "location": this.state.location
+            "location": location
         }
         var postURL = URLS.USER + "/" + this.props.user.id + "/households";
         if (this.props.householdID) {
@@ -78,27 +152,10 @@ class AddingHouseholdForm extends React.Component {
             if (json.success) {
                 if (!this.props.householdID) {
                     this.props.addHousehold(json.data);
-                    var householdIds = [];
-                    this.props.user.households.forEach(household => {
-                        householdIds.push(household.id);
-                    })
-                    fetch(URLS.USER + "/" + this.props.user.id, {
-                        method: 'post',
-                        body: JSON.stringify({
-                            "preferred_name": this.props.user.preferred_name,
-                            "email": this.props.user.email,
-                            "full_name": this.props.user.full_name,
-                            "real_estate_units": [
-                                ...householdIds
-                            ]
-                        })
-                    }).then(response => {
-                        return response.json()
-                    }).then(json => {
-                        console.log(json);
+                    postJson(URLS.USER + "/" + this.props.user.id, {"real_estate_units": json.data.id}).then(json=> {
                         if (json.success) this.props.closeForm();
                     });
-                }else{
+                } else {
                     this.props.editHousehold(json.data);
                     this.props.closeForm();
                 }

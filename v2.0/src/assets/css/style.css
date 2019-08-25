@@ -9377,3 +9377,8 @@ button.as-link {
 button.as-link:hover {
     color: #0056b3;
 }
+
+.householdForm .col p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
