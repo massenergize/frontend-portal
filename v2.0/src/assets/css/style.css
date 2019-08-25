@@ -5859,7 +5859,6 @@ span.has-tooltip {
     vertical-align: middle;
     font-size: 40px;
     font-weight: 700;
-    text-transform: uppercase;
     line-height: 60px;
     color: #fff;
 }
@@ -5867,7 +5866,7 @@ span.has-tooltip {
 .inner-banner .box {
     position: relative;
     display: table;
-    height: 280px;
+    height: 240px;
     width: 100%;
     text-align: center;
 }

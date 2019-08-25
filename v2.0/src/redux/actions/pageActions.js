@@ -24,7 +24,9 @@ import {
     REMOVE_TEAM_MEMBER,
     LOAD_COMMUNITIES,
     LOAD_COMMUNITY,
-    LOAD_TAG_COLS
+    LOAD_TAG_COLS,
+    LOAD_COMMUNITY_DATA,
+    Load_COMMUNITY_ADMINS
 } from './types'
 
 
@@ -35,6 +37,19 @@ export const reduxLoadCommunity = (community) => dispatch => {
     })
 }
 
+export const reduxLoadCommunityData = (data) => dispatch => {
+    return dispatch({
+        type: LOAD_COMMUNITY_DATA,
+        payload: data
+    })
+}
+
+export const reduxLoadCommunityAdmins = (admins) => dispatch => {
+    return dispatch({
+        type: Load_COMMUNITY_ADMINS,
+        payload: admins
+    })
+}
 export const reduxLoadHomePage = (page) => dispatch => {
     return dispatch({
         type: LOAD_HOME_PAGE,

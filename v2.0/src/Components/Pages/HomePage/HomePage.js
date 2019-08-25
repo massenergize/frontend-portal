@@ -12,56 +12,36 @@ import { connect } from 'react-redux'
 * The Home Page of the MassEnergize
 */
 class HomePage extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         welcomeImagesData: null,
-    //         impactData: null,
-    //         iconQuickLinks: null,
-    //         events: null,
-    //         loaded: false
-    //     }
-    // }
-    // componentDidMount() {
-    //     Promise.all([
-    //         getJson(URLS.PAGES + "?name=Home"),
-    //         getJson(URLS.EVENTS),
-    //     ]).then(myJsons => {
-    //         this.setState({
-                
-    //             loaded: true
-    //         })
-    //     }).catch(err => {
-    //         console.log(err)
-    //     });
-    // }
+    
     render() {
         if (!this.props.pageData) return <LoadingCircle />;
         
         const {pageData, events} = this.props;
         const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
-        const impactData = section(pageData, "Graph Section").graphs[0];
         const iconQuickLinks = section(pageData, "IconQuickLinks").cards;
-
-        // const {
-        //     welcomeImagesData,
-        //     impactData,
-        //     iconQuickLinks,
-        //     events
-        // } = this.state;
-
+        const header = section(pageData, "HomeHeader");
+        const graphs = [
+            {
+                title:'Actions Completed',
+                data: this.props.graphsData? this.props.graphsData.filter(data=>{return data.name === 'ActionsCompletedData'})[0] :null
+            },
+            {
+                title:'Households Engaged',
+                data: this.props.graphsData? this.props.graphsData.filter(data=>{return data.name === 'EngagedHouseholdsData'})[0] :null
+            },
+        ]
         return (
             <div className="boxed_wrapper">
-
                 {welcomeImagesData ?
                     <WelcomeImages
-                        data={welcomeImagesData} title="MassEnergize"
+                        data={welcomeImagesData}
+                        title={header.title}
                     /> : null
                 }
-                <h3 align='center' style={{background: '#f7f7f7'}}> Our Community Slogan is very Catchy and Great! </h3>
-                {impactData ?
+                <h3 align='center' style={{background: '#8dc63f', color: 'white'}}>{header.description}</h3>
+                {this.props.graphsData ?
                     <Graphs
-                        graphs={impactData}
+                        graphs={graphs}
                         size={120}
                     /> : null
                 }
@@ -85,7 +65,8 @@ class HomePage extends React.Component {
 const mapStoreToProps = (store) => { 
     return {
         pageData: store.page.homePage,
-        events: store.page.events
+        events: store.page.events,
+        graphsData: store.page.communityData
     }
 }
 export default connect(mapStoreToProps, null)(HomePage);

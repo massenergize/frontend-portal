@@ -42,7 +42,8 @@ import {
 	reduxLoadTestimonials,
 	reduxLoadCommunities,
 	reduxLoadRSVPs,
-	reduxLoadTagCols
+	reduxLoadTagCols,
+	reduxLoadCommunityData
 } from './redux/actions/pageActions'
 import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 
@@ -104,6 +105,7 @@ class App extends Component {
 				return com.subdomain === subdomain
 			})[0])
 			this.props.reduxLoadTagCols(myJsons[16].data)
+			this.props.reduxLoadCommunityData(myJsons[17].data)
 		}).catch(err => {
 			console.log(err)
 		});
@@ -230,7 +232,8 @@ const mapDispatchToProps = {
 	reduxLoadTodo,
 	reduxLoadDone,
 	reduxLoadRSVPs,
-	reduxLoadTagCols
+	reduxLoadTagCols,
+	reduxLoadCommunityData
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(App);
 //export default App;

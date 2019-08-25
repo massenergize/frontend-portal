@@ -36,7 +36,7 @@ class LoginFormBase extends React.Component {
         return (
             < div className="styled-form login-form" >
                 <div className="section-title style-2">
-                    <h3>Login</h3>
+                    <h3>Sign in</h3>
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -50,10 +50,10 @@ class LoginFormBase extends React.Component {
                     {error && <p style={{ color: "red" }}> {error} </p>}
                     <div className="clearfix">
                         <div className="form-group pull-left">
-                            <button type="submit" disabled={this.isInvalid()} className="thm-btn">Login</button>
+                            <button type="submit" disabled={this.isInvalid()} className="thm-btn">Sign in</button>
                         </div>
                         <div className="form-group social-links-two padd-top-5 pull-right">
-                            Or login with
+                            Or sign in with
                             <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button>
                             <button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google"><span className="fa fa-google"></span></button>
                         </div>
