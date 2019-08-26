@@ -26,7 +26,8 @@ import {
     LOAD_COMMUNITY,
     LOAD_TAG_COLS,
     LOAD_COMMUNITY_DATA,
-    Load_COMMUNITY_ADMINS
+    Load_COMMUNITY_ADMINS,
+    CHANGE_DATA
 } from './types'
 
 
@@ -220,5 +221,11 @@ export const reduxRemoveTeamMember = (teamAndMember) => dispatch => {
     return dispatch({
         type: REMOVE_TEAM_MEMBER, 
         payload: teamAndMember
+    })
+}
+export const reduxChangeData = (data) => dispatch => {
+    return dispatch({
+        type: CHANGE_DATA,
+        payload: data
     })
 }

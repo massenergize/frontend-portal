@@ -67,4 +67,6 @@ export const REMOVE_TESTIMONIAL = 'REMOVE_TESTIMONIAL'
 export const ADD_TEAM_MEMBER = 'ADD_TEAM_MEMBER' //similar to join team, and must be called at the same time, but adds the team member numbers to the team stats (team page)
 export const REMOVE_TEAM_MEMBER = 'REMOVE_TEAM_MEMBER'
 
+export const CHANGE_DATA = 'CHANGE_DATA'
+
 

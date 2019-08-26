@@ -8,6 +8,7 @@ import Cart from '../../Shared/Cart';
 import StoryForm from './StoryForm';
 import ChooseHHForm from './ChooseHHForm';
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
+import { reduxChangeData } from '../../../redux/actions/pageActions'
 import Tooltip from '../../Shared/Tooltip'
 
 
@@ -231,9 +232,9 @@ class OneActionPage extends React.Component {
     renderTags(tags) {
         console.log(tags);
         return Object.keys(tags).map((key) => {
-            var tagColName=''
-            if(tags[key].tag_collection.name !== 'Category'){
-                tagColName=tags[key].tag_collection.name +'-';
+            var tagColName = ''
+            if (tags[key].tag_collection.name !== 'Category') {
+                tagColName = tags[key].tag_collection.name + '-';
             }
             return <span key={key}> {tagColName}<i>{tags[key].name}</i> </span>;
         })
@@ -303,6 +304,7 @@ class OneActionPage extends React.Component {
             console.log(json);
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
+                this.addToImpact(json.data.action);
             }
             //just update the state here
         }).catch(err => {
@@ -313,7 +315,6 @@ class OneActionPage extends React.Component {
         const actionRel = this.props.todo.filter(actionRel => {
             return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid)
         })[0];
-        console.log(actionRel);
         if (actionRel)
             this.moveToDone(actionRel);
 
@@ -324,7 +325,6 @@ class OneActionPage extends React.Component {
             status: status,
             real_estate_unit: hid
         }
-        console.log(this.props.user.id)
         postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
             console.log(json)
             if (json.success) {
@@ -334,11 +334,67 @@ class OneActionPage extends React.Component {
                 }
                 else if (status === "DONE") {
                     this.props.reduxAddToDone(json.data);
+                    this.addToImpact(json.data.action);
                 }
             }
         }).catch(error => {
             console.log(error);
         });
+    }
+
+    
+    addToImpact(action) {
+        this.changeDataByName("ActionsCompletedData", 1)
+        action.tags.forEach(tag => {
+            if (tag.tag_collection && tag.tag_collection.name === "Category") {
+                this.changeData(tag.id, 1);
+            }
+        });
+    }
+    changeDataByName(name, number) {
+        var data = this.props.communityData.filter(data => {
+            return data.name === name
+        })[0];
+
+        const body = {
+            "value": data.value + number > 0 ? data.value + number : 0
+        }
+        postJson(URLS.DATA + '/' + data.id, body).then(json => {
+            console.log(json);
+            if (json.success) {
+                data = {
+                    ...data,
+                    value: data.value + number > 0 ? data.value + number : 0
+                }
+                this.props.reduxChangeData(data);
+            }
+        })
+    }
+    changeData(tagid, number) {
+        var data = this.props.communityData.filter(data => {
+            if (data.tag) {
+                console.log(data.tag);
+                return data.tag === tagid;
+            }
+            return false;
+        })[0];
+        if (!data) {
+            console.log("no data stored for tag " + tagid);
+            return;
+        }
+        const body = {
+            "value": data.value + number > 0 ? data.value + number : 0
+        }
+        postJson(URLS.DATA + '/' + data.id, body).then(json => {
+            console.log(json);
+            if (json.success) {
+                data = {
+                    ...data,
+                    value: data.value + number > 0 ? data.value + number : 0
+                }
+                this.props.reduxChangeData(data);
+            }
+        })
     }
 }
 const mapStoreToProps = (store) => {
@@ -348,9 +404,10 @@ const mapStoreToProps = (store) => {
         todo: store.user.todo,
         done: store.user.done,
         actions: store.page.actions,
-        stories: store.page.testimonials
+        stories: store.page.testimonials,
+        communityData: store.page.communityData
     }
 }
-const mapDispatchToProps = { reduxAddToDone, reduxAddToTodo, reduxMoveToDone }
+const mapDispatchToProps = { reduxAddToDone, reduxAddToTodo, reduxMoveToDone, reduxChangeData }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);

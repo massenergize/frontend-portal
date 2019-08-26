@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import URLS from '../../../api/urls';
 import { getJson, postJson } from '../../../api/functions'
 import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'
+import {reduxChangeData} from '../../../redux/actions/pageActions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
@@ -126,6 +127,7 @@ class ActionsPage extends React.Component {
             console.log(json);
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
+                this.addToImpact(json.data.action);
             }
             //just update the state here
         }).catch(err => {
@@ -141,7 +143,7 @@ class ActionsPage extends React.Component {
         if (actionRel)
             this.moveToDone(actionRel);
 
-    } 
+    }
     addToCart = (aid,hid, status) => {
         const body = {
             action: aid,
@@ -158,11 +160,74 @@ class ActionsPage extends React.Component {
                 }
                 else if (status === "DONE") {
                     this.props.reduxAddToDone(json.data);
+                    this.addToImpact(json.data.action);
                 }
             }
         }).catch(error => {
             console.log(error);
         });
+    }
+
+    removeFromImpact(action){
+        this.changeDataByName("ActionsCompletedData", -1)
+        action.tags.forEach(tag => {
+            if(tag.tag_collection && tag.tag_collection.name === "Category"){
+                this.changeData(tag.id, -1);
+            }
+        });
+    }
+    addToImpact(action){
+        this.changeDataByName("ActionsCompletedData",1)
+        action.tags.forEach(tag => {
+            if(tag.tag_collection && tag.tag_collection.name === "Category"){
+                this.changeData(tag.id, 1);
+            }
+        });
+    }
+    changeDataByName(name, number){
+        var data = this.props.communityData.filter(data => {
+             return data.name === name
+            })[0];
+        
+        const body = {
+            "value": data.value+number > 0? data.value+number : 0
+        }
+        postJson(URLS.DATA + '/' + data.id, body).then(json =>{
+            console.log(json);
+            if(json.success){
+                data = {
+                    ...data,
+                    value: data.value+number > 0? data.value+number : 0
+                }
+                this.props.reduxChangeData(data);
+            }
+        })
+    }
+    changeData(tagid, number){
+        var data = this.props.communityData.filter(data => {
+             if (data.tag) {
+                 console.log(data.tag);
+                 return data.tag === tagid;
+             }
+             return false;
+            })[0];
+        if(!data){
+            console.log("no data stored for tag " + tagid);
+            return;
+        }
+        const body = {
+            "value": data.value + number > 0? data.value + number : 0
+        }
+        postJson(URLS.DATA + '/' + data.id, body).then(json =>{
+            console.log(json);
+            if(json.success){
+                data = {
+                    ...data,
+                    value: data.value+number > 0? data.value+number : 0
+                }
+                this.props.reduxChangeData(data);
+            }
+        })
     }
 }
 const mapStoreToProps = (store) => {
@@ -173,9 +238,10 @@ const mapStoreToProps = (store) => {
         done: store.user.done,
         actions: store.page.actions,
         tagCols: store.page.tagCols,
-        pageData: store.page.actionsPage
+        pageData: store.page.actionsPage,
+        communityData: store.page.communityData
     }
 }
 
-const mapDispatchToProps = {reduxAddToDone, reduxAddToTodo, reduxMoveToDone}
+const mapDispatchToProps = {reduxAddToDone, reduxAddToTodo, reduxMoveToDone, reduxChangeData}
 export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);

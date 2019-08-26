@@ -25,7 +25,8 @@ import { LOAD_COMMUNITY,
     LOAD_COMMUNITIES, 
     LOAD_TAG_COLS,
     LOAD_COMMUNITY_DATA,
-    Load_COMMUNITY_ADMINS
+    Load_COMMUNITY_ADMINS,
+    CHANGE_DATA
 } from '../actions/types';
 
 const initialState = {
@@ -229,6 +230,14 @@ export default function (state = initialState, action) {
                         actions_completed: team.actions_completed - action.payload.membe.actions_completed,
                         actions_todo: team.actions_todo - action.payload.member.actions_todo
                     }
+                ]
+            }
+        case CHANGE_DATA:
+            return {
+                ...state,
+                communityData: [
+                    ...state.communityData.filter(data => { return data.id !== action.payload.id}),
+                    action.payload
                 ]
             }
         /**************************/
