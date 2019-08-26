@@ -101,7 +101,7 @@ class App extends Component {
 			this.props.reduxLoadPolicies(myJsons[9].data)
 			this.props.reduxLoadRSVPs(myJsons[10].data)
 			this.props.reduxLoadCommunities(myJsons[11].data)
-			this.props.reduxLoadCommunity(myJsons[1].data.filter(com => {
+			this.props.reduxLoadCommunity(myJsons[11].data.filter(com => {
 				return com.subdomain === subdomain
 			})[0])
 			this.props.reduxLoadTagCols(myJsons[12].data)
