@@ -8,11 +8,10 @@ class ServicesPage extends React.Component {
     
     render() {
         const {
-            pageData,
             serviceProviders
         } = this.props;
 
-        if(pageData == null || serviceProviders == null) return <LoadingCircle/>;
+        if(serviceProviders == null) return <LoadingCircle/>;
 
         return (
             <div className="boxed_wrapper">
@@ -75,7 +74,6 @@ class ServicesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        pageData: store.page.serviceProvidersPage,
         serviceProviders: store.page.serviceProviders
     }
 }

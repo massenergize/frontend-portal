@@ -14,8 +14,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 class AboutUsPage extends React.Component {
     render() {
-        if (!this.props.pageData || !this.props.community) {
-            console.log(this.props);
+        if (!this.props.community) {
             return <LoadingCircle />;
         }
 
@@ -61,7 +60,6 @@ const mapStoreToProps = (store) => {
 
     return {
         community: store.page.community,
-        pageData: store.page.aboutUsPage,
         communityAdmins: store.page.communityAdmins
     }
 }

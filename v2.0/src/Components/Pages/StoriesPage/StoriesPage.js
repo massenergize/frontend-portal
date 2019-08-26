@@ -9,10 +9,9 @@ import StoryForm from '../ActionsPage/StoryForm'
 class StoriesPage extends React.Component {
     render() {
         const {
-            pageData,
             stories
         } = this.props;
-        if(pageData == null || stories == null) return <LoadingCircle/>;
+        if( stories == null) return <LoadingCircle/>;
 
         //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
@@ -67,7 +66,6 @@ class StoriesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        pageData: store.page.testimonialsPage,
         stories: store.page.testimonials,
         user: store.user.info
     }

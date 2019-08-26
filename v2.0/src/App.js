@@ -66,13 +66,13 @@ class App extends Component {
 		
 		Promise.all([
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Actions'),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=ServiceProviders'),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Testimonials'),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Actions'),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=ServiceProviders'),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Testimonials'),
 			getJson(URLS.TEAMS_STATS),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Events'),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Events'),
 			getJson(URLS.COMMUNITY + subdomain + '/events'),
 			getJson(URLS.COMMUNITY + subdomain + '/actions'),
 			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
@@ -85,27 +85,27 @@ class App extends Component {
 			getJson(URLS.COMMUNITY+subdomain+'/data'),
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
-			this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
-			this.props.reduxLoadServiceProvidersPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
-			this.props.reduxLoadTestimonialsPage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
-			this.props.reduxLoadTeamsPage(myJsons[4].data.length > 0 ? myJsons[4].data : null)
-			this.props.reduxLoadAboutUsPage(myJsons[5].data.length > 0 ? myJsons[5].data[0] : null)
-			// this.props.reduxLoadCommunitiesStats(myJsons[6].data.length > 0 ? myJsons[6].data : null)
-			this.props.reduxLoadDonatePage(myJsons[6].data.length > 0 ? myJsons[6].data[0] : null)
-			this.props.reduxLoadEventsPage(myJsons[7].data.length > 0 ? myJsons[7].data[0] : null)
-			this.props.reduxLoadEvents(myJsons[8].data)
-			this.props.reduxLoadActions(myJsons[9].data)
-			this.props.reduxLoadServiceProviders(myJsons[10].data)
-			this.props.reduxLoadTestimonials(myJsons[11].data)
-			this.props.reduxLoadMenu(myJsons[12].data)
-			this.props.reduxLoadPolicies(myJsons[13].data)
-			this.props.reduxLoadRSVPs(myJsons[14].data)
-			this.props.reduxLoadCommunities(myJsons[15].data)
-			this.props.reduxLoadCommunity(myJsons[15].data.filter(com => {
+			//this.props.reduxLoadActionsPage(myJsons[1].data.length > 0 ? myJsons[1].data[0] : null)
+			//this.props.reduxLoadServiceProvidersPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
+			//this.props.reduxLoadTestimonialsPage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
+			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
+			this.props.reduxLoadAboutUsPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
+			//this.props.reduxLoadCommunitiesStats(myJsons[6].data.length > 0 ? myJsons[6].data : null)
+			this.props.reduxLoadDonatePage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
+			//this.props.reduxLoadEventsPage(myJsons[4].data.length > 0 ? myJsons[7].data[0] : null)
+			this.props.reduxLoadEvents(myJsons[4].data)
+			this.props.reduxLoadActions(myJsons[5].data)
+			this.props.reduxLoadServiceProviders(myJsons[6].data)
+			this.props.reduxLoadTestimonials(myJsons[7].data)
+			this.props.reduxLoadMenu(myJsons[8].data)
+			this.props.reduxLoadPolicies(myJsons[9].data)
+			this.props.reduxLoadRSVPs(myJsons[10].data)
+			this.props.reduxLoadCommunities(myJsons[11].data)
+			this.props.reduxLoadCommunity(myJsons[1].data.filter(com => {
 				return com.subdomain === subdomain
 			})[0])
-			this.props.reduxLoadTagCols(myJsons[16].data)
-			this.props.reduxLoadCommunityData(myJsons[17].data)
+			this.props.reduxLoadTagCols(myJsons[12].data)
+			this.props.reduxLoadCommunityData(myJsons[13].data)
 		}).catch(err => {
 			console.log(err)
 		});
