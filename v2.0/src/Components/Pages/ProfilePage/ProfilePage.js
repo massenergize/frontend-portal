@@ -13,6 +13,7 @@ import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 
 import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold, reduxLeaveCommunity, reduxLoadUserCommunities } from '../../../redux/actions/userActions'
+import { reduxChangeData } from '../../../redux/actions/pageActions'
 // import { watchFile } from 'fs';
 import Tooltip from '../../Shared/Tooltip'
 import JoiningCommunityForm from './JoiningCommunityForm';
@@ -198,6 +199,7 @@ class ProfilePage extends React.Component {
             </div>
         );
     }
+
     renderCommunities(communities) {
         if (!communities) return <tr><td colSpan={2}>You haven't joined any communities yet</td></tr>;
         return Object.keys(communities).map(key => {
@@ -225,11 +227,9 @@ class ProfilePage extends React.Component {
             );
         })
     }
-
     renderHouseholds(households) {
         return Object.keys(households).map(key => {
             const house = households[key]
-
             if (this.state.editingHH === house.id) {
                 return (
                     <tr key={key}>
@@ -270,8 +270,10 @@ class ProfilePage extends React.Component {
         })
     }
 
+
     addHousehold = (household) => {
         this.props.reduxAddHousehold(household);
+        this.addHouseToImpact();
     }
     editHousehold = (household) => {
         this.props.reduxEditHousehold(household);
@@ -283,6 +285,7 @@ class ProfilePage extends React.Component {
                 console.log(json);
                 if (json.success) {
                     this.props.reduxRemoveHousehold(household);
+                    this.removeHouseFromImpact();
                 }
             }
             )
@@ -291,6 +294,41 @@ class ProfilePage extends React.Component {
                 deletingHHError: 'You need to have at least one household. Try editing the name and location or adding another household before deleting this one'
             })
         }
+    }
+    removeHouseFromImpact(){
+        this.changeDataByName("EngagedHouseholdsData", -1)
+        // action.tags.forEach(tag => {
+        //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
+        //         this.changeData(tag.id, -1);
+        //     }
+        // });
+    }
+    addHouseToImpact(){
+        this.changeDataByName("EngagedHouseholdsData",1)
+        // action.tags.forEach(tag => {
+        //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
+        //         this.changeData(tag.id, 1);
+        //     }
+        // });
+    }
+    changeDataByName(name, number){
+        var data = this.props.communityData.filter(data => {
+             return data.name === name
+            })[0];
+        
+        const body = {
+            "value": data.value+number > 0? data.value+number : 0
+        }
+        postJson(URLS.DATA + '/' + data.id, body).then(json =>{
+            console.log(json);
+            if(json.success){
+                data = {
+                    ...data,
+                    value: data.value+number > 0? data.value+number : 0
+                }
+                this.props.reduxChangeData(data);
+            }
+        })
     }
 
     leaveCommunity = (community) => {
@@ -391,6 +429,7 @@ const mapStoreToProps = (store) => {
         done: store.user.done,
         communities: store.user.info ? store.user.info.communities : null,
         community: store.page.community,
+        communityData: store.page.communityData,
         households: store.user.info ? store.user.info.households : null
     }
 }
@@ -401,5 +440,6 @@ const mapDispatchToProps = {
     reduxRemoveHousehold,
     reduxLeaveCommunity, 
     reduxLoadUserCommunities,
+    reduxChangeData
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);
