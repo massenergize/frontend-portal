@@ -4,6 +4,7 @@ import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
+import StoryForm from '../ActionsPage/StoryForm'
 
 class StoriesPage extends React.Component {
     render() {
@@ -13,18 +14,21 @@ class StoriesPage extends React.Component {
         } = this.props;
         if(pageData == null || stories == null) return <LoadingCircle/>;
 
-        const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
+        //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
         return (
             <div className="boxed_wrapper">
-                
-                <WelcomeImages
-                    data={welcomeImagesData} title="Testimonials"
-                />
                 <section className="testimonial2">
                     <div className="container">
                         <div className="row masonary-layout">
                             {this.renderStories(stories)}
+                        </div>
+                        <div className="col-12 ">
+                            {this.props.user?
+                            <StoryForm uid={this.props.user.id}/>
+                            :
+                            <p className='text-center'><Link to='/login'>Sign in</Link> to submit a story</p>
+                            }
                         </div>
                     </div>
                 </section>
@@ -34,6 +38,13 @@ class StoriesPage extends React.Component {
     }
 
     renderStories(stories) {
+        if(stories.length === 0){
+            return (
+                <div className="col-12 text-center">
+                    <p > There are not any testimonials yet.  If you have a story to tell, let us know in the form below</p>
+                </div>
+            ) 
+        }
         return stories.map(story => {
             return (
                 <div className="col-md-4 col-sm-6 col-xs-12">
@@ -57,7 +68,8 @@ class StoriesPage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         pageData: store.page.testimonialsPage,
-        stories: store.page.testimonials
+        stories: store.page.testimonials,
+        user: store.user.info
     }
 }
 export default connect(mapStoreToProps, null)(StoriesPage);

@@ -66,7 +66,7 @@
    ============================== */
 
 body {
-    font-family: "Verdana", "Open Sans", sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #999;
 }
 
@@ -104,7 +104,7 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
@@ -119,7 +119,7 @@ ul.normal li {
 }
 
 p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: large;
     color: #999;
     line-height: 26px;
@@ -155,7 +155,7 @@ button {
 
 input,
 textarea {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     display: block;
     font-size: 16px;
     line-height: 28px;
@@ -345,7 +345,7 @@ textarea {
     position: relative;
     background: #8dc63f;
     font-size: 9px;
-    font-family: 'oxygen', 'verdana';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 20px;
     border-radius: 5px;
     color: #ffffff;
@@ -362,7 +362,7 @@ textarea {
     position: relative;
     background: red;
     font-size: 9px;
-    font-family: 'oxygen', 'verdana';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 20px;
     border-radius: 5px;
     color: #ffffff;
@@ -571,7 +571,7 @@ textarea {
 .accordion .acc-btn p {
     color: #303030;
     font-size: 16px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .accordion .acc-btn.active p {}
@@ -823,7 +823,7 @@ textarea {
 .select-box .btn:after {
     position: absolute;
     content: "\f107";
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
     color: #8dc63f;
     width: 20px;
@@ -1104,7 +1104,7 @@ textarea {
 .chicklet-list label {
     display: block;
     font-size: 16px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-weight: normal;
     background: #ffffff;
     border: 1px solid #f4f4f4;
@@ -1133,7 +1133,7 @@ textarea {
     left: -30px;
     top: 9px;
     font-size: 16px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
@@ -1277,7 +1277,7 @@ textarea {
 
 #polyglotLanguageSwitcher span.trigger:before {
     content: '\f107';
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     position: absolute;
     color: #cdcdcd;
     top: 0;
@@ -1287,7 +1287,7 @@ textarea {
 }
 
 #polyglotLanguageSwitcher a {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     display: inline-block;
     font-size: 14px;
     color: #333;
@@ -1395,7 +1395,7 @@ textarea {
   position: relative;
   color: #303030;
   font-weight: 700;
-  font-family: "Verdana", sans-serif;
+  font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 .menuzord-menu > li:hover a:not(.dropdown-item) {
     color: #8dc63f;
@@ -1437,7 +1437,7 @@ textarea {
 .menuzord-menu .title {
     font-size: 20px;
     margin-bottom: 30px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .menuzord-menu>li>.megamenu {
@@ -1509,7 +1509,7 @@ textarea {
     margin-top: 15px;
     line-height: 26px;
     font-size: 16px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .event-section2 .item .lower-content h4 a {
@@ -1531,7 +1531,7 @@ textarea {
 
 .event-section2 .item .lower-content .post-meta i {
     margin-right: 5px;
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .event-section2 .item .lower-content .default_link {
@@ -1587,7 +1587,7 @@ textarea {
     top: -5px;
     font-size: 16px;
     color: #303030;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 25px;
 }
 
@@ -1597,7 +1597,7 @@ textarea {
 }
 
 .megamenu .post-info i {
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -1764,7 +1764,7 @@ textarea {
 }
 
 .tparrows:before {
-    font-family: 'icomoon';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 60px;
 }
 
@@ -2031,7 +2031,7 @@ textarea {
     padding-left: 23px;
     transition: all 0.5s ease;
     position: relative;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .default-sidebar .service-catergory li a:hover {
@@ -2054,7 +2054,7 @@ textarea {
     right: 20px;
     top: 0px;
     color: #a0a0a0;
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .default-sidebar .event-filter {
@@ -2168,7 +2168,7 @@ textarea {
     margin-bottom: 15px;
     color: #777777;
     font-weight: 300;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .tabs-style-one.tabs-box {
@@ -2194,7 +2194,7 @@ textarea {
     margin-left: -33px;
     left: 50%;
     font-weight: 300;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 40px;
 }
 
@@ -2212,7 +2212,7 @@ textarea {
     padding: 25px 0 50px;
     color: #383838;
     font-size: 18px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -2297,7 +2297,7 @@ textarea {
 }
 
 .urgent-cause2 .content .donate {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #999;
     font-size: 16px;
 }
@@ -2329,7 +2329,7 @@ textarea {
 
 .urgent-cause2 .content .donator {
     color: #8dc63f;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     margin-top: 10px;
     border-bottom: 1px solid #8dc63f;
@@ -2409,7 +2409,7 @@ textarea {
     position: absolute;
     text-align: center;
     right: 0px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: -23px;
     bottom: 15px;
     width: 46px;
@@ -2545,7 +2545,7 @@ textarea {
     top: 25px;
     background: #8dc63f;
     color: #fff;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     line-height: 35px;
     padding: 0 15px;
@@ -2573,7 +2573,7 @@ textarea {
 }
 
 .urgent-cause .content .donate {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #999;
     font-size: 16px;
     border-bottom: 1px solid #f4f4f4;
@@ -2608,7 +2608,7 @@ textarea {
 
 .urgent-cause .content .donator {
     color: #e87542;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     margin-top: 10px;
     border-bottom: 1px solid #e87542;
@@ -2699,7 +2699,7 @@ textarea {
     position: absolute;
     text-align: center;
     right: 0px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: -23px;
     bottom: 15px;
     width: 46px;
@@ -2834,7 +2834,7 @@ textarea {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-cause .share .tag-box a:hover {
@@ -2846,7 +2846,7 @@ textarea {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-cause .share .social {
@@ -2883,7 +2883,7 @@ textarea {
 .single-cause .share .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -2954,14 +2954,14 @@ textarea {
 .fact-counter.style-1 .count-outer {
     font-size: 16px;
     color: #8dc63f;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin-top: 40px;
     margin-bottom: 10px;
 }
 
 .fact-counter.style-1 h5 {
     font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #e6e6e5;
 }
 
@@ -3027,7 +3027,7 @@ textarea {
     font-size: 40px;
     font-weight: 400;
     padding: 0px 0px 0px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
@@ -4230,7 +4230,7 @@ textarea {
     border: 2px solid #8dc63f;
     background: #ffffff;
     font-weight: 700;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 14px;
     padding-top: 13px;
     color: #8dc63f;
@@ -4428,7 +4428,7 @@ textarea {
 .testimonials-section .author h4 span {
     color: #8dc63f;
     font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -4922,7 +4922,7 @@ textarea {
 .blog-sidebar .popular-post .item .post-thumb a:after {
     position: absolute;
     content: "\f0c1";
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     left: 0px;
     top: 0px;
     text-align: center;
@@ -5284,7 +5284,7 @@ textarea {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .share-box .tag-box a:hover {
@@ -5296,7 +5296,7 @@ textarea {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .share-box .social {
@@ -5333,7 +5333,7 @@ textarea {
 .share-box .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -5675,7 +5675,7 @@ span.has-tooltip {
     position: relative;
     margin-left: 15px;
     color: #999;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-weight: 300;
     font-size: 16px;
 }
@@ -5688,7 +5688,7 @@ span.has-tooltip {
     content: "\f0dd";
     position: absolute;
     font-size: 16px;
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     left: -19px;
     top: 0px;
     transform: rotate(-90deg);
@@ -5907,7 +5907,7 @@ span.has-tooltip {
 
 .breadcumb-wrapper ul.link-list li a:after {
     content: "\f105";
-    font-family: 'FontAwesome';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin: 0 10px;
 }
 
@@ -6425,7 +6425,7 @@ span.has-tooltip {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #777;
     color: #252525;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     border-radius: 0px;
     padding: 5px;
@@ -6677,7 +6677,7 @@ span.has-tooltip {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-event .share .tag-box a:hover {
@@ -6689,7 +6689,7 @@ span.has-tooltip {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-event .share .social {
@@ -6727,7 +6727,7 @@ span.has-tooltip {
 .single-event .share .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -6777,7 +6777,7 @@ span.has-tooltip {
 .countdown-timer li span.hours,
 .countdown-timer li span.minutes,
 .countdown-timer li span.seconds {
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 24px;
     color: #fff;
     font-weight: 700;
@@ -6786,7 +6786,7 @@ span.has-tooltip {
 
 .countdown-timer li span.timeRef {
     position: relative;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
     color: #fff;
     font-weight: 700;
@@ -6901,7 +6901,7 @@ span.has-tooltip {
     text-transform: capitalize;
     font-size: 16px;
     border-radius: 7px;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     background: #f7f7f7;
 }
 
@@ -7152,7 +7152,7 @@ span.has-tooltip {
     color: #222;
     border-right: 1px solid #f4f4f4;
     font-weight: 400;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .cart-section .totals-table li {
@@ -7232,7 +7232,7 @@ span.has-tooltip {
     outline: none;
     height: 50px;
     padding-left: 15px;
-    font-family: "Roboto Slab", serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .cart-section .qty .input-group {
@@ -7376,7 +7376,7 @@ span.has-tooltip {
 
 .checkout-area .form form .field-label {
     color: #222;
-    font-family: "Roboto Slab", Sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     text-transform: capitalize;
     font-weight: 400;
     margin-bottom: 8px;
@@ -7602,7 +7602,7 @@ span.has-tooltip {
     font-size: 16px;
     font-weight: 400;
     line-height: 28px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     padding: 10px 18px;
     position: relative;
     width: 50%;
@@ -7655,7 +7655,7 @@ span.has-tooltip {
 .cart-total .payment-options .option-block .checkbox label span {
     color: #303030;
     padding-left: 5px;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
 }
 
@@ -7913,7 +7913,7 @@ span.has-tooltip {
     font-size: 14px;
     padding-left: 10px;
     line-height: 20px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -7982,7 +7982,7 @@ span.has-tooltip {
 
 .sidebar_categories ul li a:before {
     content: '\f114';
-    font-family: 'FontAwesome';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: 10px;
 }
 
@@ -8217,7 +8217,7 @@ span.has-tooltip {
     color: #8dc63f;
     font-size: 16px;
     font-weight: 400;
-    font-family: 'Roboto';
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .best_sellers .best_selling_item {
@@ -8502,7 +8502,7 @@ span.has-tooltip {
     color: #1f1f1f;
     font-size: 12px;
     font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     background: #f7f7f7;
     transition: all 500ms ease;
 }
@@ -8583,7 +8583,7 @@ span.has-tooltip {
     font-size: 24px;
     font-weight: 600;
     text-transform: uppercase;
-    font-family: 'Verdana', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin: 0 0 28px;
 }
 
@@ -8595,7 +8595,7 @@ span.has-tooltip {
 
 .product-tab-box .tab-content .product-details-content .highlight li:before {
     content: "\f00c";
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     color: #ab7442;
@@ -8619,7 +8619,7 @@ span.has-tooltip {
 
 .review-form .add-rating-box .add-rating-title h4 {
     color: #292929;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 400;
     margin: 0 0 10px;
@@ -8900,7 +8900,7 @@ span.has-tooltip {
 .social-links-three button {
     position: relative;
     display: inline-block;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     height: 42px;
     line-height: 45px;
@@ -9034,7 +9034,7 @@ span.has-tooltip {
 .best_sellers .best_selling_item .img_holder a:after {
     position: absolute;
     content: "\f0c1";
-    font-family: FontAwesome;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     left: 0px;
     top: 0px;
     text-align: center;
@@ -9075,7 +9075,7 @@ span.has-tooltip {
     font-size: 18px;
     font-weight: 400;
     margin: 0 0 20px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .not-found-content p {
@@ -9274,7 +9274,7 @@ article.slide-item.center {}
     top: 20px;
     right: 40px;
     font-size: 20px;
-    font-family: Verdana, Tahoma, sans-serif;
+    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .login-link:hover {
@@ -9382,3 +9382,13 @@ button.as-link:hover {
     margin-top: 1rem;
     margin-bottom: 0;
 }
+
+.review-form p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.home-subtitle {
+    background: #003000;
+    color: #aaa;
+}   

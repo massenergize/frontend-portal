@@ -14,13 +14,8 @@ class ServicesPage extends React.Component {
 
         if(pageData == null || serviceProviders == null) return <LoadingCircle/>;
 
-        const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
-
         return (
             <div className="boxed_wrapper">
-                <WelcomeImages
-                    data={welcomeImagesData} title="Service Providers"
-                />
                 <div className="container">
                     <div className="row pt-3 pb-3">
                         {this.renderVendors(serviceProviders)}
@@ -31,6 +26,7 @@ class ServicesPage extends React.Component {
     }
 
     renderVendors(vendors) {
+        console.log(vendors);
         return vendors.map((vendor) => {
             return (
                 <div className="col-12 col-md-6 col-lg-4" key={vendor.vendor}>
@@ -54,14 +50,18 @@ class ServicesPage extends React.Component {
                                     })}
                                 </ul>
                             </div>
+                            {vendor.address?
                             <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
                                 <span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
-                            </div>
+                            </div> : null}
                             
                             {vendor.key_contact != null ? (
                                 <div className="w-100 p-2 text-center">
-                                    <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a> 
-                                    <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
+                                    {vendor.user_info?
+                                    <>
+                                        <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a> 
+                                        <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
+                                    </>:null}
                                 </div>
                                 )
                                 : null}

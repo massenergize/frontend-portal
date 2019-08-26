@@ -38,7 +38,7 @@ class HomePage extends React.Component {
                         title={header.title}
                     /> : null
                 }
-                <h3 align='center' style={{background: '#8dc63f', color: 'white'}}>{header.description}</h3>
+                <h3 align='center' className='home-subtitle'>{header.description}</h3>
                 {this.props.graphsData ?
                     <Graphs
                         graphs={graphs}

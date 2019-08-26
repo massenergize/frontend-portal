@@ -238,14 +238,6 @@ class OneActionPage extends React.Component {
             return <span key={key}> {tagColName}<i>{tags[key].name}</i> </span>;
         })
     }
-    addStory = (story) => {
-        this.setState({
-            stories: [
-                ...this.props.stories,
-                story
-            ]
-        })
-    }
     renderStories(stories) {
         if (stories.length === 0)
             return <p> No stories about this action yet </p>;
