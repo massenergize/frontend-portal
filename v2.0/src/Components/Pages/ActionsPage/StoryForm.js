@@ -10,15 +10,16 @@ const INITIAL_STATE = {
     title: '',
     body: '',
     aid: null,
-    message: 'Already completed an action? Tell Us Your Story'
+    message: 'Already completed an action? Tell Us Your Story',
+    limit: 9000,
 };
 
 class StoryForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             ...INITIAL_STATE,
-            message: props.aid? 'Already completed this action? Tell Us Your Story' : 'Already completed an action? Tell Us Your Story'
+            message: props.aid ? 'Already completed this action? Tell Us Your Story' : 'Already completed an action? Tell Us Your Story'
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -28,15 +29,14 @@ class StoryForm extends React.Component {
     render() {
         if (!this.props.actions || this.props.actions.length === 0) return <p> Sorry, there are no actions to submit a story about </p>;
         return (
-            <div className="review-form" style={{border:'1px solid #aaa'}}>
+            <div className="review-form" style={{ border: '1px solid #aaa' }}>
                 <div className="tab-title-h4 text center">
                     <h4>{this.state.message}</h4>
                 </div>
-                <form onSubmit={this.onSubmit} style={{margin:'20px'}} >
+                <form onSubmit={this.onSubmit} style={{ margin: '20px' }} >
                     {this.props.aid ? null :
                         <>
                             <p> Which action is this testimonial about? </p>
-                            {this.state.error ? <p className='text-danger'>{this.state.error}</p> : null}
                             <select value={this.state.aid} onChange={event => this.setState({ aid: event.target.value })}>
                                 <option value={null}>--</option>
                                 {this.renderActionOptions(this.props.actions)}
@@ -51,8 +51,17 @@ class StoryForm extends React.Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="field-label">
-                                <p>Your Story*</p>
-                                <textarea name="body" value={this.state.body} onChange={this.onChange} style={{width:'100%'}} required></textarea>
+                                <p style={{ display: 'inline-block', float: 'left'}}>Your Story*</p>
+                                <p
+                                        className={this.state.body.length > this.state.limit ? "text-danger" : null}
+                                        style={{ display: 'inline-block', float: 'right'}}
+                                    >
+                                        {this.state.body.length + ' / ' + this.state.limit + 'chars'}
+                                    </p>
+                                <textarea name="body" value={this.state.body} onChange={this.onChange} style={{ width: '100%' }} required>
+                                    
+                                </textarea>
+                                
                             </div>
                         </div>
                     </div>
@@ -61,11 +70,16 @@ class StoryForm extends React.Component {
                             <button className="thm-btn bg-cl-1" type="submit">Submit Now</button>
                         </div>
                     </div>
+                    {this.state.error ? <p className='text-danger'>{this.state.error}</p> : null}
+
                 </form>
             </div>
         );
     }
-
+    count = (words) => {
+        // return words.split(' ').length //word count
+        return words.length; //char count
+    }
     //updates the state when form elements are changed
     onChange(event) {
         this.setState({
@@ -91,8 +105,10 @@ class StoryForm extends React.Component {
             "title": this.state.title,
             "community": this.props.community.id
         }
-        if (!this.props.aid && !this.state.aid) {
+        if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
             this.setState({ error: "Please choose which action you are writing a testimonial about" })
+        } else if(this.count(this.state.body) > this.state.limit){
+            this.setState({ error: "Sorry, your story is too long" })
         } else {
             postJson(URLS.TESTIMONIALS, body).then(json => {
                 console.log(json);
@@ -104,7 +120,7 @@ class StoryForm extends React.Component {
                 } else {
                     this.setState({
                         ...INITIAL_STATE,
-                        message: "We are sorry, but you can only submit one story about this Action"
+                        error: "We are sorry, but you can only submit one story about this Action"
                     })
                 }
                 console.log(this.state);

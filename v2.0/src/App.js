@@ -69,7 +69,7 @@ class App extends Component {
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Actions'),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=ServiceProviders'),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Testimonials'),
-			getJson(URLS.TEAMS_STATS),
+			getJson(URLS.TEAMS_STATS+'?community__subdomain='+subdomain),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Events'),
