@@ -2,6 +2,7 @@ import React from 'react'
 import LoginForm from './LoginForm'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class LoginPage extends React.Component {
     constructor(props){
@@ -22,6 +23,8 @@ class LoginPage extends React.Component {
         }
 
         return (
+            <>
+            <BreadCrumbBar links={[{ name: 'Sign In' }]} />
             <div className="boxed_wrapper">
                 <section className="register-section sec-padd-top">
                     <div className="container">
@@ -33,8 +36,8 @@ class LoginPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                
             </div>
+            </>
         );
     }
 }

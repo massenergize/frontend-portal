@@ -4,30 +4,14 @@ import PageTitle from '../../Shared/PageTitle';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import {connect} from 'react-redux';
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class PoliciesPage extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         loaded: false
-    //     }
-    // }
-    // componentDidMount() {
-    //     Promise.all([
-    //         getJson(URLS.PAGE + "/2"),
-	// 	]).then(myJsons => {
-	// 		this.setState({
-    //             policies: myJsons[0].data.sections,
-	// 			loaded: true
-	// 		})
-	// 	}).catch(err => {
-	// 		console.log(err)
-	// 	});
-    // }
-
     render() {
         if(!this.props.policies) return <LoadingCircle/>;
         return (
+            <>
+            <BreadCrumbBar links={[{ name: 'Policies' }]} />
             <div className='boxed-wrapper'>
                 <div className="container p-5">
                     <PageTitle>Policies</PageTitle>
@@ -36,6 +20,7 @@ class PoliciesPage extends React.Component {
                     </Accordion>
                 </div>
             </div>
+            </>
         );
     }
 

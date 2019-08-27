@@ -1,16 +1,15 @@
 import React from 'react'
-import { section } from '../../../api/functions'
-import LoadingCircle from '../../Shared/LoadingCircle';
-import WelcomeImages from '../../Shared/WelcomeImages'
+import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import StoryForm from '../ActionsPage/StoryForm'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class StoriesPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            limit: 140, //a tweet
+            limit: 140, //size of a tweet
             expanded: null
         }
     }
@@ -23,23 +22,25 @@ class StoriesPage extends React.Component {
         //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
         return (
-            <div className="boxed_wrapper">
-                <section className="testimonial2">
-                    <div className="container">
-                        <div className="row masonary-layout">
-                            {this.renderStories(stories)}
+            <>
+                <BreadCrumbBar links={[{ name: 'Testimonials' }]} />
+                <div className="boxed_wrapper">
+                    <section className="testimonial2">
+                        <div className="container">
+                            <div className="row masonary-layout">
+                                {this.renderStories(stories)}
+                            </div>
+                            <div className="col-12 ">
+                                {this.props.user ?
+                                    <StoryForm uid={this.props.user.id} />
+                                    :
+                                    <p className='text-center'><Link to='/login'>Sign in</Link> to submit a story</p>
+                                }
+                            </div>
                         </div>
-                        <div className="col-12 ">
-                            {this.props.user ?
-                                <StoryForm uid={this.props.user.id} />
-                                :
-                                <p className='text-center'><Link to='/login'>Sign in</Link> to submit a story</p>
-                            }
-                        </div>
-                    </div>
-                </section>
-
-            </div>
+                    </section>
+                </div>
+            </>
         );
     }
 

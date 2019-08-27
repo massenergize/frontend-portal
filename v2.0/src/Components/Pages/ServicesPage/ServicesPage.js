@@ -3,6 +3,7 @@ import { section } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages';
 import { connect } from 'react-redux'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class ServicesPage extends React.Component {
     
@@ -14,6 +15,8 @@ class ServicesPage extends React.Component {
         if(serviceProviders == null) return <LoadingCircle/>;
 
         return (
+            <>
+            <BreadCrumbBar links={[{ name: 'Service Providers' }]} />
             <div className="boxed_wrapper">
                 <div className="container">
                     <div className="row pt-3 pb-3">
@@ -21,6 +24,7 @@ class ServicesPage extends React.Component {
                     </div>
                 </div>
             </div>
+            </>
         );
     }
 

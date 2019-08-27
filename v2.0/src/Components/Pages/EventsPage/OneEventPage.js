@@ -2,32 +2,8 @@ import React from 'react'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 class OneEventPage extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         loaded: false,
-    //     }
-    // }
-    //gets the data from the api url and puts it in pagedata and menudata
-    // componentDidMount() {
-    //     Promise.all([
-    //         getJson(URLS.USERS + "?email=" + this.props.auth.email),
-    //         getJson(URLS.EVENT + "/" + this.props.match.params.id),
-    //     ]).then(myJsons => {
-    //         console.log(myJsons[1]);
-    //         this.setState({
-    //             ...this.state,
-    //             loaded: true,
-    //             user: myJsons[0].data[0],
-    //             event: myJsons[1].data,
-    //         })
-    //     }).catch(error => {
-    //         console.log(error);
-    //         return null;
-    //     });
-    // }
-
     /**
     * renders a single event from the passes id prop 
     */
@@ -39,16 +15,18 @@ class OneEventPage extends React.Component {
         })[0]
         //avoids trying to render before the promise from the server is fulfilled
         return (
-            <div className="boxed_wrapper">
-                <section className="shop-single-area">
-                    <div className="container">
-                        <div className="single-products-details">
-                            {this.renderEvent(event)}
+            <>
+                <BreadCrumbBar links={[{ link: '/events', name: 'Events' }, { name: `Event ${event.id}` }]} />
+                <div className="boxed_wrapper">
+                    <section className="shop-single-area">
+                        <div className="container">
+                            <div className="single-products-details">
+                                {this.renderEvent(event)}
+                            </div>
                         </div>
-                    </div>
-                </section>
-
-            </div>
+                    </section>
+                </div>
+            </>
         );
     }
 
@@ -149,7 +127,7 @@ class OneEventPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth, 
+        auth: store.firebase.auth,
         user: store.user.info,
         events: store.page.events,
 

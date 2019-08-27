@@ -10,6 +10,7 @@ import ChooseHHForm from './ChooseHHForm';
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
 import { reduxChangeData } from '../../../redux/actions/pageActions'
 import Tooltip from '../../Shared/Tooltip'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 
 /**
@@ -37,33 +38,35 @@ class OneActionPage extends React.Component {
         })[0]
         this.chooseFontSize();
         return (
-            <div className="boxed_wrapper">
-                <section className="shop-single-area">
-                    <div className="container">
-                        <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <div className="col-md-8">
-                                <div className="single-products-details">
-                                    {this.renderAction(action)}
+            <>
+                <BreadCrumbBar links={[{ link: '/actions', name: 'All Actions' }, { name: `Action ${action.id}` }]} />
+                <div className="boxed_wrapper">
+                    <section className="shop-single-area">
+                        <div className="container">
+                            <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                                <div className="col-md-8">
+                                    <div className="single-products-details">
+                                        {this.renderAction(action)}
+                                    </div>
                                 </div>
-                            </div>
-                            {/* makes the todo and completed actions carts */}
-                            {this.props.user ?
-                                <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                                    <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
-                                    <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
-                                </div>
-                                :
-                                <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                                    <p>
-                                        <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                {/* makes the todo and completed actions carts */}
+                                {this.props.user ?
+                                    <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
+                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
+                                    </div>
+                                    :
+                                    <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                                        <p>
+                                            <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
                                     </p>
-                                </div>
-                            }
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
-                </section>
-
-            </div>
+                    </section>
+                </div>
+            </>
         );
     }
     /**
@@ -342,7 +345,7 @@ class OneActionPage extends React.Component {
         });
     }
 
-    
+
     addToImpact(action) {
         this.changeDataByName("ActionsCompletedData", 1)
         action.tags.forEach(tag => {

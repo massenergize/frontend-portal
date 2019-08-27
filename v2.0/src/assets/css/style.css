@@ -5873,7 +5873,8 @@ span.has-tooltip {
 
 .breadcumb-wrapper {
     background: rgb(66, 138, 54);
-    padding: 10px 0;
+    height: 30px;
+    line-height: 30px;
     border-bottom: 1px solid #f4f4f4;
 }
 
@@ -5884,41 +5885,43 @@ span.has-tooltip {
     list-style: none;
     font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
     color: #8dc63f;
+    display: inline-block;
 }
 
-.breadcumb-wrapper ul.link-list li a {
+.breadcumb-wrapper ul.link-list li .link {
     color: #222;
-    text-transform: uppercase;
     font-weight: 700;
     font-size: 14px;
     transition: .3s ease;
+    display: inline-block;
 }
 
-.breadcumb-wrapper ul.link-list li a:hover {
+.breadcumb-wrapper ul.link-list li .link:hover {
     transition: .3s ease;
+    color: #8dc63f;
 }
 
-.breadcumb-wrapper ul.link-list li a i {
+.breadcumb-wrapper ul.link-list li .link i {
     color: #fac012;
     margin-right: 7px;
 }
 
-.breadcumb-wrapper ul.link-list li a:after {
-    content: "\f105";
+.breadcumb-wrapper ul.link-list li .link:after {
+    content: ">";
     font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
     margin: 0 10px;
+    display: inline-block;
 }
 
-.breadcumb-wrapper a.get-qoute {
+.breadcumb-wrapper .link.get-qoute {
     text-transform: uppercase;
     font-weight: 700;
     color: #8dc63f;
     font-size: 14px;
 }
 
-.breadcumb-wrapper a.get-qoute i {
+.breadcumb-wrapper .link.get-qoute i {
     margin-left: 7px;
     color: #8dc63f;
     margin-right: 7px;

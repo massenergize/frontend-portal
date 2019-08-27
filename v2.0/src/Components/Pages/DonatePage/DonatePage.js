@@ -3,6 +3,7 @@ import PageTitle from '../../Shared/PageTitle';
 import { section } from '../../../api/functions';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class DonatePage extends React.Component {
     
@@ -15,6 +16,8 @@ class DonatePage extends React.Component {
         const header = section(pageSections, "DonatePageHeader", true);
         const button = section(pageSections, "DonatePageButton", true);
         return (
+            <>
+            <BreadCrumbBar links={[{ name: 'Donate' }]} />
             <div className='boxed-wrapper'>
                 <div className="container p-5">
                     <PageTitle>{header.title}</PageTitle>
@@ -34,6 +37,7 @@ class DonatePage extends React.Component {
                     
                 </div>
             </div>
+            </>
         );
     }
 }

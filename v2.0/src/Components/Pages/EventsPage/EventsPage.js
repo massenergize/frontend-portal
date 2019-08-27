@@ -8,6 +8,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import RSVPForm from './RSVPForm';
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 
 /**
@@ -30,6 +31,8 @@ class EventsPage extends React.Component {
     render() {
         //avoids trying to render before the promise from the server is fulfilled
         return (
+            <>
+            <BreadCrumbBar links={[{ name: 'Events' }]} />
             <div className="boxed_wrapper">
                 {/* renders the sidebar and events columns */}
                 <div className="boxed-wrapper">
@@ -50,6 +53,7 @@ class EventsPage extends React.Component {
                     </section>
                 </div>
             </div>
+            </>
         );
     }
 

@@ -5,7 +5,7 @@ import URLS from '../../../api/urls';
 import { getJson, postJson } from '../../../api/functions'
 import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'
 import {reduxChangeData} from '../../../redux/actions/pageActions'
-import LoadingCircle from '../../Shared/LoadingCircle';
+import BreadCrumbBar from '../../Shared/BreadCrumbBar';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
@@ -29,6 +29,8 @@ class ActionsPage extends React.Component {
     }
     render() {
         return (
+            <>
+            <BreadCrumbBar links={[{name: 'All Actions'}]}/>
             <div className="boxed_wrapper">
                 {/* main shop section */}
                 <div className="shop sec-padd">
@@ -65,6 +67,7 @@ class ActionsPage extends React.Component {
                     </div>
                 </div>
             </div>
+            </>
         );
     }
     // on change in any category or tag checkbox update the actionsPage

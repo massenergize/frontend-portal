@@ -8,6 +8,7 @@ import { postJson, deleteJson } from '../../../api/functions'
 
 import SignOutButton from '../../Shared/SignOutButton'
 import Cart from '../../Shared/Cart'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
@@ -43,160 +44,163 @@ class ProfilePage extends React.Component {
         if (this.props.user.households.length === 0) {
             this.addDefaultHousehold();
         }
-        if (this.props.user.communities.filter(com=>{return com.id === this.props.community.id}).length === 0) {
-            if(this.props.community)
+        if (this.props.user.communities.filter(com => { return com.id === this.props.community.id }).length === 0) {
+            if (this.props.community)
                 this.addDefaultCommunity();
         }
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
         //if (!user) return <Redirect to='/register?form=2' />
         return (
-            <div className='boxed_wrapper' onClick={this.clearError}>
-                <div className="container">
-                    {this.state.printing ?
-                        <>
-                            <PrintCart />
-                            <button className='thm-btn text-center' onClick={() => this.setState({ printing: false })}> Cancel</button>
-                        </>
-                        :
-                        <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-                            <div className="col-lg-6 col-md-6  col-12">
-                                {!this.state.editingProfile ?
-                                    <>
-                                        <h3>{user ?
-                                            <div style={{ display: 'inline-block' }}>
-                                                <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
-                                            </div>
-                                            :
-                                            "Your Profile"
-                                        }
-                                            &nbsp;&nbsp;
+            <>
+                <BreadCrumbBar links={[{ name: 'Profile' }]} />
+                <div className='boxed_wrapper' onClick={this.clearError}>
+                    <div className="container">
+                        {this.state.printing ?
+                            <>
+                                <PrintCart />
+                                <button className='thm-btn text-center' onClick={() => this.setState({ printing: false })}> Cancel</button>
+                            </>
+                            :
+                            <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
+                                <div className="col-lg-6 col-md-6  col-12">
+                                    {!this.state.editingProfile ?
+                                        <>
+                                            <h3>{user ?
+                                                <div style={{ display: 'inline-block' }}>
+                                                    <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
+                                                </div>
+                                                :
+                                                "Your Profile"
+                                            }
+                                                &nbsp;&nbsp;
                                     <button style={{ display: 'inline-block', color: 'green' }} onClick={() => this.setState({ editingProfile: true })}> <i className='fa fa-edit' /></button>
-                                            &nbsp;&nbsp;
+                                                &nbsp;&nbsp;
                                     </h3>
-                                    </>
-                                    :
-                                    <>
-                                        <EditingProfileForm
-                                            full_name={this.props.user.full_name}
-                                            preferred_name={this.props.user.preferred_name}
-                                            closeForm={() => this.setState({ editingProfile: false })}
-                                        />
-                                    </>
-                                }
-                                <section className="fact-counter style-2 sec-padd" >
-                                    <div className="container">
-                                        <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
-                                            <div className="row no-gutter">
-                                                <div className="column counter-column col-lg-4 col-6 ">
-                                                    <Counter end={this.props.done? this.props.done.length:0} icon={"icon-money"} title={"Actions Completed"} />
-                                                </div>
-                                                <div className="column counter-column  d-lg-block d-none col-4 ">
-                                                    <Counter end={this.props.todo? this.props.todo.length:0} icon={"icon-money"} title={"Actions To Do"} />
-                                                </div>
-                                                <div className="column counter-column col-lg-4 col-6"  >
-                                                    <Counter end={this.props.done? this.props.done.length * 10: 0} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+                                        </>
+                                        :
+                                        <>
+                                            <EditingProfileForm
+                                                full_name={this.props.user.full_name}
+                                                preferred_name={this.props.user.preferred_name}
+                                                closeForm={() => this.setState({ editingProfile: false })}
+                                            />
+                                        </>
+                                    }
+                                    <section className="fact-counter style-2 sec-padd" >
+                                        <div className="container">
+                                            <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
+                                                <div className="row no-gutter">
+                                                    <div className="column counter-column col-lg-4 col-6 ">
+                                                        <Counter end={this.props.done ? this.props.done.length : 0} icon={"icon-money"} title={"Actions Completed"} />
+                                                    </div>
+                                                    <div className="column counter-column  d-lg-block d-none col-4 ">
+                                                        <Counter end={this.props.todo ? this.props.todo.length : 0} icon={"icon-money"} title={"Actions To Do"} />
+                                                    </div>
+                                                    <div className="column counter-column col-lg-4 col-6"  >
+                                                        <Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </section>
+                                    </section>
 
-                                <table className="profile-table" style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <th> Your Households </th>
-                                            <th />
-                                            <th />
-                                        </tr>
-                                        {this.renderHouseholds(user.households)}
-                                        {!this.state.editingHH ?
+                                    <table className="profile-table" style={{ width: '100%' }}>
+                                        <tbody>
                                             <tr>
-                                                <td colSpan={3}>
-                                                    {this.state.addingHH ?
-                                                        <>
-                                                            <AddingHouseholdForm
-                                                                user={this.props.user}
-                                                                addHousehold={this.addHousehold}
-                                                                closeForm={() => this.setState({ addingHH: false })}
-                                                            />
-                                                            <button
-                                                                className="thm-btn"
-                                                                onClick={() => this.setState({ addingHH: false })}
-                                                                style={{ width: '99%' }}>Cancel
-                                                                    </button>
-                                                        </>
-                                                        :
-                                                        <button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
-                                                    }
-                                                </td>
+                                                <th> Your Households </th>
+                                                <th />
+                                                <th />
                                             </tr>
-                                            : null}
+                                            {this.renderHouseholds(user.households)}
+                                            {!this.state.editingHH ?
+                                                <tr>
+                                                    <td colSpan={3}>
+                                                        {this.state.addingHH ?
+                                                            <>
+                                                                <AddingHouseholdForm
+                                                                    user={this.props.user}
+                                                                    addHousehold={this.addHousehold}
+                                                                    closeForm={() => this.setState({ addingHH: false })}
+                                                                />
+                                                                <button
+                                                                    className="thm-btn"
+                                                                    onClick={() => this.setState({ addingHH: false })}
+                                                                    style={{ width: '99%' }}>Cancel
+                                                                    </button>
+                                                            </>
+                                                            :
+                                                            <button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                : null}
 
-                                    </tbody>
-                                </table>
-                                {this.state.deletingHHError ?
-                                    <p className='text-danger'> {this.state.deletingHHError}</p> : null
-                                }
-                                <br />
-                                <table className="profile-table" style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <th> Your teams </th>
-                                            <th></th>
-                                        </tr>
-                                        {this.renderTeams(user.teams)}
-                                        <tr>
-                                            <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <br />
-                                <table className="profile-table" style={{ width: '100%' }}>
-                                    <tbody>
-                                        <tr>
-                                            <th> Your Communities </th>
-                                            <th></th>
-                                        </tr>
-                                        {this.renderCommunities(user.communities)}
-                                        <tr>
-                                            {this.state.joiningCom ?
-                                                <td colSpan={2}>
-                                                    <JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
+                                        </tbody>
+                                    </table>
+                                    {this.state.deletingHHError ?
+                                        <p className='text-danger'> {this.state.deletingHHError}</p> : null
+                                    }
+                                    <br />
+                                    <table className="profile-table" style={{ width: '100%' }}>
+                                        <tbody>
+                                            <tr>
+                                                <th> Your teams </th>
+                                                <th></th>
+                                            </tr>
+                                            {this.renderTeams(user.teams)}
+                                            <tr>
+                                                <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br />
+                                    <table className="profile-table" style={{ width: '100%' }}>
+                                        <tbody>
+                                            <tr>
+                                                <th> Your Communities </th>
+                                                <th></th>
+                                            </tr>
+                                            {this.renderCommunities(user.communities)}
+                                            <tr>
+                                                {this.state.joiningCom ?
+                                                    <td colSpan={2}>
+                                                        <JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
 
-                                                </td>
-                                                :
-                                                <td colSpan={2}>
-                                                    <button className="thm-btn" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
-                                                </td>
-                                            }
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                {this.state.leaveComError ?
-                                    <p className='text-danger'> {this.state.leaveComError}</p> : null
-                                }
-                                <br />
-                                <br />
-                                <br />
+                                                    </td>
+                                                    :
+                                                    <td colSpan={2}>
+                                                        <button className="thm-btn" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
+                                                    </td>
+                                                }
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    {this.state.leaveComError ?
+                                        <p className='text-danger'> {this.state.leaveComError}</p> : null
+                                    }
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
+                                {/* makes the todo and completed actions carts */}
+                                <div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
+
+                                    <h3 className="col-12 text-right">
+                                        <SignOutButton style={{ display: 'inline-block' }} />
+                                    </h3>
+                                    <br />
+                                    {this.props.todo ?
+                                        <Cart title="To Do List" actionRels={this.props.todo} status="TODO" /> : null}
+                                    {this.props.done ?
+                                        <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" /> : null}
+                                    <button className='thm-btn text-center' onClick={() => this.setState({ printing: true })}> Summarize your actions</button>
+                                </div>
                             </div>
-                            {/* makes the todo and completed actions carts */}
-                            <div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
-
-                                <h3 className="col-12 text-right">
-                                    <SignOutButton style={{ display: 'inline-block' }} />
-                                </h3>
-                                <br />
-                                {this.props.todo?
-                                <Cart title="To Do List" actionRels={this.props.todo} status="TODO" />:null}
-                                {this.props.done?
-                                <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" />:null}
-                                <button className='thm-btn text-center' onClick={() => this.setState({ printing: true })}> Summarize your actions</button>
-                            </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 
@@ -295,7 +299,7 @@ class ProfilePage extends React.Component {
             })
         }
     }
-    removeHouseFromImpact(){
+    removeHouseFromImpact() {
         this.changeDataByName("EngagedHouseholdsData", -1)
         // action.tags.forEach(tag => {
         //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
@@ -303,28 +307,28 @@ class ProfilePage extends React.Component {
         //     }
         // });
     }
-    addHouseToImpact(){
-        this.changeDataByName("EngagedHouseholdsData",1)
+    addHouseToImpact() {
+        this.changeDataByName("EngagedHouseholdsData", 1)
         // action.tags.forEach(tag => {
         //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
         //         this.changeData(tag.id, 1);
         //     }
         // });
     }
-    changeDataByName(name, number){
+    changeDataByName(name, number) {
         var data = this.props.communityData.filter(data => {
-             return data.name === name
-            })[0];
-        
+            return data.name === name
+        })[0];
+
         const body = {
-            "value": data.value+number > 0? data.value+number : 0
+            "value": data.value + number > 0 ? data.value + number : 0
         }
-        postJson(URLS.DATA + '/' + data.id, body).then(json =>{
+        postJson(URLS.DATA + '/' + data.id, body).then(json => {
             console.log(json);
-            if(json.success){
+            if (json.success) {
                 data = {
                     ...data,
-                    value: data.value+number > 0? data.value+number : 0
+                    value: data.value + number > 0 ? data.value + number : 0
                 }
                 this.props.reduxChangeData(data);
             }
@@ -349,7 +353,7 @@ class ProfilePage extends React.Component {
                     this.props.reduxLeaveCommunity(community);
                 }
             })
-        }else{
+        } else {
             this.setState({
                 leaveComError: "You can't leave your home community"
             })
@@ -358,12 +362,12 @@ class ProfilePage extends React.Component {
 
     clearError = () => {
         if (this.state.deletingHHError) {
-            this.setState({ 
+            this.setState({
                 deletingHHError: null,
             })
         }
-        if ( this.state.leaveComError) {
-            this.setState({ 
+        if (this.state.leaveComError) {
+            this.setState({
                 leaveComError: null,
             })
         }
@@ -438,7 +442,7 @@ const mapDispatchToProps = {
     reduxAddHousehold,
     reduxEditHousehold,
     reduxRemoveHousehold,
-    reduxLeaveCommunity, 
+    reduxLeaveCommunity,
     reduxLoadUserCommunities,
     reduxChangeData
 };
