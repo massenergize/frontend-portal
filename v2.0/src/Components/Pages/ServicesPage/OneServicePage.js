@@ -3,6 +3,7 @@ import LoadingCircle from '../../Shared/LoadingCircle';
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import { Link } from 'react-router-dom'
+import StoryForm from '../ActionsPage/StoryForm';
 
 class OneServicePage extends React.Component {
     constructor(props) {
@@ -81,9 +82,10 @@ class OneServicePage extends React.Component {
                             : null}
                         <br />
                         <div className='text-center'>
-                            <h4> Testimonials about this Service Provider </h4>
+                            <h4 style={{background:'#003000', color: 'white'}}> Testimonials about this Service Provider </h4>
                         </div>
                         {this.renderStories(stories)}
+                        <StoryForm vid={vendor.id}/>
                     </div>
                 </div>
             </div>

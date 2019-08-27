@@ -19,9 +19,16 @@ const INITIAL_STATE = {
 class StoryForm extends React.Component {
     constructor(props) {
         super(props);
+        var message = 'Already completed an action? Tell Us Your Story';
+        if(props.aid) message = 'Already completed this action? Tell Us Your Story';
+        if(props.vid) message = 'Already used this vendor? Tell Us Your Story';
+
         this.state = {
             ...INITIAL_STATE,
-            message: props.aid ? 'Already completed this action? Tell Us Your Story' : 'Already completed an action? Tell Us Your Story'
+            vid: props.vid? props.vid : '--',
+            aid: props.aid? props.aid : '--',
+
+            message: message
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -30,7 +37,7 @@ class StoryForm extends React.Component {
 
     render() {
         if (!this.props.actions || this.props.actions.length === 0) return <p> Sorry, there are no actions to submit a story about </p>;
-        if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({vendor:''})
+        if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
         return (
             <div className="review-form" style={{ border: '1px solid #aaa' }}>
                 <div className="tab-title-h4 text center">
@@ -47,16 +54,20 @@ class StoryForm extends React.Component {
                             <br />
                         </>
                     }
-                    <p> Who helped you complete this action? </p>
-                    <select value={this.state.vid} onChange={event => this.setState({ vid: event.target.value })}>
-                        <option value={'--'}>Did it myself!</option>
-                        {this.renderOptions(this.props.vendors)}
-                        <option value={'other'}>Other</option>
-                    </select> &nbsp; &nbsp; &nbsp; 
-                    {this.state.vid === 'other' ?
-                        <div className="field-label" style ={{display: 'inline-block'}}>
-                            <input type="text" name="vendor" value={this.state.vendor} onChange={this.onChange} autoFocus={true} required />
-                        </div> : <br/>
+                    {this.props.vid ? null :
+                        <>
+                            <p> Who helped you complete this action? </p>
+                            <select value={this.state.vid} onChange={event => this.setState({ vid: event.target.value })}>
+                                <option value={'--'}>Did it myself!</option>
+                                {this.renderOptions(this.props.vendors)}
+                                <option value={'other'}>Other</option>
+                            </select> &nbsp; &nbsp; &nbsp;
+                            {this.state.vid === 'other' ?
+                                <div className="field-label" style={{ display: 'inline-block' }}>
+                                    <input type="text" name="vendor" value={this.state.vendor} onChange={this.onChange} autoFocus={true} required />
+                                </div> : <br />
+                            }
+                        </>
                     }
                     <div className="field-label">
                         <p>Story Title*</p>
@@ -112,7 +123,7 @@ class StoryForm extends React.Component {
         event.preventDefault();
         /** Collects the form data and sends it to the backend */
         const body = {
-            "user": this.props.uid,
+            "user": this.props.user.id,
             "vendor": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
             "action": this.props.aid ? this.props.aid : this.state.aid,
             "rank": 0,
@@ -146,6 +157,7 @@ class StoryForm extends React.Component {
 
 const mapStoreToProps = (store) => {
     return {
+        user: store.user.info,
         actions: store.page.actions,
         vendors: store.page.serviceProviders,
         community: store.page.community
