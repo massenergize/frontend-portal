@@ -9,6 +9,7 @@ import { reduxAddRSVP, reduxRemoveRSVP, reduxChangeRSVP } from '../../../redux/a
 /********************************************************************/
 const INITIAL_STATE = {
     value: '--',
+    oldvalue: '--',
 };
 
 class RSVPForm extends React.Component {
@@ -16,6 +17,7 @@ class RSVPForm extends React.Component {
         super(props);
         this.state = {
             value: props.rsvp ? props.rsvp.status : INITIAL_STATE.value,
+            oldvalue: props.rsvp ? props.rsvp.status : INITIAL_STATE.oldvalue
         };
 
         this.onChange = this.onChange.bind(this);
@@ -32,26 +34,36 @@ class RSVPForm extends React.Component {
                     <option value='RSVP'>Going</option>
                     <option value='SAVE'>Save For Later</option>
                 </select>
+                &nbsp;
+                {this.state.oldvalue !== this.state.value? 
+                    <button className='thm-btn style-4' onClick={this.handleSubmit}>Submit</button>
+                    :
+                    null
+                }
             </>
         );
     }
 
     //updates the state when form elements are changed
     onChange(event) {
-        const oldvalue = this.state.value;
         this.setState({
             value: event.target.value,
         });
-        if(oldvalue === '--'){
-            this.addRSVP(event.target.value);
+    };
+    handleSubmit = (event) => {
+        if(this.state.oldvalue === '--'){
+            this.addRSVP(this.state.value);
         }
-        else if(event.target.value === '--'){
-            this.removeRSVP(event.target.value);
+        else if(this.state.value === '--'){
+            this.removeRSVP(this.state.value);
         }
         else { 
-            this.changeRSVP(event.target.value)
+            this.changeRSVP(this.state.value);
         }
-    };
+        this.setState({
+            oldvalue: this.state.value
+        })
+    }
 
     addRSVP = (status) => {
         const body = {

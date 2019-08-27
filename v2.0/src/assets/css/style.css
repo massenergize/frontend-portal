@@ -5861,6 +5861,7 @@ span.has-tooltip {
     font-weight: 700;
     line-height: 60px;
     color: #fff;
+    background: #00000077;
 }
 
 .inner-banner .box {
@@ -9393,5 +9394,5 @@ button.as-link:hover {
 
 .home-subtitle {
     background: #003000;
-    color: #aaa;
+    color: white;
 }   
