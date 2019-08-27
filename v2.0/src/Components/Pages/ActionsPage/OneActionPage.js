@@ -22,6 +22,8 @@ class OneActionPage extends React.Component {
         super(props);
         this.state = {
             status: null,
+            limit: 140,
+            expanded: null
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -201,7 +203,7 @@ class OneActionPage extends React.Component {
                                 :
                                 <p>
                                     <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
-                            </p>
+                                </p>
                             }
                         </div>
 
@@ -242,7 +244,7 @@ class OneActionPage extends React.Component {
             return <span key={key}> {tagColName}<i>{tags[key].name}</i> </span>;
         })
     }
-    renderStories(stories) {
+    renderStories = (stories) => {
         if (stories.length === 0)
             return <p> No stories about this action yet </p>;
         return (
@@ -265,9 +267,26 @@ class OneActionPage extends React.Component {
                                     </div>
                                 </div>
                                 <div className="text">
-                                    <h6>{story.title}</h6>
-                                    <p>{story.body}</p>
+                                    <h6>
+                                        {story.title}
+                                        {this.state.expanded && this.state.expanded === story.id ?
+                                            <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
+                                        }
+                                    </h6>
+
+                                    <p>{this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, this.state.limit)}
+                                        {this.state.limit < story.body.length && this.state.expanded !== story.id ?
+                                            <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: story.id }) }}>more...</button>
+                                            :
+                                            null
+                                        }
+                                    </p>
                                 </div>
+                                {story.vendor ?
+                                    <div className="text">
+                                        <p>Linked Vendor: <Link to={`/services/${story.vendor.id}`}>{story.vendor.name}</Link></p>
+                                    </div> : null
+                                }
                             </div>
                         </div>
                     );

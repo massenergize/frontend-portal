@@ -12,6 +12,7 @@ import ActionsPage from './Components/Pages/ActionsPage/ActionsPage'
 import OneActionPage from './Components/Pages/ActionsPage/OneActionPage'
 import AboutUsPage from './Components/Pages/AboutUsPage/AboutUsPage'
 import ServicesPage from './Components/Pages/ServicesPage/ServicesPage'
+import OneServicePage from './Components/Pages/ServicesPage/OneServicePage'
 import StoriesPage from './Components/Pages/StoriesPage/StoriesPage'
 import LoginPage from './Components/Pages/LoginPage/LoginPage'
 import EventsPage from './Components/Pages/EventsPage/EventsPage'
@@ -173,7 +174,8 @@ class App extends Component {
 							<Route path="/home" component={HomePage} />
 							<Route exact path="/actions" component={ActionsPage} />
 							<Route path="/aboutus" component={AboutUsPage} />
-							<Route path="/services" component={ServicesPage} />
+							<Route exact path="/services" component={ServicesPage} />
+							<Route path="/services/:id" component={OneServicePage} />
 							<Route path="/actions/:id" component={OneActionPage} />
 							<Route path="/testimonials" component={StoriesPage} />
 							<Route path="/teams" component={TeamsPage} />

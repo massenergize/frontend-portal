@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 const INITIAL_STATE = {
     title: '',
     body: '',
-    aid: null,
+    aid: '--',
+    vid: '--',
+    vendor: '',
     message: 'Already completed an action? Tell Us Your Story',
     limit: 9000,
 };
@@ -28,6 +30,7 @@ class StoryForm extends React.Component {
 
     render() {
         if (!this.props.actions || this.props.actions.length === 0) return <p> Sorry, there are no actions to submit a story about </p>;
+        if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({vendor:''})
         return (
             <div className="review-form" style={{ border: '1px solid #aaa' }}>
                 <div className="tab-title-h4 text center">
@@ -38,11 +41,22 @@ class StoryForm extends React.Component {
                         <>
                             <p> Which action is this testimonial about? </p>
                             <select value={this.state.aid} onChange={event => this.setState({ aid: event.target.value })}>
-                                <option value={null}>--</option>
-                                {this.renderActionOptions(this.props.actions)}
+                                <option value={'--'}>--</option>
+                                {this.renderOptions(this.props.actions)}
                             </select>
                             <br />
                         </>
+                    }
+                    <p> Who helped you complete this action? </p>
+                    <select value={this.state.vid} onChange={event => this.setState({ vid: event.target.value })}>
+                        <option value={'--'}>Did it myself!</option>
+                        {this.renderOptions(this.props.vendors)}
+                        <option value={'other'}>Other</option>
+                    </select> &nbsp; &nbsp; &nbsp; 
+                    {this.state.vid === 'other' ?
+                        <div className="field-label" style ={{display: 'inline-block'}}>
+                            <input type="text" name="vendor" value={this.state.vendor} onChange={this.onChange} autoFocus={true} required />
+                        </div> : <br/>
                     }
                     <div className="field-label">
                         <p>Story Title*</p>
@@ -51,17 +65,17 @@ class StoryForm extends React.Component {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="field-label">
-                                <p style={{ display: 'inline-block', float: 'left'}}>Your Story*</p>
+                                <p style={{ display: 'inline-block', float: 'left' }}>Your Story*</p>
                                 <p
-                                        className={this.state.body.length > this.state.limit ? "text-danger" : null}
-                                        style={{ display: 'inline-block', float: 'right'}}
-                                    >
-                                        {this.state.body.length + ' / ' + this.state.limit + 'chars'}
-                                    </p>
+                                    className={this.state.body.length > this.state.limit ? "text-danger" : null}
+                                    style={{ display: 'inline-block', float: 'right' }}
+                                >
+                                    {this.state.body.length + ' / ' + this.state.limit + 'chars'}
+                                </p>
                                 <textarea name="body" value={this.state.body} onChange={this.onChange} style={{ width: '100%' }} required>
-                                    
+
                                 </textarea>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -87,10 +101,10 @@ class StoryForm extends React.Component {
             error: null
         });
     };
-    renderActionOptions(actions) {
-        return Object.keys(actions).map(key => {
-            var action = actions[key];
-            return <option value={action.id}> {action.title} </option>
+    renderOptions(choices) {
+        return Object.keys(choices).map(key => {
+            var choice = choices[key];
+            return <option value={choice.id}> {choice.title ? choice.title : choice.name} </option>
         })
     }
     onSubmit(event) {
@@ -99,6 +113,7 @@ class StoryForm extends React.Component {
         /** Collects the form data and sends it to the backend */
         const body = {
             "user": this.props.uid,
+            "vendor": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
             "action": this.props.aid ? this.props.aid : this.state.aid,
             "rank": 0,
             "body": this.state.body,
@@ -107,7 +122,7 @@ class StoryForm extends React.Component {
         }
         if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
             this.setState({ error: "Please choose which action you are writing a testimonial about" })
-        } else if(this.count(this.state.body) > this.state.limit){
+        } else if (this.count(this.state.body) > this.state.limit) {
             this.setState({ error: "Sorry, your story is too long" })
         } else {
             postJson(URLS.TESTIMONIALS, body).then(json => {
@@ -132,6 +147,7 @@ class StoryForm extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         actions: store.page.actions,
+        vendors: store.page.serviceProviders,
         community: store.page.community
     }
 }

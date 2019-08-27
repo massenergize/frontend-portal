@@ -1,29 +1,28 @@
 import React from 'react'
-import { section } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
-import WelcomeImages from '../../Shared/WelcomeImages';
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import { Link } from 'react-router-dom'
 
 class ServicesPage extends React.Component {
-    
+
     render() {
         const {
             serviceProviders
         } = this.props;
 
-        if(serviceProviders == null) return <LoadingCircle/>;
+        if (serviceProviders == null) return <LoadingCircle />;
 
         return (
             <>
-            <BreadCrumbBar links={[{ name: 'Service Providers' }]} />
-            <div className="boxed_wrapper">
-                <div className="container">
-                    <div className="row pt-3 pb-3">
-                        {this.renderVendors(serviceProviders)}
+                <BreadCrumbBar links={[{ name: 'Service Providers' }]} />
+                <div className="boxed_wrapper">
+                    <div className="container">
+                        <div className="row pt-3 pb-3">
+                            {this.renderVendors(serviceProviders)}
+                        </div>
                     </div>
                 </div>
-            </div>
             </>
         );
     }
@@ -36,8 +35,12 @@ class ServicesPage extends React.Component {
                     <div className="card rounded-0 spacing">
                         <div className="card-body">
                             <div className="col-12 text-center">
-                                <img className="w-100" src={vendor.logo.url} alt={vendor.name}/>
+                                <Link to={`/services/${vendor.id}`}>
+                                    <img className="w-100" src={vendor.logo.url} alt={vendor.name} />
+                                </Link>
+                                <Link to={`/services/${vendor.id}`}>
                                 <h3 className="pt-3">{vendor.name}</h3>
+                                </Link>
                                 {/* <p className="action-tags">
                                     {vendor.categories.map((category) => {
                                         return (<span key={category}>{category}</span>)  
@@ -53,22 +56,22 @@ class ServicesPage extends React.Component {
                                     })}
                                 </ul>
                             </div>
-                            {vendor.address?
-                            <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
-                                <span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
-                            </div> : null}
-                            
+                            {vendor.address ?
+                                <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
+                                    <span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
+                                </div> : null}
+
                             {vendor.key_contact != null ? (
                                 <div className="w-100 p-2 text-center">
-                                    {vendor.user_info?
-                                    <>
-                                        <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a> 
-                                        <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
-                                    </>:null}
+                                    {vendor.user_info ?
+                                        <>
+                                            <a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
+                                            <a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
+                                        </> : null}
                                 </div>
-                                )
+                            )
                                 : null}
-                            
+
                         </div>
                     </div>
                 </div>
