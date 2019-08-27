@@ -45,7 +45,7 @@ class OneServicePage extends React.Component {
                 <div className="card rounded-0 spacing">
                     <div className="card-body">
                         <div className="row">
-                            <div className="col-lg-4 col-xl-4 col-12 text-center">
+                            <div className="col-md-5 col-12 text-center">
                                 <img className="w-100" src={vendor.logo.url} alt={vendor.name} />
                                 {vendor.address ?
                                     <div className="w-100 p-2 bg-dark text-white text-center justify-content-center">
@@ -53,21 +53,24 @@ class OneServicePage extends React.Component {
                                     </div> : null
                                 }
                             </div>
-                            <div className="col-lg-8 col-xl-5 col-12 mt-3">
+                            <div className="col-md-7 col-12 mt-3">
                                 <h1 className="pt-3">{vendor.name}</h1>
                                 <p>
-                                    {vendor.description}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{vendor.description}
                                 </p>
                             </div>
-                            <div className='col-xl-3 col-12'>
-                                <span><h4>Services</h4></span>
-                                <ul className="normal">
-                                    {vendor.services.map((service) => {
-                                        // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;
-                                        return <li key={vendor.name + "-" + service.id}><b>{service.name}</b>&nbsp;&nbsp;&nbsp; <p>{service.description}</p></li>;
-                                    })}
-                                </ul>
-                            </div>
+                            {vendor.services && vendor.services.length > 0 ?
+                                <div className='col-12'>
+                                    <span><h4>Services</h4></span>
+                                    <ul className="normal">
+                                        {vendor.services.map((service) => {
+                                            // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;
+                                            return <li style={{display:'inline-block'}} key={vendor.name + "-" + service.id}><b>{service.name}</b>&nbsp;&nbsp;&nbsp;<p>{service.description}</p></li>;
+                                        })}
+                                    </ul>
+                                </div>
+                                : null
+                            }
                         </div>
 
                         {vendor.key_contact != null ? (
@@ -82,10 +85,10 @@ class OneServicePage extends React.Component {
                             : null}
                         <br />
                         <div className='text-center'>
-                            <h4 style={{background:'#003000', color: 'white'}}> Testimonials about this Service Provider </h4>
+                            <h4 style={{ background: '#003000', color: 'white' }}> Testimonials about this Service Provider </h4>
                         </div>
                         {this.renderStories(stories)}
-                        <StoryForm vid={vendor.id}/>
+                        <StoryForm vid={vendor.id} />
                     </div>
                 </div>
             </div>
@@ -93,7 +96,7 @@ class OneServicePage extends React.Component {
     }
     renderStories = (stories) => {
         if (stories.length === 0)
-            return <p> No stories about this Service Provider yet </p>;
+            return <div className='text-center'><p> No stories about this Service Provider yet </p></div>;
         return (
             <>
                 {/* <div className="tab-title-h4">

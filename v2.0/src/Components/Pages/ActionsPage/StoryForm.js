@@ -36,7 +36,7 @@ class StoryForm extends React.Component {
     }
 
     render() {
-        if (!this.props.actions || this.props.actions.length === 0) return <p> Sorry, there are no actions to submit a story about </p>;
+        if (!this.props.actions || this.props.actions.length === 0) return <div className='text-center'><p> Sorry, there are no actions to submit a story about </p></div>;
         if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
         return (
             <div className="review-form" style={{ border: '1px solid #aaa' }}>
