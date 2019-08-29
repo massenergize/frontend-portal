@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import RSVPForm from './RSVPForm';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import CONST from '../../Constants'
 
 
 /**
@@ -29,6 +30,7 @@ class EventsPage extends React.Component {
     }
 
     render() {
+        console.log(CONST.LIMIT);
         //avoids trying to render before the promise from the server is fulfilled
         return (
             <>
@@ -122,7 +124,14 @@ class EventsPage extends React.Component {
                                 <div className="lower-content">
                                     <Link to={this.props.match.url + "/" + event.id}><h4> {event.name} </h4></Link>
                                     <div className="text">
-                                        <p> {event.description} </p>
+                                        {event.description.length < CONST.BIG_LIMIT ?
+                                            <p> {event.description} </p> 
+                                            :
+                                            <p> 
+                                                {event.description.substring(0, CONST.BIG_LIMIT)} 
+                                                &nbsp;<Link to={`/events/${event.id}`}> ...more</Link>
+                                            </p>
+                                        }
                                     </div>
                                     {(endDate - now > 0) ?
                                         <>

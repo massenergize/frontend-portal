@@ -3556,12 +3556,12 @@ textarea {
 }
 
 .event-style1 .item.style-2 .clearfix {
-    padding: 19px;
+    /* padding: 19px; */
 }
 
 .event-style1 .item .lower-content {
     position: relative;
-    padding: 18px 19px 0;
+    padding: 0px 19px 0;
     border-left: 0px;
 }
 
@@ -3653,7 +3653,6 @@ textarea {
     overflow: hidden;
     position: relative;
     width: 100%;
-    height: 250px;
 }
 
 .event-style1 .item .img-holder a {

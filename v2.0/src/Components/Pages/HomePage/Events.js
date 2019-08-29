@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import CONST from '../../Constants'
 /**
  * Events section displays upcoming events,
- * @TODO make a limit number so it only displays that many events
  * @props
     events: list of the events to show
         title
@@ -18,7 +18,6 @@ import { Link } from 'react-router-dom'
  */
 class Events extends React.Component {
     renderEvents(events, start, end, showMessage) {
-        const limit = 140;
         if (!events && showMessage) {
             return <div>No Events to Display</div>
         }
@@ -57,10 +56,11 @@ class Events extends React.Component {
                             <div className="text-column">
                                 <div className="lower-content">
                                     <Link to={'events/' + event.id}><h4>{event.name}</h4></Link>
-                                    <div className="text">
-                                        {event.description.length > limit ?
-                                            <p>{event.description.substring(0, limit)}
-                                                <Link to={`/events/${event.id}`}> ... </Link>
+                                    <div >
+                                        {event.description.length > CONST.LIMIT ?
+                                            <p>
+                                            {event.description.substring(0, CONST.LIMIT)}
+                                            &nbsp;<Link to={`/events/${event.id}`}> ...more </Link>
                                             </p>
                                             :
                                             <p> {event.description} </p>

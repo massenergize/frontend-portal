@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import StoryForm from '../ActionsPage/StoryForm'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import CONST from '../../Constants'
 
 class StoriesPage extends React.Component {
     constructor(props) {
@@ -73,8 +74,8 @@ class StoriesPage extends React.Component {
                             <button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
                         }
                         <p className="p-1 text-center">
-                            {this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, this.state.limit)}
-                            {(!this.state.expanded || !this.state.expanded === story.id) && this.state.limit < story.body.length ?
+                            {this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, CONST.LIMIT)}
+                            {(!this.state.expanded || !this.state.expanded === story.id) && CONST.LIMIT < story.body.length ?
                                 <button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: story.id }) }}>...</button>
                                 :
                                 null
