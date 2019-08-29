@@ -32,27 +32,27 @@ class EventsPage extends React.Component {
         //avoids trying to render before the promise from the server is fulfilled
         return (
             <>
-            <BreadCrumbBar links={[{ name: 'Events' }]} />
-            <div className="boxed_wrapper">
-                {/* renders the sidebar and events columns */}
-                <div className="boxed-wrapper">
-                    <section className="eventlist">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-lg-4 col-md-5 col-12">
-                                    {this.props.tagCols ?
-                                        this.renderSideBar() : <LoadingCircle />}
-                                </div>
-                                <div className="col-lg-8 col-md-7 col-12">
-                                    <div className="outer-box sec-padd event-style2">
-                                        {this.renderEvents(this.props.events)}
+                <BreadCrumbBar links={[{ name: 'Events' }]} />
+                <div className="boxed_wrapper">
+                    {/* renders the sidebar and events columns */}
+                    <div className="boxed-wrapper">
+                        <section className="eventlist">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-lg-4 col-md-5 col-12">
+                                        {this.props.tagCols ?
+                                            this.renderSideBar() : <LoadingCircle />}
+                                    </div>
+                                    <div className="col-lg-8 col-md-7 col-12">
+                                        <div className="outer-box sec-padd event-style2">
+                                            {this.renderEvents(this.props.events)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
-            </div>
             </>
         );
     }
@@ -124,18 +124,21 @@ class EventsPage extends React.Component {
                                     <div className="text">
                                         <p> {event.description} </p>
                                     </div>
-                                    {this.props.user ?
-                                        <RSVPForm
-                                            eventid={event.id}
-                                            userid={this.props.user.id}
-                                            //value={this.userRSVPvalue(event.id)}
-                                            rsvp={this.userRSVP(event.id)}
-                                        />
-                                        :
-                                        <p>
-                                            <Link to='/login'>Sign In</Link> to RSVP to events
+                                    {(endDate - now > 0) ?
+                                        <>
+                                            {this.props.user ?
+                                                <RSVPForm
+                                                    eventid={event.id}
+                                                    userid={this.props.user.id}
+                                                    //value={this.userRSVPvalue(event.id)}
+                                                    rsvp={this.userRSVP(event.id)}
+                                                />
+                                                :
+                                                <p>
+                                                    <Link to='/login'>Sign In</Link> to RSVP to events
                                         </p>
-                                    }
+                                            }
+                                        </> : null}
                                 </div>
                             </div>
                             {/* renders the  date time and location of the event */}
@@ -163,18 +166,10 @@ class EventsPage extends React.Component {
         });
     }
 
-    // userRSVPvalue(event_id){
-    //     if(!this.props.user || !this.props.eventRSVPs) return '--';
-    //     console.log(this.props.eventRSVPs);
-    //     const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id)})
-    //     if(RSVPs.length < 1) return '--';
-    //     return RSVPs[0].value;
-    // }
     userRSVP(event_id) {
         if (!this.props.user || !this.props.eventRSVPs) return null;
         const RSVPs = this.props.eventRSVPs.filter(rsvp => { return (rsvp.attendee.id === this.props.user.id && rsvp.event.id === event_id) })
         if (RSVPs.length < 1) return null;
-        console.log(RSVPs[0]);
         return RSVPs[0];
     }
 
@@ -372,8 +367,8 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth,
         user: store.user.info,
         events: store.page.events,
-        eventRSVPs: store.page.rsvps, 
-        tagCols: store.page.tagCols? store.page.tagCols.filter( col => { return col.name === 'Category'}) : null
+        eventRSVPs: store.page.rsvps,
+        tagCols: store.page.tagCols ? store.page.tagCols.filter(col => { return col.name === 'Category' }) : null
     }
 }
 export default connect(mapStoreToProps, null)(EventsPage);
