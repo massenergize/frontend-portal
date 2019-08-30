@@ -1,6 +1,6 @@
 import React from 'react';
 import URLS from '../../../api/urls'
-import { postJson } from '../../../api/functions';
+import { postJson, getJson } from '../../../api/functions';
 import { connect } from 'react-redux';
 
 /********************************************************************/
@@ -20,13 +20,14 @@ class StoryForm extends React.Component {
     constructor(props) {
         super(props);
         var message = 'Already completed an action? Tell Us Your Story';
-        if(props.aid) message = 'Already completed this action? Tell Us Your Story';
-        if(props.vid) message = 'Already used this vendor? Tell Us Your Story';
+        if (props.aid) message = 'Already completed this action? Tell Us Your Story';
+        if (props.vid) message = 'Already used this vendor? Tell Us Your Story';
 
         this.state = {
             ...INITIAL_STATE,
-            vid: props.vid? props.vid : '--',
-            aid: props.aid? props.aid : '--',
+            vid: props.vid ? props.vid : '--',
+            aid: props.aid ? props.aid : '--',
+            captchaConfirmed:false,
 
             message: message
         };
@@ -90,6 +91,7 @@ class StoryForm extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <br></br>
                     <div className="row">
                         <div className="col-md-12">
                             <button className="thm-btn bg-cl-1" type="submit">Submit Now</button>

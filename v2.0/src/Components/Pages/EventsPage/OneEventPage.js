@@ -92,7 +92,7 @@ class OneEventPage extends React.Component {
                                 }
                             </div>
 
-                            <div className="section-title style-2">
+                            {/* <div className="section-title style-2">
                                 <h3>Our Sponsors</h3>
                             </div>
                             <ul className="brand-carousel2">
@@ -100,9 +100,9 @@ class OneEventPage extends React.Component {
                                 <li key='1'><Link to="#"><img src="images/event/b2.jpg" alt="" /></Link></li>
                                 <li key='2'><Link to="#"><img src="images/event/b3.jpg" alt="" /></Link></li>
                                 <li key='3'><Link to="#"><img src="images/event/b4.jpg" alt="" /></Link></li>
-                            </ul>
+                            </ul> */}
                         </div>
-                        <div className="share clearfix">
+                        {/* <div className="share clearfix">
                             <div className="social-box float_left">
                                 <span>Share <i className="fa fa-share-alt"></i></span>
                                 <ul className="list-inline social">
@@ -113,7 +113,7 @@ class OneEventPage extends React.Component {
                             <div className="float_right">
                                 <Link to="/donate" className="thm-btn style-2 donate-box-btn">Donate</Link>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

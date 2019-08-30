@@ -33,6 +33,7 @@ export const postJson = async (url, body) => {
 	}
 	catch (err) {
 		console.log(err);
+		return null;
 	}
 }
 

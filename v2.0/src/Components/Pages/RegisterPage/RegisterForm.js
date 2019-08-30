@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withFirebase } from 'react-redux-firebase';
-import { Link,Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import { postJson, getJson } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
@@ -46,7 +48,7 @@ class RegisterFormBase extends React.Component {
     }
 
     render() {
-        if(!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
+        if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
 
         const {
             email,
@@ -74,7 +76,7 @@ class RegisterFormBase extends React.Component {
                 <div>
                     {form === 1 ?
                         < div className="styled-form register-form" >
-                            
+
                             <div className="section-title style-2">
                                 <h3>Register With Email and Password</h3>
                             </div>
@@ -91,6 +93,11 @@ class RegisterFormBase extends React.Component {
                                     <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
                                     <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
                                 </div>
+                                <ReCAPTCHA
+                                    sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
+                                    onChange={this.onReCaptchaChange}
+                                />
+                                <br/>
                                 {error && <p style={{ color: "red" }}> {error} </p>}
                                 <div className="clearfix">
                                     <div className="form-group pull-left">
@@ -133,7 +140,7 @@ class RegisterFormBase extends React.Component {
                                     <input className="checkbox" type="checkbox" name="termsAndServices" onChange={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
                                     <span className="checkmark"></span>
                                     <p style={{ marginLeft: "25px" }}>I agree to the <button onClick={this.showTOS}>Terms of Service</button>.</p>
-                                    <span className="text-danger mb-3 small" style={{display: (this.state.showTOSError) ? "block" : "none"}}>You need to agree to the terms of service!</span>
+                                    <span className="text-danger mb-3 small" style={{ display: (this.state.showTOSError) ? "block" : "none" }}>You need to agree to the terms of service!</span>
                                 </label>
                                 <div className="clearfix">
                                     <div className="form-group pull-left">
@@ -146,13 +153,13 @@ class RegisterFormBase extends React.Component {
                         </div>
                     }
                 </div>
-                <Modal show={this.state.showTOSModal} onHide={() => this.setState({showTOSModal: false})} centered>
+                <Modal show={this.state.showTOSModal} onHide={() => this.setState({ showTOSModal: false })} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Terms of Service</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body dangerouslySetInnerHTML={{__html: this.props.policies.filter(x => x.name === "Terms of Service")[0].description}} style={{maxHeight: "50vh", overflowY: "scroll"}}></Modal.Body>
+                    <Modal.Body dangerouslySetInnerHTML={{ __html: this.props.policies.filter(x => x.name === "Terms of Service")[0].description }} style={{ maxHeight: "50vh", overflowY: "scroll" }}></Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => this.setState({showTOSModal: false})}>
+                        <Button variant="secondary" onClick={() => this.setState({ showTOSModal: false })}>
                             Close
                         </Button>
                     </Modal.Footer>
@@ -160,9 +167,18 @@ class RegisterFormBase extends React.Component {
             </>
         );
     }
+    onReCaptchaChange = (value) => {
+        if (!value) {
+            this.setState({ captchaConfirmed: false });
+        }
+        postJson(URLS.VERIFY, { 'captchaString': value }).then(response => {
+            console.log(response)
+            if (response.success && response.data.success) this.setState({ 'captchaConfirmed': true });
+        })
+    }
 
     showTOS() {
-        this.setState({showTOSModal: true});
+        this.setState({ showTOSModal: true });
     }
 
     onChange(event) {
@@ -183,24 +199,28 @@ class RegisterFormBase extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         const { email, passwordOne } = this.state;
-        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
-            this.props.firebase.auth()
-                .createUserWithEmailAndPassword(email, passwordOne)
-                .then(authUser => {
-                    //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
-                    this.setState({ ...INITIAL_STATE, form: 2 });
-                })
-                .catch(err => {
-                    this.setState({ error: err.message });
-                });
-        });
+        if (!this.state.captchaConfirmed) {
+            this.setState({ error: 'Invalid reCAPTCHA, please try again' });
+        } else {
+            this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+                this.props.firebase.auth()
+                    .createUserWithEmailAndPassword(email, passwordOne)
+                    .then(authUser => {
+                        //this.props.sendSignInSignal(authUser); //send Sign in signal from the connect to redux
+                        this.setState({ ...INITIAL_STATE, form: 2 });
+                    })
+                    .catch(err => {
+                        this.setState({ error: err.message });
+                    });
+            });
+        }
     };
     onFinalSubmit(event) {
         event.preventDefault();
         /** Collects the form data and sends it to the backend */
-        const { firstName, lastName, preferredName, serviceProvider, termsAndServices} = this.state;
-        if(!termsAndServices) {
-            this.setState({showTOSError: true});
+        const { firstName, lastName, preferredName, serviceProvider, termsAndServices } = this.state;
+        if (!termsAndServices) {
+            this.setState({ showTOSError: true });
             return;
         }
         const { auth } = this.props;

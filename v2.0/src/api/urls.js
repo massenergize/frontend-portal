@@ -1,7 +1,7 @@
 // Defining URLS object for manipulation...
 const URLS = {
-	ROOT: "http://api.massenergize.org"
-	//ROOT: "http://localhost:8000"
+	//ROOT: "http://api.massenergize.org"
+	ROOT: "http://localhost:8000"
 	//ROOT: "http://10.0.0.187:8000"
 }
 const COMM_ID = "3";
@@ -85,6 +85,7 @@ URLS["USER_GROUPS"] = URLS.V2 + "user-groups";
 URLS["USER_GROUP"] = URLS.V2 + "user-group"; //add the id after this
 URLS["VENDORS"] = URLS.V2 + "vendors";
 URLS["VENDOR"] = URLS.V2 + "vendor"; //add the id after this
+URLS["VERIFY"] = URLS.V2 + "verify";
 
 export default URLS;
 
