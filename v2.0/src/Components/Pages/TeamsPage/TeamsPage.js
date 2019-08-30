@@ -95,16 +95,13 @@ class TeamsPage extends React.Component {
         });
     }
     inTeam = (team_id) => {
-        console.log(team_id);
         if (!this.props.user) {
             return false;
         }
-        console.log(this.props.user.teams);
         return this.props.user.teams.filter(team => { return team.id === team_id }).length > 0;
     }
 
     joinTeam = (team) => {
-        console.log('woah')
         const body = {
             members: this.props.user.id,
         }

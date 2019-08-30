@@ -26,6 +26,7 @@ export const ADD_COMMUNITY = 'ADD_COMMUNITY'
 export const REMOVE_COMMUNITY = 'LEAVE_COMMUNITY'
 
 export const JOIN_TEAM = 'JOIN_TEAM' //adds the team to the users list of teams
+export const LEAVE_TEAM = 'LEAVE_TEAM'
 
 /** PAGE ACTIONS
  * these actions load the database data for the pages
@@ -66,6 +67,10 @@ export const REMOVE_TESTIMONIAL = 'REMOVE_TESTIMONIAL'
 
 export const ADD_TEAM_MEMBER = 'ADD_TEAM_MEMBER' //similar to join team, and must be called at the same time, but adds the team member numbers to the team stats (team page)
 export const REMOVE_TEAM_MEMBER = 'REMOVE_TEAM_MEMBER'
+export const TEAM_ADD_ACTION = 'TEAM_ADD_ACTION'
+export const TEAM_REMOVE_ACTION = 'TEAM_REMOVE_ACTION'
+export const TEAM_ADD_HOUSEHOLD = 'TEAM_ADD_HOUSEHOLD'
+export const TEAM_REMOVE_HOUSEHOLD = 'TEAM_REMOVE_HOUSEHOLD'
 
 export const CHANGE_DATA = 'CHANGE_DATA'
 

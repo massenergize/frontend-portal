@@ -13,8 +13,22 @@ import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 
-import { reduxMoveToDone, reduxAddHousehold, reduxEditHousehold, reduxRemoveHousehold, reduxLeaveCommunity, reduxLoadUserCommunities } from '../../../redux/actions/userActions'
-import { reduxChangeData } from '../../../redux/actions/pageActions'
+import { 
+    reduxMoveToDone, 
+    reduxAddHousehold, 
+    reduxEditHousehold, 
+    reduxRemoveHousehold, 
+    reduxLeaveCommunity, 
+    reduxLoadUserCommunities, 
+    reduxLeaveTeam 
+} from '../../../redux/actions/userActions'
+import { 
+    reduxChangeData, 
+    reduxRemoveTeamMember, 
+    reduxTeamRemoveHouse, 
+    reduxTeamRemoveAction,
+    reduxTeamAddHouse
+} from '../../../redux/actions/pageActions'
 // import { watchFile } from 'fs';
 import Tooltip from '../../Shared/Tooltip'
 import JoiningCommunityForm from './JoiningCommunityForm';
@@ -44,9 +58,10 @@ class ProfilePage extends React.Component {
         if (this.props.user.households.length === 0) {
             this.addDefaultHousehold();
         }
-        if (this.props.user.communities.filter(com => { return com.id === this.props.community.id }).length === 0) {
-            if (this.props.community)
+        if (this.props.community) {
+            if (this.props.user.communities.filter(com => { return com.id === this.props.community.id }).length === 0) {
                 this.addDefaultCommunity();
+            }
         }
         const { user } = this.props;
         //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
@@ -226,7 +241,7 @@ class ProfilePage extends React.Component {
                         <span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
                     </Tooltip>
                 </td>
-                <td> <button className="remove-btn"> <i className="fa fa-trash"></i></button> </td>
+                <td> <button className="remove-btn"> <i className="fa fa-trash" onClick={() => this.leaveTeam(team)}></i></button> </td>
             </tr>
             );
         })
@@ -277,6 +292,10 @@ class ProfilePage extends React.Component {
 
     addHousehold = (household) => {
         this.props.reduxAddHousehold(household);
+        Object.keys(this.props.user.teams).map(key => {
+            const team = this.props.user.teams[key];
+            this.props.reduxTeamAddHouse(team);
+        })
         this.addHouseToImpact();
     }
     editHousehold = (household) => {
@@ -288,8 +307,9 @@ class ProfilePage extends React.Component {
             deleteJson(`${URLS.HOUSEHOLD}/${household.id}`).then(json => {
                 console.log(json);
                 if (json.success) {
+                    var numDone = this.props.done.filter(a => a.real_estate_unit.id === household.id).length;
                     this.props.reduxRemoveHousehold(household);
-                    this.removeHouseFromImpact();
+                    this.removeHouseFromImpact(numDone);
                 }
             }
             )
@@ -299,21 +319,17 @@ class ProfilePage extends React.Component {
             })
         }
     }
-    removeHouseFromImpact() {
+    removeHouseFromImpact(numDone) {
         this.changeDataByName("EngagedHouseholdsData", -1)
-        // action.tags.forEach(tag => {
-        //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
-        //         this.changeData(tag.id, -1);
-        //     }
-        // });
+        Object.keys(this.props.user.teams).forEach(key => {
+            this.props.reduxTeamRemoveHouse(this.props.user.teams[key]);
+            for(var i = 0; i < numDone; i ++){
+                this.props.reduxTeamRemoveAction(this.props.user.teams[key]);
+            }
+        })
     }
     addHouseToImpact() {
         this.changeDataByName("EngagedHouseholdsData", 1)
-        // action.tags.forEach(tag => {
-        //     if(tag.tag_collection && tag.tag_collection.name === "Category"){
-        //         this.changeData(tag.id, 1);
-        //     }
-        // });
     }
     changeDataByName(name, number) {
         var data = this.props.communityData.filter(data => {
@@ -356,6 +372,27 @@ class ProfilePage extends React.Component {
         } else {
             this.setState({
                 leaveComError: "You can't leave your home community"
+            })
+        }
+    }
+
+    leaveTeam = (team) => {
+        if (team && this.props.user) {
+            deleteJson(`${URLS.TEAM}/${team.id}/member/${this.props.user.id}`).then(json => {
+                console.log(json);
+                if (json.success) {
+                    this.props.reduxLeaveTeam(team);
+
+                    this.props.reduxRemoveTeamMember({
+                        team: team,
+                        member: {
+                            households: this.props.user.households.length,
+                            actions: this.props.todo.length + this.props.done.length,
+                            actions_completed: this.props.done.length,
+                            actions_todo: this.props.todo.length
+                        }
+                    });
+                }
             })
         }
     }
@@ -444,6 +481,11 @@ const mapDispatchToProps = {
     reduxRemoveHousehold,
     reduxLeaveCommunity,
     reduxLoadUserCommunities,
-    reduxChangeData
+    reduxChangeData,
+    reduxLeaveTeam,
+    reduxRemoveTeamMember,
+    reduxTeamRemoveHouse, 
+    reduxTeamRemoveAction,
+    reduxTeamAddHouse
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);

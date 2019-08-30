@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Tooltip from '../Shared/Tooltip'
 import { connect } from 'react-redux'
 import { reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
-import { reduxChangeData } from '../../redux/actions/pageActions'
+import { reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction } from '../../redux/actions/pageActions'
 import URLS from '../../api/urls'
 import { postJson, deleteJson } from '../../api/functions'
 
@@ -160,7 +160,7 @@ class Cart extends React.Component {
             console.log(json);
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
-                this.addToImpact(actionRel.action)
+                this.addToImpact(actionRel.action);
             }
         }).catch(err => {
             console.log(err)
@@ -189,6 +189,9 @@ class Cart extends React.Component {
                 this.changeData(tag.id, -1);
             }
         });
+        Object.keys(this.props.user.teams).forEach(key => {
+            this.props.reduxTeamRemoveAction(this.props.user.teams[key]);
+        })
     }
     addToImpact(action) {
         this.changeDataByName("ActionsCompletedData", 1)
@@ -197,6 +200,9 @@ class Cart extends React.Component {
                 this.changeData(tag.id, 1);
             }
         });
+        Object.keys(this.props.user.teams).forEach(key => {
+            this.props.reduxTeamAddAction(this.props.user.teams[key]);
+        })
     }
     changeDataByName(name, number) {
         var data = this.props.communityData.filter(data => {
@@ -254,7 +260,7 @@ const mapStoreToProps = (store) => {
 }
 
 const mapDispatchToProps = {
-    reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone, reduxChangeData
+    reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone, reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(Cart);

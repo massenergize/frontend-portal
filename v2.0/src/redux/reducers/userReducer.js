@@ -15,7 +15,8 @@ import {
   REMOVE_HOUSEHOLD,
   ADD_COMMUNITY,
   REMOVE_COMMUNITY,
-  JOIN_TEAM
+  JOIN_TEAM,
+  LEAVE_TEAM
 } from '../actions/types';
 
 const initialState = {
@@ -119,8 +120,10 @@ export default function (state = initialState, action) {
         ...state,
         info: {
           ...state.info,
-          households: state.info.households.filter(element => element !== action.payload)
-        }
+          households: state.info.households.filter(element => element.id !== action.payload.id)
+        },
+        todo: state.todo.filter(a => a.real_estate_unit.id !== action.payload.id),
+        done: state.done.filter(a => a.real_estate_unit.id !== action.payload.id)
       }
     /**************************/
     case LOAD_USER_COMMUNITIES:
@@ -159,6 +162,14 @@ export default function (state = initialState, action) {
             ...state.info.teams,
             action.payload
           ]
+        }
+      }
+    case LEAVE_TEAM:
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          teams: state.info.teams.filter(team => team.id !== action.payload.id)
         }
       }
 

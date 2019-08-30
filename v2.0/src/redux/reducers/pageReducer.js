@@ -1,32 +1,37 @@
-import { LOAD_COMMUNITY,
-    LOAD_HOME_PAGE, 
-    LOAD_ACTIONS_PAGE, 
-    LOAD_EVENTS_PAGE, 
-    LOAD_SERVICE_PROVIDERS_PAGE, 
-    LOAD_TESTIMONIALS_PAGE, 
-    LOAD_TEAMS_PAGE, 
-    LOAD_ABOUT_US_PAGE, 
-    LOAD_COMMUNITIES_STATS, 
-    LOAD_DONATE_PAGE, 
-    LOAD_EVENTS, 
-    LOAD_ACTIONS, 
-    LOAD_SERVICE_PROVIDERS, 
-    LOAD_TESTIMONIALS, 
-    ADD_TESTIMONIAL, 
-    REMOVE_TESTIMONIAL, 
-    LOAD_MENU, 
-    LOAD_POLICIES, 
-    LOAD_EVENT_RSVPS, 
-    ADD_RSVP, 
-    REMOVE_RSVP, 
-    CHANGE_RSVP, 
-    ADD_TEAM_MEMBER, 
-    REMOVE_TEAM_MEMBER, 
-    LOAD_COMMUNITIES, 
+import {
+    LOAD_COMMUNITY,
+    LOAD_HOME_PAGE,
+    LOAD_ACTIONS_PAGE,
+    LOAD_EVENTS_PAGE,
+    LOAD_SERVICE_PROVIDERS_PAGE,
+    LOAD_TESTIMONIALS_PAGE,
+    LOAD_TEAMS_PAGE,
+    LOAD_ABOUT_US_PAGE,
+    LOAD_COMMUNITIES_STATS,
+    LOAD_DONATE_PAGE,
+    LOAD_EVENTS,
+    LOAD_ACTIONS,
+    LOAD_SERVICE_PROVIDERS,
+    LOAD_TESTIMONIALS,
+    ADD_TESTIMONIAL,
+    REMOVE_TESTIMONIAL,
+    LOAD_MENU,
+    LOAD_POLICIES,
+    LOAD_EVENT_RSVPS,
+    ADD_RSVP,
+    REMOVE_RSVP,
+    CHANGE_RSVP,
+    ADD_TEAM_MEMBER,
+    REMOVE_TEAM_MEMBER,
+    LOAD_COMMUNITIES,
     LOAD_TAG_COLS,
     LOAD_COMMUNITY_DATA,
     Load_COMMUNITY_ADMINS,
-    CHANGE_DATA
+    CHANGE_DATA,
+    TEAM_ADD_ACTION,
+    TEAM_REMOVE_ACTION,
+    TEAM_ADD_HOUSEHOLD,
+    TEAM_REMOVE_HOUSEHOLD
 } from '../actions/types';
 
 const initialState = {
@@ -47,9 +52,9 @@ const initialState = {
     events: null,
     serviceProviders: null,
     testimonials: null,
-    tagCols:null,
+    tagCols: null,
 
-    communities:null,
+    communities: null,
     communitiesStats: null,
     community: null,
     communityData: null,
@@ -64,14 +69,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 community: action.payload
-            }   
+            }
         case LOAD_COMMUNITY_DATA:
             return {
                 ...state,
                 communityData: action.payload
             }
         case Load_COMMUNITY_ADMINS:
-            return{
+            return {
                 ...state,
                 communityAdmins: action.payload
             }
@@ -208,8 +213,6 @@ export default function (state = initialState, action) {
                 actions_completed: team.actions_completed + action.payload.member.actions_completed,
                 actions_todo: team.actions_todo + action.payload.member.actions_todo
             }
-            console.log(team)
-            console.log(newTeam)
             return {
                 ...state,
                 teamsPage: [
@@ -227,8 +230,56 @@ export default function (state = initialState, action) {
                         ...team,
                         households: team.households - action.payload.member.households,
                         actions: team.actions - action.payload.member.actions,
-                        actions_completed: team.actions_completed - action.payload.membe.actions_completed,
+                        actions_completed: team.actions_completed - action.payload.member.actions_completed,
                         actions_todo: team.actions_todo - action.payload.member.actions_todo
+                    }
+                ]
+            }
+        case TEAM_ADD_ACTION:
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+                    {
+                        ...team,
+                        actions_completed: team.actions_completed + 1
+                    }
+                ]
+            }
+        case TEAM_REMOVE_ACTION:
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+                    {
+                        ...team,
+                        actions_completed: team.actions_completed - 1,
+                    }
+                ]
+            }
+        case TEAM_ADD_HOUSEHOLD:
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+                    {
+                        ...team,
+                        households: team.households + 1
+                    }
+                ]
+            }
+        case TEAM_REMOVE_HOUSEHOLD:
+            var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+            return {
+                ...state,
+                teamsPage: [
+                    ...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+                    {
+                        ...team,
+                        households: team.households - 1
                     }
                 ]
             }
@@ -236,7 +287,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 communityData: [
-                    ...state.communityData.filter(data => { return data.id !== action.payload.id}),
+                    ...state.communityData.filter(data => { return data.id !== action.payload.id }),
                     action.payload
                 ]
             }

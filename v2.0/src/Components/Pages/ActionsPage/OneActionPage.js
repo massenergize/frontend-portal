@@ -8,7 +8,7 @@ import Cart from '../../Shared/Cart';
 import StoryForm from './StoryForm';
 import ChooseHHForm from './ChooseHHForm';
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
-import { reduxChangeData } from '../../../redux/actions/pageActions'
+import { reduxChangeData, reduxTeamAddAction} from '../../../redux/actions/pageActions'
 import Tooltip from '../../Shared/Tooltip'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
@@ -372,6 +372,9 @@ class OneActionPage extends React.Component {
                 this.changeData(tag.id, 1);
             }
         });
+        Object.keys(this.props.user.teams).forEach(key => {
+            this.props.reduxTeamAddAction(this.props.user.teams[key]);
+        });
     }
     changeDataByName(name, number) {
         var data = this.props.communityData.filter(data => {
@@ -430,6 +433,12 @@ const mapStoreToProps = (store) => {
         communityData: store.page.communityData
     }
 }
-const mapDispatchToProps = { reduxAddToDone, reduxAddToTodo, reduxMoveToDone, reduxChangeData }
+const mapDispatchToProps = { 
+    reduxAddToDone, 
+    reduxAddToTodo, 
+    reduxMoveToDone, 
+    reduxChangeData,
+    reduxTeamAddAction
+}
 
 export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);

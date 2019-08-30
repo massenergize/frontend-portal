@@ -27,7 +27,11 @@ import {
     LOAD_TAG_COLS,
     LOAD_COMMUNITY_DATA,
     Load_COMMUNITY_ADMINS,
-    CHANGE_DATA
+    CHANGE_DATA,
+    TEAM_ADD_ACTION,
+    TEAM_REMOVE_ACTION,
+    TEAM_ADD_HOUSEHOLD,
+    TEAM_REMOVE_HOUSEHOLD
 } from './types'
 
 
@@ -221,6 +225,30 @@ export const reduxRemoveTeamMember = (teamAndMember) => dispatch => {
     return dispatch({
         type: REMOVE_TEAM_MEMBER, 
         payload: teamAndMember
+    })
+}
+export const reduxTeamAddAction = (team) => dispatch => {
+    return dispatch({
+        type: TEAM_ADD_ACTION,
+        payload: team
+    })
+}
+export const reduxTeamRemoveAction = (team) => dispatch => {
+    return dispatch({
+        type: TEAM_REMOVE_ACTION,
+        payload: team
+    })
+}
+export const reduxTeamAddHouse = (team) => dispatch => {
+    return dispatch({
+        type: TEAM_ADD_HOUSEHOLD,
+        payload: team
+    })
+}
+export const reduxTeamRemoveHouse = (team) => dispatch => {
+    return dispatch({
+        type: TEAM_REMOVE_HOUSEHOLD,
+        payload: team
     })
 }
 export const reduxChangeData = (data) => dispatch => {

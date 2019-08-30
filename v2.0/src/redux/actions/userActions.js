@@ -19,7 +19,8 @@ import {
   REMOVE_HOUSEHOLD, 
   ADD_COMMUNITY, 
   REMOVE_COMMUNITY,
-  JOIN_TEAM
+  JOIN_TEAM,
+  LEAVE_TEAM
 } from './types'
 
 /** stores the user data when a user logs in */
@@ -144,6 +145,13 @@ export const reduxLeaveCommunity = (community) => dispatch => {
 export const reduxJoinTeam = (team) => dispatch => {
   return dispatch({
       type: JOIN_TEAM,
+      payload: team
+  })
+}
+
+export const reduxLeaveTeam = (team) => dispatch => {
+  return dispatch({
+      type: LEAVE_TEAM,
       payload: team
   })
 }

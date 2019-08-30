@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import URLS from '../../../api/urls';
 import { getJson, postJson } from '../../../api/functions'
 import {reduxAddToDone, reduxAddToTodo, reduxMoveToDone} from '../../../redux/actions/userActions'
-import {reduxChangeData} from '../../../redux/actions/pageActions'
+import {reduxChangeData, reduxTeamAddAction} from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
@@ -171,14 +171,6 @@ class ActionsPage extends React.Component {
         });
     }
 
-    removeFromImpact(action){
-        this.changeDataByName("ActionsCompletedData", -1)
-        action.tags.forEach(tag => {
-            if(tag.tag_collection && tag.tag_collection.name === "Category"){
-                this.changeData(tag.id, -1);
-            }
-        });
-    }
     addToImpact(action){
         this.changeDataByName("ActionsCompletedData",1)
         action.tags.forEach(tag => {
@@ -186,6 +178,9 @@ class ActionsPage extends React.Component {
                 this.changeData(tag.id, 1);
             }
         });
+        Object.keys(this.props.user.teams).forEach(key => {
+            this.props.reduxTeamAddAction(this.props.user.teams[key]);
+        })
     }
     changeDataByName(name, number){
         var data = this.props.communityData.filter(data => {
@@ -246,5 +241,11 @@ const mapStoreToProps = (store) => {
     }
 }
 
-const mapDispatchToProps = {reduxAddToDone, reduxAddToTodo, reduxMoveToDone, reduxChangeData}
+const mapDispatchToProps = {
+    reduxAddToDone, 
+    reduxAddToTodo, 
+    reduxMoveToDone, 
+    reduxChangeData,
+    reduxTeamAddAction
+}
 export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);
