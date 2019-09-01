@@ -130,7 +130,6 @@ class App extends Component {
 		document.body.style.overflowX = 'hidden';
 
 		if (!isLoaded(this.props.auth)) {
-			console.log("Waiting for firebase auth to load...")
 			return <LoadingCircle />;
 		}
 		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
@@ -141,7 +140,6 @@ class App extends Component {
 			})
 		}
 		if(this.props.auth.uid && !this.state.triedLogin){
-			console.log("Waiting to retrieve user from the database...")
 			return <LoadingCircle/>;
 		} 
 
