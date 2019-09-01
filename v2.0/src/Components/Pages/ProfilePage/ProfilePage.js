@@ -13,19 +13,19 @@ import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 
-import { 
-    reduxMoveToDone, 
-    reduxAddHousehold, 
-    reduxEditHousehold, 
-    reduxRemoveHousehold, 
-    reduxLeaveCommunity, 
-    reduxLoadUserCommunities, 
-    reduxLeaveTeam 
+import {
+    reduxMoveToDone,
+    reduxAddHousehold,
+    reduxEditHousehold,
+    reduxRemoveHousehold,
+    reduxLeaveCommunity,
+    reduxLoadUserCommunities,
+    reduxLeaveTeam
 } from '../../../redux/actions/userActions'
-import { 
-    reduxChangeData, 
-    reduxRemoveTeamMember, 
-    reduxTeamRemoveHouse, 
+import {
+    reduxChangeData,
+    reduxRemoveTeamMember,
+    reduxTeamRemoveHouse,
     reduxTeamRemoveAction,
     reduxTeamAddHouse
 } from '../../../redux/actions/pageActions'
@@ -33,6 +33,10 @@ import {
 import Tooltip from '../../Shared/Tooltip'
 import JoiningCommunityForm from './JoiningCommunityForm';
 import PrintCart from '../../Shared/PrintCart';
+import DeleteAccountForm from './DeleteAccountForm';
+import ChangePasswordForm from './ChangePasswordForm';
+import ChangeEmailForm from './ChangeEmailForm';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -45,9 +49,11 @@ class ProfilePage extends React.Component {
 
             joiningCom: false,
             addingHH: false,
-            editingProfile: false,
+            editingProfileForm: null,
 
-            printing: false
+            printing: false,
+
+            message: ''
         }
     }
 
@@ -79,29 +85,7 @@ class ProfilePage extends React.Component {
                             :
                             <div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
                                 <div className="col-lg-6 col-md-6  col-12">
-                                    {!this.state.editingProfile ?
-                                        <>
-                                            <h3>{user ?
-                                                <div style={{ display: 'inline-block' }}>
-                                                    <span style={{ color: "#8dc63f" }}>Welcome</span> {user.preferred_name}
-                                                </div>
-                                                :
-                                                "Your Profile"
-                                            }
-                                                &nbsp;&nbsp;
-                                    <button style={{ display: 'inline-block', color: 'green' }} onClick={() => this.setState({ editingProfile: true })}> <i className='fa fa-edit' /></button>
-                                                &nbsp;&nbsp;
-                                    </h3>
-                                        </>
-                                        :
-                                        <>
-                                            <EditingProfileForm
-                                                full_name={this.props.user.full_name}
-                                                preferred_name={this.props.user.preferred_name}
-                                                closeForm={() => this.setState({ editingProfile: false })}
-                                            />
-                                        </>
-                                    }
+                                    {this.renderForm(this.state.editingProfileForm)}
                                     <section className="fact-counter style-2 sec-padd" >
                                         <div className="container">
                                             <div className="counter-outer" style={{ background: "#333", width: "100%" }}>
@@ -219,6 +203,65 @@ class ProfilePage extends React.Component {
         );
     }
 
+    renderForm = (form) => {
+        console.log(this.state.message);
+        return (
+            <>
+                <h3>
+                    {this.props.user ?
+                        <div style={{ display: 'inline-block' }}>
+                            <span style={{ color: "#8dc63f" }}>Welcome</span> {this.props.user.preferred_name}
+                        </div>
+                        :
+                        "Your Profile"
+                    }
+                    <Dropdown onSelect={() => null} style={{ display: 'inline-block' }}>
+                        <Dropdown.Toggle style={{ color: '#aaa', background: 'white', border: 'white' }}></Dropdown.Toggle>
+                        <Dropdown.Menu style={{
+                            borderTop: "5px solid #8dc63f",
+                            borderRadius: "0",
+                            padding: "0",
+                        }}>
+                            <Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'edit' })}>Edit Profile</Dropdown.Item>
+                            {this.props.auth.providerData && this.props.auth.providerData.length === 1 && this.props.auth.providerData[0].providerId === 'password' ?
+                                <>
+                                    <Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'password' })}>Change Password</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'email' })}>Change Email</Dropdown.Item>
+                                </>
+                                : null
+                            }
+                            <Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'delete' })}>Delete Account</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    &nbsp;&nbsp;
+                </h3>
+                <p> {this.state.message? this.state.message : ''} </p>
+                {form === 'edit' ?
+                    <EditingProfileForm
+                        full_name={this.props.user.full_name}
+                        preferred_name={this.props.user.preferred_name}
+                        closeForm={(message='') => this.setState({ editingProfileForm: null, message: message? message: null })}
+                    /> : null
+                }
+                {form === 'delete' ?
+                    <DeleteAccountForm
+                        closeForm={(message='') => this.setState({ editingProfileForm: null, message: message? message: null })}
+                    /> : null
+                }
+                {form === 'password' ?
+                    <ChangePasswordForm
+                        closeForm={(message='') => this.setState({ editingProfileForm: null, message: message? message: null })}
+                    /> : null
+                }
+                {form === 'email' ?
+                    <ChangeEmailForm
+                        closeForm={(message='') => this.setState({ editingProfileForm: null, message: message? message: null })}
+                        email={this.props.user.email}
+                    /> : null
+                }
+            </>
+        );
+    }
     renderCommunities(communities) {
         if (!communities) return <tr><td colSpan={2}>You haven't joined any communities yet</td></tr>;
         return Object.keys(communities).map(key => {
@@ -288,8 +331,6 @@ class ProfilePage extends React.Component {
             }
         })
     }
-
-
     addHousehold = (household) => {
         this.props.reduxAddHousehold(household);
         Object.keys(this.props.user.teams).map(key => {
@@ -323,7 +364,7 @@ class ProfilePage extends React.Component {
         this.changeDataByName("EngagedHouseholdsData", -1)
         Object.keys(this.props.user.teams).forEach(key => {
             this.props.reduxTeamRemoveHouse(this.props.user.teams[key]);
-            for(var i = 0; i < numDone; i ++){
+            for (var i = 0; i < numDone; i++) {
                 this.props.reduxTeamRemoveAction(this.props.user.teams[key]);
             }
         })
@@ -484,7 +525,7 @@ const mapDispatchToProps = {
     reduxChangeData,
     reduxLeaveTeam,
     reduxRemoveTeamMember,
-    reduxTeamRemoveHouse, 
+    reduxTeamRemoveHouse,
     reduxTeamRemoveAction,
     reduxTeamAddHouse
 };

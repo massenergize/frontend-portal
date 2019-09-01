@@ -1413,6 +1413,23 @@ textarea {
     border-top: 3px solid #8dc63f;
     right: auto !important;
 }
+ul.dropdown li ul.dropdown {
+    padding: 0 10px;
+    min-width: 230px;
+    background: #fff;
+    border-top: 3px solid #8dc63f;
+    right: auto !important;
+}
+
+ul.dropdown li a {
+    padding: 14px 0 14px;
+    color: #303030;
+    font-weight: 700;
+    text-transform: capitalize;
+    border-bottom: 1px solid #f4f4f4;
+    transition: .5s ease-in-out;
+    font-size: 14px;
+  }
 
 .menuzord-menu ul.dropdown li a {
   padding: 14px 0 14px;
@@ -1422,6 +1439,13 @@ textarea {
   border-bottom: 1px solid #f4f4f4;
   transition: .5s ease-in-out;
   font-size: 14px;
+}
+ul.dropdown li:hover a {
+    padding-left: 0px;
+    padding-right: 0px;
+    color: #8dc63f;
+    transition: .5s ease-in-out;
+    font-size: 14px;
 }
 .menuzord-menu ul.dropdown li:hover a {
     padding-left: 0px;

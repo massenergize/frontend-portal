@@ -152,7 +152,7 @@ class RegisterFormBase extends React.Component {
         return (
             < div className="styled-form register-form" >
                 <form onSubmit={this.onFinalSubmit}>
-                    {!this.props.auth.emailVerified ?
+                    {!this.props.firebase.auth().currentUser.emailVerified ?
                         <>
                             <p> We sent a link to your email address. Please verify your email and sign in to continue.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>

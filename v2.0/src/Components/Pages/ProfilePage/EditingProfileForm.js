@@ -17,6 +17,7 @@ class EditingProfileForm extends React.Component {
             full_name: props.full_name ? props.full_name : '',
             preferred_name: props.preferred_name ? props.preferred_name : '',
             delete_account: false,
+            change_password: false,
             are_you_sure: false,
         };
 
@@ -34,43 +35,8 @@ class EditingProfileForm extends React.Component {
 
                 <input type="text" name="preferred_name" value={this.state.preferred_name} onChange={this.onChange} required />
                 <p>Preffered Name <span className="text-danger">*</span></p>
-
-
-                <input
-                    type="checkbox"
-                    id="delete_account"
-                    checked={this.state.deleteAccount}
-                    onChange={() => this.setState({ delete_account: !this.state.delete_account })}
-                    style={{ display: "inline-block" }}
-                />
-                <label htmlFor="delete_account" style={{ display: "inline-block" }}> Delete Account</label>
-                <br />
-                {this.state.delete_account ?
-                    <>
-                        <p> Are you sure you want to delete your account? </p>
-
-                        <input
-                            type="radio"
-                            id="yes_im_sure"
-                            checked={this.state.are_you_sure}
-                            onChange={() => this.setState({ are_you_sure: !this.state.are_you_sure })}
-                            style={{ display: "inline-block" }}
-                        />
-                        <label htmlFor="yes_im_sure" style={{ display: "inline-block" }}> Yes </label>
-                        &nbsp;
-                        <input
-                            type="radio"
-                            id="nope_not_sure"
-                            checked={!this.state.are_you_sure}
-                            onChange={() => this.setState({ are_you_sure: !this.state.are_you_sure })}
-                            style={{ display: "inline-block" }}
-                        />
-                        <label htmlFor="nope_not_sure" style={{ display: "inline-block" }}> No</label>
-                        <br />
-                    </> : null
-                }
                 <button className="thm-btn bg-cl-1" type="submit">{"Submit"}</button>
-                <button className="thm-btn red" type='button' onClick={this.props.closeForm}> Cancel </button>
+                <button className="thm-btn red" type='button' onClick={() => this.props.closeForm()}> Cancel </button>
             </form>
         );
     }
@@ -114,7 +80,8 @@ class EditingProfileForm extends React.Component {
 
 const mapStoreToProps = store => {
     return {
-        user: store.user.info
+        user: store.user.info,
+        auth: store.firebase.auth
     }
 }
 export default connect(mapStoreToProps, { reduxLogin })(EditingProfileForm);
