@@ -12,6 +12,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
+import EventCart from './EventCart'
 
 import {
     reduxMoveToDone,
@@ -128,7 +129,7 @@ class ProfilePage extends React.Component {
                                                                     className="thm-btn"
                                                                     onClick={() => this.setState({ addingHH: false })}
                                                                     style={{ width: '99%' }}>Cancel
-                                                                    </button>
+                                                                </button>
                                                             </>
                                                             :
                                                             <button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
@@ -195,6 +196,8 @@ class ProfilePage extends React.Component {
                                         <Cart title="To Do List" actionRels={this.props.todo} status="TODO" /> : null}
                                     {this.props.done ?
                                         <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" /> : null}
+                                    {this.props.rsvps ?
+                                        <EventCart title="Event RSVPs" eventRSVPs={this.props.rsvps.filter(rsvp => rsvp.attendee && rsvp.attendee.id === this.props.user.id)}/> : null}
                                     <button className='thm-btn text-center' onClick={() => this.setState({ printing: true })}> Summarize your actions</button>
                                 </div>
                             </div>
@@ -514,7 +517,8 @@ const mapStoreToProps = (store) => {
         communities: store.user.info ? store.user.info.communities : null,
         community: store.page.community,
         communityData: store.page.communityData,
-        households: store.user.info ? store.user.info.households : null
+        households: store.user.info ? store.user.info.households : null,
+        rsvps: store.page.rsvps
     }
 }
 const mapDispatchToProps = {

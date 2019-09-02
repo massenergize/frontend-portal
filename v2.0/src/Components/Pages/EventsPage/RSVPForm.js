@@ -26,8 +26,12 @@ class RSVPForm extends React.Component {
     render() {
         return (
             <>
-                <h6 style={{ display: 'inline-block' }}> RSVP </h6>
-                {'\u00A0'}
+                {this.props.noText ? null :
+                    <>
+                        <h6 style={{ display: 'inline-block' }}> RSVP </h6>
+                        {'\u00A0'}
+                    </>
+                }
                 <select value={this.state.value} onChange={this.onChange}>
                     <option value='--'>--</option>
                     <option value='INTERESTED'>Interested</option>
@@ -35,7 +39,7 @@ class RSVPForm extends React.Component {
                     <option value='SAVE'>Save For Later</option>
                 </select>
                 &nbsp;
-                {this.state.oldvalue !== this.state.value? 
+                {this.state.oldvalue !== this.state.value ?
                     <button className='thm-btn style-4' onClick={this.handleSubmit}>Submit</button>
                     :
                     null
@@ -51,13 +55,13 @@ class RSVPForm extends React.Component {
         });
     };
     handleSubmit = (event) => {
-        if(this.state.oldvalue === '--'){
+        if (this.state.oldvalue === '--') {
             this.addRSVP(this.state.value);
         }
-        else if(this.state.value === '--'){
+        else if (this.state.value === '--') {
             this.removeRSVP(this.state.value);
         }
-        else { 
+        else {
             this.changeRSVP(this.state.value);
         }
         this.setState({
@@ -73,7 +77,7 @@ class RSVPForm extends React.Component {
         }
         postJson(URLS.EVENT_ATTENDEES, body).then(json => {
             console.log(json)
-            if(json.success && json.data){
+            if (json.success && json.data) {
                 this.props.reduxAddRSVP(json.data);
             }
         })
@@ -87,7 +91,7 @@ class RSVPForm extends React.Component {
         }
         postJson(`${URLS.EVENT_ATTENDEE}/${this.props.rsvp.id}`, body).then(json => {
             console.log(json)
-            if(json.success && json.data){
+            if (json.success && json.data) {
                 this.props.reduxChangeRSVP(json.data);
             }
         })
@@ -96,7 +100,7 @@ class RSVPForm extends React.Component {
     removeRSVP = () => {
         deleteJson(`${URLS.EVENT_ATTENDEE}/${this.props.rsvp.id}`).then(json => {
             console.log(json)
-            if(json.success){
+            if (json.success) {
                 this.props.reduxRemoveRSVP(this.props.rsvp);
             }
         })
