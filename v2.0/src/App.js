@@ -162,7 +162,8 @@ class App extends Component {
 					</div> : <LoadingCircle />
 				}
 				{ /**if theres a half finsished account the only place a user can go is the register page */
-					this.state.triedLogin && !this.props.user && this.props.auth.uid?
+					(this.state.triedLogin && !this.props.user && this.props.auth.uid)
+					|| (this.props.auth.uid && !this.props.auth.emailVerified) ?
 						<Switch> 
 							<Route component={RegisterPage} />
 						</Switch>

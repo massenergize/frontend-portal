@@ -12,6 +12,7 @@ import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import LoadingCircle from '../../Shared/LoadingCircle';
+import Tooltip from '../../Shared/Tooltip';
 
 /* Modal config */
 const INITIAL_STATE = {
@@ -58,7 +59,7 @@ class RegisterFormBase extends React.Component {
         }
 
 
-        if (this.props.user.info && this.props.user.todo && this.props.user.done) {
+        if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified) {
             return <Redirect to='/profile' />;
         }
         return (
@@ -116,10 +117,6 @@ class RegisterFormBase extends React.Component {
                         <span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
                         <input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
                     </div>
-                    <ReCAPTCHA
-                        sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
-                        onChange={this.onReCaptchaChange}
-                    />
                     <br />
                     {error && <p style={{ color: "red" }}> {error} </p>}
                     <div className="clearfix">
@@ -157,7 +154,7 @@ class RegisterFormBase extends React.Component {
                             <p> We sent a link to your email address. Please verify your email and sign in to continue.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>
                                 <br />
-                                <Link to='/login' onClick={() => this.props.firebase.auth().signOut()}> Continue</Link>
+                                <Link to='/login' onClick={() => this.props.firebase.auth().signOut()}> Sign in</Link>
                             </p>
                         </>
                         :
@@ -183,16 +180,25 @@ class RegisterFormBase extends React.Component {
                                 <input className="checkbox" type="checkbox" name="termsAndServices" onChange={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
                                 <span className="checkmark"></span>
                                 <p style={{ marginLeft: "25px" }}>I agree to the <button type='button' onClick={this.showTOS} className='as-link'>Terms of Service</button></p>
-                                <span className="text-danger mb-3 small" style={{ display: (this.state.showTOSError) ? "block" : "none" }}>You need to agree to the terms of service!</span>
+                                {/* <span className="text-danger mb-3 small" style={{ display: (this.state.showTOSError) ? "block" : "none" }}>You need to agree to the terms of service!</span> */}
                             </label>
+                            <ReCAPTCHA
+                                sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
+                                onChange={this.onReCaptchaChange}
+                            />
                         </>
                     }
+                    {this.state.error && <p style={{ color: "red" }}> {this.state.error} </p>}
                     <div className="clearfix">
                         <div className="form-group pull-left">
-                            <button type="submit" className="thm-btn" disabled={!this.props.auth.emailVerified}>
-                                Finish Creating Account
-                            </button>
-                            <button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+                            {this.props.auth.emailVerified ?
+                                <button type="submit" className="thm-btn" >
+                                    Finish Creating Account
+                                </button> : null
+                            }
+                            <Tooltip text='Cancling in the middle of registration will delete your account'>
+                                <button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+                            </Tooltip>
                         </div>
                     </div>
                 </form>
@@ -238,50 +244,53 @@ class RegisterFormBase extends React.Component {
     onSubmit(event) {
         event.preventDefault();
         const { email, passwordOne } = this.state;
-        if (!this.state.captchaConfirmed) {
-            this.setState({ error: 'Invalid reCAPTCHA, please try again' });
-        } else {
-            this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
-                this.props.firebase.auth()
-                    .createUserWithEmailAndPassword(email, passwordOne)
-                    .then(authUser => {
-                        this.setState({ ...INITIAL_STATE, form: 2 });
-                        this.sendVerificationEmail();
-                    })
-                    .catch(err => {
-                        this.setState({ error: err.message });
-                    });
-            });
-        }
+
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .createUserWithEmailAndPassword(email, passwordOne)
+                .then(authUser => {
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                    this.sendVerificationEmail();
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
     };
     onFinalSubmit(event) {
         event.preventDefault();
-        /** Collects the form data and sends it to the backend */
-        const { firstName, lastName, preferredName, serviceProvider, termsAndServices } = this.state;
-        if (!termsAndServices) {
-            this.setState({ showTOSError: true });
-            return;
-        }
-        const { auth } = this.props;
-        const body = {
-            "full_name": firstName + ' ' + lastName,
-            "preferred_name": preferredName === "" ? firstName : preferredName,
-            "email": auth.email,
-            // "id": auth.uid,
-            "is_vendor": serviceProvider,
-            "accepts_terms_and_conditions": termsAndServices
-        }
-        postJson(URLS.USERS, body).then(json => {
-            console.log(json);
-            if (json.success && json.data) {
-                this.fetchAndLogin(json.data.email).then(success => {
-                    if (success) {
-                        console.log('yay')
-                    }
-                });
+        if (!this.state.termsAndServices) {
+            this.setState({ error: 'You need to agree to the terms and services' });
+        }else if(!this.state.captchaConfirmed){ 
+            this.setState({ error: 'Invalid reCAPTCHA, please try again' });
+        }else {
+            /** Collects the form data and sends it to the backend */
+            const { firstName, lastName, preferredName, serviceProvider, termsAndServices } = this.state;
+            if (!termsAndServices) {
+                this.setState({ showTOSError: true });
+                return;
             }
-        })
-        this.setState({ ...INITIAL_STATE });
+            const { auth } = this.props;
+            const body = {
+                "full_name": firstName + ' ' + lastName,
+                "preferred_name": preferredName === "" ? firstName : preferredName,
+                "email": auth.email,
+                // "id": auth.uid,
+                "is_vendor": serviceProvider,
+                "accepts_terms_and_conditions": termsAndServices
+            }
+            postJson(URLS.USERS, body).then(json => {
+                console.log(json);
+                if (json.success && json.data) {
+                    this.fetchAndLogin(json.data.email).then(success => {
+                        if (success) {
+                            console.log('yay')
+                        }
+                    });
+                }
+            })
+            this.setState({ ...INITIAL_STATE });
+        }
     }
 
     deleteFirebaseAccount = () => {
@@ -292,45 +301,36 @@ class RegisterFormBase extends React.Component {
     //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
     //WOULD NOT DELETE DATA I THINK?
     signInWithGoogle = () => {
-        if (!this.state.captchaConfirmed) {
-            this.setState({ error: 'Invalid reCAPTCHA, please try again' });
-        } else {
-            this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
-                this.props.firebase.auth()
-                    .signInWithPopup(googleProvider)
-                    .then(auth => {
-                        console.log(auth);
-                        this.fetchAndLogin(auth.user.email).then(success => {
-                        });
-                        this.setState({ ...INITIAL_STATE, form: 2 });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.setState({ ...INITIAL_STATE, form: 2 });
+
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(googleProvider)
+                .then(auth => {
+                    console.log(auth);
+                    this.fetchAndLogin(auth.user.email).then(success => {
                     });
-            });
-        }
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({ ...INITIAL_STATE, form: 2 });
+                });
+        });
+
     }
     signInWithFacebook = () => {
-        if (!this.state.captchaConfirmed) {
-            this.setState({ error: 'Invalid reCAPTCHA, please try again' });
-        } else {
-            this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
-                this.props.firebase.auth()
-                    .signInWithPopup(facebookProvider)
-                    .then(auth => {
-                        console.log(auth);
-                        this.fetchAndLogin(auth.user.email).then(success => {
-                            if (success)
-                                console.log('yay');
-                        });
-                        this.setState({ ...INITIAL_STATE });
-                    })
-                    .catch(err => {
-                        this.setState({ error: err.message });
-                    });
-            });
-        }
+        this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
+            this.props.firebase.auth()
+                .signInWithPopup(facebookProvider)
+                .then(auth => {
+                    this.fetchAndLogin(auth.user.email);
+                    if (!auth.emailVerified) this.sendVerificationEmail();
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(err => {
+                    this.setState({ error: err.message });
+                });
+        });
     }
 
     fetchAndLogin = async (email) => {

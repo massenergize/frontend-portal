@@ -43,6 +43,7 @@ class ProfilePage extends React.Component {
         super(props);
         this.state = {
             loaded: false,
+            addedHouse: false,
 
             selectedHousehold: null,
             editingHH: null,
@@ -61,7 +62,8 @@ class ProfilePage extends React.Component {
         if (!this.props.user)
             return <Redirect to='/login'> </Redirect>
 
-        if (this.props.user.households.length === 0) {
+        if (this.props.user.households.length === 0 && !this.state.addedHouse) {
+            this.setState({addedHouse:true});
             this.addDefaultHousehold();
         }
         if (this.props.community) {
