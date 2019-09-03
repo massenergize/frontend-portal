@@ -1,41 +1,13 @@
 import React from 'react'
-import logo from '../../logo.svg';
+import logo from '../../logo.png';
 import Dropdown from 'react-bootstrap/Dropdown'
-import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import SignOutLink from '../Shared/SignOutLink';
 import { withFirebase } from 'react-redux-firebase';
 import { reduxLogout } from '../../redux/actions/userActions';
+import { section } from '../../api/functions'
 
-/**
- * Renders entire navbar
- * 
- * Normal state:
- * <nav>
- *  <ul>
- *      <li>
- *          <Dropdown> // if necessary
- *              <Link />
- *          </Dropdown>
- *      </li>
- *  </ul>
- * </nav>
- * 
- * Burgered state:
- * <Menu>
- *  <MenuItem></MenuItem>
- *  <SubMenuItem></SubMenuItem> // for if has children only
- * </Menu>
- * 
- * where SubMenuItem renders:
- * <MenuItem></MenuItem>
- * <div>
- *  <Menu>
- *      <MenuItem></MenuItem>
- *      <MenuItem></MenuItem>
- *  </Menu>
- * </div>
- */
 class NavBarBurger extends React.Component {
     constructor(props) {
         super(props);
@@ -53,7 +25,7 @@ class NavBarBurger extends React.Component {
     }
     handleResize = () => {
         this.setState({
-            menuBurgered: window.innerWidth < 992
+            menuBurgered: window.outerWidth < 992
         })
         this.forceUpdate();
     };
@@ -65,8 +37,9 @@ class NavBarBurger extends React.Component {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
     render() {
-        const styles =
-        {
+        const header = section(this.props.pageData, 'HomeHeader');
+        const communitylogo = header.image ? header.image.url : null;
+        const styles = {
             container: {
                 position: 'relative',
                 width: '100%',
@@ -88,7 +61,7 @@ class NavBarBurger extends React.Component {
 
         // Only for burgered
         const menuItems = this.props.navLinks.map((val, index) => {
-            if(val.children) {
+            if (val.children) {
                 return (
                     <SubMenuItem key={index} navlink={val} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
                 )
@@ -97,7 +70,7 @@ class NavBarBurger extends React.Component {
                 <MenuItem
                     key={index}
                     delay={`${index * 0.1}s`}
-                    onClick={() => {this.handleLinkClick()}}
+                    onClick={() => { this.handleLinkClick() }}
                     href={val.link}
                 >
                     {val.name}
@@ -105,16 +78,24 @@ class NavBarBurger extends React.Component {
             )
         });
         return (
-            <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{"height": "100px"}}>
+            <nav className={`theme_menu navbar p-0 bg-white ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{ "height": "100px" }}>
                 <div className="container">
                     <div className="row no-gutter width-100">
-                        <div className="col-lg-2 col-md-3 col d-flex align-items-center" >
+                        <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
                             <div className="main-logo col" >
-                                <Link to="/"><img src={logo} alt="" /></Link>
+                                <Link to="/" >
+                                    {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
+                                    <div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
+                                        <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+                                        {communitylogo ? null : <>&nbsp;{header.title}</>}
+                                        {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+                                        <>&nbsp;Concord</> */}
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                         {this.state.menuBurgered ? // BURGERED STATE
-                            <div className="col-lg-10 col-md-9 col menu-column" >
+                            <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column" >
                                 <div style={styles.container}>
                                     <MenuButton open={this.state.menuOpen} onClick={() => this.handleMenuClick()} color='#333' />
                                     {this.renderLogin()}
@@ -130,7 +111,7 @@ class NavBarBurger extends React.Component {
                                 </Menu>
                             </div>
                             :
-                            <div className="col-xl-9 col-lg-10 col-md-8 col-sm-6 col-6 menu-column">
+                            <div className="col-lg-7 col-md-4 col-sm-6 col-6 menu-column">
                                 <div style={styles.container}>
                                     <nav className="menuzord d-flex ml-auto" style={{ display: 'inline-block' }} id="main_menu" >
                                         <ul className="menuzord-menu height-100 d-flex flex-row">
@@ -159,7 +140,7 @@ class NavBarBurger extends React.Component {
         };
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
-            if(navLink.children) {
+            if (navLink.children) {
                 return (
                     <li className="d-flex flex-column justify-content-center" key={navLink.name}>
                         <Dropdown onSelect={() => null}>
@@ -175,7 +156,7 @@ class NavBarBurger extends React.Component {
         });
     }
     renderDropdownItems(children) {
-        return children.map((child,key) => {
+        return children.map((child, key) => {
             return (
                 <Link key={key} to={child.link} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
             );
@@ -183,7 +164,7 @@ class NavBarBurger extends React.Component {
     }
     renderLogin() {
         const {
-            auth,  
+            auth,
             user
         } = this.props;
         const style = {
@@ -194,10 +175,10 @@ class NavBarBurger extends React.Component {
         if (auth.uid && user.info) {
             return (
                 <Dropdown onSelect={() => null} className="d-flex">
-                    <Dropdown.Toggle as={ProfileBtnDropdown} userName= {user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
+                    <Dropdown.Toggle as={ProfileBtnDropdown} userName={user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
                         <Link to="/profile" className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
-                        <button className="dropdown-item p-3 small font-weight-bold" onClick={() => {this.props.firebase.auth().signOut(); this.props.reduxLogout();}}><SignOutLink>Sign Out</SignOutLink></button>
+                        <button className="dropdown-item p-3 small font-weight-bold" onClick={() => { this.props.firebase.auth().signOut(); this.props.reduxLogout(); }}><SignOutLink>Sign Out</SignOutLink></button>
                     </Dropdown.Menu>
                 </Dropdown>
             );
@@ -210,14 +191,16 @@ class NavBarBurger extends React.Component {
             );
         }
     }
-} 
+}
 const mapStoreToProps = (store) => {
+
     return {
         auth: store.firebase.auth,
-        user: store.user
+        user: store.user,
+        pageData: store.page.homePage
     }
 }
-export default connect(mapStoreToProps,{reduxLogout})(withFirebase(NavBarBurger));
+export default connect(mapStoreToProps, { reduxLogout })(withFirebase(NavBarBurger));
 // export default NavBarBurger;
 
 class ProfileBtnDropdown extends React.Component {
@@ -233,9 +216,9 @@ class ProfileBtnDropdown extends React.Component {
 
     render() {
         return (
-            <button className="thm-btn float-right" onClick={this.handleClick} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight:600 }}>
+            <button className="thm-btn float-right" onClick={this.handleClick} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
                 <i className="fa fa-user" />{'\u00A0'}
-                    Hello, {this.props.userName}
+                Hello, {this.props.userName}
                 <span className="fa fa-angle-down text-white ml-1"></span>
             </button>
         );
@@ -245,27 +228,27 @@ class ProfileBtnDropdown extends React.Component {
 /* For Navbar (Normal) Dropdown Link */
 class CustomNavLink extends React.Component {
     constructor(props, context) {
-      super(props, context);
-  
-      this.handleClick = this.handleClick.bind(this);
-    }
-  
-    handleClick(e) {
-      e.preventDefault();
-  
-      this.props.onClick(e);
-    }
-  
-    render() {
-      return (
-        // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
-            <Link to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
-        // </li>
-      );
-    }
-  }
+        super(props, context);
 
-  // ======================== BURGERED vvv =========================== //
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e) {
+        e.preventDefault();
+
+        this.props.onClick(e);
+    }
+
+    render() {
+        return (
+            // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
+            <Link to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
+            // </li>
+        );
+    }
+}
+
+// ======================== BURGERED vvv =========================== //
 
 /**
  * Renders one navlink and its menu underneath in Burgered menu
@@ -281,13 +264,13 @@ class SubMenuItem extends React.Component {
     }
 
     handleClick() {
-        this.setState({open: !this.state.open});
+        this.setState({ open: !this.state.open });
     }
 
     renderSubmenuItems(items) {
         return items.map((item, key) => {
             return (
-                <MenuItem key = {key}
+                <MenuItem key={key}
                     href={item.link}
                     onClick={this.props.clickHandler}
                 >
@@ -308,13 +291,13 @@ class SubMenuItem extends React.Component {
                 >
                     {this.props.navlink.name}
                 </MenuItem>
-                <div style={{marginLeft: "1em"}}>
+                <div style={{ marginLeft: "1em" }}>
                     <Menu open={this.state.open} submenu={true}>
                         {this.renderSubmenuItems(this.props.navlink.children)}
                     </Menu>
                 </div>
             </>
-            )
+        )
     }
 };
 
@@ -410,13 +393,13 @@ class Menu extends React.Component {
                 paddingTop: (!this.props.submenu) ? '3rem' : "0",
             }
         }
-        
-        if(!this.props.submenu) {
+
+        if (!this.props.submenu) {
             // this is the main parent menu
             document.body.className = (this.state.open) ? "burger-menu-open" : "";
         }
-        
-        
+
+
         return (
             <div style={styles.container}>
                 {

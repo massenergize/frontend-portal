@@ -144,6 +144,10 @@ img {
     display: inline-block;
 }
 
+.header-logo { 
+    max-width: 150px;
+}
+
 button {
     border: none;
     outline: none;
@@ -1332,12 +1336,6 @@ textarea {
 
 
 /*======logo========*/
-
-.main-logo {
-    margin: 7px 0;
-    width: 9em;
-}
-
 
 /*=====menu========*/
 

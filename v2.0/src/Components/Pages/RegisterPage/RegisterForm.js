@@ -208,9 +208,7 @@ class RegisterFormBase extends React.Component {
 
     sendVerificationEmail = () => {
         console.log(process.env.EMAIL_REDIRECT_URL)
-        this.props.firebase.auth().currentUser.sendEmailVerification({
-            url: 'http://localhost:3000/login',
-        }).then(() => console.log('email sent'));
+        this.props.firebase.auth().currentUser.sendEmailVerification().then(() => console.log('email sent'));
     }
     onReCaptchaChange = (value) => {
         if (!value) {

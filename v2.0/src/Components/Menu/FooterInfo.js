@@ -1,6 +1,9 @@
 import React from 'react';
-import logo from '../../logo.svg';
-import {Link} from 'react-router-dom'
+import logo from '../../logo.png';
+import { Link } from 'react-router-dom'
+import { section } from '../../api/functions'
+import { connect } from 'react-redux'
+
 
 
 /** Renders the address/ company contact info in the footer
@@ -12,20 +15,29 @@ import {Link} from 'react-router-dom'
         contactPersonLink
 */
 
-class FooterInfo extends React.Component{
-    render(){
-        return(
+class FooterInfo extends React.Component {
+    render() {
+        const header = section(this.props.pageData, 'HomeHeader');
+        const communitylogo = header.image ? header.image.url : null;
+        return (
             <div className="col-7 col-md-4">
                 <div className="footer-widget about-column">
-                    <figure><Link to="/"><img src={logo} alt="" className="col-10 p-0"/></Link></figure>
+                    <figure><Link to="/">
+                        <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+                    </Link></figure>
                     <ul className="contact-info">
                         <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li>
                         <li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
-                        <li><span className="icon-people3"></span><Link to={this.props.info.contactPersonLink} target="_blank" className="font-normal"><u>{this.props.info.contactPerson}, <i>Community Contact</i></u></Link></li>
+                        <li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
                     </ul>
                 </div>
             </div>
         );
     }
 }
-export default FooterInfo
+const mapStoreToProps = (store) => {
+    return {
+        pageData: store.page.homePage
+    }
+}
+export default connect(mapStoreToProps, null)(FooterInfo);

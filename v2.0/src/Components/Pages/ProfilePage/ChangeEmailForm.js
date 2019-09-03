@@ -47,9 +47,7 @@ class ChangeEmailFormBase extends React.Component {
         );
         this.props.firebase.auth().currentUser.reauthenticateWithCredential(cred).then(() => {
             this.props.firebase.auth().currentUser.updateEmail(this.state.email).then(() => {
-                this.props.firebase.auth().currentUser.sendEmailVerification({
-                    url: 'http://localhost:3000/login',
-                }).then(() => console.log('email sent'));
+                this.props.firebase.auth().currentUser.sendEmailVerification().then(() => console.log('email sent'));
                 postJson(`${URLS.USER}/${this.props.user.id}`, {email: this.state.email}).then(response =>{
                     console.log(response);
                 });
