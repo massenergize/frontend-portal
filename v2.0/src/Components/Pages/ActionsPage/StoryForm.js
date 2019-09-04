@@ -27,7 +27,7 @@ class StoryForm extends React.Component {
             ...INITIAL_STATE,
             vid: props.vid ? props.vid : '--',
             aid: props.aid ? props.aid : '--',
-            captchaConfirmed:false,
+            captchaConfirmed: false,
 
             message: message
         };
@@ -41,9 +41,11 @@ class StoryForm extends React.Component {
         if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
         return (
             <div className="review-form" style={{ border: '1px solid #aaa' }}>
-                <div className="tab-title-h4 text center">
-                    <h4>{this.state.message}</h4>
-                </div>
+                {this.props.noMessage ? null :
+                    <div className="tab-title-h4 text center">
+                        <h4>{this.state.message}</h4>
+                    </div>
+                }
                 <form onSubmit={this.onSubmit} style={{ margin: '20px' }} >
                     {this.props.aid ? null :
                         <>
@@ -145,11 +147,13 @@ class StoryForm extends React.Component {
                         ...INITIAL_STATE,
                         message: "Thank you for submitting your story! Our community admins will review it and post it soon."
                     })
+                    if(this.props.closeForm) this.props.closeForm('Thank you for submitting your testimonial. Your community admins will review it and post it soon.');
                 } else {
                     this.setState({
                         ...INITIAL_STATE,
-                        error: "We are sorry, but you can only submit one story about this Action"
+                        error: "There was an error submitting your testimonial"
                     })
+                    if(this.props.closeForm) this.props.closeForm('There was an error submitting your testimonial. We are sorry.');
                 }
                 console.log(this.state);
             })

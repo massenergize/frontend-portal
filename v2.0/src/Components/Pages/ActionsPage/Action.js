@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Tooltip from '../../Shared/Tooltip';
 import ChooseHHForm from './ChooseHHForm'
+import StoryForm from './StoryForm'
 
 /**
  * Action Component is a single action for the action page, 
@@ -23,6 +24,8 @@ class Action extends React.Component {
         super(props);
         this.state = {
             status: null,
+            showTestimonialForm: false,
+            message: null,
         }
     }
     render() {
@@ -80,7 +83,7 @@ class Action extends React.Component {
                                             {!this.props.user ?
                                                 <Tooltip text='Sign in to make a TODO list'>
                                                     <p className='has-tooltip thm-btn style-4 disabled'>
-                                                        Add Todo 
+                                                        Add Todo
                                                     </p>
                                                 </Tooltip>
                                                 :
@@ -94,17 +97,17 @@ class Action extends React.Component {
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
                                         <div className="col-centered">
-                                        {!this.props.user ?
+                                            {!this.props.user ?
                                                 <Tooltip text='Sign in to mark actions as completed'>
                                                     <p className='has-tooltip thm-btn style-4 disabled'>
-                                                        Done It 
+                                                        Done It
                                                     </p>
                                                 </Tooltip>
                                                 :
                                                 <button
-                                                className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
-                                                onClick={() => this.openForm("DONE")}
-                                            > Done It </button>
+                                                    className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+                                                    onClick={() => this.openForm("DONE")}
+                                                > Done It </button>
                                             }
                                         </div>
                                     </div>
@@ -112,6 +115,25 @@ class Action extends React.Component {
 
                                         <div className="col-centered">
                                             <br></br>
+                                            {this.props.showTestimonialLink ?
+                                                <>
+                                                    {this.state.showTestimonialForm ?
+                                                        <>
+                                                            <button className='as-link' onClick={() => this.setState({ showTestimonialForm: false })} style={{ margin: 'auto' }}> Cancel</button>
+                                                            <StoryForm aid={this.props.action.id} noMessage={true} closeForm={(message) => this.setState({ message: message, showTestimonialForm: false })}></StoryForm>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            {this.state.message ?
+                                                                <p>{this.state.message}</p>
+                                                                :
+                                                                <p>Nice job! How was your experience with this action? Tell us about it in a <button className='as-link' style={{ display: 'inline-block' }} onClick={() => this.setState({ showTestimonialForm: true })}>testimonial</button>.</p>
+                                                            }
+                                                        </>
+
+                                                    }
+                                                </> : null
+                                            }
                                             <ChooseHHForm
                                                 aid={this.props.action.id}
                                                 status={this.state.status}

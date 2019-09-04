@@ -24,6 +24,7 @@ class ActionsPage extends React.Component {
         this.state = {
             loaded: false,
             openAddForm: null,
+            testimonialLink: null,
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -85,12 +86,6 @@ class ActionsPage extends React.Component {
             return <Action key={key}
                 action={action}
 
-                // id={action.id}
-                // title={action.title}
-                // description={action.about}
-                // image={action.image ? action.image.url : null}
-                // tags={action.tags}
-
                 tagCols={this.props.tagCols}
                 match={this.props.match} //passed from the Route, need to forward to the action for url matching
                 user={this.props.user}
@@ -100,6 +95,7 @@ class ActionsPage extends React.Component {
                 moveToDone={(aid, hid) => this.moveToDoneByActionId(aid,hid)}
 
                 HHFormOpen = {this.state.openAddForm === action.id}
+                showTestimonialLink = {this.state.testimonialLink === action.id}
                 closeHHForm = {() => this.setState({ openAddForm: null })}
                 openHHForm = {(aid) => this.setState({ openAddForm: aid})}
             />
@@ -131,6 +127,7 @@ class ActionsPage extends React.Component {
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
                 this.addToImpact(json.data.action);
+                this.setState({testimonialLink: actionRel.action.id})
             }
             //just update the state here
         }).catch(err => {
@@ -153,6 +150,7 @@ class ActionsPage extends React.Component {
             status:status,
             real_estate_unit: hid
         }
+        this.setState({testimonialLink: null});
         console.log(this.props.user.id)        
         postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
             console.log(json)
@@ -164,6 +162,7 @@ class ActionsPage extends React.Component {
                 else if (status === "DONE") {
                     this.props.reduxAddToDone(json.data);
                     this.addToImpact(json.data.action);
+                    this.setState({testimonialLink: aid});
                 }
             }
         }).catch(error => {

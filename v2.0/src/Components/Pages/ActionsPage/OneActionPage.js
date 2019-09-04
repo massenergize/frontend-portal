@@ -8,7 +8,7 @@ import Cart from '../../Shared/Cart';
 import StoryForm from './StoryForm';
 import ChooseHHForm from './ChooseHHForm';
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
-import { reduxChangeData, reduxTeamAddAction} from '../../../redux/actions/pageActions'
+import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/pageActions'
 import Tooltip from '../../Shared/Tooltip'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
@@ -23,7 +23,10 @@ class OneActionPage extends React.Component {
         this.state = {
             status: null,
             limit: 140,
-            expanded: null
+            expanded: null,
+            showTestimonialLink: false,
+            numberToShow: 3,
+            tab: 'description'
         }
         this.handleChange = this.handleChange.bind(this);
     }
@@ -137,7 +140,10 @@ class OneActionPage extends React.Component {
                                         /> </div>
                                     : null
                                 }
-
+                                {this.state.showTestimonialLink ?
+                                    <p>Nice job! How was your experience with this action? Tell us about it in a <a href='#testimonials-form' className='as-link' style={{ display: 'inline-block' }} onClick={() => this.setState({ tab: 'testimonials' })}>testimonial</a>.</p>
+                                    : null
+                                }
                             </div>
                         </div>
                         {/* action image */}
@@ -150,34 +156,23 @@ class OneActionPage extends React.Component {
                 <div className="product-tab-box">
                     <ul className="nav nav-tabs tab-menu">
                         {/* tab switching system, may be a better way to do this */}
-                        <li id="desctab" className="active"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
-                            if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane active";
-                            if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
-                            if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
-                            if (document.getElementById("desctab")) document.getElementById("desctab").className = "active";
-                            if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
-                            if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                        }} data-toggle="tab">Description</button></li>
-                        <li id="stepstab"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
-                            if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
-                            if (document.getElementById("review")) document.getElementById("review").className = "tab-pane";
-                            if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane active";
-                            if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
-                            if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "";
-                            if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "active";
-                        }} data-toggle="tab">Steps to Take</button></li>
-                        <li id="reviewtab"><button style={{ fontSize: this.state.fontSize }} onClick={() => {
-                            if (document.getElementById("desc")) document.getElementById("desc").className = "tab-pane";
-                            if (document.getElementById("review")) document.getElementById("review").className = "tab-pane active";
-                            if (document.getElementById("steps")) document.getElementById("steps").className = "tab-pane";
-                            if (document.getElementById("desctab")) document.getElementById("desctab").className = "";
-                            if (document.getElementById("reviewtab")) document.getElementById("reviewtab").className = "active";
-                            if (document.getElementById("stepstab")) document.getElementById("stepstab").className = "";
-                        }} data-toggle="tab">Testimonials </button></li>{/**@TODO make it say number of stories/disapear if none*/}
+                        <li id="desctab" className={this.state.tab === 'description' ? "active" : ''}>
+                            <button style={{ fontSize: this.state.fontSize }} onClick={() => {
+                                this.setState({ tab: 'description' })
+                            }} data-toggle="tab">Description</button></li>
+                        <li id="stepstab" className={this.state.tab === 'steps' ? "active" : ''}>
+                            <button style={{ fontSize: this.state.fontSize }} onClick={() => {
+                                this.setState({ tab: 'steps' })
+                            }} data-toggle="tab">Steps To Take</button></li>
+                        <li id="reviewtab" className={this.state.tab === 'testimonials' ? "active" : ''}>
+                            <button style={{ fontSize: this.state.fontSize }} onClick={() => {
+                                this.setState({ tab: 'testimonials' })
+                            }} data-toggle="tab">Testimonials</button></li>
+
                     </ul>
                     <div className="tab-content">
                         {/* description */}
-                        <div className="tab-pane active" id="desc">
+                        <div className={this.state.tab === 'description' ? "tab-pane active" : 'tab-pane'} id="desc">
                             <div className="product-details-content">
                                 <div className="desc-content-box">
                                     <p>{action.about}</p>
@@ -185,21 +180,27 @@ class OneActionPage extends React.Component {
                             </div>
                         </div>
                         {/* steps to take */}
-                        <div className="tab-pane" id="steps">
+                        <div className={this.state.tab === 'steps' ? "tab-pane active" : 'tab-pane'} id="steps">
                             <div className="product-details-content">
                                 <div className="desc-content-box">
                                     <p>{action.steps_to_take}</p>
                                 </div>
                             </div>
                         </div>
-                        <div className="tab-pane" id="review">
+                        <div className={this.state.tab === 'testimonials' ? "tab-pane active" : 'tab-pane'} id="review">
                             <div className="review-box">
                                 {/* Reviews */}
                                 {this.renderStories(stories)}
+                                {this.state.numberToShow < stories.length ?
+                                <button style={{margin:'0 auto 30px auto'}} className='as-link' onClick={() => this.setState({numberToShow: stories.length})}> Show all Testimonials </button>
+                                :null
+                                }
                             </div>
                             {/* form to fill out to tell your own story */}
                             {this.props.user ?
-                                <StoryForm uid={this.props.user.id} aid={action.id} addStory={this.addStory} />
+                                <div id='testimonials-form'>
+                                    <StoryForm uid={this.props.user.id} aid={action.id} addStory={this.addStory} />
+                                </div>
                                 :
                                 <p>
                                     <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
@@ -255,41 +256,43 @@ class OneActionPage extends React.Component {
                 {Object.keys(stories).map((key) => {
                     const story = stories[key];
                     const date = new Date(story.created_at);
-                    return (
-                        <div className="single-review-box" key={key}>
-                            <div className="img-holder">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="text-holder">
-                                <div className="top">
-                                    <div className="name pull-left">
-                                        <h4>{story.user.full_name} – {date.toLocaleDateString()}:</h4>
+                    if (key < this.state.numberToShow) {
+                        return (
+                            <div className="single-review-box" key={key}>
+                                <div className="img-holder">
+                                    <img src="" alt="" />
+                                </div>
+                                <div className="text-holder">
+                                    <div className="top">
+                                        <div className="name pull-left">
+                                            <h4>{story.user.full_name} – {date.toLocaleDateString()}:</h4>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="text">
-                                    <h6>
-                                        {story.title}
-                                        {this.state.expanded && this.state.expanded === story.id ?
-                                            <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
-                                        }
-                                    </h6>
-
-                                    <p>{this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, this.state.limit)}
-                                        {this.state.limit < story.body.length && this.state.expanded !== story.id ?
-                                            <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: story.id }) }}>more...</button>
-                                            :
-                                            null
-                                        }
-                                    </p>
-                                </div>
-                                {story.vendor ?
                                     <div className="text">
-                                        <p>Linked Vendor: <Link to={`/services/${story.vendor.id}`}>{story.vendor.name}</Link></p>
-                                    </div> : null
-                                }
+                                        <h6>
+                                            {story.title}
+                                            {this.state.expanded && this.state.expanded === story.id ?
+                                                <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
+                                            }
+                                        </h6>
+
+                                        <p>{this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, this.state.limit)}
+                                            {this.state.limit < story.body.length && this.state.expanded !== story.id ?
+                                                <button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: story.id }) }}>more...</button>
+                                                :
+                                                null
+                                            }
+                                        </p>
+                                    </div>
+                                    {story.vendor ?
+                                        <div className="text">
+                                            <p>Linked Vendor: <Link to={`/services/${story.vendor.id}`}>{story.vendor.name}</Link></p>
+                                        </div> : null
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    );
+                        );
+                    }
                 })}
             </>
         );
@@ -327,6 +330,7 @@ class OneActionPage extends React.Component {
             if (json.success) {
                 this.props.reduxMoveToDone(json.data);
                 this.addToImpact(json.data.action);
+                this.setState({ showTestimonialLink: true });
             }
             //just update the state here
         }).catch(err => {
@@ -357,6 +361,7 @@ class OneActionPage extends React.Component {
                 else if (status === "DONE") {
                     this.props.reduxAddToDone(json.data);
                     this.addToImpact(json.data.action);
+                    this.setState({ showTestimonialLink: true });
                 }
             }
         }).catch(error => {
@@ -433,10 +438,10 @@ const mapStoreToProps = (store) => {
         communityData: store.page.communityData
     }
 }
-const mapDispatchToProps = { 
-    reduxAddToDone, 
-    reduxAddToTodo, 
-    reduxMoveToDone, 
+const mapDispatchToProps = {
+    reduxAddToDone,
+    reduxAddToTodo,
+    reduxMoveToDone,
     reduxChangeData,
     reduxTeamAddAction
 }
