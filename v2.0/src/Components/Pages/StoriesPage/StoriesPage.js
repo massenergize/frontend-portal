@@ -35,7 +35,7 @@ class StoriesPage extends React.Component {
                                 {this.props.user ?
                                     <StoryForm uid={this.props.user.id} />
                                     :
-                                    <p className='text-center'><Link to='/login'>Sign in</Link> to submit a story</p>
+                                    <p className='text-center'><Link to={this.props.links.signin}>Sign in</Link> to submit a story</p>
                                 }
                             </div>
                         </div>
@@ -85,7 +85,7 @@ class StoriesPage extends React.Component {
                             <h4>{story.user.full_name}</h4>
                             {/* <p>{story.location}</p> */}
                         </div>
-                        {(story.action) ? <p><Link to={`/actions/${story.action.id}`} className="font-normal"><u>{story.action.title}</u></Link></p> : null}
+                        {(story.action) ? <p><Link to={`${this.props.links.actions}/${story.action.id}`} className="font-normal"><u>{story.action.title}</u></Link></p> : null}
                     </div>
                 </div>
             );
@@ -95,7 +95,8 @@ class StoriesPage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         stories: store.page.testimonials,
-        user: store.user.info
+        user: store.user.info,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, null)(StoriesPage);

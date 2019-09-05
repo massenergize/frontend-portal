@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import CONST from '../../Constants'
+import {connect} from 'react-redux'
 /**
  * Events section displays upcoming events,
  * @props
@@ -32,7 +33,7 @@ class Events extends React.Component {
             }
         });
         if (upcomingEvents.length === 0 && showMessage) {
-            return <div><p> Sorry, no upcoming events. See all <Link to='/events'> events</Link></p></div>
+            return <div><p> Sorry, no upcoming events. See all <Link to={this.props.links.events}> events</Link></p></div>
         }
         var eventsDisplayed = 0;
         return upcomingEvents.map(event => {
@@ -50,17 +51,17 @@ class Events extends React.Component {
                         <div className="clearfix">
                             <div className="img-column">
                                 <figure className="img-holder">
-                                    <Link to={'events/' + event.id}><img src={event.image ? event.image.url : ""} alt="" /></Link>
+                                    <Link to={`${this.props.links.events}/${event.id}`}><img src={event.image ? event.image.url : ""} alt="" /></Link>
                                 </figure>
                             </div>
                             <div className="text-column">
                                 <div className="lower-content">
-                                    <Link to={'events/' + event.id}><h4>{event.name}</h4></Link>
+                                    <Link to={`${this.props.links.events}/${event.id}`}><h4>{event.name}</h4></Link>
                                     <div >
                                         {event.description.length > CONST.LIMIT ?
                                             <p>
                                             {event.description.substring(0, CONST.LIMIT)}
-                                            &nbsp;<Link to={`/events/${event.id}`}> ...more </Link>
+                                            &nbsp;<Link to={`${this.props.links.events}/${event.id}`}> ...more </Link>
                                             </p>
                                             :
                                             <p> {event.description} </p>
@@ -100,7 +101,7 @@ class Events extends React.Component {
                             </div>
                         </div>
                         <div className="col-md-3 col-sm-2 col-xs-12">
-                            <Link to="events" className="thm-btn float_right">All Events</Link>
+                            <Link to={`${this.props.links.events}`} className="thm-btn float_right">All Events</Link>
                         </div>
                     </div>
                     <div className="row">
@@ -116,4 +117,9 @@ class Events extends React.Component {
         );
     }
 }
-export default Events;
+const mapStoreToProps = (store) => {
+    return({
+        links: store.links
+    });
+}
+export default connect(mapStoreToProps)(Events);

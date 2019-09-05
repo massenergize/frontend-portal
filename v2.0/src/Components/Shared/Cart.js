@@ -44,7 +44,7 @@ class Cart extends React.Component {
     renderActions(actionRelations) {
         if (!actionRelations || actionRelations.length <= 0) {
             return (
-                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/actions'> actions </Link></p></td></tr>
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to={this.props.links.actions}> actions </Link></p></td></tr>
             );
         }
         //returns a list of action components
@@ -65,7 +65,7 @@ class Cart extends React.Component {
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            <Link to={'/actions/' + action.id}>
+                            <Link to={`${this.props.links.actions}/${action.id}`}>
                                 <h4 className="prod-title padd-top-20">{action.title}</h4>
                             </Link>
                         </div>
@@ -95,7 +95,7 @@ class Cart extends React.Component {
     renderActionsMoreInfo(actionRelations) {
         if (!actionRelations || actionRelations.length <= 0) {
             return (
-                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/actions'> actions </Link></p></td></tr>
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to={this.props.links.actions}> actions </Link></p></td></tr>
             );
         }
         //returns a list of action components
@@ -255,7 +255,8 @@ const mapStoreToProps = (store) => {
         user: store.user.info,
         todo: store.user.todo,
         done: store.user.done,
-        communityData: store.page.communityData
+        communityData: store.page.communityData,
+        links: store.links
     }
 }
 

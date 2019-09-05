@@ -114,7 +114,7 @@ class EventsPage extends React.Component {
                             {/* renders the image */}
                             <div className="col-lg-4 col-12">
                                 <figure className="img-holder">
-                                    <Link to={this.props.match.url + "/" + event.id}><img src={event.image ? event.image.url : null} alt="" /></Link>
+                                    <Link to={this.props.links.events + "/" + event.id}><img src={event.image ? event.image.url : null} alt="" /></Link>
                                     {/* if the date has passed already the calender div should be all gray */}
                                     <div className={(endDate - now > 0) ? "date" : "date old"}><span>{months[date.getMonth()]}<br />{date.getDate()}</span></div>
                                 </figure>
@@ -122,14 +122,14 @@ class EventsPage extends React.Component {
                             {/* renders the event text */}
                             <div className=" col-lg-8 col-12">
                                 <div className="lower-content">
-                                    <Link to={this.props.match.url + "/" + event.id}><h4> {event.name} </h4></Link>
+                                    <Link to={this.props.links.events + "/" + event.id}><h4> {event.name} </h4></Link>
                                     <div className="text">
                                         {event.description.length < CONST.BIG_LIMIT ?
                                             <p> {event.description} </p> 
                                             :
                                             <p> 
                                                 {event.description.substring(0, CONST.BIG_LIMIT)} 
-                                                &nbsp;<Link to={`/events/${event.id}`}> ...more</Link>
+                                                &nbsp;<Link to={`${this.props.links.events}/${event.id}`}> ...more</Link>
                                             </p>
                                         }
                                     </div>
@@ -144,7 +144,7 @@ class EventsPage extends React.Component {
                                                 />
                                                 :
                                                 <p>
-                                                    <Link to='/login'>Sign In</Link> to RSVP to events
+                                                    <Link to={this.props.links.signin}>Sign In</Link> to RSVP to events
                                         </p>
                                             }
                                         </> : null}
@@ -377,6 +377,7 @@ const mapStoreToProps = (store) => {
         user: store.user.info,
         events: store.page.events,
         eventRSVPs: store.page.rsvps,
+        links: store.links,
         tagCols: store.page.tagCols ? store.page.tagCols.filter(col => { return col.name === 'Category' }) : null
     }
 }

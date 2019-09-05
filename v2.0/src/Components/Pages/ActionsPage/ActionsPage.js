@@ -53,7 +53,7 @@ class ActionsPage extends React.Component {
                                     :
                                     <div>
                                         <p>
-                                            <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                            <Link to={`${this.props.links.signin}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
                                         </p>
                                     </div>
                                 }
@@ -236,7 +236,8 @@ const mapStoreToProps = (store) => {
         actions: store.page.actions,
         tagCols: store.page.tagCols,
         pageData: store.page.actionsPage,
-        communityData: store.page.communityData
+        communityData: store.page.communityData,
+        links: store.links
     }
 }
 

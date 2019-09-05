@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Tooltip from '../../Shared/Tooltip';
+import Tooltip from '../../Shared/Tooltip'
 import ChooseHHForm from './ChooseHHForm'
 import StoryForm from './StoryForm'
+import {connect} from 'react-redux'
 
 /**
  * Action Component is a single action for the action page, 
@@ -35,7 +36,7 @@ class Action extends React.Component {
                 <div className="col-lg-6 col-md-12 col-sm-12 col-12" >
                     <div className="single-shop-item" >
                         <div className="img-box" > { /* plug in the image here */}
-                            <Link to={this.props.match.url + "/" + this.props.action.id} >
+                            <Link to={this.props.links.actions + "/" + this.props.action.id} >
                                 < img src={this.props.action.image ? this.props.action.image.url : null} alt="" />
                             </Link>
                             { /* animated section on top of the image */}
@@ -43,7 +44,7 @@ class Action extends React.Component {
                                 <div className="box" >
                                     <div className="content">
                                         { /* link is thisurl/id (links to the OneActionPage) */}
-                                        <Link to={this.props.match.url + "/" + this.props.action.id} >
+                                        <Link to={this.props.links.actions + "/" + this.props.action.id} >
                                             <i className="fa fa-link" aria-hidden="true" ></i>
                                         </Link>
                                     </div>
@@ -53,7 +54,7 @@ class Action extends React.Component {
                         <div className="content-box" >
                             <div className="inner-box" >
                                 <h4>
-                                    <Link to={this.props.match.url + "/" + this.props.action.id}> {this.props.action.title} </Link>
+                                    <Link to={this.props.links.actions+ "/" + this.props.action.id}> {this.props.action.title} </Link>
                                 </h4>
                             </div>
                             { /* Impact and Difficulty tags*/}
@@ -75,7 +76,7 @@ class Action extends React.Component {
                                 <div className="row no-gutter">
                                     <div className="col-sm-4 col-md-4 col-lg-4 col-4" >
                                         <div className="col-centered" >
-                                            <Link to={this.props.match.url + "/" + this.props.action.id} className="thm-btn style-4" > More Info</Link>
+                                            <Link to={this.props.links.actions + "/" + this.props.action.id} className="thm-btn style-4" > More Info</Link>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-4 col-lg-4 col-4" >
@@ -255,4 +256,9 @@ class Action extends React.Component {
         return null;
     }
 }
-export default Action;
+const mapStoreToProps = (store) => {
+    return({
+        links: store.links
+    });
+}
+export default connect(mapStoreToProps)(Action);

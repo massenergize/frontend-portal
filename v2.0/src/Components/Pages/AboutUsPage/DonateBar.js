@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
 /**
  * A display for donating to the cause
  * @props : 
@@ -10,10 +11,14 @@ class DonateBar extends React.Component {
             <div className="donate-us center p-5" style={{backgroundColor: "#eee"}}>
                 <h2>{this.props.donateMessage}</h2>
                 <br/>
-                <Link to="donate"><button className="thm-btn donate-box-btn">Donate</button></Link>
+                <Link to={this.props.links.donate}><button className="thm-btn donate-box-btn">Donate</button></Link>
             </div>
         );
     }
 }
-
-export default DonateBar;
+const mapStoreToProps = (store) => {
+    return({
+        links: store.links
+    });
+}
+export default connect(mapStoreToProps)(DonateBar);

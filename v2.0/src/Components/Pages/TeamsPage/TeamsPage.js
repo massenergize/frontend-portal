@@ -86,7 +86,7 @@ class TeamsPage extends React.Component {
                         </td>
                         :
                         <td>
-                            <p><Link to='/login'>Sign In</Link> to join a team</p>
+                            <p><Link to={this.props.links.signin}>Sign In</Link> to join a team</p>
                         </td>
                     }
                     {/* <td>{obj.ghgSaved}</td> */}
@@ -129,6 +129,7 @@ const mapStoreToProps = (store) => {
         todo: store.user.todo,
         done: store.user.done,
         teamsPage: store.page.teamsPage,
+        links: store.links
     }
 }
 const mapDispatchToProps = {

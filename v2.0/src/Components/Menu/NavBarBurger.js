@@ -39,6 +39,8 @@ class NavBarBurger extends React.Component {
     render() {
         const header = section(this.props.pageData, 'HomeHeader');
         const communitylogo = header.image ? header.image.url : null;
+        const {links}=this.props;
+
         const styles = {
             container: {
                 position: 'relative',
@@ -71,7 +73,7 @@ class NavBarBurger extends React.Component {
                     key={index}
                     delay={`${index * 0.1}s`}
                     onClick={() => { this.handleLinkClick() }}
-                    href={val.link}
+                    href={links.home+val.link}
                 >
                     {val.name}
                 </MenuItem>
@@ -83,7 +85,7 @@ class NavBarBurger extends React.Component {
                     <div className="row no-gutter width-100">
                         <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
                             <div className="main-logo col" >
-                                <Link to="/" >
+                                <Link to={links.home} >
                                     {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
                                     <div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
                                         <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
@@ -138,6 +140,7 @@ class NavBarBurger extends React.Component {
             borderRadius: "0",
             padding: "0",
         };
+        const {links}=this.props;
         return Object.keys(navLinks).map(key => {
             var navLink = navLinks[key];
             if (navLink.children) {
@@ -152,17 +155,19 @@ class NavBarBurger extends React.Component {
                     </li>
                 );
             }
-            return <li className="d-flex flex-column justify-content-center" key={navLink.name}><Link to={navLink.link}>{navLink.name}</Link></li>
+            return <li className="d-flex flex-column justify-content-center" key={navLink.name}><Link to={`${links.home}${navLink.link}`}>{navLink.name}</Link></li>
         });
     }
     renderDropdownItems(children) {
+        const {links}=this.props;
         return children.map((child, key) => {
             return (
-                <Link key={key} to={child.link} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
+                <Link key={key} to={`${links.home}${child.link}`} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
             );
         });
     }
     renderLogin() {
+        const {links}=this.props;
         const {
             auth,
             user
@@ -177,14 +182,14 @@ class NavBarBurger extends React.Component {
                 <Dropdown onSelect={() => null} className="d-flex">
                     <Dropdown.Toggle as={ProfileBtnDropdown} userName={user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
                     <Dropdown.Menu style={style}>
-                        <Link to="/profile" className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
+                        <Link to={links.profile} className="dropdown-item p-3 small font-weight-bold" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
                         <button className="dropdown-item p-3 small font-weight-bold" onClick={() => { this.props.firebase.auth().signOut(); this.props.reduxLogout(); }}><SignOutLink>Sign Out</SignOutLink></button>
                     </Dropdown.Menu>
                 </Dropdown>
             );
         } else {
             return (
-                <Link className="thm-btn float-right" to="/login" style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
+                <Link className="thm-btn float-right" to={links.signin} style={{ padding: '10px', margin: 'auto 0 auto 10px', fontSize: '12px' }}>
                     <i className="fa fa-user" style={{ padding: "0px 5px" }} />{'\u00A0'}
                     Sign In
                 </Link>
@@ -197,7 +202,8 @@ const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
         user: store.user,
-        pageData: store.page.homePage
+        pageData: store.page.homePage,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, { reduxLogout })(withFirebase(NavBarBurger));
@@ -268,10 +274,11 @@ class SubMenuItem extends React.Component {
     }
 
     renderSubmenuItems(items) {
+        const {links}=this.props;
         return items.map((item, key) => {
             return (
                 <MenuItem key={key}
-                    href={item.link}
+                    href={links.home+item.link}
                     onClick={this.props.clickHandler}
                 >
                     {item.name}
@@ -281,6 +288,7 @@ class SubMenuItem extends React.Component {
     }
 
     render() {
+        const {links}=this.props;
         return (
             <>
                 <MenuItem
@@ -343,6 +351,7 @@ class MenuItem extends React.Component {
 
             }
         }
+        const {links}=this.props;
         return (
             <div style={styles.container}>
                 <Link

@@ -75,3 +75,8 @@ export const TEAM_REMOVE_HOUSEHOLD = 'TEAM_REMOVE_HOUSEHOLD'
 export const CHANGE_DATA = 'CHANGE_DATA'
 
 
+/****
+ * Links 
+ */
+
+export const LOAD_LINKS = 'LOAD_LINKS'

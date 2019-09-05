@@ -44,7 +44,7 @@ class OneActionPage extends React.Component {
         this.chooseFontSize();
         return (
             <>
-                <BreadCrumbBar links={[{ link: '/actions', name: 'All Actions' }, { name: `Action ${action.id}` }]} />
+                <BreadCrumbBar links={[{ link: this.props.links.actions, name: 'All Actions' }, { name: `Action ${action.id}` }]} />
                 <div className="boxed_wrapper">
                     <section className="shop-single-area">
                         <div className="container">
@@ -63,7 +63,7 @@ class OneActionPage extends React.Component {
                                     :
                                     <div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
                                         <p>
-                                            <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to add actions to your todo list or to mark them as complete
+                                            <Link to={this.props.links.signin}> Sign In </Link> to add actions to your todo list or to mark them as complete
                                     </p>
                                     </div>
                                 }
@@ -203,7 +203,7 @@ class OneActionPage extends React.Component {
                                 </div>
                                 :
                                 <p>
-                                    <Link to={`/login?returnpath=${this.props.match.url}`}> Sign In </Link> to submit your own story about taking this Action
+                                    <Link to={this.props.links.signin}> Sign In </Link> to submit your own story about taking this Action
                                 </p>
                             }
                         </div>
@@ -286,7 +286,7 @@ class OneActionPage extends React.Component {
                                     </div>
                                     {story.vendor ?
                                         <div className="text">
-                                            <p>Linked Vendor: <Link to={`/services/${story.vendor.id}`}>{story.vendor.name}</Link></p>
+                                            <p>Linked Service Provider: <Link to={`${this.props.links.services}/${story.vendor.id}`}>{story.vendor.name}</Link></p>
                                         </div> : null
                                     }
                                 </div>
@@ -435,7 +435,8 @@ const mapStoreToProps = (store) => {
         done: store.user.done,
         actions: store.page.actions,
         stories: store.page.testimonials,
-        communityData: store.page.communityData
+        communityData: store.page.communityData,
+        links: store.links
     }
 }
 const mapDispatchToProps = {

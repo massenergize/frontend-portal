@@ -60,7 +60,7 @@ class RegisterFormBase extends React.Component {
 
 
         if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified) {
-            return <Redirect to='/profile' />;
+            return <Redirect to={this.props.links.profile}/>;
         }
         return (
             <>
@@ -134,7 +134,7 @@ class RegisterFormBase extends React.Component {
                     <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
                     <button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
                 </div>
-                Already have an account? <Link to='/login'>Sign In</Link>
+                Already have an account? <Link to={this.props.links.signin}>Sign In</Link>
             </div>
         );
     }
@@ -154,7 +154,7 @@ class RegisterFormBase extends React.Component {
                             <p> We sent a link to your email address. Please verify your email and sign in to continue.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>
                                 <br />
-                                <Link to='/login' onClick={() => this.props.firebase.auth().signOut()}> Sign in</Link>
+                                <Link to={this.props.links.signin} onClick={() => this.props.firebase.auth().signOut()}> Sign in</Link>
                             </p>
                         </>
                         :
@@ -363,6 +363,7 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth,
         user: store.user,
         policies: store.page.policies,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);

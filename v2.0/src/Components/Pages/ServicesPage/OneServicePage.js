@@ -24,7 +24,7 @@ class OneServicePage extends React.Component {
 
         return (
             <>
-                <BreadCrumbBar links={[{ name: 'Service Providers', link: '/services' }, { name: `Service Provider ${vendor.id}` }]} />
+                <BreadCrumbBar links={[{ name: 'Service Providers', link: this.props.links.services }, { name: `Service Provider ${vendor.id}` }]} />
                 <div className="boxed_wrapper">
                     <div className="container">
                         <div className="row pt-3 pb-3">
@@ -64,7 +64,6 @@ class OneServicePage extends React.Component {
                                     <span><h4>Services</h4></span>
                                     <ul className="normal">
                                         {vendor.services.map((service) => {
-                                            // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;
                                             return <li style={{display:'inline-block'}} key={vendor.name + "-" + service.id}><b>{service.name}</b>&nbsp;&nbsp;&nbsp;<p>{service.description}</p></li>;
                                         })}
                                     </ul>
@@ -132,7 +131,7 @@ class OneServicePage extends React.Component {
                                 </div>
                                 {story.action ?
                                     <div className="text">
-                                        <p>Linked Action: <Link to={`/actions/${story.action.id}`}>{story.action.title}</Link></p>
+                                        <p>Linked Action: <Link to={`${this.props.links.actions}/${story.action.id}`}>{story.action.title}</Link></p>
                                     </div> : null
                                 }
                             </div>
@@ -146,7 +145,8 @@ class OneServicePage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         serviceProviders: store.page.serviceProviders,
-        testimonials: store.page.testimonials
+        testimonials: store.page.testimonials,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, null)(OneServicePage);

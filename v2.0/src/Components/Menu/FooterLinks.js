@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-
+import {connect} from 'react-redux'
 
 /** Renders the Navigation links in the footer
 @props
@@ -18,7 +18,7 @@ class FooterLinks extends React.Component{
             var link = links[key];
             return (
                 <li key = {link.name}>
-                    <Link to={link.link}>{link.name}</Link>
+                    <Link to={`${this.props.reduxLinks.home}/${link.link}`}>{link.name}</Link>
                 </li>
             );
         });
@@ -55,4 +55,10 @@ class FooterLinks extends React.Component{
         );
     }
 }
-export default FooterLinks
+const mapStoreToProps = (store) => {
+    return {
+        pageData: store.page.homePage,
+        reduxLinks: store.links
+    }
+}
+export default connect(mapStoreToProps, null)(FooterLinks);

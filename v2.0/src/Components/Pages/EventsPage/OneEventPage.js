@@ -16,7 +16,7 @@ class OneEventPage extends React.Component {
         //avoids trying to render before the promise from the server is fulfilled
         return (
             <>
-                <BreadCrumbBar links={[{ link: '/events', name: 'Events' }, { name: `Event ${event.id}` }]} />
+                <BreadCrumbBar links={[{ link:this.props.links.events, name: 'Events' }, { name: `Event ${event.id}` }]} />
                 <div className="boxed_wrapper">
                     <section className="shop-single-area">
                         <div className="container">
@@ -91,29 +91,7 @@ class OneEventPage extends React.Component {
                                     null
                                 }
                             </div>
-
-                            {/* <div className="section-title style-2">
-                                <h3>Our Sponsors</h3>
-                            </div>
-                            <ul className="brand-carousel2">
-                                <li key='0'><Link to="#"><img src="images/event/b1.jpg" alt="" /></Link></li>
-                                <li key='1'><Link to="#"><img src="images/event/b2.jpg" alt="" /></Link></li>
-                                <li key='2'><Link to="#"><img src="images/event/b3.jpg" alt="" /></Link></li>
-                                <li key='3'><Link to="#"><img src="images/event/b4.jpg" alt="" /></Link></li>
-                            </ul> */}
                         </div>
-                        {/* <div className="share clearfix">
-                            <div className="social-box float_left">
-                                <span>Share <i className="fa fa-share-alt"></i></span>
-                                <ul className="list-inline social">
-                                    <li key='fb'><Link to="/"><i className="fa fa-facebook"></i></Link></li>
-                                    <li key='g'><Link to="/"><i className="fa fa-google-plus"></i></Link></li>
-                                </ul>
-                            </div>
-                            <div className="float_right">
-                                <Link to="/donate" className="thm-btn style-2 donate-box-btn">Donate</Link>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </section>
@@ -130,7 +108,7 @@ const mapStoreToProps = (store) => {
         auth: store.firebase.auth,
         user: store.user.info,
         events: store.page.events,
-
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, null)(OneEventPage);

@@ -17,9 +17,9 @@ class LoginPage extends React.Component {
         // const returnpath = params.get('returnpath');
         if(!this.state.tryingToLogin){
             if(this.props.user.info)
-                return <Redirect to='/profile'/>
+                return <Redirect to={this.props.links.profile}/>
             if(this.props.auth.isLoaded && !this.props.auth.isEmpty)
-                return <Redirect to='/register'/>
+                return <Redirect to={this.props.links.signup}/>
         }
 
         return (
@@ -45,7 +45,8 @@ class LoginPage extends React.Component {
 const mapStoreToProps = (store) => {
     return {
         auth: store.firebase.auth,
-        user: store.user
+        user: store.user,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps)(LoginPage);

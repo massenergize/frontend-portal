@@ -61,7 +61,7 @@ class ProfilePage extends React.Component {
 
     render() {
         if (!this.props.user)
-            return <Redirect to='/login'> </Redirect>
+            return <Redirect to={this.props.links.signin}> </Redirect>
 
         if (this.props.user.households.length === 0 && !this.state.addedHouse) {
             this.setState({addedHouse:true});
@@ -73,8 +73,7 @@ class ProfilePage extends React.Component {
             }
         }
         const { user } = this.props;
-        //if the user hasnt registered to our back end yet, but still has a firebase login, send them to register
-        //if (!user) return <Redirect to='/register?form=2' />
+        
         return (
             <>
                 <BreadCrumbBar links={[{ name: 'Profile' }]} />
@@ -152,7 +151,7 @@ class ProfilePage extends React.Component {
                                             </tr>
                                             {this.renderTeams(user.teams)}
                                             <tr>
-                                                <td colSpan={2} align='center'><Link className="thm-btn" to='/teams' style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
+                                                <td colSpan={2} align='center'><Link className="thm-btn" to={this.props.links.teams} style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -518,7 +517,8 @@ const mapStoreToProps = (store) => {
         community: store.page.community,
         communityData: store.page.communityData,
         households: store.user.info ? store.user.info.households : null,
-        rsvps: store.page.rsvps
+        rsvps: store.page.rsvps,
+        links: store.links
     }
 }
 const mapDispatchToProps = {

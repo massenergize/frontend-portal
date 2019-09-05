@@ -60,7 +60,7 @@ class LoginFormBase extends React.Component {
                     </div>
                 </form>
                 <p><button className="as-link" onClick={this.forgotPassword}> Forgot Password </button></p>
-                <p> Don't have an account? <Link to="/register">Register Here</Link> </p>
+                <p> Don't have an account? <Link to={this.props.links.signup}>Register Here</Link> </p>
             </div >
         );
     }
@@ -182,7 +182,8 @@ const LoginForm = compose(
 
 const mapStoreToProps = (store) => {
     return {
-        auth: store.firebase.auth
+        auth: store.firebase.auth,
+        links: store.links,
     }
 }
 

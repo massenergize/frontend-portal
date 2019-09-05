@@ -1,6 +1,8 @@
 import React from 'react'
 import CircleGraph from '../../Shared/CircleGraph'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
+
 
 
 /** Renders the graphs on the home page and a link to the impact page
@@ -46,7 +48,7 @@ class Graphs extends React.Component {
                         <article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
                             <div className="item">
                                 <div className="icon"><i className="fa fa-chart-bar" /></div>
-                                <Link to="/impact" className="thm-btn">More</Link>
+                                <Link to={this.props.links.impact} className="thm-btn">More</Link>
                                 <h4 className="counter-title">See more about our impact in the Community</h4>
                             </div>
                         </article>
@@ -56,4 +58,9 @@ class Graphs extends React.Component {
         );
     }
 }
-export default Graphs;
+const mapStoreToProps = (store) => {
+    return({
+        links: store.links
+    });
+}
+export default connect(mapStoreToProps)(Graphs);

@@ -3,6 +3,7 @@ import FooterInfo from './FooterInfo'
 import FooterLinks from './FooterLinks'
 import { Link } from 'react-router-dom'
 import SubscribeForm from './SubscribeForm';
+import {connect} from 'react-redux'
 /**
  * Footer section has place for links, 
  */
@@ -42,7 +43,7 @@ class Footer extends React.Component {
 
                         </div>
                         <div className="pull-right get-text">
-                            <Link to="/donate">Donate Now</Link>
+                            <Link to={this.props.links.donate}>Donate Now</Link>
                         </div>
                     </div>
                 </section>
@@ -67,4 +68,9 @@ class Footer extends React.Component {
         );
     }
 }
-export default Footer;
+const mapStoreToProps = (store) => {
+    return({
+        links: store.links
+    });
+}
+export default connect(mapStoreToProps)(Footer);

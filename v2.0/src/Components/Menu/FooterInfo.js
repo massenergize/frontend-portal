@@ -22,7 +22,7 @@ class FooterInfo extends React.Component {
         return (
             <div className="col-7 col-md-4">
                 <div className="footer-widget about-column">
-                    <figure><Link to="/">
+                    <figure><Link to={this.props.links.home}>
                         <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
                     </Link></figure>
                     <ul className="contact-info">
@@ -37,7 +37,8 @@ class FooterInfo extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        pageData: store.page.homePage
+        pageData: store.page.homePage,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, null)(FooterInfo);

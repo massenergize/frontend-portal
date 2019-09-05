@@ -45,7 +45,7 @@ class EventCart extends React.Component {
     renderEvents(eventRSVPs) {
         if (!eventRSVPs || eventRSVPs.length <= 0) {
             return (
-                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/events'> events </Link></p></td></tr>
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to={this.props.links.events}> events </Link></p></td></tr>
             );
         }
         //returns a list of action components
@@ -60,7 +60,7 @@ class EventCart extends React.Component {
                     </td> */}
                     <td>
                         <div className="column-box">
-                            <Link to={'/events/' + event.id}>
+                            <Link to={`${this.props.links.events}/${event.id}`}>
                                 <h5> {event.name}</h5>
                             </Link>
                         </div>
@@ -89,7 +89,7 @@ class EventCart extends React.Component {
     renderEventsMoreInfo(eventRSVPs) {
         if (!eventRSVPs || eventRSVPs.length <= 0) {
             return (
-                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to='/events'> events </Link></p></td></tr>
+                <tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center">Nothing here, yet! See all <Link to={this.props.links.events}> events </Link></p></td></tr>
             );
         }
         //returns a list of action components
@@ -141,7 +141,8 @@ const mapStoreToProps = (store) => {
         user: store.user.info,
         todo: store.user.todo,
         done: store.user.done,
-        communityData: store.page.communityData
+        communityData: store.page.communityData,
+        links: store.links,
     }
 }
 

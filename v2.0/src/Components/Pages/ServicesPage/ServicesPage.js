@@ -35,11 +35,11 @@ class ServicesPage extends React.Component {
                     <div className="card rounded-0 spacing">
                         <div className="card-body">
                             <div className="col-12 text-center">
-                                <Link to={`/services/${vendor.id}`}>
+                                <Link to={`${this.props.links.services}/${vendor.id}`}>
                                     <img className="w-100" src={vendor.logo.url} alt={vendor.name} />
                                 </Link>
-                                <Link to={`/services/${vendor.id}`}>
-                                <h3 className="pt-3">{vendor.name}</h3>
+                                <Link to={`${this.props.links.services}/${vendor.id}`}>
+                                    <h3 className="pt-3">{vendor.name}</h3>
                                 </Link>
                                 {/* <p className="action-tags">
                                     {vendor.categories.map((category) => {
@@ -51,7 +51,6 @@ class ServicesPage extends React.Component {
                                 <span><b>Services</b></span>
                                 <ul className="normal">
                                     {vendor.services.map((action) => {
-                                        // return <li key={vendor.name + "-" + action.id}><Link to={"/actions/" + action.id}><u>{action.name}</u></Link></li>;
                                         return <li key={vendor.name + "-" + action.id}>{action.name}</li>;
                                     })}
                                 </ul>
@@ -81,7 +80,8 @@ class ServicesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
     return {
-        serviceProviders: store.page.serviceProviders
+        serviceProviders: store.page.serviceProviders,
+        links: store.links
     }
 }
 export default connect(mapStoreToProps, null)(ServicesPage);
