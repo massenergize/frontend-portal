@@ -1958,6 +1958,7 @@ ul.dropdown li:hover a {
 
 .service .service-item .icon-box span {
     position: relative;
+    top: -10px;
     color: #8dc63f;
     font-size: 45px;
     transition: .5s ease;
@@ -3560,7 +3561,8 @@ ul.dropdown li:hover a {
     transition: .5s ease-in-out;
     margin-bottom: 50px;
     overflow: hidden;
-    border: 1px solid rgba(244, 244, 244, 0.1);
+    padding: 1em;
+    border: 1px dashed #ddd;
 }
 
 .event-style1 .item.style-2 {
@@ -5709,7 +5711,7 @@ span.has-tooltip {
     content: "\f0dd";
     position: absolute;
     font-size: 16px;
-    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
+    font-family: FontAwesome;
     left: -19px;
     top: 0px;
     transform: rotate(-90deg);
@@ -5845,7 +5847,7 @@ span.has-tooltip {
 
 /*===========footer bottom ================*/
 .coders {
-    background-color: #003000;
+    background-color: #002000;
     padding: 1em;
     text-align: center;
 }
@@ -5894,7 +5896,7 @@ span.has-tooltip {
 }
 
 .breadcumb-wrapper {
-    background: rgb(66, 138, 54);
+    background: #eee;
     height: 30px;
     line-height: 30px;
     border-bottom: 1px solid #f4f4f4;
