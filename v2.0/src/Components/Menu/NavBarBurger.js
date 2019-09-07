@@ -37,8 +37,12 @@ class NavBarBurger extends React.Component {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
     render() {
-        const header = section(this.props.pageData, 'HomeHeader');
-        const communitylogo = header.image ? header.image.url : null;
+        var communitylogo = null;
+        var header = null
+        if(this.props.pageData){
+            header = section(this.props.pageData, 'HomeHeader');
+            communitylogo = header.image ? header.image.url : null;
+        }
         const {links}=this.props;
 
         const styles = {
@@ -89,7 +93,7 @@ class NavBarBurger extends React.Component {
                                     {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
                                     <div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
                                         <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
-                                        {communitylogo ? null : <>&nbsp;{header.title}</>}
+                                        {communitylogo ? null : <>&nbsp;{header? header.title : null}</>}
                                         {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
                                         <>&nbsp;Concord</> */}
                                     </div>

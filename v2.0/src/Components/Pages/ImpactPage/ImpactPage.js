@@ -23,6 +23,8 @@ class ImpactPage extends React.Component {
             })
             return <LoadingCircle />
         }
+        if (!this.props.tagCols || !this.props.communityData) return <LoadingCircle />;
+
         let stats = this.props.communitiesStats.slice(0);
 
         stats = stats.sort((a, b) => {
@@ -54,17 +56,32 @@ class ImpactPage extends React.Component {
 
         var tags = this.props.tagCols.filter(tagCol => { return tagCol.name === 'Category' })[0].tags;
         var graph2Categories = [];
-        var graph2Series = [];
+        var graph2Series = [
+            {
+                name: "State reported",
+                data: [],
+            },
+            {
+                name: "Self reported",
+                data: [],
+            },
+        ];
 
         tags.forEach(tag => {
             var data = this.props.communityData.filter(d => {
                 return d.tag === tag.id
             })[0];
-            console.log(tag)
-            console.log(data)
             if (data) {
                 graph2Categories.push(data.name);
-                graph2Series.push(data.value);
+                graph2Series[1].data.push(data.value);
+                var stata = this.props.communityData.filter(d => {
+                    return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
+                })[0];
+                if(stata){
+                    graph2Series[0].data.push(stata.value);
+                }else{
+                    graph2Series[0].data.push(0);
+                }
             }
         })
 
@@ -110,16 +127,15 @@ class ImpactPage extends React.Component {
                             <div className="col-12 col-lg-8">
                                 <div className="card rounded-0 mb-4">
                                     <div className="card-header text-center bg-white">
-                                        <h4>Actions Completed by Category</h4>
+                                        <h4>Actions Completed</h4>
                                     </div>
                                     <div className="card-body">
                                         <BarGraph
                                             categories={graph2Categories}
-                                            series={[{
-                                                name: "Actions Completed",
-                                                data: graph2Series
-                                            }]}
-                                            colors={["#428a36"]}
+                                            series={graph2Series}
+                                            stacked={true}
+                                            colors={["#86bd7d","#428a36"]}
+                                            // 86bd7d
                                         />
                                     </div>
                                 </div>

@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 class HomePage extends React.Component {
     
     render() {
-        if (!this.props.pageData) return <LoadingCircle />;
+        if (!this.props.pageData) return <p className='text-center'> Sorry, looks like this community's Home Page is under maintenance. Try again later </p>;
         
         const {pageData, events} = this.props;
         const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;

@@ -16,7 +16,7 @@ import 'react-multi-carousel/lib/styles.css';
 class AboutUsPage extends React.Component {
     render() {
         if (!this.props.pageData || !this.props.community) {
-            return <LoadingCircle />;
+            return <p className='text-center'> Sorry, looks like this community's About Us Page is under maintenance. Try again later </p>
         }
 
         if (!this.props.communityAdmins) {

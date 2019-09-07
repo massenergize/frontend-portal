@@ -8,7 +8,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 class DonatePage extends React.Component {
     
     render() {
-        if(!this.props.donatePage) return <LoadingCircle/>;
+        if(!this.props.donatePage) return <p className='text-center'> Sorry, looks like this community's Donate Page is under maintenance. Try again later </p>;
 
         const pageSections = this.props.donatePage.sections;
         if(pageSections == null) return <LoadingCircle/>

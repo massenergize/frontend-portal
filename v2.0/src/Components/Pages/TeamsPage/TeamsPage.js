@@ -16,7 +16,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 class TeamsPage extends React.Component {
     render() {
         const teams = this.props.teamsPage;
-        if (teams == null) return <LoadingCircle />
+        if (teams == null) return <p className='text-center'> Sorry, looks like this community's Teams Page is under maintenance. Try again later </p>
 
         return (
             <>
