@@ -17,8 +17,8 @@ import { connect } from 'react-redux'
 
 class FooterInfo extends React.Component {
     render() {
-        const header = section(this.props.pageData, 'HomeHeader');
-        const communitylogo = header.image ? header.image.url : null;
+        const header = this.props.pageData? section(this.props.pageData, 'HomeHeader') : null;
+        const communitylogo = header && header.image ? header.image.url : null; 
         return (
             <div className="col-7 col-md-4">
                 <div className="footer-widget about-column">

@@ -271,7 +271,7 @@ class ProfilePage extends React.Component {
         return Object.keys(communities).map(key => {
             const community = communities[key]
             return (<tr key={key}>
-                <td> <a href={'//' + community.subdomain + '.massenergize.org'}> {community.name} </a></td>
+                <td> <a href={`/${community.subdomain}`}> {community.name} </a></td>
                 <td> <button className="remove-btn" onClick={() => this.leaveCommunity(community)}> <i className="fa fa-trash"></i></button> </td>
             </tr>
             );

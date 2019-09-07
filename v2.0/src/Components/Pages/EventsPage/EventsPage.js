@@ -78,10 +78,10 @@ class EventsPage extends React.Component {
      * @param events - json list of events
      */
     renderEvents(events) {
-        if (!this.props.events) {
+        if (!this.props.events || this.props.events.length===0) {
             return (
                 <div className='text-center'>
-                    <h2> No Events Coming up </h2>
+                    <p> Sorry, looks like there are no upcoming events in your community </p>
                 </div>
             );
         }

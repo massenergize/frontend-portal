@@ -77,8 +77,8 @@ class ActionsPage extends React.Component {
     }
     // renders all the actions
     renderActions(actions) {
-        if (!actions) {
-            return <li>No actions to Display</li>;
+        if (!actions || actions.length === 0) {
+            return <p>There are not any actions available in this community yet, come back later.</p>;
         }
         //returns a list of action components
         return Object.keys(actions).map(key => {

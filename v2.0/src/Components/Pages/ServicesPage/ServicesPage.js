@@ -11,7 +11,13 @@ class ServicesPage extends React.Component {
             serviceProviders
         } = this.props;
 
-        if (serviceProviders == null) return <LoadingCircle />;
+        if (!serviceProviders || serviceProviders.length === 0) {
+            return (
+                <div className="text-center">
+                    <p > Looks like your community hasn't partnered with any service providers yet.  Try again later</p>
+                </div>
+            )
+        }
 
         return (
             <>
@@ -28,7 +34,13 @@ class ServicesPage extends React.Component {
     }
 
     renderVendors(vendors) {
-        console.log(vendors);
+        if (!vendors || vendors.length === 0) {
+            return (
+                <div className="text-center">
+                    <p > Looks like your community hasn't partnered with any vendors yet.  Try again later</p>
+                </div>
+            )
+        }
         return vendors.map((vendor) => {
             return (
                 <div className="col-12 col-md-6 col-lg-4" key={vendor.vendor}>

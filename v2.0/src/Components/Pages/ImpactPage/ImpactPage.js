@@ -24,7 +24,11 @@ class ImpactPage extends React.Component {
             return <LoadingCircle />
         }
         if (!this.props.tagCols || !this.props.communityData) return <LoadingCircle />;
-
+        if (!this.props.communityData || this.props.communityData.length === 0) {
+            return (<div className="text-center">
+                <p > Sorry, looks like your community's impact page is under maintenance</p>
+            </div>);
+        }
         let stats = this.props.communitiesStats.slice(0);
 
         stats = stats.sort((a, b) => {
@@ -77,9 +81,9 @@ class ImpactPage extends React.Component {
                 var stata = this.props.communityData.filter(d => {
                     return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
                 })[0];
-                if(stata){
+                if (stata) {
                     graph2Series[0].data.push(stata.value);
-                }else{
+                } else {
                     graph2Series[0].data.push(0);
                 }
             }
@@ -115,14 +119,6 @@ class ImpactPage extends React.Component {
                                         />
                                     </div>
                                 </div>
-                                {/* <div className="card rounded-0 mb-4">
-                                <div className="card-body">
-                                    <CircleGraph
-                                        num={123} goal={456} label={"Example Graph"} size={150}
-                                        colors={["#999999"]}
-                                    />
-                                </div>
-                            </div> */}
                             </div>
                             <div className="col-12 col-lg-8">
                                 <div className="card rounded-0 mb-4">
@@ -134,8 +130,8 @@ class ImpactPage extends React.Component {
                                             categories={graph2Categories}
                                             series={graph2Series}
                                             stacked={true}
-                                            colors={["#86bd7d","#428a36"]}
-                                            // 86bd7d
+                                            colors={["#86bd7d", "#428a36"]}
+                                        // 86bd7d
                                         />
                                     </div>
                                 </div>
