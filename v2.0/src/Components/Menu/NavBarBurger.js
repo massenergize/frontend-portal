@@ -88,7 +88,7 @@ class NavBarBurger extends React.Component {
                 <div className="container">
                     <div className="row no-gutter width-100">
                         <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
-                            <div className="main-logo col" >
+                            <div className="main-logo col d-flex align-items-center" >
                                 <Link to={links.home} >
                                     {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
                                     <div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
