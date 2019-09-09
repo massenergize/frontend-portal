@@ -64,12 +64,13 @@ class NavBarBurger extends React.Component {
                 transition: 'filter 0.5s ease',
             },
         }
+        if(!links) return null;
 
         // Only for burgered
         const menuItems = this.props.navLinks.map((val, index) => {
             if (val.children) {
                 return (
-                    <SubMenuItem key={index} navlink={val} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
+                    <SubMenuItem key={index} navlink={val} links={links} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
                 )
             }
             return (
@@ -163,6 +164,7 @@ class NavBarBurger extends React.Component {
         });
     }
     renderDropdownItems(children) {
+        if(!this.props.links) return;
         const {links}=this.props;
         return children.map((child, key) => {
             return (

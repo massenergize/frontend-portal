@@ -64,8 +64,6 @@ class AppRouter extends Component {
         }
     }
     componentDidMount() {
-        console.log('yeah')
-
         var subdomain = this.props.match.params.subdomain;
         this.props.reduxLoadLinks({
             home: `/${subdomain}`,
@@ -116,6 +114,7 @@ class AppRouter extends Component {
             this.props.reduxLoadTagCols(myJsons[12].data)
             this.props.reduxLoadCommunityData(myJsons[13].data)
         }).catch(err => {
+            this.setState({error: err})
             console.log(err)
         });
     }
@@ -138,6 +137,7 @@ class AppRouter extends Component {
         document.body.style.overflowX = 'hidden';
 
         if (!isLoaded(this.props.auth)) {
+            console.log('auth loading')
             return <LoadingCircle />;
         }
         if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
@@ -148,6 +148,7 @@ class AppRouter extends Component {
             })
         }
         if (this.props.auth.uid && !this.state.triedLogin) {
+            console.log('user loading')
             return <LoadingCircle />;
         }
         const { links } = this.props;

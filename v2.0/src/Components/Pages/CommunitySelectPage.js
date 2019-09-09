@@ -15,7 +15,7 @@ class CommunitySelectPage extends React.Component {
             <ul className='text-center'>
                 {Object.keys(this.props.communities).map(key => {
                     const com = this.props.communities[key];
-                    return <li key={key}> <Link to={`/${com.subdomain}`}>{com.name}</Link></li>
+                    return <li key={key}> <a href={`/${com.subdomain}`}>{com.name}</a></li>
                 })}
             </ul>
             <h3 className='text-center'> Or go to our main site</h3>
