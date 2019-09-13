@@ -3677,6 +3677,7 @@ ul.dropdown li:hover a {
     overflow: hidden;
     position: relative;
     width: 100%;
+    max-height: 350px;
 }
 
 .event-style1 .item .img-holder a {

@@ -208,7 +208,6 @@ class ProfilePage extends React.Component {
     }
 
     renderForm = (form) => {
-        console.log(this.state.message);
         return (
             <>
                 <h3>

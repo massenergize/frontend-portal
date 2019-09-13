@@ -26,7 +26,7 @@ const INITIAL_STATE = {
     serviceProvider: false,
     termsAndServices: false,
     showTOSError: false,
-    showTOSModal: false,
+    showTOS: false,
 
     form: 1,
     error: null,
@@ -45,7 +45,6 @@ class RegisterFormBase extends React.Component {
         this.isInvalid = this.isInvalid.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onFinalSubmit = this.onFinalSubmit.bind(this);
-        this.showTOS = this.showTOS.bind(this);
     }
 
     render() {
@@ -57,7 +56,8 @@ class RegisterFormBase extends React.Component {
         } else {
             page = 2;
         }
-
+        const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
+        const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
 
         if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified) {
             return <Redirect to={this.props.links.profile}/>;
@@ -67,13 +67,24 @@ class RegisterFormBase extends React.Component {
                 <div>
                     {this.renderPage(page)}
                 </div>
-                <Modal show={this.state.showTOSModal} onHide={() => this.setState({ showTOSModal: false })} centered>
+                <Modal show={this.state.showTOS} onHide={() => this.setState({ showTOS: false })} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Terms of Service</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body dangerouslySetInnerHTML={{ __html: this.props.policies.filter(x => x.name === "Terms of Service")[0].description }} style={{ maxHeight: "50vh", overflowY: "scroll" }}></Modal.Body>
+                    <Modal.Body dangerouslySetInnerHTML={{ __html: TOS? TOS.description : 'The Terms of Service failed to load or does not exist' }} style={{ maxHeight: "50vh", overflowY: "scroll" }}></Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => this.setState({ showTOSModal: false })}>
+                        <Button variant="secondary" onClick={() => this.setState({ showTOS: false })}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.showPP} onHide={() => this.setState({ showPP: false })} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Privacy Policy</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body dangerouslySetInnerHTML={{ __html: PP? PP.description : 'The privacy policy failed to load or does not exist' }} style={{ maxHeight: "50vh", overflowY: "scroll" }}></Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.setState({ showPP: false })}>
                             Close
                         </Button>
                     </Modal.Footer>
@@ -179,7 +190,7 @@ class RegisterFormBase extends React.Component {
                             <label className="checkbox-container">
                                 <input className="checkbox" type="checkbox" name="termsAndServices" onChange={() => { this.setState({ termsAndServices: !termsAndServices }) }} checked={termsAndServices} />
                                 <span className="checkmark"></span>
-                                <p style={{ marginLeft: "25px" }}>I agree to the <button type='button' onClick={this.showTOS} className='as-link'>Terms of Service</button></p>
+                                <p style={{ marginLeft: "25px" }}>I agree to MassEnergize’s <button type='button' onClick={() => this.setState({showTOS:true})} className='as-link' style={{display:'inline-block'}}>Terms of Service</button> and <button type='button' onClick={() => this.setState({showPP: true})} className='as-link' style={{display:'inline-block'}}>Privacy Policy</button></p>
                                 {/* <span className="text-danger mb-3 small" style={{ display: (this.state.showTOSError) ? "block" : "none" }}>You need to agree to the terms of service!</span> */}
                             </label>
                             <ReCAPTCHA
@@ -219,11 +230,6 @@ class RegisterFormBase extends React.Component {
             if (response.success && response.data.success) this.setState({ 'captchaConfirmed': true });
         })
     }
-
-    showTOS() {
-        this.setState({ showTOSModal: true });
-    }
-
     onChange(event) {
         this.setState({
             [event.target.name]: event.target.value,
@@ -281,8 +287,8 @@ class RegisterFormBase extends React.Component {
                 console.log(json);
                 if (json.success && json.data) {
                     this.fetchAndLogin(json.data.email).then(success => {
-                        if (success) {
-                            console.log('yay')
+                        if(!success){
+                            this.setState({error: 'Failed to Register'})
                         }
                     });
                 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import LoadingCircle from '../../Shared/LoadingCircle';
-import PageTitle from '../../Shared/PageTitle';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import {connect} from 'react-redux';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import queryString from 'query-string'
 
 class PoliciesPage extends React.Component {
     render() {
@@ -14,7 +14,6 @@ class PoliciesPage extends React.Component {
             <BreadCrumbBar links={[{ name: 'Policies' }]} />
             <div className='boxed-wrapper'>
                 <div className="container p-5">
-                    <PageTitle>Policies</PageTitle>
                     <Accordion defaultActiveKey="0">
                         {this.renderPolicies(this.props.policies)}
                     </Accordion>
@@ -25,6 +24,14 @@ class PoliciesPage extends React.Component {
     }
 
     renderPolicies(policies) {
+        const query = queryString.parse(this.props.location.search);
+        if(query && query.name){
+            policies = policies.filter(p => {
+                console.log(query.name);
+                console.log(p.name);
+                return p.name === query.name;
+            });
+        }
         return Object.keys(policies).map((key) => {
             const policy = policies[key];
             return (
