@@ -43,14 +43,14 @@ class StoryForm extends React.Component {
             <div className="review-form" style={{ border: '1px solid #aaa' }}>
                 {this.props.noMessage ? null :
                     <div className="tab-title-h4 text center">
-                        <h4>{this.state.message}</h4>
+                        <h4 className="p-2">{this.state.message}</h4>
                     </div>
                 }
                 <form onSubmit={this.onSubmit} style={{ margin: '20px' }} >
                     {this.props.aid ? null :
                         <>
                             <p> Which action is this testimonial about? </p>
-                            <select value={this.state.aid} onChange={event => this.setState({ aid: event.target.value })}>
+                            <select className="w-100" value={this.state.aid} onChange={event => this.setState({ aid: event.target.value })}>
                                 <option value={'--'}>--</option>
                                 {this.renderOptions(this.props.actions)}
                             </select>
@@ -60,7 +60,7 @@ class StoryForm extends React.Component {
                     {this.props.vid ? null :
                         <>
                             <p> Who helped you complete this action? </p>
-                            <select value={this.state.vid} onChange={event => this.setState({ vid: event.target.value })}>
+                            <select className="w-100" value={this.state.vid} onChange={event => this.setState({ vid: event.target.value })}>
                                 <option value={'--'}>Did it myself!</option>
                                 {this.renderOptions(this.props.vendors)}
                                 <option value={'other'}>Other</option>

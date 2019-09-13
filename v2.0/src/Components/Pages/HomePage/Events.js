@@ -95,13 +95,13 @@ class Events extends React.Component {
             <section className="event-style1">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-9 col-sm-10 col-xs-12">
-                            <div className="section-title">
+                        <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">
+                            <div className="section-title m-0">
                                 <h2>Upcoming Events</h2>
                             </div>
                         </div>
-                        <div className="col-md-3 col-sm-2 col-xs-12">
-                            <Link to={`${this.props.links.events}`} className="thm-btn float_right">All Events</Link>
+                        <div className="col-md-3 col-sm-2 col-xs-12 text-center text-sm-right">
+                            <Link to={`${this.props.links.events}`} className="thm-btn mb-4">All Events</Link>
                         </div>
                     </div>
                     <div className="row">

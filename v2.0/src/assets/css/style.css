@@ -703,6 +703,11 @@ textarea {
 }
 
 /*============= graphs ===============*/
+.apexcharts-svg {
+    position: absolute;
+    top: -25%;
+}
+
 .apex-chart.circle-graph {
     margin-bottom: -100px;
 }
@@ -1918,11 +1923,12 @@ ul.dropdown li:hover a {
 }
 
 .service .section-title h2 {
-    line-height: 20px;
+    /* line-height: 20px; */
     color: #aaa;
 }
 
 .service .service-item {
+    width: 100%;
     margin-bottom: 30px;
     border: 1px solid #f4f4f4;
     border-radius: 3px;
@@ -5820,7 +5826,7 @@ span.has-tooltip {
 .main-footer .contact-column p {
     padding-bottom: 19px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #363636;
+    /* border-bottom: 1px solid #363636; */
 }
 
 
