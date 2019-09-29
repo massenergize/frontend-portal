@@ -64,10 +64,10 @@ class Action extends React.Component {
                                         <Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
                                             <span className="has-tooltip">Impact</span>
                                         </Tooltip>
-                                        <span>{this.renderTagBar(this.getTag(3))}</span>
+                                        <span>{this.renderTagBar(this.getTag("impact"))}</span>
                                     </div>
                                     <div className="float_right" >
-                                        Difficulty<span> {this.renderTagBar(this.getTag(2))} </span>
+                                        Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +221,10 @@ class Action extends React.Component {
     }
 
     getTag(collection) {
-        const tags = this.props.action.tags.filter(tag => tag.tag_collection === collection);
+        const tags = this.props.action.tags.filter(tag =>{
+            
+            return tag.tag_collection && tag.tag_collection.name && tag.tag_collection.name.toLowerCase() === collection.toLowerCase();
+        });
         return tags && tags.length > 0 ? tags[0] : null
     }
 
