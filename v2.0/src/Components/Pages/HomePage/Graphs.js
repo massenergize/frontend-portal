@@ -27,7 +27,7 @@ class Graphs extends React.Component {
                 console.log(graph);
             }
             return (
-                    <div key={key} className="col-sm" data-wow-duration="0ms">
+                    <div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
                         <CircleGraph num={graph.data.value} goal={graph.data.denominator} label={graph.title} size={this.props.size}/>
                     </div>
             );
@@ -43,13 +43,13 @@ class Graphs extends React.Component {
             <section className="fact-counter style-2 no-padd">
                 <div className="container">
                     <div className="row no-gutter clearfix">
-                        {/* {dumbycol} */}
+                        {dumbycol}
                         {this.renderGraphs(this.props.graphs)}
-                        <article className="column counter-column col-lg-2 col-xs-12 wow fadeIn" data-wow-duration="0ms">
+                        <article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
                             <div className="item">
                                 <div className="icon"><i className="fa fa-chart-bar" /></div>
                                 <Link to={this.props.links.impact} className="thm-btn">More</Link>
-                                <h4 className="counter-title">See more about our impact in the Community</h4>
+                                <h4 className="counter-title">about our community impact</h4>
                             </div>
                         </article>
                     </div>

@@ -703,10 +703,10 @@ textarea {
 }
 
 /*============= graphs ===============*/
-.apexcharts-svg {
+/* .apexcharts-svg {
     position: absolute;
     top: -25%;
-}
+} */
 
 .apex-chart.circle-graph {
     margin-bottom: -100px;
