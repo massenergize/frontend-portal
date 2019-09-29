@@ -51,13 +51,13 @@ class Footer extends React.Component {
                     <div className="container">
                         <p className="m-0" style={{fontSize:'12px'}}>Made with&nbsp;
                             <span className="fa fa-heart text-danger"></span> by&nbsp;
-                            <a href="/" className="normal">
+                            <a  className="normal">
                                 <u>Sam Opoku-Agyemang</u>
                             </a>,&nbsp;
-                            <a href="/" className="normal">
-                                <u>Kieran O'Day</u> 
+                            <a className="normal">
+                                <u>Kieran O'Day</u>
                             </a>,&nbsp;
-                            <a href="/" className="normal">
+                            <a  className="normal">
                                 <u>Mingle Li</u>
                             </a>
                             .
