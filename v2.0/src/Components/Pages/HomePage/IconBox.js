@@ -19,8 +19,8 @@ class IconBox extends React.Component {
                     <div className="icon-box text-center">
                         <span className={this.props.icon}></span>
                     </div>
-                    <h4>{this.props.title}</h4>
-                    <p>{this.props.description}</p>
+                    <h4 className="cool-font">{this.props.title}</h4>
+                    <p className="cool-font">{this.props.description}</p>
                     </Link>
 
                 </div>

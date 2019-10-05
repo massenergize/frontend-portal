@@ -7,6 +7,7 @@ import Events from './Events';
 import { section } from '../../../api/functions'
 import { connect } from 'react-redux'
 import Carousel from './../../Shared/MyCarousel';
+import DoughnutChart from './../../Shared/DoughnutChart';
 
 
 /*
@@ -16,7 +17,7 @@ class HomePage extends React.Component {
 
 	render() {
 		if (!this.props.pageData) return <p className='text-center'> Sorry, looks like this community's Home Page is under maintenance. Try again later </p>;
-
+		var communityName = this.props.pageData ? this.props.pageData.community.name : "";
 		const { pageData, events } = this.props;
 		const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 		const iconQuickLinks = section(pageData, "IconQuickLinks").cards;
@@ -42,8 +43,8 @@ class HomePage extends React.Component {
 				} */}
 				{/* <h3 align='center' className='home-subtitle p-3'>{header.description}</h3> */}
 
-				<div>
-					<Carousel images = {welcomeImagesData}/>
+				<div style={{marginTop:20}}>
+					<Carousel community = {communityName}images = {welcomeImagesData}/>
 				</div>
 				{/* <div>
 					{this.props.graphsData ?
@@ -54,7 +55,8 @@ class HomePage extends React.Component {
 					}
 				</div> */}
 				{/* ======Fix space issue ======= (come back and fix properly) */}
-				<div style={{marginTop:260}}></div>
+				<div style={{ marginTop: 260 }}></div>
+				<DoughnutChart graphs={this.props.graphsData ? this.props.graphsData:[]} />
 				<div>
 					{iconQuickLinks ?
 						<IconBoxTable

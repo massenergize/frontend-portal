@@ -33,18 +33,17 @@ class NavBarBurger extends React.Component {
 		this.setState({ menuOpen: !this.state.menuOpen });
 	}
 	handleLinkClick() {
-		console.log("menuOpen: " + this.state.menuOpen);
 		this.setState({ menuOpen: !this.state.menuOpen });
 	}
 	render() {
 		var communitylogo = null;
 		var header = null
+		var communityName = this.props.pageData ? this.props.pageData.community.name : "communities";
 		if (this.props.pageData) {
 			header = section(this.props.pageData, 'HomeHeader');
 			communitylogo = header.image ? header.image.url : null;
 		}
 		const { links } = this.props;
-		console.log("I am the params", this.props.params)
 		const styles = {
 			container: {
 				position: 'relative',
@@ -85,14 +84,14 @@ class NavBarBurger extends React.Component {
 			)
 		});
 		return (
-			<nav className={`theme_menu navbar p-0  z-depth-1 ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{ height: "80px" }}>
+			<nav className={`theme_menu navbar p-0  z-depth-1 ${(this.props.sticky) ? "fixed-top border-bottom" : ""}`} style={{ height: "80px",position:'fixed',width:'100%',background:'white' }}>
 				<div className="container">
 					<div className="row no-gutter width-100">
 						<div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
 							{/*  main-logo col d-flex  align-items-center*/}
 							<div className="" style={{ position: 'relative', padding: 18, marginLeft: -100 }}>
 								<h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
-								<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>Wayland</small>
+								<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small>
 								{/* <Link to={links.home} >
 											style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}}
 											<div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
