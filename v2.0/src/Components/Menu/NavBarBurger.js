@@ -89,7 +89,7 @@ class NavBarBurger extends React.Component {
 					<div className="row no-gutter width-100">
 						<div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
 							{/*  main-logo col d-flex  align-items-center*/}
-							<div className="" style={{ position: 'relative', padding: 18, marginLeft: -100 }}>
+							<div onClick = {()=>{window.location ="/"}}className="" style={{ cursor:'pointer',position: 'relative', padding: 18, marginLeft: -100 }}>
 								<h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
 								<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small>
 								{/* <Link to={links.home} >

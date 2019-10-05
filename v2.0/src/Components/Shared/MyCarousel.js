@@ -27,10 +27,10 @@ class MyCarousel extends Component {
   }
   render() {
     return (
-      <div style={{ height: 400, position: 'relative',marginTop:77 }}>
-        <div style={{zIndex:10, height: 650, position: 'absolute', width: '100%' }}>
+      <div style={{ height: 400, position: 'relative', marginTop: 77 }}>
+        <div style={{ zIndex: 10, height: 650, position: 'absolute', width: '100%' }}>
           <center>
-            <h1 style={{ color: 'white',marginTop:'20%',fontSize:'4.5rem' }} className="cool-font"><span className="overlay-text-shadow">{this.props.community}</span> <span className="overlay-text-shadow" style={{color:'burlywood'}}>Community</span></h1>
+            <h1 style={{ color: 'white', marginTop: '20%', fontSize: '4.5rem' }} className="cool-font"><span className="overlay-text-shadow">{this.props.community}</span> <span className="overlay-text-shadow" style={{ color: 'burlywood' }}>Community</span></h1>
           </center>
         </div>
         <div className="my-overlay"></div>
