@@ -18,7 +18,7 @@ class DonatePage extends React.Component {
         return (
             <>
             <BreadCrumbBar links={[{ name: 'Donate' }]} />
-            <div className='boxed-wrapper'>
+            <div className='boxed-wrapper' style={{marginTop:90}}>
                 <div className="container p-5">
                     <PageTitle>{header.title}</PageTitle>
                     <p>{header.description}</p>

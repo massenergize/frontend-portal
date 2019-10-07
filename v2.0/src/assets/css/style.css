@@ -33,6 +33,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Google+Sans:400,400i,700');
 @import url(./bootstrap.min.css);
 @import url(./bootstrap-select.min.css);
 @import url(./jquery.bootstrap-touchspin.css);
@@ -66,8 +67,11 @@
    2. Global styles
    ============================== */
 
+html {
+    font-family:'Google Sans','Open Sans', sans-serif;
+}
 body {
-    font-family: 'Verdana', 'Oxygen', 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Open Sans', sans-serif;
     color: #999;
 }
 

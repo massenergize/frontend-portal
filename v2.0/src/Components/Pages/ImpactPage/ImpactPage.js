@@ -98,7 +98,7 @@ class ImpactPage extends React.Component {
 		return (
 			<>
 				<BreadCrumbBar links={[{ name: 'Impact' }]} />
-				<div className='boxed-wrapper'>
+				<div className='boxed-wrapper' style={{marginTop:90}}>
 					<div className="container bg-light p-5">
 						<PageTitle>Our Community's Impact</PageTitle>
 						<div className="row">
@@ -123,7 +123,7 @@ class ImpactPage extends React.Component {
 							<div className="col-12 col-lg-8">
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4>Actions Compeleted</h4>
+										<h4 className="cool-font">Actions Compeleted</h4>
 										<p style={{top:240,position:'absolute',fontSize:16, transform:'rotateZ(-90deg',left:-100}}>Number Of Actions Completed</p>
 									</div>
 									<div className="card-body">
@@ -134,14 +134,14 @@ class ImpactPage extends React.Component {
 											colors={["#86bd7d", "#428a36"]}
 										// 86bd7d
 										/>
-										<center><p style={{fontSize:16,margin:0}}>Community Goals</p></center>
+										<center><p style={{fontSize:16,margin:0}} className="cool-font">Community Goals</p></center>
 									</div>
 								
 								</div>
 
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4>Communities and their Impacts</h4>
+										<h4 className="cool-font">Communities and their Impacts</h4>
 										<p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p>
 									</div>
 									<div className="card-body">

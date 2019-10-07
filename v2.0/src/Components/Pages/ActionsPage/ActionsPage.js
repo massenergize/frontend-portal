@@ -32,7 +32,7 @@ class ActionsPage extends React.Component {
 		return (
 			<>
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
-				<div className="boxed_wrapper">
+				<div className="boxed_wrapper" style={{marginTop:90}}>
 					{/* main shop section */}
 					<div className="shop sec-padd">
 						<div className="container">
@@ -76,7 +76,7 @@ class ActionsPage extends React.Component {
 		this.forceUpdate();
 	}
 	// renders all the actions
-	renderActions(actions) {
+	renderActions(actions) { 
 		if (!actions || actions.length === 0) {
 			return <p>There are not any actions available in this community yet, come back later.</p>;
 		}

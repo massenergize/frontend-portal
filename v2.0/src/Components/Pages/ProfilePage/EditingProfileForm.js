@@ -34,7 +34,7 @@ class EditingProfileForm extends React.Component {
                 <p>Full Name <span className="text-danger" >*</span></p>
 
                 <input type="text" name="preferred_name" value={this.state.preferred_name} onChange={this.onChange} required />
-                <p>Preffered Name <span className="text-danger">*</span></p>
+                <p>Preferred Name <span className="text-danger">*</span></p>
                 <button className="thm-btn bg-cl-1" type="submit">{"Submit"}</button>
                 <button className="thm-btn red" type='button' onClick={() => this.props.closeForm()}> Cancel </button>
             </form>

@@ -17,7 +17,7 @@ class OneEventPage extends React.Component {
         return (
             <>
                 <BreadCrumbBar links={[{ link:this.props.links.events, name: 'Events' }, { name: `Event ${event.id}` }]} />
-                <div className="boxed_wrapper">
+                <div className="boxed_wrapper" style={{marginTop:50}}>
                     <section className="shop-single-area">
                         <div className="container">
                             <div className="single-products-details">
@@ -46,10 +46,10 @@ class OneEventPage extends React.Component {
                             </div>
                             <div className="col-12 col-lg-6">
                                 <div className="text">
-                                    <h3>{event.name}</h3>
-                                    <p>{event.description}</p>
+                                    <h3 className="cool-font">{event.name}</h3>
+                                    <p className="cool-font">{event.description}</p>
                                     <br />
-                                    <p>{event.moreinfo}</p>
+                                    <p className="cool-font">{event.moreinfo}</p>
                                 </div>
                             </div>
                         </div>

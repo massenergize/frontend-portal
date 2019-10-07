@@ -18,7 +18,7 @@ class FooterLinks extends React.Component{
             var link = links[key];
             return (
                 <li key = {link.name}>
-                    <Link to={`${this.props.reduxLinks.home}/${link.link}`}>{link.name}</Link>
+                    <Link className="cool-font" to={`${this.props.reduxLinks.home}/${link.link}`}>{link.name}</Link>
                 </li>
             );
         });
@@ -37,7 +37,7 @@ class FooterLinks extends React.Component{
                     <div className="row">
                         <div className="col-12 col-md-6">
                             <div className="widget-content">
-                                <ul className="list mb-0">
+                                <ul className="list mb-0 cool-font">
                                     {this.renderLinks(leftSide)}
                                 </ul>
                             </div>

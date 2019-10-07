@@ -29,13 +29,17 @@ class Action extends React.Component {
 			message: null,
 		}
 	}
+	gotoAction(){
+		window.location = `${this.props.links.actions + "/" + this.props.action.id}`;
+
+	}
 	render() {
 		if (!this.props.HHFormOpen && this.state.status) this.setState({ status: null });
 		if (this.shouldRender()) { //checks if the action should render or not
 			return (
 				<div className="col-lg-6 col-md-12 col-sm-12 col-12" >
-					<div className="single-shop-item" >
-						<div className="img-box" > { /* plug in the image here */}
+					<div className="single-shop-item m-action-item">
+						<div className="img-box" onClick ={()=>{this.gotoAction()}}> { /* plug in the image here */}
 							<Link to={this.props.links.actions + "/" + this.props.action.id} >
 								< img src={this.props.action.image ? this.props.action.image.url : null} alt="" />
 							</Link>
@@ -52,13 +56,13 @@ class Action extends React.Component {
 							</figcaption>
 						</div>
 						<div className="content-box" >
-							<div className="inner-box" >
+							<div className="inner-box" onClick ={()=>{this.gotoAction()}} >
 								<h4>
-									<Link to={this.props.links.actions + "/" + this.props.action.id}> {this.props.action.title} </Link>
+									<Link className="cool-font" to={this.props.links.actions + "/" + this.props.action.id}> {this.props.action.title} </Link>
 								</h4>
 							</div>
 							{ /* Impact and Difficulty tags*/}
-							<div className="price-box2" >
+							<div className="price-box2" onClick ={()=>{this.gotoAction()}} >
 								<div className="clearfix" >
 									<div className="float_right" >
 										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
@@ -73,11 +77,11 @@ class Action extends React.Component {
 								</div>
 							</div>
 							{ /* buttons for adding todo, marking as complete and getting more info */}
-							<div className="price-box3">
+							<div className="price-box3" style={{paddingTop:18}}>
 								<div className="row no-gutter">
 									<div className="col-sm-4 col-md-4 col-lg-4 col-4" >
 										<div className="col-centered" >
-											<Link to={this.props.links.actions + "/" + this.props.action.id} className="thm-btn style-4" > More Info</Link>
+											<Link to={this.props.links.actions + "/" + this.props.action.id} className="thm-btn style-4 action-btns cool-font" > More Info</Link>
 										</div>
 									</div>
 									<div className="col-md-4 col-sm-4 col-lg-4 col-4" >
@@ -90,7 +94,7 @@ class Action extends React.Component {
 												</Tooltip>
 												:
 												<button
-													className={this.state.status === "TODO" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+													className={this.state.status === "TODO" ? "thm-btn style-4 selected cool-font action-btns" : "thm-btn style-4 cool-font action-btns"}
 													onClick={() => this.openForm("TODO")}
 												> Add Todo </button>
 											}
@@ -107,7 +111,7 @@ class Action extends React.Component {
 												</Tooltip>
 												:
 												<button
-													className={this.state.status === "DONE" ? "thm-btn style-4 selected" : "thm-btn style-4"}
+													className={this.state.status === "DONE" ? "thm-btn style-4 selected cool-font action-btns" : "thm-btn style-4 cool-font action-btns"}
 													onClick={() => this.openForm("DONE")}
 												> Done It </button>
 											}

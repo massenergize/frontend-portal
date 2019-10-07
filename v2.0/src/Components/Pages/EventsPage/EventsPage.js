@@ -36,7 +36,7 @@ class EventsPage extends React.Component {
 		return (
 			<>
 				<BreadCrumbBar links={[{ name: 'Events' }]} />
-				<div className="boxed_wrapper">
+				<div className="boxed_wrapper" style={{marginTop:90}}>
 					{/* renders the sidebar and events columns */}
 					<div className="boxed-wrapper">
 						<section className="eventlist">
@@ -81,7 +81,7 @@ class EventsPage extends React.Component {
 		if (!this.props.events || this.props.events.length === 0) {
 			return (
 				<div className='text-center'>
-					<p> Sorry, looks like there are no upcoming events in your community </p>
+					<p className="cool-font"> Sorry, looks like there are no upcoming events in your community </p>
 				</div>
 			);
 		}
@@ -109,7 +109,7 @@ class EventsPage extends React.Component {
 			const endDate = new Date(event.end_date_and_time);
 			if (this.shouldRender(event)) {
 				return (
-					<div className="item style-1 clearfix" key={event.id}>
+					<div className="item style-1 clearfix m-action-item" onClick ={()=>{ window.location = `${this.props.links.events + "/" + event.id}`}} key={event.id}>
 						<div className="row no-gutter">
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
@@ -120,14 +120,14 @@ class EventsPage extends React.Component {
 								</figure>
 							</div>
 							{/* renders the event text */}
-							<div className=" col-lg-8 col-12">
-								<div className="lower-content">
-									<Link to={this.props.links.events + "/" + event.id}><h4> {event.name} </h4></Link>
+							<div className=" col-lg-8 col-12 ">
+								<div className="lower-content ">
+									<Link className="cool-font" to={this.props.links.events + "/" + event.id}><h4 className="cool-font"> {event.name} </h4></Link>
 									<div className="text">
 										{event.description.length < CONST.BIG_LIMIT ?
-											<p> {event.description} </p>
+											<p className="cool-font"> {event.description} </p>
 											:
-											<p>
+											<p className="cool-font">
 												{event.description.substring(0, CONST.BIG_LIMIT)}
 												&nbsp;<Link to={`${this.props.links.events}/${event.id}`}> ...more</Link>
 											</p>
@@ -144,7 +144,7 @@ class EventsPage extends React.Component {
 												/>
 												:
 												<p>
-													<Link to={this.props.links.signin}>Sign In</Link> to RSVP to events
+													<Link className="cool-font" to={this.props.links.signin}>Sign In</Link> to RSVP to events
                                         </p>
 											}
 										</> : null}

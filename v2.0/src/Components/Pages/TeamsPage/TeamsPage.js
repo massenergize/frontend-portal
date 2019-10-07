@@ -40,7 +40,7 @@ class TeamsPage extends React.Component {
 			<>
 				{this.renderModal()}
 				<BreadCrumbBar links={[{ name: 'Teams' }]} />
-				<div className="boxed_wrapper p-5">
+				<div className="boxed_wrapper p-5" style={{marginTop:90}}>
 					<PageTitle>Teams Leaderboard</PageTitle>
 					<Table bordered hover responsive>
 						<thead>

@@ -38,20 +38,22 @@ class AboutUsPage extends React.Component {
 
 		return (
 			<>
-				<BreadCrumbBar links={[{ name: 'About Us' }]} />
+			
+				<BreadCrumbBar links={[{ name: 'About Us' }]}/>
 
 				{/* <WelcomeImages
 						data={welcomeImagesData} title="About Us"
 					/> */}
 				<div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
+				<div style={{ marginTop: 70 }}></div>
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
-						<center><h3 style={{ padding: 20 }}>About MassEnergize</h3></center>
-						<p>Duis ullamco exercitation incididunt irure. Excepteur sint labore amet fugiat ullamco sint cillum culpa sint ad qui est. Nisi sint irure fugiat elit magna consectetur. Voluptate esse nostrud est nostrud ullamco ut mollit irure do ipsum aliquip mollit reprehenderit. Amet non ipsum aute ex deserunt nostrud ut aute do. Qui dolore occaecat cupidatat sit veniam excepteur occaecat officia enim.</p>
+						<center><h3 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h3></center>
+						<p className="cool-font">Duis ullamco exercitation incididunt irure. Excepteur sint labore amet fugiat ullamco sint cillum culpa sint ad qui est. Nisi sint irure fugiat elit magna consectetur. Voluptate esse nostrud est nostrud ullamco ut mollit irure do ipsum aliquip mollit reprehenderit. Amet non ipsum aute ex deserunt nostrud ut aute do. Qui dolore occaecat cupidatat sit veniam excepteur occaecat officia enim.</p>
 					</div>
 					<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-						<center><h3 style={{ padding: 20 }}>About {this.props.community.name} Community</h3></center>
+						<center><h3 className="cool-font" style={{ padding: 20 }}>About {this.props.community.name} Community</h3></center>
 						<Video link={videoLink} />
-						<div className="community-about-text" dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
+						<div className="community-about-text cool-font" dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 					</div>
 				</div>
 				{/* <div className="row m-0 mt-3">
