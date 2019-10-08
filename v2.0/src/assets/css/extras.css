@@ -7,7 +7,8 @@
   border:solid 1px greenyellow; 
   padding:12px; 
   margin:10px 0px;
-  color:black
+  color:black;
+  font-size: 1rem;
 }
 
 .m-service-title{
@@ -41,7 +42,7 @@
 .new-sign-in{
   border-radius:200px;
   border:solid 2px green; 
-  padding:10px 30px; 
+  padding:10px 20px; 
   font-size:14px; 
   cursor:pointer;
   color:white;

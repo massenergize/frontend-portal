@@ -41,8 +41,8 @@ class TeamsPage extends React.Component {
 				{this.renderModal()}
 				<BreadCrumbBar links={[{ name: 'Teams' }]} />
 				<div className="boxed_wrapper p-5" style={{marginTop:90}}>
-					<PageTitle>Teams Leaderboard</PageTitle>
-					<Table bordered hover responsive>
+					<PageTitle>Team Leaderboard</PageTitle>
+					<Table bordered hover responsive className="teams-table">
 						<thead>
 							<tr>
 								<th>Team Name</th>
@@ -109,7 +109,7 @@ class TeamsPage extends React.Component {
 						</td>
 						:
 						<td>
-							<p><Link to={this.props.links.signin}>Sign In</Link> to join a team</p>
+							<Link to={this.props.links.signin}>Sign In</Link> to join a team
 						</td>
 					}
 					{/* <td>{obj.ghgSaved}</td> */}

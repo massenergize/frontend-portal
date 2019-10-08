@@ -38,7 +38,7 @@ class ActionsPage extends React.Component {
 						<div className="container">
 							<div className="row">
 								{/* renders the sidebar */}
-								<div className="col-lg-4 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
+								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
 									<SideBar
 										tagCols={this.props.tagCols}
 										onChange={this.handleChange} //runs when any category is selected or unselected
@@ -59,7 +59,7 @@ class ActionsPage extends React.Component {
 									}
 								</div>
 								{/* renders the actions */}
-								<div className="col-lg-8 col-md-7 col-sm-12 col-xs-12">
+								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
 									<div className="row" id="actions-container">
 										{this.renderActions(this.props.actions)}
 									</div>

@@ -2,6 +2,7 @@ import React from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../Menu/SideBar'
+import PageTitle from '../../Shared/PageTitle';
 import URLS from '../../../api/urls'
 import { getJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle'
@@ -39,6 +40,7 @@ class EventsPage extends React.Component {
 				<div className="boxed_wrapper" style={{marginTop:90}}>
 					{/* renders the sidebar and events columns */}
 					<div className="boxed-wrapper">
+						<PageTitle>Events</PageTitle>
 						<section className="eventlist">
 							<div className="container">
 								<div className="row">
@@ -371,7 +373,7 @@ class EventsPage extends React.Component {
 								<button className="tran3s color1_bg" ><i className="fa fa-search" aria-hidden="true"></i></button>
 							</form>
 						</div>
-						<p className="toggle-filter-button" onClick = {()=>{this.toggleFilter()}}>Event Filter</p>
+						<p className="toggle-filter-button" onClick = {()=>{this.toggleFilter()}}>Filter By</p>
 					</div>
 					{this.renderCategoryFilter()}
 				</div>

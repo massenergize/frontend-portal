@@ -9,7 +9,7 @@ class DonateBar extends React.Component {
     render() {
         return (
             <div className="donate-us center p-5" style={{backgroundColor: "floralwhite"}}>
-                <h2 className="cool-font">{this.props.donateMessage}</h2>
+                <h3 className="cool-font">{this.props.donateMessage}</h3>
                 <br/>
                 <Link to={this.props.links.donate}><button className=" thm-btn donate-box-btn action-btns">Donate</button></Link>
             </div>

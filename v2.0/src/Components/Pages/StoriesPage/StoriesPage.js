@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import StoryForm from '../ActionsPage/StoryForm'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import PageTitle from '../../Shared/PageTitle';
 import CONST from '../../Constants'
 
 class StoriesPage extends React.Component {
@@ -27,6 +28,7 @@ class StoriesPage extends React.Component {
 				<BreadCrumbBar links={[{ name: 'Testimonials' }]} />
 				<div className="boxed_wrapper" style={{ marginTop: 90 }}>
 					<section className="testimonial2">
+						<PageTitle>Testimonials</PageTitle>
 						<div className="container">
 							<div className="row masonary-layout">
 								{this.renderStories(stories)}
@@ -66,9 +68,9 @@ class StoriesPage extends React.Component {
 			return (
 				<div className={cn}>
 					<div className="item center" style={{ padding: 30 }}>
-						<div className="quote">
+						{/* <div className="quote">
 							<i className="fa fa-quote-left"></i>
-						</div>
+						</div> */}
 						<h4 className="title p-2 cool-font">{story.title}</h4>
 						{this.state.expanded && this.state.expanded === story.id ?
 							<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
@@ -82,7 +84,7 @@ class StoriesPage extends React.Component {
 							}
 						</p>
 						<div className="author cool-font">
-							<h5 className="cool-font">{story.user.full_name}</h5>
+							<h6 className="cool-font">{story.user.full_name}</h6>
 							{/* <p>{story.location}</p> */}
 						</div>
 						{(story.action) ? <p><Link to={`${this.props.links.actions}/${story.action.id}`} className="cool-font"><u>{story.action.title}</u></Link></p> : null}

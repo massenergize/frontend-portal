@@ -78,7 +78,7 @@ class Action extends React.Component {
 							</div>
 							{ /* buttons for adding todo, marking as complete and getting more info */}
 							<div className="price-box3" style={{paddingTop:18}}>
-								<div className="row no-gutter">
+								<div className="row no-gutter d-flex align-items-center">
 									<div className="col-sm-4 col-md-4 col-lg-4 col-4" >
 										<div className="col-centered" >
 											<Link to={this.props.links.actions + "/" + this.props.action.id} className="thm-btn style-4 action-btns cool-font" > More Info</Link>
@@ -88,7 +88,7 @@ class Action extends React.Component {
 										<div className="col-centered" >
 											{!this.props.user ?
 												<Tooltip text='Sign in to make a TODO list'>
-													<p className='has-tooltip thm-btn style-4 disabled'>
+													<p className='has-tooltip thm-btn style-4 action-btns disabled'>
 														Add Todo
                                                     </p>
 												</Tooltip>
@@ -105,7 +105,7 @@ class Action extends React.Component {
 										<div className="col-centered">
 											{!this.props.user ?
 												<Tooltip text='Sign in to mark actions as completed'>
-													<p className='has-tooltip thm-btn style-4 disabled'>
+													<p className='has-tooltip thm-btn style-4 action-btns disabled'>
 														Done It
                                                     </p>
 												</Tooltip>

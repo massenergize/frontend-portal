@@ -51,7 +51,7 @@ class ServicesPage extends React.Component {
                                     <img className="w-100" src={vendor.logo.url} alt={vendor.name} />
                                 </Link>
                                 <Link to={`${this.props.links.services}/${vendor.id}`}>
-                                    <h3 className="pt-3">{vendor.name}</h3>
+                                    <h4 className="pt-3">{vendor.name}</h4>
                                 </Link>
                                 {/* <p className="action-tags">
                                     {vendor.categories.map((category) => {
