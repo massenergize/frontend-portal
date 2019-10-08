@@ -56,14 +56,14 @@
   font-weight: 600;
 }
 .m-footer-color{
-  background:#232f3e;
+  background:#232f3e !important;
 }
 .b-footer-color{
-  background:#282828;
+  background:#282828 !important;
 }
 .btn-finishing{
-  border-radius: 100px; padding: '12px 33px' ;
-  padding: 10px 37px;
+  border-radius: 100px !important; 
+  padding: 10px 37px !important;
 }
 .new-sign-in:hover{
   background:rgb(249, 104, 111); 

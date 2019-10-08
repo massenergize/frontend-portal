@@ -41,7 +41,7 @@ class HomePage extends React.Component {
 				}
 				<div style={{padding:30,background:'floralwhite'}}>
 					<h4 align='center'className="cool-font">{this.props.pageData.community.name}</h4>
-					<p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>Laborum nostrud incididunt nulla est pariatur anim ex incididunt commodo veniam pariatur esse deserunt. Fugiat amet ea non in ipsum aute reprehenderit. Velit ipsum duis minim sunt. Eu magna velit eiusmod adipisicing enim Lorem ullamco. Excepteur labore deserunt elit esse consequat sunt. Laborum duis duis ipsum tempor enim esse sit velit consectetur ipsum est qui.</p>
+					<p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p>
 				</div>
 				{this.props.graphsData ?
 					<Graphs
