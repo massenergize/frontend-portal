@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class BreadCrumbBar extends React.Component {
 	render() {
 		return (
-			<div class="breadcumb-wrapper">
+			<div class="breadcumb-wrapper" style={{marginTop:90,marginBottom:31,background:'rgb(245, 255, 222)'}}>
 				<div class="container">
 					<div class="pull-left">
 						<ul class="list-inline link-list">
@@ -21,7 +21,7 @@ class BreadCrumbBar extends React.Component {
 									);
 								} else if (link.name) {
 									return (
-										<li key={key}>
+										<li key={key} style={{color:'#333'}}>
 											{link.name}
 										</li>
 									);

@@ -14,7 +14,7 @@ class Counter extends React.Component {
 
     render() {
         return (
-                <div className="item">
+                <div className="item count-cardy z-depth-1">
                     <br/><br/>
                     <div className="icon">
                         <i className={this.props.icon}></i>
@@ -22,7 +22,7 @@ class Counter extends React.Component {
                     <div className="count-outer">
                         <CountUp end={this.props.end} duration={3}/>
                     </div>
-                    <h4 className="counter-title">{this.props.title}</h4>
+                    <h6 className="">{this.props.title}</h6>
                 </div>
         );
     }

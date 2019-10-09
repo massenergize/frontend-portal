@@ -19,13 +19,13 @@ class TeamsPage extends React.Component {
 		super(props);
 
 		this.state = {
-			modal_toggled: false, 
-			modal_content: { title:"...",desc:"..."}
+			modal_toggled: false,
+			modal_content: { title: "...", desc: "..." }
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 	}
 	renderModal = () => {
-		if (this.state.modal_toggled) return <Modal content = {this.state.modal_content} toggler={this.toggleModal} />
+		if (this.state.modal_toggled) return <Modal content={this.state.modal_content} toggler={this.toggleModal} />
 	}
 
 	toggleModal = () => {
@@ -39,28 +39,32 @@ class TeamsPage extends React.Component {
 		return (
 			<>
 				{this.renderModal()}
-				<BreadCrumbBar links={[{ name: 'Teams' }]} />
-				<div className="boxed_wrapper p-5" style={{marginTop:90}}>
-					<PageTitle>Team Leaderboard</PageTitle>
-					<Table bordered hover responsive className="teams-table">
-						<thead>
-							<tr>
-								<th>Team Name</th>
-								<th># Households</th>
-								<th># Actions Completed</th>
-								<th>Average # Actions/Household</th>
-								<th>
-									<Tooltip text="Brad's paragraph here" dir="left">
-										<span className="has-tooltip">Carbon Impact</span>
-									</Tooltip>
-								</th>
-								<th>Join Team</th>
-							</tr>
-						</thead>
-						<tbody>
-							{this.renderTeamsData(teams)}
-						</tbody>
-					</Table>
+
+				<div className="boxed_wrapper" >
+					<BreadCrumbBar links={[{ name: 'Teams' }]} />
+					<div className="p-5">
+						<PageTitle>Team Leaderboard</PageTitle>
+						<Table bordered hover responsive className="teams-table">
+							<thead>
+								<tr>
+									<th>Team Name</th>
+									<th>Households</th>
+									<th>Actions Completed</th>
+									<th>Average Actions/Household</th>
+									<th>
+										<Tooltip text="Brad's paragraph here" dir="left">
+											<span className="has-tooltip">Carbon Impact</span>
+										</Tooltip>
+									</th>
+									<th>Key Contact</th>
+									<th>Join Team</th>
+								</tr>
+							</thead>
+							<tbody>
+								{this.renderTeamsData(teams)}
+							</tbody>
+						</Table>
+					</div>
 				</div>
 			</>
 		);
@@ -79,15 +83,15 @@ class TeamsPage extends React.Component {
 		teamsSorted = teamsSorted.sort((a, b) => {
 			return b.avrgActionsPerHousehold - a.avrgActionsPerHousehold;
 		});
-
+		console.log("I am the team sorted", teamsSorted);
 		return teamsSorted.map((obj) => {
-			const desc  = obj.team.description.length > 70 ? obj.team.description.substr(0,70) + "..." : obj.team.description;
+			const desc = obj.team.description.length > 70 ? obj.team.description.substr(0, 70) + "..." : obj.team.description;
 			return (
 				<tr>
 					<td>{obj.team.name} &nbsp;
             <Tooltip title={obj.team.name} text={desc} dir="right">
 							<div>
-								<small className="more-hyperlink" onClick={() => { this.setState({modal_content:{title:obj.team.name, desc:obj.team.description}});this.toggleModal() }}>More...</small>
+								<small className="more-hyperlink" onClick={() => { this.setState({ modal_content: { title: obj.team.name, desc: obj.team.description } }); this.toggleModal() }}>More...</small>
 								<span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
 							</div>
 						</Tooltip>
@@ -95,6 +99,7 @@ class TeamsPage extends React.Component {
 					<td>{obj.households}</td>
 					<td>{obj.actions_completed}</td>
 					<td>{obj.avrgActionsPerHousehold}</td>
+					<td>...</td>
 					<td>...</td>
 					{this.props.user ?
 						<td>

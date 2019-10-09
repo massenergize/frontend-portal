@@ -64,14 +64,15 @@ class Action extends React.Component {
 							{ /* Impact and Difficulty tags*/}
 							<div className="price-box2" onClick ={()=>{this.gotoAction()}} >
 								<div className="clearfix" >
-									<div className="float_right" >
-										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
-									</div>
 									<div className="float_left">
 										<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
 											<span className="has-tooltip">Impact</span>
 										</Tooltip>
 										<span>{this.renderTagBar(this.getTag("impact"))}</span>
+									</div>
+									<div className="float_right" >
+										
+										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
 									</div>
 
 								</div>

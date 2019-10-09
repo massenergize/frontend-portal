@@ -1922,7 +1922,8 @@ ul.dropdown li:hover a {
 
 .service {
     background-size: cover;
-    background: #003000;
+    /* background: #003000; */
+    background:#f4ffc9;
 }
 
 .service .section-title h2 {
@@ -3037,7 +3038,7 @@ ul.dropdown li:hover a {
     position: relative;
     background: #fff;
     margin:10px 10px 10px 10px;
-    height: 250px;
+    height: 220px;
     border: 1px solid #fff;
 }
 
@@ -5907,7 +5908,7 @@ span.has-tooltip {
 }
 
 .breadcumb-wrapper {
-    background: #eee;
+    background: #ecffd3;
     height: 30px;
     line-height: 30px;
     border-bottom: 1px solid #f4f4f4;
@@ -5925,7 +5926,7 @@ span.has-tooltip {
 }
 
 .breadcumb-wrapper ul.link-list li .link {
-    color: #222;
+    color: #398846;
     font-weight: 700;
     font-size: 14px;
     transition: .3s ease;
@@ -5934,7 +5935,7 @@ span.has-tooltip {
 
 .breadcumb-wrapper ul.link-list li .link:hover {
     transition: .3s ease;
-    color: #8dc63f;
+    color: #141413;
 }
 
 .breadcumb-wrapper ul.link-list li .link i {
@@ -9387,12 +9388,14 @@ article.slide-item.center {}
 
 .profile-table {
     margin: auto;
-    border: solid 1px #aaa;
+    border: solid 1px lightgray;
 }
 .profile-table th{
+    padding:15px;
     background: #eee;
 }
 .profile-table td{
+    padding:15px;
     border: solid 1px #aaa;
 }
 .profile-table td button{

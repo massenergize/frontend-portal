@@ -36,10 +36,11 @@ class EventsPage extends React.Component {
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<>
-				<BreadCrumbBar links={[{ name: 'Events' }]} />
-				<div className="boxed_wrapper" style={{marginTop:90}}>
+				
+				<div className="boxed_wrapper" >
 					{/* renders the sidebar and events columns */}
 					<div className="boxed-wrapper">
+					<BreadCrumbBar links={[{ name: 'Events' }]} />
 						<PageTitle>Events</PageTitle>
 						<section className="eventlist">
 							<div className="container">
@@ -111,7 +112,7 @@ class EventsPage extends React.Component {
 			const endDate = new Date(event.end_date_and_time);
 			if (this.shouldRender(event)) {
 				return (
-					<div className="item style-1 clearfix m-action-item" onClick ={()=>{ window.location = `${this.props.links.events + "/" + event.id}`}} key={event.id}>
+					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
 						<div className="row no-gutter">
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
@@ -300,11 +301,81 @@ class EventsPage extends React.Component {
 		return noFilter;
 	}
 
-	renderCategoryFilter = ()=>{
-		if(!this.state.events_search_toggled) return <div></div>;
-		else{
+	renderCategoryFilter = () => {
+		if (!this.state.events_search_toggled) return <div></div>;
+		else {
 			return (
 				<div >
+					<div className="tabs-outer">
+						{/* <!--Tabs Box--> */}
+						<div className="tabs-box tabs-style-one">
+							{/* <!--Tab Buttons--> */}
+							<form className="tab-buttons">
+								<div className="tab-btn"><input type="radio" name="tabs" id="show-all-button" defaultChecked onClick={this.resetDates} /> All</div>
+								<div className="tab-btn"><input type="radio" name="tabs" id="show-upcoming-button" onClick={this.resetDates} /> Upcoming</div>
+							</form>
+
+							{/* <!--Tabs Content--> */}
+							<div className="tabs-content">
+								{/* <!--Tab / Active Tab--> */}
+								<div className="tab active-tab" id="tab-two" style={{ display: 'block' }}>
+									<div className="default-form-area all">
+										{/* <form id="contact-form" name="contact_form" className="default-form style-5" action="inc/sendmail.php" method="post">
+											<div className="clearfix">
+												<div className="form-group">
+													<p>
+														Find events between:
+                                                </p>
+													<DatePicker
+														selected={this.state.startDate}
+														selectsStart
+														startDate={this.state.startDate}
+														endDate={this.state.endDate}
+														onChange={this.selectStartDate}
+														placeholderText="Enter a starting date"
+													/>
+													<DatePicker
+														selected={this.state.endDate}
+														selectsEnd
+														startDate={this.state.startDate}
+														endDate={this.state.endDate}
+														onChange={this.selectEndDate}
+														minDate={this.state.startDate}
+														placeholderText="Enter an ending date"
+													/>
+												</div>
+											</div>
+										</form> */}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<SideBar
+						tagCols={this.props.tagCols}
+						onChange={this.handleChange} //runs when any category is selected or unselected
+					/>
+				</div>
+			);
+		}
+	}
+	toggleFilter = () => {
+		var prev = this.state.events_search_toggled;
+		this.setState({ events_search_toggled: !prev });
+	}
+	renderSideBar() {
+		return (
+			<div className="blog-sidebar sec-padd">
+				<div className="event-filter" style={{padding:35,borderRadius:15}}>
+					<div className="section-title style-2">
+						<div className="sidebar_search" style={{ margin: 0 }}>
+							<form action="#">
+								<input type="text" placeholder="Search...." id='action-searchbar' />
+								<button className="tran3s color1_bg" ><i className="fa fa-search" aria-hidden="true"></i></button>
+							</form>
+						</div>
+					</div>
+					<div >
 						<div className="tabs-outer">
 							{/* <!--Tabs Box--> */}
 							<div className="tabs-box tabs-style-one">
@@ -355,27 +426,7 @@ class EventsPage extends React.Component {
 							onChange={this.handleChange} //runs when any category is selected or unselected
 						/>
 					</div>
-			);
-		}
-	}
-	toggleFilter = () => {
-		var prev = this.state.events_search_toggled;
-		this.setState({events_search_toggled: !prev});
-	}
-	renderSideBar() {
-		return (
-			<div className="blog-sidebar sec-padd">
-				<div className="event-filter">
-					<div className="section-title style-2">
-						<div className="sidebar_search" style={{ margin: 0 }}>
-							<form action="#">
-								<input type="text" placeholder="Search...." id='action-searchbar' />
-								<button className="tran3s color1_bg" ><i className="fa fa-search" aria-hidden="true"></i></button>
-							</form>
-						</div>
-						<p className="toggle-filter-button" onClick = {()=>{this.toggleFilter()}}>Filter By</p>
-					</div>
-					{this.renderCategoryFilter()}
+
 				</div>
 			</div>
 		);

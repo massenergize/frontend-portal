@@ -1,15 +1,16 @@
 import React from 'react'
 import RegisterForm from './RegisterForm'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class RegisterPage extends React.Component {
     render() { //avoids trying to render before the promise from the server is fulfilled  
         return (
             <>
-                <BreadCrumbBar links={[{ name: 'Sign Up' }]} />
+
                 <div className="boxed_wrapper">
-                    <section className="register-section sec-padd-top">
+                    <BreadCrumbBar links={[{ name: 'Sign Up' }]} />
+                    <section className="register-section sec-padd-top" style={{paddingTop:5}}>
                         <div className="container">
                             <div className="row">
                                 {/* <!--Form Column--> */}
@@ -24,9 +25,9 @@ class RegisterPage extends React.Component {
             </>
         );
     }
-} 
+}
 const mapStoreToProps = (store) => {
-    return({
+    return ({
         links: store.links
     });
 }

@@ -6,7 +6,7 @@ import React from 'react'
 export default class PageTitle extends React.Component {
     render() {
         return (
-            <div className="row text-center justify-content-center mb-5">
+            <div className="row text-center justify-content-center mb-5 zero-margin-btm">
                 <h2 className="cool-font">{this.props.children}</h2>
             </div>
         );

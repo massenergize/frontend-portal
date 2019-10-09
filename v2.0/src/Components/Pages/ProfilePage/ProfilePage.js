@@ -76,8 +76,8 @@ class ProfilePage extends React.Component {
 
 		return (
 			<>
+				<div className='boxed_wrapper' onClick={this.clearError} >
 				<BreadCrumbBar links={[{ name: 'Profile' }]} />
-				<div className='boxed_wrapper' onClick={this.clearError} style={{marginTop:80}}>
 					<div className="container">
 						{this.state.printing ?
 							<>
@@ -89,17 +89,17 @@ class ProfilePage extends React.Component {
 								<div className="col-lg-6 col-md-6  col-12">
 									{this.renderForm(this.state.editingProfileForm)}
 									<section className="fact-counter style-2 sec-padd" >
-										<div className="container">
-											<div className="counter-outer" style={{ background: "#333", width: "100%" }}>
+										<div className="container" style={{padding:0}}>
+											<div className="counter-outer" style={{ background: "white", width: "100%" }}>
 												<div className="row no-gutter">
 													<div className="column counter-column col-lg-4 col-6 ">
-														<Counter end={this.props.done ? this.props.done.length : 0} icon={"icon-money"} title={"Actions Completed"} />
+														<Counter end={this.props.done ? this.props.done.length : 0} icon={"fa fa-check-circle"} title={"Actions Completed"} />
 													</div>
 													<div className="column counter-column  d-lg-block d-none col-4 ">
-														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"icon-money"} title={"Actions To Do"} />
+														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
 													<div className="column counter-column col-lg-4 col-6"  >
-														<Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"icon-money"} title={"Tons of Carbon Saved"} />
+														<Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"fa fa-cloud"} title={"Tons of Carbon Saved"} />
 													</div>
 												</div>
 											</div>
@@ -131,7 +131,7 @@ class ProfilePage extends React.Component {
                                                                 </button>
 															</>
 															:
-															<button className="thm-btn" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
+															<button className="thm-btn btn-finishing" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
 														}
 													</td>
 												</tr>
@@ -151,7 +151,7 @@ class ProfilePage extends React.Component {
 											</tr>
 											{this.renderTeams(user.teams)}
 											<tr>
-												<td colSpan={2} align='center'><Link className="thm-btn" to={this.props.links.teams} style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
+												<td colSpan={2} align='center'><Link className="thm-btn btn-finishing" to={this.props.links.teams} style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
 											</tr>
 										</tbody>
 									</table>
@@ -171,7 +171,7 @@ class ProfilePage extends React.Component {
 													</td>
 													:
 													<td colSpan={2}>
-														<button className="thm-btn" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
+														<button className="thm-btn btn-finishing" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
 													</td>
 												}
 											</tr>
@@ -185,7 +185,7 @@ class ProfilePage extends React.Component {
 									<br />
 								</div>
 								{/* makes the todo and completed actions carts */}
-								<div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px" }}>
+								<div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
 
 									{/* <h3 className="col-12 text-right">
                                         <SignOutButton style={{ display: 'inline-block' }} />
@@ -197,7 +197,7 @@ class ProfilePage extends React.Component {
 										<Cart title="Completed Actions" actionRels={this.props.done} status="DONE" /> : null}
 									{this.props.rsvps ?
 										<EventCart title="Event RSVPs" eventRSVPs={this.props.rsvps.filter(rsvp => rsvp.attendee && rsvp.attendee.id === this.props.user.id)} /> : null}
-									<button className='thm-btn text-center' onClick={() => this.setState({ printing: true })}> Summarize your actions</button>
+									<center><button  className='text-center summary-finish raise' onClick={() => this.setState({ printing: true })} > Summary Of Your Actions</button></center>
 								</div>
 							</div>
 						}

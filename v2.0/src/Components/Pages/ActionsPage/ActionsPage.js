@@ -31,8 +31,9 @@ class ActionsPage extends React.Component {
 	render() {
 		return (
 			<>
+				
+				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
-				<div className="boxed_wrapper" style={{marginTop:90}}>
 					{/* main shop section */}
 					<div className="shop sec-padd">
 						<div className="container">

@@ -20,7 +20,7 @@ class EventCart extends React.Component {
         return (
             // <!--Cart Outer-->
             <div className="cart-outer mb-5">
-                <h3 className="center m-0">{this.props.title}</h3>
+                <h3 className="center m-0 m-cart-header">{this.props.title}</h3>
                 <div className="table-outer">
                     <table className="cart-table" style={{ width: '100%' }}>
                         {this.props.info ?
@@ -76,7 +76,7 @@ class EventCart extends React.Component {
                             <RSVPForm 
                             noText={true}
                             eventid={event.id}
-                            userid={this.props.user.id}
+                             userid={this.props.user.id}
                             //value={this.userRSVPvalue(event.id)}
                             rsvp={rsvp}/>
                         </div>

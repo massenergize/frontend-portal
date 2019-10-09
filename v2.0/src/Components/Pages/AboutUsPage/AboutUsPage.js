@@ -38,31 +38,32 @@ class AboutUsPage extends React.Component {
 
 		return (
 			<>
-			
-				<BreadCrumbBar links={[{ name: 'About Us' }]}/>
 
-				{/* <WelcomeImages
+				<div className="boxed_wrapper">
+					<BreadCrumbBar links={[{ name: 'About Us' }]} />
+
+					{/* <WelcomeImages
 						data={welcomeImagesData} title="About Us"
 					/> */}
-				<div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
-				<div style={{ marginTop: 70 }}></div>
-					<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-						<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
-						<Video link={videoLink} />
-						<div className="community-about-text cool-font" dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
+					<div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
+						<div style={{ marginTop: 70 }}></div>
+						<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
+							<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
+							<Video link={videoLink} />
+							<div className="community-about-text cool-font" dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
+						</div>
+						<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
+							<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
+							<p className="cool-font">We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p>
+						</div>
 					</div>
-					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
-						<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
-						<p className="cool-font">We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p>
-					</div>
-				</div>
-				{/* <div className="row m-0 mt-3">
+					{/* <div className="row m-0 mt-3">
 						<div className={videoLink ? "col-sm-12 col-md-6" : "col-12"} dangerouslySetInnerHTML={{ __html: paragraphContent }}>
 						</div>
 					</div> */}
-				{/* <TeamMembers data={teamMembersData} /> */}
-				<DonateBar donateMessage={donateMessage} />
-
+					{/* <TeamMembers data={teamMembersData} /> */}
+					<DonateBar donateMessage={donateMessage} />
+				</div>
 			</>
 		);
 	}

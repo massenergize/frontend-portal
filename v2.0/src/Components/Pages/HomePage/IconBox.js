@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 class IconBox extends React.Component {
 	render() {
 		return (
-			<div className="service-item center hover-service-item">
+			<div className="service-item center hover-service-item" style={{background:'white'}}>
 				<Link to={`${this.props.links.home}${this.props.link}`} style={{ width: '100%', height: '100%' }}>
 
 					<div className="icon-box text-center" >

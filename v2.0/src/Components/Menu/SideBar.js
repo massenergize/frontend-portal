@@ -12,7 +12,7 @@ class SideBar extends React.Component {
 	render() {
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
-			<div className="wrapper shop-sidebar mb-5">
+			<div className=" event-filter wrapper shop-sidebar mb-5" style={{padding:36,borderRadius:15}}>
 				{/* <div className="sidebar_search">
 					<form action="#">
 						<input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />
@@ -46,7 +46,21 @@ class SideBar extends React.Component {
 		});
 	}
 
+	makeTagsSystematic = (tagCols) =>{
+		//arrange side filters in this order: Categories, Impact, difficulty
+		if(!tagCols) return tagCols;
+		var arr = []; 
+		arr[0] =  tagCols.filter(item =>item.name ==="Category")[0];
+		arr[1] =  tagCols.filter(item =>item.name ==="Impact")[0];
+		arr[2] =  tagCols.filter(item =>item.name ==="Difficulty")[0];
+		var the_rest = tagCols.filter( item =>{
+			return item.name !=="Category" && item.name !=="Impact" && item.name !=="Difficulty";
+		});
+		var available= arr.filter( item => item !==undefined);
+		return[ ...available, ...the_rest];
+	}
 	renderTagCollections(tagCols) {
+		tagCols = this.makeTagsSystematic(tagCols);
 		if (!tagCols) {
 			return <p>No Filters Available</p>;
 		}

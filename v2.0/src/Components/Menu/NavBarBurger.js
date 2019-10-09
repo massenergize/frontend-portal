@@ -202,7 +202,7 @@ class NavBarBurger extends React.Component {
 			return (
 				<Link className="cool-font new-sign-in float-right round-me raise" to={links.signin} >
 					<i className="fa fa-user" style={{ padding: "0px 2px" }} />{'\u00A0'}
-					Login
+					Sign In
                 </Link>
 			);
 		}

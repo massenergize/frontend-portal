@@ -44,9 +44,10 @@ class OneActionPage extends React.Component {
 		this.chooseFontSize();
 		return (
 			<>
-				<BreadCrumbBar links={[{ link: this.props.links.actions, name: 'All Actions' }, { name: `Action ${action.id}` }]} />
+			
 				<div className="boxed_wrapper">
-					<section className="shop-single-area">
+				<BreadCrumbBar links={[{ link: this.props.links.actions, name: 'All Actions' }, { name: `Action ${action.id}` }]} />
+					<section className="shop-single-area" style={{paddingTop:0}}>
 						<div className="container">
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
 								<div className="col-md-8">
@@ -102,7 +103,7 @@ class OneActionPage extends React.Component {
 								<br />
 								{!this.props.user ?
 									<Tooltip text='Sign in to make a TODO list'>
-										<p className='has-tooltip thm-btn style-4 disabled '>
+										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
 											Add Todo
                                                     </p>
 									</Tooltip>
@@ -115,7 +116,7 @@ class OneActionPage extends React.Component {
 								&nbsp;
                                 {!this.props.user ?
 									<Tooltip text='Sign in to mark actions as completed'>
-										<p className='has-tooltip thm-btn style-4 disabled'>
+										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
 											Done It
                                                     </p>
 									</Tooltip>

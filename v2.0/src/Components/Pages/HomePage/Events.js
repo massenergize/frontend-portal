@@ -97,7 +97,7 @@ class Events extends React.Component {
 					<div className="row">
 						<div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">
 							<div className="section-title m-0">
-								<h2 className="cool-font">Upcoming Events</h2>
+								<h3 className="cool-font">Upcoming Events</h3>
 							</div>
 						</div>
 						<div className="col-md-3 col-sm-2 col-xs-12 text-center text-sm-right">

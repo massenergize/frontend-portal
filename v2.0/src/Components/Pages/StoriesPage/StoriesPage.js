@@ -25,8 +25,9 @@ class StoriesPage extends React.Component {
 
 		return (
 			<>
+				
+				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'Testimonials' }]} />
-				<div className="boxed_wrapper" style={{ marginTop: 90 }}>
 					<section className="testimonial2">
 						<PageTitle>Testimonials</PageTitle>
 						<div className="container">

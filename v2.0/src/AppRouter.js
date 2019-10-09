@@ -120,7 +120,7 @@ class AppRouter extends Component {
 	}
 	async getUser(email) {
 		const json = await getJson(`${URLS.USER}/e/${email}`);
-		if (json.success && json.data) {
+		if (json && json.success && json.data) {
 			this.props.reduxLogin(json.data);
 			const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
 			this.props.reduxLoadTodo(todo.data);
