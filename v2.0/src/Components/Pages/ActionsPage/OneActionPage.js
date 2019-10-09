@@ -149,7 +149,7 @@ class OneActionPage extends React.Component {
 						</div>
 						{/* action image */}
 						<div className="col-lg-6 col-md-12"><div className="img-box">
-							<img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive" style={{ marginTop: "20px" }} />
+							<img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive raise" style={{ marginTop: "20px",borderRadius:9 }} />
 						</div></div>
 					</div>
 				</div>
