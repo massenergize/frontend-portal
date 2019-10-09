@@ -74,9 +74,19 @@
 .b-footer-color{
   background:#282828 !important;
 }
+.combo-box-wrapper{
+  border-radius: 6px;
+  padding:7px; 
+  background:#f9f7e3 !important; 
+  margin:4px;
+}
+.select-undefault{
+  border-width: 0px !important; 
+  background:transparent !important;
+}
 .count-cardy{
   /* border:solid 1px lightgray !important;  */
-  border-radius: 15px;
+  border-radius: 11px;
   margin:2px 5px !important;
 }
 .summary-finish{

@@ -68,7 +68,7 @@ class StoriesPage extends React.Component {
 
 			return (
 				<div className={cn}>
-					<div className="item center" style={{ padding: 30 }}>
+					<div className="item center" style={{ padding: 30,borderRadius:7 }}>
 						{/* <div className="quote">
 							<i className="fa fa-quote-left"></i>
 						</div> */}
