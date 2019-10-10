@@ -39,7 +39,7 @@ class HomePage extends React.Component {
 						title={header.title}
 					/> : null
 				}
-				<div className="" style={{padding:30,background:'floralwhite'}}>
+				<div className="" style={{padding:30,background:'#bcfb8d', color:"#383838"}}>
 					<h4 align='center'className="cool-font">{communityDescription ? communityDescription : "Welcome To Our Page"}</h4>
 					{/* <p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p> */}
 				</div>

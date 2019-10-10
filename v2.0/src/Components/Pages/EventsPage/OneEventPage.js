@@ -16,8 +16,9 @@ class OneEventPage extends React.Component {
         //avoids trying to render before the promise from the server is fulfilled
         return (
             <>
-                <BreadCrumbBar links={[{ link:this.props.links.events, name: 'Events' }, { name: `Event ${event.id}` }]} />
-                <div className="boxed_wrapper" style={{marginTop:50}}>
+
+                <div className="boxed_wrapper" >
+                    <BreadCrumbBar links={[{ link: this.props.links.events, name: 'Events' }, { name: `Event ${event.id}` }]} />
                     <section className="shop-single-area">
                         <div className="container">
                             <div className="single-products-details">
