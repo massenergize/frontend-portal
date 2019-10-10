@@ -48,7 +48,7 @@ class Graphs extends React.Component {
 						<article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
 							<div className="item">
 								<div className="icon"><i className="fa fa-chart-bar" /></div>
-								<Link to={this.props.links.impact}  className="thm-btn btn-finishing">Our Impact</Link>
+								<Link to={this.props.links.impact}  className="thm-btn btn-finishing raise">Our Impact</Link>
 								{/* <h4 className="counter-title">about our community impact</h4> */}
 							</div>
 						</article>

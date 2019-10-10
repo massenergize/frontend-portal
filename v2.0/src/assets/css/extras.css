@@ -51,12 +51,12 @@
 }
 .new-sign-in{
   border-radius:200px;
-  border:solid 2px green; 
+  border:solid 2px #8dc63f; 
   padding:10px 16px; 
   font-size:14px; 
   cursor:pointer;
   color:white;
-  background:green;
+  background:#8dc63f;
   margin:18px;
 }
 .m-cart-header{
@@ -73,6 +73,11 @@
 }
 .b-footer-color{
   background:#282828 !important;
+}
+.print-cancel-style{
+  padding: 10px 84px !important;
+  border-color:crimson !important;
+  border-radius: 155px !important;
 }
 .combo-box-wrapper{
   border-radius: 6px;

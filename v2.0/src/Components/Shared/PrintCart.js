@@ -30,7 +30,7 @@ class PrintCart extends React.Component {
                 <ComponentToPrint ref={el => (this.componentRef = el)} todo={this.props.todo} done={this.props.done} rsvps={this.props.rsvps} user={this.props.user}/>
                 <ReactToPrint
                     content={() => this.componentRef}
-                    trigger={() => <button className='thm-btn'> <i className="fa fa-print"/> Print your Actions</button>}
+                    trigger={() => <center><button className='thm-btn btn-finishing'> <i className="fa fa-print"/> Print your Actions</button></center>}
                 />
             </div>
         );

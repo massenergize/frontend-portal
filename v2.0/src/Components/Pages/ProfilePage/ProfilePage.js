@@ -82,7 +82,7 @@ class ProfilePage extends React.Component {
 						{this.state.printing ?
 							<>
 								<PrintCart />
-								<button className='thm-btn text-center' onClick={() => this.setState({ printing: false })}> Cancel</button>
+								<center><button className='thm-btn text-center print-cancel-style' style={{background:"crimson",color:"white",marginBottom:20,padding:"10px 84px !important"}} onClick={() => this.setState({ printing: false })}> Cancel</button></center>
 							</>
 							:
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
