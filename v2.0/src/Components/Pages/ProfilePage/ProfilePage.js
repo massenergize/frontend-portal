@@ -99,7 +99,7 @@ class ProfilePage extends React.Component {
 														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
 													<div className="column counter-column col-lg-4 col-6"  >
-														<Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"fa fa-cloud"} title={"Tons of Carbon Saved"} />
+														<Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"fa fa-leaf"} title={"Tons of Carbon Saved"} />
 													</div>
 												</div>
 											</div>

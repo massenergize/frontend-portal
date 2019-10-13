@@ -92,7 +92,7 @@ class Events extends React.Component {
 	}
 	render() {
 		return (
-			<section className="event-style1" style={{background:'floralwhite'}}>
+			<section className="event-style1" style={{background:'white'}}>
 				<div className="container">
 					<div className="row">
 						<div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">

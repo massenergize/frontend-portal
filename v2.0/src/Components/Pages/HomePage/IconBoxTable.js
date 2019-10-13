@@ -13,7 +13,17 @@ import IconBox from './IconBox';
  *          link
  */
 class IconBoxTable extends React.Component {
+	actionFirst = (boxes) => {
+		const action = boxes.filter(item => item.title.toLowerCase().includes('action'))[0];
+		if (action) {
+			var rest = boxes.filter(item => item.title !== action.title);
+			var newB = [action, ...rest];
+			return newB;
+		}
+		return boxes;
+	}
 	renderBoxes(boxes) {
+		boxes = this.actionFirst(boxes);
 		if (!boxes) {
 			return <div>No Icon Boxes to Display</div>
 		}
@@ -31,14 +41,15 @@ class IconBoxTable extends React.Component {
 		});
 	}
 	render() {
+		const boxes = this.props.boxes; 
 		return (
 			<section className="service p-5">
 				<div className="container">
 					<div className="section-title center ">
-						<h4 class="text-white cool-font m-service-title" >{this.props.title}</h4>
+						<h4 class="text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4>
 					</div>
 					<div className="row d-flex flex-row">
-						{this.renderBoxes(this.props.boxes)}
+						{this.renderBoxes(boxes)}
 					</div>
 				</div>
 			</section>

@@ -124,7 +124,7 @@ class ImpactPage extends React.Component {
 							<div className="col-12 col-lg-8">
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4 className="cool-font">Number Of Actions Compeleted</h4>
+										<h4 className="cool-font">Number Of Actions Completed</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:16, transform:'rotateZ(-90deg',left:-100}}>Number Of Actions Completed</p> */}
 									</div>
 									<div className="card-body">

@@ -1923,7 +1923,7 @@ ul.dropdown li:hover a {
 .service {
     background-size: cover;
     /* background: #003000; */
-    background:#e8e8e8;
+    background:white;
 }
 
 .service .section-title h2 {
@@ -1934,7 +1934,7 @@ ul.dropdown li:hover a {
 .service .service-item {
     width: 100%;
     margin-bottom: 30px;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #ffd2cc;
     border-radius: 3px;
     padding: 28px 14px 5px;
     position: relative;
@@ -3798,7 +3798,7 @@ ul.dropdown li:hover a {
     transition: .5s ease-in-out;
     margin-bottom: 50px;
     overflow: hidden;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #cacaca;
 }
 
 .event-style2 .item .img-column {
@@ -6629,9 +6629,9 @@ span.has-tooltip {
 }
 
 .single-event .content {
-    padding: 20px 30px 40px;
-    border-left: 1px solid #f4f4f4;
-    border-right: 1px solid #f4f4f4;
+    /* padding: 20px 30px 40px; */
+    /* border-left: 1px solid #f4f4f4; */
+    /* border-right: 1px solid #f4f4f4; */
 }
 
 .single-event .section-title {
@@ -6646,7 +6646,7 @@ span.has-tooltip {
 .single-event .content .text p {}
 
 .single-event .event-timeline {
-    background: #f7f7f7;
+    background: #f6fff4;
     padding: 40px 30px 20px;
 }
 
@@ -7882,7 +7882,7 @@ span.has-tooltip {
 
 .single-shop-item .content-box .inner-box {
     border-bottom: 1px dashed #eee;
-    height: 7em;
+    /* height: 7em; */
     padding: 14px 20px;
 }
 

@@ -44,20 +44,20 @@ class OneActionPage extends React.Component {
 		this.chooseFontSize();
 		return (
 			<>
-			
+
 				<div className="boxed_wrapper">
-				<BreadCrumbBar links={[{ link: this.props.links.actions, name: 'All Actions' }, { name: `Action ${action.id}` }]} />
-					<section className="shop-single-area" style={{paddingTop:0}}>
+					<BreadCrumbBar links={[{ link: this.props.links.actions, name: 'All Actions' }, { name: `Action ${action.id}` }]} />
+					<section className="shop-single-area" style={{ paddingTop: 0 }}>
 						<div className="container">
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-								<div className="col-md-8">
+								<div className="col-md-9">
 									<div className="single-products-details">
 										{this.renderAction(action)}
 									</div>
 								</div>
 								{/* makes the todo and completed actions carts */}
 								{this.props.user ?
-									<div className="col-md-4" style={{ paddingRight: "0px", marginRight: "0px" }}>
+									<div className="col-md-3" style={{ paddingRight: "0px", marginRight: "0px" }}>
 										<Cart title="To Do List" actionRels={this.props.todo} status="TODO" moveToDone={this.moveToDone} />
 										<Cart title="Completed Actions" actionRels={this.props.done} status="DONE" moveToDone={this.moveToDone} />
 									</div>
@@ -75,9 +75,58 @@ class OneActionPage extends React.Component {
 			</>
 		);
 	}
+
+
+	getMyAction() {
+		const action = this.props.actions.filter(action => {
+			return action.id === Number(this.props.match.params.id)
+		})[0]
+		if (action) return action;
+		return null;
+	}
+
+	getTag(collection) {
+
+		const tags = this.getMyAction().tags.filter(tag => {
+
+			return tag.tag_collection && tag.tag_collection.name && tag.tag_collection.name.toLowerCase() === collection.toLowerCase();
+		});
+		return tags && tags.length > 0 ? tags[0] : null
+	}
+	renderTagBar(tag) {
+		if (tag) {
+			if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
+				return (
+					<div>
+						<div className="tag-bar one">
+						</div>
+					</div>
+				);
+			}
+			if (tag.name.toLowerCase() === "medium") {
+				return (
+					<div>
+						<div className="tag-bar one" />
+						<div className="tag-bar two" />
+					</div>
+				);
+			}
+			if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase() === "hard") {
+				return (
+					<div>
+						<div className="tag-bar one" > </div>
+						<div className="tag-bar two" > </div>
+						<div className="tag-bar three" > </div>
+					</div>
+				);
+			}
+		}
+		return null;
+	}
 	/**
 	 * renders the action on the page
 	 */
+
 	renderAction(action) {
 		if (!this.props.stories) {
 			return <LoadingCircle />
@@ -85,6 +134,7 @@ class OneActionPage extends React.Component {
 		const stories = this.props.stories.filter(story => {
 			return story.action.id === Number(this.props.match.params.id)
 		})
+		console.log("I am the actionister", this.renderTagBar(this.getTag("difficulty")));
 		return (
 			<div>
 				<div className="product-content-box">
@@ -94,13 +144,24 @@ class OneActionPage extends React.Component {
 							<div className="content-box">
 								<h2 className="cool-font" style={{ padding: "20px 0px 0px 0px" }}>{action.title}</h2>
 							</div>
-							<br />
+							<div style={{padding:15,position:'relative'}}>
+								<div className="" style={{display:'inline-block'}}>
+									<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
+										<span className="has-tooltip">Impact</span>
+									</Tooltip>
+									<span>{this.renderTagBar(this.getTag("impact"))}</span>
+								</div>
+								<div className="float_right" style={{marginRight:50}} >
+									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
+								</div>
+							</div>
+					
 							{/* displays the action's info: impact, difficulty, tags and categories*/}
-							<div className="clearfix" style={{ marginLeft: "40px" }}>
+							<div className="clearfix" style={{ marginLeft: "40px", marginTop:10 }}>
 								{/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-								<br />
+						
 								{!this.props.user ?
 									<Tooltip text='Sign in to make a TODO list'>
 										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
@@ -131,7 +192,6 @@ class OneActionPage extends React.Component {
 										<ChooseHHForm
 											aid={action.id}
 											status={this.state.status}
-
 											open={this.state.status ? true : false}
 											user={this.props.user}
 											addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
@@ -149,7 +209,7 @@ class OneActionPage extends React.Component {
 						</div>
 						{/* action image */}
 						<div className="col-lg-6 col-md-12"><div className="img-box">
-							<img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive raise" style={{ marginTop: "20px",borderRadius:9 }} />
+							<img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive raise" style={{ marginTop: "20px", borderRadius: 9 }} />
 						</div></div>
 					</div>
 				</div>
@@ -162,7 +222,7 @@ class OneActionPage extends React.Component {
 								this.setState({ tab: 'description' })
 							}} data-toggle="tab">Description</button></li>
 						<li id="stepstab" className={this.state.tab === 'steps' ? "active" : ''}>
-							<button className="cool-font"style={{ fontSize: this.state.fontSize }} onClick={() => {
+							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'steps' })
 							}} data-toggle="tab">Steps To Take</button></li>
 						<li id="reviewtab" className={this.state.tab === 'testimonials' ? "active" : ''}>
