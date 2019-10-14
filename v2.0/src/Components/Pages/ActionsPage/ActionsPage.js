@@ -31,7 +31,7 @@ class ActionsPage extends React.Component {
 	render() {
 		return (
 			<>
-				
+				 
 				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
 					{/* main shop section */}
@@ -124,7 +124,6 @@ class ActionsPage extends React.Component {
 			real_estate_unit: actionRel.real_estate_unit.id,
 		}
 		postJson(URLS.USER + '/' + this.props.user.id + '/action/' + actionRel.id, body).then(json => {
-			console.log(json);
 			if (json.success) {
 				this.props.reduxMoveToDone(json.data);
 				this.addToImpact(json.data.action);
@@ -136,11 +135,9 @@ class ActionsPage extends React.Component {
 		})
 	}
 	moveToDoneByActionId(aid, hid) {
-		console.log(aid + " " + hid)
 		const actionRel = this.props.todo.filter(actionRel => {
 			return Number(actionRel.action.id) === Number(aid) && Number(actionRel.real_estate_unit.id) === Number(hid)
 		})[0];
-		console.log(actionRel);
 		if (actionRel)
 			this.moveToDone(actionRel);
 
@@ -152,9 +149,7 @@ class ActionsPage extends React.Component {
 			real_estate_unit: hid
 		}
 		this.setState({ testimonialLink: null });
-		console.log(this.props.user.id)
 		postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
-			console.log(json)
 			if (json.success) {
 				//set the state here
 				if (status === "TODO") {
@@ -191,7 +186,6 @@ class ActionsPage extends React.Component {
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
 		postJson(URLS.DATA + '/' + data.id, body).then(json => {
-			console.log(json);
 			if (json.success) {
 				data = {
 					...data,
@@ -204,20 +198,17 @@ class ActionsPage extends React.Component {
 	changeData(tagid, number) {
 		var data = this.props.communityData.filter(data => {
 			if (data.tag) {
-				console.log(data.tag);
 				return data.tag === tagid;
 			}
 			return false;
 		})[0];
 		if (!data) {
-			console.log("no data stored for tag " + tagid);
 			return;
 		}
 		const body = {
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
 		postJson(URLS.DATA + '/' + data.id, body).then(json => {
-			console.log(json);
 			if (json.success) {
 				data = {
 					...data,

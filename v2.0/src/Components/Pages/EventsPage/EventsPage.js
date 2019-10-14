@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import RSVPForm from './RSVPForm';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import CONST from '../../Constants'
+import * as moment from 'moment';
 
 
 /**
@@ -108,10 +109,14 @@ class EventsPage extends React.Component {
 		});
 		//maps the list to react/html code that renders each element
 		return sortedEvents.map(event => {
+			const format = "MMMM Do YYYY, h:mm:ss a";
 			const date = new Date(event.start_date_and_time);
 			const endDate = new Date(event.end_date_and_time);
+			const textyStart = moment(date).format(format);
+			const textyEnd = moment(endDate).format(format);
+	
 			if (this.shouldRender(event)) {
-				return (
+				return ( 
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
 						<div className="row no-gutter">
 							{/* renders the image */}
@@ -157,9 +162,9 @@ class EventsPage extends React.Component {
 							<div className="col-12">
 								<ul className="post-meta list_inline">
 									{this.sameDay(date, endDate) ?
-										<li><i className="fa fa-clock-o"></i> {date.toLocaleString()} - {endDate.toLocaleTimeString()}</li>
+										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
 										:
-										<li><i className="fa fa-clock-o"></i> {date.toLocaleString()} - {endDate.toLocaleString()}</li>
+										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
 									}
 									{event.location ?
 										<li>
@@ -364,6 +369,7 @@ class EventsPage extends React.Component {
 		this.setState({ events_search_toggled: !prev });
 	}
 	renderSideBar() {
+		console.log("i am the events ", this.props.events);
 		return (
 			<div className="blog-sidebar sec-padd">
 				<div className="event-filter" style={{padding:35,borderRadius:15}}>

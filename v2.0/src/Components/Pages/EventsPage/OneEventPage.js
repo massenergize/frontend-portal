@@ -41,14 +41,14 @@ class OneEventPage extends React.Component {
 		const textyStart = moment(date).format(format);
 		const textyEnd = moment(endDate).format(format);
 
-		return (
+		return ( 
 			<section className="event-section style-3">
 				<div className="container">
 					<div className="single-event sec-padd">
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<div className="img-box raise" style={{ height: 340, borderRadius: 10 }}>
-									<img src={event.image ? event.image.url : null} alt="" />
+									<img style={{width:'100%',objectFit:'cover'}} src={event.image ? event.image.url : null} alt="" />
 								</div>
 								{/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
 							</div>

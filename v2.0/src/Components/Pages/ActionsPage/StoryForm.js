@@ -2,6 +2,7 @@ import React from 'react';
 import URLS from '../../../api/urls'
 import { postJson, getJson } from '../../../api/functions';
 import { connect } from 'react-redux';
+import defaultUser from './../../Shared/default-user.png';
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -29,7 +30,8 @@ class StoryForm extends React.Component {
 			aid: props.aid ? props.aid : '--',
 			captchaConfirmed: false,
 
-			message: message
+			message: message,
+			picFile:null
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -77,7 +79,13 @@ class StoryForm extends React.Component {
 					}
 					<div className="field-label">
 						<p>Story Title*</p>
-						<input type="text" style={{borderRadius:5}} name="title" value={this.state.title} onChange={this.onChange} required />
+						<input type="text" style={{ borderRadius: 5 }} name="title" value={this.state.title} onChange={this.onChange} required />
+					</div>
+					<div className="row">
+						<div className="col-md-12 " style={{padding:10,border:'solid 1px #f5f3f3',borderRadius:10}}>
+							<p style={{margin:15}}>Upload an image</p>
+							<input type="file" name="image" onChange = {(event)=>{this.setState({picFile:event.target.value})}} classname="form-control" />
+						</div>
 					</div>
 					<div className="row">
 						<div className="col-md-12">
@@ -89,7 +97,7 @@ class StoryForm extends React.Component {
 								>
 									{this.state.body.length + ' / ' + this.state.limit + 'chars'}
 								</p>
-								<textarea name="body" value={this.state.body} onChange={this.onChange} style={{ width: '100%',borderColor:'lightgray',borderRadius:6 }} required>
+								<textarea name="body" value={this.state.body} onChange={this.onChange} style={{ width: '100%', borderColor: 'lightgray', borderRadius: 6 }} required>
 
 								</textarea>
 
@@ -136,16 +144,18 @@ class StoryForm extends React.Component {
 			"rank": 0,
 			"body": this.state.body,
 			"title": this.state.title,
-			"community": this.props.community.id
+			"community": this.props.community.id,
+			"image":this.state.picFile ?this.state.picFile : defaultUser
 		}
 		if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
 			this.setState({ error: "Please choose which action you are writing a testimonial about" })
 		} else if (this.count(this.state.body) > this.state.limit) {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
-			postJson(URLS.TESTIMONIALS, body).then(json => {
+			//postJson(URLS.TESTIMONIALS, body).then(json => {
+			postJson(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
 				console.log(json);
-				if (json.success) {
+				if (json && json.success) {
 					this.setState({
 						...INITIAL_STATE,
 						message: "Thank you for submitting your story! Our community admins will review it and post it soon."
@@ -158,7 +168,6 @@ class StoryForm extends React.Component {
 					})
 					if (this.props.closeForm) this.props.closeForm('There was an error submitting your testimonial. We are sorry.');
 				}
-				console.log(this.state);
 			})
 		}
 	}

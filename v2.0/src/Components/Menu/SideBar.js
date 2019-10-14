@@ -75,7 +75,7 @@ class SideBar extends React.Component {
 				<form className="list">
 					{this.renderTagCollection(tagCol.tags)}
 				</form>
-			);
+			); 
 			return (
 				<div className="category-style-one" key={key}>
 					<Accordian
