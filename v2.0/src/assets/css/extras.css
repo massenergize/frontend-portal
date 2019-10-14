@@ -131,6 +131,8 @@
 }
 
 .more-hyperlink{
+  font-size:15px !important;
+  font-weight: 700;
   margin:3;
   cursor:pointer;
 }
@@ -182,6 +184,19 @@
   transition: .4s;
 }
 
+.contact-admin-btn{
+  font-size: 14px;
+  font-weight: 700;;
+  background:lightgray; 
+  border-radius: 5px;
+  padding:7px 11px;
+  cursor:pointer;
+}
+.contact-admin-btn:hover{
+  background:green; 
+  color:white; 
+  transition: .4s ease-in-out;
+}
 
 .raise-2{
   box-shadow: 0px 1px 1px #9E9E9E;

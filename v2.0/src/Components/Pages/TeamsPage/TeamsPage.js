@@ -7,9 +7,10 @@ import LoadingCircle from '../../Shared/LoadingCircle';
 import { postJson } from '../../../api/functions'
 import URLS from '../../../api/urls'
 import { reduxJoinTeam } from '../../../redux/actions/userActions'
-import { reduxAddTeamMember } from '../../../redux/actions/pageActions'
+import { reduxAddTeamMember, reduxRemoveTeamMember } from '../../../redux/actions/pageActions'
 import { Link } from 'react-router-dom'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import ContactModal from '../../Shared/ContactModal'
 import Modal from '../../Shared/DescModal';
 
 
@@ -17,8 +18,14 @@ import Modal from '../../Shared/DescModal';
 class TeamsPage extends React.Component {
 	constructor(props) {
 		super(props);
-
+		this.handleText = this.handleText.bind(this);
+		this.sendMessage = this.sendMessage.bind(this);
 		this.state = {
+			wholeContent: null,
+			teamsCarbonDetails: [],
+			contact_modal_toggled: false,
+			current_team_id: null,
+			contact_content: "",
 			modal_toggled: false,
 			modal_content: { title: "...", desc: "..." }
 		}
@@ -27,19 +34,50 @@ class TeamsPage extends React.Component {
 	renderModal = () => {
 		if (this.state.modal_toggled) return <Modal content={this.state.modal_content} toggler={this.toggleModal} />
 	}
+	setModalContent = (title, desc) => {
+		this.setState({ modal_content: { title: title, desc: desc } });
+	}
+	renderContactModal = () => {
+		if (this.state.contact_modal_toggled) return <ContactModal content={this.state.modal_content} handleTextFxn={this.handleText} sendMessageFxn={this.sendMessage} content={this.state.modal_content} toggler={this.toggleContact} />
+	}
+	handleText = (event) => {
+		this.setState({ contact_content: event.target.value });
+	}
+	sendMessage = () => {
+		var spinner = document.getElementById('sender-spinner');
+		var msg = this.state.contact_content.trim();
+		const body = {
+			team_id: this.state.current_team_id,
+			message: msg
+		}
+		const me = this;
+		if (msg !== "") {
+			spinner.style.display = "block";
+			postJson(`http://api.massenergize.org/v3/teams.contactAdmin`, body).then(json => {
+				document.getElementById("contact-textarea").value = "";
+				spinner.style.display= "none";
+				me.toggleContact();
+			});
+		}
+	}
 
+	toggleContact = () => {
+		var val = this.state.contact_modal_toggled;
+		this.setState({ contact_modal_toggled: !val });
+	}
 	toggleModal = () => {
 		var val = this.state.modal_toggled;
 		this.setState({ modal_toggled: !val });
 	}
 	render() {
+
 		const teams = this.props.teamsPage;
 		if (teams == null) return <p className='text-center'> Sorry, looks like this community's Teams Page is under maintenance. Try again later </p>
 
 		return (
 			<>
+				{this.renderContactModal()}
 				{this.renderModal()}
-
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ name: 'Teams' }]} />
 					<div className="p-5">
@@ -70,6 +108,9 @@ class TeamsPage extends React.Component {
 		);
 	}
 
+
+
+
 	renderTeamsData(teamsData) {
 		var teamsSorted = teamsData.slice(0);
 		for (let i = 0; i < teamsSorted.length; i++) {
@@ -83,15 +124,20 @@ class TeamsPage extends React.Component {
 		teamsSorted = teamsSorted.sort((a, b) => {
 			return b.avrgActionsPerHousehold - a.avrgActionsPerHousehold;
 		});
-		console.log("I am the team sorted", teamsSorted);
 		return teamsSorted.map((obj) => {
+			this.goalsList(obj.team.id).then(json => {
+				if (json && json.success && json.data) {
+					var c = json.data[0].attained_carbon_footprint_reduction;
+					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
+				}
+			});
 			const desc = obj.team.description.length > 70 ? obj.team.description.substr(0, 70) + "..." : obj.team.description;
 			return (
 				<tr>
 					<td>{obj.team.name} &nbsp;
             <Tooltip title={obj.team.name} text={desc} dir="right">
 							<div>
-								<small className="more-hyperlink" onClick={() => { this.setState({ modal_content: { title: obj.team.name, desc: obj.team.description } }); this.toggleModal() }}>More...</small>
+								<small className="more-hyperlink" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.toggleModal() }}>More...</small>
 								<span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
 							</div>
 						</Tooltip>
@@ -99,18 +145,19 @@ class TeamsPage extends React.Component {
 					<td>{obj.households}</td>
 					<td>{obj.actions_completed}</td>
 					<td>{obj.avrgActionsPerHousehold}</td>
-					<td>...</td>
-					<td>...</td>
+					<td id={'carbo-' + obj.team.id}>...</td>
+					<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
 					{this.props.user ?
 						<td>
 							{this.inTeam(obj.team.id) ?
-								<button className='thm-btn red'><i className='fa fa-hand-peace-o'> </i> Leave</button>
+								<button className='thm-btn red round-me' onClick={() => { this.leaveTeam(this.props.user.id, obj.team.id) }}><i className='fa fa-hand-peace-o'> </i> Leave</button>
+
 								:
-								<button className='thm-btn' onClick={() => {
-									console.log('clicked')
+								<button className='thm-btn round-me' onClick={() => {
 									this.joinTeam(obj.team)
 								}}><i className='fa fa-user-plus' > </i> Join </button>
 							}
+
 						</td>
 						:
 						<td>
@@ -120,6 +167,8 @@ class TeamsPage extends React.Component {
 					{/* <td>{obj.ghgSaved}</td> */}
 				</tr>
 			)
+
+
 		});
 	}
 	inTeam = (team_id) => {
@@ -129,12 +178,31 @@ class TeamsPage extends React.Component {
 		return this.props.user.teams.filter(team => { return team.id === team_id }).length > 0;
 	}
 
+	goalsList = (team_id) => {
+		const body = {
+			team_id: team_id
+		}
+		return postJson(`http://api.massenergize.org/v3/goals.list`, body);
+	}
+
+	leaveTeam = (user_id, team_id) => {
+		const body = {
+			team_id: team_id,
+			user_id: user_id
+		}
+		postJson(`http://api.massenergize.org/v3/teams.leave`, body).then(json => {
+			if (json) {
+				if (json.success) {
+					window.location.reload();
+				}
+			}
+		});
+	}
 	joinTeam = (team) => {
 		const body = {
 			members: this.props.user.id,
 		}
 		postJson(`${URLS.TEAM}/${team.id}`, body).then(json => {
-			console.log(json)
 			if (json.success) {
 				this.props.reduxJoinTeam(team);
 
@@ -162,6 +230,7 @@ const mapStoreToProps = (store) => {
 }
 const mapDispatchToProps = {
 	reduxJoinTeam,
-	reduxAddTeamMember
+	reduxAddTeamMember,
+	reduxRemoveTeamMember
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);

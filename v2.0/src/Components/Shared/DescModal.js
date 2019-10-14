@@ -13,7 +13,7 @@ class DescModal extends Component {
     const {title, desc } = this.props.content;
     return (
       <div>
-        <div className="modal-box">
+        <div className="modal-box z-depth-2">
           <h4 onClick = {()=>{this.props.toggler()}}className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
           <center>
             <h5>{title}</h5>
@@ -22,7 +22,7 @@ class DescModal extends Component {
             </div>
           </center>
         </div>
-        <div className="desc-modal-container" onClick = {()=>{this.props.toggler()}}></div>
+        <div id="contact-textarea"className="desc-modal-container" onClick = {()=>{this.props.toggler()}}></div>
       </div>
     )
   }
