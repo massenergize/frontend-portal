@@ -132,7 +132,7 @@ class ImpactPage extends React.Component {
 											categories={graph2Categories}
 											series={graph2Series}
 											stacked={true}
-											colors={["#86bd7d", "#428a36"]}
+											colors={["#ff9a9a", "rgba(251, 85, 33, 0.85)"]}
 										// 86bd7d
 										/>
 										{/* <center><p style={{fontSize:16,margin:0}} className="cool-font">Community Goals</p></center> */}
@@ -142,7 +142,7 @@ class ImpactPage extends React.Component {
 
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4 className="cool-font">Communities And Their Impacts</h4>
+										<h4 className="cool-font">Number Of Communities And Their Impacts</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p> */}
 									</div>
 									<div className="card-body">
