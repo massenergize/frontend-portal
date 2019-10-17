@@ -47,7 +47,7 @@ class CommunitySelectPage extends React.Component {
 								})}
 							</ul>
 							<h3 className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)" }}> Or go to our main site</h3>
-							<p className='text-center'><a href='https://massenergize.org' className="mass-domain-link " >MassEnergize</a> </p>
+							<p className='text-center'><a href='https://massenergize.org' className="mass-domain-link "  >MassEnergize</a> </p>
 						</div>
 					</div>
 				</div>

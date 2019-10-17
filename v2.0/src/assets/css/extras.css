@@ -25,12 +25,12 @@
   border-color:White;
   -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
   box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-  transition: .4s ease-in-out;
+  transition: .2s ease-in-out;
 }
 .mass-domain-link{
   color:white; 
   border:solid 1px #ed5a14;
-  padding:10px 15px;
+  padding:10px 25px;
   margin:0px;
   background:#ed5a14;
   border-radius: 100px;
@@ -40,7 +40,7 @@
   color:white;
   -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
   box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-  transition: .4s ease-in-out;
+  transition: .2s ease-in-out;
 }
 .hover-service-item{
   -webkit-box-shadow:0 2px 0px 0 rgba(0,0,0,-0.84),0 2px 0px 0 rgba(0,0,0,.12);
