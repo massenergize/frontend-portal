@@ -12,7 +12,7 @@ class SideBar extends React.Component {
 	render() {
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
-			<div className=" event-filter wrapper shop-sidebar mb-5" style={{padding:36,borderRadius:15}}>
+			<div className=" event-filter wrapper shop-sidebar mb-5 raise" style={{padding:36,borderRadius:15}}>
 				{/* <div className="sidebar_search">
 					<form action="#">
 						<input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />

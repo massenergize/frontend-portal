@@ -15,7 +15,8 @@ import ServicesPage from './Components/Pages/ServicesPage/ServicesPage'
 import OneServicePage from './Components/Pages/ServicesPage/OneServicePage'
 import StoriesPage from './Components/Pages/StoriesPage/StoriesPage'
 import LoginPage from './Components/Pages/LoginPage/LoginPage'
-import EventsPage from './Components/Pages/EventsPage/EventsPage'
+//import EventsPage from './Components/Pages/EventsPage/EventsPage'
+import EventsPage from './Components/Pages/EventsPage/EventsPageReal'
 import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
 import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
 import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
@@ -45,14 +46,15 @@ import {
 	reduxLoadCommunities,
 	reduxLoadRSVPs,
 	reduxLoadTagCols,
-	reduxLoadCommunityData
+	reduxLoadCommunityData, 
+	reduxLoadCollection,
 } from './redux/actions/pageActions'
 import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 import { reduxLoadLinks } from './redux/actions/linkActions';
 
 
 import URLS from './api/urls'
-import { getJson } from './api/functions'
+import { getJson,apiCall } from './api/functions'
 import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 
@@ -79,13 +81,14 @@ class AppRouter extends Component {
 			signup: `/${subdomain}/signup`,
 			profile: `/${subdomain}/profile`,
 			policies: `/${subdomain}/policies`,
-		})
+		}) 
 		Promise.all([
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
-			getJson(URLS.COMMUNITY + subdomain + '/events'),
+			//getJson(URLS.V3+ 'events.listForSuperAdmin'),
+			apiCall('events.list',{subdomain:subdomain},null),
 			getJson(URLS.COMMUNITY + subdomain + '/actions'),
 			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
 			getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
@@ -95,6 +98,7 @@ class AppRouter extends Component {
 			getJson(URLS.COMMUNITIES),
 			getJson(URLS.TAG_COLLECTIONS),
 			getJson(URLS.COMMUNITY + subdomain + '/data'),
+			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
@@ -113,6 +117,7 @@ class AppRouter extends Component {
 			})[0])
 			this.props.reduxLoadTagCols(myJsons[12].data)
 			this.props.reduxLoadCommunityData(myJsons[13].data)
+			this.props.reduxLoadCollection(myJsons[14].data)
 		}).catch(err => {
 			this.setState({ error: err })
 			console.log(err)
@@ -137,7 +142,6 @@ class AppRouter extends Component {
 		document.body.style.overflowX = 'hidden';
 
 		if (!isLoaded(this.props.auth)) {
-			console.log('auth loading')
 			return <LoadingCircle />;
 		}
 		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
@@ -245,6 +249,7 @@ const mapDispatchToProps = {
 	reduxLoadRSVPs,
 	reduxLoadTagCols,
 	reduxLoadCommunityData,
-	reduxLoadLinks
+	reduxLoadLinks, 
+	reduxLoadCollection,
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

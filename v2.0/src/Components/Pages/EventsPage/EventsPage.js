@@ -33,7 +33,7 @@ class EventsPage extends React.Component {
 	}
 
 	render() {
-
+		console.log("I am the events", this.props)
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<>
