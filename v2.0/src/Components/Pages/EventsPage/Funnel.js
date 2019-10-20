@@ -49,7 +49,7 @@ class EventFilter extends Component {
     if (col) {
       return col.map(set => {
         const header = (
-          <div className="section-title w-100">
+          <div className="section-title w-100" style={{margin:"0px"}}>
             <span>{set.name}</span>
           </div>
         );

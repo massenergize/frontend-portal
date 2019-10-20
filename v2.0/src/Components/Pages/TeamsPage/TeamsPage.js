@@ -126,7 +126,10 @@ class TeamsPage extends React.Component {
 		});
 		return teamsSorted.map((obj) => {
 			this.goalsList(obj.team.id).then(json => {
+				console.log(obj.team.id);
+				console.log("json", json);
 				if (json && json.success && json.data) {
+					
 					var c = json.data[0].attained_carbon_footprint_reduction;
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}

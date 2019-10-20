@@ -16,29 +16,30 @@ import { connect } from 'react-redux'
 */
 
 class FooterInfo extends React.Component {
-    render() {
-        const header = this.props.pageData? section(this.props.pageData, 'HomeHeader') : null;
-        const communitylogo = header && header.image ? header.image.url : null; 
-        return (
-            <div className="col-7 col-md-4">
-                <div className="footer-widget about-column">
-                    <figure><Link to={this.props.links.home}>
-                        <img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
-                    </Link></figure>
-                    <ul className="contact-info">
-                        {/* <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li> */}
-                        <li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
-                        <li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
-                    </ul>
-                </div>
-            </div>
-        );
-    }
+	render() {
+		//const header = this.props.pageData ? section(this.props.pageData, 'HomeHeader') : null;
+		//const header =  null;
+		const communitylogo = null;
+		return (
+			<div className="col-7 col-md-4">
+				<div className="footer-widget about-column">
+					<figure><Link to={this.props.links.home}>
+						<img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+					</Link></figure>
+					<ul className="contact-info">
+						{/* <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li> */}
+						<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
+						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
+					</ul>
+				</div>
+			</div>
+		);
+	}
 }
 const mapStoreToProps = (store) => {
-    return {
-        pageData: store.page.homePage,
-        links: store.links
-    }
+	return {
+		pageData: store.page.homePage,
+		links: store.links
+	}
 }
 export default connect(mapStoreToProps, null)(FooterInfo);

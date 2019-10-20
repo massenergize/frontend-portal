@@ -55,6 +55,10 @@ class EventsPage extends React.Component {
 		this.addMeToSelected(id);
 	}
 	findCommon(){
+		//everytime there is a change in "check_values",
+		//loop through all the events again, and render events 
+		//with the tag IDs  in "check_values"
+		//then pass it on to "renderEvents(...)"
 		const events = this.props.events; 
 		const values = this.state.check_values? this.state.check_values:[]; 
 		const common = [];

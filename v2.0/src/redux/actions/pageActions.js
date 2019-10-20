@@ -53,7 +53,7 @@ export const reduxLoadCommunityData = (data) => dispatch => {
 		type: LOAD_COMMUNITY_DATA,
 		payload: data
 	})
-}
+} 
 
 export const reduxLoadCommunityAdmins = (admins) => dispatch => {
 	return dispatch({

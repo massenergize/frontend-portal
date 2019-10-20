@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 class Graphs extends React.Component {
 
 	renderGraphs(graphs) {
+	
 		if (!graphs) {
 			return <div>No Graphs to Display</div>
 		}
@@ -25,12 +26,13 @@ class Graphs extends React.Component {
 			var graph = graphs[key];
 			if (graph.data == null) {
 				console.log(graph);
+			} else {
+				return (
+					<div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
+						<CircleGraph num={graph.data.attained} goal={graph.data.target} label={graph.title} size={this.props.size} />
+					</div>
+				);
 			}
-			return (
-				<div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">
-					<CircleGraph num={graph.data.value} goal={graph.data.denominator} label={graph.title} size={this.props.size} />
-				</div>
-			);
 		});
 	}
 
@@ -48,7 +50,7 @@ class Graphs extends React.Component {
 						<article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
 							<div className="item">
 								<div className="icon"><i className="fa fa-chart-bar" /></div>
-								<Link to={this.props.links.impact}  className="thm-btn btn-finishing raise">Our Impact</Link>
+								<Link to={this.props.links.impact} className="thm-btn btn-finishing raise">Our Impact</Link>
 								{/* <h4 className="counter-title">about our community impact</h4> */}
 							</div>
 						</article>

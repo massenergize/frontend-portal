@@ -10,7 +10,7 @@ class CommunitySelectPage extends React.Component {
 		this.state = {
 			mirror_communities: []
 		}
-	}
+	} 
 
 	handleSearch(event){
 		var text = event.target.value.toLowerCase(); 
@@ -30,6 +30,8 @@ class CommunitySelectPage extends React.Component {
 	}
 	render() {
 		const communities = this.state.mirror_communities.length ===0 ?this.props.communities :this.state.mirror_communities;
+		console.log("There is something here", communities);
+		
 		if (!this.props.communities) return <LoadingCircle />;
 		return (
 			<div className="">
@@ -40,13 +42,13 @@ class CommunitySelectPage extends React.Component {
 							<h1 className='text-center raise-my-text'> <span style={{ color: '#ed5a14' }}>Welcome to </span>our <span style={{ color: 'green' }}>Community Portal</span> </h1>
 							<p className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)", fontWeight: '400' }}> Select Your Community Below</p>
 							<input onChange = {(event)=>{this.handleSearch(event)}}type="text" placeholder="Search for your community..." className="form-control font-textbox round-me" />
-							<ul className='text-center'>
+							<ul className='text-center' style={{marginBottom:10}}>
 								{Object.keys(communities).map(key => {
 									const com = communities[key];
 									return <li key={key} style={{ display: 'inline-block', margin: "5px", fontSize: 15 }}> <a className="com-domain-link" href={`/${com.subdomain}`}>{com.name}</a></li>
 								})}
 							</ul>
-							<h3 className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)" }}> Or go to our main site</h3>
+							<h3 className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)", margin:15}}> Or go to our main site</h3>
 							<p className='text-center'><a href='https://massenergize.org' className="mass-domain-link "  >MassEnergize</a> </p>
 						</div>
 					</div>

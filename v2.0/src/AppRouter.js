@@ -83,7 +83,9 @@ class AppRouter extends Component {
 			policies: `/${subdomain}/policies`,
 		}) 
 		Promise.all([
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
+			//Make sure to cleanup, and declare variables in Urls later
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
+			apiCall('home_page_settings.info',{subdomain:subdomain},null),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
@@ -95,12 +97,13 @@ class AppRouter extends Component {
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
-			getJson(URLS.COMMUNITIES),
+			getJson(URLS.V3_COMMUNITIES),
 			getJson(URLS.TAG_COLLECTIONS),
 			getJson(URLS.COMMUNITY + subdomain + '/data'),
 			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
 		]).then(myJsons => {
-			this.props.reduxLoadHomePage(myJsons[0].data.length > 0 ? myJsons[0].data[0] : null)
+			console.log("I am theloooo", myJsons[0].data.length)
+			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
 			this.props.reduxLoadAboutUsPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
 			this.props.reduxLoadDonatePage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
