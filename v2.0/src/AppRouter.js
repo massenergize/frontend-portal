@@ -87,9 +87,10 @@ class AppRouter extends Component {
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
 			apiCall('home_page_settings.info',{subdomain:subdomain},null),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
-			getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
-			//getJson(URLS.V3+ 'events.listForSuperAdmin'),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
+			apiCall('about_us_page_settings.info',{subdomain:subdomain},null),
+			apiCall('donate_page_settings.info',{subdomain:subdomain},null),
+			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
 			apiCall('events.list',{subdomain:subdomain},null),
 			getJson(URLS.COMMUNITY + subdomain + '/actions'),
 			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
@@ -97,16 +98,15 @@ class AppRouter extends Component {
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
-			getJson(URLS.V3_COMMUNITIES),
+			//apiCall("communities.list",{},null),
 			getJson(URLS.TAG_COLLECTIONS),
 			getJson(URLS.COMMUNITY + subdomain + '/data'),
 			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
 		]).then(myJsons => {
-			console.log("I am theloooo", myJsons[0].data.length)
 			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
-			this.props.reduxLoadAboutUsPage(myJsons[2].data.length > 0 ? myJsons[2].data[0] : null)
-			this.props.reduxLoadDonatePage(myJsons[3].data.length > 0 ? myJsons[3].data[0] : null)
+			this.props.reduxLoadAboutUsPage(myJsons[2].data  ? myJsons[2].data : null)
+			this.props.reduxLoadDonatePage(myJsons[3].data? myJsons[3].data : null)
 			this.props.reduxLoadEvents(myJsons[4].data)
 			this.props.reduxLoadActions(myJsons[5].data)
 			this.props.reduxLoadServiceProviders(myJsons[6].data)
@@ -114,7 +114,7 @@ class AppRouter extends Component {
 			this.props.reduxLoadMenu(myJsons[8].data)
 			this.props.reduxLoadPolicies(myJsons[9].data)
 			this.props.reduxLoadRSVPs(myJsons[10].data)
-			this.props.reduxLoadCommunities(myJsons[11].data)
+			//this.props.reduxLoadCommunities(myJsons[11].data)
 			this.props.reduxLoadCommunity(myJsons[11].data.filter(com => {
 				return com.subdomain === subdomain
 			})[0])

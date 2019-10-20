@@ -4,7 +4,7 @@ import './assets/css/style.css'
 import AppRouter from './AppRouter'
 import { connect } from 'react-redux'
 import { reduxLoadCommunities } from './redux/actions/pageActions'
-import {getJson} from './api/functions'
+import {getJson,apiCall} from './api/functions'
 import URLS from './api/urls'
 import CommunitySelectPage from './Components/Pages/CommunitySelectPage';
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
 		}
 	}
 	componentDidMount() {
-		getJson(URLS.COMMUNITIES).then(json => {
+		apiCall("communities.list").then(json => {
 			if (json.success) {
 				this.props.reduxLoadCommunities(json.data);
 			}

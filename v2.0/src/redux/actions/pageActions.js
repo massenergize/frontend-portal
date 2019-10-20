@@ -166,7 +166,7 @@ export const reduxLoadTestimonials = (testimonials) => dispatch => {
 	})
 }
 
-export const reduxLoadCommunities = (communities) => dispatch => {
+export const reduxLoadCommunities = (communities) => dispatch => {	
 	return dispatch({
 		type: LOAD_COMMUNITIES,
 		payload: communities

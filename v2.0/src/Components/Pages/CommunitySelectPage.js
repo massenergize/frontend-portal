@@ -30,7 +30,6 @@ class CommunitySelectPage extends React.Component {
 	}
 	render() {
 		const communities = this.state.mirror_communities.length ===0 ?this.props.communities :this.state.mirror_communities;
-		console.log("There is something here", communities);
 		
 		if (!this.props.communities) return <LoadingCircle />;
 		return (
