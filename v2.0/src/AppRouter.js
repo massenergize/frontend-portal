@@ -98,7 +98,7 @@ class AppRouter extends Component {
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
-			//apiCall("communities.list",{},null),
+			apiCall("communities.info",{subdomain:subdomain},null),
 			getJson(URLS.TAG_COLLECTIONS),
 			getJson(URLS.COMMUNITY + subdomain + '/data'),
 			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
@@ -115,9 +115,10 @@ class AppRouter extends Component {
 			this.props.reduxLoadPolicies(myJsons[9].data)
 			this.props.reduxLoadRSVPs(myJsons[10].data)
 			//this.props.reduxLoadCommunities(myJsons[11].data)
-			this.props.reduxLoadCommunity(myJsons[11].data.filter(com => {
-				return com.subdomain === subdomain
-			})[0])
+			// this.props.reduxLoadCommunity(myJsons[11].data.filter(com => {
+			// 	return com.subdomain === subdomain
+			// })[0])
+			this.props.reduxLoadCommunity(myJsons[11].data)
 			this.props.reduxLoadTagCols(myJsons[12].data)
 			this.props.reduxLoadCommunityData(myJsons[13].data)
 			this.props.reduxLoadCollection(myJsons[14].data)

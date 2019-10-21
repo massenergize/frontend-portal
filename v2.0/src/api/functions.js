@@ -61,7 +61,6 @@ export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = 
 
   try {
 		const json = await response.json();
-		console.log("me json", json);
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     }
