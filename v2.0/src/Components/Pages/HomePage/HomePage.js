@@ -3,10 +3,9 @@ import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
-import Events from './Events';
+import Events from './EventHomepageSection';
 import { section } from '../../../api/functions'
 import { connect } from 'react-redux'
-
 
 /*
 * The Home Page of the MassEnergize
@@ -43,17 +42,19 @@ class HomePage extends React.Component {
 		return (
 			<div className="boxed_wrapper" style={{ paddingTop: 91 }}>
 				{welcomeImagesData ?
+			
 					<WelcomeImages
 						data={welcomeImagesData}
 						title={title}
-					/> : null
+					/> 
+					: null
 				}
 				<div className="" style={{ padding: 30, background: 'white', color: "#383838" }}>
 					<h4 align='center' className="cool-font">{communityDescription ? communityDescription : "Welcome To Our Page"}</h4>
 					{/* <p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p> */}
 				</div>
 				{this.props.pageData.show_featured_links ?
-
+					
 					<IconBoxTable
 						title="Get started - See your local options!"
 						boxes={iconQuickLinks}
@@ -61,7 +62,7 @@ class HomePage extends React.Component {
 					: null
 				}
 				{this.props.pageData.show_featured_stats ?
-
+					
 					<Graphs
 						graphs={graphs}
 						size={148}

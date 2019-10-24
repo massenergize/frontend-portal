@@ -6,7 +6,7 @@ const URLS = {
 }
 const COMM_ID = "3";
 
-/**
+/** 
  * These are all the api URLS, minus a few that need to have ids in the middle ie: v2/household/hid/actions
  * after any of the singlular request, you need to add a /<id> to the end of the url
  * after any of the plural requests you can specify filters to add by adding "?<model-variable-name>=<value>&<model-variable2-name>=<value2>..."
