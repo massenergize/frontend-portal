@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import CONST from '../../Constants'
 import { connect } from 'react-redux'
+import * as moment from 'moment';
 import img from './../../../../src/assets/images/blog/i9.jpg';
 /**
  * Events section displays upcoming events,
@@ -26,6 +27,12 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
+        const format = "MMMM Do YYYY, h:mm:ss a";
+				const date = new Date(event.start_date_and_time);
+				const endDate = new Date(event.end_date_and_time);
+				const textyStart = moment(date).format(format);
+				const textyEnd = moment(endDate).format(format);
+
         const desc = event.description.length > 70 ? event.description.substr(0, 70) + "..." : event.description;
         const img = event.image.url ? event.image.url : img;
         return (
@@ -35,15 +42,12 @@ class Events extends React.Component {
               <div style={{ padding: 30,height:250 }}>
                 <h5>{event.name}</h5>
                 <p style={{fontSize:16}}>{desc} </p>
-            
                 {event.location ?
                   <small className="text text-default text-sm-right"><b>{event.location.state},{event.location.city},  {event.location.street}</b></small>
                   :
                   null
                 }
-                
-                <p style={{fontSize:12}}className="text text-success">{`${event.start_date_and_time} - ${event.end_date_and_time}`}</p>
-               
+                <p style={{fontSize:12}}className="text text-success">{`${textyStart} - ${textyEnd}`}</p>
               </div>
             </div>
           </article>
