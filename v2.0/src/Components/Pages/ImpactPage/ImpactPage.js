@@ -23,11 +23,14 @@ class ImpactPage extends React.Component {
 			})
 			return <LoadingCircle />
 		}
+		
 		if (!this.props.tagCols || !this.props.communityData) return <LoadingCircle />;
 		if (!this.props.communityData || this.props.communityData.length === 0) {
-			return (<div className="text-center">
-				<p > Sorry, looks like your community's impact page is under maintenance</p>
-			</div>);
+			return (
+				<div className="boxed_wrapper" >
+					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not stats for this community yet :( </h2>
+				</div>
+			)
 		}
 		let stats = this.props.communitiesStats.slice(0);
 

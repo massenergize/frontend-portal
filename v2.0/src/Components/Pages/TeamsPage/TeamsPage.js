@@ -4,7 +4,7 @@ import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
 import LoadingCircle from '../../Shared/LoadingCircle';
-import { postJson } from '../../../api/functions'
+import { postJson, apiCall } from '../../../api/functions'
 import URLS from '../../../api/urls'
 import { reduxJoinTeam } from '../../../redux/actions/userActions'
 import { reduxAddTeamMember, reduxRemoveTeamMember } from '../../../redux/actions/pageActions'
@@ -55,7 +55,7 @@ class TeamsPage extends React.Component {
 			spinner.style.display = "block";
 			postJson(`http://api.massenergize.org/v3/teams.contactAdmin`, body).then(json => {
 				document.getElementById("contact-textarea").value = "";
-				spinner.style.display= "none";
+				spinner.style.display = "none";
 				me.toggleContact();
 			});
 		}
@@ -72,8 +72,13 @@ class TeamsPage extends React.Component {
 	render() {
 
 		const teams = this.props.teamsPage;
-		if (teams == null) return <p className='text-center'> Sorry, looks like this community's Teams Page is under maintenance. Try again later </p>
-
+		if (teams == null) {
+			return (
+				<div className="boxed_wrapper" >
+					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2>
+				</div>
+			)
+		}
 		return (
 			<>
 				{this.renderContactModal()}
@@ -124,19 +129,16 @@ class TeamsPage extends React.Component {
 		teamsSorted = teamsSorted.sort((a, b) => {
 			return b.avrgActionsPerHousehold - a.avrgActionsPerHousehold;
 		});
-		return teamsSorted.map((obj) => {
+		return teamsSorted.map((obj, index) => {
 			this.goalsList(obj.team.id).then(json => {
-				console.log(obj.team.id);
-				console.log("json", json);
 				if (json && json.success && json.data) {
-					
 					var c = json.data[0].attained_carbon_footprint_reduction;
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}
 			});
 			const desc = obj.team.description.length > 70 ? obj.team.description.substr(0, 70) + "..." : obj.team.description;
 			return (
-				<tr>
+				<tr key={index.toString()}>
 					<td>{obj.team.name} &nbsp;
             <Tooltip title={obj.team.name} text={desc} dir="right">
 							<div>
@@ -185,7 +187,7 @@ class TeamsPage extends React.Component {
 		const body = {
 			team_id: team_id
 		}
-		return postJson(`http://api.massenergize.org/v3/goals.list`, body);
+		return apiCall(`/goals.list`, body);
 	}
 
 	leaveTeam = (user_id, team_id) => {
