@@ -43,6 +43,7 @@ class Graphs extends React.Component {
 		}
 		return (
 			<section className="fact-counter style-2 no-padd">
+				<h4 className="section-title text-center" style={{fontSize:20}}>Our Impact</h4>
 				<div className="container">
 					<div className="row no-gutter clearfix">
 						{dumbycol}
@@ -50,7 +51,7 @@ class Graphs extends React.Component {
 						<article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
 							<div className="item">
 								<div className="icon"><i className="fa fa-chart-bar" /></div>
-								<Link to={this.props.links.impact} className="thm-btn btn-finishing raise">Our Impact</Link>
+								<Link to={this.props.links.impact} className="thm-btn btn-finishing raise">All Impacts</Link>
 								{/* <h4 className="counter-title">about our community impact</h4> */}
 							</div>
 						</article>

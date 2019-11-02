@@ -19,8 +19,7 @@ export const getJson = async (url) => {
 //** Posts a body to a url and then returns the json of the response */
 export const postJson = async (url, body) => {
 	try {
-		//Differentiate between dev deployment and real deployment
-		//body = { is_dev:true, ...body};
+	
 		const csrfResponse = await getJson(`${URLS.ROOT}/auth/csrf`);
 		const csrfToken = csrfResponse.data.csrfToken;
 		const response = await fetch(url, {
@@ -52,6 +51,8 @@ export const postJson = async (url, body) => {
  * band-with and being faster in general while avoiding CORS issues.
  */
 export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+		//Differentiate between dev deployment and real deployment
+		//dataToSend = { is_dev:true, ...dataToSend};
 	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
     credentials: 'include',
     method: 'POST',

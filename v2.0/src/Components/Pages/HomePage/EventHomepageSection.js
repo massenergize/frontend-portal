@@ -63,14 +63,17 @@ class Events extends React.Component {
     return (
       <section className="event-style1" style={{ background: 'white' }}>
         <div className="container">
+        <h3 className="cool-font text-center" style={{fontSize:20}}>Upcoming Events</h3>
           <div className="row">
+          
             <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">
-              <div className="section-title m-0">
+              {/* <div className="section-title m-0">
                 <h3 className="cool-font">Upcoming Events</h3>
-              </div>
+              </div> */}
             </div>
-            <div className="col-md-3 col-sm-2 col-xs-12 text-center text-sm-right">
-              <Link to={`${this.props.links.events}`} className="cool-font thm-btn mb-4 btn-finishing raise">All Events</Link>
+            <div style={{marginLeft:-64}} className="col-md-3 col-sm-2 col-xs-12 text-sm-right">
+            {/* <div className="pull-right">  */}
+              <Link to={`${this.props.links.events}`} className="cool-font thm-btn mb-4 btn-finishing raise pull-right float-right">All Events</Link>
             </div>
           </div>
           <div className="row">

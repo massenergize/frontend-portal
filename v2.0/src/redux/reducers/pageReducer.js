@@ -166,7 +166,7 @@ export default function (state = initialState, action) {
 				...state,
 				communities: action.payload
 			}
-		case LOAD_TAG_COLS:
+		case LOAD_TAG_COLS: 
 			return {
 				...state,
 				tagCols: action.payload

@@ -38,7 +38,7 @@ class Action extends React.Component {
 		if (this.shouldRender()) { //checks if the action should render or not
 			return (
 				<div className="col-lg-6 col-md-12 col-sm-12 col-12" >
-					<div className="single-shop-item m-action-item">
+					<div className="single-shop-item m-action-item" style={{minHeight:392}}>
 						<div className="img-box" onClick ={()=>{this.gotoAction()}}> { /* plug in the image here */}
 							<Link to={this.props.links.actions + "/" + this.props.action.id} >
 								< img src={this.props.action.image ? this.props.action.image.url : null} alt="" />
