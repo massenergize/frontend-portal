@@ -236,7 +236,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'description' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="desc">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font">{action.about}</p>
+									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}} ></p>
 								</div>
 							</div>
 						</div>
@@ -244,7 +244,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'steps' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="steps">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font">{action.steps_to_take}</p>
+									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}}></p>
 								</div>
 							</div>
 						</div>

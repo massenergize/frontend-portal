@@ -22,11 +22,12 @@ class EventsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleBoxClick = this.handleBoxClick.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
 		this.state = {
 			events_search_toggled: false,
 			userData: null,
-			check_values:null,
-			mirror_events:[]
+			check_values: null,
+			mirror_events: []
 		}
 	}
 	/**
@@ -38,56 +39,70 @@ class EventsPage extends React.Component {
 	 * pass the return values into "renderEvents"
 	 */
 
-	addMeToSelected(tagID){
+	addMeToSelected(tagID) {
 		tagID = Number(tagID);
-		const arr = this.state.check_values ? this.state.check_values :[]; 
-		if(arr.includes(tagID)){
-			var filtered = arr.filter(item=> item !==tagID);
-			this.setState({check_values:filtered.length ===0 ?null:filtered});
+		const arr = this.state.check_values ? this.state.check_values : [];
+		if (arr.includes(tagID)) {
+			var filtered = arr.filter(item => item !== tagID);
+			this.setState({ check_values: filtered.length === 0 ? null : filtered });
 		}
-		else{
-			this.setState({check_values:[tagID,...arr]})
+		else {
+			this.setState({ check_values: [tagID, ...arr] })
 		}
 	}
 
-	handleBoxClick(event){
-		var id = event.target.value; 
+	handleBoxClick(event) {
+		var id = event.target.value;
 		this.addMeToSelected(id);
 	}
-	findCommon(){
+	findCommon() {
 		//everytime there is a change in "check_values",
 		//loop through all the events again, and render events 
 		//with the tag IDs  in "check_values"
 		//then pass it on to "renderEvents(...)"
-		const events = this.props.events; 
-		const values = this.state.check_values? this.state.check_values:[]; 
+		const events = this.state.mirror_events.length >0 ? this.state.mirror_events : this.props.events;
+		const values = this.state.check_values ? this.state.check_values : [];
 		const common = [];
-		if(events){
+		if (events) {
 			for (let i = 0; i < events.length; i++) {
-				const ev= events[i];
-					for (let i = 0; i < ev.tags.length; i++) {
-						const tag = ev.tags[i];
-						//only push events if they arent there already
-						if(values.includes(tag.id) && !common.includes(ev)){
-							common.push(ev)
-						}
+				const ev = events[i];
+				for (let i = 0; i < ev.tags.length; i++) {
+					const tag = ev.tags[i];
+					//only push events if they arent there already
+					if (values.includes(tag.id) && !common.includes(ev)) {
+						common.push(ev)
 					}
+				}
 			}
 		}
 		return common;
 	}
+
+	handleSearch = event => {
+		const value = event.target.value;
+		const events = this.props.events;
+		const common = [];
+		if (value.trim() !== "") {
+			for (let i = 0; i < events.length; i++) {
+				const ev = events[i];
+				if (ev.name.includes(value)) {
+					common.push(ev);
+				}
+			}
+			this.setState({ mirror_events: [...common] });
+		}
+	}
 	renderSideBar() {
 		return (
 			<div className="blog-sidebar sec-padd">
-					<div className="event-filter raise" style={{ padding: 45, borderRadius: 15 }}>
-						<h4>Filter by...</h4>
-						<Funnel boxClick = {this.handleBoxClick} />
+				<div className="event-filter raise" style={{ padding: 45, borderRadius: 15 }}>
+					<h4>Filter by...</h4>
+					<Funnel boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_events.length} />
 				</div>
 			</div>
 		);
 	}
 	render() {
-	
 		return (
 			<>
 				<div className="boxed_wrapper" >
@@ -120,7 +135,7 @@ class EventsPage extends React.Component {
 	 * @param events - json list of events
 	 */
 	renderEvents(events) {
-		events = this.state.check_values ===null? this.props.events :events;
+		events = this.state.check_values === null ? this.props.events : events;
 		if (!this.props.events || this.props.events.length === 0) {
 			return (
 				<div className='text-center'>
@@ -204,8 +219,8 @@ class EventsPage extends React.Component {
 			someDate.getFullYear() === someOtherDate.getFullYear()
 	}
 
-	
-	
+
+
 
 
 
@@ -214,7 +229,7 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
 	return {
-		collection:store.page.collection,
+		collection: store.page.collection,
 		auth: store.firebase.auth,
 		user: store.user.info,
 		events: store.page.events,

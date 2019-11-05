@@ -5,9 +5,7 @@ class EventFilter extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
 
-    }
   }
 
   makeTagsSystematic = (tagCols) => {
@@ -28,13 +26,14 @@ class EventFilter extends Component {
     if (tags) {
       return tags.map(tag => {
         return (
-          <label className="checkbox-container" >
+          <label style={{ marginBottom: "0px", marginTop: "0px" }} className="checkbox-container" >
             <p style={{
               marginLeft: "25px",
-              marginBottom: "0",
+              marginBottom: "0px",
+              marginTop: "0px",
               padding: "4px 0 5px 0"
             }}>{tag.name}</p>
-            <input className="checkbox" type="checkbox" onChange={(event)=>{this.props.boxClick(event)}}name="boxes" value={tag.id} />
+            <input className="checkbox" type="checkbox" onChange={(event) => { this.props.boxClick(event) }} name="boxes" value={tag.id} />
             <span className="checkmark"></span>
           </label>
         )
@@ -49,13 +48,13 @@ class EventFilter extends Component {
     if (col) {
       return col.map(set => {
         const header = (
-          <div className="section-title w-100" style={{margin:"0px"}}>
+          <div className="section-title w-100" style={{ margin: "0px" }}>
             <span>{set.name}</span>
           </div>
         );
         return (<div>
           <Accordion
-          open={set.name==="Category"}
+            open={set.name === "Category"}
             header={header}
             content={me.renderTagCheckBoxes(set.tags)}
           />
@@ -65,10 +64,11 @@ class EventFilter extends Component {
     }
   }
   render() {
-
-    console.log("I am the collection in funnel ", this.props.collection);
+    const found = this.props.foundNumber;
     return (
       <div>
+        <input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />
+        <small style={{ color: '#70a96f' }}>{found} {found === 1 ? "event " : "events "} found</small>
         {this.renderDifferentCollections()}
       </div>
     )

@@ -21,14 +21,18 @@ import Cart from '../../Shared/Cart';
 class ActionsPage extends React.Component {
 	constructor(props) {
 		super(props);
+		this.handleSearch = this.handleSearch.bind(this);
 		this.state = {
 			loaded: false,
 			openAddForm: null,
 			testimonialLink: null,
+			mirror_actions:[]
 		}
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
+		console.log("I am all the actions", this.props.actions);
+		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		return (
 			<>
 				 
@@ -41,6 +45,8 @@ class ActionsPage extends React.Component {
 								{/* renders the sidebar */}
 								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
 									<SideBar
+										search ={this.handleSearch}
+										foundNumber={this.state.mirror_actions.length}
 										tagCols={this.props.tagCols}
 										onChange={this.handleChange} //runs when any category is selected or unselected
 									></SideBar>
@@ -62,7 +68,7 @@ class ActionsPage extends React.Component {
 								{/* renders the actions */}
 								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
 									<div className="row" id="actions-container">
-										{this.renderActions(this.props.actions)}
+										{this.renderActions(actions)}
 									</div>
 								</div>
 							</div>
@@ -76,10 +82,26 @@ class ActionsPage extends React.Component {
 	handleChange() {
 		this.forceUpdate();
 	}
+	handleSearch = event => {
+		const value = event.target.value;
+		const actions = this.props.actions;
+		const common = [];
+		if (value.trim() !== "") {
+			for (let i = 0; i < actions.length; i++) {
+				const ac = actions[i];
+				if (ac.title.includes(value)) {
+					common.push(ac);
+				}
+			}
+			this.setState({ mirror_actions: [...common] });
+		}else{
+			this.setState({mirror_actions:[]})
+		}
+	}
 	// renders all the actions
 	renderActions(actions) { 
 		if (!actions || actions.length === 0) {
-			return <p>There are not any actions available in this community yet, come back later.</p>;
+			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}
 		//returns a list of action components
 		return Object.keys(actions).map(key => {

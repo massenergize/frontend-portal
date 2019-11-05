@@ -10,6 +10,7 @@ import Accordian from './Accordian';
 */
 class SideBar extends React.Component {
 	render() {
+		const found = this.props.foundNumber;
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<div className=" event-filter wrapper shop-sidebar mb-5 raise" style={{padding:36,borderRadius:15}}>
@@ -20,7 +21,10 @@ class SideBar extends React.Component {
 					</form>
 				</div> */}
 				<br />
-				<h4>Filter by...</h4>
+				<h4>Filter by...</h4> 
+				<input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />
+				<small style={{ color: '#70a96f' }}>{found} {found === 1 ? "action " : "actions "} found</small>
+
 				{this.renderTagCollections(this.props.tagCols)}
 			</div>
 		);
@@ -33,7 +37,7 @@ class SideBar extends React.Component {
 		return Object.keys(tagCol).map(key => {
 			var tag = tagCol[key];
 			return (
-				<label className="checkbox-container" onClick={this.props.onChange} key={key}>
+				<label s className="checkbox-container" onClick={this.props.onChange} key={key}>
 					<p style={{
 						marginLeft: "25px",
 						marginBottom: "0",

@@ -41,7 +41,7 @@ class NavBarBurger extends React.Component {
 		var communityName = this.props.pageData ? this.props.pageData.community.name : "communities";
 		if (this.props.pageData) {
 			//header = section(this.props.pageData, 'HomeHeader');
-			communitylogo = this.props.pageData ? this.props.pageData.community.logo.url : null;
+			communitylogo = this.props.pageData.community.logo ? this.props.pageData.community.logo.url : null;
 		}
 		const { links } = this.props;
 		const styles = {

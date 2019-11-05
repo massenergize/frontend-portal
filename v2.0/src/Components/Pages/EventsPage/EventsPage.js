@@ -369,7 +369,7 @@ class EventsPage extends React.Component {
 		this.setState({ events_search_toggled: !prev });
 	}
 	renderSideBar() {
-		console.log("i am the events ", this.props.events);
+		
 		return (
 			<div className="blog-sidebar sec-padd">
 				<div className="event-filter" style={{padding:35,borderRadius:15}}>
