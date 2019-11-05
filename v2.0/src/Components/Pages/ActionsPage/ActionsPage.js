@@ -89,7 +89,7 @@ class ActionsPage extends React.Component {
 		if (value.trim() !== "") {
 			for (let i = 0; i < actions.length; i++) {
 				const ac = actions[i];
-				if (ac.title.includes(value)) {
+				if (ac.title.toLowerCase().includes(value.toLowerCase())) {
 					common.push(ac);
 				}
 			}

@@ -85,7 +85,7 @@ class EventsPage extends React.Component {
 		if (value.trim() !== "") {
 			for (let i = 0; i < events.length; i++) {
 				const ev = events[i];
-				if (ev.name.includes(value)) {
+				if (ev.name.toLowerCase().includes(value.toLowerCase())) {
 					common.push(ev);
 				}
 			}
