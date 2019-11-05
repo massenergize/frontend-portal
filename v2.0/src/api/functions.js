@@ -1,4 +1,6 @@
 import URLS from './urls'
+import qs from 'qs';
+
 export const getJson = async (url) => {
 	try {
 		const data = await fetch(url, {
@@ -17,6 +19,7 @@ export const getJson = async (url) => {
 //** Posts a body to a url and then returns the json of the response */
 export const postJson = async (url, body) => {
 	try {
+	
 		const csrfResponse = await getJson(`${URLS.ROOT}/auth/csrf`);
 		const csrfToken = csrfResponse.data.csrfToken;
 		const response = await fetch(url, {
@@ -37,6 +40,38 @@ export const postJson = async (url, body) => {
 	}
 }
 
+
+/**
+ *
+ * @param {object} destinationUrl
+ * @param {object} dataToSend
+ * @param {string} relocationPage
+ * This function handles sending data to the backend.  It takes advantage of
+ * being a SimpleRequest hence no preflight checks will be done saving some
+ * band-with and being faster in general while avoiding CORS issues.
+ */
+export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+		//Differentiate between dev deployment and real deployment
+		//dataToSend = { is_dev:true, ...dataToSend};
+	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: qs.stringify(dataToSend)
+  });
+
+  try {
+		const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error };
+  }
+}
 export const deleteJson = async (url) => {
 	try {
 		const data = await fetch(url, {

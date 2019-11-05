@@ -6,7 +6,7 @@ const URLS = {
 }
 const COMM_ID = "3";
 
-/**
+/** 
  * These are all the api URLS, minus a few that need to have ids in the middle ie: v2/household/hid/actions
  * after any of the singlular request, you need to add a /<id> to the end of the url
  * after any of the plural requests you can specify filters to add by adding "?<model-variable-name>=<value>&<model-variable2-name>=<value2>..."
@@ -16,7 +16,10 @@ const COMM_ID = "3";
  */
 // ...and dependence on other defined URLS
 URLS["V2"] = URLS.ROOT + "/v2/";
+URLS["V3"] = URLS.ROOT + "/v3/";
+URLS["V3_COMMUNITIES"] = URLS.V3+"communities.list";
 URLS["COMMUNITY"] = URLS.V2 + "community/";
+URLS["V3_COMMUNITY"] = URLS.V3+"community/";
 
 URLS["ACTIONS"] = URLS.V2 + "actions";
 URLS["ACTION"] = URLS.V2 + "action"; //add the id after this
@@ -76,6 +79,7 @@ URLS["TAG_COLLECTIONS"] = URLS.V2 + "tag-collections";
 URLS["TAG_COLLECTION"] = URLS.V2 + "tag-collection";  //add the id after this
 URLS["TEAMS"] = URLS.V2 + "teams";
 URLS["TEAM"] = URLS.V2 + "team"; //add the id after this
+URLS["LEAVE"] = "v3/teams.leave"; //add the id after this
 URLS["TEAMS_STATS"] = URLS.V2 + "teams/stats"; //need to specify community after this
 URLS["TESTIMONIALS"] = URLS.V2 + "testimonials";
 URLS["TESTIMONIAL"] = URLS.V2 + "testimonial"; //add the id after this

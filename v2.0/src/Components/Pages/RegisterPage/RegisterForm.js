@@ -285,7 +285,7 @@ class RegisterFormBase extends React.Component {
             }
             postJson(URLS.USERS, body).then(json => {
                 console.log(json);
-                if (json.success && json.data) {
+                if ( json && json.success && json.data) {
                     this.fetchAndLogin(json.data.email).then(success => {
                         if(!success){
                             this.setState({error: 'Failed to Register'})

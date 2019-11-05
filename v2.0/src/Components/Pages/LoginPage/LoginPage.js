@@ -24,9 +24,10 @@ class LoginPage extends React.Component {
 
         return (
             <>
-            <BreadCrumbBar links={[{ name: 'Sign In' }]} />
+            
             <div className="boxed_wrapper">
-                <section className="register-section sec-padd-top">
+            <BreadCrumbBar links={[{ name: 'Sign In' }]} />
+                <section className="register-section sec-padd-top" style={{paddingTop:5}}>
                     <div className="container">
                         <div className="row">
                             {/* <!--Form Column--> */}

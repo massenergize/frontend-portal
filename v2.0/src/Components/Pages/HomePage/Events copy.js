@@ -91,6 +91,7 @@ class Events extends React.Component {
 			d1.getDate() === d2.getDate();
 	}
 	render() {
+		console.log("i am the events in events", this.props.events)
 		return (
 			<section className="event-style1" style={{background:'white'}}>
 				<div className="container">
