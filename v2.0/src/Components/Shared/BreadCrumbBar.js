@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 class BreadCrumbBar extends React.Component {
 	render() {
 		return (
-			<div class="breadcumb-wrapper" style={{marginTop:90,marginBottom:31,background:'rgb(245, 255, 222)'}}>
-				<div class="container">
-					<div class="pull-left">
-						<ul class="list-inline link-list">
+			<div className="breadcumb-wrapper" style={{marginTop:90,marginBottom:31,background:'rgb(245, 255, 222)'}}>
+				<div className="container">
+					<div className="pull-left">
+						<ul className="list-inline link-list">
 							<li>
 								<Link to={this.props.reduxLinks.home} className='link'> Home </Link>
 							</li>

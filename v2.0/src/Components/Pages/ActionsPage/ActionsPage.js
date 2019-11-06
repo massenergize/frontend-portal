@@ -9,6 +9,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
+import PageTitle from '../../Shared/PageTitle';
 
 
 
@@ -31,13 +32,14 @@ class ActionsPage extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
-		console.log("I am all the actions", this.props.actions);
+		
 		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		return (
 			<>
 				 
 				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
+				<PageTitle>Actions</PageTitle>
 					{/* main shop section */}
 					<div className="shop sec-padd">
 						<div className="container">

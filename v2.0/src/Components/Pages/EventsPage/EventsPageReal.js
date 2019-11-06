@@ -60,7 +60,7 @@ class EventsPage extends React.Component {
 		//loop through all the events again, and render events 
 		//with the tag IDs  in "check_values"
 		//then pass it on to "renderEvents(...)"
-		const events = this.state.mirror_events.length >0 ? this.state.mirror_events : this.props.events;
+		const events = this.props.events;
 		const values = this.state.check_values ? this.state.check_values : [];
 		const common = [];
 		if (events) {
@@ -90,6 +90,8 @@ class EventsPage extends React.Component {
 				}
 			}
 			this.setState({ mirror_events: [...common] });
+		}else{
+			this.setState({mirror_events:[]})
 		}
 	}
 	renderSideBar() {
@@ -103,6 +105,7 @@ class EventsPage extends React.Component {
 		);
 	}
 	render() {
+		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
 			<>
 				<div className="boxed_wrapper" >
@@ -119,7 +122,7 @@ class EventsPage extends React.Component {
 									</div>
 									<div className="col-lg-9 col-md-9 col-12">
 										<div className="outer-box sec-padd event-style2">
-											{this.renderEvents(this.findCommon())}
+											{this.renderEvents(found)}
 										</div>
 									</div>
 								</div>
@@ -135,8 +138,14 @@ class EventsPage extends React.Component {
 	 * @param events - json list of events
 	 */
 	renderEvents(events) {
-		events = this.state.check_values === null ? this.props.events : events;
-		if (!this.props.events || this.props.events.length === 0) {
+		//when mirror_events.length ===0, it means no one is searching,so go on to check if 
+		//someone if user is using check_values 
+		//if check_values ===null, then it means it is probably the first time the user
+		//is loading the page, so show everything from props
+		if (this.state.mirror_events.length === 0){
+			events = this.state.check_values === null ? this.props.events : events;
+		}
+			if (!this.props.events || this.props.events.length === 0) {
 			return (
 				<div className='text-center'>
 					<p className="cool-font"> Sorry, looks like there are no upcoming events in your community </p>
