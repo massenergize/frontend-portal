@@ -1,4 +1,12 @@
-
+.loc-banner{
+  padding:20px !important;
+  background-color:#344038 !important;
+  cursor:pointer;
+}
+.pref-height{
+  min-height:375px !important; 
+  max-height:375px !important;
+}
 .filter-search-input{
   padding:10px 25px !important; 
   border:solid 1px #eafff3; 

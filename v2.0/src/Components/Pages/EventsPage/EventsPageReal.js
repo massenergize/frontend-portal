@@ -13,7 +13,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import CONST from '../../Constants'
 import * as moment from 'moment';
 import Funnel from './Funnel';
-
+ 
 
 /**
  * Renders the event page
@@ -99,7 +99,7 @@ class EventsPage extends React.Component {
 			<div className="blog-sidebar sec-padd">
 				<div className="event-filter raise" style={{ padding: 45, borderRadius: 15 }}>
 					<h4>Filter by...</h4>
-					<Funnel boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_events.length} />
+					<Funnel type="event" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_events.length} />
 				</div>
 			</div>
 		);
@@ -175,10 +175,10 @@ class EventsPage extends React.Component {
 									<Link className="cool-font" to={this.props.links.events + "/" + event.id}><h4 className="cool-font"> {event.name} </h4></Link>
 									<div className="text">
 										{event.description.length < CONST.BIG_LIMIT ?
-											<p className="cool-font"> {event.description} </p>
+											<p className="cool-font" dangerouslySetInnerHTML={{__html:event.description}}></p>
 											:
-											<p className="cool-font">
-												{event.description.substring(0, CONST.BIG_LIMIT)}
+											<p className="cool-font" dangerouslySetInnerHTML={{__html:event.description.substring(0, CONST.BIG_LIMIT)}}>
+												{/* {event.description.substring(0, CONST.BIG_LIMIT)} */}
 												&nbsp;<Link to={`${this.props.links.events}/${event.id}`}> ...more</Link>
 											</p>
 										}

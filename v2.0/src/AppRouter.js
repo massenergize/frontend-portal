@@ -67,6 +67,7 @@ class AppRouter extends Component {
 	}
 	componentDidMount() {
 		var subdomain = this.props.match.params.subdomain;
+		var body = {subdomain:subdomain};
 		this.props.reduxLoadLinks({
 			home: `/${subdomain}`,
 			actions: `/${subdomain}/actions`,
@@ -85,16 +86,18 @@ class AppRouter extends Component {
 		Promise.all([
 			//Make sure to cleanup, and declare variables in Urls later
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
-			apiCall('home_page_settings.info',{subdomain:subdomain},null),
+			apiCall('home_page_settings.info',body,null),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
-			apiCall('about_us_page_settings.info',{subdomain:subdomain},null),
-			apiCall('donate_page_settings.info',{subdomain:subdomain},null),
+			apiCall('about_us_page_settings.info',body,null),
+			apiCall('donate_page_settings.info',body,null),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
-			apiCall('events.list',{subdomain:subdomain},null),
+			apiCall('events.list',body,null),
 			getJson(URLS.COMMUNITY + subdomain + '/actions'),
-			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
-			getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
+			//getJson(URLS.COMMUNITY + subdomain + '/vendors'),
+			apiCall('vendors.list',body,null),
+			apiCall('testimonials.list',body,null),
+			//getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),

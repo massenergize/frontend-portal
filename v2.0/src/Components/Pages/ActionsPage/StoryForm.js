@@ -42,7 +42,7 @@ class StoryForm extends React.Component {
 		if (!this.props.actions || this.props.actions.length === 0) return <div className='text-center'><p> Sorry, there are no actions to submit a story about </p></div>;
 		if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
 		return (
-			<div className="review-form raise" style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
+			<div className="review-form " style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
 				{this.props.noMessage ? null :
 					<div className="tab-title-h4 text center">
 						<h4 className="p-2">{this.state.message}</h4>

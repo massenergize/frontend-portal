@@ -55,7 +55,7 @@ class OneEventPage extends React.Component {
 							<div className="col-12 col-lg-6">
 								<div className="text">
 									<h3 className="cool-font">{event.name}</h3>
-									<p className="cool-font">{event.description}</p>
+									<p className="cool-font" dangerouslySetInnerHTML={{__html:event.description}}></p>
 									<br />
 									<p className="cool-font">{event.moreinfo}</p>
 								</div>

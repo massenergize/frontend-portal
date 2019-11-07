@@ -18,7 +18,7 @@ import img from './../../../../src/assets/images/blog/i9.jpg';
         organizer
         address
         //may need to add in id
- */
+ */ 
 class Events extends React.Component {
   renderEvents() {
     const events = this.props.events;
@@ -41,7 +41,7 @@ class Events extends React.Component {
               <img src={img} className="home-events-img" />
               <div style={{ padding: 30,height:250 }}>
                 <h5>{event.name}</h5>
-                <p style={{fontSize:16}}>{desc} </p>
+                <p style={{fontSize:16}} dangerouslySetInnerHTML={{__html: desc}}></p>
                 {event.location ?
                   <small className="text text-default text-sm-right"><b>{event.location.state},{event.location.city},  {event.location.street}</b></small>
                   :
