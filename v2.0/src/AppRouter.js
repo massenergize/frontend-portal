@@ -24,6 +24,7 @@ import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './Components/Pages/DonatePage/DonatePage'
+import ContactPage from './Components/Pages/ContactUs/ContactUsPage';
 import CommunitySelectPage from './Components/Pages/CommunitySelectPage'
 
 import {
@@ -48,6 +49,7 @@ import {
 	reduxLoadTagCols,
 	reduxLoadCommunityData, 
 	reduxLoadCollection,
+	reduxLoadCommunityInformation
 } from './redux/actions/pageActions'
 import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 import { reduxLoadLinks } from './redux/actions/linkActions';
@@ -82,6 +84,7 @@ class AppRouter extends Component {
 			signup: `/${subdomain}/signup`,
 			profile: `/${subdomain}/profile`,
 			policies: `/${subdomain}/policies`,
+			contactus:`/${subdomain}/contactus`
 		}) 
 		Promise.all([
 			//Make sure to cleanup, and declare variables in Urls later
@@ -105,6 +108,7 @@ class AppRouter extends Component {
 			getJson(URLS.TAG_COLLECTIONS),
 			getJson(URLS.COMMUNITY + subdomain + '/data'),
 			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
+			apiCall("communities.info",body,null)
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
@@ -125,6 +129,7 @@ class AppRouter extends Component {
 			this.props.reduxLoadTagCols(myJsons[12].data)
 			this.props.reduxLoadCommunityData(myJsons[13].data)
 			this.props.reduxLoadCollection(myJsons[14].data)
+			this.props.reduxLoadCommunityInformation(myJsons[15].data)
 		}).catch(err => {
 			this.setState({ error: err })
 			console.log(err)
@@ -163,6 +168,7 @@ class AppRouter extends Component {
 			return <LoadingCircle />;
 		}
 		const { links } = this.props;
+		const contactUsItem = {link:"/contactus",name:"Contact Us"};
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
@@ -176,7 +182,7 @@ class AppRouter extends Component {
 				{this.props.menu ?
 					<div>
 						<NavBarBurger
-							navLinks={this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content}
+							navLinks={[...this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content,contactUsItem]}
 						/>
 						<NavBarOffset />
 					</div> : <LoadingCircle />
@@ -206,7 +212,7 @@ class AppRouter extends Component {
 							<Route path={links.signup} component={RegisterPage} />
 							<Route path={links.profile} component={ProfilePage} />
 							<Route path={links.policies} component={PoliciesPage} />
-							{/*<Route path="/contact" component={Contact} /> */}
+							<Route path={links.contactus} component={ContactPage} />
 							<Route component={() => {
 								return <div>
 									404 Error: Page not Found
@@ -258,5 +264,6 @@ const mapDispatchToProps = {
 	reduxLoadCommunityData,
 	reduxLoadLinks, 
 	reduxLoadCollection,
+	reduxLoadCommunityInformation
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

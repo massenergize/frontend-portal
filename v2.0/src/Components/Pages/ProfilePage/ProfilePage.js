@@ -86,7 +86,7 @@ class ProfilePage extends React.Component {
 							</>
 							:
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-								<div className="col-lg-6 col-md-6  col-12">
+								<div className="col-lg-9 col-md-9  col-12">
 									{this.renderForm(this.state.editingProfileForm)}
 									<section className="fact-counter style-2 sec-padd" >
 										<div className="container" style={{padding:0}}>
@@ -125,9 +125,9 @@ class ProfilePage extends React.Component {
 																	closeForm={() => this.setState({ addingHH: false })}
 																/>
 																<button
-																	className="thm-btn"
+																	className=""
 																	onClick={() => this.setState({ addingHH: false })}
-																	style={{ width: '99%' }}>Cancel
+																	style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
                                                                 </button>
 															</>
 															:
@@ -185,7 +185,7 @@ class ProfilePage extends React.Component {
 									<br />
 								</div>
 								{/* makes the todo and completed actions carts */}
-								<div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
+								<div className="col-lg-3 col-md-3 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
 
 									{/* <h3 className="col-12 text-right">
                                         <SignOutButton style={{ display: 'inline-block' }} />
@@ -310,9 +310,9 @@ class ProfilePage extends React.Component {
 								closeForm={() => this.setState({ editingHH: null })}
 							/>
 							<button
-								className="thm-btn"
+								className=""
 								onClick={() => this.setState({ addingHH: false, editingHH: null })}
-								style={{ width: '99%' }}>Cancel
+								style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
                         </button>
 						</td>
 					</tr>

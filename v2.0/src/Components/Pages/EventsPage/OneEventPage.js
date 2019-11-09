@@ -35,7 +35,7 @@ class OneEventPage extends React.Component {
 
 	renderEvent(event) {
 		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
-		const format = "MMMM Do YYYY, h:mm:ss a";
+		const format = "MMMM Do YYYY, h:mm a";
 		const date = new Date(event.start_date_and_time);
 		const endDate = new Date(event.end_date_and_time);
 		const textyStart = moment(date).format(format);
@@ -44,6 +44,7 @@ class OneEventPage extends React.Component {
 		return ( 
 			<section className="event-section style-3">
 				<div className="container">
+				<h3 className="cool-font text-center">{event.name}</h3>
 					<div className="single-event sec-padd">
 						<div className="row">
 							<div className="col-12 col-lg-6">
@@ -54,7 +55,7 @@ class OneEventPage extends React.Component {
 							</div>
 							<div className="col-12 col-lg-6">
 								<div className="text">
-									<h3 className="cool-font">{event.name}</h3>
+									<h5 className="cool-font" style={{color:'lightgray'}}>About</h5>
 									<p className="cool-font" dangerouslySetInnerHTML={{__html:event.description}}></p>
 									<br />
 									<p className="cool-font">{event.moreinfo}</p>

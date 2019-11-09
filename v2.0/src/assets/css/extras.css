@@ -1,3 +1,27 @@
+
+.force-height-event{
+  height:190px !important;
+}
+.m-form-outer{
+  padding:25px;
+  border:solid 1px lightgray; 
+  border-radius:10px; 
+  min-height: 500px; 
+  max-height: 500px;
+  margin-bottom: 30px;
+}
+.m-btn{
+  padding:10px 30px; 
+  border-radius:55px;
+  margin:9px;
+}
+
+.m-textbox{
+  padding:20px; 
+  font-size:16px;
+  margin:6px 0px;
+}
+
 .loc-banner{
   padding:20px !important;
   background-color:#344038 !important;
@@ -100,7 +124,9 @@
 }
 
 .m-action-item{
+  border-radius:12px;
   cursor:pointer; 
+  border-color: #f3f3f3 !important;
 
 }
 .cart-t-bar{
@@ -258,10 +284,11 @@
 .contact-admin-btn{
   font-size: 14px;
   font-weight: 700;;
-  background:lightgray; 
+  background:#73626f; 
   border-radius: 5px;
   padding:7px 11px;
   cursor:pointer;
+  color:white;
 }
 .contact-admin-btn:hover{
   background:green; 

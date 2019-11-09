@@ -154,7 +154,7 @@ class EventsPage extends React.Component {
 		}
 		if (events) {
 			return events.map(event => {
-				const format = "MMMM Do YYYY, h:mm:ss a";
+				const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);
 				const endDate = new Date(event.end_date_and_time);
 				const textyStart = moment(date).format(format);
@@ -164,8 +164,8 @@ class EventsPage extends React.Component {
 						<div className="row no-gutter">
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
-								<figure className="img-holder" style={{ borderRadius: 10 }}>
-									<Link to={this.props.links.events + "/" + event.id}><img style={{ margin: 10, borderRadius: 10 }} src={event.image ? event.image.url : null} alt="" /></Link>
+								<figure className="raise-2" style={{ marginTop:15,marginRight:10, marginLeft:20,borderRadius: 10 ,height:190}}>
+									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{objectFit:'cover',borderRadius:10}}src={event.image ? event.image.url : null} alt="" /></Link>
 									{/* if the date has passed already the calender div should be all gray */}
 								</figure>
 							</div>
