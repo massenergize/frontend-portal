@@ -31,9 +31,8 @@ class FooterInfo extends React.Component {
 						{/* <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li> 
 						<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
 						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li> */}
+						<li><span className="icon-people3"></span><a href={"mailto:"+this.props.pageData.community.owner_email}> {this.props.pageData.community.owner_name}</a>, <i>Community Contact</i></li>
 						<li><span className="icon-phone-call"></span>{this.props.pageData.community.owner_phone}</li>
-						<li><span className="icon-e-mail-envelope"></span> {this.props.pageData.community.owner_email}</li> 
-						<li><span className="icon-people3"></span>{this.props.pageData.community.owner_name}, <i>Community Contact</i></li>
 					</ul>
 				</div>
 			</div>
