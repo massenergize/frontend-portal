@@ -34,6 +34,7 @@ class Action extends React.Component {
 
 	}
 	render() {
+		const tags = this.props.action ? this.props.action.tags :null;
 		if (!this.props.HHFormOpen && this.state.status) this.setState({ status: null });
 		if (this.shouldRender()) { //checks if the action should render or not
 			return (

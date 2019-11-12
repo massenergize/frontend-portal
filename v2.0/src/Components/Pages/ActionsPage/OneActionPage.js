@@ -134,7 +134,6 @@ class OneActionPage extends React.Component {
 		const stories = this.props.stories.filter(story => {
 			return story.action.id === Number(this.props.match.params.id)
 		})
-		console.log("I am the actionister", this.renderTagBar(this.getTag("difficulty")));
 		return (
 			<div>
 				<div className="product-content-box">
@@ -163,11 +162,11 @@ class OneActionPage extends React.Component {
 								</p> */}
 						
 								{!this.props.user ?
-									<Tooltip text='Sign in to make a TODO list'>
+									// <Tooltip text='Sign in to make a TODO list' style={{display:'inline-block'}}>
 										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
 											Add Todo
                                                     </p>
-									</Tooltip>
+									// </Tooltip>
 									:
 									<button
 										className={this.state.status === "TODO" ? "thm-btn action-btns cool-font style-4 selected" : "thm-btn style-4 action-btns cool-font"}
@@ -176,11 +175,11 @@ class OneActionPage extends React.Component {
 								}
 								&nbsp;
                                 {!this.props.user ?
-									<Tooltip text='Sign in to mark actions as completed'>
+									// <Tooltip text='Sign in to mark actions as completed' style={{display:'inline-block'}}>
 										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
 											Done It
                                                     </p>
-									</Tooltip>
+									// </Tooltip>
 									:
 									<button
 										className={this.state.status === "DONE" ? "thm-btn style-4 selected action-btns cool-font " : "thm-btn style-4 action-btns  cool-font"}
@@ -297,7 +296,6 @@ class OneActionPage extends React.Component {
 	}
 
 	renderTags(tags) {
-		console.log(tags);
 		return Object.keys(tags).map((key) => {
 			var tagColName = ''
 			if (tags[key].tag_collection.name !== 'Category') {

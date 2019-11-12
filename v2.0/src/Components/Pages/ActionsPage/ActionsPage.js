@@ -39,13 +39,13 @@ class ActionsPage extends React.Component {
 				 
 				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
-				<PageTitle>Actions</PageTitle>
+			
 					{/* main shop section */}
 					<div className="shop sec-padd">
 						<div className="container">
 							<div className="row">
 								{/* renders the sidebar */}
-								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
+								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo" style={{paddingTop:60}}>
 									<SideBar
 										search ={this.handleSearch}
 										foundNumber={this.state.mirror_actions.length}
@@ -69,7 +69,8 @@ class ActionsPage extends React.Component {
 								</div>
 								{/* renders the actions */}
 								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-									<div className="row" id="actions-container">
+								<PageTitle>Actions</PageTitle>
+									<div className="row" id="actions-container"  style={{ marginTop:10,overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
 										{this.renderActions(actions)}
 									</div>
 								</div>

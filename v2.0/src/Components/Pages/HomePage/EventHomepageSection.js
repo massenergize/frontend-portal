@@ -33,21 +33,22 @@ class Events extends React.Component {
 				const textyStart = moment(date).format(format);
 				const textyEnd = moment(endDate).format(format);
 
-        const desc = event.description.length > 70 ? event.description.substr(0, 70) + "..." : event.description;
+        const desc = event.description.length > 70 ? "Click to read full description about this event" : event.description;
         const img = event.image.url ? event.image.url : img;
         return (
           <article className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{marginBottom:10,marginTop:10}} onClick ={()=>{window.location = this.props.links.events + "/"+event.id}}>
             <div className="z-depth-1"style={{borderRadius:15}}>
               <img src={img} className="home-events-img" />
-              <div style={{ padding: 30,height:250 }}>
-                <h5>{event.name}</h5>
-                <p style={{fontSize:16}} dangerouslySetInnerHTML={{__html: desc}}></p>
+              <div style={{ padding: 11,paddingLeft:17,height:120 }}>
+                <h6 className="zero-margin-btm">{event.name}</h6>
+                {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
+               
                 {event.location ?
-                  <small className="text text-default text-sm-right"><b>{event.location.state},{event.location.city},  {event.location.street}</b></small>
+                  <small small style={{fontSize:11}} className="text text-default text-sm-right"><b>{event.location.state},{event.location.city},  {event.location.street}</b></small>
                   :
                   null
                 }
-                <p style={{fontSize:12}}className="text text-success">{`${textyStart} - ${textyEnd}`}</p>
+                <p style={{fontSize:12}}className="text text-success zero-margin-btm">{`${textyStart} - ${textyEnd}`}</p>
               </div>
             </div>
           </article>

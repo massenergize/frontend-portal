@@ -33,7 +33,7 @@ class StoriesPage extends React.Component {
 					for (let i = 0; i < ev.tags.length; i++) {
 						const tag = ev.tags[i];
 						//only push events if they arent there already
-						if (values.includes(tag.id) && !common.includes(ev)) {
+						if (values.includes(tag.id) && !common.includes(story)) {
 							common.push(story)
 						}
 					}

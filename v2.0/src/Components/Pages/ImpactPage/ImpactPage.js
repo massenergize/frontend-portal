@@ -28,7 +28,7 @@ class ImpactPage extends React.Component {
 		if (!this.props.communityData || this.props.communityData.length === 0) {
 			return (
 				<div className="boxed_wrapper" >
-					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not stats for this community yet :( </h2>
+					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are no stats for this community yet :( </h2>
 				</div>
 			)
 		}
@@ -162,7 +162,7 @@ class ImpactPage extends React.Component {
 					</div>
 				</div>
 			</>
-		);
+		); 
 	}
 }
 

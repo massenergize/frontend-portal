@@ -1,6 +1,6 @@
 import React from 'react';
 import URLS from '../../../api/urls'
-import { postJson, getJson } from '../../../api/functions';
+import { postJson, getJson,apiCall } from '../../../api/functions';
 import { connect } from 'react-redux';
 import defaultUser from './../../Shared/default-user.png';
 
@@ -153,7 +153,7 @@ class StoryForm extends React.Component {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
-			postJson(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
+			apiCall(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
 				console.log(json);
 				if (json && json.success) {
 					this.setState({
