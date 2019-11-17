@@ -59,7 +59,7 @@ class StoriesPage extends React.Component {
 		this.addMeToSelected(id);
 	}
 	render() {
-		const stories = this.findCommon().length >0 ? this.findCommon() : this.props.stories;
+		const stories = this.findCommon().length > 0 ? this.findCommon() : this.props.stories;
 		if (stories == null) return <LoadingCircle />;
 
 		//const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
@@ -102,7 +102,7 @@ class StoriesPage extends React.Component {
 
 	renderStories(stories) {
 		if (stories.length === 0) {
-			
+
 			return (
 				<div className="col-12 text-center">
 					<p className="cool-font"> There are not any testimonials yet.  If you have a story to tell, let us know in the form below</p>
@@ -138,7 +138,9 @@ class StoriesPage extends React.Component {
 							}
 						</p>
 						<div className="author cool-font">
-							<h6 className="cool-font">{story.user.full_name}</h6>
+							{story.user ?
+								<h6 className="cool-font">{story.user.full_name}</h6>
+								: null}
 							{/* <p>{story.location}</p> */}
 						</div>
 						{(story.action) ? <p><Link to={`${this.props.links.actions}/${story.action.id}`} className="cool-font"><u>{story.action.title}</u></Link></p> : null}

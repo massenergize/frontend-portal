@@ -49,7 +49,7 @@ class EventsPage extends React.Component {
 		else {
 			this.setState({ check_values: [tagID, ...arr] })
 		}
-	}
+	} 
 
 	handleBoxClick(event) {
 		var id = event.target.value;
@@ -156,7 +156,6 @@ class EventsPage extends React.Component {
 		}
 		if (events) {
 			return events.map(event => {
-				console.log("I am the next events", event);
 				const HTML = `<div> ${event.description}</div>`;
 				const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);

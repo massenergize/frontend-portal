@@ -14,21 +14,23 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class ImpactPage extends React.Component {
 	render() {
+
+		const community = this.props.communityData ? this.props.comData.community :null;
+		const goal = this.props.comData ? this.props.comData.goal : null;
 		if (!this.props.communitiesStats || this.props.communitiesStats.length <= 0) {
 			getJson(URLS.COMMUNITIES_STATS).then(json => {
-				console.log(json);
 				if (json.success) {
 					this.props.reduxLoadCommunitiesStats(json.data.length > 0 ? json.data : null)
 				}
 			})
 			return <LoadingCircle />
 		}
-		
+
 		if (!this.props.tagCols || !this.props.communityData) return <LoadingCircle />;
 		if (!this.props.communityData || this.props.communityData.length === 0) {
 			return (
 				<div className="boxed_wrapper" >
-					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are no stats for this community yet :( </h2>
+					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are no stats for this community yet :( </h2>
 				</div>
 			)
 		}
@@ -37,6 +39,7 @@ class ImpactPage extends React.Component {
 		stats = stats.sort((a, b) => {
 			return b.actions_completed - a.actions_completed;
 		});
+
 
 		let communityImpact = {
 			// "categories": ["Wayland", "Weston", "Lincoln", "Concord", "Framingham", "Newton"],
@@ -100,33 +103,35 @@ class ImpactPage extends React.Component {
 		})[0];
 		return (
 			<>
-				
+
 				<div className='boxed_wrapper' >
-				<BreadCrumbBar links={[{ name: 'Impact' }]} />
-					<div className="container bg-light p-5">
-						<PageTitle>Our Community's Impact</PageTitle>
+					<BreadCrumbBar links={[{ name: 'Impact' }]} />
+					<div className="container p-5" style={{background:'white'}}>
+
 						<div className="row">
-							<div className="col-12 col-lg-4">
-								<div className="card rounded-0 mb-4">
+							<div className="col-12 col-lg-4" >
+								<h5 className="text-center" style={{ color: '#888', margin: 19 }}>{community ? community.name : null}</h5>
+								<div className="card  mb-4 raise"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
 									<div className="card-body">
 										<CircleGraph
-											num={householdsEngaged.value} goal={Number(householdsEngaged.denominator)} label={'Households Engaged'} size={150}
+											num={goal ? goal.attained_number_of_households : 0} goal={goal ? goal.target_number_of_households : 0} label={'Households Engaged'} size={150}
 											colors={["#428a36"]}
 										/>
 									</div>
 								</div>
-								<div className="card rounded-0 mb-4">
+								<div className="card raise mb-4"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
 									<div className="card-body">
 										<CircleGraph
-											num={actionsCompleted.value} goal={Number(actionsCompleted.denominator)} label={"Actions Completed"} size={150}
+											num={goal ? goal.attained_number_of_actions : 0} goal={goal ? goal.target_number_of_actions : 0} label={"Actions Completed"} size={150}
 											colors={["#FB5521"]}
 										/>
 									</div>
 								</div>
 							</div>
 							<div className="col-12 col-lg-8">
-								<div className="card rounded-0 mb-4">
-									<div className="card-header text-center bg-white">
+								<PageTitle>Our Community's Impact</PageTitle>
+								<div className="card rounded-0 mb-4" style={{ marginTop: 15 }}>
+									<div className="card-header text-center bg-white" style={{marginTop:5}}>
 										<h4 className="cool-font">Number Of Actions Completed</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:16, transform:'rotateZ(-90deg',left:-100}}>Number Of Actions Completed</p> */}
 									</div>
@@ -140,7 +145,7 @@ class ImpactPage extends React.Component {
 										/>
 										{/* <center><p style={{fontSize:16,margin:0}} className="cool-font">Community Goals</p></center> */}
 									</div>
-								
+
 								</div>
 
 								<div className="card rounded-0 mb-4">
@@ -154,7 +159,7 @@ class ImpactPage extends React.Component {
 											series={communityImpact.series}
 											colors={["#428a36", "#FB5521"]}
 										/>
-											{/* <center><p style={{fontSize:16,margin:0}}>Communities</p></center> */}
+										{/* <center><p style={{fontSize:16,margin:0}}>Communities</p></center> */}
 									</div>
 								</div>
 							</div>
@@ -162,7 +167,7 @@ class ImpactPage extends React.Component {
 					</div>
 				</div>
 			</>
-		); 
+		);
 	}
 }
 
@@ -170,7 +175,8 @@ const mapStoreToProps = (store) => {
 	return {
 		communitiesStats: store.page.communitiesStats,
 		communityData: store.page.communityData,
-		tagCols: store.page.tagCols
+		tagCols: store.page.tagCols,
+		comData: store.page.homePage,
 	}
 }
 export default connect(mapStoreToProps, { reduxLoadCommunitiesStats })(ImpactPage);

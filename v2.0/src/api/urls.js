@@ -15,7 +15,7 @@ const COMM_ID = "3";
  *          @TODO fix the read me to make it correct for new url patterns and have the arg names match the model var names
  */
 // ...and dependence on other defined URLS
-URLS["V2"] = URLS.ROOT + "/v2/";
+URLS["V2"] = URLS.ROOT + "/v2/"; 
 URLS["V3"] = URLS.ROOT + "/v3/";
 URLS["V3_COMMUNITIES"] = URLS.V3+"communities.list";
 URLS["COMMUNITY"] = URLS.V2 + "community/";

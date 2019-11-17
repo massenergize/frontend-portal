@@ -27,7 +27,7 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
-        const format = "MMMM Do YYYY, h:mm:ss a";
+        const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);
 				const endDate = new Date(event.end_date_and_time);
 				const textyStart = moment(date).format(format);

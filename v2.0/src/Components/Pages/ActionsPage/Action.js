@@ -29,18 +29,18 @@ class Action extends React.Component {
 			message: null,
 		}
 	}
-	gotoAction(){
+	gotoAction() {
 		window.location = `${this.props.links.actions + "/" + this.props.action.id}`;
 
 	}
 	render() {
-		const tags = this.props.action ? this.props.action.tags :null;
+		const tags = this.props.action ? this.props.action.tags : null;
 		if (!this.props.HHFormOpen && this.state.status) this.setState({ status: null });
 		if (this.shouldRender()) { //checks if the action should render or not
 			return (
 				<div className="col-lg-6 col-md-12 col-sm-12 col-12" >
 					<div className="single-shop-item m-action-item" >
-						<div className="img-box" onClick ={()=>{this.gotoAction()}}> { /* plug in the image here */}
+						<div className="img-box" onClick={() => { this.gotoAction() }}> { /* plug in the image here */}
 							<Link to={this.props.links.actions + "/" + this.props.action.id} >
 								< img src={this.props.action.image ? this.props.action.image.url : null} alt="" />
 							</Link>
@@ -57,29 +57,29 @@ class Action extends React.Component {
 							</figcaption>
 						</div>
 						<div className="content-box" >
-							<div className="inner-box" onClick ={()=>{this.gotoAction()}} >
+							<div className="inner-box" onClick={() => { this.gotoAction() }} >
 								<h4>
 									<Link className="cool-font" to={this.props.links.actions + "/" + this.props.action.id}> {this.props.action.title} </Link>
 								</h4>
 							</div>
 							{ /* Impact and Difficulty tags*/}
-							<div className="price-box2" onClick ={()=>{this.gotoAction()}} >
+							<div className="price-box2" onClick={() => { this.gotoAction() }} >
 								<div className="clearfix" >
 									<div className="float_left">
 										<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
 											<span className="has-tooltip">Impact</span>
 										</Tooltip>
-										<span>{this.renderTagBar(this.getTag("impact"))}</span>
+										<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 									</div>
 									<div className="float_right" >
-										
-										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
+
+										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
 									</div>
 
 								</div>
 							</div>
 							{ /* buttons for adding todo, marking as complete and getting more info */}
-							<div className="price-box3" style={{paddingTop:18}}>
+							<div className="price-box3" style={{ paddingTop: 18 }}>
 								<div className="row no-gutter d-flex align-items-center">
 									<div className="col-sm-4 col-md-4 col-lg-4 col-4" >
 										<div className="col-centered" >
@@ -227,38 +227,54 @@ class Action extends React.Component {
 		return noFilter;
 	}
 
-	getTag(collection) {
-		const tags = this.props.action.tags.filter(tag => {
-
-			return tag.tag_collection && tag.tag_collection.name && tag.tag_collection.name.toLowerCase() === collection.toLowerCase();
-		});
-		return tags && tags.length > 0 ? tags[0] : null
+	getParticularCollection(name) {
+		const cols = this.props.collection;
+		if (cols) {
+			const col = cols.filter(item => {
+				return item.name.toLowerCase() === name.toLowerCase();
+			});
+			return col ? col[0] : null;
+		}
 	}
 
-	renderTagBar(tag) {
+	getTag(name) {
+		const collectionSet = this.getParticularCollection(name);
+		if (collectionSet) {
+			const tags = this.props.action.tags.filter(tag => {
+				return tag.tag_collection === collectionSet.id;
+			});
+			return tags && tags.length > 0 ? tags[0] : null
+		}
+		return null
+	}
+
+	renderTagBar(tag, name) {
+
+		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
 		if (tag) {
-			if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
+
+			if (tag.points === 1) {
 				return (
 					<div>
-						<div className="tag-bar one">
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`}>
 						</div>
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "medium") {
+			if (tag.points === 2) {
 				return (
 					<div>
-						<div className="tag-bar one" />
-						<div className="tag-bar two" />
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase() === "hard") {
+			if (tag.points === 3) {
 				return (
 					<div>
-						<div className="tag-bar one" > </div>
-						<div className="tag-bar two" > </div>
-						<div className="tag-bar three" > </div>
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
+						<div className={`tag-bar ${diff ? 'd-three' : 'three'}`} />
 					</div>
 				);
 			}
@@ -268,7 +284,8 @@ class Action extends React.Component {
 }
 const mapStoreToProps = (store) => {
 	return ({
-		links: store.links
+		links: store.links,
+		collection: store.page.collection,
 	});
 }
 export default connect(mapStoreToProps)(Action);

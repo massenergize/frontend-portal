@@ -1,6 +1,29 @@
+
+/* one - #c63f3f 
+   two - #dc3545
+   three - #a0337e
+   
+*/
+
+
+
+.d-one{
+  background:#c63f3f;
+}
+.d-two{
+  background:#dc3545;
+}
+.d-three{
+  background:crimson;
+}
 ::-webkit-scrollbar {
   width: 9px;
   
+}
+.vendor-hover:hover{
+  -webkit-box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+  box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+  transition:.4s ease-in-out;
 }
 
 ::-webkit-scrollbar-track {
@@ -44,8 +67,8 @@
   cursor:pointer;
 }
 .pref-height{
-  min-height:375px !important; 
-  max-height:375px !important;
+  min-height:265px !important; 
+  max-height:265px !important;
 }
 .filter-search-input{
   padding:10px 25px !important; 

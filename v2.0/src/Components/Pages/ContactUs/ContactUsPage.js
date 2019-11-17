@@ -4,7 +4,7 @@ import { getJson, section } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-
+import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
@@ -35,7 +35,7 @@ class ContactUsPage extends React.Component {
       return (
         <div>
           <h4>Location</h4>
-          <p>{location.city}, <b>{location.unit} </b>, {location.state} , <b>{location.address}</b>, {location.country} , <b>{location.zipcode}</b></p>
+          <p>{location.city? `${location.city},` : ''} <b>{location.unit? `${location.unit},` : ''} </b> {location.state? `${location.state},` : ''}  <b>{location.address? `${location.address},` : ''}</b> {location.country? `${location.country},` : ''}  <b>{location.zipcode? `${location.zipcode}` : ''}</b></p>
         </div>
       )
     } else {
@@ -46,6 +46,9 @@ class ContactUsPage extends React.Component {
     }
   }
   render() {
+    if (!this.props.user)
+      return <Redirect to={this.props.links.signin}> </Redirect>;
+
     if (!this.props.pageData || !this.props.community) {
       return (
         <div className="boxed_wrapper" >
@@ -79,7 +82,7 @@ class ContactUsPage extends React.Component {
                   {this.ejectAdmins(admins)}
                 </div>
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                  <ContactPageForm admins = {admins} community_id={id}/>
+                  <ContactPageForm admins={admins} community_id={id} />
                 </div>
               </div>
             </div>
@@ -94,6 +97,8 @@ class ContactUsPage extends React.Component {
 const mapStoreToProps = (store) => {
 
   return {
+    user:store.user.info,
+    links: store.links,
     community: store.page.community,
     communityAdmins: store.page.communityAdmins,
     pageData: store.page.comInformation

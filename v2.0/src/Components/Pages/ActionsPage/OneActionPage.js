@@ -85,38 +85,54 @@ class OneActionPage extends React.Component {
 		return null;
 	}
 
-	getTag(collection) {
-
-		const tags = this.getMyAction().tags.filter(tag => {
-
-			return tag.tag_collection && tag.tag_collection.name && tag.tag_collection.name.toLowerCase() === collection.toLowerCase();
-		});
-		return tags && tags.length > 0 ? tags[0] : null
+	getParticularCollection(name) {
+		const cols = this.props.collection;
+		if (cols) {
+			const col = cols.filter(item => {
+				return item.name.toLowerCase() === name.toLowerCase();
+			});
+			return col ? col[0] : null;
+		}
 	}
-	renderTagBar(tag) {
+	
+	getTag(name) {
+		const collectionSet = this.getParticularCollection(name);
+		if (collectionSet) {
+			const tags = this.getMyAction().tags.filter(tag => {
+				return tag.tag_collection === collectionSet.id;
+			});
+			return tags && tags.length > 0 ? tags[0] : null
+		}
+		return null
+	}
+
+	renderTagBar(tag, name) {
+	
+		const diff = name.toLowerCase() ==="Difficulty".toLowerCase() ? true :false;
 		if (tag) {
-			if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
+
+			if (tag.points === 1) {
 				return (
 					<div>
-						<div className="tag-bar one">
+						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}>
 						</div>
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "medium") {
+			if (tag.points === 2) {
 				return (
 					<div>
-						<div className="tag-bar one" />
-						<div className="tag-bar two" />
+						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}/>
+						<div className={`tag-bar ${diff ? 'd-two' :'two'}`} />
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase() === "hard") {
+			if (tag.points === 3) {
 				return (
 					<div>
-						<div className="tag-bar one" > </div>
-						<div className="tag-bar two" > </div>
-						<div className="tag-bar three" > </div>
+						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}/>
+						<div className={`tag-bar ${diff ? 'd-two' :'two'}`} />
+						<div className={`tag-bar ${diff ? 'd-three' :'three'}`} />
 					</div>
 				);
 			}
@@ -148,10 +164,10 @@ class OneActionPage extends React.Component {
 									<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
 										<span className="has-tooltip">Impact</span>
 									</Tooltip>
-									<span>{this.renderTagBar(this.getTag("impact"))}</span>
+									<span>{this.renderTagBar(this.getTag("impact"),"impact")}</span>
 								</div>
 								<div className="float_right" style={{marginRight:50}} >
-									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
+									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"),"difficulty")} </span>
 								</div>
 							</div>
 					
@@ -243,7 +259,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'steps' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="steps">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}}></p>
+									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.steps_to_take}}></p>
 								</div>
 							</div>
 						</div>
@@ -495,7 +511,8 @@ const mapStoreToProps = (store) => {
 		actions: store.page.actions,
 		stories: store.page.testimonials,
 		communityData: store.page.communityData,
-		links: store.links
+		links: store.links, 
+		collection:store.page.collection
 	}
 }
 const mapDispatchToProps = {
