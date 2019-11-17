@@ -110,6 +110,7 @@ class StoryForm extends React.Component {
 							<button className="thm-btn bg-cl-1 btn-finishing" type="submit">Submit Now</button>
 						</div>
 					</div>
+					{this.state.message ? <p className='text-success'>{this.state.message}</p> : null}
 					{this.state.error ? <p className='text-danger'>{this.state.error}</p> : null}
 
 				</form>
@@ -134,17 +135,16 @@ class StoryForm extends React.Component {
 		})
 	}
 	onSubmit(event) {
-		console.log(this.state);
 		event.preventDefault();
 		/** Collects the form data and sends it to the backend */
 		const body = {
-			"user": this.props.user.id,
-			"vendor": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
-			"action": this.props.aid ? this.props.aid : this.state.aid,
+			"user_email": this.props.user.email,
+			"vendor_id": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
+			"action_id": this.props.aid ? this.props.aid : this.state.aid,
 			"rank": 0,
 			"body": this.state.body,
 			"title": this.state.title,
-			"community": this.props.community.id,
+			"community_id": this.props.community.id,
 			"image":this.state.picFile ?this.state.picFile : defaultUser
 		}
 		if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
@@ -153,7 +153,7 @@ class StoryForm extends React.Component {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
-			apiCall(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
+			apiCall(`/testimonials.add`, body).then(json => {
 				console.log(json);
 				if (json && json.success) {
 					this.setState({

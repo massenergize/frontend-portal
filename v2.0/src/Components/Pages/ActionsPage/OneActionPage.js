@@ -94,7 +94,7 @@ class OneActionPage extends React.Component {
 			return col ? col[0] : null;
 		}
 	}
-	
+
 	getTag(name) {
 		const collectionSet = this.getParticularCollection(name);
 		if (collectionSet) {
@@ -107,14 +107,14 @@ class OneActionPage extends React.Component {
 	}
 
 	renderTagBar(tag, name) {
-	
-		const diff = name.toLowerCase() ==="Difficulty".toLowerCase() ? true :false;
+
+		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
 		if (tag) {
 
 			if (tag.points === 1) {
 				return (
 					<div>
-						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}>
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`}>
 						</div>
 					</div>
 				);
@@ -122,17 +122,17 @@ class OneActionPage extends React.Component {
 			if (tag.points === 2) {
 				return (
 					<div>
-						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}/>
-						<div className={`tag-bar ${diff ? 'd-two' :'two'}`} />
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
 					</div>
 				);
 			}
 			if (tag.points === 3) {
 				return (
 					<div>
-						<div className={`tag-bar ${diff ? 'd-one' :'one'}`}/>
-						<div className={`tag-bar ${diff ? 'd-two' :'two'}`} />
-						<div className={`tag-bar ${diff ? 'd-three' :'three'}`} />
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
+						<div className={`tag-bar ${diff ? 'd-three' : 'three'}`} />
 					</div>
 				);
 			}
@@ -147,9 +147,13 @@ class OneActionPage extends React.Component {
 		if (!this.props.stories) {
 			return <LoadingCircle />
 		}
+
 		const stories = this.props.stories.filter(story => {
-			return story.action.id === Number(this.props.match.params.id)
-		})
+			if (story.action) {
+				return story.action.id === Number(this.props.match.params.id)
+			}
+		});
+
 		return (
 			<div>
 				<div className="product-content-box">
@@ -159,28 +163,28 @@ class OneActionPage extends React.Component {
 							<div className="content-box">
 								<h2 className="cool-font" style={{ padding: "20px 0px 0px 0px" }}>{action.title}</h2>
 							</div>
-							<div style={{padding:15,position:'relative'}}>
-								<div className="" style={{display:'inline-block'}}>
+							<div style={{ padding: 15, position: 'relative' }}>
+								<div className="" style={{ display: 'inline-block' }}>
 									<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
 										<span className="has-tooltip">Impact</span>
 									</Tooltip>
-									<span>{this.renderTagBar(this.getTag("impact"),"impact")}</span>
+									<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 								</div>
-								<div className="float_right" style={{marginRight:50}} >
-									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"),"difficulty")} </span>
+								<div className="float_right" style={{ marginRight: 50 }} >
+									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
 								</div>
 							</div>
-					
+
 							{/* displays the action's info: impact, difficulty, tags and categories*/}
-							<div className="clearfix" style={{ marginLeft: "40px", marginTop:10 }}>
+							<div className="clearfix" style={{ marginLeft: "40px", marginTop: 10 }}>
 								{/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-						
+
 								{!this.props.user ?
 									// <Tooltip text='Sign in to make a TODO list' style={{display:'inline-block'}}>
-										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
-											Add Todo
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
+										Add Todo
                                                     </p>
 									// </Tooltip>
 									:
@@ -192,8 +196,8 @@ class OneActionPage extends React.Component {
 								&nbsp;
                                 {!this.props.user ?
 									// <Tooltip text='Sign in to mark actions as completed' style={{display:'inline-block'}}>
-										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
-											Done It
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
+										Done It
                                                     </p>
 									// </Tooltip>
 									:
@@ -251,7 +255,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'description' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="desc">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}} ></p>
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.about }} ></p>
 								</div>
 							</div>
 						</div>
@@ -259,7 +263,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'steps' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="steps">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.steps_to_take}}></p>
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p>
 								</div>
 							</div>
 						</div>
@@ -333,7 +337,7 @@ class OneActionPage extends React.Component {
 					const date = new Date(story.created_at);
 					if (key < this.state.numberToShow) {
 						return (
-							<div className="single-review-box" key={key}>
+							<div className="single-review-box" style={{paddingLeft:0,paddingBottom:5}} key={key}>
 								<div className="img-holder">
 									<img src="" alt="" />
 								</div>
@@ -511,8 +515,8 @@ const mapStoreToProps = (store) => {
 		actions: store.page.actions,
 		stories: store.page.testimonials,
 		communityData: store.page.communityData,
-		links: store.links, 
-		collection:store.page.collection
+		links: store.links,
+		collection: store.page.collection
 	}
 }
 const mapDispatchToProps = {

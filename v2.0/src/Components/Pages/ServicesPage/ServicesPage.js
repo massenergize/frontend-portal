@@ -79,7 +79,7 @@ class ServicesPage extends React.Component {
 				</div>
 			)
 		}
-		var serviceProviders = this.state.mirror_services.length > 0 ? this.state.mirror_services : this.findCommon();
+		var vendors = this.state.mirror_services.length > 0 ? this.state.mirror_services : this.findCommon();
 
 
 		return (
@@ -94,7 +94,7 @@ class ServicesPage extends React.Component {
 							<div className="col-md-3">
 								<div className="event-filter raise" style={{ marginTop: 90, padding: 45, borderRadius: 15 }}>
 									<h4>Filter by...</h4>
-									<Funnel type="service" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={0} />
+									<Funnel type="service" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_services.length} />
 								</div>
 							</div>
 							<div className="col-md-8 col-lg-8 col-sm-12 ">
@@ -105,7 +105,7 @@ class ServicesPage extends React.Component {
 								</div>
 
 								<div className="row pt-3 pb-3">
-									{this.renderVendors(serviceProviders)}
+									{this.renderVendors(vendors)}
 								</div>
 							</div>
 						</div>
@@ -119,13 +119,13 @@ class ServicesPage extends React.Component {
 		if (this.state.mirror_services.length === 0) {
 			vendors = this.state.check_values === null ? this.props.serviceProviders : vendors;
 		}
-		if (!vendors || vendors.length === 0) {
-			return (
-				<div className="boxed_wrapper" >
-					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Looks like your community hasn't partnered with any vendors yet.  Try again later :( </h2>
-				</div>
-			)
-		}
+		// if (!vendors || vendors.length === 0) {
+		// 	return (
+		// 		<div className="boxed_wrapper" >
+		// 			<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Looks like your community hasn't partnered with any vendors yet.  Try again later :( </h2>
+		// 		</div>
+		// 	)
+		// }
 
 		return vendors.map((vendor) => {
 			return (

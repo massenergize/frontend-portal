@@ -106,9 +106,11 @@ class AppRouter extends Component {
 			getJson(URLS.EVENT_ATTENDEES),
 			apiCall("communities.info", { subdomain: subdomain }, null),
 			getJson(URLS.TAG_COLLECTIONS),
-			getJson(URLS.COMMUNITY + subdomain + '/data'),
+			//getJson(URLS.COMMUNITY + subdomain + '/data'),
+			apiCall("graphs.actions.completed",body),
 			getJson(URLS.V3 + 'tag_collections.listForSuperAdmin'),
-			apiCall("communities.info", body, null)
+			apiCall("communities.info", body, null),
+			apiCall(URLS.V3_COMMUNITIES_STATS,body)
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
@@ -130,6 +132,7 @@ class AppRouter extends Component {
 			this.props.reduxLoadCommunityData(myJsons[13].data)
 			this.props.reduxLoadCollection(myJsons[14].data)
 			this.props.reduxLoadCommunityInformation(myJsons[15].data)
+			this.props.reduxLoadCommunitiesStats(myJsons[16].data)
 		}).catch(err => {
 			this.setState({ error: err })
 			console.log(err)

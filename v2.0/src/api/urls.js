@@ -20,6 +20,7 @@ URLS["V3"] = URLS.ROOT + "/v3/";
 URLS["V3_COMMUNITIES"] = URLS.V3+"communities.list";
 URLS["COMMUNITY"] = URLS.V2 + "community/";
 URLS["V3_COMMUNITY"] = URLS.V3+"community/";
+URLS["V3_COMMUNITIES_STATS"] = "graphs.communities.impact";
 
 URLS["ACTIONS"] = URLS.V2 + "actions";
 URLS["ACTION"] = URLS.V2 + "action"; //add the id after this

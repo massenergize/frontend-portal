@@ -14,18 +14,9 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class ImpactPage extends React.Component {
 	render() {
-
 		const community = this.props.communityData ? this.props.comData.community :null;
 		const goal = this.props.comData ? this.props.comData.goal : null;
-		if (!this.props.communitiesStats || this.props.communitiesStats.length <= 0) {
-			getJson(URLS.COMMUNITIES_STATS).then(json => {
-				if (json.success) {
-					this.props.reduxLoadCommunitiesStats(json.data.length > 0 ? json.data : null)
-				}
-			})
-			return <LoadingCircle />
-		}
-
+		const completed = this.props.communityData ? this.props.communityData.data :[];
 		if (!this.props.tagCols || !this.props.communityData) return <LoadingCircle />;
 		if (!this.props.communityData || this.props.communityData.length === 0) {
 			return (
@@ -34,73 +25,70 @@ class ImpactPage extends React.Component {
 				</div>
 			)
 		}
-		let stats = this.props.communitiesStats.slice(0);
-
+		let stats = this.props.communitiesStats ?this.props.communitiesStats.data.slice(0):[];
 		stats = stats.sort((a, b) => {
 			return b.actions_completed - a.actions_completed;
 		});
 
-
 		let communityImpact = {
-			// "categories": ["Wayland", "Weston", "Lincoln", "Concord", "Framingham", "Newton"],
 			"categories": [],
 			"series": [
 				{
 					name: "Households Engaged",
-					// data: [100, 90, 80, 70, 60, 50]
 					data: []
 				},
 				{
 					name: "Actions Completed",
-					// data: [300, 250, 200, 150, 100, 50]
 					data: []
 				}
 			]
 		};
-
 		stats.forEach(comm => {
 			communityImpact.categories.push(comm.community.name);
 			communityImpact.series[0].data.push(comm.households_engaged);
 			communityImpact.series[1].data.push(comm.actions_completed);
 		});
 
-		var tags = this.props.tagCols.filter(tagCol => { return tagCol.name === 'Category' })[0].tags;
 		var graph2Categories = [];
 		var graph2Series = [
 			{
-				name: "State reported",
-				data: [],
-			},
-			{
-				name: "Self reported",
-				data: [],
+				name: "Actions Completed",
+				data: [2,3,4,5],
 			},
 		];
 
-		tags.forEach(tag => {
-			var data = this.props.communityData.filter(d => {
-				return d.tag === tag.id
-			})[0];
-			if (data) {
-				graph2Categories.push(data.name);
-				graph2Series[1].data.push(data.value);
-				var stata = this.props.communityData.filter(d => {
-					return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
-				})[0];
-				if (stata) {
-					graph2Series[0].data.push(stata.value);
-				} else {
-					graph2Series[0].data.push(0);
-				}
+		completed.forEach(el =>{
+			if(el){
+				graph2Categories.push(el.name);
+				graph2Series[0].data.push(el.value);
 			}
 		})
 
-		var householdsEngaged = this.props.communityData.filter(d => {
-			return d.name === 'EngagedHouseholdsData';
-		})[0];
-		var actionsCompleted = this.props.communityData.filter(d => {
-			return d.name === 'ActionsCompletedData';
-		})[0];
+		// tags.forEach(tag => {
+		// 	var data = this.props.communityData.filter(d => {
+		// 		return d.tag === tag.id
+		// 	})[0];
+		// 	if (data) {
+		// 		graph2Categories.push(data.name);
+		// 		graph2Series[1].data.push(data.value);
+		// 		var stata = this.props.communityData.filter(d => {
+		// 			return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
+		// 		})[0];
+		// 		if (stata) {
+		// 			graph2Series[0].data.push(stata.value);
+		// 		} else {
+		// 			graph2Series[0].data.push(0);
+		// 		}
+		// 	}
+		// })
+
+
+		// var householdsEngaged = this.props.communityData.filter(d => {
+		// 	return d.name === 'EngagedHouseholdsData';
+		// })[0];
+		// var actionsCompleted = this.props.communityData.filter(d => {
+		// 	return d.name === 'ActionsCompletedData';
+		// })[0];
 		return (
 			<>
 
@@ -140,7 +128,7 @@ class ImpactPage extends React.Component {
 											categories={graph2Categories}
 											series={graph2Series}
 											stacked={true}
-											colors={["#ff9a9a", "rgba(251, 85, 33, 0.85)"]}
+											colors={["rgba(251, 85, 33, 0.85)","#ff9a9a" ]}
 										// 86bd7d
 										/>
 										{/* <center><p style={{fontSize:16,margin:0}} className="cool-font">Community Goals</p></center> */}
