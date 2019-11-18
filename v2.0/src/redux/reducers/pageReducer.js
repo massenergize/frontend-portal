@@ -66,6 +66,11 @@ export default function (state = initialState, action) {
 	switch (action.type) {
 		/**************************/
 		
+		case "LOAD_COMMUNITY_INFORMATION":
+			return {
+				...state,
+				comInformation: action.payload
+			}
 		case "LOAD_COLLECTION":
 			return {
 				...state,
@@ -243,7 +248,7 @@ export default function (state = initialState, action) {
 			}
 		case TEAM_ADD_ACTION:
 			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
-			return {
+			return { 
 				...state,
 				teamsPage: [
 					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),

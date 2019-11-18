@@ -1,6 +1,6 @@
 import React from 'react';
 import URLS from '../../../api/urls'
-import { postJson, getJson } from '../../../api/functions';
+import { postJson, getJson,apiCall } from '../../../api/functions';
 import { connect } from 'react-redux';
 import defaultUser from './../../Shared/default-user.png';
 
@@ -42,7 +42,7 @@ class StoryForm extends React.Component {
 		if (!this.props.actions || this.props.actions.length === 0) return <div className='text-center'><p> Sorry, there are no actions to submit a story about </p></div>;
 		if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
 		return (
-			<div className="review-form raise" style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
+			<div className="review-form " style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
 				{this.props.noMessage ? null :
 					<div className="tab-title-h4 text center">
 						<h4 className="p-2">{this.state.message}</h4>
@@ -110,6 +110,7 @@ class StoryForm extends React.Component {
 							<button className="thm-btn bg-cl-1 btn-finishing" type="submit">Submit Now</button>
 						</div>
 					</div>
+					{this.state.message ? <p className='text-success'>{this.state.message}</p> : null}
 					{this.state.error ? <p className='text-danger'>{this.state.error}</p> : null}
 
 				</form>
@@ -134,17 +135,16 @@ class StoryForm extends React.Component {
 		})
 	}
 	onSubmit(event) {
-		console.log(this.state);
 		event.preventDefault();
 		/** Collects the form data and sends it to the backend */
 		const body = {
-			"user": this.props.user.id,
-			"vendor": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
-			"action": this.props.aid ? this.props.aid : this.state.aid,
+			"user_email": this.props.user.email,
+			"vendor_id": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
+			"action_id": this.props.aid ? this.props.aid : this.state.aid,
 			"rank": 0,
 			"body": this.state.body,
 			"title": this.state.title,
-			"community": this.props.community.id,
+			"community_id": this.props.community.id,
 			"image":this.state.picFile ?this.state.picFile : defaultUser
 		}
 		if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
@@ -153,7 +153,7 @@ class StoryForm extends React.Component {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
-			postJson(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
+			apiCall(`/testimonials.add`, body).then(json => {
 				console.log(json);
 				if (json && json.success) {
 					this.setState({

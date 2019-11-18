@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 class HomePage extends React.Component {
 
 	render() {
+		
 		if (!this.props.pageData) return <p className='text-center'> Sorry, looks like this community's Home Page is under maintenance. Try again later </p>;
 		const comGoals = this.props.pageData ? this.props.pageData.goal : null;
 		const communityDescription = this.props.pageData.description;

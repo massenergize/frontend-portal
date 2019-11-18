@@ -24,6 +24,7 @@ import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
 import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './Components/Pages/DonatePage/DonatePage'
+import ContactPage from './Components/Pages/ContactUs/ContactUsPage';
 import CommunitySelectPage from './Components/Pages/CommunitySelectPage'
 
 import {
@@ -46,15 +47,16 @@ import {
 	reduxLoadCommunities,
 	reduxLoadRSVPs,
 	reduxLoadTagCols,
-	reduxLoadCommunityData, 
+	reduxLoadCommunityData,
 	reduxLoadCollection,
+	reduxLoadCommunityInformation
 } from './redux/actions/pageActions'
 import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 import { reduxLoadLinks } from './redux/actions/linkActions';
 
 
 import URLS from './api/urls'
-import { getJson,apiCall } from './api/functions'
+import { getJson, apiCall } from './api/functions'
 import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 
@@ -67,6 +69,7 @@ class AppRouter extends Component {
 	}
 	componentDidMount() {
 		var subdomain = this.props.match.params.subdomain;
+		var body = { subdomain: subdomain };
 		this.props.reduxLoadLinks({
 			home: `/${subdomain}`,
 			actions: `/${subdomain}/actions`,
@@ -81,32 +84,38 @@ class AppRouter extends Component {
 			signup: `/${subdomain}/signup`,
 			profile: `/${subdomain}/profile`,
 			policies: `/${subdomain}/policies`,
-		}) 
+			contactus: `/${subdomain}/contactus`
+		})
 		Promise.all([
 			//Make sure to cleanup, and declare variables in Urls later
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
-			apiCall('home_page_settings.info',{subdomain:subdomain},null),
+			apiCall('home_page_settings.info', body, null),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
-			apiCall('about_us_page_settings.info',{subdomain:subdomain},null),
-			apiCall('donate_page_settings.info',{subdomain:subdomain},null),
+			apiCall('about_us_page_settings.info', body, null),
+			apiCall('donate_page_settings.info', body, null),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
-			apiCall('events.list',{subdomain:subdomain},null),
+			apiCall('events.list', body, null),
 			getJson(URLS.COMMUNITY + subdomain + '/actions'),
-			getJson(URLS.COMMUNITY + subdomain + '/vendors'),
-			getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
+			//getJson(URLS.COMMUNITY + subdomain + '/vendors'),
+			apiCall('vendors.list', body, null),
+			apiCall('testimonials.list', body, null),
+			//getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
-			apiCall("communities.info",{subdomain:subdomain},null),
+			apiCall("communities.info", { subdomain: subdomain }, null),
 			getJson(URLS.TAG_COLLECTIONS),
-			getJson(URLS.COMMUNITY + subdomain + '/data'),
-			getJson(URLS.V3+'tag_collections.listForSuperAdmin'),
+			//getJson(URLS.COMMUNITY + subdomain + '/data'),
+			apiCall("graphs.actions.completed",body),
+			getJson(URLS.V3 + 'tag_collections.listForSuperAdmin'),
+			apiCall("communities.info", body, null),
+			apiCall(URLS.V3_COMMUNITIES_STATS,body)
 		]).then(myJsons => {
 			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
 			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
-			this.props.reduxLoadAboutUsPage(myJsons[2].data  ? myJsons[2].data : null)
-			this.props.reduxLoadDonatePage(myJsons[3].data? myJsons[3].data : null)
+			this.props.reduxLoadAboutUsPage(myJsons[2].data ? myJsons[2].data : null)
+			this.props.reduxLoadDonatePage(myJsons[3].data ? myJsons[3].data : null)
 			this.props.reduxLoadEvents(myJsons[4].data)
 			this.props.reduxLoadActions(myJsons[5].data)
 			this.props.reduxLoadServiceProviders(myJsons[6].data)
@@ -122,6 +131,8 @@ class AppRouter extends Component {
 			this.props.reduxLoadTagCols(myJsons[12].data)
 			this.props.reduxLoadCommunityData(myJsons[13].data)
 			this.props.reduxLoadCollection(myJsons[14].data)
+			this.props.reduxLoadCommunityInformation(myJsons[15].data)
+			this.props.reduxLoadCommunitiesStats(myJsons[16].data)
 		}).catch(err => {
 			this.setState({ error: err })
 			console.log(err)
@@ -160,6 +171,13 @@ class AppRouter extends Component {
 			return <LoadingCircle />;
 		}
 		const { links } = this.props;
+		var finalMenu =[];
+		if (this.props.menu) {
+			const contactUsItem = { link: "/contactus", name: "Contact Us" };
+			const navMenus = this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content;
+		 finalMenu = this.props.user ? [...navMenus, contactUsItem] : navMenus;
+		}
+
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">
@@ -173,7 +191,7 @@ class AppRouter extends Component {
 				{this.props.menu ?
 					<div>
 						<NavBarBurger
-							navLinks={this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content}
+							navLinks={finalMenu}
 						/>
 						<NavBarOffset />
 					</div> : <LoadingCircle />
@@ -203,7 +221,7 @@ class AppRouter extends Component {
 							<Route path={links.signup} component={RegisterPage} />
 							<Route path={links.profile} component={ProfilePage} />
 							<Route path={links.policies} component={PoliciesPage} />
-							{/*<Route path="/contact" component={Contact} /> */}
+							<Route path={links.contactus} component={ContactPage} />
 							<Route component={() => {
 								return <div>
 									404 Error: Page not Found
@@ -223,6 +241,7 @@ class AppRouter extends Component {
 }
 const mapStoreToProps = (store) => {
 	return {
+		user: store.user.info,
 		auth: store.firebase.auth,
 		user: store.user.info,
 		menu: store.page.menu,
@@ -253,7 +272,8 @@ const mapDispatchToProps = {
 	reduxLoadRSVPs,
 	reduxLoadTagCols,
 	reduxLoadCommunityData,
-	reduxLoadLinks, 
+	reduxLoadLinks,
 	reduxLoadCollection,
+	reduxLoadCommunityInformation
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

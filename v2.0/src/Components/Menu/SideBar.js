@@ -37,7 +37,7 @@ class SideBar extends React.Component {
 		return Object.keys(tagCol).map(key => {
 			var tag = tagCol[key];
 			return (
-				<label s className="checkbox-container" onClick={this.props.onChange} key={key}>
+				<label s className="checkbox-container" onClick={this.props.onChange} key={key.toString()}>
 					<p style={{
 						marginLeft: "25px",
 						marginBottom: "0",

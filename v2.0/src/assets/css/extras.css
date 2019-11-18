@@ -1,14 +1,85 @@
 
+/* one - #c63f3f 
+   two - #dc3545
+   three - #a0337e
+   
+*/
+
+
+
+.d-one{
+  background:#c63f3f;
+}
+.d-two{
+  background:#dc3545;
+}
+.d-three{
+  background:crimson;
+}
+::-webkit-scrollbar {
+  width: 9px;
+  
+}
+.vendor-hover:hover{
+  -webkit-box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+  box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
+  transition:.4s ease-in-out;
+}
+
+::-webkit-scrollbar-track {
+  background:white;
+  -webkit-box-shadow: 0 0 0; 
+  border-radius: 10px;
+  opacity:.4;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background:#eaeae6;
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  */
+}
+.force-height-event{
+  height:190px !important;
+}
+.m-form-outer{
+  padding:25px;
+  border:solid 1px lightgray; 
+  border-radius:10px; 
+  min-height: 500px; 
+  max-height: 500px;
+  margin-bottom: 30px;
+}
+.m-btn{
+  padding:10px 30px; 
+  border-radius:55px;
+  margin:9px;
+}
+
+.m-textbox{
+  padding:20px; 
+  font-size:16px;
+  margin:6px 0px;
+}
+
+.loc-banner{
+  padding:20px !important;
+  background-color:#344038 !important;
+  cursor:pointer;
+}
+.pref-height{
+  min-height:265px !important; 
+  max-height:265px !important;
+}
 .filter-search-input{
-  padding:10px 25px; 
+  padding:10px 25px !important; 
   border:solid 1px #eafff3; 
   border-radius:55px;
-  margin-left:-20px;
+  margin-left:-20px !important;
 }
 
 .home-events-img{
   width:100%; 
-  height:200px !important; 
+  height:300px !important; 
   object-fit: cover;
 }
 .home-event-hover:hover{
@@ -92,7 +163,9 @@
 }
 
 .m-action-item{
+  border-radius:12px;
   cursor:pointer; 
+  border-color: #f3f3f3 !important;
 
 }
 .cart-t-bar{
@@ -223,7 +296,7 @@
   padding:25px; 
 }
 .community-about-text{
-  padding:25px;
+  /* padding:25px; */
 }
 .modal-close-x{
     position: absolute; 
@@ -250,10 +323,11 @@
 .contact-admin-btn{
   font-size: 14px;
   font-weight: 700;;
-  background:lightgray; 
+  background:#73626f; 
   border-radius: 5px;
   padding:7px 11px;
   cursor:pointer;
+  color:white;
 }
 .contact-admin-btn:hover{
   background:green; 

@@ -65,10 +65,17 @@ class EventFilter extends Component {
   }
   render() {
     const found = this.props.foundNumber;
+    const type = this.props.type;
     return (
       <div>
-        <input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />
-        <small style={{ color: '#70a96f' }}>{found} {found === 1 ? "event " : "events "} found</small>
+        {type !== "testimonial" ? (
+          <div>
+            <input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />
+            <small style={{ color: '#70a96f' }}>{found} {found === 1 ? this.props.type : this.props.type + "s "} found</small>
+          </div>
+        )
+          :
+          null}
         {this.renderDifferentCollections()}
       </div>
     )

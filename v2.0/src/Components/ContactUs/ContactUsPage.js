@@ -11,9 +11,9 @@ import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
 
 // Carousel from npm react-multi-carousel
-import 'react-multi-carousel/lib/styles.css';
+import './node_modules/react-multi-carousel/lib/styles.css';
 
-class AboutUsPage extends React.Component {
+class ContactUsPage extends React.Component {
 	render() {
 	
 		if (!this.props.pageData || !this.props.community) {
@@ -52,7 +52,7 @@ class AboutUsPage extends React.Component {
 						}
 						<div className={paragraphContent ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
 							<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
-							<div className="community-about-text cool-font" style={{color:'gray',fontSize:'large'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
+							<div className="community-about-text cool-font" style={{color:'gray'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 						</div>
 						<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 							<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
@@ -76,8 +76,8 @@ const mapStoreToProps = (store) => {
 	return {
 		community: store.page.community,
 		communityAdmins: store.page.communityAdmins,
-		pageData: store.page.aboutUsPage
+		pageData: store.page.ContactUsPage
 	}
 }
 
-export default connect(mapStoreToProps, { reduxLoadCommunityAdmins })(AboutUsPage);
+export default connect(mapStoreToProps, { reduxLoadCommunityAdmins })(ContactUsPage);

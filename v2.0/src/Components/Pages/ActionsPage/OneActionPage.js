@@ -85,38 +85,54 @@ class OneActionPage extends React.Component {
 		return null;
 	}
 
-	getTag(collection) {
-
-		const tags = this.getMyAction().tags.filter(tag => {
-
-			return tag.tag_collection && tag.tag_collection.name && tag.tag_collection.name.toLowerCase() === collection.toLowerCase();
-		});
-		return tags && tags.length > 0 ? tags[0] : null
+	getParticularCollection(name) {
+		const cols = this.props.collection;
+		if (cols) {
+			const col = cols.filter(item => {
+				return item.name.toLowerCase() === name.toLowerCase();
+			});
+			return col ? col[0] : null;
+		}
 	}
-	renderTagBar(tag) {
+
+	getTag(name) {
+		const collectionSet = this.getParticularCollection(name);
+		if (collectionSet) {
+			const tags = this.getMyAction().tags.filter(tag => {
+				return tag.tag_collection === collectionSet.id;
+			});
+			return tags && tags.length > 0 ? tags[0] : null
+		}
+		return null
+	}
+
+	renderTagBar(tag, name) {
+
+		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
 		if (tag) {
-			if (tag.name.toLowerCase() === "low" || tag.name.toLowerCase() === "easy") {
+
+			if (tag.points === 1) {
 				return (
 					<div>
-						<div className="tag-bar one">
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`}>
 						</div>
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "medium") {
+			if (tag.points === 2) {
 				return (
 					<div>
-						<div className="tag-bar one" />
-						<div className="tag-bar two" />
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
 					</div>
 				);
 			}
-			if (tag.name.toLowerCase() === "high" || tag.name.toLowerCase() === "hard") {
+			if (tag.points === 3) {
 				return (
 					<div>
-						<div className="tag-bar one" > </div>
-						<div className="tag-bar two" > </div>
-						<div className="tag-bar three" > </div>
+						<div className={`tag-bar ${diff ? 'd-one' : 'one'}`} />
+						<div className={`tag-bar ${diff ? 'd-two' : 'two'}`} />
+						<div className={`tag-bar ${diff ? 'd-three' : 'three'}`} />
 					</div>
 				);
 			}
@@ -131,10 +147,13 @@ class OneActionPage extends React.Component {
 		if (!this.props.stories) {
 			return <LoadingCircle />
 		}
+
 		const stories = this.props.stories.filter(story => {
-			return story.action.id === Number(this.props.match.params.id)
-		})
-		console.log("I am the actionister", this.renderTagBar(this.getTag("difficulty")));
+			if (story.action) {
+				return story.action.id === Number(this.props.match.params.id)
+			}
+		});
+
 		return (
 			<div>
 				<div className="product-content-box">
@@ -144,30 +163,30 @@ class OneActionPage extends React.Component {
 							<div className="content-box">
 								<h2 className="cool-font" style={{ padding: "20px 0px 0px 0px" }}>{action.title}</h2>
 							</div>
-							<div style={{padding:15,position:'relative'}}>
-								<div className="" style={{display:'inline-block'}}>
+							<div style={{ padding: 15, position: 'relative' }}>
+								<div className="" style={{ display: 'inline-block' }}>
 									<Tooltip text="Shows the level of impact this action makes relative to the other actions." dir="top">
 										<span className="has-tooltip">Impact</span>
 									</Tooltip>
-									<span>{this.renderTagBar(this.getTag("impact"))}</span>
+									<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 								</div>
-								<div className="float_right" style={{marginRight:50}} >
-									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"))} </span>
+								<div className="float_right" style={{ marginRight: 50 }} >
+									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
 								</div>
 							</div>
-					
+
 							{/* displays the action's info: impact, difficulty, tags and categories*/}
-							<div className="clearfix" style={{ marginLeft: "40px", marginTop:10 }}>
+							<div className="clearfix" style={{ marginLeft: "40px", marginTop: 10 }}>
 								{/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-						
+
 								{!this.props.user ?
-									<Tooltip text='Sign in to make a TODO list'>
-										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
-											Add Todo
+									// <Tooltip text='Sign in to make a TODO list' style={{display:'inline-block'}}>
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
+										Add Todo
                                                     </p>
-									</Tooltip>
+									// </Tooltip>
 									:
 									<button
 										className={this.state.status === "TODO" ? "thm-btn action-btns cool-font style-4 selected" : "thm-btn style-4 action-btns cool-font"}
@@ -176,11 +195,11 @@ class OneActionPage extends React.Component {
 								}
 								&nbsp;
                                 {!this.props.user ?
-									<Tooltip text='Sign in to mark actions as completed'>
-										<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
-											Done It
+									// <Tooltip text='Sign in to mark actions as completed' style={{display:'inline-block'}}>
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
+										Done It
                                                     </p>
-									</Tooltip>
+									// </Tooltip>
 									:
 									<button
 										className={this.state.status === "DONE" ? "thm-btn style-4 selected action-btns cool-font " : "thm-btn style-4 action-btns  cool-font"}
@@ -236,7 +255,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'description' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="desc">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}} ></p>
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.about }} ></p>
 								</div>
 							</div>
 						</div>
@@ -244,7 +263,7 @@ class OneActionPage extends React.Component {
 						<div className={this.state.tab === 'steps' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="steps">
 							<div className="product-details-content">
 								<div className="desc-content-box">
-									<p className="cool-font" dangerouslySetInnerHTML={{__html: action.about}}></p>
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p>
 								</div>
 							</div>
 						</div>
@@ -297,7 +316,6 @@ class OneActionPage extends React.Component {
 	}
 
 	renderTags(tags) {
-		console.log(tags);
 		return Object.keys(tags).map((key) => {
 			var tagColName = ''
 			if (tags[key].tag_collection.name !== 'Category') {
@@ -319,7 +337,7 @@ class OneActionPage extends React.Component {
 					const date = new Date(story.created_at);
 					if (key < this.state.numberToShow) {
 						return (
-							<div className="single-review-box" key={key}>
+							<div className="single-review-box" style={{paddingLeft:0,paddingBottom:5}} key={key}>
 								<div className="img-holder">
 									<img src="" alt="" />
 								</div>
@@ -497,7 +515,8 @@ const mapStoreToProps = (store) => {
 		actions: store.page.actions,
 		stories: store.page.testimonials,
 		communityData: store.page.communityData,
-		links: store.links
+		links: store.links,
+		collection: store.page.collection
 	}
 }
 const mapDispatchToProps = {

@@ -131,7 +131,7 @@ class TeamsPage extends React.Component {
 		});
 		return teamsSorted.map((obj, index) => {
 			this.goalsList(obj.team.id).then(json => {
-				if (json && json.success && json.data) {
+				if (json && json.success && json.data.length > 0) {
 					var c = json.data[0].attained_carbon_footprint_reduction;
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}
@@ -151,7 +151,13 @@ class TeamsPage extends React.Component {
 					<td>{obj.actions_completed}</td>
 					<td>{obj.avrgActionsPerHousehold}</td>
 					<td id={'carbo-' + obj.team.id}>...</td>
+					{this.props.user ?
 					<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
+					: 
+					<td>
+					<Link to={this.props.links.signin}>Sign In</Link> to contact admin
+				</td>
+					}
 					{this.props.user ?
 						<td>
 							{this.inTeam(obj.team.id) ?
