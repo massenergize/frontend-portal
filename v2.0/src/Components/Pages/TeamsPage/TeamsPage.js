@@ -201,7 +201,7 @@ class TeamsPage extends React.Component {
 			team_id: team_id,
 			user_id: user_id
 		}
-		postJson(`http://api.massenergize.org/v3/teams.leave`, body).then(json => {
+		apiCall(`/teams.leave`, body).then(json => {
 			if (json) {
 				if (json.success) {
 					window.location.reload();

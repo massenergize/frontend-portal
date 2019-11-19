@@ -6,7 +6,12 @@
 */
 
 
-
+.sm-tag-hover:hover{
+  background:darkred; 
+  color:white !important; 
+  border-color: darkred !important;
+  transition: .4s ease-in-out;
+}
 .d-one{
   background:#c63f3f;
 }

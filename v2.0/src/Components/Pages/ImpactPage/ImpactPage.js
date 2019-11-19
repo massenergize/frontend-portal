@@ -52,15 +52,20 @@ class ImpactPage extends React.Component {
 		var graph2Categories = [];
 		var graph2Series = [
 			{
-				name: "Actions Completed",
+				name: "State Reported",
 				data: [2,3,4,5],
 			},
+			{
+				name: "Self Reported",
+				data: [2,3,4,5],
+			}
 		];
 
 		completed.forEach(el =>{
 			if(el){
 				graph2Categories.push(el.name);
 				graph2Series[0].data.push(el.value);
+				graph2Series[1].data.push(el.reported_value);
 			}
 		})
 
