@@ -2,12 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../Shared/Tooltip'
 import { connect } from 'react-redux'
-import { reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
+import { reduxLoadDone, reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction } from '../../redux/actions/pageActions'
 import URLS from '../../api/urls'
 import { postJson, deleteJson } from '../../api/functions'
 
-/**
+/** 
  * Cart component
  * renders a list of actions
  * @props title
@@ -167,16 +167,20 @@ class Cart extends React.Component {
 		})
 	}
 
+
 	removeFromCart = (actionRel) => {
+		//console.log("I am the real", actionRel)
 		const status = actionRel.status;
 		deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
-			console.log(json);
 			if (json.success) {
 				if (status === 'TODO')
 					this.props.reduxRemoveFromTodo(actionRel);
 				if (status === 'DONE') {
+					const remainder = this.props.actionRels.filter( item => item.id !== actionRel.id)
 					this.props.reduxRemoveFromDone(actionRel);
-					this.removeFromImpact(actionRel.action);
+					//this.removeFromImpact(actionRel.action);
+					this.props.reduxLoadDone(remainder);
+					//window.location.reload();
 				}
 			}
 		})
@@ -209,6 +213,7 @@ class Cart extends React.Component {
 			return data.name === name
 		})[0];
 
+
 		const body = {
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
@@ -222,6 +227,7 @@ class Cart extends React.Component {
 				this.props.reduxChangeData(data);
 			}
 		})
+
 	}
 	changeData = (tagid, number) => {
 		var data = this.props.communityData.filter(data => {
@@ -255,13 +261,14 @@ const mapStoreToProps = (store) => {
 		user: store.user.info,
 		todo: store.user.todo,
 		done: store.user.done,
-		communityData: store.page.communityData,
+		communityRawData: store.page.communityData,
+		communityData: store.page.communityData.data ? store.page.communityData.data : null,
 		links: store.links
 	}
 }
 
 const mapDispatchToProps = {
-	reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone, reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction
+	reduxLoadDone, reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone, reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction
 }
 
 export default connect(mapStoreToProps, mapDispatchToProps)(Cart);

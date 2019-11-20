@@ -169,7 +169,7 @@ class ProfilePage extends React.Component {
 														<JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
 
 													</td>
-													:
+													: 
 													<td colSpan={2}>
 														<button className="thm-btn btn-finishing" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
 													</td>
@@ -242,6 +242,7 @@ class ProfilePage extends React.Component {
 				<p> {this.state.message ? this.state.message : ''} </p>
 				{form === 'edit' ?
 					<EditingProfileForm
+						email = {this.props.user.email}
 						full_name={this.props.user.full_name}
 						preferred_name={this.props.user.preferred_name}
 						closeForm={(message = '') => this.setState({ editingProfileForm: null, message: message ? message : null })}

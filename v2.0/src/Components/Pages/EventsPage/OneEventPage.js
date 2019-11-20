@@ -40,6 +40,7 @@ class OneEventPage extends React.Component {
 		const endDate = new Date(event.end_date_and_time);
 		const textyStart = moment(date).format(format);
 		const textyEnd = moment(endDate).format(format);
+		const location = event.location;
 
 		return (
 			<section className="event-section style-3">
@@ -67,10 +68,10 @@ class OneEventPage extends React.Component {
 												{textyEnd}
 											</div>
 										</li>
-										{event.location ?
+										{location ?
 											<li>
 												<i className="fa fa-map-marker" />
-												<b>Venue:</b> {event.location.street + ", " + event.location.city + " " + event.location.state}
+												<b>Venue:</b> {location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b>
 											</li>
 											:
 											null

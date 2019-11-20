@@ -64,12 +64,12 @@ class NavBarBurger extends React.Component {
 			},
 		}
 		if (!links) return null;
-		
+
 		// Only for burgered
 		const menuItems = this.props.navLinks.map((val, index) => {
 			if (val.children) {
 				return (
-					<SubMenuItem key={index} navlink={val} links={links} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
+					<SubMenuItem key={index} communityName={communityName} navlink={val} links={links} index={index} clickHandler={this.handleLinkClick}></SubMenuItem>
 				)
 			}
 			return (
@@ -90,7 +90,7 @@ class NavBarBurger extends React.Component {
 						<div className="row no-gutter width-100">
 							<div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
 								{/*  main-logo col d-flex  align-items-center*/}
-								<div onClick={() => { window.location = "/" }} className="" style={{ cursor: 'pointer', position: 'relative', padding: 18, marginLeft: -100 }}>
+								<div onClick={() => { window.location = links.home }} className="" style={{ cursor: 'pointer', position: 'relative', padding: 18, marginLeft: -100 }}>
 									{/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
 									<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small> */}
 									<Link to={links.home} >
@@ -123,7 +123,7 @@ class NavBarBurger extends React.Component {
 								:
 								<div className="col-lg-7 col-md-4 col-sm-6 col-6 menu-column">
 									<div style={styles.container} className="push-to-right">
-										<nav className="padding-0 menuzord d-flex ml-auto" style={{ display: 'inline-block',padding:20,paddingTop:33 }} id="main_menu" >
+										<nav className="padding-0 menuzord d-flex ml-auto" style={{ display: 'inline-block', padding: 20, paddingTop: 33 }} id="main_menu" >
 											<ul className="cool-font menuzord-menu height-100 d-flex flex-row">
 												{this.renderNavLinks(this.props.navLinks)}
 											</ul>
@@ -168,13 +168,23 @@ class NavBarBurger extends React.Component {
 			return <li className="d-flex flex-column justify-content-center" key={navLink.name}><Link className="cool-font" to={`${links.home}${navLink.link}`}>{navLink.name}</Link></li>
 		});
 	}
+
+	//----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
 	renderDropdownItems(children) {
 		if (!this.props.links) return;
 		const { links } = this.props;
+		const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community" }
 		return children.map((child, key) => {
-			return (
-				<Link key={key} to={`${links.home}${child.link}`} className="cool-font dropdown-item p-3 small " onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name}</Link>
-			);
+			if (child.special) {
+				return (
+					<Link key={key} className="cool-font dropdown-item p-3 small " onClick={() => { window.location = child.link; }}>{child.name}</Link>
+				);
+			}
+			else {
+				return (
+					<Link key={key} to={`${links.home}${child.link}`} className="cool-font dropdown-item p-3 small " onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name === "current-home" ? comm.name : child.name}</Link>
+				);
+			}
 		});
 	}
 	renderLogin() {
@@ -233,7 +243,7 @@ class ProfileBtnDropdown extends React.Component {
 
 	render() {
 		return (
-			<button className=" float-right new-sign-in raise" onClick={this.handleClick} style={{  margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
+			<button className=" float-right new-sign-in raise" onClick={this.handleClick} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
 				<i className="fa fa-user" />{'\u00A0'}
 				{this.props.userName}
 				<span className="fa fa-angle-down text-white ml-1"></span>
@@ -284,17 +294,30 @@ class SubMenuItem extends React.Component {
 		this.setState({ open: !this.state.open });
 	}
 
+	//---------WHERE TO SETUP WEIRD SPECIAL MENU ITEMS IN BURGERED MENU ---------
 	renderSubmenuItems(items) {
 		const { links } = this.props;
+		const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community" }
 		return items.map((item, key) => {
-			return (
-				<MenuItem key={key}
-					href={links.home + item.link}
-					onClick={this.props.clickHandler}
-				>
-					{item.name}
-				</MenuItem>
-			)
+			if (item.special) {
+				return (
+					<MenuItem key={key}
+						onClick={(e) => { e.preventDefault(); window.location = item.link }}
+					>
+						{comm.name}
+					</MenuItem>
+				)
+			} else {
+				const name = this.props.communityName ? this.props.communityName : "My Community";
+				return (
+					<MenuItem key={key}
+						href={links.home + item.link}
+						onClick={this.props.clickHandler}
+					>
+						{item.name ==="current-home" ?name : item.name}
+					</MenuItem>
+				)
+			}
 		});
 	}
 
@@ -318,6 +341,7 @@ class SubMenuItem extends React.Component {
 			</>
 		)
 	}
+
 };
 
 /**

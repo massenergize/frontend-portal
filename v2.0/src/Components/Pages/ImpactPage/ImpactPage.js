@@ -14,6 +14,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
 class ImpactPage extends React.Component {
 	render() {
+		console.log(" de data:::", this.props.communitiesStats)
 		const community = this.props.communityData ? this.props.comData.community :null;
 		const goal = this.props.comData ? this.props.comData.goal : null;
 		const completed = this.props.communityData ? this.props.communityData.data :[];

@@ -52,7 +52,7 @@ export const postJson = async (url, body) => {
  */
 export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
 		//Differentiate between dev deployment and real deployment
-		//dataToSend = { is_dev:true, ...dataToSend};
+		dataToSend = { is_dev:true, ...dataToSend};
 	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
     credentials: 'include',
     method: 'POST',

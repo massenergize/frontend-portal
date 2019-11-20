@@ -177,7 +177,13 @@ class AppRouter extends Component {
 			const navMenus = this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content;
 		 finalMenu = this.props.user ? [...navMenus, contactUsItem] : navMenus;
 		}
-
+		finalMenu = finalMenu.filter(item =>item.name !== "Home");
+		const homeChil =[ 
+			{ name:"current-home",link:"/"}, 
+			{name: "Community List",link:"http://"+window.location.host, special:true}
+		];
+		const droppyHome = {name:"Home",children:homeChil}
+		finalMenu = [droppyHome,...finalMenu];
 		//if (!this.state.loaded) return <LoadingCircle />;
 		return (
 			<div className="boxed-wrapper">

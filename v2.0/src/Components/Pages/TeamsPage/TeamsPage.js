@@ -25,9 +25,10 @@ class TeamsPage extends React.Component {
 			teamsCarbonDetails: [],
 			contact_modal_toggled: false,
 			current_team_id: null,
-			contact_content: "",
+			contact_content: {title:"", msg:""},
 			modal_toggled: false,
-			modal_content: { title: "...", desc: "..." }
+			modal_content: { title: "...", desc: "..." },
+			alert: false,
 		}
 		this.toggleModal = this.toggleModal.bind(this);
 	}
@@ -41,23 +42,32 @@ class TeamsPage extends React.Component {
 		if (this.state.contact_modal_toggled) return <ContactModal content={this.state.modal_content} handleTextFxn={this.handleText} sendMessageFxn={this.sendMessage} content={this.state.modal_content} toggler={this.toggleContact} />
 	}
 	handleText = (event) => {
-		this.setState({ contact_content: event.target.value });
+		const old = this.state.contact_content; 
+		const newOne = { ...old, [event.target.name]:event.target.value};
+		this.setState({ contact_content: newOne });
 	}
 	sendMessage = () => {
 		var spinner = document.getElementById('sender-spinner');
-		var msg = this.state.contact_content.trim();
+		var msg = this.state.contact_content.msg.trim();
+		var title = this.state.contact_content.title.trim();
 		const body = {
 			team_id: this.state.current_team_id,
+			title:title,
 			message: msg
 		}
 		const me = this;
-		if (msg !== "") {
+		if (msg !== "" && title !=="") {
 			spinner.style.display = "block";
-			postJson(`http://api.massenergize.org/v3/teams.contactAdmin`, body).then(json => {
+			apiCall(`/teams.contactAdmin`, body).then(json => {
 				document.getElementById("contact-textarea").value = "";
+				document.getElementById("contact-title").value = "";
 				spinner.style.display = "none";
 				me.toggleContact();
+				this.setState({alert:true})
 			});
+		}
+		else{
+			alert("Please add a message & title!")
 		}
 	}
 
@@ -69,13 +79,26 @@ class TeamsPage extends React.Component {
 		var val = this.state.modal_toggled;
 		this.setState({ modal_toggled: !val });
 	}
+	showAlert = () => {
+		if (this.state.alert) {
+			return (
+				<div>
+					<p className="alert alert-success alert-dismissible fade show">Your message was successfully sent!
+						<button type="button" className="close" onClick = {()=>{this.setState({alert:false})}} aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</p>
+				</div>
+			)
+		}
+	}
 	render() {
 
 		const teams = this.props.teamsPage;
 		if (teams == null) {
 			return (
 				<div className="boxed_wrapper" >
-					<h2 className='text-center' style={{ color:'#9e9e9e',margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2>
+					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2>
 				</div>
 			)
 		}
@@ -107,6 +130,7 @@ class TeamsPage extends React.Component {
 								{this.renderTeamsData(teams)}
 							</tbody>
 						</Table>
+						{this.showAlert()}
 					</div>
 				</div>
 			</>
@@ -152,10 +176,10 @@ class TeamsPage extends React.Component {
 					<td>{obj.avrgActionsPerHousehold}</td>
 					<td id={'carbo-' + obj.team.id}>...</td>
 					{this.props.user ?
-					<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
-					: 
-					<td>
-					<Link to={this.props.links.signin}>Sign In</Link> to contact admin
+						<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
+						:
+						<td>
+							<Link to={this.props.links.signin}>Sign In</Link> to contact admin
 				</td>
 					}
 					{this.props.user ?

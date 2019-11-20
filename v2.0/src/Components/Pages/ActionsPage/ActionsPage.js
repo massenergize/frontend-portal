@@ -102,7 +102,7 @@ class ActionsPage extends React.Component {
 		}
 	}
 	// renders all the actions
-	renderActions(actions) { 
+	renderActions(actions) {  
 		if (!actions || actions.length === 0) {
 			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}

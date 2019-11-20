@@ -35,7 +35,7 @@ class ContactUsPage extends React.Component {
       return (
         <div>
           <h4>Location</h4>
-          <p>{location.city? `${location.city},` : ''} <b>{location.unit? `${location.unit},` : ''} </b> {location.state? `${location.state},` : ''}  <b>{location.address? `${location.address},` : ''}</b> {location.country? `${location.country},` : ''}  <b>{location.zipcode? `${location.zipcode}` : ''}</b></p>
+          <p>{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b></p>
         </div>
       )
     } else {

@@ -20,7 +20,8 @@ class ContactModal extends Component {
             <h5>{title}</h5>
             <p>Send a message to this team's admin</p>
             <div>
-              <textarea id="contact-textarea" onChange = {(event)=>this.props.handleTextFxn(event)} className="form-control" style={{padding:15}} rows={7} placeholder="Message...">
+              <input id="contact-title" type="text" name ="title" className="form-control" onChange = {(event)=>this.props.handleTextFxn(event)} className="form-control" style={{padding:15,marginBottom:7}} placeholder ="Title..." />
+              <textarea id="contact-textarea" name="msg" onChange = {(event)=>this.props.handleTextFxn(event)} className="form-control" style={{padding:15}} rows={7} placeholder="Message...">
 
               </textarea>
               <button className="btn btn-success raise round-me" style={{margin:10,padding:"10px 50px"}} onClick = {()=>{this.props.sendMessageFxn(); }}>Send</button>
