@@ -21,7 +21,7 @@ class OneEventPage extends React.Component {
 
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ link: this.props.links.events, name: 'Events' }, { name: `Event ${event.id}` }]} />
-					<section className="shop-single-area">
+					<section className="shop-single-area" style={{paddingTop:0}}>
 						<div className="container">
 							<div className="single-products-details">
 								{this.renderEvent(event)}
@@ -35,27 +35,55 @@ class OneEventPage extends React.Component {
 
 	renderEvent(event) {
 		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
-		const format = "MMMM Do YYYY, h:mm:ss a";
+		const format = "MMMM Do YYYY, h:mm a";
 		const date = new Date(event.start_date_and_time);
 		const endDate = new Date(event.end_date_and_time);
 		const textyStart = moment(date).format(format);
 		const textyEnd = moment(endDate).format(format);
+		const location = event.location;
 
-		return ( 
+		return (
 			<section className="event-section style-3">
 				<div className="container">
-					<div className="single-event sec-padd">
+					<h3 className="cool-font text-center" style={{textTransform:'capitalize'}}>{event.name}</h3>
+					<div className="single-event sec-padd" style={{borderWidth:0}}>
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<div className="img-box raise" style={{ height: 340, borderRadius: 10 }}>
-									<img style={{width:'100%',objectFit:'cover'}} src={event.image ? event.image.url : null} alt="" />
+									<img style={{ width: '100%', objectFit: 'cover' }} src={event.image ? event.image.url : null} alt="" />
+
+								</div>
+								<div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>
+									{/* <div className="section-title style-2">
+                                            <h3>Event Schedule</h3>
+																				</div> */}
+									<ul>
+										{/* <li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
+												<b> - </b>{endDate.toLocaleString()}
+											</li> */}
+										<li key='time'><b>Date<br /> </b>
+											<div style={{ paddingLeft: 20 }}>
+												{textyStart}<br />
+												<b><span className="text text-success"> TO </span> </b><br />
+												{textyEnd}
+											</div>
+										</li>
+										{location ?
+											<li>
+												<i className="fa fa-map-marker" />
+												<b>Venue:</b> {location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b>
+											</li>
+											:
+											null
+										}
+									</ul>
 								</div>
 								{/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
 							</div>
 							<div className="col-12 col-lg-6">
 								<div className="text">
-									<h3 className="cool-font">{event.name}</h3>
-									<p className="cool-font">{event.description}</p>
+									<h5 className="cool-font" style={{ color: 'lightgray' }}>About</h5>
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: event.description }}></p>
 									<br />
 									<p className="cool-font">{event.moreinfo}</p>
 								</div>
@@ -67,14 +95,14 @@ class OneEventPage extends React.Component {
 							<div className="row">
 
 								<div className="col-md-6 col-sm-6 col-xs-12" >
-									<div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>
-										{/* <div className="section-title style-2">
+									{/* <div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>
+										<div className="section-title style-2">
                                             <h3>Event Schedule</h3>
-																				</div> */}
+																				</div>
 										<ul>
-											{/* <li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
+											<li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
 												<b> - </b>{endDate.toLocaleString()}
-											</li> */}
+											</li>
 											<li key='time'><b>Date<br /> </b>
 												<div style={{ paddingLeft: 20 }}>
 													{textyStart}<br />
@@ -91,7 +119,7 @@ class OneEventPage extends React.Component {
 												null
 											}
 										</ul>
-									</div>
+									</div> */}
 								</div>
 								{event.details ?
 									<div className="col-md-6 col-sm-6 col-xs-12">

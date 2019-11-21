@@ -46,7 +46,7 @@ class IconBoxTable extends React.Component {
 			<section className="service p-5">
 				<div className="container">
 					<div className="section-title center ">
-						<h4 class="text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4>
+						<h4 className="text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4>
 					</div>
 					<div className="row d-flex flex-row">
 						{this.renderBoxes(boxes)}

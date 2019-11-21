@@ -1398,8 +1398,10 @@ textarea {
     float: left;
 }
 .menuzord-menu > li a:not(.dropdown-item) {
+  padding: 11px 12px !important;
+  font-size:13px !important;
   position: relative;
-  color: #303030;
+  color: #888;
   font-weight: 700;
   font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
@@ -1434,7 +1436,7 @@ ul.dropdown li a {
     text-transform: capitalize;
     border-bottom: 1px solid #f4f4f4;
     transition: .5s ease-in-out;
-    font-size: 14px;
+    font-size: 13px;
   }
 
 .menuzord-menu ul.dropdown li a {

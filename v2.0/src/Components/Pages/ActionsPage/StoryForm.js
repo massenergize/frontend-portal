@@ -1,6 +1,6 @@
 import React from 'react';
 import URLS from '../../../api/urls'
-import { postJson, getJson } from '../../../api/functions';
+import { postJson, getJson, apiCall } from '../../../api/functions';
 import { connect } from 'react-redux';
 import defaultUser from './../../Shared/default-user.png';
 
@@ -29,20 +29,58 @@ class StoryForm extends React.Component {
 			vid: props.vid ? props.vid : '--',
 			aid: props.aid ? props.aid : '--',
 			captchaConfirmed: false,
-
 			message: message,
-			picFile:null
+			picFile: null,
+			selected_tags: []
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
 	}
 
+	categories() {
+		const cat = this.props.tagCollections;
+		if (cat) {
+			return cat.filter(item => item.name === "Category")[0];
+		}
+		return null;
+	}
+	ejectCategories() {
+		if (this.categories()) {
+			return this.categories().tags.map(cat => <option>{cat.name}</option>)
+		}
+	}
+
+	ejectSelectedTags() {
+		return this.state.selected_tags.map((item, key) => {
+			return (
+				<small onClick={() => { this.removeTag(item.id) }} key={key.toString()} className="sm-tag-hover" style={{ cursor: 'pointer', border: 'solid 1px #f5f4f4', color: '#888', borderRadius: 55, margin: 5, padding: '5px 40px' }}> {item.name} <i style={{ marginLeft: 5 }} className="fa fa-close " /></small>
+			)
+		})
+	}
+
+	removeTag(id) {
+		const old = this.state.selected_tags;
+		const newOne = old.filter(item => item.id !== id);
+		this.setState({ selected_tags: newOne })
+	}
+
+	handleTagChoice(event) {
+		const cats = this.categories().tags;
+		const old = this.state.selected_tags;
+		if (cats) {
+			let found = cats.filter(item => item.name === event.target.value)[0];
+			if (!old.includes(found)) {
+				this.setState({ selected_tags: [...old, found] });
+			}
+		}
+	}
 	render() {
+		const cols = this.props.tagCollections;
 		if (!this.props.actions || this.props.actions.length === 0) return <div className='text-center'><p> Sorry, there are no actions to submit a story about </p></div>;
 		if (this.state.vid !== 'other' && this.state.vendor !== '') this.setState({ vendor: '' })
 		return (
-			<div className="review-form raise" style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
+			<div className="review-form " style={{ border: '1px solid lightgray', borderRadius: 10, padding: 25 }}>
 				{this.props.noMessage ? null :
 					<div className="tab-title-h4 text center">
 						<h4 className="p-2">{this.state.message}</h4>
@@ -77,14 +115,27 @@ class StoryForm extends React.Component {
 							}
 						</>
 					}
+
+					{cols ?
+						<>
+							<p style={{ marginBottom: 4 }}> Choose all the categories this testimonial belongs to. </p>
+							{this.ejectSelectedTags()}
+							<div className="combo-box-wrapper" style={{ marginTop: 15 }}>
+								<select className="w-100 select-undefault" onChange={(event) => { this.handleTagChoice(event) }}>
+									<option>--</option>
+									{this.ejectCategories()}
+								</select><br />
+							</div>
+						</>
+						: <br />}
 					<div className="field-label">
 						<p>Story Title*</p>
 						<input type="text" style={{ borderRadius: 5 }} name="title" value={this.state.title} onChange={this.onChange} required />
 					</div>
 					<div className="row">
-						<div className="col-md-12 " style={{padding:10,border:'solid 1px #f5f3f3',borderRadius:10}}>
-							<p style={{margin:15}}>Upload an image</p>
-							<input type="file" name="image" onChange = {(event)=>{this.setState({picFile:event.target.value})}} classname="form-control" />
+						<div className="col-md-12 " style={{ padding: 10, border: 'solid 1px #f5f3f3', borderRadius: 10 }}>
+							<p style={{ margin: 15 }}>Upload an image</p>
+							<input type="file" name="image" onChange={(event) => { this.setState({ picFile: event.target.value }) }} classname="form-control" />
 						</div>
 					</div>
 					<div className="row">
@@ -110,6 +161,7 @@ class StoryForm extends React.Component {
 							<button className="thm-btn bg-cl-1 btn-finishing" type="submit">Submit Now</button>
 						</div>
 					</div>
+					{this.state.message ? <p className='text-success'>{this.state.message}</p> : null}
 					{this.state.error ? <p className='text-danger'>{this.state.error}</p> : null}
 
 				</form>
@@ -134,26 +186,26 @@ class StoryForm extends React.Component {
 		})
 	}
 	onSubmit(event) {
-		console.log(this.state);
 		event.preventDefault();
 		/** Collects the form data and sends it to the backend */
 		const body = {
-			"user": this.props.user.id,
-			"vendor": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
-			"action": this.props.aid ? this.props.aid : this.state.aid,
+			"user_email": this.props.user.email,
+			"vendor_id": this.state.vid !== '--' && this.state.vid !== 'other' ? this.state.vid : null,
+			"action_id": this.props.aid ? this.props.aid : this.state.aid === "--" ? null : this.state.aid,
 			"rank": 0,
 			"body": this.state.body,
 			"title": this.state.title,
-			"community": this.props.community.id,
-			"image":this.state.picFile ?this.state.picFile : defaultUser
+			"community_id": this.props.community.id,
+			"image": this.state.picFile ? this.state.picFile : defaultUser,
+			"tags": this.state.selected_tags ? this.state.selected_tags : null
 		}
-		if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
-			this.setState({ error: "Please choose which action you are writing a testimonial about" })
-		} else if (this.count(this.state.body) > this.state.limit) {
+		// if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
+		// 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
+		if (this.count(this.state.body) > this.state.limit) {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
-			postJson(`http://api.massenergize.org/v3/testimonials.add`, body).then(json => {
+			apiCall(`/testimonials.add`, body).then(json => {
 				console.log(json);
 				if (json && json.success) {
 					this.setState({
@@ -178,7 +230,8 @@ const mapStoreToProps = (store) => {
 		user: store.user.info,
 		actions: store.page.actions,
 		vendors: store.page.serviceProviders,
-		community: store.page.community
+		community: store.page.community,
+		tagCollections: store.page.tagCols
 	}
 }
 //composes the login form by using higher order components to make it have routing and firebase capabilities

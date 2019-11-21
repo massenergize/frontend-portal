@@ -50,7 +50,7 @@ class Events extends React.Component {
 					<div key={eventsDisplayed} className={eventStyle}>
 						<div className="clearfix">
 							<div className="img-column">
-								<figure className="img-holder">
+								<figure className="img-holder" style={{height:190}}>
 									<Link to={`${this.props.links.events}/${event.id}`}><img src={event.image ? event.image.url : ""} alt="" /></Link>
 								</figure>
 							</div>

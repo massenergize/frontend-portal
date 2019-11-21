@@ -35,6 +35,14 @@ import {
 } from './types'
 
 
+
+export const reduxLoadCommunityInformation= (data) => dispatch => {
+	return dispatch({
+		type: "LOAD_COMMUNITY_INFORMATION",
+		payload: data
+	})
+}
+
 export const reduxLoadCollection= (collection) => dispatch => {
 	return dispatch({
 		type: "LOAD_COLLECTION",

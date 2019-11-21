@@ -9,6 +9,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar';
 import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
+import PageTitle from '../../Shared/PageTitle';
 
 
 
@@ -31,19 +32,20 @@ class ActionsPage extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
-		console.log("I am all the actions", this.props.actions);
+		
 		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		return (
 			<>
 				 
 				<div className="boxed_wrapper" >
 				<BreadCrumbBar links={[{ name: 'All Actions' }]} />
+			
 					{/* main shop section */}
 					<div className="shop sec-padd">
 						<div className="container">
 							<div className="row">
 								{/* renders the sidebar */}
-								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
+								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo" style={{paddingTop:60}}>
 									<SideBar
 										search ={this.handleSearch}
 										foundNumber={this.state.mirror_actions.length}
@@ -67,7 +69,8 @@ class ActionsPage extends React.Component {
 								</div>
 								{/* renders the actions */}
 								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-									<div className="row" id="actions-container">
+								<PageTitle>Actions</PageTitle>
+									<div className="row" id="actions-container"  style={{ marginTop:10,overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
 										{this.renderActions(actions)}
 									</div>
 								</div>
@@ -99,7 +102,7 @@ class ActionsPage extends React.Component {
 		}
 	}
 	// renders all the actions
-	renderActions(actions) { 
+	renderActions(actions) {  
 		if (!actions || actions.length === 0) {
 			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}

@@ -18,36 +18,38 @@ import img from './../../../../src/assets/images/blog/i9.jpg';
         organizer
         address
         //may need to add in id
- */
+ */ 
 class Events extends React.Component {
   renderEvents() {
     const events = this.props.events;
+
     if( !events){
       return <div><p>No upcoming events. See <Link to={this.props.links.events}>all events</Link> </p></div>
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
-        const format = "MMMM Do YYYY, h:mm:ss a";
+        const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);
 				const endDate = new Date(event.end_date_and_time);
 				const textyStart = moment(date).format(format);
 				const textyEnd = moment(endDate).format(format);
-
-        const desc = event.description.length > 70 ? event.description.substr(0, 70) + "..." : event.description;
+        const location = event.location;
+        const desc = event.description.length > 70 ? "Click to read full description about this event" : event.description;
         const img = event.image.url ? event.image.url : img;
         return (
-          <article className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{marginBottom:10,marginTop:10}} onClick ={()=>{window.location = this.props.links.events + "/"+event.id}}>
+          <article key = {index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{marginBottom:10,marginTop:10}} onClick ={()=>{window.location = this.props.links.events + "/"+event.id}}>
             <div className="z-depth-1"style={{borderRadius:15}}>
               <img src={img} className="home-events-img" />
-              <div style={{ padding: 30,height:250 }}>
-                <h5>{event.name}</h5>
-                <p style={{fontSize:16}}>{desc} </p>
-                {event.location ?
-                  <small className="text text-default text-sm-right"><b>{event.location.state},{event.location.city},  {event.location.street}</b></small>
+              <div style={{ padding: 11,paddingLeft:17,height:120 }}>
+                <h6 className="zero-margin-btm">{event.name}</h6>
+                {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
+               
+                {location ?
+                  <small small style={{fontSize:11}} className="text text-default text-sm-right">{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b></small>
                   :
                   null
                 }
-                <p style={{fontSize:12}}className="text text-success">{`${textyStart} - ${textyEnd}`}</p>
+                <p style={{fontSize:12}}className="text text-success zero-margin-btm">{`${textyStart} - ${textyEnd}`}</p>
               </div>
             </div>
           </article>

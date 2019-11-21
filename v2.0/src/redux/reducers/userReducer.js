@@ -58,7 +58,7 @@ export default function (state = initialState, action) {
     case LOAD_DONE:
       return {
         ...state,
-        done: action.payload
+        done: action.payload 
       }
     case ADD_TO_DONE:
       return {

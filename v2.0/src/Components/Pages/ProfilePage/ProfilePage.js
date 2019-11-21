@@ -86,7 +86,7 @@ class ProfilePage extends React.Component {
 							</>
 							:
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
-								<div className="col-lg-6 col-md-6  col-12">
+								<div className="col-lg-9 col-md-9  col-12">
 									{this.renderForm(this.state.editingProfileForm)}
 									<section className="fact-counter style-2 sec-padd" >
 										<div className="container" style={{padding:0}}>
@@ -125,9 +125,9 @@ class ProfilePage extends React.Component {
 																	closeForm={() => this.setState({ addingHH: false })}
 																/>
 																<button
-																	className="thm-btn"
+																	className=""
 																	onClick={() => this.setState({ addingHH: false })}
-																	style={{ width: '99%' }}>Cancel
+																	style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
                                                                 </button>
 															</>
 															:
@@ -169,7 +169,7 @@ class ProfilePage extends React.Component {
 														<JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
 
 													</td>
-													:
+													: 
 													<td colSpan={2}>
 														<button className="thm-btn btn-finishing" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
 													</td>
@@ -185,7 +185,7 @@ class ProfilePage extends React.Component {
 									<br />
 								</div>
 								{/* makes the todo and completed actions carts */}
-								<div className="col-lg-6 col-md-6 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
+								<div className="col-lg-3 col-md-3 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
 
 									{/* <h3 className="col-12 text-right">
                                         <SignOutButton style={{ display: 'inline-block' }} />
@@ -242,6 +242,7 @@ class ProfilePage extends React.Component {
 				<p> {this.state.message ? this.state.message : ''} </p>
 				{form === 'edit' ?
 					<EditingProfileForm
+						email = {this.props.user.email}
 						full_name={this.props.user.full_name}
 						preferred_name={this.props.user.preferred_name}
 						closeForm={(message = '') => this.setState({ editingProfileForm: null, message: message ? message : null })}
@@ -310,9 +311,9 @@ class ProfilePage extends React.Component {
 								closeForm={() => this.setState({ editingHH: null })}
 							/>
 							<button
-								className="thm-btn"
+								className=""
 								onClick={() => this.setState({ addingHH: false, editingHH: null })}
-								style={{ width: '99%' }}>Cancel
+								style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
                         </button>
 						</td>
 					</tr>
