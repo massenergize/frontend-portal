@@ -51,16 +51,31 @@ export const postJson = async (url, body) => {
  * band-with and being faster in general while avoiding CORS issues.
  */
 export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
-		//Differentiate between dev deployment and real deployment
+	const idToken = localStorage.getItem("idToken");
+	var params = {}
+	//Differentiate between dev deployment and real deployment
 		dataToSend = { is_dev:true, ...dataToSend};
-	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: qs.stringify(dataToSend)
-  });
+		if (idToken) {
+			params = {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Authorization: `Bearer ${idToken}`
+				},
+				body: qs.stringify(dataToSend)
+			}
+		} else {
+			params = {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: qs.stringify(dataToSend)
+			}
+		}
+	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`,params);
 
   try {
 		const json = await response.json();
@@ -87,6 +102,42 @@ export const deleteJson = async (url) => {
 	}
 }
 
+export async function rawCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+  const idToken = localStorage.getItem("idToken");
+  var params = {};
+  if (idToken) {
+    params = {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${idToken}`
+      },
+      body: qs.stringify(dataToSend)
+    }
+  } else {
+    params = {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: qs.stringify(dataToSend)
+    }
+  }
+
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
+
+  try {
+    const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error: error.toString() };
+  }
+}
 /**
  * Takes out the section that matches with the name given
  * @param {JSONObject | JSONArray} json : the json object of either the page data or the json array of the sections

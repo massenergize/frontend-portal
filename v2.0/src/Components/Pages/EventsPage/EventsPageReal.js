@@ -122,7 +122,7 @@ class EventsPage extends React.Component {
 											this.renderSideBar() : <LoadingCircle />}
 									</div>
 									<div className="col-lg-9 col-md-9 col-12" >
-										<PageTitle>Events</PageTitle>
+										<PageTitle>Events And Campaigns</PageTitle>
 										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9, overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
 											{this.renderEvents(found)}
 										</div>
@@ -162,6 +162,7 @@ class EventsPage extends React.Component {
 				const endDate = new Date(event.end_date_and_time);
 				const textyStart = moment(date).format(format);
 				const textyEnd = moment(endDate).format(format);
+				const location = event.location;
 				return (
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
 						<div className="row no-gutter">
@@ -197,10 +198,10 @@ class EventsPage extends React.Component {
 										:
 										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
 									}
-									{event.location ?
+									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											{event.location.street + ", " + event.location.city + " " + event.location.state}
+											{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b>  
 										</li>
 										:
 										null

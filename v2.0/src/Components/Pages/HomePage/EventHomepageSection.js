@@ -65,7 +65,7 @@ class Events extends React.Component {
     return (
       <section className="event-style1" style={{ background: 'white' }}>
         <div className="container">
-        <h3 className="cool-font text-center" style={{fontSize:20}}>Upcoming Events</h3>
+        <h3 className="cool-font text-center" style={{fontSize:20}}>Upcoming Events And Campaigns</h3>
           <div className="row">
           
             <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">

@@ -111,15 +111,12 @@ class ActionsPage extends React.Component {
 			var action = actions[key];
 			return <Action key={key}
 				action={action}
-
 				tagCols={this.props.tagCols}
 				match={this.props.match} //passed from the Route, need to forward to the action for url matching
 				user={this.props.user}
-
 				addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
 				inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
 				moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-
 				HHFormOpen={this.state.openAddForm === action.id}
 				showTestimonialLink={this.state.testimonialLink === action.id}
 				closeHHForm={() => this.setState({ openAddForm: null })}
