@@ -9,7 +9,7 @@ import TeamMembers from './TeamMembers'
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
-
+import Error404 from './../Errors/404';
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
 
@@ -17,7 +17,9 @@ class AboutUsPage extends React.Component {
 	render() {
 	
 		if (!this.props.pageData || !this.props.community) {
-			return <p className='text-center'> Sorry, looks like this community's About Us Page is under maintenance. Try again later </p>
+			// return <p className='text-center'> Sorry, looks like this community's About Us Page is under maintenance. Try again later </p>
+			return <Error404 />
+		
 		}
 
 		// if (!this.props.communityAdmins) {
@@ -76,7 +78,8 @@ const mapStoreToProps = (store) => {
 	return {
 		community: store.page.community,
 		communityAdmins: store.page.communityAdmins,
-		pageData: store.page.aboutUsPage
+		pageData: store.page.aboutUsPage,
+		homePageData:store.page.homePageData
 	}
 }
 

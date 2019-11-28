@@ -262,7 +262,7 @@ const mapStoreToProps = (store) => {
 		todo: store.user.todo,
 		done: store.user.done,
 		communityRawData: store.page.communityData,
-		communityData: store.page.communityData.data ? store.page.communityData.data : null,
+		communityData: store.page.communityData ? store.page.communityData.data : null,
 		links: store.links
 	}
 }

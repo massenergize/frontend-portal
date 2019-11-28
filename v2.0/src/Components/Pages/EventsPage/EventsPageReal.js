@@ -13,6 +13,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import CONST from '../../Constants'
 import * as moment from 'moment';
 import Funnel from './Funnel';
+import Error404 from './../Errors/404';
 
 
 /**
@@ -105,6 +106,8 @@ class EventsPage extends React.Component {
 		);
 	}
 	render() {
+		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
+		
 
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
@@ -169,7 +172,7 @@ class EventsPage extends React.Component {
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
 								<figure className="raise-2" style={{ marginTop: 15, marginRight: 10, marginLeft: 20, borderRadius: 10, height: 190 }}>
-									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : null} alt="" /></Link>
+									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ width:'100%', height:'100%' ,objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : null} alt="" /></Link>
 									{/* if the date has passed already the calender div should be all gray */}
 								</figure>
 							</div>
@@ -243,6 +246,7 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePage,
 		collection: store.page.collection,
 		auth: store.firebase.auth,
 		user: store.user.info,

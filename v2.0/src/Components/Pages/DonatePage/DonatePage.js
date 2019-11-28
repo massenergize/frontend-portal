@@ -4,11 +4,13 @@ import { section } from '../../../api/functions';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import Error404 from './../Errors/404';
 
 class DonatePage extends React.Component {
 
 	render() {
-		if (!this.props.donatePage) return <p className='text-center'> Sorry, looks like this community's Donate Page is under maintenance. Try again later </p>;
+		// if(!this.props.homePageData) return <Error404 />
+		if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
 		const pageData = this.props.donatePage;
 		const pageSections = this.props.donatePage.sections;
 		if (pageData == null) return <LoadingCircle />
@@ -52,6 +54,7 @@ class DonatePage extends React.Component {
 
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePageData,
 		donatePage: store.page.donatePage,
 	}
 }

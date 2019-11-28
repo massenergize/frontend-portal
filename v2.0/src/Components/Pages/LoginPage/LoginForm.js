@@ -56,7 +56,7 @@ class LoginFormBase extends React.Component {
 						</div>
 						<div className="form-group social-links-two padd-top-5 pull-right">
 							Or sign in with
-                            <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button>
+                            {/* <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button> */}
 							<button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google"><span className="fa fa-google"></span></button>
 						</div>
 					</div>
@@ -99,8 +99,8 @@ class LoginFormBase extends React.Component {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
 				.then(auth => {
-					console.log(auth.user);
-
+					
+					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email).then(success => {
 						if (success)
 							console.log('yay');
@@ -117,12 +117,12 @@ class LoginFormBase extends React.Component {
 	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
 	//WOULD NOT DELETE DATA I THINK?
 	signInWithGoogle = () => {
-		const me = this;
+
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.signInWithPopup(googleProvider)
 				.then(auth => {
-					me.fetchMassToken(auth.user._lat);
+					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email).then(success => {
 						if (success)
 							console.log('yay');
@@ -141,6 +141,7 @@ class LoginFormBase extends React.Component {
 			this.props.firebase.auth()
 				.signInWithPopup(facebookProvider)
 				.then(auth => {
+					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email).then(success => {
 						if (success) {
 							console.log('yay')

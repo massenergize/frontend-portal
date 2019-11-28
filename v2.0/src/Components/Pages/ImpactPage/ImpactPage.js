@@ -8,12 +8,17 @@ import { getJson } from '../../../api/functions'
 import URLS from '../../../api/urls'
 import { reduxLoadCommunitiesStats } from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-
+import Error404 from './../Errors/404';
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
 
 class ImpactPage extends React.Component {
 	render() {
+		if (!this.props.comData) {
+			return (
+				<Error404 message = "Sorry, there are no stats for this community yet "/>
+			)
+		}
 		const community = this.props.communityData ? this.props.comData.community :null;
 		const goal = this.props.comData ? this.props.comData.goal : null;
 		const completed = this.props.communityData ? this.props.communityData.data :[];
@@ -21,7 +26,7 @@ class ImpactPage extends React.Component {
 		if (!this.props.communityData || this.props.communityData.length === 0) {
 			return (
 				<div className="boxed_wrapper" >
-					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are no stats for this community yet :( </h2>
+					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> :( </h2>
 				</div>
 			)
 		}
@@ -52,11 +57,11 @@ class ImpactPage extends React.Component {
 		var graph2Categories = [];
 		var graph2Series = [
 			{
-				name: "State Reported",
+				name: "Self Reported",
 				data: [2,3,4,5],
 			},
 			{
-				name: "Self Reported",
+				name: "State Reported",
 				data: [2,3,4,5],
 			}
 		];

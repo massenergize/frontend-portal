@@ -19,7 +19,10 @@ class FooterInfo extends React.Component {
 	render() {
 		//const header = this.props.pageData ? section(this.props.pageData, 'HomeHeader') : null;
 		//const header =  null;
-		const communitylogo = this.props.pageData.community.logo ? this.props.pageData.community.logo.url: null;
+		var communitylogo = null;
+		if (this.props.pageData) {
+			 communitylogo = this.props.pageData.community.logo ? this.props.pageData.community.logo.url : null;
+		}
 		return (
 			<div className="col-7 col-md-4">
 				<div className="footer-widget about-column">

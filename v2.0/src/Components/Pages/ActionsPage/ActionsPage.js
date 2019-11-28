@@ -10,7 +10,7 @@ import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
 import PageTitle from '../../Shared/PageTitle';
-
+import Error404 from './../Errors/404';
 
 
 /**
@@ -32,6 +32,7 @@ class ActionsPage extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
+		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
 		
 		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		return (
@@ -107,7 +108,7 @@ class ActionsPage extends React.Component {
 			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}
 		//returns a list of action components
-		return Object.keys(actions).map(key => {
+		return Object.keys(actions).reverse().map(key => {
 			var action = actions[key];
 			return <Action key={key}
 				action={action}
@@ -243,6 +244,7 @@ class ActionsPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePage,
 		auth: store.firebase.auth,
 		user: store.user.info,
 		todo: store.user.todo,

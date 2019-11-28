@@ -13,6 +13,7 @@ import Counter from './Counter'
 import AddingHouseholdForm from './AddingHouseholdForm'
 import EditingProfileForm from './EditingProfileForm'
 import EventCart from './EventCart'
+import { withFirebase } from 'react-redux-firebase';
 
 import {
 	reduxMoveToDone,
@@ -21,7 +22,8 @@ import {
 	reduxRemoveHousehold,
 	reduxLeaveCommunity,
 	reduxLoadUserCommunities,
-	reduxLeaveTeam
+	reduxLeaveTeam, 
+	reduxLogout
 } from '../../../redux/actions/userActions'
 import {
 	reduxChangeData,
@@ -60,9 +62,16 @@ class ProfilePage extends React.Component {
 	}
 
 	render() {
-		if (!this.props.user)
+		var token = localStorage.getItem('idToken');
+	
+		if (!this.props.user){
 			return <Redirect to={this.props.links.signin}> </Redirect>
-
+		}
+		if (!token && this.props.user) {
+			console.log("Background logout!")
+			this.props.firebase.auth().signOut();
+			this.props.reduxLogout();
+		}
 		if (this.props.user.households.length === 0 && !this.state.addedHouse) {
 			this.setState({ addedHouse: true });
 			this.addDefaultHousehold();
@@ -77,19 +86,19 @@ class ProfilePage extends React.Component {
 		return (
 			<>
 				<div className='boxed_wrapper' onClick={this.clearError} >
-				<BreadCrumbBar links={[{ name: 'Profile' }]} />
+					<BreadCrumbBar links={[{ name: 'Profile' }]} />
 					<div className="container">
 						{this.state.printing ?
 							<>
 								<PrintCart />
-								<center><button className='thm-btn text-center print-cancel-style' style={{background:"crimson",color:"white",marginBottom:20,padding:"10px 84px !important"}} onClick={() => this.setState({ printing: false })}> Cancel</button></center>
+								<center><button className='thm-btn text-center print-cancel-style' style={{ background: "crimson", color: "white", marginBottom: 20, padding: "10px 84px !important" }} onClick={() => this.setState({ printing: false })}> Cancel</button></center>
 							</>
 							:
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
 								<div className="col-lg-9 col-md-9  col-12">
 									{this.renderForm(this.state.editingProfileForm)}
 									<section className="fact-counter style-2 sec-padd" >
-										<div className="container" style={{padding:0}}>
+										<div className="container" style={{ padding: 0 }}>
 											<div className="counter-outer" style={{ background: "white", width: "100%" }}>
 												<div className="row no-gutter">
 													<div className="column counter-column col-lg-4 col-6 ">
@@ -127,7 +136,7 @@ class ProfilePage extends React.Component {
 																<button
 																	className=""
 																	onClick={() => this.setState({ addingHH: false })}
-																	style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
+																	style={{ color: 'white', width: '99%', padding: 13, borderRadius: 6, background: 'indianred', borderColor: 'indianred' }}>Cancel
                                                                 </button>
 															</>
 															:
@@ -169,7 +178,7 @@ class ProfilePage extends React.Component {
 														<JoiningCommunityForm closeForm={() => this.setState({ joiningCom: false })} />
 
 													</td>
-													: 
+													:
 													<td colSpan={2}>
 														<button className="thm-btn btn-finishing" onClick={() => this.setState({ joiningCom: true })}>Join another Community</button>
 													</td>
@@ -185,7 +194,7 @@ class ProfilePage extends React.Component {
 									<br />
 								</div>
 								{/* makes the todo and completed actions carts */}
-								<div className="col-lg-3 col-md-3 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop:90 }}>
+								<div className="col-lg-3 col-md-3 col-12" style={{ paddingRight: "0px", marginRight: "0px", marginTop: 90 }}>
 
 									{/* <h3 className="col-12 text-right">
                                         <SignOutButton style={{ display: 'inline-block' }} />
@@ -197,7 +206,7 @@ class ProfilePage extends React.Component {
 										<Cart title="Completed Actions" actionRels={this.props.done} status="DONE" /> : null}
 									{this.props.rsvps ?
 										<EventCart title="Event RSVPs" eventRSVPs={this.props.rsvps.filter(rsvp => rsvp.attendee && rsvp.attendee.id === this.props.user.id)} /> : null}
-									<center><button  className='text-center summary-finish raise' onClick={() => this.setState({ printing: true })} > Summary Of Your Actions</button></center>
+									<center><button className='text-center summary-finish raise' onClick={() => this.setState({ printing: true })} > Summary Of Your Actions</button></center>
 								</div>
 							</div>
 						}
@@ -212,9 +221,9 @@ class ProfilePage extends React.Component {
 			<>
 				<h4>
 					{this.props.user ?
-						
+
 						<div style={{ display: 'inline-block' }}>
-						    <span style={{ color: "#8dc63f" }}>Welcome</span> {this.props.user.preferred_name}
+							<span style={{ color: "#8dc63f" }}>Welcome</span> {this.props.user.preferred_name}
 						</div>
 						:
 						"Your Profile"
@@ -242,7 +251,7 @@ class ProfilePage extends React.Component {
 				<p> {this.state.message ? this.state.message : ''} </p>
 				{form === 'edit' ?
 					<EditingProfileForm
-						email = {this.props.user.email}
+						email={this.props.user.email}
 						full_name={this.props.user.full_name}
 						preferred_name={this.props.user.preferred_name}
 						closeForm={(message = '') => this.setState({ editingProfileForm: null, message: message ? message : null })}
@@ -313,7 +322,7 @@ class ProfilePage extends React.Component {
 							<button
 								className=""
 								onClick={() => this.setState({ addingHH: false, editingHH: null })}
-								style={{  color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }}>Cancel
+								style={{ color: 'white', width: '99%', padding: 13, borderRadius: 6, background: 'indianred', borderColor: 'indianred' }}>Cancel
                         </button>
 						</td>
 					</tr>
@@ -523,6 +532,7 @@ const mapStoreToProps = (store) => {
 	}
 }
 const mapDispatchToProps = {
+	reduxLogout,
 	reduxMoveToDone,
 	reduxAddHousehold,
 	reduxEditHousehold,
@@ -536,4 +546,4 @@ const mapDispatchToProps = {
 	reduxTeamRemoveAction,
 	reduxTeamAddHouse
 };
-export default connect(mapStoreToProps, mapDispatchToProps)(ProfilePage);
+export default connect(mapStoreToProps, mapDispatchToProps)(withFirebase(ProfilePage));

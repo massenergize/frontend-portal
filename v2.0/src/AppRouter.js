@@ -26,8 +26,9 @@ import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './Components/Pages/DonatePage/DonatePage'
 import ContactPage from './Components/Pages/ContactUs/ContactUsPage';
 import CommunitySelectPage from './Components/Pages/CommunitySelectPage'
-
+import Error404 from './Components/Pages/Errors/404';
 import {
+
 	reduxLoadCommunity,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
@@ -51,12 +52,12 @@ import {
 	reduxLoadCollection,
 	reduxLoadCommunityInformation
 } from './redux/actions/pageActions'
-import { reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
+import { reduxLogout,reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 import { reduxLoadLinks } from './redux/actions/linkActions';
 
 
 import URLS from './api/urls'
-import { getJson, apiCall } from './api/functions'
+import { getJson, apiCall, rawCall } from './api/functions'
 import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 
@@ -85,7 +86,7 @@ class AppRouter extends Component {
 			profile: `/${subdomain}/profile`,
 			policies: `/${subdomain}/policies`,
 			contactus: `/${subdomain}/contactus`
-		})
+		}) 
 		Promise.all([
 			//Make sure to cleanup, and declare variables in Urls later
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
@@ -138,6 +139,20 @@ class AppRouter extends Component {
 			console.log(err)
 		});
 	}
+	lowKeyErrorCheck(res,fallbackLink){
+		//if the request comes in as signature expired
+		//delete local token and sign user out, 
+		//and run the same route again without token 
+		if(res.error === "Signature has expired"){
+			localStorage.removeItem('idToken');
+			this.props.reduxLogout();
+			return apiCall(fallbackLink).data
+		}
+		else{
+			//if it has nothing to do with auth, just return whatever is coming from the server
+			return res.data;
+		}
+	}
 	async getUser(email) {
 		const json = await getJson(`${URLS.USER}/e/${email}`);
 		if (json && json.success && json.data) {
@@ -175,7 +190,7 @@ class AppRouter extends Component {
 		if (this.props.menu) {
 			const contactUsItem = { link: "/contactus", name: "Contact Us" };
 			const navMenus = this.props.menu.filter(menu => { return menu.name === 'PortalMainNavLinks' })[0].content;
-		 finalMenu = this.props.user ? [...navMenus, contactUsItem] : navMenus;
+		 finalMenu =  [...navMenus, contactUsItem];
 		}
 		finalMenu = finalMenu.filter(item =>item.name !== "Home");
 		const homeChil =[ 
@@ -229,9 +244,7 @@ class AppRouter extends Component {
 							<Route path={links.policies} component={PoliciesPage} />
 							<Route path={links.contactus} component={ContactPage} />
 							<Route component={() => {
-								return <div>
-									404 Error: Page not Found
-								</div>
+								return <Error404 />
 							}} />
 						</Switch>
 				}
@@ -255,6 +268,7 @@ const mapStoreToProps = (store) => {
 	}
 }
 const mapDispatchToProps = {
+	reduxLogout,
 	reduxLoadCommunity,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,

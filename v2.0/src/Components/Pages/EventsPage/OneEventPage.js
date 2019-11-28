@@ -50,7 +50,7 @@ class OneEventPage extends React.Component {
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<div className="img-box raise" style={{ height: 340, borderRadius: 10 }}>
-									<img style={{ width: '100%', objectFit: 'cover' }} src={event.image ? event.image.url : null} alt="" />
+									<img style={{ width: '100%', height:'100%', objectFit: 'cover' }} src={event.image ? event.image.url : null} alt="" />
 
 								</div>
 								<div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>

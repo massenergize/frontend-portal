@@ -46,10 +46,10 @@ class ContactUsPage extends React.Component {
     }
   }
   render() {
-    if (!this.props.user)
-      return <Redirect to={this.props.links.signin}> </Redirect>;
+    // if (!this.props.user)
+    //   return <Redirect to={this.props.links.signin}> </Redirect>;
 
-    if (!this.props.pageData || !this.props.community) {
+    if (!this.props.homePageData || !this.props.community) {
       return (
         <div className="boxed_wrapper" >
           <h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, it looks like this community has no contact information :( </h2>
@@ -97,6 +97,7 @@ class ContactUsPage extends React.Component {
 const mapStoreToProps = (store) => {
 
   return {
+    homePageData:store.page.homePage,
     user:store.user.info,
     links: store.links,
     community: store.page.community,

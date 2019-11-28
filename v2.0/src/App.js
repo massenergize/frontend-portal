@@ -4,9 +4,10 @@ import './assets/css/style.css'
 import AppRouter from './AppRouter'
 import { connect } from 'react-redux'
 import { reduxLoadCommunities } from './redux/actions/pageActions'
-import {getJson,apiCall} from './api/functions'
+import {getJson,apiCall,apiCallNoToken} from './api/functions'
 import URLS from './api/urls'
 import CommunitySelectPage from './Components/Pages/CommunitySelectPage';
+import { reduxLogout } from './redux/actions/userActions'
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -15,13 +16,14 @@ class App extends Component {
 		}
 	}
 	componentDidMount() {
-		apiCall("communities.list").then(json => {
+		apiCallNoToken("communities.list").then(json => {
 			if (json.success) {
 				this.props.reduxLoadCommunities(json.data);
 			}
 		}).catch(err => this.setState({ error: err }))
 	}
 	render() {
+	
 		return (
 			<>
 				{this.state.error ?
@@ -43,8 +45,14 @@ class App extends Component {
 		)
 	}
 }
-
-const mapDispatchToProps = {
-	reduxLoadCommunities
+const mapStateToProps = (store)=>{
+	return {
+		user: store.user, 
+	
+	}
 }
-export default connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = {
+	reduxLoadCommunities,
+	reduxLogout
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

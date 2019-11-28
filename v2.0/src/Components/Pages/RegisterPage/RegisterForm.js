@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import { postJson, getJson } from '../../../api/functions';
+import { postJson, getJson, rawCall, apiCall } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
@@ -138,12 +138,12 @@ class RegisterFormBase extends React.Component {
 				</form>
 				<div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
 				</div>
-				<div className="section-title style-2">
-					<h3>Register with Google or Facebook</h3>
+				<div className="section-title style-2" style={{marginBottom:9}}>
+					<h3>Register with Google</h3>
 				</div>
 				<div className="form-group social-links-three padd-top-5">
-					<button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
-					<button onClick={this.signInWithGoogle} id="google" className="img-circle google"><span className="fa fa-google"> Register with Google</span></button>
+					{/* <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button> */}
+					<button style={{borderRadius:5}} onClick={this.signInWithGoogle} id="google" className="img-circle google cool-font"><span className="fa fa-google"></span> Register with Google</button>
 				</div>
 				Already have an account? <Link to={this.props.links.signin}>Sign In</Link>
 			</div>
@@ -310,7 +310,7 @@ class RegisterFormBase extends React.Component {
 			this.props.firebase.auth()
 				.signInWithPopup(googleProvider)
 				.then(auth => {
-					console.log(auth);
+					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email).then(success => {
 					});
 					this.setState({ ...INITIAL_STATE, form: 2 });
@@ -327,6 +327,7 @@ class RegisterFormBase extends React.Component {
 			this.props.firebase.auth()
 				.signInWithPopup(facebookProvider)
 				.then(auth => {
+					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email);
 					if (!auth.emailVerified) this.sendVerificationEmail();
 					this.setState({ ...INITIAL_STATE });
@@ -337,9 +338,21 @@ class RegisterFormBase extends React.Component {
 		});
 	}
 
+	fetchMassToken = async(fireToken) =>{
+		const me = this;
+    const body = { idToken: fireToken };
+    rawCall("auth/verify", body).then(massToken => {
+			const idToken = massToken.data.idToken;
+      localStorage.setItem("idToken", idToken.toString());
+    }).catch(err => {
+      console.log("Error MASSTOKEN: ", err);
+    });
+	}
 	fetchAndLogin = async (email) => {
+		
 		try {
-			const json = await getJson(`${URLS.USER}/e/${email}`);
+			//const json = await getJson(`${URLS.USER}/e/${email}`);
+			const json = await rawCall("auth/whoami");
 			if (json.success && json.data) {
 				this.props.reduxLogin(json.data);
 
