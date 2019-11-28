@@ -115,6 +115,7 @@ class StoriesPage extends React.Component {
 			)
 		}
 		return stories.map(story => {
+			console.log(story);
 			var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12";
 			var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
 			if (this.state.expanded !== null) {

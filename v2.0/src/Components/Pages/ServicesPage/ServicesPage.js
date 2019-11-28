@@ -58,11 +58,13 @@ class ServicesPage extends React.Component {
 		if (services) {
 			for (let i = 0; i < services.length; i++) {
 				const ev = services[i];
-				for (let i = 0; i < ev.tags.length; i++) {
-					const tag = ev.tags[i];
-					//only push events if they arent there already
-					if (values.includes(tag.id) && !common.includes(ev)) {
-						common.push(ev)
+				if (ev.tags) {
+					for (let i = 0; i < ev.tags.length; i++) {
+						const tag = ev.tags[i];
+						//only push events if they arent there already
+						if (values.includes(tag.id) && !common.includes(ev)) {
+							common.push(ev)
+						}
 					}
 				}
 			}
@@ -70,7 +72,8 @@ class ServicesPage extends React.Component {
 		return common;
 	}
 	render() {
-		if(!this.props.homePageData){
+
+		if (!this.props.homePageData) {
 			return <Error404 />
 		}
 		var { serviceProviders } = this.props;
