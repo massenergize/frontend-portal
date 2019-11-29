@@ -115,7 +115,6 @@ class StoriesPage extends React.Component {
 			)
 		}
 		return stories.map(story => {
-			console.log(story);
 			var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12";
 			var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
 			if (this.state.expanded !== null) {
@@ -139,7 +138,7 @@ class StoriesPage extends React.Component {
 					}
 					<div className="item center" style={style}>
 						{this.state.expanded !== null ?
-							<img src={avatar} style={{ height: 150, float: 'left', border: 'solid 1px #fbf7f7', borderRadius: '100%', padding: 10 }} />
+							<img src={story.file ?story.file.url :avatar} style={{ height: 150, width:159, marginRight:10 , float: 'left', border: 'solid 1px #fbf7f7', borderRadius: '100%', padding: 10 }} />
 							: null}
 						{/* <div className="quote">
 							<i className="fa fa-quote-left"></i>

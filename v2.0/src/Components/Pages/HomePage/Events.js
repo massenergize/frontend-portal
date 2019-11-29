@@ -75,7 +75,7 @@ class Events extends React.Component {
 							<li><i className="fa fa-clock-o"></i>{this.sameDay(date, endDate) ? `${date.toLocaleTimeString()} - ${endDate.toLocaleTimeString()}` : `${date.toLocaleTimeString()}`}</li>  |&nbsp;&nbsp;&nbsp;
                         <li><i className="fa fa-calendar"></i>{this.sameDay(date, endDate) ? date.toString().substring(4, 10) : `${date.toString().substring(4, 10)} - ${endDate.toString().substring(4, 10)}`}, {date.getFullYear().toString()}</li>
 							{event.location ?
-								<li>&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker"></i> {location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b></li>
+								<li>&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker"></i> {location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</li>
 								: null
 							}
 						</ul>

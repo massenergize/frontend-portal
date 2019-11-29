@@ -31,11 +31,13 @@ class ContactUsPage extends React.Component {
     }
   }
   ejectLocation(location) {
+    
     if (location) {
+    
       return (
         <div>
           <h4>Location</h4>
-          <p>{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b></p>
+          <p>{location.city? `${location.city}` : ''}  {location.state? `, ${location.state}` : ''}  {location.zipcode? `, ${location.zipcode}` : ''}</p>
         </div>
       )
     } else {
@@ -56,7 +58,7 @@ class ContactUsPage extends React.Component {
         </div>
       )
     }
-    const pageData = this.props.pageData;
+    const pageData = this.props.pageData ? this.props.pageData : {admins:[]};
     const {
       id,
       name,

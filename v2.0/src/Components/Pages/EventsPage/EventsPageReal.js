@@ -14,6 +14,7 @@ import CONST from '../../Constants'
 import * as moment from 'moment';
 import Funnel from './Funnel';
 import Error404 from './../Errors/404';
+import notFound from './not-found.jpg';
 
 
 /**
@@ -172,7 +173,7 @@ class EventsPage extends React.Component {
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
 								<figure className="raise-2" style={{ marginTop: 15, marginRight: 10, marginLeft: 20, borderRadius: 10, height: 190 }}>
-									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ width:'100%', height:'100%' ,objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : null} alt="" /></Link>
+									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ width:'100%', height:'100%' ,objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : notFound} alt="" /></Link>
 									{/* if the date has passed already the calender div should be all gray */}
 								</figure>
 							</div>
