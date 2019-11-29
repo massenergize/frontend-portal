@@ -97,7 +97,8 @@ class AppRouter extends Component {
 			apiCall('donate_page_settings.info', body, null),
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
 			apiCall('events.list', body, null),
-			getJson(URLS.COMMUNITY + subdomain + '/actions'),
+			//getJson(URLS.COMMUNITY + subdomain + '/actions'),
+			apiCall('actions.list',body),
 			//getJson(URLS.COMMUNITY + subdomain + '/vendors'),
 			apiCall('vendors.list', body, null),
 			apiCall('testimonials.list', body, null),
@@ -195,7 +196,7 @@ class AppRouter extends Component {
 		finalMenu = finalMenu.filter(item =>item.name !== "Home");
 		const homeChil =[ 
 			{ name:"current-home",link:"/"}, 
-			{name: "Community List",link:"http://"+window.location.host, special:true}
+			{name: "All Communities",link:"http://"+window.location.host, special:true}
 		];
 		const droppyHome = {name:"Home",children:homeChil}
 		finalMenu = [droppyHome,...finalMenu];

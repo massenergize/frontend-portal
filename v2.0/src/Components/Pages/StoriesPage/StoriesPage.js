@@ -120,7 +120,7 @@ class StoriesPage extends React.Component {
 			if (this.state.expanded !== null) {
 				if (this.state.expanded === story.id) {
 					cn = 'col-12'
-					style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 621, overflowY: 'scroll' }
+					style = { padding: 30, borderRadius: 15 }
 				} else {
 					cn = 'd-none'
 
@@ -151,9 +151,9 @@ class StoriesPage extends React.Component {
 							<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
 						} */}
 						<p className="p-1  cool-font" style={this.state.expanded !== null ? { textAlign: 'left' } : {}}>
-							{this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, CONST.LIMIT)}
+							{this.state.expanded && this.state.expanded === story.id ? story.body: story.body.substring(0, CONST.LIMIT)}
 							{(!this.state.expanded || !this.state.expanded === story.id) && CONST.LIMIT < story.body.length ?
-								<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: story.id }) }}>...more</button>
+								<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: story.id }); window.scrollTo(10,10) }}>...more</button>
 								:
 								null
 							}

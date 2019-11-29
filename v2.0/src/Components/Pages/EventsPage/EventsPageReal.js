@@ -126,8 +126,8 @@ class EventsPage extends React.Component {
 											this.renderSideBar() : <LoadingCircle />}
 									</div>
 									<div className="col-lg-9 col-md-9 col-12" >
-										<PageTitle>Events And Campaigns</PageTitle>
-										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9, overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
+										<PageTitle>Events and Campaigns</PageTitle>
+										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9,paddingRight:40 }}>
 											{this.renderEvents(found)}
 										</div>
 									</div>
