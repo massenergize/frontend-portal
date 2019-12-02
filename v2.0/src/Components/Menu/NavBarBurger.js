@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import SignOutLink from '../Shared/SignOutLink';
 import { withFirebase } from 'react-redux-firebase';
 import { reduxLogout } from '../../redux/actions/userActions';
-import { section } from '../../api/functions'
 
 class NavBarBurger extends React.Component {
 	constructor(props) {
@@ -177,7 +176,7 @@ class NavBarBurger extends React.Component {
 		return children.map((child, key) => {
 			if (child.special) {
 				return (
-					<Link key={key} className="cool-font dropdown-item p-3 small " onClick={() => { window.location = child.link; }}>{child.name}</Link>
+					<Link to={`${links.home}#`} key={key} className="cool-font dropdown-item p-3 small " onClick={() => { window.location = child.link; }}>{child.name}</Link>
 				);
 			}
 			else {

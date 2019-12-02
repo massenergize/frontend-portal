@@ -10,7 +10,7 @@ class ContactModal extends Component {
   }
  
   render() {
-    const {title, desc } = this.props.content;
+    const {title } = this.props.content;
     
     return (
       <div>

@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import { postJson, getJson, rawCall, apiCall } from '../../../api/functions';
+import {apiCall, postJson, getJson, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
@@ -283,7 +283,7 @@ class RegisterFormBase extends React.Component {
 				"is_vendor": serviceProvider,
 				"accepts_terms_and_conditions": termsAndServices
 			}
-			postJson(URLS.USERS, body).then(json => {
+			apiCall('users.create', body).then(json => {
 				console.log(json);
 				if (json && json.success && json.data) {
 					this.fetchAndLogin(json.data.email).then(success => {

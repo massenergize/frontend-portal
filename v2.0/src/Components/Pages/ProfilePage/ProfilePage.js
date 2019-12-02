@@ -4,9 +4,8 @@ import { Link, Redirect } from 'react-router-dom'
 
 // import { threadId } from 'worker_threads'
 import URLS from '../../../api/urls'
-import { postJson, deleteJson } from '../../../api/functions'
+import { apiCall, postJson, deleteJson } from '../../../api/functions'
 
-import SignOutButton from '../../Shared/SignOutButton'
 import Cart from '../../Shared/Cart'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Counter from './Counter'
@@ -63,7 +62,11 @@ class ProfilePage extends React.Component {
 
 	render() {
 		var token = localStorage.getItem('idToken');
-	
+		if (!this.props.user){
+			return <div><br /><br /><br /><br /><br /><br />Please sign in first</div>
+		}
+		const myHouseholds = this.props.user.households || [];
+		const myCommunities = this.props.user.communities || [];
 		if (!this.props.user){
 			return <Redirect to={this.props.links.signin}> </Redirect>
 		}
@@ -72,12 +75,12 @@ class ProfilePage extends React.Component {
 			this.props.firebase.auth().signOut();
 			this.props.reduxLogout();
 		}
-		if (this.props.user.households.length === 0 && !this.state.addedHouse) {
+		if (myHouseholds.length === 0 && !this.state.addedHouse) {
 			this.setState({ addedHouse: true });
-			this.addDefaultHousehold();
+			this.addDefaultHousehold(this.props.user, this.props.community);
 		}
 		if (this.props.community) {
-			if (this.props.user.communities.filter(com => { return com.id === this.props.community.id }).length === 0) {
+			if (myCommunities.filter(com => { return com.id === this.props.community.id }).length === 0) {
 				this.addDefaultCommunity();
 			}
 		}
@@ -387,7 +390,8 @@ class ProfilePage extends React.Component {
 		this.changeDataByName("EngagedHouseholdsData", 1)
 	}
 	changeDataByName(name, number) {
-		var data = this.props.communityData.filter(data => {
+		const communityData = this.props.communityData || []
+		var data = communityData.filter(data => {
 			return data.name === name
 		})[0];
 
@@ -480,15 +484,19 @@ class ProfilePage extends React.Component {
 		})
 	}
 
-	addDefaultHousehold = () => {
+	addDefaultHousehold = (user, community) => {
 		const body = {
 			"name": 'Home',
 			"unit_type": 'RESIDENTIAL',
-			"location": ''
+			"location": '',
+			"user_id": user && user.id,
+			"email": user && user.email,
+			"community": community && community.id
 		}
-		var postURL = URLS.USER + "/" + this.props.user.id + "/households";
+
+		// var postURL = URLS.USER + "/" + this.props.user.id + "/households";
 		/** Collects the form data and sends it to the backend */
-		postJson(postURL, body).then(json => {
+		apiCall('users.households.add', body).then(json => {
 			console.log(json);
 			if (json.success) {
 				this.addHousehold(json.data);

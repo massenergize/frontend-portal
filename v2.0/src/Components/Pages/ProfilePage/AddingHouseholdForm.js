@@ -17,7 +17,7 @@ class AddingHouseholdForm extends React.Component {
 		var address = '';
 		var city = '';
 		var state = 'MA';
-		if (props.location && props.location != '') {
+		if (props.location && props.location !== '') {
 			var locationparts = props.location.split(', ')
 			address = locationparts[0];
 			city = locationparts[1];

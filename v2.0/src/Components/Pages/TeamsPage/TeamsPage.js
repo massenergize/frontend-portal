@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
-import LoadingCircle from '../../Shared/LoadingCircle';
 import { postJson, apiCall } from '../../../api/functions'
 import URLS from '../../../api/urls'
 import { reduxJoinTeam } from '../../../redux/actions/userActions'
