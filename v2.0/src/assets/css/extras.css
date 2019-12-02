@@ -5,7 +5,19 @@
    
 */
 
+.g-back{
+  padding: 10px 25px;
+  border: solid 1px lightgray; 
+  border-radius: 55px; 
+  margin-bottom: 10px;
+}
 
+.g-back:hover{
+  background:'green'; 
+  color:'white'; 
+  border-color:green;
+  transition: .4s ease-in-out;
+}
 .sm-tag-hover:hover{
   background:darkred; 
   color:white !important; 
@@ -76,10 +88,11 @@
   max-height:265px !important;
 }
 .filter-search-input{
+  width:120%;
   padding:10px 25px !important; 
   border:solid 1px #eafff3; 
   border-radius:55px;
-  margin-left:-20px !important;
+  margin-left:-15px !important;
 }
 
 .home-events-img{

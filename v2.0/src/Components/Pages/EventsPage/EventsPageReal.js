@@ -13,6 +13,8 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import CONST from '../../Constants'
 import * as moment from 'moment';
 import Funnel from './Funnel';
+import Error404 from './../Errors/404';
+import notFound from './not-found.jpg';
 
 
 /**
@@ -105,6 +107,8 @@ class EventsPage extends React.Component {
 		);
 	}
 	render() {
+		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
+		
 
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
@@ -122,8 +126,8 @@ class EventsPage extends React.Component {
 											this.renderSideBar() : <LoadingCircle />}
 									</div>
 									<div className="col-lg-9 col-md-9 col-12" >
-										<PageTitle>Events</PageTitle>
-										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9, overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
+										<PageTitle>Events and Campaigns</PageTitle>
+										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9,paddingRight:40 }}>
 											{this.renderEvents(found)}
 										</div>
 									</div>
@@ -162,13 +166,14 @@ class EventsPage extends React.Component {
 				const endDate = new Date(event.end_date_and_time);
 				const textyStart = moment(date).format(format);
 				const textyEnd = moment(endDate).format(format);
+				const location = event.location;
 				return (
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
 						<div className="row no-gutter">
 							{/* renders the image */}
 							<div className="col-lg-4 col-12">
 								<figure className="raise-2" style={{ marginTop: 15, marginRight: 10, marginLeft: 20, borderRadius: 10, height: 190 }}>
-									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : null} alt="" /></Link>
+									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ width:'100%', height:'100%' ,objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : notFound} alt="" /></Link>
 									{/* if the date has passed already the calender div should be all gray */}
 								</figure>
 							</div>
@@ -197,10 +202,10 @@ class EventsPage extends React.Component {
 										:
 										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
 									}
-									{event.location ?
+									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											{event.location.street + ", " + event.location.city + " " + event.location.state}
+											{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b>  
 										</li>
 										:
 										null
@@ -242,6 +247,7 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePage,
 		collection: store.page.collection,
 		auth: store.firebase.auth,
 		user: store.user.info,

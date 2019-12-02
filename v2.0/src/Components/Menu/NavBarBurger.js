@@ -204,7 +204,7 @@ class NavBarBurger extends React.Component {
 					<Dropdown.Toggle as={ProfileBtnDropdown} userName={user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
 					<Dropdown.Menu style={style}>
 						<Link to={links.profile} className="dropdown-item p-3 small font-weight-bold cool-font" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
-						<button className="dropdown-item p-3 small font-weight-bold cool-font" onClick={() => { this.props.firebase.auth().signOut(); this.props.reduxLogout(); }}><SignOutLink>Sign Out</SignOutLink></button>
+						<button className="dropdown-item p-3 small font-weight-bold cool-font" onClick={() => { this.props.firebase.auth().signOut(); this.props.reduxLogout();localStorage.removeItem("idToken");  }}><SignOutLink>Sign Out</SignOutLink></button>
 					</Dropdown.Menu>
 				</Dropdown>
 			);

@@ -6,6 +6,7 @@ import IconBoxTable from './IconBoxTable';
 import Events from './EventHomepageSection';
 import { section } from '../../../api/functions'
 import { connect } from 'react-redux'
+import oops from './oops.png';
 
 /*
 * The Home Page of the MassEnergize
@@ -13,8 +14,21 @@ import { connect } from 'react-redux'
 class HomePage extends React.Component {
 
 	render() {
-		
-		if (!this.props.pageData) return <p className='text-center'> Sorry, looks like this community's Home Page is under maintenance. Try again later </p>;
+
+		if (!this.props.pageData) {
+			return (
+				<div className="boxed_wrapper" style={{ paddingTop: 221, height: window.screen.height }}>
+					<center>
+						<img src={oops} style={{ marginBottom:20,height: 200, width: 200 }} />
+						<h1 style={{ color: 'lightgray' }}>OOPS!</h1>
+
+						<h3 className='text-center' style={{ marginBottom:20,color: 'lightgray' }}> Sorry, the page you are looking for, could not be found. <br />Please try again later, or use the links on the navigation bar </h3>
+						<p className='text-center'><a href={"http://"+window.location.host} className="mass-domain-link "  >Find My Community</a> </p>
+					</center>
+
+				</div>
+			)
+		}
 		const comGoals = this.props.pageData ? this.props.pageData.goal : null;
 		const communityDescription = this.props.pageData.description;
 		const events = this.props.pageData ? this.props.pageData.featured_events : [];
@@ -43,11 +57,11 @@ class HomePage extends React.Component {
 		return (
 			<div className="boxed_wrapper" style={{ paddingTop: 91 }}>
 				{welcomeImagesData ?
-			
+
 					<WelcomeImages
 						data={welcomeImagesData}
 						title={title}
-					/> 
+					/>
 					: null
 				}
 				<div className="" style={{ padding: 30, background: 'white', color: "#383838" }}>
@@ -55,7 +69,7 @@ class HomePage extends React.Component {
 					{/* <p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p> */}
 				</div>
 				{this.props.pageData.show_featured_links ?
-					
+
 					<IconBoxTable
 						title="Get started - See your local options!"
 						boxes={iconQuickLinks}
@@ -63,7 +77,7 @@ class HomePage extends React.Component {
 					: null
 				}
 				{this.props.pageData.show_featured_stats ?
-					
+
 					<Graphs
 						graphs={graphs}
 						size={148}

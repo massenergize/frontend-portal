@@ -50,17 +50,93 @@ export const postJson = async (url, body) => {
  * being a SimpleRequest hence no preflight checks will be done saving some
  * band-with and being faster in general while avoiding CORS issues.
  */
-export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+export async function authCall(token, relocationPage = null) {
 		//Differentiate between dev deployment and real deployment
+	var params = {
+		credentials: 'include',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			Authorization: `Bearer ${token}`
+		},
+	}
+	const response = await fetch(`${URLS.ROOT}/auth/whoami`,params);
+  try {
+		const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+export async function apiCallNoToken(destinationUrl, dataToSend = {}, relocationPage = null) {
+	//const idToken = localStorage.getItem("idToken");
+		//Differentiate between dev deployment and real deployment
+	dataToSend = { is_dev:true, ...dataToSend};
+	var params = {
+		credentials: 'include',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: qs.stringify(dataToSend)
+	}
+
+	
+	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`,params);
+
+  try {
+		const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+//-------------------------------
+ function authCheck(token){
+	authCall(token).then(data=>{
+		if(!data.success && data.error ==="Signature has expired"){
+			localStorage.removeItem('idToken');
+		}
+	})
+}
+//THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
+export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+	var idToken = localStorage.getItem("idToken");
+	var params = {}
+	if(idToken){
+		authCheck(idToken);
+	}
+	//---reset token value
+	idToken =  localStorage.getItem("idToken");
+	//---Differentiate between dev deployment and real deployment
 		dataToSend = { is_dev:true, ...dataToSend};
-	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: qs.stringify(dataToSend)
-  });
+		if (idToken) {
+			params = {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					Authorization: `Bearer ${idToken}`
+				},
+				body: qs.stringify(dataToSend)
+			}
+		} else {
+			params = {
+				credentials: 'include',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: qs.stringify(dataToSend)
+			}
+		}
+	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`,params);
 
   try {
 		const json = await response.json();
@@ -86,7 +162,44 @@ export const deleteJson = async (url) => {
 		return null;
 	}
 }
+//THIS FUNCTION IS USED IF YOU WANT TO SKIP "v3" ROUTE LINE
 
+export async function rawCall(destinationUrl, dataToSend = {}, relocationPage = null) {
+  const idToken = localStorage.getItem("idToken");
+  var params = {};
+  if (idToken) {
+    params = {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${idToken}`
+      },
+      body: qs.stringify(dataToSend)
+    }
+  } else {
+    params = {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: qs.stringify(dataToSend)
+    }
+  }
+
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
+
+  try {
+    const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error: error.toString() };
+  }
+}
 /**
  * Takes out the section that matches with the name given
  * @param {JSONObject | JSONArray} json : the json object of either the page data or the json array of the sections

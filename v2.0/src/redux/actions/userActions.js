@@ -30,7 +30,7 @@ export const reduxLogin = (user) => dispatch => {
       payload: user
     });
 }
-
+ 
 /** nulls the stored user after logout*/
 export const reduxLogout = () => dispatch => {
   return dispatch({

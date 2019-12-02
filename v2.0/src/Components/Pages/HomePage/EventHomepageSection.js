@@ -45,7 +45,7 @@ class Events extends React.Component {
                 {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
                
                 {location ?
-                  <small small style={{fontSize:11}} className="text text-default text-sm-right">{location.city? `${location.city}` : ''} <b>{location.unit? `, ${location.unit}` : ''} </b> {location.state? `, ${location.state}` : ''}  <b>{location.address? `, ${location.address}` : ''}</b> {location.country? `, ${location.country}` : ''}  <b>{location.zipcode? `, ${location.zipcode}` : ''}</b></small>
+                  <small small style={{fontSize:11}} className="text text-default text-sm-right">{location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</small>
                   :
                   null
                 }
@@ -65,7 +65,7 @@ class Events extends React.Component {
     return (
       <section className="event-style1" style={{ background: 'white' }}>
         <div className="container">
-        <h3 className="cool-font text-center" style={{fontSize:20}}>Upcoming Events</h3>
+        <h3 className="cool-font text-center" style={{fontSize:20}}>Upcoming Events and Campaigns</h3>
           <div className="row">
           
             <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">

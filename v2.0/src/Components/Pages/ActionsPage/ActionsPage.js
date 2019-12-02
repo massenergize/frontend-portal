@@ -10,7 +10,7 @@ import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
 import PageTitle from '../../Shared/PageTitle';
-
+import Error404 from './../Errors/404';
 
 
 /**
@@ -32,6 +32,7 @@ class ActionsPage extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
+		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
 		
 		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		return (
@@ -70,7 +71,7 @@ class ActionsPage extends React.Component {
 								{/* renders the actions */}
 								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
 								<PageTitle>Actions</PageTitle>
-									<div className="row" id="actions-container"  style={{ marginTop:10,overflowY: 'scroll', maxHeight: 900,paddingRight:40 }}>
+									<div className="row" id="actions-container"  style={{ marginTop:10,paddingRight:40 }}>
 										{this.renderActions(actions)}
 									</div>
 								</div>
@@ -107,19 +108,16 @@ class ActionsPage extends React.Component {
 			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}
 		//returns a list of action components
-		return Object.keys(actions).map(key => {
+		return Object.keys(actions).reverse().map(key => {
 			var action = actions[key];
 			return <Action key={key}
 				action={action}
-
 				tagCols={this.props.tagCols}
 				match={this.props.match} //passed from the Route, need to forward to the action for url matching
 				user={this.props.user}
-
 				addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
 				inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
 				moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-
 				HHFormOpen={this.state.openAddForm === action.id}
 				showTestimonialLink={this.state.testimonialLink === action.id}
 				closeHHForm={() => this.setState({ openAddForm: null })}
@@ -246,6 +244,7 @@ class ActionsPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePage,
 		auth: store.firebase.auth,
 		user: store.user.info,
 		todo: store.user.todo,

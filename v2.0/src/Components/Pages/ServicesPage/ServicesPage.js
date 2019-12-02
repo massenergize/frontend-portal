@@ -5,7 +5,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import { Link } from 'react-router-dom'
 import notFound from './green-mat.jpg';
 import Funnel from '../EventsPage/Funnel';
-
+import Error404 from './../Errors/404';
 class ServicesPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -58,11 +58,13 @@ class ServicesPage extends React.Component {
 		if (services) {
 			for (let i = 0; i < services.length; i++) {
 				const ev = services[i];
-				for (let i = 0; i < ev.tags.length; i++) {
-					const tag = ev.tags[i];
-					//only push events if they arent there already
-					if (values.includes(tag.id) && !common.includes(ev)) {
-						common.push(ev)
+				if (ev.tags) {
+					for (let i = 0; i < ev.tags.length; i++) {
+						const tag = ev.tags[i];
+						//only push events if they arent there already
+						if (values.includes(tag.id) && !common.includes(ev)) {
+							common.push(ev)
+						}
 					}
 				}
 			}
@@ -70,6 +72,10 @@ class ServicesPage extends React.Component {
 		return common;
 	}
 	render() {
+
+		if (!this.props.homePageData) {
+			return <Error404 />
+		}
 		var { serviceProviders } = this.props;
 
 		if (!serviceProviders || serviceProviders.length === 0) {
@@ -178,6 +184,8 @@ class ServicesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
 	return {
+		homePageData: store.page.homePage,
+		pageData: store.page.ServicesPage,
 		serviceProviders: store.page.serviceProviders,
 		links: store.links
 	}
