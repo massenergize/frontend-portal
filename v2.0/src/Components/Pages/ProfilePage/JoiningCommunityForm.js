@@ -36,7 +36,6 @@ class JoiningCommunityForm extends React.Component {
 
 	//updates the state when form elements are changed
 	onChange(event) {
-		const oldvalue = this.state.value;
 		this.setState({
 			value: event.target.value,
 		});

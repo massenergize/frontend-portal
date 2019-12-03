@@ -1,6 +1,5 @@
 import React from 'react';
-import URLS from '../../../api/urls'
-import { postJson, getJson, apiCall } from '../../../api/functions';
+import { apiCall } from '../../../api/functions';
 import { connect } from 'react-redux';
 import defaultUser from './../../Shared/default-user.png';
 

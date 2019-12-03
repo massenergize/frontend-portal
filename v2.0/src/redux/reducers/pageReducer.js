@@ -234,7 +234,7 @@ export default function (state = initialState, action) {
 				]
 			} 
 		case REMOVE_TEAM_MEMBER:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			return {
 				...state,
 				teamsPage: [
@@ -249,7 +249,7 @@ export default function (state = initialState, action) {
 				]
 			}
 		case TEAM_ADD_ACTION:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return { 
 				...state,
 				teamsPage: [
@@ -261,7 +261,7 @@ export default function (state = initialState, action) {
 				]
 			}
 		case TEAM_REMOVE_ACTION:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
 				teamsPage: [
@@ -273,7 +273,7 @@ export default function (state = initialState, action) {
 				]
 			}
 		case TEAM_ADD_HOUSEHOLD:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
 				teamsPage: [
@@ -285,7 +285,7 @@ export default function (state = initialState, action) {
 				]
 			}
 		case TEAM_REMOVE_HOUSEHOLD:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
 				teamsPage: [

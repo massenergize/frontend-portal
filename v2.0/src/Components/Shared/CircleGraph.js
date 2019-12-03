@@ -58,7 +58,7 @@ class CircleGraph extends React.Component {
 									return this.props.num;
 									// return `
 									//     <Tooltip text="Out of our goal of ${this.props.goal}, we have ${this.props.num} ${this.props.label.toLowerCase()}" dir="top">
-									//         <span class="has-tooltip">${this.props.num}</span>
+									//         <span className="has-tooltip">${this.props.num}</span>
 									//     </Tooltip>
 									// `;
 								}

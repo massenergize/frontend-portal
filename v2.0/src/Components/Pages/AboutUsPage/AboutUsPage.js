@@ -1,11 +1,6 @@
 import React from 'react'
-import URLS from '../../../api/urls';
-import { getJson, section } from '../../../api/functions'
-import LoadingCircle from '../../Shared/LoadingCircle';
-import WelcomeImages from '../../Shared/WelcomeImages'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Video from './Video'
-import TeamMembers from './TeamMembers'
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'

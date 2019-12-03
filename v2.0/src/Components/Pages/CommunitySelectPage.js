@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import LoadingCircle from '../Shared/LoadingCircle';
 import logo from '../../logo.png'
 
@@ -37,7 +36,7 @@ class CommunitySelectPage extends React.Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12 col-md-12 col-sm-10 col-xs-12  " style={{ paddingTop: "" }}>
-							<img className='text-center' style={{ margin: 'auto', display: 'block', maxWidth: '200px', marginTop: '16%', marginBottom: 10 }} src={logo} />
+							<img alt="IMG" className='text-center' style={{ margin: 'auto', display: 'block', maxWidth: '200px', marginTop: '16%', marginBottom: 10 }} src={logo} />
 							<h1 className='text-center raise-my-text'> <span style={{ color: '#ed5a14' }}>Welcome to </span>our <span style={{ color: 'green' }}>Community Portal</span> </h1>
 							<p className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)", fontWeight: '400' }}> Select Your Community Below</p>
 							<input onChange = {(event)=>{this.handleSearch(event)}}type="text" placeholder="Search for your community..." className="form-control font-textbox round-me" />

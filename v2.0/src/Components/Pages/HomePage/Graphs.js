@@ -25,7 +25,7 @@ class Graphs extends React.Component {
 		return Object.keys(graphs).map(key => {
 			var graph = graphs[key];
 			if (graph.data == null) {
-				console.log(graph);
+				return <div>No Graphs to Display</div>
 			} else {
 				return (
 					<div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12" data-wow-duration="0ms">

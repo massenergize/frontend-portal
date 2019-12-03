@@ -1,9 +1,7 @@
 import React from 'react'
 import LoadingCircle from '../../Shared/LoadingCircle'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import Moment from 'react-moment';
 import * as moment from 'moment';
 import notFound from './not-found.jpg';
 class OneEventPage extends React.Component {

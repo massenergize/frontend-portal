@@ -372,6 +372,8 @@ class OneActionPage extends React.Component {
 								</div>
 							</div>
 						);
+					}else{
+						return <div />
 					}
 				})}
 			</>

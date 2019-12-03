@@ -1,6 +1,5 @@
 import React from 'react';
 import PageTitle from '../../Shared/PageTitle';
-import { section } from '../../../api/functions';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
@@ -12,7 +11,6 @@ class DonatePage extends React.Component {
 		// if(!this.props.homePageData) return <Error404 />
 		if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
 		const pageData = this.props.donatePage;
-		const pageSections = this.props.donatePage.sections;
 		if (pageData == null) return <LoadingCircle />
 
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'
@@ -33,8 +31,8 @@ class DonatePage extends React.Component {
 						}
 						</center>
 						<br />
-						<div class="row text-center justify-content-center">
-							<div class="col-12 col-md-6 col-lg-4">
+						<div className="row text-center justify-content-center">
+							<div className="col-12 col-md-6 col-lg-4">
 								<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 									<input type="hidden" name="cmd" value="_donations" />
 									<input type="hidden" name="business" value="Donate" />

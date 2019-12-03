@@ -1,7 +1,6 @@
 import React from 'react';
 import logo from '../../logo.png';
 import { Link } from 'react-router-dom'
-import { section } from '../../api/functions'
 import { connect } from 'react-redux'
 
 
@@ -29,10 +28,13 @@ class FooterInfo extends React.Component {
 						<img src={communitylogo ? communitylogo : logo} alt="LOGO" style={{ display: "inline-block" }} className='header-logo' />
 					</Link></figure>
 					<ul className="contact-info">
-						{/* <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li> */}
-						<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
-						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
-						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
+						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Contact</i></li>
+						{this.props.info.email &&
+							<li><span className="icon-e-mail-envelope"></span>{this.props.info.email}</li>
+						}
+						{this.props.info.phone &&
+							<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
+						}
 					</ul>
 				</div>
 			</div>

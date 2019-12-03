@@ -14,12 +14,6 @@ class SideBar extends React.Component {
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<div className=" event-filter wrapper shop-sidebar mb-5 raise" style={{padding:36,borderRadius:15}}>
-				{/* <div className="sidebar_search">
-					<form action="#">
-						<input type="text" placeholder="Search...." id='action-searchbar' onChange={this.props.onChange} />
-						<button className="tran3s color1_bg" onClick={this.props.onChange}><i className="fa fa-search" aria-hidden="true"></i></button>
-					</form>
-				</div> */}
 				<br />
 				<h4>Filter by...</h4> 
 				<input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />
@@ -36,7 +30,7 @@ class SideBar extends React.Component {
 		}
 		return tagCol.map(tag => {
 			return (
-				<label s className="checkbox-container" onClick={this.props.onChange} key={tag.id}>
+				<label className="checkbox-container" onClick={this.props.onChange} key={tag.id}>
 					<p style={{
 						marginLeft: "25px",
 						marginBottom: "0",

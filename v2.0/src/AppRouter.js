@@ -24,7 +24,6 @@ import RegisterPage from './components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './components/Pages/DonatePage/DonatePage'
 import ContactPage from './components/Pages/ContactUs/ContactUsPage';
-import CommunitySelectPage from './components/Pages/CommunitySelectPage'
 
 import Error404 from './components/Pages/Errors/404';
 import {
@@ -63,7 +62,8 @@ class AppRouter extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			triedLogin: false
+			triedLogin: false,
+			community: null
 		}
 	}
 	componentDidMount() {
@@ -99,7 +99,7 @@ class AppRouter extends Component {
 				homePageResponse,
 				mainMenuResponse,
 			] = res;
-
+			this.setState({ community: communityInfoResponse.data })
 			this.props.reduxLoadCommunityInformation(communityInfoResponse.data)
 			this.props.reduxLoadHomePage(homePageResponse.data)
 			this.props.reduxLoadMenu(mainMenuResponse.data)
@@ -223,9 +223,10 @@ class AppRouter extends Component {
 		];
 		const droppyHome = {name:"Home",children:homeChil}
 		finalMenu = [droppyHome,...finalMenu];
-		//if (!this.state.loaded) return <LoadingCircle />;
 
-		const communityInfo = {} //communityInfoResponse.data
+		const communityInfo = this.state.community || {};
+		const footerInfo = {name: communityInfo.owner_name, phone: communityInfo.owner_phone_number, email: communityInfo.owner_email }
+
 		return (
 			<div className="boxed-wrapper">
 				<div className="burger-menu-overlay"></div>
@@ -277,7 +278,7 @@ class AppRouter extends Component {
 				{this.props.menu ?
 					<Footer
 						footerLinks={this.props.menu.filter(menu => { return menu.name === 'PortalFooterQuickLinks' })[0].content}
-						footerInfo={{name: communityInfo.owner_name, phone: communityInfo.owner_phone_number, email: communityInfo.owner_email }}
+						footerInfo={footerInfo}
 					/> : <LoadingCircle />
 				}
 			</div>

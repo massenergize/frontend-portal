@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import CONST from '../../Constants'
 import { connect } from 'react-redux'
 import * as moment from 'moment';
-import img from './../../../../src/assets/images/blog/i9.jpg';
+import defaultImg from './../../../../src/assets/images/blog/i9.jpg';
 /**
  * Events section displays upcoming events,
  * @props
@@ -19,6 +18,7 @@ import img from './../../../../src/assets/images/blog/i9.jpg';
         address
         //may need to add in id
  */ 
+
 class Events extends React.Component {
   renderEvents() {
     const events = this.props.events;
@@ -34,18 +34,17 @@ class Events extends React.Component {
 				const textyStart = moment(date).format(format);
 				const textyEnd = moment(endDate).format(format);
         const location = event.location;
-        const desc = event.description.length > 70 ? "Click to read full description about this event" : event.description;
-        const img = event.image.url ? event.image.url : img;
+        const img = event.image.url ? event.image.url : defaultImg;
         return (
           <article key = {index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{marginBottom:10,marginTop:10}} onClick ={()=>{window.location = this.props.links.events + "/"+event.id}}>
             <div className="z-depth-1"style={{borderRadius:15}}>
-              <img src={img} className="home-events-img" />
+              <img alt="IMG" src={img} className="home-events-img" />
               <div style={{ padding: 11,paddingLeft:17,height:120 }}>
                 <h6 className="zero-margin-btm">{event.name}</h6>
                 {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
                
                 {location ?
-                  <small small style={{fontSize:11}} className="text text-default text-sm-right">{location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</small>
+                  <small style={{fontSize:11}} className="text text-default text-sm-right">{location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</small>
                   :
                   null
                 }

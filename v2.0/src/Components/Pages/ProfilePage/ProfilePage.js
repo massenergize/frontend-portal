@@ -350,8 +350,8 @@ class ProfilePage extends React.Component {
 	}
 	addHousehold = (household) => {
 		this.props.reduxAddHousehold(household);
-		Object.keys(this.props.user.teams).map(key => {
-			const team = this.props.user.teams[key];
+		const teams = this.props.user.teams || []
+		teams.forEach(team => {
 			this.props.reduxTeamAddHouse(team);
 		})
 		this.addHouseToImpact();
