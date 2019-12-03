@@ -114,6 +114,7 @@ class AppRouter extends Component {
 			apiCall('about_us_page_settings.info', body),
 			apiCall('actions.list', body),
 			apiCall("graphs.actions.completed",body),
+			apiCall("graphs.communities.impact",body),
 			apiCall('donate_page_settings.info', body),
 			apiCall('events.list', body),
 			apiCall('users.events.list', body),
@@ -127,6 +128,7 @@ class AppRouter extends Component {
 			const [ 
 				aboutUsPageResponse,
 				actionsResponse,
+				actionsCompletedResponse,
 				communityStatsResponse,
 				donatePageResponse,
 				eventsResponse,
@@ -148,6 +150,7 @@ class AppRouter extends Component {
 			this.props.reduxLoadPolicies(policiesResponse.data)
 			this.props.reduxLoadRSVPs(eventsRsvpListResponse.data)
 			this.props.reduxLoadTagCols(tagCollectionsResponse.data)
+			this.props.reduxLoadCommunityData(actionsCompletedResponse.data)
 			this.props.reduxLoadCommunitiesStats(communityStatsResponse.data)
 
 		}).catch(err => {

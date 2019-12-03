@@ -121,7 +121,7 @@ class ImpactPage extends React.Component {
 
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4 className="cool-font">Number Of Communities And Their Impacts</h4>
+										<h4 className="cool-font">Communities And Their Impact</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p> */}
 									</div>
 									<div className="card-body">
@@ -145,7 +145,7 @@ class ImpactPage extends React.Component {
 const mapStoreToProps = (store) => {
 	return {
 		communitiesStats: store.page.communitiesStats,
-		communityData: store.page.communitiesStats,
+		communityData: store.page.communityData,
 		tagCols: store.page.tagCols,
 		comData: store.page.homePage,
 	}
