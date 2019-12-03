@@ -34,10 +34,9 @@ class SideBar extends React.Component {
 		if (!tagCol) {
 			return <p>No Filter Available</p>;
 		}
-		return Object.keys(tagCol).map(key => {
-			var tag = tagCol[key];
+		return tagCol.map(tag => {
 			return (
-				<label s className="checkbox-container" onClick={this.props.onChange} key={key.toString()}>
+				<label s className="checkbox-container" onClick={this.props.onChange} key={tag.id}>
 					<p style={{
 						marginLeft: "25px",
 						marginBottom: "0",

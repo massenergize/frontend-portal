@@ -16,7 +16,7 @@ class Error404 extends Component {
       <div>
 				<div className="boxed_wrapper" style={{ paddingTop: 221, height: window.screen.height }}>
           <center>
-            <img src={oops} style={{ marginBottom: 20, height: 200, width: 200 }} />
+            <img alt="404" src={oops} style={{ marginBottom: 20, height: 200, width: 200 }} />
             <h1 style={{ color: 'lightgray' }}>OOPS!</h1>
 
             <h3 className='text-center' style={{ marginBottom: 20, color: 'lightgray' }}> {msg}</h3>

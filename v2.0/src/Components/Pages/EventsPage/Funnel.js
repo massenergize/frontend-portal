@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Accordion from './../../Menu/Accordian';
 class EventFilter extends Component {
-  constructor(props) {
-    super(props)
-
-
-  }
 
   makeTagsSystematic = (tagCols) => {
     //arrange side filters in this order: Categories, Impact, difficulty

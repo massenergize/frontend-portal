@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { reduxLogin } from '../../../redux/actions/userActions'
 import { compose } from 'recompose'
 import { withFirebase } from 'react-redux-firebase'
-import URLS from '../../../api/urls'
-import { postJson } from '../../../api/functions'
 import Tooltip from '../../Shared/Tooltip';
-import { isThisSecond } from 'date-fns';
 
 
 class ChangePasswordFormBase extends React.Component {

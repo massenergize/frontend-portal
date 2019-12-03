@@ -4,10 +4,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { getJson,rawCall, apiCall } from '../../../api/functions';
+import { getJson,rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls'
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
-import firebase from './../../../config/firebaseConfig'
 
 
 

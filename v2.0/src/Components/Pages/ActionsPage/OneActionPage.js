@@ -152,6 +152,7 @@ class OneActionPage extends React.Component {
 			if (story.action) {
 				return story.action.id === Number(this.props.match.params.id)
 			}
+			return false;
 		});
 
 		return (

@@ -138,7 +138,7 @@ class StoriesPage extends React.Component {
 					}
 					<div className="item center" style={style}>
 						{this.state.expanded !== null ?
-							<img src={story.file ?story.file.url :avatar} style={{ height: 150, width:159, marginRight:10 , float: 'left', border: 'solid 1px #fbf7f7', borderRadius: '100%', padding: 10 }} />
+							<img alt="IMG" src={story.file ?story.file.url :avatar} style={{ height: 150, width:159, marginRight:10 , float: 'left', border: 'solid 1px #fbf7f7', borderRadius: '100%', padding: 10 }} />
 							: null}
 						{/* <div className="quote">
 							<i className="fa fa-quote-left"></i>

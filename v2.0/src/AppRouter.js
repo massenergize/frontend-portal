@@ -1,32 +1,32 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
-import NavBarBurger from './Components/Menu/NavBarBurger'
-import NavBarOffset from './Components/Menu/NavBarOffset'
-import Footer from './Components/Menu/Footer'
-import LoadingCircle from './Components/Shared/LoadingCircle'
+import NavBarBurger from './components/Menu/NavBarBurger'
+import NavBarOffset from './components/Menu/NavBarOffset'
+import Footer from './components/Menu/Footer'
+import LoadingCircle from './components/Shared/LoadingCircle'
 import './assets/css/style.css';
 
-import HomePage from './Components/Pages/HomePage/HomePage'
-import ActionsPage from './Components/Pages/ActionsPage/ActionsPage'
-import OneActionPage from './Components/Pages/ActionsPage/OneActionPage'
-import AboutUsPage from './Components/Pages/AboutUsPage/AboutUsPage'
-import ServicesPage from './Components/Pages/ServicesPage/ServicesPage'
-import OneServicePage from './Components/Pages/ServicesPage/OneServicePage'
-import StoriesPage from './Components/Pages/StoriesPage/StoriesPage'
-import LoginPage from './Components/Pages/LoginPage/LoginPage'
-//import EventsPage from './Components/Pages/EventsPage/EventsPage'
-import EventsPage from './Components/Pages/EventsPage/EventsPageReal'
-import OneEventPage from './Components/Pages/EventsPage/OneEventPage'
-import ProfilePage from './Components/Pages/ProfilePage/ProfilePage'
-import ImpactPage from './Components/Pages/ImpactPage/ImpactPage'
-import TeamsPage from './Components/Pages/TeamsPage/TeamsPage'
-import RegisterPage from './Components/Pages/RegisterPage/RegisterPage'
-import PoliciesPage from './Components/Pages/PoliciesPage/PoliciesPage'
-import DonatePage from './Components/Pages/DonatePage/DonatePage'
-import ContactPage from './Components/Pages/ContactUs/ContactUsPage';
-import CommunitySelectPage from './Components/Pages/CommunitySelectPage'
-import Error404 from './Components/Pages/Errors/404';
+import HomePage from './components/Pages/HomePage/HomePage'
+import ActionsPage from './components/Pages/ActionsPage/ActionsPage'
+import OneActionPage from './components/Pages/ActionsPage/OneActionPage'
+import AboutUsPage from './components/Pages/AboutUsPage/AboutUsPage'
+import ServicesPage from './components/Pages/ServicesPage/ServicesPage'
+import OneServicePage from './components/Pages/ServicesPage/OneServicePage'
+import StoriesPage from './components/Pages/StoriesPage/StoriesPage'
+import LoginPage from './components/Pages/LoginPage/LoginPage'
+//import EventsPage from './components/Pages/EventsPage/EventsPage'
+import EventsPage from './components/Pages/EventsPage/EventsPageReal'
+import OneEventPage from './components/Pages/EventsPage/OneEventPage'
+import ProfilePage from './components/Pages/ProfilePage/ProfilePage'
+import ImpactPage from './components/Pages/ImpactPage/ImpactPage'
+import TeamsPage from './components/Pages/TeamsPage/TeamsPage'
+import RegisterPage from './components/Pages/RegisterPage/RegisterPage'
+import PoliciesPage from './components/Pages/PoliciesPage/PoliciesPage'
+import DonatePage from './components/Pages/DonatePage/DonatePage'
+import ContactPage from './components/Pages/ContactUs/ContactUsPage';
+import CommunitySelectPage from './components/Pages/CommunitySelectPage'
+import Error404 from './components/Pages/Errors/404';
 import {
 
 	reduxLoadCommunity,
@@ -92,23 +92,17 @@ class AppRouter extends Component {
 			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
 			apiCall('home_page_settings.info', body, null),
 			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
-			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=AboutUs'),
 			apiCall('about_us_page_settings.info', body, null),
 			apiCall('donate_page_settings.info', body, null),
-			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Donate'),
 			apiCall('events.list', body, null),
-			//getJson(URLS.COMMUNITY + subdomain + '/actions'),
 			apiCall('actions.list',body),
-			//getJson(URLS.COMMUNITY + subdomain + '/vendors'),
 			apiCall('vendors.list', body, null),
 			apiCall('testimonials.list', body, null),
-			//getJson(URLS.COMMUNITY + subdomain + '/testimonials'),
 			getJson(URLS.MENUS),
 			getJson(URLS.POLICIES),
 			getJson(URLS.EVENT_ATTENDEES),
 			apiCall("communities.info", { subdomain: subdomain }, null),
 			getJson(URLS.TAG_COLLECTIONS),
-			//getJson(URLS.COMMUNITY + subdomain + '/data'),
 			apiCall("graphs.actions.completed",body),
 			getJson(URLS.V3 + 'tag_collections.listForSuperAdmin'),
 			apiCall("communities.info", body, null),

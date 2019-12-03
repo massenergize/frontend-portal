@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Tooltip from '../Shared/Tooltip'
+import Tooltip from './Tooltip'
 import { connect } from 'react-redux'
 import { reduxLoadDone, reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction } from '../../redux/actions/pageActions'
 import URLS from '../../api/urls'
-import { postJson, deleteJson } from '../../api/functions'
+import { postJson, apiCall, deleteJson } from '../../api/functions'
 
 /** 
  * Cart component
@@ -150,23 +150,42 @@ class Cart extends React.Component {
 	/**
 	 * Cart Functions
 	 */
+	// moveToDone = (actionRel) => {
+	// 	const body = {
+	// 		status: "DONE",
+	// 		action: actionRel.action.id,
+	// 		real_estate_unit: actionRel.real_estate_unit.id,
+	// 	}
+	// 	postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
+	// 		console.log(json);
+	// 		if (json.success) {
+	// 			this.props.reduxMoveToDone(json.data);
+	// 			this.addToImpact(actionRel.action);
+	// 		}
+	// 	}).catch(err => {
+	// 		console.log(err)
+	// 	})
+	// }
+
 	moveToDone = (actionRel) => {
 		const body = {
-			status: "DONE",
-			action: actionRel.action.id,
-			real_estate_unit: actionRel.real_estate_unit.id,
+			user_id: this.props.user.id,
+			action_id: actionRel.action.id,
+			household_id: actionRel.real_estate_unit.id,
 		}
-		postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
-			console.log(json);
+		apiCall('users.actions.completed.add', body).then(json => {
 			if (json.success) {
 				this.props.reduxMoveToDone(json.data);
-				this.addToImpact(actionRel.action);
+				this.addToImpact(json.data.action);
+				this.setState({ testimonialLink: actionRel.action.id })
+			} else{
+				console.log(json.error)
 			}
+			//just update the state here
 		}).catch(err => {
 			console.log(err)
 		})
 	}
-
 
 	removeFromCart = (actionRel) => {
 		//console.log("I am the real", actionRel)

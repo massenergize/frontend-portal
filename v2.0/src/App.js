@@ -4,9 +4,8 @@ import './assets/css/style.css'
 import AppRouter from './AppRouter'
 import { connect } from 'react-redux'
 import { reduxLoadCommunities } from './redux/actions/pageActions'
-import {getJson,apiCall,apiCallNoToken} from './api/functions'
-import URLS from './api/urls'
-import CommunitySelectPage from './Components/Pages/CommunitySelectPage';
+import {apiCallNoToken} from './api/functions'
+import CommunitySelectPage from './components/Pages/CommunitySelectPage';
 import { reduxLogout } from './redux/actions/userActions'
 class App extends Component {
 	constructor(props) {

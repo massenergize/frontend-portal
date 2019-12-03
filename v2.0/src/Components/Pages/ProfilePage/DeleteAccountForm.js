@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { reduxLogin, reduxLogout } from '../../../redux/actions/userActions'
 import URLS from '../../../api/urls'
-import { postJson, deleteJson } from '../../../api/functions'
+import { deleteJson } from '../../../api/functions'
 import { compose } from 'recompose'
 import { withFirebase } from 'react-redux-firebase'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
