@@ -15,7 +15,6 @@ import ServicesPage from './components/Pages/ServicesPage/ServicesPage'
 import OneServicePage from './components/Pages/ServicesPage/OneServicePage'
 import StoriesPage from './components/Pages/StoriesPage/StoriesPage'
 import LoginPage from './components/Pages/LoginPage/LoginPage'
-//import EventsPage from './components/Pages/EventsPage/EventsPage'
 import EventsPage from './components/Pages/EventsPage/EventsPageReal'
 import OneEventPage from './components/Pages/EventsPage/OneEventPage'
 import ProfilePage from './components/Pages/ProfilePage/ProfilePage'
@@ -26,9 +25,9 @@ import PoliciesPage from './components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './components/Pages/DonatePage/DonatePage'
 import ContactPage from './components/Pages/ContactUs/ContactUsPage';
 import CommunitySelectPage from './components/Pages/CommunitySelectPage'
+
 import Error404 from './components/Pages/Errors/404';
 import {
-
 	reduxLoadCommunity,
 	reduxLoadHomePage,
 	reduxLoadActionsPage,
@@ -50,14 +49,13 @@ import {
 	reduxLoadTagCols,
 	reduxLoadCommunityData,
 	reduxLoadCollection,
-	reduxLoadCommunityInformation
+	reduxLoadCommunityInformation,
+	reduxLoadCommunityAdmins
 } from './redux/actions/pageActions'
 import { reduxLogout,reduxLogin, reduxLoadTodo, reduxLoadDone } from './redux/actions/userActions';
 import { reduxLoadLinks } from './redux/actions/linkActions';
 
-
-import URLS from './api/urls'
-import { getJson, apiCall, rawCall } from './api/functions'
+import { apiCall } from './api/functions'
 import { connect } from 'react-redux';
 import { isLoaded } from 'react-redux-firebase';
 
@@ -69,8 +67,9 @@ class AppRouter extends Component {
 		}
 	}
 	componentDidMount() {
-		var subdomain = this.props.match.params.subdomain;
-		var body = { subdomain: subdomain };
+		const {subdomain} = this.props.match.params;
+		const body = { subdomain: subdomain };
+
 		this.props.reduxLoadLinks({
 			home: `/${subdomain}`,
 			actions: `/${subdomain}/actions`,
@@ -87,53 +86,76 @@ class AppRouter extends Component {
 			policies: `/${subdomain}/policies`,
 			contactus: `/${subdomain}/contactus`
 		}) 
+
+		// for lazy loading: load these first
 		Promise.all([
-			//Make sure to cleanup, and declare variables in Urls later
-			//getJson(URLS.COMMUNITY + subdomain + '/pages?name=Home'),
-			apiCall('home_page_settings.info', body, null),
-			getJson(URLS.TEAMS_STATS + '?community__subdomain=' + subdomain),
-			apiCall('about_us_page_settings.info', body, null),
-			apiCall('donate_page_settings.info', body, null),
-			apiCall('events.list', body, null),
-			apiCall('actions.list',body),
-			apiCall('vendors.list', body, null),
-			apiCall('testimonials.list', body, null),
-			getJson(URLS.MENUS),
-			getJson(URLS.POLICIES),
-			getJson(URLS.EVENT_ATTENDEES),
-			apiCall("communities.info", { subdomain: subdomain }, null),
-			getJson(URLS.TAG_COLLECTIONS),
+			apiCall("communities.info", body),
+			apiCall('home_page_settings.info', body),
+			apiCall('menus.list', body),
+		]).then(res => {
+
+			const [ 
+				communityInfoResponse, 
+				homePageResponse,
+				mainMenuResponse,
+			] = res;
+
+			this.props.reduxLoadCommunityInformation(communityInfoResponse.data)
+			this.props.reduxLoadHomePage(homePageResponse.data)
+			this.props.reduxLoadMenu(mainMenuResponse.data)
+		}).catch(err => {
+			this.setState({ error: err })
+			console.log(err)
+		});
+
+
+
+		Promise.all([
+			apiCall('about_us_page_settings.info', body),
+			apiCall('actions.list', body),
 			apiCall("graphs.actions.completed",body),
-			getJson(URLS.V3 + 'tag_collections.listForSuperAdmin'),
-			apiCall("communities.info", body, null),
-			apiCall(URLS.V3_COMMUNITIES_STATS,body)
-		]).then(myJsons => {
-			this.props.reduxLoadHomePage(myJsons[0].data ? myJsons[0].data : null)
-			this.props.reduxLoadTeamsPage(myJsons[1].data.length > 0 ? myJsons[1].data : null)
-			this.props.reduxLoadAboutUsPage(myJsons[2].data ? myJsons[2].data : null)
-			this.props.reduxLoadDonatePage(myJsons[3].data ? myJsons[3].data : null)
-			this.props.reduxLoadEvents(myJsons[4].data)
-			this.props.reduxLoadActions(myJsons[5].data)
-			this.props.reduxLoadServiceProviders(myJsons[6].data)
-			this.props.reduxLoadTestimonials(myJsons[7].data)
-			this.props.reduxLoadMenu(myJsons[8].data)
-			this.props.reduxLoadPolicies(myJsons[9].data)
-			this.props.reduxLoadRSVPs(myJsons[10].data)
-			//this.props.reduxLoadCommunities(myJsons[11].data)
-			// this.props.reduxLoadCommunity(myJsons[11].data.filter(com => {
-			// 	return com.subdomain === subdomain
-			// })[0])
-			this.props.reduxLoadCommunity(myJsons[11].data)
-			this.props.reduxLoadTagCols(myJsons[12].data)
-			this.props.reduxLoadCommunityData(myJsons[13].data)
-			this.props.reduxLoadCollection(myJsons[14].data)
-			this.props.reduxLoadCommunityInformation(myJsons[15].data)
-			this.props.reduxLoadCommunitiesStats(myJsons[16].data)
+			apiCall('donate_page_settings.info', body),
+			apiCall('events.list', body),
+			apiCall('users.events.list', body),
+			apiCall('policies.list', body),
+			apiCall('teams.stats', body),
+			apiCall('tag_collections.list', body),
+			apiCall('testimonials.list', body),
+			apiCall('vendors.list', body),
+		]).then(res => {
+
+			const [ 
+				aboutUsPageResponse,
+				actionsResponse,
+				communityStatsResponse,
+				donatePageResponse,
+				eventsResponse,
+				eventsRsvpListResponse,
+				policiesResponse,
+				teamResponse,
+				tagCollectionsResponse,
+				testimonialsResponse,
+				vendorsResponse,
+			] = res;
+
+      this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data)
+			this.props.reduxLoadTeamsPage(teamResponse.data)
+			this.props.reduxLoadDonatePage(donatePageResponse.data)
+			this.props.reduxLoadEvents(eventsResponse.data)
+			this.props.reduxLoadActions(actionsResponse.data)
+			this.props.reduxLoadServiceProviders(vendorsResponse.data)
+			this.props.reduxLoadTestimonials(testimonialsResponse.data)
+			this.props.reduxLoadPolicies(policiesResponse.data)
+			this.props.reduxLoadRSVPs(eventsRsvpListResponse.data)
+			this.props.reduxLoadTagCols(tagCollectionsResponse.data)
+			this.props.reduxLoadCommunitiesStats(communityStatsResponse.data)
+
 		}).catch(err => {
 			this.setState({ error: err })
 			console.log(err)
 		});
 	}
+
 	lowKeyErrorCheck(res,fallbackLink){
 		//if the request comes in as signature expired
 		//delete local token and sign user out, 
@@ -148,14 +170,19 @@ class AppRouter extends Component {
 			return res.data;
 		}
 	}
+
 	async getUser(email) {
-		const json = await getJson(`${URLS.USER}/e/${email}`);
+		if(!email) return false;
+		const json = await apiCall('users.info', { email });
 		if (json && json.success && json.data) {
 			this.props.reduxLogin(json.data);
-			const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
+			const todo = await apiCall('users.actions.todo.list', { email })
 			this.props.reduxLoadTodo(todo.data);
-			const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
+			const done = await apiCall('users.actions.completed.list', { email })
 			this.props.reduxLoadDone(done.data);
+			this.setState({
+				triedLogin: true
+			})
 			return true;
 		}
 		else {
@@ -163,12 +190,15 @@ class AppRouter extends Component {
 			return false;
 		}
 	}
+
+
 	render() {
 		document.body.style.overflowX = 'hidden';
 
 		if (!isLoaded(this.props.auth)) {
 			return <LoadingCircle />;
 		}
+
 		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
 			this.getUser(this.props.auth.email).then(success => {
 				this.setState({
@@ -177,7 +207,6 @@ class AppRouter extends Component {
 			})
 		}
 		if (this.props.auth.uid && !this.state.triedLogin) {
-			console.log('user loading')
 			return <LoadingCircle />;
 		}
 		const { links } = this.props;
@@ -195,6 +224,8 @@ class AppRouter extends Component {
 		const droppyHome = {name:"Home",children:homeChil}
 		finalMenu = [droppyHome,...finalMenu];
 		//if (!this.state.loaded) return <LoadingCircle />;
+
+		const communityInfo = {} //communityInfoResponse.data
 		return (
 			<div className="boxed-wrapper">
 				<div className="burger-menu-overlay"></div>
@@ -246,7 +277,7 @@ class AppRouter extends Component {
 				{this.props.menu ?
 					<Footer
 						footerLinks={this.props.menu.filter(menu => { return menu.name === 'PortalFooterQuickLinks' })[0].content}
-						footerInfo={this.props.menu.filter(menu => { return menu.name === 'PortalFooterContactInfo' })[0].content}
+						footerInfo={{name: communityInfo.owner_name, phone: communityInfo.owner_phone_number, email: communityInfo.owner_email }}
 					/> : <LoadingCircle />
 				}
 			</div>
@@ -257,7 +288,6 @@ const mapStoreToProps = (store) => {
 	return {
 		user: store.user.info,
 		auth: store.firebase.auth,
-		user: store.user.info,
 		menu: store.page.menu,
 		links: store.links,
 	}
@@ -289,6 +319,7 @@ const mapDispatchToProps = {
 	reduxLoadCommunityData,
 	reduxLoadLinks,
 	reduxLoadCollection,
-	reduxLoadCommunityInformation
+	reduxLoadCommunityInformation,
+	reduxLoadCommunityAdmins
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

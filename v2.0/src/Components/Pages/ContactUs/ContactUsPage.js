@@ -1,10 +1,5 @@
 import React from 'react'
-import URLS from '../../../api/urls';
-import { getJson, section } from '../../../api/functions'
-import LoadingCircle from '../../Shared/LoadingCircle';
-import WelcomeImages from '../../Shared/WelcomeImages'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
@@ -48,26 +43,22 @@ class ContactUsPage extends React.Component {
     }
   }
   render() {
-    // if (!this.props.user)
-    //   return <Redirect to={this.props.links.signin}> </Redirect>;
-
-    if (!this.props.homePageData || !this.props.community) {
+    const communityInfo = this.props.pageData || this.props.community
+    if (!this.props.homePageData && !communityInfo) {
       return (
         <div className="boxed_wrapper" >
           <h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, it looks like this community has no contact information :( </h2>
         </div>
       )
     }
-    const pageData = this.props.pageData ? this.props.pageData : {admins:[]};
+
     const {
       id,
       name,
-      owner_name,
-      owner_email,
-      owner_phone_number,
       location,
       admins
-    } = pageData;
+    } = communityInfo;
+    
     return (
       <>
         <div className="boxed_wrapper" style={{ marginBottom: 300 }}>

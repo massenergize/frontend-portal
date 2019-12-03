@@ -1,14 +1,9 @@
 import React from 'react'
-import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
-import SideBar from '../../Menu/SideBar'
 import PageTitle from '../../Shared/PageTitle';
-import URLS from '../../../api/urls'
-import { getJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import RSVPForm from './RSVPForm';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import CONST from '../../Constants'
 import * as moment from 'moment';
@@ -109,7 +104,6 @@ class EventsPage extends React.Component {
 	render() {
 		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
 		
-
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
 			<>
@@ -236,13 +230,6 @@ class EventsPage extends React.Component {
 			someDate.getMonth() === someOtherDate.getMonth() &&
 			someDate.getFullYear() === someOtherDate.getFullYear()
 	}
-
-
-
-
-
-
-
 }
 
 const mapStoreToProps = (store) => {

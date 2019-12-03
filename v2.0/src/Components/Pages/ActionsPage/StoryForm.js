@@ -205,7 +205,7 @@ class StoryForm extends React.Component {
 			this.setState({ error: "Sorry, your story is too long" })
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
-			apiCall(`/testimonials.add`, body).then(json => {
+			apiCall(`testimonials.add`, body).then(json => {
 				console.log(json);
 				if (json && json.success) {
 					this.setState({

@@ -16,22 +16,22 @@ import { connect } from 'react-redux'
 */
 
 class FooterInfo extends React.Component {
+
 	render() {
-		//const header = this.props.pageData ? section(this.props.pageData, 'HomeHeader') : null;
-		//const header =  null;
-		var communitylogo = null;
-		if (this.props.pageData) {
-			 communitylogo = this.props.pageData.community.logo ? this.props.pageData.community.logo.url : null;
-		}
+		const { pageData } = this.props;
+		const { community } = pageData || {};
+		var communitylogo = community && community.logo & community.logo.url;
+
 		return (
 			<div className="col-7 col-md-4">
 				<div className="footer-widget about-column">
 					<figure><Link to={this.props.links.home}>
-						<img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+						<img src={communitylogo ? communitylogo : logo} alt="LOGO" style={{ display: "inline-block" }} className='header-logo' />
 					</Link></figure>
 					<ul className="contact-info">
 						{/* <li><span className="icon-e-mail-envelope"></span> {this.props.info.email}</li> */}
 						<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
+						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
 						<li><span className="icon-people3"></span>{this.props.info.contactPerson}, <i>Community Contact</i></li>
 					</ul>
 				</div>
