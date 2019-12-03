@@ -69,7 +69,8 @@ export default function (state = initialState, action) {
 		case "LOAD_COMMUNITY_INFORMATION":
 			return {
 				...state,
-				comInformation: action.payload
+				comInformation: action.payload,
+				community: action.payload
 			}
 		case "LOAD_COLLECTION":
 			return {

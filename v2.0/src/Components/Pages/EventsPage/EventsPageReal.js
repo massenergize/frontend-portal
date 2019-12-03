@@ -109,7 +109,6 @@ class EventsPage extends React.Component {
 	render() {
 		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
 		
-
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
 			<>
@@ -236,13 +235,6 @@ class EventsPage extends React.Component {
 			someDate.getMonth() === someOtherDate.getMonth() &&
 			someDate.getFullYear() === someOtherDate.getFullYear()
 	}
-
-
-
-
-
-
-
 }
 
 const mapStoreToProps = (store) => {

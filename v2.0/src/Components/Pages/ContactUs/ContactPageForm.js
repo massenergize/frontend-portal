@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { apiCall } from '../../../api/functions'
 
 const DEFAULTS = {
- // admin:"All", 
   user_name:null, 
   email:null, 
-  //phone:null, 
   body:null, 
   uploaded_file:null
 }
@@ -47,7 +45,8 @@ class ContactPageForm extends Component {
       return 
     }
   
-    apiCall("/admins.messages.add",data).then(res=>{
+    apiCall("admins.messages.add",data).then(res=>{
+      console.log(res, data)
      if(res.success){
        spin.style.display = "none";
        this.clear();
@@ -59,11 +58,6 @@ class ContactPageForm extends Component {
    });
   }
   render() {
-    // const { admins } = this.props;
-    // var mapped = null;
-    // if (admins) {
-    //   mapped = admins.map((admin, index) => { return <option>{admin.email}</option> })
-    // }
     return (
       <div className="container">
         <div className="m-form-outer z-depth-1">

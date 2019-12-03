@@ -1,11 +1,6 @@
 import React from 'react'
-import URLS from '../../../api/urls';
-import { getJson, section } from '../../../api/functions'
-import LoadingCircle from '../../Shared/LoadingCircle';
-import WelcomeImages from '../../Shared/WelcomeImages'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Video from './Video'
-import TeamMembers from './TeamMembers'
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
@@ -20,21 +15,14 @@ class ContactUsPage extends React.Component {
 			return <p className='text-center'> Sorry, looks like this community's About Us Page is under maintenance. Try again later </p>
 		}
 
-		// if (!this.props.communityAdmins) {
-		// 	getJson(URLS.COMMUNITY_ADMIN_GROUP + this.props.community.id).then(json => {
-		// 		if (json.success && json.data) {
-		// 			this.props.reduxLoadCommunityAdmins(json.data.members)
-		// 		}
-		// 	});
-		// 	return <LoadingCircle />
-		// }
+
 		const pageData = this.props.pageData;
 	//	const welcomeImagesData = section(this.props.pageData.sections, "WelcomeImages", true).slider[0].slides;
 		//const video = section(this.props.pageData.sections, "AboutUsVideo", true);
 		const videoLink = pageData ? pageData.featured_video_link : null;
 		const paragraphContent = pageData.description;
 		const donateMessage = "Help support our cause by donating";
-		const teamMembersData = this.props.communityAdmins
+
 		return (
 			<>
 				<div className="boxed_wrapper">

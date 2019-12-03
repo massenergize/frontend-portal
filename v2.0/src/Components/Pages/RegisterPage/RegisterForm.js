@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { compose } from 'recompose';
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import { postJson, getJson, rawCall, apiCall } from '../../../api/functions';
+import { postJson, apiCall, rawCall, apiCallNoToken } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
@@ -75,7 +75,7 @@ class RegisterFormBase extends React.Component {
 					<Modal.Footer>
 						<Button variant="secondary" onClick={() => this.setState({ showTOS: false })}>
 							Close
-                        </Button>
+            </Button>
 					</Modal.Footer>
 				</Modal>
 				<Modal show={this.state.showPP} onHide={() => this.setState({ showPP: false })} centered>
@@ -279,11 +279,10 @@ class RegisterFormBase extends React.Component {
 				"full_name": firstName + ' ' + lastName,
 				"preferred_name": preferredName === "" ? firstName : preferredName,
 				"email": auth.email,
-				// "id": auth.uid,
 				"is_vendor": serviceProvider,
 				"accepts_terms_and_conditions": termsAndServices
 			}
-			postJson(URLS.USERS, body).then(json => {
+			apiCall('users.create', body).then(json => {
 				console.log(json);
 				if (json && json.success && json.data) {
 					this.fetchAndLogin(json.data.email).then(success => {
@@ -339,26 +338,24 @@ class RegisterFormBase extends React.Component {
 	}
 
 	fetchMassToken = async(fireToken) =>{
-		const me = this;
     const body = { idToken: fireToken };
-    rawCall("auth/verify", body).then(massToken => {
+    apiCallNoToken("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;
       localStorage.setItem("idToken", idToken.toString());
     }).catch(err => {
       console.log("Error MASSTOKEN: ", err);
     });
 	}
+
 	fetchAndLogin = async (email) => {
-		
 		try {
-			//const json = await getJson(`${URLS.USER}/e/${email}`);
 			const json = await rawCall("auth/whoami");
+			console.log(json)
 			if (json.success && json.data) {
 				this.props.reduxLogin(json.data);
-
-				const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
+				const todo = await apiCall('users.actions.todo.list', { email })
 				this.props.reduxLoadTodo(todo.data);
-				const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
+				const done = await apiCall('users.actions.completed.list', { email })
 				this.props.reduxLoadDone(done.data);
 				return true;
 			}

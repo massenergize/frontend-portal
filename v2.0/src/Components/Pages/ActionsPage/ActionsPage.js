@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import URLS from '../../../api/urls';
-import { getJson, postJson } from '../../../api/functions'
+import {  postJson } from '../../../api/functions'
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar';

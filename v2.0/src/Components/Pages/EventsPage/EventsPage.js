@@ -307,6 +307,7 @@ class EventsPage extends React.Component {
 	}
 
 	renderCategoryFilter = () => {
+		console.log(this.props.tagCols)
 		if (!this.state.events_search_toggled) return <div></div>;
 		else {
 			return (
