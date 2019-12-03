@@ -31,8 +31,8 @@ class DonatePage extends React.Component {
 						}
 						</center>
 						<br />
-						<div class="row text-center justify-content-center">
-							<div class="col-12 col-md-6 col-lg-4">
+						<div className="row text-center justify-content-center">
+							<div className="col-12 col-md-6 col-lg-4">
 								<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 									<input type="hidden" name="cmd" value="_donations" />
 									<input type="hidden" name="business" value="Donate" />

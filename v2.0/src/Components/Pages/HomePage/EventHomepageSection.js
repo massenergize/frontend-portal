@@ -44,7 +44,7 @@ class Events extends React.Component {
                 {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
                
                 {location ?
-                  <small small style={{fontSize:11}} className="text text-default text-sm-right">{location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</small>
+                  <small style={{fontSize:11}} className="text text-default text-sm-right">{location.address? `${location.address}` : ''}  {location.city? `, ${location.city}` : ''} {location.unit? `, ${location.unit}` : ''} {location.state? `, ${location.state}` : ''}    {location.zipcode? `, ${location.zipcode}` : ''}</small>
                   :
                   null
                 }
