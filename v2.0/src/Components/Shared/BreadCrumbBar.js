@@ -25,6 +25,8 @@ class BreadCrumbBar extends React.Component {
 											{link.name}
 										</li>
 									);
+								}else{
+									return <div />
 								}
 							})}
 						</ul>

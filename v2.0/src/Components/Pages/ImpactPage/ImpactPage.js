@@ -4,8 +4,6 @@ import CircleGraph from '../../Shared/CircleGraph';
 import PageTitle from '../../Shared/PageTitle';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
-import { getJson } from '../../../api/functions'
-import URLS from '../../../api/urls'
 import { reduxLoadCommunitiesStats } from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Error404 from './../Errors/404';

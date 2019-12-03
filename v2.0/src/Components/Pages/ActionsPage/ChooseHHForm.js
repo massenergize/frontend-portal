@@ -3,10 +3,6 @@ import React from 'react';
 /********************************************************************/
 /**                        RSVP FORM                               **/
 /********************************************************************/
-const INITIAL_STATE = {
-	error: null,
-	choice: null,
-};
 
 class ChooseHHForm extends React.Component {
 	constructor(props) {
@@ -78,28 +74,27 @@ class ChooseHHForm extends React.Component {
 		})
 	}
 	renderRadios(households) {
-		return Object.keys(households).map(key => {
-			const household = households[key];
-			if ((this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) || (this.props.status === "TODO" && !this.props.inCart(this.props.aid, household.id))) {
-				return (
-					<div key={key} style={{ display: 'inline-block' }}>
-						<input id={'' + household.name + key} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} checked={Number(this.state.choice) === Number(household.id)} style={{ display: 'inline-block' }} />
-						&nbsp;
-                            <label htmlFor={'' + household.name + key}> {household.name} </label>
-						&nbsp;&nbsp;&nbsp;
-                        </div>
-				);
-			}
-		})
+		if(!households) return <div />
+
+		return households.filter(household => 
+			(this.props.status === "DONE" && !this.props.inCart(this.props.aid, household.id, "DONE")) 
+				|| (this.props.status === "TODO" && !this.props.inCart(this.props.aid, household.id))
+			).map(household => (
+				<div key={household.id} style={{ display: 'inline-block' }}>
+					<input id={'' + household.name + household.id} type='radio' value={household.id} name='hhchoice' onChange={this.onChange} checked={Number(this.state.choice) === Number(household.id)} style={{ display: 'inline-block' }} />
+					&nbsp;
+					<label htmlFor={'' + household.name + household.id}> {household.name} </label>
+					&nbsp;&nbsp;&nbsp;
+				</div>
+			)
+		)
 	}
 	//updates the state when form elements are changed
 	onChange(event) {
-		console.log(event.target.value)
 		this.setState({
 			error: null,
 			choice: event.target.value,
 		});
-		console.log(this.state)
 	};
 
 	checkHouseholds = () => {
@@ -113,12 +108,11 @@ class ChooseHHForm extends React.Component {
 					housesAvailable.push(household.id)
 				}
 			}
-			console.log(housesAvailable)
+
 			if (!this.state.error && !this.state.choice) {
 				if (housesAvailable.length === 0) {
 					this.setState({ error: `You have already added this action for all of your households` });
 				} else {
-					console.log(housesAvailable[0])
 					this.setState({ choice: housesAvailable[0] });
 				}
 			}

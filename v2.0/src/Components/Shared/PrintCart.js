@@ -11,7 +11,7 @@ class ComponentToPrint extends React.Component {
     render() {
         return (
             <div style={{padding: "30px"}}>
-                <img src={logo} style={{width: "50%", margin:"auto", display:"block", paddingBottom:"20px"}}></img>
+                <img alt="IMG" src={logo} style={{width: "50%", margin:"auto", display:"block", paddingBottom:"20px"}}></img>
                 <Cart title="To Do List" actionRels={this.props.todo} status="TODO" info={true}/>
                 <Cart title="Completed Actions" actionRels={this.props.done} status="DONE" info={true}/>
                 {this.props.rsvps?

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import URLS from '../../../api/urls';
-import {  postJson } from '../../../api/functions'
+import { apiCall, postJson } from '../../../api/functions'
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar';
@@ -142,15 +142,17 @@ class ActionsPage extends React.Component {
 	}
 	moveToDone = (actionRel) => {
 		const body = {
-			status: "DONE",
-			action: actionRel.action.id,
-			real_estate_unit: actionRel.real_estate_unit.id,
+			user_id: this.props.user.id,
+			action_id: actionRel.action.id,
+			household_id: actionRel.real_estate_unit.id,
 		}
-		postJson(URLS.USER + '/' + this.props.user.id + '/action/' + actionRel.id, body).then(json => {
+		apiCall('users.actions.completed.add', body).then(json => {
 			if (json.success) {
 				this.props.reduxMoveToDone(json.data);
-				this.addToImpact(json.data.action);
+				// this.addToImpact(json.data.action);
 				this.setState({ testimonialLink: actionRel.action.id })
+			} else{
+				console.log(json.error)
 			}
 			//just update the state here
 		}).catch(err => {
@@ -167,12 +169,13 @@ class ActionsPage extends React.Component {
 	}
 	addToCart = (aid, hid, status) => {
 		const body = {
-			action: aid,
-			status: status,
-			real_estate_unit: hid
+			user_id: this.props.user.id,
+			action_id: aid,
+			household_id: hid,
 		}
+		const path = (status === "DONE") ? "users.actions.completed.add" : "users.actions.todo.add"
 		this.setState({ testimonialLink: null });
-		postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
+		apiCall(path, body).then(json => {
 			if (json.success) {
 				//set the state here
 				if (status === "TODO") {
@@ -180,7 +183,7 @@ class ActionsPage extends React.Component {
 				}
 				else if (status === "DONE") {
 					this.props.reduxAddToDone(json.data);
-					this.addToImpact(json.data.action);
+					// this.addToImpact(json.data.action);
 					this.setState({ testimonialLink: aid });
 				}
 			}
@@ -200,8 +203,10 @@ class ActionsPage extends React.Component {
 			this.props.reduxTeamAddAction(this.props.user.teams[key]);
 		})
 	}
+
 	changeDataByName(name, number) {
-		var data = this.props.communityData.filter(data => {
+		const communityData = this.props.communityData || []
+		var data = communityData.filter(data => {
 			return data.name === name
 		})[0];
 
@@ -218,6 +223,7 @@ class ActionsPage extends React.Component {
 			}
 		})
 	}
+
 	changeData(tagid, number) {
 		var data = this.props.communityData.filter(data => {
 			if (data.tag) {

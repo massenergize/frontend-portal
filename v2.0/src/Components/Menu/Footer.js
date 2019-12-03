@@ -50,18 +50,15 @@ class Footer extends React.Component {
 				<section className="coders " style={{ background: 'black' }}>
 					<div className="container">
 						<p className="m-0" style={{ fontSize: '12px' }}>Made with&nbsp;
-                            <span className="fa fa-heart text-danger"></span> by&nbsp;
-                            <a className="normal">
+							<span className="fa fa-heart text-danger"></span> by&nbsp;
 								<u>Sam Opoku-Agyemang</u>
-							</a>,&nbsp;
-                            <a className="normal">
+								&nbsp;&nbsp;
 								<u>Kieran O'Day</u>
-							</a>,&nbsp;
-                            <a className="normal">
+							&nbsp;&nbsp;
 								<u>Mingle Li</u>
-							</a>
-							.
-                        </p>
+							&nbsp;&nbsp;
+								<u>Frimpong Opoku-Agyemang</u>
+						</p>
 					</div>
 				</section>
 			</div>
