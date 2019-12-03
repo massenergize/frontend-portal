@@ -227,7 +227,7 @@ class RegisterFormBase extends React.Component {
 		}
 		postJson(URLS.VERIFY, { 'captchaString': value }).then(response => {
 			console.log(response)
-			if (response.success && response.data.success) this.setState({ 'captchaConfirmed': true });
+			if (response && response.data && response.data.success) this.setState({ 'captchaConfirmed': true });
 		})
 	}
 	onChange(event) {

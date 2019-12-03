@@ -175,7 +175,8 @@ export default function (state = initialState, action) {
 		case LOAD_TAG_COLS: 
 			return {
 				...state,
-				tagCols: action.payload
+				tagCols: action.payload,
+				collection:  (action.payload || []).filter(t => t.name === "Category")
 			}
 		case ADD_TESTIMONIAL:
 			return {

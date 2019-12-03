@@ -58,7 +58,7 @@ class TeamsPage extends React.Component {
 		const me = this;
 		if (msg !== "" && title !=="") {
 			spinner.style.display = "block";
-			apiCall(`/teams.contactAdmin`, body).then(json => {
+			apiCall(`teams.contactAdmin`, body).then(json => {
 				document.getElementById("contact-textarea").value = "";
 				document.getElementById("contact-title").value = "";
 				spinner.style.display = "none";
@@ -109,7 +109,7 @@ class TeamsPage extends React.Component {
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ name: 'Teams' }]} />
 					<div className="p-5">
-						<PageTitle>Team Leaderboard</PageTitle>
+						<PageTitle>Teams in this Community</PageTitle>
 						<Table bordered hover responsive className="teams-table">
 							<thead>
 								<tr>
@@ -157,6 +157,7 @@ class TeamsPage extends React.Component {
 			this.goalsList(obj.team.id).then(json => {
 				if (json && json.success && json.data.length > 0) {
 					var c = json.data[0].attained_carbon_footprint_reduction;
+					console.log(c, obj)
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}
 			});
@@ -217,7 +218,7 @@ class TeamsPage extends React.Component {
 		const body = {
 			team_id: team_id
 		}
-		return apiCall(`/goals.list`, body);
+		return apiCall(`goals.list`, body);
 	}
 
 	leaveTeam = (user_id, team_id) => {
@@ -225,7 +226,7 @@ class TeamsPage extends React.Component {
 			team_id: team_id,
 			user_id: user_id
 		}
-		apiCall(`/teams.leave`, body).then(json => {
+		apiCall(`teams.leave`, body).then(json => {
 			if (json) {
 				if (json.success) {
 					window.location.reload();

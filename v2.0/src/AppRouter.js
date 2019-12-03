@@ -135,7 +135,7 @@ class AppRouter extends Component {
 				testimonialsResponse,
 				vendorsResponse,
 			] = res;
-
+			console.log(teamResponse)
 			this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data)
 			this.props.reduxLoadTeamsPage(teamResponse.data)
 			this.props.reduxLoadDonatePage(donatePageResponse.data)
