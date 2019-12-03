@@ -20,7 +20,7 @@ class ContactModal extends Component {
             <h5>{title}</h5>
             <p>Send a message to this team's admin</p>
             <div>
-              <input id="contact-title" type="text" name ="title" className="form-control" onChange = {(event)=>this.props.handleTextFxn(event)} className="form-control" style={{padding:15,marginBottom:7}} placeholder ="Title..." />
+              <input id="contact-title" type="text" name ="title" className="form-control" onChange = {(event)=>this.props.handleTextFxn(event)} style={{padding:15,marginBottom:7}} placeholder ="Title..." />
               <textarea id="contact-textarea" name="msg" onChange = {(event)=>this.props.handleTextFxn(event)} className="form-control" style={{padding:15}} rows={7} placeholder="Message...">
 
               </textarea>

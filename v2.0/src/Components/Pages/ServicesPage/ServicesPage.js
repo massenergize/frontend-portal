@@ -1,5 +1,4 @@
 import React from 'react'
-import LoadingCircle from '../../Shared/LoadingCircle';
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import { Link } from 'react-router-dom'

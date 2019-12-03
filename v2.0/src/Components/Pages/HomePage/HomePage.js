@@ -1,10 +1,8 @@
 import React from 'react'
-import LoadingCircle from '../../Shared/LoadingCircle';
 import WelcomeImages from '../../Shared/WelcomeImages'
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './EventHomepageSection';
-import { section } from '../../../api/functions'
 import { connect } from 'react-redux'
 import oops from './oops.png';
 
@@ -19,7 +17,7 @@ class HomePage extends React.Component {
 			return (
 				<div className="boxed_wrapper" style={{ paddingTop: 221, height: window.screen.height }}>
 					<center>
-						<img src={oops} style={{ marginBottom:20,height: 200, width: 200 }} />
+						<img src={oops} alt="IMG" style={{ marginBottom:20,height: 200, width: 200 }} />
 						<h1 style={{ color: 'lightgray' }}>OOPS!</h1>
 
 						<h3 className='text-center' style={{ marginBottom:20,color: 'lightgray' }}> Sorry, the page you are looking for, could not be found. <br />Please try again later, or use the links on the navigation bar </h3>

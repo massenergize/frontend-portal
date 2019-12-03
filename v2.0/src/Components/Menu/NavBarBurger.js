@@ -321,7 +321,6 @@ class SubMenuItem extends React.Component {
 	}
 
 	render() {
-		const { links } = this.props;
 		return (
 			<>
 				<MenuItem
@@ -385,7 +384,6 @@ class MenuItem extends React.Component {
 
 			}
 		}
-		const { links } = this.props;
 		return (
 			<div style={styles.container}>
 				<Link

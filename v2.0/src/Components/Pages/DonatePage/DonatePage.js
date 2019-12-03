@@ -1,6 +1,5 @@
 import React from 'react';
 import PageTitle from '../../Shared/PageTitle';
-import { section } from '../../../api/functions';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
@@ -12,7 +11,6 @@ class DonatePage extends React.Component {
 		// if(!this.props.homePageData) return <Error404 />
 		if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
 		const pageData = this.props.donatePage;
-		const pageSections = this.props.donatePage.sections;
 		if (pageData == null) return <LoadingCircle />
 
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'

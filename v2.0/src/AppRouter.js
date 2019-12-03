@@ -24,7 +24,6 @@ import RegisterPage from './components/Pages/RegisterPage/RegisterPage'
 import PoliciesPage from './components/Pages/PoliciesPage/PoliciesPage'
 import DonatePage from './components/Pages/DonatePage/DonatePage'
 import ContactPage from './components/Pages/ContactUs/ContactUsPage';
-import CommunitySelectPage from './components/Pages/CommunitySelectPage'
 
 import Error404 from './components/Pages/Errors/404';
 import {

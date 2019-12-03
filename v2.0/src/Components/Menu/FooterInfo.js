@@ -1,7 +1,6 @@
 import React from 'react';
 import logo from '../../logo.png';
 import { Link } from 'react-router-dom'
-import { section } from '../../api/functions'
 import { connect } from 'react-redux'
 
 

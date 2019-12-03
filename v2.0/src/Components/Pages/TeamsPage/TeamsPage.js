@@ -38,7 +38,7 @@ class TeamsPage extends React.Component {
 		this.setState({ modal_content: { title: title, desc: desc } });
 	}
 	renderContactModal = () => {
-		if (this.state.contact_modal_toggled) return <ContactModal content={this.state.modal_content} handleTextFxn={this.handleText} sendMessageFxn={this.sendMessage} content={this.state.modal_content} toggler={this.toggleContact} />
+		if (this.state.contact_modal_toggled) return <ContactModal content={this.state.modal_content} handleTextFxn={this.handleText} sendMessageFxn={this.sendMessage} toggler={this.toggleContact} />
 	}
 	handleText = (event) => {
 		const old = this.state.contact_content; 

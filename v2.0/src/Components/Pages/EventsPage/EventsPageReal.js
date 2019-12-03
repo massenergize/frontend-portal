@@ -154,7 +154,6 @@ class EventsPage extends React.Component {
 		}
 		if (events) {
 			return events.map(event => {
-				const HTML = `<div> ${event.description}</div>`;
 				const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);
 				const endDate = new Date(event.end_date_and_time);
