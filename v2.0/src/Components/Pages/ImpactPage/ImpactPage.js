@@ -72,31 +72,6 @@ class ImpactPage extends React.Component {
 			}
 		})
 
-		// tags.forEach(tag => {
-		// 	var data = this.props.communityData.filter(d => {
-		// 		return d.tag === tag.id
-		// 	})[0];
-		// 	if (data) {
-		// 		graph2Categories.push(data.name);
-		// 		graph2Series[1].data.push(data.value);
-		// 		var stata = this.props.communityData.filter(d => {
-		// 			return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
-		// 		})[0];
-		// 		if (stata) {
-		// 			graph2Series[0].data.push(stata.value);
-		// 		} else {
-		// 			graph2Series[0].data.push(0);
-		// 		}
-		// 	}
-		// })
-
-
-		// var householdsEngaged = this.props.communityData.filter(d => {
-		// 	return d.name === 'EngagedHouseholdsData';
-		// })[0];
-		// var actionsCompleted = this.props.communityData.filter(d => {
-		// 	return d.name === 'ActionsCompletedData';
-		// })[0];
 		return (
 			<>
 
@@ -170,7 +145,7 @@ class ImpactPage extends React.Component {
 const mapStoreToProps = (store) => {
 	return {
 		communitiesStats: store.page.communitiesStats,
-		communityData: store.page.communityData,
+		communityData: store.page.communitiesStats,
 		tagCols: store.page.tagCols,
 		comData: store.page.homePage,
 	}
