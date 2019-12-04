@@ -74,7 +74,7 @@ export async function authCall(token, relocationPage = null) {
 export async function apiCallNoToken(destinationUrl, dataToSend = {}, relocationPage = null) {
 	//const idToken = localStorage.getItem("idToken");
 		//Differentiate between dev deployment and real deployment
-	dataToSend = { is_dev:true, ...dataToSend};
+	// dataToSend = { is_dev:true, ...dataToSend};
 	var params = {
 		credentials: 'include',
 		method: 'POST',
@@ -115,7 +115,7 @@ export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = 
 	//---reset token value
 	idToken =  localStorage.getItem("idToken");
 	//---Differentiate between dev deployment and real deployment
-		dataToSend = { is_dev:true, ...dataToSend};
+		// dataToSend = { is_dev:true, ...dataToSend};
 		if (idToken) {
 			params = {
 				credentials: 'include',

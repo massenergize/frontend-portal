@@ -1,7 +1,7 @@
 // Defining URLS object for manipulation...
 const URLS = {
-	// ROOT: "http://api.massenergize.org"
-	ROOT: "http://localhost:8000"
+	ROOT: "http://api.massenergize.org"
+	// ROOT: "http://localhost:8000"
 }
 
 /** 
