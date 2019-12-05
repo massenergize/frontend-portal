@@ -351,7 +351,6 @@ class RegisterFormBase extends React.Component {
 	fetchAndLogin = async (email) => {
 		try {
 			const json = await rawCall("auth/whoami");
-			console.log(json)
 			if (json.success && json.data) {
 				this.props.reduxLogin(json.data);
 				const todo = await apiCall('users.actions.todo.list', { email })

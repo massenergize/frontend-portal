@@ -66,6 +66,7 @@ class AppRouter extends Component {
 			community: null
 		}
 	}
+
 	componentDidMount() {
 		const {subdomain} = this.props.match.params;
 		const body = { subdomain: subdomain };
@@ -87,6 +88,7 @@ class AppRouter extends Component {
 			contactus: `/${subdomain}/contactus`
 		}) 
 
+		
 		// for lazy loading: load these first
 		Promise.all([
 			apiCall("communities.info", body),
@@ -159,6 +161,13 @@ class AppRouter extends Component {
 		});
 	}
 
+	setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve);
+    });
+	}
+	
+
 	lowKeyErrorCheck(res,fallbackLink){
 		//if the request comes in as signature expired
 		//delete local token and sign user out, 
@@ -176,20 +185,26 @@ class AppRouter extends Component {
 
 	async getUser(email) {
 		if(!email) return false;
-		const json = await apiCall('users.info', { email });
-		if (json && json.success && json.data) {
-			this.props.reduxLogin(json.data);
-			const todo = await apiCall('users.actions.todo.list', { email })
-			this.props.reduxLoadTodo(todo.data);
-			const done = await apiCall('users.actions.completed.list', { email })
-			this.props.reduxLoadDone(done.data);
-			this.setState({
-				triedLogin: true
-			})
+		await this.setStateAsync({ triedLogin: true})
+
+		const [
+			userInfoResponse, 
+			userActionsTodoResponse,
+			userActionsCompletedResponse
+		] = await Promise.all([
+			apiCall('users.info', { email }),
+			apiCall('users.actions.todo.list', { email }),
+			apiCall('users.actions.completed.list', { email })
+		])
+				
+		if (userInfoResponse && userInfoResponse.success && userInfoResponse.data) {
+			this.props.reduxLogin(userInfoResponse.data);
+			this.props.reduxLoadTodo(userActionsTodoResponse.data);
+			this.props.reduxLoadDone(userActionsCompletedResponse.data);
 			return true;
 		}
 		else {
-			console.log('no user');
+			console.log(`no user with this email: ${email}`);
 			return false;
 		}
 	}
@@ -202,13 +217,14 @@ class AppRouter extends Component {
 			return <LoadingCircle />;
 		}
 
-		if (!this.state.triedLogin && this.props.auth.uid && !this.props.user) {
+		if (!this.state.triedLogin && this.props.auth && this.props.auth.uid && !this.props.user) {
 			this.getUser(this.props.auth.email).then(success => {
 				this.setState({
 					triedLogin: true
 				})
 			})
 		}
+
 		if (this.props.auth.uid && !this.state.triedLogin) {
 			return <LoadingCircle />;
 		}

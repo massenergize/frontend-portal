@@ -61,20 +61,20 @@ class ProfilePage extends React.Component {
 	}
 
 	render() {
-		var token = localStorage.getItem('idToken');
-		if (!this.props.user){
-			return <div><br /><br /><br /><br /><br /><br />Please sign in first</div>
-		}
-		const myHouseholds = this.props.user.households || [];
-		const myCommunities = this.props.user.communities || [];
+
 		if (!this.props.user){
 			return <Redirect to={this.props.links.signin}> </Redirect>
 		}
+		
+		var token = localStorage.getItem('idToken');
 		if (!token && this.props.user) {
 			console.log("Background logout!")
 			this.props.firebase.auth().signOut();
 			this.props.reduxLogout();
 		}
+		const myHouseholds = this.props.user.households || [];
+		const myCommunities = this.props.user.communities || [];
+
 		if (myHouseholds.length === 0 && !this.state.addedHouse) {
 			this.setState({ addedHouse: true });
 			this.addDefaultHousehold(this.props.user, this.props.community);

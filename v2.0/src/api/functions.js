@@ -97,57 +97,48 @@ export async function apiCallNoToken(destinationUrl, dataToSend = {}, relocation
     return { success: false, error };
   }
 }
-//-------------------------------
- function authCheck(token){
-	authCall(token).then(data=>{
-		if(!data.success && data.error ==="Signature has expired"){
-			localStorage.removeItem('idToken');
-		}
-	})
-}
+
+
 //THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
 	var idToken = localStorage.getItem("idToken");
 	var params = {}
-	if(idToken){
-		authCheck(idToken);
-	}
-	//---reset token value
 	idToken =  localStorage.getItem("idToken");
-	//---Differentiate between dev deployment and real deployment
-		// dataToSend = { is_dev:true, ...dataToSend};
-		if (idToken) {
-			params = {
-				credentials: 'include',
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					Authorization: `Bearer ${idToken}`
-				},
-				body: qs.stringify(dataToSend)
-			}
-		} else {
-			params = {
-				credentials: 'include',
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-				body: qs.stringify(dataToSend)
-			}
-		}
-	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`,params);
+	// dataToSend = { is_dev:true, ...dataToSend};
+	params = {
+		credentials: 'include',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			Authorization: `Bearer ${idToken}`
+		},
+		body: qs.stringify(dataToSend)
+	}
+
+	if (!idToken) delete params.headers.Authorization
+
+	const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
 
   try {
 		const json = await response.json();
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
-    }
+    } else if(!json.success) {
+			if (json.error === "Signature has expired"){
+				localStorage.removeItem('idToken');
+				// window.alert("Session Expired.  Please reload and sign in again.")
+				console.log(destinationUrl, json)
+				window.location.href = window.location
+			}else{
+				console.log(destinationUrl, json.error)
+			}
+		}
     return json;
   } catch (error) {
     return { success: false, error };
   }
 }
+
 export const deleteJson = async (url) => {
 	try {
 		const data = await fetch(url, {
