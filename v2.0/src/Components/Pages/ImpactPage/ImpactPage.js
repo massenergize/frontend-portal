@@ -72,31 +72,6 @@ class ImpactPage extends React.Component {
 			}
 		})
 
-		// tags.forEach(tag => {
-		// 	var data = this.props.communityData.filter(d => {
-		// 		return d.tag === tag.id
-		// 	})[0];
-		// 	if (data) {
-		// 		graph2Categories.push(data.name);
-		// 		graph2Series[1].data.push(data.value);
-		// 		var stata = this.props.communityData.filter(d => {
-		// 			return (d.tag && d.tag === data.tag && d.name.toLowerCase().indexOf('state') > -1);
-		// 		})[0];
-		// 		if (stata) {
-		// 			graph2Series[0].data.push(stata.value);
-		// 		} else {
-		// 			graph2Series[0].data.push(0);
-		// 		}
-		// 	}
-		// })
-
-
-		// var householdsEngaged = this.props.communityData.filter(d => {
-		// 	return d.name === 'EngagedHouseholdsData';
-		// })[0];
-		// var actionsCompleted = this.props.communityData.filter(d => {
-		// 	return d.name === 'ActionsCompletedData';
-		// })[0];
 		return (
 			<>
 
@@ -146,7 +121,7 @@ class ImpactPage extends React.Component {
 
 								<div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
-										<h4 className="cool-font">Number Of Communities And Their Impacts</h4>
+										<h4 className="cool-font">Communities And Their Impact</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p> */}
 									</div>
 									<div className="card-body">
