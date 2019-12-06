@@ -11,7 +11,7 @@ import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/
 import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/pageActions'
 import Tooltip from '../../Shared/Tooltip'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-
+import Error404 from './../Errors/404';
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -41,6 +41,9 @@ class OneActionPage extends React.Component {
 		const action = this.props.actions.filter(action => {
 			return action.id === Number(this.props.match.params.id)
 		})[0]
+		if(!action){
+			return <Error404 />
+		}
 		this.chooseFontSize();
 		return (
 			<>

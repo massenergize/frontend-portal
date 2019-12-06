@@ -4,7 +4,64 @@
    three - #a0337e
    
 */
+.testi-card{
+  border:soild 1px lightgray; 
+  padding:15px; 
+  margin:5px;
+  margin-bottom:170px;
+  margin-right: -63px !important;
 
+}
+.testi-anchor{
+  text-decoration: underline;
+  font-size: 14px;
+  margin-bottom:7px;
+  color: #c63f3f;
+}
+
+
+.testi-more{
+  cursor:pointer;
+  margin-right: 10px;
+  float: right; 
+  clear: both;
+  font-size:12px;
+  border:solid 1px #f6c7cb; 
+  border-radius: 55px;
+  padding: 11px 50px;
+  outline: 0 !important;
+}
+.testi-more:hover{
+  background:green; 
+  color: white;
+  border-color: green;
+  transition: .5s ease-in-out;
+  
+
+}
+.testi-para{
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  min-height: 276px;
+  background: white;
+  padding:20px;
+  margin-top: -87px;
+  border-radius: 9px;
+  
+}
+.testi-para:hover{
+  transform:scale(1.05);
+  transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.testi-img{
+  height:220px; 
+  width:100%; 
+  object-fit: cover;
+  border-radius: 15px;
+  z-index: 0;
+
+}
 .g-back{
   padding: 10px 25px;
   border: solid 1px lightgray; 
