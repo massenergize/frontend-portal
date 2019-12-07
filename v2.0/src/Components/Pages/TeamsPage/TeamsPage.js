@@ -156,7 +156,6 @@ class TeamsPage extends React.Component {
 			this.goalsList(obj.team.id).then(json => {
 				if (json && json.success && json.data.length > 0) {
 					var c = json.data[0].attained_carbon_footprint_reduction;
-					console.log(c, obj)
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}
 			});
@@ -245,7 +244,7 @@ class TeamsPage extends React.Component {
 					team: team,
 					member: {
 						households: this.props.user.households.length,
-						actions: this.props.todo.length + this.props.done.length,
+						actions: this.props.todo && this.props.done ? this.props.todo.length + this.props.done.length : 0,
 						actions_completed: this.props.done.length,
 						actions_todo: this.props.todo.length
 					}

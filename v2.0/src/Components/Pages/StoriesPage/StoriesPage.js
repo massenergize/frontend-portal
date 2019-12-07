@@ -93,7 +93,7 @@ class StoriesPage extends React.Component {
 									</div>
 								</div>
 							</div>
-							<div className="col-12 ">
+							<div className="col-12 " style={{marginTop:80}}>
 								{this.props.user ?
 									<StoryForm uid={this.props.user.id} />
 									:
@@ -139,6 +139,7 @@ class StoriesPage extends React.Component {
 			)
 		}
 		return stories.map(story => {
+			console.log(story)
 			var body = "";
 			if (story.body.length > 0) {
 				body = story.body.length > 100 ? story.body.substring(0, 100) + "..." : story.body;

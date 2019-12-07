@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { getJson,rawCall } from '../../../api/functions';
+import { getJson, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls'
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 
@@ -32,36 +32,38 @@ class LoginFormBase extends React.Component {
 	}
 
 	render() {
-		
+
 		const { email, password, error } = this.state;
 		return (
-			< div className="styled-form login-form" >
-				<div className="section-title style-2">
-					<h3>Sign in</h3>
-				</div>
-				<form onSubmit={this.onSubmit}>
-					<div className="form-group">
-						<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
-						<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter email" />
+			< div className="styled-form login-form" style={{ height: window.screen.height, marginTop: 100 }}>
+				<div className="z-depth-1" style={{padding:55, borderRadius:12}}>
+					<div className="section-title style-2">
+						<h3>Sign in</h3>
 					</div>
-					<div className="form-group">
-						<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
-						<input type="password" name="password" value={password} onChange={this.onChange} placeholder="Enter Password" />
-					</div>
-					{error && <p style={{ color: "red" }}> {error} </p>}
-					<div className="clearfix">
-						<div className="form-group pull-left">
-							<button type="submit" disabled={this.isInvalid()} className="thm-btn">Sign in</button>
+					<form onSubmit={this.onSubmit}>
+						<div className="form-group">
+							<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
+							<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter email" />
 						</div>
-						<div className="form-group social-links-two padd-top-5 pull-right">
-							Or sign in with
+						<div className="form-group">
+							<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
+							<input type="password" name="password" value={password} onChange={this.onChange} placeholder="Enter Password" />
+						</div>
+						{error && <p style={{ color: "red" }}> {error} </p>}
+						<div className="clearfix">
+							<div className="form-group pull-left">
+								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Sign in</button>
+							</div>
+							<div className="form-group social-links-two padd-top-5 pull-right">
+								Or sign in with
                             {/* <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button> */}
-							<button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google"><span className="fa fa-google"></span></button>
+								<button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google round-me raise"><span className="fa fa-google"></span></button>
+							</div>
 						</div>
-					</div>
-				</form>
-				<p><button className="as-link" onClick={this.forgotPassword}> Forgot Password </button></p>
-				<p> Don't have an account? <Link to={this.props.links.signup}>Register Here</Link> </p>
+					</form>
+					<p><button className=" energize-link" onClick={this.forgotPassword} > Forgot Password </button></p>
+					<p> Don't have an account? <Link className="energize-link" to={this.props.links.signup}>Register Here</Link> </p>
+				</div>
 			</div >
 		);
 	}
@@ -98,7 +100,7 @@ class LoginFormBase extends React.Component {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat,auth.user.email);
+					this.fetchMassToken(auth.user._lat, auth.user.email);
 					this.setState({ ...INITIAL_STATE }); //reset the login boxes
 				})
 				.catch(err => {
@@ -111,16 +113,11 @@ class LoginFormBase extends React.Component {
 	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
 	//WOULD NOT DELETE DATA I THINK?
 	signInWithGoogle = () => {
-
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.signInWithPopup(googleProvider)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat,auth.user.email);
-					// this.fetchAndLogin(auth.user.email).then(success => {
-					// 	if (success)
-					// 		console.log('yay');
-					// });
+					this.fetchMassToken(auth.user._lat, auth.user.email);
 					this.setState({ ...INITIAL_STATE });
 				})
 				.catch(err => {
@@ -128,7 +125,7 @@ class LoginFormBase extends React.Component {
 					this.setState({ error: err.message });
 				});
 		});
-	
+
 	}
 	signInWithFacebook = () => {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
@@ -150,20 +147,19 @@ class LoginFormBase extends React.Component {
 	}
 
 
-	fetchMassToken = async(fireToken,email) =>{
-    const body = { idToken: fireToken };
-    rawCall("auth/verify", body).then(massToken => {
+	fetchMassToken = async (fireToken, email) => {
+		const body = { idToken: fireToken };
+		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;
-      localStorage.setItem("idToken", idToken.toString());
-			console.log("I am the massToken", massToken);
+			localStorage.setItem("idToken", idToken.toString());
 			this.fetchAndLogin(email).then(success => {
 				if (success)
 					console.log('yay');
 			});
-			
-    }).catch(err => {
-      console.log("Error MASSTOKEN: ", err);
-    });
+
+		}).catch(err => {
+			console.log("Error MASSTOKEN: ", err);
+		});
 	}
 	fetchAndLogin = async (email) => {
 		try {

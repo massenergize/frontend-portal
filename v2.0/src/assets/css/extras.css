@@ -1,4 +1,11 @@
-
+.energize-link{
+  text-decoration: none;
+  color:#97b36b ;
+}
+.energize-link:hover{
+  color:#dd4b39; 
+  transition: .4s ease-in-out;
+}
 /* one - #c63f3f 
    two - #dc3545
    three - #a0337e
