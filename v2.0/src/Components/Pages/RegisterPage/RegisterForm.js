@@ -95,7 +95,6 @@ class RegisterFormBase extends React.Component {
 	}
 
 	renderPage = (page) => {
-		console.log(page)
 		if (page === 1) {
 			return this.renderPage1()
 		} else if (page === 2) {
@@ -117,7 +116,7 @@ class RegisterFormBase extends React.Component {
 					<div className="section-title style-2">
 						<h3>Register With Email and Password</h3>
 					</div>
-					<form onSubmit={this.onSubmit}>
+					<form onSubmit={this.onSubmit}> 
 						<div className="form-group">
 							<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
 							<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
@@ -161,9 +160,10 @@ class RegisterFormBase extends React.Component {
 			termsAndServices,
 		} = this.state;
 		return (
-			< div className="styled-form register-form" style={{ height: window.screen.height, marginTop: 100 }}>
+			< div className="styled-form register-form" style={{  height: window.screen.height, marginTop: 100 }}>
+				<div className="z-depth-1" style={{padding:40, borderRadius:12,}}>
 				<form onSubmit={this.onFinalSubmit}>
-					{!this.props.firebase.auth().currentUser.emailVerified ?
+					{this.props.firebase.auth().currentUser && !this.props.firebase.auth().currentUser.emailVerified ?
 						<>
 							<p> We sent a link to your email address. Please verify your email and sign in to continue.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>
@@ -212,11 +212,12 @@ class RegisterFormBase extends React.Component {
                                 </button> : null
 							}
 							<Tooltip text='Cancelling in the middle of registration will delete your account'>
-								<button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+								<button onClick={this.deleteFirebaseAccount} style={{marginTop:10}} className="raise round-me thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
 					</div>
 				</form>
+				</div>
 			</div>
 		)
 	}

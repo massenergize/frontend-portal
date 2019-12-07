@@ -10,15 +10,18 @@ import Funnel from './../EventsPage/Funnel';
 import avatar from './user_ava.png';
 import Error404 from './../Errors/404';
 import leafy from './leafy.png';
+import StoryModal from './StoryModal';
 
 class StoriesPage extends React.Component {
 	constructor(props) {
 		super(props)
+		this.closeModal = this.closeModal.bind(this);
 		this.handleBoxClick = this.handleBoxClick.bind(this);
 		this.state = {
 			limit: 140, //size of a tweet
 			expanded: null,
 			check_values: null,
+			modal_content: { image: null, title: null, desc: null }
 		}
 	}
 	findCommon() {
@@ -62,6 +65,11 @@ class StoriesPage extends React.Component {
 		var id = event.target.value;
 		this.addMeToSelected(id);
 	}
+	renderModal(){
+		if(this.state.expanded){
+			return 	<StoryModal content = {this.state.modal_content} close = {this.closeModal} />
+		}
+	}
 	render() {
 		if (!this.props.pageData) return <p className='text-center'> <Error404 /></p>;
 
@@ -72,11 +80,10 @@ class StoriesPage extends React.Component {
 
 		return (
 			<>
-
+			{this.renderModal()}
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ name: 'Testimonials' }]} />
 					<section className="testimonial2">
-
 						<div className="container">
 							<div className="row masonary-layout">
 								<div className="col-md-3">
@@ -88,12 +95,11 @@ class StoriesPage extends React.Component {
 								<div className="col-md-8 col-lg-8 col-sm-12 ">
 									<PageTitle>Testimonials</PageTitle>
 									<div className="row">
-
 										{this.renderStories(stories)}
 									</div>
 								</div>
 							</div>
-							<div className="col-12 " style={{marginTop:80}}>
+							<div className="col-12 " style={{ marginTop: 80 }}>
 								{this.props.user ?
 									<StoryForm uid={this.props.user.id} />
 									:
@@ -107,7 +113,9 @@ class StoriesPage extends React.Component {
 		);
 	}
 
-
+	closeModal() {
+		this.setState({ expanded: null })
+	}
 	renderImage(img) {
 		if (img && !this.state.expanded) {
 			return (
@@ -124,9 +132,10 @@ class StoriesPage extends React.Component {
 			)
 		}
 	}
-	renderMoreBtn(body) {
-		if (body.length > 100) {
-			return <button className="testi-more">More...</button>
+	renderMoreBtn(body, id,title,imageObj) {
+		var content = { image:imageObj, title:title, desc:body};
+		if (body.length > 100 && !this.state.expanded) {
+			return <button className="testi-more" onClick={() => { this.setState({ expanded: id, modal_content:content })}}>More...</button>
 		}
 	}
 	renderStories(stories) {
@@ -139,32 +148,24 @@ class StoriesPage extends React.Component {
 			)
 		}
 		return stories.map(story => {
-			console.log(story)
 			var body = "";
 			if (story.body.length > 0) {
 				body = story.body.length > 100 ? story.body.substring(0, 100) + "..." : story.body;
 			}
 			var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12";
 			var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
-			if (this.state.expanded !== null) {
-				if (this.state.expanded === story.id) {
-					cn = 'col-12'
-					style = { padding: 30, borderRadius: 15 }
-				} else {
-					cn = 'd-none'
+			// if (this.state.expanded !== null) {
+			// 	if (this.state.expanded === story.id) {
+			// 		cn = 'col-12'
+			// 		style = { padding: 30, borderRadius: 15 }
+			// 	} else {
+			// 		cn = 'd-none';
 
-				}
-			}
+			// 	}
+			// }
 
 			return (
 				<div className={cn} style={{ marginRight: 40 }}>
-					{this.state.expanded !== null ?
-						<center>
-							<button className="g-back" onClick={() => { this.setState({ expanded: null }) }}><i className='fa fa-back'></i> Go Back </button>
-						</center>
-						:
-						null
-					}
 					<div className="" >
 						<div className="testi-card">
 							<div >
@@ -175,45 +176,13 @@ class StoriesPage extends React.Component {
 										<a href={`${this.props.links.actions}/${story.action.id}`} className="testi-anchor">{story.action.title > 70 ? story.action.title.substring(0, 70) + "..." : story.action.title}</a>
 										: null}
 									<p>{body}</p>
-									{this.renderMoreBtn(story.body)}
+									{this.renderMoreBtn(story.body, story.id,story.title,story.file)}
 								</div>
 
 							</div>
 						</div>
 
-						{/* <div className="quote">
-							<i className="fa fa-quote-left"></i>
-						</div>
-						<div style={this.state.expanded !== null ? { textAlign: 'left' } : {}}>
-							<h4 className="title p-2 cool-font" style={{ textTransform: 'capitalize', marginBottom: 0 }}>{story.title} </h4>
-							{(story.action) ? <p><Link to={`${this.props.links.actions}/${story.action.id}`} className="cool-font"><u>{story.action.title}</u></Link></p> : null}
-						</div>
-						{this.state.expanded && this.state.expanded === story.id ?
-							<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
-						}
-						<p className="p-1  cool-font" style={this.state.expanded !== null ? { textAlign: 'left' } : {}}>
-							{this.state.expanded && this.state.expanded === story.id ? story.body : story.body.substring(0, CONST.LIMIT)}
-							{(!this.state.expanded || !this.state.expanded === story.id) && CONST.LIMIT < story.body.length ?
-								<button className='as-link' style={{ width: '100%', margin: 'auto' }} onClick={() => { this.setState({ expanded: story.id }); window.scrollTo(10, 10) }}>...more</button>
-								:
-								null
-							}
-						</p>
-						<div className="author cool-font">
-							{story.user ?
-								<h6 className="cool-font">{story.user.full_name}</h6>
-								: null}
-							<p>{story.location}</p>
-						</div> */}
-						{/* {(story.action) ? <p><Link to={`${this.props.links.actions}/${story.action.id}`} className="cool-font"><u>{story.action.title}</u></Link></p> : null} */}
 					</div>
-					{this.state.expanded !== null ?
-						<center>
-							<button className="g-back" onClick={() => { this.setState({ expanded: null }) }}><i className='fa fa-back'></i> Go Back </button>
-						</center>
-						:
-						null
-					}
 				</div>
 			);
 		});
