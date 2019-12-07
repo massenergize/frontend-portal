@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import Tooltip from '../../Shared/Tooltip';
-
+ 
 /* Modal config */
 const INITIAL_STATE = {
 	email: '',
@@ -52,8 +52,6 @@ class RegisterFormBase extends React.Component {
 		if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
 
 		var page;
-		console.log("I am the auth", this.props.auth); 
-		console.log("I am the user", this.props.user);
 		if (this.props.auth.isEmpty) {
 			page = 1;
 		} else {
@@ -114,7 +112,7 @@ class RegisterFormBase extends React.Component {
 			error,
 		} = this.state;
 		return (
-			< div className="styled-form register-form" style={{height:window.screen.height -60, marginTop:100}}>
+			< div className="styled-form register-form" >
 				<div className="section-title style-2">
 					<h3>Register With Email and Password</h3>
 				</div>
@@ -161,7 +159,7 @@ class RegisterFormBase extends React.Component {
 			termsAndServices,
 		} = this.state;
 		return (
-			< div className="styled-form register-form"  style={{height:window.screen.height, marginTop:100}}>
+			< div className="styled-form register-form" >
 				<form onSubmit={this.onFinalSubmit}>
 					{!this.props.firebase.auth().currentUser.emailVerified ?
 						<>
@@ -210,7 +208,7 @@ class RegisterFormBase extends React.Component {
 									Finish Creating Account
                                 </button> : null
 							}
-							<Tooltip text='Cancelling in the middle of registration will delete your account'>
+							<Tooltip text='Cancling in the middle of registration will delete your account'>
 								<button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
@@ -247,7 +245,6 @@ class RegisterFormBase extends React.Component {
 			email === '' ||
 			name === '');
 	}
-
 
 	onSubmit(event) {
 		event.preventDefault();
@@ -287,23 +284,16 @@ class RegisterFormBase extends React.Component {
 				"accepts_terms_and_conditions": termsAndServices
 			}
 			apiCall('users.create', body).then(json => {
-				console.log("user user user ", json);
-				var token = this.props.auth? this.props.auth.stsTokenManager.accessToken:null;
-				var email = this.props.auth? this.props.auth.email:null;
-				console.log("le token, letoken access", token);
+				console.log(json);
 				if (json && json.success && json.data) {
-					this.fetchMassToken(token,email);
-					// this.fetchAndLogin(json.data.email).then(success => {
-					// 	if (!success) {
-					// 		this.setState({ error: 'Failed to Register' })
-					// 	}
-					// });
+					this.fetchAndLogin(json.data.email).then(success => {
+						if (!success) {
+							this.setState({ error: 'Failed to Register' })
+						}
+					});
 				}
-			}).catch(err => {
-				console.log(err);
-				this.setState({ ...INITIAL_STATE});
-			});
-			//this.setState({ ...INITIAL_STATE });
+			})
+			this.setState({ ...INITIAL_STATE });
 		}
 	}
 
@@ -315,6 +305,7 @@ class RegisterFormBase extends React.Component {
 	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
 	//WOULD NOT DELETE DATA I THINK?
 	signInWithGoogle = () => {
+
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.signInWithPopup(googleProvider)
@@ -322,7 +313,7 @@ class RegisterFormBase extends React.Component {
 					this.fetchMassToken(auth.user._lat);
 					this.fetchAndLogin(auth.user.email).then(success => {
 					});
-					// this.setState({ ...INITIAL_STATE, form: 2 });
+					this.setState({ ...INITIAL_STATE, form: 2 });
 				})
 				.catch(err => {
 					console.log(err);
@@ -347,17 +338,11 @@ class RegisterFormBase extends React.Component {
 		});
 	}
 
-	fetchMassToken = async(fireToken,email) =>{
+	fetchMassToken = async(fireToken) =>{
     const body = { idToken: fireToken };
-    rawCall("auth/verify", body).then(massToken => {
+    apiCallNoToken("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;
       localStorage.setItem("idToken", idToken.toString());
-			console.log("I am the massToken", massToken);
-			this.fetchAndLogin(email).then(success => {
-				if (success)
-					console.log('yay');
-			});
-			
     }).catch(err => {
       console.log("Error MASSTOKEN: ", err);
     });
@@ -366,7 +351,6 @@ class RegisterFormBase extends React.Component {
 	fetchAndLogin = async (email) => {
 		try {
 			const json = await rawCall("auth/whoami");
-		
 			if (json.success && json.data) {
 				this.props.reduxLogin(json.data);
 				const todo = await apiCall('users.actions.todo.list', { email })

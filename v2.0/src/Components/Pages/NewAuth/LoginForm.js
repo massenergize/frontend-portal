@@ -4,7 +4,9 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { getJson,rawCall } from '../../../api/functions';
+import firebase from '../../../config/firebaseConfig';
+
+import { getJson, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls'
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 
@@ -32,12 +34,12 @@ class LoginFormBase extends React.Component {
 	}
 
 	render() {
-		
+
 		const { email, password, error } = this.state;
 		return (
 			< div className="styled-form login-form" >
 				<div className="section-title style-2">
-					<h3>Sign in</h3>
+					<h3>Sign In</h3>
 				</div>
 				<form onSubmit={this.onSubmit}>
 					<div className="form-group">
@@ -98,7 +100,12 @@ class LoginFormBase extends React.Component {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat,auth.user.email);
+
+					this.fetchMassToken(auth.user._lat);
+					this.fetchAndLogin(auth.user.email).then(success => {
+						if (success)
+							console.log('yay');
+					});
 					this.setState({ ...INITIAL_STATE }); //reset the login boxes
 				})
 				.catch(err => {
@@ -108,27 +115,23 @@ class LoginFormBase extends React.Component {
 		event.preventDefault();
 	};
 
-	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
+	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE 
+	//SAME PASSWORD: 
 	//WOULD NOT DELETE DATA I THINK?
 	signInWithGoogle = () => {
+		firebase.auth()
+			.signInWithPopup(googleProvider)
+			.then(auth => {
+				console.log("I am teh auth", auth);
+				this.fetchMassToken(auth.user._lat);
+				this.fetchAndLogin(auth.user.email);
+				//this.setState({ ...INITIAL_STATE });
+			})
+			.catch(err => {
+				console.log(err);
+				this.setState({ error: err.message });
+			});
 
-		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
-			this.props.firebase.auth()
-				.signInWithPopup(googleProvider)
-				.then(auth => {
-					this.fetchMassToken(auth.user._lat,auth.user.email);
-					// this.fetchAndLogin(auth.user.email).then(success => {
-					// 	if (success)
-					// 		console.log('yay');
-					// });
-					this.setState({ ...INITIAL_STATE });
-				})
-				.catch(err => {
-					console.log(err);
-					this.setState({ error: err.message });
-				});
-		});
-	
 	}
 	signInWithFacebook = () => {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
@@ -150,34 +153,28 @@ class LoginFormBase extends React.Component {
 	}
 
 
-	fetchMassToken = async(fireToken,email) =>{
-    const body = { idToken: fireToken };
-    rawCall("auth/verify", body).then(massToken => {
+	fetchMassToken = async (fireToken) => {
+		const body = { idToken: fireToken };
+		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;
-      localStorage.setItem("idToken", idToken.toString());
-			console.log("I am the massToken", massToken);
-			this.fetchAndLogin(email).then(success => {
-				if (success)
-					console.log('yay');
-			});
-			
-    }).catch(err => {
-      console.log("Error MASSTOKEN: ", err);
-    });
+			localStorage.setItem("idToken", idToken.toString());
+		}).catch(err => {
+			console.log("Error MASSTOKEN: ", err);
+		});
 	}
 	fetchAndLogin = async (email) => {
 		try {
-			this.props.tryingToLogin(true);
+			//this.props.tryingToLogin(true);
 			//const json2 = await getJson(`${URLS.USER}/e/${email}`);
 			const json = await rawCall("auth/whoami");
-			console.log("I am fetch", json);
 			if (json.success && json.data) {
+				localStorage.setItem("user",json.data.toString());
 				this.props.reduxLogin(json.data);
 				const todo = await getJson(`${URLS.USER}/e/${email}/actions?status=TODO`)
 				this.props.reduxLoadTodo(todo.data);
 				const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
 				this.props.reduxLoadDone(done.data);
-				this.props.tryingToLogin(false);
+				//this.props.tryingToLogin(false);
 				return true;
 			}
 			console.log('fetch and login failed');
