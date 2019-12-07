@@ -147,8 +147,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;me.open
-  
+  border-radius: 10px;
+
   background:#eaeae6;
   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  */
 }
