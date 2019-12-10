@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import ContactModal from '../../Shared/ContactModal'
 import Modal from '../../Shared/DescModal';
+import LoadingCircle from '../../Shared/LoadingCircle';
 
 
 
@@ -94,10 +95,19 @@ class TeamsPage extends React.Component {
 	render() {
 
 		const teams = this.props.teamsPage;
-		if (teams == null) {
+		if (teams === null) {
+			return (
+				<div className="boxed_wrapper" >
+					{/* <h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2> */}
+						<LoadingCircle />
+				</div>
+			)
+		}
+		else if( teams.length === 0){
 			return (
 				<div className="boxed_wrapper" >
 					<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2>
+						{/* <LoadingCircle /> */}
 				</div>
 			)
 		}
@@ -107,7 +117,7 @@ class TeamsPage extends React.Component {
 				{this.renderModal()}
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ name: 'Teams' }]} />
-					<div className="p-5">
+					<div className="p-5" style={{height:window.screen.height -120}}>
 						<PageTitle>Teams in this Community</PageTitle>
 						<Table bordered hover responsive className="teams-table">
 							<thead>
@@ -156,7 +166,6 @@ class TeamsPage extends React.Component {
 			this.goalsList(obj.team.id).then(json => {
 				if (json && json.success && json.data.length > 0) {
 					var c = json.data[0].attained_carbon_footprint_reduction;
-					console.log(c, obj)
 					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
 				}
 			});
@@ -245,7 +254,7 @@ class TeamsPage extends React.Component {
 					team: team,
 					member: {
 						households: this.props.user.households.length,
-						actions: this.props.todo.length + this.props.done.length,
+						actions: this.props.todo && this.props.done ? this.props.todo.length + this.props.done.length : 0,
 						actions_completed: this.props.done.length,
 						actions_todo: this.props.todo.length
 					}

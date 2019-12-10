@@ -7,13 +7,16 @@ import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
 import Error404 from './../Errors/404';
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
+import LoadingCircle from '../../Shared/LoadingCircle'
 
 class AboutUsPage extends React.Component {
 	render() {
-	
 		if (!this.props.pageData || !this.props.community) {
-			return <Error404 />
+			return <LoadingCircle />
 		
+		}
+		else if(this.props.pageData ==={} || this.props.community ==={}){
+		return 	<Error404 />
 		}
 
 		const pageData = this.props.pageData;

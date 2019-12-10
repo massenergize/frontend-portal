@@ -95,7 +95,6 @@ class RegisterFormBase extends React.Component {
 	}
 
 	renderPage = (page) => {
-		console.log(page)
 		if (page === 1) {
 			return this.renderPage1()
 		} else if (page === 2) {
@@ -112,41 +111,43 @@ class RegisterFormBase extends React.Component {
 			error,
 		} = this.state;
 		return (
-			< div className="styled-form register-form" >
-				<div className="section-title style-2">
-					<h3>Register With Email and Password</h3>
-				</div>
-				<form onSubmit={this.onSubmit}>
-					<div className="form-group">
-						<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
-						<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
+			<div className="styled-form register-form" style={{ height: window.screen.height - 60, marginTop: 100 }}>
+				<div className="z-depth-1" style={{ padding: 46, borderRadius: 12 }}>
+					<div className="section-title style-2">
+						<h3>Register With Email and Password</h3>
 					</div>
-					<div className="form-group">
-						<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
-						<input type="password" name="passwordOne" value={passwordOne} onChange={this.onChange} placeholder="Enter your password" required />
-					</div>
-					<div className="form-group">
-						<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
-						<input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
-					</div>
-					<br />
-					{error && <p style={{ color: "red" }}> {error} </p>}
-					<div className="clearfix">
-						<div className="form-group pull-left">
-							<button type="submit" disabled={this.isInvalid()} className="thm-btn">Create Account</button>
+					<form onSubmit={this.onSubmit}> 
+						<div className="form-group">
+							<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
+							<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter your email" required />
 						</div>
+						<div className="form-group">
+							<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
+							<input type="password" name="passwordOne" value={passwordOne} onChange={this.onChange} placeholder="Enter your password" required />
+						</div>
+						<div className="form-group">
+							<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
+							<input type="password" name="passwordTwo" value={passwordTwo} onChange={this.onChange} placeholder="Re-enter your password" required />
+						</div>
+						<br />
+						{error && <p style={{ color: "red" }}> {error} </p>}
+						<div className="clearfix">
+							<div className="form-group pull-left">
+								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Account</button>
+							</div>
+						</div>
+					</form>
+					<div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
 					</div>
-				</form>
-				<div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
+					<div className="section-title style-2" style={{ marginBottom: 9 }}>
+						<h3>Register with Google</h3>
+					</div>
+					<div className="form-group social-links-three padd-top-5">
+						{/* <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button> */}
+						<button style={{ borderRadius: 5, padding: '0px 30px' }} onClick={this.signInWithGoogle} id="google" className="img-circle google cool-font round-me raise"><span className="fa fa-google"></span> Register with Google</button>
+					</div>
+					Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link>
 				</div>
-				<div className="section-title style-2" style={{marginBottom:9}}>
-					<h3>Register with Google</h3>
-				</div>
-				<div className="form-group social-links-three padd-top-5">
-					{/* <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button> */}
-					<button style={{borderRadius:5}} onClick={this.signInWithGoogle} id="google" className="img-circle google cool-font"><span className="fa fa-google"></span> Register with Google</button>
-				</div>
-				Already have an account? <Link to={this.props.links.signin}>Sign In</Link>
 			</div>
 		);
 	}
@@ -159,9 +160,10 @@ class RegisterFormBase extends React.Component {
 			termsAndServices,
 		} = this.state;
 		return (
-			< div className="styled-form register-form" >
+			< div className="styled-form register-form" style={{  height: window.screen.height, marginTop: 100 }}>
+				<div className="z-depth-1" style={{padding:40, borderRadius:12,}}>
 				<form onSubmit={this.onFinalSubmit}>
-					{!this.props.firebase.auth().currentUser.emailVerified ?
+					{this.props.firebase.auth().currentUser && !this.props.firebase.auth().currentUser.emailVerified ?
 						<>
 							<p> We sent a link to your email address. Please verify your email and sign in to continue.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>
@@ -171,6 +173,7 @@ class RegisterFormBase extends React.Component {
 						</>
 						:
 						<>
+							<center><p style={{ color: 'red' }}> Please finish creating your account before you continue</p></center>
 							<div className="form-group">
 								<span className="adon-icon"><span className="fa fa-user"></span></span>
 								<input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
@@ -208,12 +211,13 @@ class RegisterFormBase extends React.Component {
 									Finish Creating Account
                                 </button> : null
 							}
-							<Tooltip text='Cancling in the middle of registration will delete your account'>
-								<button onClick={this.deleteFirebaseAccount} className="thm-btn red"> Cancel </button>
+							<Tooltip text='Cancelling in the middle of registration will delete your account'>
+								<button onClick={this.deleteFirebaseAccount} style={{marginTop:10}} className="raise round-me thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
 					</div>
 				</form>
+				</div>
 			</div>
 		)
 	}
@@ -245,6 +249,7 @@ class RegisterFormBase extends React.Component {
 			email === '' ||
 			name === '');
 	}
+
 
 	onSubmit(event) {
 		event.preventDefault();
@@ -284,16 +289,16 @@ class RegisterFormBase extends React.Component {
 				"accepts_terms_and_conditions": termsAndServices
 			}
 			apiCall('users.create', body).then(json => {
-				console.log(json);
+				var token = this.props.auth ? this.props.auth.stsTokenManager.accessToken : null;
+				var email = this.props.auth ? this.props.auth.email : null;
 				if (json && json.success && json.data) {
-					this.fetchAndLogin(json.data.email).then(success => {
-						if (!success) {
-							this.setState({ error: 'Failed to Register' })
-						}
-					});
+					this.fetchMassToken(token, email);
 				}
-			})
-			this.setState({ ...INITIAL_STATE });
+			}).catch(err => {
+				console.log(err);
+				this.setState({ ...INITIAL_STATE });
+			});
+			//this.setState({ ...INITIAL_STATE });
 		}
 	}
 
@@ -302,18 +307,15 @@ class RegisterFormBase extends React.Component {
 		this.props.firebase.auth().signOut();
 	}
 
+
 	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
 	//WOULD NOT DELETE DATA I THINK?
 	signInWithGoogle = () => {
-
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.signInWithPopup(googleProvider)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat);
-					this.fetchAndLogin(auth.user.email).then(success => {
-					});
-					this.setState({ ...INITIAL_STATE, form: 2 });
+					this.fetchMassToken(auth.user._lat, auth.user.email);
 				})
 				.catch(err => {
 					console.log(err);
@@ -338,19 +340,25 @@ class RegisterFormBase extends React.Component {
 		});
 	}
 
-	fetchMassToken = async(fireToken) =>{
-    const body = { idToken: fireToken };
-    apiCallNoToken("auth/verify", body).then(massToken => {
+	fetchMassToken = async (fireToken, email) => {
+		const body = { idToken: fireToken };
+		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;
-      localStorage.setItem("idToken", idToken.toString());
-    }).catch(err => {
-      console.log("Error MASSTOKEN: ", err);
-    });
+			localStorage.setItem("idToken", idToken.toString());
+			this.fetchAndLogin(email).then(success => {
+				if (success)
+					console.log('yay');
+			});
+
+		}).catch(err => {
+			console.log("Error MASSTOKEN: ", err);
+		});
 	}
 
 	fetchAndLogin = async (email) => {
 		try {
 			const json = await rawCall("auth/whoami");
+
 			if (json.success && json.data) {
 				this.props.reduxLogin(json.data);
 				const todo = await apiCall('users.actions.todo.list', { email })

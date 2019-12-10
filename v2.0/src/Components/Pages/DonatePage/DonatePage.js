@@ -9,10 +9,9 @@ class DonatePage extends React.Component {
 
 	render() {
 		// if(!this.props.homePageData) return <Error404 />
-		if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
+		// if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
 		const pageData = this.props.donatePage;
 		if (pageData == null) return <LoadingCircle />
-
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'
 		//const button = section(pageSections, "DonatePageButton", true);
 		return (
