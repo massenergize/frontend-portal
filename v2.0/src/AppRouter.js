@@ -141,7 +141,7 @@ class AppRouter extends Component {
 				testimonialsResponse,
 				vendorsResponse,
 			] = res;
-
+			
       this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data)
 			this.props.reduxLoadTeamsPage(teamResponse.data)
 			this.props.reduxLoadDonatePage(donatePageResponse.data)
@@ -168,20 +168,20 @@ class AppRouter extends Component {
 	}
 	
 
-	lowKeyErrorCheck(res,fallbackLink){
-		//if the request comes in as signature expired
-		//delete local token and sign user out, 
-		//and run the same route again without token 
-		if(res.error === "Signature has expired"){
-			localStorage.removeItem('idToken');
-			this.props.reduxLogout();
-			return apiCall(fallbackLink).data
-		}
-		else{
-			//if it has nothing to do with auth, just return whatever is coming from the server
-			return res.data;
-		}
-	}
+	// lowKeyErrorCheck(res,fallbackLink){
+	// 	//if the request comes in as signature expired
+	// 	//delete local token and sign user out, 
+	// 	//and run the same route again without token 
+	// 	if(res.error === "Signature has expired"){
+	// 		localStorage.removeItem('idToken');
+	// 		this.props.reduxLogout();
+	// 		return apiCall(fallbackLink).data
+	// 	}
+	// 	else{
+	// 		//if it has nothing to do with auth, just return whatever is coming from the server
+	// 		return res.data;
+	// 	}
+	// }
 
 	async getUser(email) {
 		if(!email) return false;

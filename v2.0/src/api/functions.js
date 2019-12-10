@@ -104,7 +104,7 @@ export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = 
 	var idToken = localStorage.getItem("idToken");
 	var params = {}
 	idToken =  localStorage.getItem("idToken");
-	 dataToSend = { is_dev:true, ...dataToSend};
+	 //dataToSend = { is_dev:true, ...dataToSend};
 	params = {
 		credentials: 'include',
 		method: 'POST',

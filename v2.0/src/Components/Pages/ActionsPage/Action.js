@@ -234,6 +234,7 @@ class Action extends React.Component {
 			});
 			return col ? col[0] : null;
 		}
+		return null;
 	}
 
 	getTag(name) {
