@@ -1,7 +1,14 @@
 // Defining URLS object for manipulation...
-const URLS = {
-	ROOT: "http://api.massenergize.org"
-	// ROOT: "http://localhost:8000"
+import { IS_PROD, IS_LOCAL } from '../config/config'
+
+
+let URLS = {}
+if(IS_LOCAL){	
+	URLS["ROOT"] = "http://localhost:8000"
+} else if(!IS_PROD){
+	URLS["ROOT"] =  "http://api.dev.massenergize.org"
+}else if(IS_PROD) {
+	URLS["ROOT"] =  "http://api.prod.massenergize.org"
 }
 
 /** 
