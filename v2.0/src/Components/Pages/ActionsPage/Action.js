@@ -226,31 +226,27 @@ class Action extends React.Component {
 		return noFilter;
 	}
 
-	getParticularCollection(name) {
-		const cols = this.props.collection;
-		if (cols) {
-			const col = cols.filter(item => {
-				return item.name.toLowerCase() === name.toLowerCase();
-			});
-			return col ? col[0] : null;
-		}
-		return null;
-	}
+	// getParticularCollection(name) {
+	// 	const cols = this.props.collection;
+	// 	if (cols) {
+	// 		const col = cols.filter(item => {
+	// 			return item.name.toLowerCase() === name.toLowerCase();
+	// 		});
+	// 		return col ? col[0] : null;
+	// 	}
+	// 	return null;
+	// }
 
 	getTag(name) {
-		const collectionSet = this.getParticularCollection(name);
-		if (collectionSet) {
 			const tags = this.props.action.tags.filter(tag => {
-				return tag.tag_collection === collectionSet.id;
+				return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
 			});
 			return tags && tags.length > 0 ? tags[0] : null
-		}
-		return null
 	}
 
-	renderTagBar(tag, name) {
 
-		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
+	renderTagBar(tag, name) {
+		const diff = name.toLowerCase() ==="difficulty".toLowerCase();
 		if (tag) {
 
 			if (tag.points === 1) {

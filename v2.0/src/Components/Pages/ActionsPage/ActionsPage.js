@@ -32,9 +32,10 @@ class ActionsPage extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	render() {
-		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
 		
-		const actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
+		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
+		var actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
+		actions = actions ? actions.sort((a,b)=>{return a.rank - b.rank}): actions;
 		return (
 			<>
 				 
