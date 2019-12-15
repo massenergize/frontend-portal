@@ -6,9 +6,9 @@ let URLS = {}
 if(IS_LOCAL){	
 	URLS["ROOT"] = "http://localhost:8000"
 } else if(!IS_PROD){
-	URLS["ROOT"] =  "http://api.dev.massenergize.org"
+	URLS["ROOT"] =  "https://api-dev.massenergize.org"
 }else if(IS_PROD) {
-	URLS["ROOT"] =  "http://api.prod.massenergize.org"
+	URLS["ROOT"] =  "https://api.massenergize.org"
 }
 
 /** 
