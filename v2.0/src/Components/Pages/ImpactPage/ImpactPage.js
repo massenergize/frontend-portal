@@ -77,23 +77,23 @@ class ImpactPage extends React.Component {
 
 				<div className='boxed_wrapper' >
 					<BreadCrumbBar links={[{ name: 'Impact' }]} />
-					<div className="container p-5" style={{background:'white'}}>
+					<div className="container p-5 mob-pad-0" style={{background:'white'}}>
 
 						<div className="row">
-							<div className="col-12 col-lg-4" >
+							<div className="col-12 col-lg-4 mob-impact-pad-fix" >
 								<h5 className="text-center" style={{ color: '#888', margin: 19 }}>{community ? community.name : null}</h5>
 								<div className="card  mb-4 raise"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
-									<div className="card-body">
+									<div className="card-body mob-homepage-chart-h">
 										<CircleGraph
-											num={goal ? goal.attained_number_of_households : 0} goal={goal ? goal.target_number_of_households : 0} label={'Households Engaged'} size={150}
+											num={goal ? goal.attained_number_of_households : 0} goal={goal ? goal.target_number_of_households : 0} label={'Households Engaged'} size={130}
 											colors={["#428a36"]}
 										/>
 									</div>
 								</div>
 								<div className="card raise mb-4"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
-									<div className="card-body">
+									<div className="card-body mob-homepage-chart-h">
 										<CircleGraph
-											num={goal ? goal.attained_number_of_actions : 0} goal={goal ? goal.target_number_of_actions : 0} label={"Actions Completed"} size={150}
+											num={goal ? goal.attained_number_of_actions : 0} goal={goal ? goal.target_number_of_actions : 0} label={"Actions Completed"} size={130}
 											colors={["#FB5521"]}
 										/>
 									</div>
@@ -124,7 +124,7 @@ class ImpactPage extends React.Component {
 										<h4 className="cool-font"> See How We Compare To Our Neighbors</h4>
 										{/* <p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p> */}
 									</div>
-									<div className="card-body">
+									<div className="card-body ">
 										<BarGraph
 											categories={communityImpact.categories}
 											series={communityImpact.series}

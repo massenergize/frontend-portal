@@ -150,7 +150,7 @@ class StoriesPage extends React.Component {
 			if (story.body.length > 0) {
 				body = story.body.length > 100 ? story.body.substring(0, 100) + "..." : story.body;
 			}
-			var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12";
+			var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12 mob-testy-card-fix";
 			// var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
 			// if (this.state.expanded !== null) {
 			// 	if (this.state.expanded === story.id) {

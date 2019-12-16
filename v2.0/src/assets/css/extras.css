@@ -1,4 +1,74 @@
 
+
+
+/* MOBILE PHONE ARE */
+
+@media only screen and ( max-width: 785px){
+  .mob-btn-left-fix{
+    left:-48px;
+  }
+  .header-logo{
+    max-width: 110px;
+    margin-left: 90px;
+  }
+  .mob-pad-absolute-0{
+    padding: 0px !important;
+  }
+  .mob-margin-absolute-0{
+    margin:0px !important;
+  }
+  
+  .mob-our-impact-div{
+    height: 30px !important; 
+    margin: 0px !important;
+  }
+  .mob-event-section{
+    padding-top:10px;
+  }
+  .mob-homepage-chart-h{
+    height:250px !important;
+  }
+  .mob-pad-0{
+    padding:0px !important;
+  }
+  .mob-margin-0{
+    margin:0px !important;
+  }
+  .mob-impact-pad-fix{
+    padding:70px !important;
+  }
+  .mob-actions-page-padding-remove{
+    padding-right:0px !important;
+  }
+  .mob-testy-card-fix{
+    left:-17px;
+  }
+  .mob-appear{
+    display:block !important;
+  }
+
+  .land-textbox{
+    margin:0px !important;
+    margin-bottom:15px !important;
+  }
+}
+/*  ====== END END END END ========== */
+
+.mob-appear{
+  display:none;
+}
+.mob-actions-page-padding-remove{
+  padding-right:40px;
+}
+.land-textbox{}
+.mob-impact-pad-fix{}
+.mob-pad-0{}
+.mob-testy-card-fix{}
+.mob-event-section{}
+.mob-btn-left-fix{}
+.mob-pad-absolute-0{}
+.mob-margin-absolute-0{}
+.mob-our-impact-div{}
 .testi-green-monster{
   height:130px;
   z-index:0;

@@ -140,13 +140,16 @@ class RegisterFormBase extends React.Component {
 					<div style={{ width: '100%', height: '0px', borderBottom: 'solid 1px black', marginBottom: '15px' }}>
 					</div>
 					<div className="section-title style-2" style={{ marginBottom: 9 }}>
-						<h3>Register with Google</h3>
+						<h3>Register with</h3>
 					</div>
 					<div className="form-group social-links-three padd-top-5">
 						{/* <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button> */}
-						<button style={{ borderRadius: 5, padding: '0px 30px' }} onClick={this.signInWithGoogle} id="google" className="img-circle google cool-font round-me raise"><span className="fa fa-google"></span> Register with Google</button>
+						<button style={{borderRadius: 5, padding: '0px 30px',background:'#398add' }} onClick={this.signInWithFacebook} id="google" className="img-circle google cool-font round-me raise"><span className="fa fa-facebook"></span>acebook</button>
+						<button style={{float:'left', borderRadius: 5, padding: '0px 30px' }} onClick={this.signInWithGoogle} id="google" className="img-circle google cool-font round-me raise"><span className="fa fa-google"></span>oogle</button>
+					
 					</div>
-					Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link>
+		
+					<p>Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>
 				</div>
 			</div>
 		);
@@ -329,9 +332,9 @@ class RegisterFormBase extends React.Component {
 			this.props.firebase.auth()
 				.signInWithPopup(facebookProvider)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat);
-					this.fetchAndLogin(auth.user.email);
-					if (!auth.emailVerified) this.sendVerificationEmail();
+					this.fetchMassToken(auth.user._lat,auth.user.email);
+					// this.fetchAndLogin(auth.user.email);
+					//if (!auth.emailVerified) this.sendVerificationEmail();
 					this.setState({ ...INITIAL_STATE });
 				})
 				.catch(err => {

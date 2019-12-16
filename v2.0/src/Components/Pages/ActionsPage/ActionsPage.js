@@ -72,7 +72,7 @@ class ActionsPage extends React.Component {
 								{/* renders the actions */}
 								<div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
 								<PageTitle>Actions</PageTitle>
-									<div className="row" id="actions-container"  style={{ marginTop:10,paddingRight:40 }}>
+									<div className="row" id="actions-container mob-actions-page-padding-remove"  style={{ marginTop:10 }}>
 										{this.renderActions(actions)}
 									</div>
 								</div>
