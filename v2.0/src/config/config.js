@@ -1,5 +1,5 @@
 module.exports = {
-  IS_LOCAL: false,
+  IS_LOCAL: true,
   IS_PROD: false,
-  IS_SANDBOX: true
+  IS_SANDBOX: false
 }

@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
-import { postJson, apiCall } from '../../../api/functions'
-import URLS from '../../../api/urls'
+import { apiCall } from '../../../api/functions'
 import { reduxJoinTeam } from '../../../redux/actions/userActions'
 import { reduxAddTeamMember, reduxRemoveTeamMember } from '../../../redux/actions/pageActions'
 import { Link } from 'react-router-dom'
@@ -244,12 +243,12 @@ class TeamsPage extends React.Component {
 	}
 	joinTeam = (team) => {
 		const body = {
-			members: this.props.user.id,
+			user_id: this.props.user.id,
+			team_id: team.id,
 		}
-		postJson(`${URLS.TEAM}/${team.id}`, body).then(json => {
+		apiCall('teams.join', body).then(json => {
 			if (json.success) {
 				this.props.reduxJoinTeam(team);
-
 				this.props.reduxAddTeamMember({
 					team: team,
 					member: {
@@ -259,8 +258,12 @@ class TeamsPage extends React.Component {
 						actions_todo: this.props.todo.length
 					}
 				});
+		
 			}
+		}).catch(error => {
+			console.log(error);
 		})
+
 	}
 }
 const mapStoreToProps = (store) => {

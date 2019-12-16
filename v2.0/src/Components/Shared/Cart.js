@@ -27,9 +27,9 @@ class Cart extends React.Component {
 								<tr>
 									<th>Household</th>
 									<th>Action</th>
-									<th>Contact</th>
-									<th>Phone</th>
-									<th>Email</th>
+									<th>Vendors</th>
+									<th>Vendors' Phone</th>
+									<th>Vendors' Email</th>
 								</tr>
 							</thead>
 							: null}
@@ -98,6 +98,7 @@ class Cart extends React.Component {
 				<tr key="1"><td colSpan="100%"><p className="m-0 p-2 w-100 text-center cool-font">Nothing here, yet! See all <Link to={this.props.links.actions}> actions </Link></p></td></tr>
 			);
 		}
+
 		//returns a list of action components
 		return Object.keys(actionRelations).map(key => {
 			var actionRel = actionRelations[key];
@@ -127,7 +128,7 @@ class Cart extends React.Component {
 						<div className="column-box">
 							{action.vendors ?
 								Object.keys(action.vendors).map(key => {
-									return (<p> {<p> {action.vendors[key].key_contact ? action.vendors[key].key_contact.phone : null} </p>} </p>)
+									return (<p> {<p> {action.vendors[key] ? action.vendors[key].phone_number : null} </p>} </p>)
 								})
 
 								: '123-456-7890'}
@@ -137,7 +138,7 @@ class Cart extends React.Component {
 						<div className="column-box">
 							{action.vendors ?
 								Object.keys(action.vendors).map(key => {
-									return (<p> {<p> {action.vendors[key].key_contact ? action.vendors[key].key_contact.email : null} </p>} </p>)
+									return (<p> {<p> {action.vendors[key] ? action.vendors[key].email : null} </p>} </p>)
 								})
 								: 'info@massenergize.org'}
 						</div>

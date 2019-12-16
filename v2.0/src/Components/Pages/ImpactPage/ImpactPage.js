@@ -56,11 +56,11 @@ class ImpactPage extends React.Component {
 		var graph2Series = [
 			{
 				name: "Self Reported",
-				data: [2,3,4,5],
+				data: [],
 			},
 			{
 				name: "State Reported",
-				data: [2,3,4,5],
+				data: [],
 			}
 		];
 

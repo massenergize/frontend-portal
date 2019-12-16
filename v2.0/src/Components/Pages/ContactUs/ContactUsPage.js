@@ -8,7 +8,7 @@ class ContactUsPage extends React.Component {
 
   ejectAdmins(admins) {
     if (admins.length > 0) {
-      const adminsMapped = admins.map((admin, index) => { return (<div><a style={{ fontSize: 17, color: 'green' }} href={`mailto:${admin.email}`}>{admin.full_name}</a></div>) })
+      const adminsMapped = admins.map((admin, index) => { return (<div><a style={{ fontSize: 17, color: 'green' }} href={`/#`}>{admin.full_name}</a></div>) })
       return (
         <div>
           <h4>Admins</h4>

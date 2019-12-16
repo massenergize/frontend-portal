@@ -71,7 +71,6 @@ class Action extends React.Component {
 										<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 									</div>
 									<div className="float_right" >
-
 										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
 									</div>
 
@@ -250,6 +249,7 @@ class Action extends React.Component {
 
 	renderTagBar(tag, name) {
 
+		console.log(tag, name)
 		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
 		if (tag) {
 
@@ -285,7 +285,7 @@ class Action extends React.Component {
 const mapStoreToProps = (store) => {
 	return ({
 		links: store.links,
-		collection: store.page.collection,
+		collection: store.page.tagCols,
 	});
 }
 export default connect(mapStoreToProps)(Action);

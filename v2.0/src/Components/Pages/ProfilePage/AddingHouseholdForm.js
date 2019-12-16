@@ -1,6 +1,7 @@
 import React from 'react';
-import URLS from '../../../api/urls'
-import { postJson } from '../../../api/functions'
+import { connect } from 'react-redux'
+import { apiCall } from '../../../api/functions'
+import { withFirebase } from 'react-redux-firebase';
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -136,29 +137,28 @@ class AddingHouseholdForm extends React.Component {
 
 	onSubmit = (event) => {
 		event.preventDefault();
+		const { user, community, householdID } = this.props;
 		const location = this.state.address + ', ' + this.state.city + ', ' + this.state.state;
 		const body = {
 			"name": this.state.name,
 			"unit_type": this.state.unittype,
-			"location": location
+			"location": location,
+			"user_id": user && user.id,
+			"email": user && user.email,
+			"community": community && community.id
 		}
-		var postURL = URLS.USER + "/" + this.props.user.id + "/households";
-		if (this.props.householdID) {
-			postURL = URLS.HOUSEHOLD + "/" + this.props.householdID;
-		}
-		/** Collects the form data and sends it to the backend */
-		postJson(postURL, body).then(json => {
-			console.log(json);
+
+		apiCall('users.households.add', body).then(json => {
 			if (json.success) {
-				if (!this.props.householdID) {
+				if (!householdID) {
 					this.props.addHousehold(json.data);
-					postJson(URLS.USER + "/" + this.props.user.id, { "real_estate_units": json.data.id }).then(json => {
-						if (json.success) this.props.closeForm();
-					});
 				} else {
 					this.props.editHousehold(json.data);
 					this.props.closeForm();
 				}
+			}else{
+				this.props.editHousehold(json.data);
+				this.props.closeForm();
 			}
 		}).catch(error => {
 			console.log(error);
@@ -167,7 +167,14 @@ class AddingHouseholdForm extends React.Component {
 }
 
 
-//composes the login form by using higher order components to make it have routing and firebase capabilities
-export default AddingHouseholdForm;
+const mapStoreToProps = (store) => {
+	return {
+		auth: store.firebase.auth,
+		user: store.user.info,
+		community: store.page.community,
+	}
+}
+
+export default connect(mapStoreToProps, {})(withFirebase(AddingHouseholdForm));
 
 
