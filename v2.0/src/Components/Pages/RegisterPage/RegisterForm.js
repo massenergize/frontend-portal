@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import ReCAPTCHA from 'react-google-recaptcha'
 
 
-import { postJson, apiCall, rawCall, apiCallNoToken } from '../../../api/functions';
+import { postJson, apiCall, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
 import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';

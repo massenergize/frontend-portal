@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactToPrint from 'react-to-print'
 import { connect } from 'react-redux'
-import logo from '../../logo.svg'
-
+import logo from '../../logo.png'
 
 import Cart from './Cart';
 import EventCart from '../Pages/ProfilePage/EventCart'

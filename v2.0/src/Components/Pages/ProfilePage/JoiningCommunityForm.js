@@ -1,6 +1,5 @@
 import React from 'react';
-import URLS from '../../../api/urls'
-import { postJson } from '../../../api/functions'
+import { apiCall } from '../../../api/functions'
 import { connect } from 'react-redux'
 import { reduxLoadUserCommunities } from '../../../redux/actions/userActions'
 
@@ -44,11 +43,12 @@ class JoiningCommunityForm extends React.Component {
 	onSubmit = () => {
 		if (this.state.value !== '--') {
 			const body = {
-				"communities": this.state.value,
+				user_id: this.props.user.id,
+				community_id: this.state.value
 			}
-			var postURL = URLS.USER + "/" + this.props.user.id;
+
 			/** Collects the form data and sends it to the backend */
-			postJson(postURL, body).then(json => {
+			apiCall('communities.join', body).then(json => {
 				console.log(json);
 				if (json.success) {
 					this.props.reduxLoadUserCommunities(json.data.communities);

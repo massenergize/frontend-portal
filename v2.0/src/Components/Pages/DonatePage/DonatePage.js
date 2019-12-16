@@ -3,7 +3,6 @@ import PageTitle from '../../Shared/PageTitle';
 import { connect } from 'react-redux';
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import Error404 from './../Errors/404';
 
 class DonatePage extends React.Component {
 
@@ -32,7 +31,7 @@ class DonatePage extends React.Component {
 						<br />
 						<div className="row text-center justify-content-center">
 							<div className="col-12 col-md-6 col-lg-4">
-								<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+								<form action="https://paypal.me/massenergize?locale.x=en_US" method="post" target="_top">
 									<input type="hidden" name="cmd" value="_donations" />
 									<input type="hidden" name="business" value="Donate" />
 									<input type="hidden" name="currency_code" value="USD" />

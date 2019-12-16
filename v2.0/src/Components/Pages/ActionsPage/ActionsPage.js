@@ -109,7 +109,7 @@ class ActionsPage extends React.Component {
 			return <p>There aren't any actions available in this community yet, come back later.</p>;
 		}
 		//returns a list of action components
-		return Object.keys(actions).reverse().map(key => {
+		return Object.keys(actions).map(key => {
 			var action = actions[key];
 			return <Action key={key}
 				action={action}

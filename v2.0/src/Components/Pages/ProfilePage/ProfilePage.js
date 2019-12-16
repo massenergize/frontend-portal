@@ -1,10 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
-
-// import { threadId } from 'worker_threads'
 import URLS from '../../../api/urls'
-import { apiCall, postJson, deleteJson } from '../../../api/functions'
+import { apiCall, postJson } from '../../../api/functions'
 
 import Cart from '../../Shared/Cart'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
@@ -362,21 +360,20 @@ class ProfilePage extends React.Component {
 
 	deleteHousehold = (household) => {
 		if (this.props.user.households.length > 1) {
-			deleteJson(`${URLS.HOUSEHOLD}/${household.id}`).then(json => {
-				console.log(json);
+			apiCall('users.households.remove', { household_id: household.id }).then(json => {
 				if (json.success) {
-					var numDone = this.props.done.filter(a => a.real_estate_unit.id === household.id).length;
 					this.props.reduxRemoveHousehold(household);
-					this.removeHouseFromImpact(numDone);
 				}
-			}
-			)
+			}).catch(error => {
+				console.log(error);
+			})
 		} else {
 			this.setState({
 				deletingHHError: 'You need to have at least one household. Try editing the name and location or adding another household before deleting this one'
 			})
 		}
 	}
+
 	removeHouseFromImpact(numDone) {
 		this.changeDataByName("EngagedHouseholdsData", -1)
 		Object.keys(this.props.user.teams).forEach(key => {
@@ -419,14 +416,19 @@ class ProfilePage extends React.Component {
 					newCommunityIds.push(com.id);
 				}
 			});
+
 			const body = {
-				communities: newCommunityIds
+				user_id: this.props.user.id,
+				community_id: community.id
 			}
-			postJson(`${URLS.USER}/${this.props.user.id}`, body).then(json => {
-				console.log(json)
+
+			apiCall('communities.leave', body).then(json => {
+				console.log(json);
 				if (json.success) {
 					this.props.reduxLeaveCommunity(community);
 				}
+			}).catch(error => {
+				console.log(error);
 			})
 		} else {
 			this.setState({
@@ -436,12 +438,15 @@ class ProfilePage extends React.Component {
 	}
 
 	leaveTeam = (team) => {
+
 		if (team && this.props.user) {
-			deleteJson(`${URLS.TEAM}/${team.id}/member/${this.props.user.id}`).then(json => {
-				console.log(json);
+			const body = {
+				user_id: this.props.user.id,
+				team_id: team.id,
+			}
+			apiCall('teams.join', body).then(json => {
 				if (json.success) {
 					this.props.reduxLeaveTeam(team);
-
 					this.props.reduxRemoveTeamMember({
 						team: team,
 						member: {
@@ -452,6 +457,8 @@ class ProfilePage extends React.Component {
 						}
 					});
 				}
+			}).catch(error => {
+				console.log(error);
 			})
 		}
 	}
@@ -470,12 +477,12 @@ class ProfilePage extends React.Component {
 	}
 	addDefaultCommunity = () => {
 		const body = {
-			"communities": this.props.community.id,
+			user_id: this.props.user.id,
+			community_id: this.props.community.id
 		}
-		var postURL = URLS.USER + "/" + this.props.user.id;
+
 		/** Collects the form data and sends it to the backend */
-		postJson(postURL, body).then(json => {
-			console.log(json);
+		apiCall('communities.join', body).then(json => {
 			if (json.success) {
 				this.props.reduxLoadUserCommunities(json.data.communities);
 			}
@@ -494,31 +501,14 @@ class ProfilePage extends React.Component {
 			"community": community && community.id
 		}
 
-		// var postURL = URLS.USER + "/" + this.props.user.id + "/households";
 		/** Collects the form data and sends it to the backend */
 		apiCall('users.households.add', body).then(json => {
-			console.log(json);
 			if (json.success) {
 				this.addHousehold(json.data);
 				var householdIds = [];
 				this.props.user.households.forEach(household => {
 					householdIds.push(household.id);
 				})
-				fetch(URLS.USER + "/" + this.props.user.id, {
-					method: 'post',
-					body: JSON.stringify({
-						"preferred_name": this.props.user.preferred_name,
-						"email": this.props.user.email,
-						"full_name": this.props.user.full_name,
-						"real_estate_units": [
-							...householdIds
-						]
-					})
-				}).then(response => {
-					return response.json()
-				}).then(json => {
-					console.log(json);
-				});
 			}
 		}).catch(error => {
 			console.log(error);

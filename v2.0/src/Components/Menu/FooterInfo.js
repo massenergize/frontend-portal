@@ -30,7 +30,7 @@ class FooterInfo extends React.Component {
 					<ul className="contact-info">
 						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Contact</i></li>
 						{this.props.info.email &&
-							<li><span className="icon-e-mail-envelope"></span><a className="energize-link" href={`mailto:${this.props.info.email}`}>Click to email admin </a> </li>
+							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={`/${community.subdomain}/contactus`}>Click to email admin </Link> </li>
 						}
 						{this.props.info.phone &&
 							<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>

@@ -5,9 +5,7 @@ import { connect } from 'react-redux'
 import StoryForm from '../ActionsPage/StoryForm'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import PageTitle from '../../Shared/PageTitle';
-import CONST from '../../Constants'
 import Funnel from './../EventsPage/Funnel';
-import avatar from './user_ava.png';
 import Error404 from './../Errors/404';
 import leafy from './leafy.png';
 import StoryModal from './StoryModal';
@@ -120,14 +118,14 @@ class StoriesPage extends React.Component {
 		if (img && !this.state.expanded) {
 			return (
 				<div >
-					<center><img className="testi-img" src={img.url} /></center>
+					<center><img className="testi-img" src={img.url} alt="IMG"/></center>
 				</div>
 			)
 		}
 		else if (!img && !this.state.expanded) {
 			return (
 				<div >
-					<center><img className="testi-img" src={leafy} style={{ objectFit: 'contain' }} /></center>
+					<center><img className="testi-img" src={leafy} style={{ objectFit: 'contain' }} alt="IMG"/></center>
 				</div>
 			)
 		}
@@ -153,7 +151,7 @@ class StoriesPage extends React.Component {
 				body = story.body.length > 100 ? story.body.substring(0, 100) + "..." : story.body;
 			}
 			var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12";
-			var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
+			// var style = { padding: 30, borderRadius: 15, minHeight: 417, maxHeight: 417 };
 			// if (this.state.expanded !== null) {
 			// 	if (this.state.expanded === story.id) {
 			// 		cn = 'col-12'

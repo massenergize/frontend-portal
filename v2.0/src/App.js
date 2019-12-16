@@ -19,7 +19,7 @@ class App extends Component {
 			if (json.success) {
 				this.props.reduxLoadCommunities(json.data);
 			}
-		}).catch(err => this.setState({ error: err }))
+		}).catch(err => this.setState({ error: err.message }))
 	}
 	render() {
 	
