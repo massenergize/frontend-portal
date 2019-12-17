@@ -68,7 +68,7 @@ class ContactPageForm extends Component {
           </select> */}
           <input id="name" onChange = {(event)=>{this.handleText(event)}} type="text" name="user_name" placeholder="Your Name *" className="form-control m-textbox" />
           <input id ="email" onChange = {(event)=>{this.handleText(event)}}type="email" name="email"  placeholder="Your Email *" className="form-control m-textbox" />
-          <input id="title" onChange = {(event)=>{this.handleText(event)}}type="text" name="title"  placeholder="Title *" className="form-control m-textbox" />
+          <input id="title" onChange = {(event)=>{this.handleText(event)}}type="text" name="title"  placeholder="Subject *" className="form-control m-textbox" />
           <textarea id = "message" name="body"onChange = {(event)=>{this.handleText(event)}} className="form-control m-textbox" rows="6" placeholder="Your message"></textarea>
           <small id="s_spin" className='text text-success pull-left' style={{display:'none',fontWeight:'700',margin:20}}><i className="fa fa-spinner fa-spin"></i> sending... </small>
           <button onClick = {()=>{this.sendMessage()}}className="raise btn btn-success pull-right m-btn">Send Message</button>

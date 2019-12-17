@@ -158,7 +158,7 @@ class LoginFormBase extends React.Component {
 					console.log('yay');
 			});
 
-		}).catch(err => {
+		}).catch(err => { 
 			console.log("Error MASSTOKEN: ", err);
 		});
 	}

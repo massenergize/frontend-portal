@@ -30,7 +30,8 @@ class StoryForm extends React.Component {
 			captchaConfirmed: false,
 			message: message,
 			picFile: null,
-			selected_tags: []
+			selected_tags: [],
+			anonymous:false,
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -74,6 +75,20 @@ class StoryForm extends React.Component {
 			}
 		}
 	}
+	check(type){
+		//if true then make me anonymous
+		console.log("I have been clicked")
+		if(type){
+			this.setState({anonymous:true}); 
+			document.getElementById('real_name').checked = false;
+			document.getElementById('ano').checked = true;
+		}
+		else{
+			this.setState({anonymous:false});
+			document.getElementById('ano').checked = false;
+			document.getElementById('real_name').checked = true;
+		}
+	}
 	render() {
 		const cols = this.props.tagCollections;
 		if (!this.props.actions || this.props.actions.length === 0) return <div className='text-center'><p> Sorry, there are no actions to submit a story about </p></div>;
@@ -98,6 +113,11 @@ class StoryForm extends React.Component {
 							<br />
 						</>
 					}
+					<div>
+						<p>How would you like  your name to be displayed? </p>
+						<input  type="checkbox" id = "real_name"value="false" style={{display:'inline-block'}} onClick ={()=>{this.check(false)}}/>	<small onClick ={()=>{this.check(false)}} style={{ fontSize:15, fontWeight:'600' , cursor:'pointer'}}>'John Doe'</small> <br/>
+						<input  type="checkbox" id="ano" value = "true" style={{display:'inline-block'}} onClick ={()=>{this.check(true)}}/>	<small onClick ={()=>{this.check(true)}} style={{ fontSize:15, fontWeight:'600' , cursor:'pointer'}}>Anonymous</small>
+					</div>
 					{this.props.vid ? null :
 						<>
 							<p> Who helped you complete this action? </p>
@@ -196,7 +216,8 @@ class StoryForm extends React.Component {
 			"title": this.state.title,
 			"community_id": this.props.community.id,
 			"image": this.state.picFile ? this.state.picFile : defaultUser,
-			"tags": this.state.selected_tags ? this.state.selected_tags : null
+			"tags": this.state.selected_tags ? this.state.selected_tags : null, 
+			'anonymous': this.state.anonymous
 		}
 		// if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
 		// 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
