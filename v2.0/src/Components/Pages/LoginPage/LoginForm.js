@@ -58,6 +58,7 @@ class LoginFormBase extends React.Component {
 								Or sign in with
                             {/* <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button> */}
 								<button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google round-me raise"><span className="fa fa-google"></span></button>
+								<button onClick={this.signInWithFacebook} id="google" type="button" className="img-circle google round-me raise" style={{background:'#398add' }}><span className="fa fa-facebook"></span></button>
 							</div>
 						</div>
 					</form>
@@ -132,12 +133,12 @@ class LoginFormBase extends React.Component {
 			this.props.firebase.auth()
 				.signInWithPopup(facebookProvider)
 				.then(auth => {
-					this.fetchMassToken(auth.user._lat);
-					this.fetchAndLogin(auth.user.email).then(success => {
-						if (success) {
-							console.log('yay')
-						}
-					});
+					this.fetchMassToken(auth.user._lat, auth.user.email);
+					// this.fetchAndLogin(auth.user.email).then(success => {
+					// 	if (success) {
+					// 		console.log('yay')
+					// 	}
+					// });
 					this.setState({ ...INITIAL_STATE });
 				})
 				.catch(err => {
