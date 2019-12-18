@@ -117,7 +117,9 @@ class TeamsPage extends React.Component {
 				<div className="boxed_wrapper" >
 					<BreadCrumbBar links={[{ name: 'Teams' }]} />
 					<div className="p-5" style={{height:window.screen.height -120}}>
+					
 						<PageTitle>Teams in this Community</PageTitle>
+						<p className="mob-appear" style={{color:'rgb(116, 176, 229)', textAlign:'center'}}><i className="fa fa-backward"/>  Swipe on your screen to the left, to see all table content <i className="fa fa-backward"/> </p>
 						<Table bordered hover responsive className="teams-table">
 							<thead>
 								<tr>
