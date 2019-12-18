@@ -31,13 +31,10 @@ class DonatePage extends React.Component {
 						<br />
 						<div className="row text-center justify-content-center">
 							<div className="col-12 col-md-6 col-lg-4">
-								<form action="https://paypal.me/massenergize?locale.x=en_US" method="post" target="_top">
-									<input type="hidden" name="cmd" value="_donations" />
-									<input type="hidden" name="business" value="Donate" />
-									<input type="hidden" name="currency_code" value="USD" />
-									<input type="image" className="w-100" src="https://i.imgur.com/CwBgXO2.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-									<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-								</form>
+								<div  target="_top">
+								<a rel="noopener noreferrer" href="https://paypal.me/massenergize?locale.x=en_US" target="_blank" ><input type="image" className="w-100" src="https://i.imgur.com/CwBgXO2.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" /></a>
+
+								</div>
 							</div>
 						</div>
 

@@ -4,11 +4,30 @@ import FooterLinks from './FooterLinks'
 import { Link } from 'react-router-dom'
 import SubscribeForm from './SubscribeForm';
 import { connect } from 'react-redux'
+import {IS_PROD, IS_SANDBOX, BUILD_VERSION} from '../../config/config'
 /**
  * Footer section has place for links, 
  */
 class Footer extends React.Component {
+
 	render() {
+		let BUILD_VERSION_TEXT = BUILD_VERSION
+		if(IS_PROD && IS_SANDBOX){
+			// prod sandbox
+			BUILD_VERSION_TEXT = "Production Build (Sandbox) " + BUILD_VERSION_TEXT
+		}else if(IS_PROD && !IS_SANDBOX){
+			//prod main
+			BUILD_VERSION_TEXT = "Production Build " + BUILD_VERSION_TEXT
+	
+		}else if(!IS_PROD && IS_SANDBOX){
+			// dev sandbox
+			BUILD_VERSION_TEXT = "Development Build (Sandbox) " + BUILD_VERSION_TEXT
+	
+		}else{
+			// dev sandbox
+			BUILD_VERSION_TEXT = "Development Build " + BUILD_VERSION_TEXT
+		}
+	
 		return (
 			<div className="d-flex flex-column">
 				<footer className="main-footer m-footer-color">
@@ -39,7 +58,7 @@ class Footer extends React.Component {
 				<section className="footer-bottom m-footer-color">
 					<div className="container">
 						<div className="pull-left copy-text">
-							<p className="cool-font"><a target="_blank" href="https://massenergize.org">Copyright © 2019</a> All Rights Reserved. Powered by <a target="_blank" href="https://massenergize.org">MassEnergize</a></p>
+							<p className="cool-font"><a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">Copyright © 2019</a> All Rights Reserved. Powered by <a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">MassEnergize</a></p>
 
 						</div>
 						<div className="pull-right get-text">
@@ -51,13 +70,15 @@ class Footer extends React.Component {
 					<div className="container">
 						<p className="m-0" style={{ fontSize: '12px' }}>Made with&nbsp;
 							<span className="fa fa-heart text-danger"></span> by&nbsp;
-								<u>Sam Opoku-Agyemang</u>
+								<u>Samuel Opoku-Agyemang</u>
 								&nbsp;&nbsp;
 								<u>Kieran O'Day</u>
 							&nbsp;&nbsp;
 								<u>Mingle Li</u>
 							&nbsp;&nbsp;
 								<u>Frimpong Opoku-Agyemang</u>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<u>{BUILD_VERSION_TEXT}</u>
 						</p>
 					</div>
 				</section>
