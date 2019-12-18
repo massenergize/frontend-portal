@@ -363,8 +363,8 @@ class MenuItem extends React.Component {
 			},
 			menuItem: {
 				color: this.state.hover ? '#8ec449' : '#303030',
-				fontWeight: '700',
-				fontFamily: "Verdana",
+				fontWeight: '400',
+				fontFamily: "Google Sans",
 				fontSize: '1rem',
 				padding: '.5rem 0',
 				margin: '0 5%',
@@ -422,7 +422,7 @@ class Menu extends React.Component {
 			container: {
 				position: !this.props.submenu ? 'absolute' : 'relative',
 				width: !this.props.submenu ? '50%' : '100%',
-				height: this.state.open ? (!this.props.submenu ? 'calc(100vh - 100px)' : '100%') : 0,
+				height: this.state.open ? (!this.props.submenu ? 'calc(100vh - 80px)' : '100%') : 0,
 				display: 'flex',
 				flexDirection: 'column',
 				background: 'white',

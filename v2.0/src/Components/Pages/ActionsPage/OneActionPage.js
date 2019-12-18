@@ -88,7 +88,7 @@ class OneActionPage extends React.Component {
 		return null;
 	}
 
-	getParticularCollection(name) {
+	/* getParticularCollection(name) {
 		const cols = this.props.collection;
 		if (cols) {
 			const col = cols.filter(item => {
@@ -96,17 +96,14 @@ class OneActionPage extends React.Component {
 			});
 			return col ? col[0] : null;
 		}
-	}
+	} */
 
 	getTag(name) {
-		const collectionSet = this.getParticularCollection(name);
-		if (collectionSet) {
 			const tags = this.getMyAction().tags.filter(tag => {
-				return tag.tag_collection === collectionSet.id;
+				return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
 			});
 			return tags && tags.length > 0 ? tags[0] : null
-		}
-		return null
+	
 	}
 
 	renderTagBar(tag, name) {

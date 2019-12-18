@@ -212,7 +212,6 @@ class AppRouter extends Component {
 
 	render() {
 		document.body.style.overflowX = 'hidden';
-
 		if (!isLoaded(this.props.auth)) {
 			return <LoadingCircle />;
 		}

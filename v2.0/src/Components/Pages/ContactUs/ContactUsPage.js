@@ -8,7 +8,7 @@ class ContactUsPage extends React.Component {
 
   ejectAdmins(admins) {
     if (admins.length > 0) {
-      const adminsMapped = admins.map((admin, index) => { return (<div><a style={{ fontSize: 17, color: 'green' }} href={`/#`}>{admin.full_name}</a></div>) })
+      const adminsMapped = admins.map((admin, index) => { return (<li><a style={{ fontSize: 17, color: 'green' }} href={`/#`}>{admin.full_name}</a></li>) })
       return (
         <div>
           <h4>Admins</h4>
@@ -70,7 +70,7 @@ class ContactUsPage extends React.Component {
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>Contact <b>{name}</b> </h3>
-                  <p>Use this page to get key information and in touch with {name}</p>
+                  <p>We are always striving to make this better and welcome your feedback! Reach an individual {name} organizer by clicking on their name or fill in the form to contact all organizers</p>
                   {this.ejectLocation(location)}
                   {this.ejectAdmins(admins)}
                 </div>
