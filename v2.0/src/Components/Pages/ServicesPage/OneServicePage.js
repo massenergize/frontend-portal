@@ -120,11 +120,14 @@ class OneServicePage extends React.Component {
 								<img src="" alt="" />
 							</div>
 							<div className="text-holder" style={{padding:40}}>
+								{story.user &&
 								<div className="top">
 									<div className="name pull-left">
 										<h4>{story.user.full_name} – {date.toLocaleDateString()}:</h4>
 									</div>
 								</div>
+								}
+								
 								<div className="text">
 									<h6>
 										{story.title}

@@ -280,13 +280,14 @@ class RegisterFormBase extends React.Component {
 				this.setState({ showTOSError: true });
 				return;
 			}
-			const { auth } = this.props;
+			const { auth, community } = this.props;
 			const body = {
 				"full_name": firstName + ' ' + lastName,
 				"preferred_name": preferredName === "" ? firstName : preferredName,
 				"email": auth.email,
 				"is_vendor": serviceProvider,
-				"accepts_terms_and_conditions": termsAndServices
+				"accepts_terms_and_conditions": termsAndServices,
+				subdomain: community && community.subdomain
 			}
 			apiCall('users.create', body).then(json => {
 				var token = this.props.auth ? this.props.auth.stsTokenManager.accessToken : null;
@@ -387,7 +388,8 @@ const mapStoreToProps = (store) => {
 		auth: store.firebase.auth,
 		user: store.user,
 		policies: store.page.policies,
-		links: store.links
+		links: store.links,
+		community: store.page.community,
 	}
 }
 export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);

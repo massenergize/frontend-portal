@@ -1,0 +1,4 @@
+aws2 s3 sync build/ s3://community.massenergize.org
+aws2 s3 sync build/ s3://community-dev.massenergize.org
+aws2 s3 sync build/ s3://sandbox.community.massenergize.org
+aws2 s3 sync build/ s3://sandbox.community-dev.massenergize.org
