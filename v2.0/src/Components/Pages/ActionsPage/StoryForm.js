@@ -113,11 +113,11 @@ class StoryForm extends React.Component {
 							<br />
 						</>
 					}
-					<div>
+					{/* <div>
 						<p>How would you like  your name to be displayed? </p>
 						<input  type="checkbox" id = "real_name"value="false" style={{display:'inline-block'}} onClick ={()=>{this.check(false)}}/>	<small onClick ={()=>{this.check(false)}} style={{ fontSize:15, fontWeight:'600' , cursor:'pointer'}}>'John Doe'</small> <br/>
 						<input  type="checkbox" id="ano" value = "true" style={{display:'inline-block'}} onClick ={()=>{this.check(true)}}/>	<small onClick ={()=>{this.check(true)}} style={{ fontSize:15, fontWeight:'600' , cursor:'pointer'}}>Anonymous</small>
-					</div>
+					</div> */}
 					{this.props.vid ? null :
 						<>
 							<p> Who helped you complete this action? </p>
@@ -217,7 +217,7 @@ class StoryForm extends React.Component {
 			"community_id": this.props.community.id,
 			"image": this.state.picFile ? this.state.picFile : defaultUser,
 			"tags": this.state.selected_tags ? this.state.selected_tags : null, 
-			'anonymous': this.state.anonymous
+			// 'anonymous': this.state.anonymous
 		}
 		// if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
 		// 	this.setState({ error: "Please choose which action you are writing a testimonial about" })

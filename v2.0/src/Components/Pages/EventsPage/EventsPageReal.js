@@ -175,15 +175,7 @@ class EventsPage extends React.Component {
 								<div className="lower-content ">
 									<Link className="cool-font" to={this.props.links.events + "/" + event.id}><h4 className="cool-font"> {event.name} </h4></Link>
 									<div className="text">
-										{event.description.length < CONST.BIG_LIMIT ?
-											<p className="cool-font" dangerouslySetInnerHTML={{ __html: event.description }}></p>
-											:
-											// <p className="cool-font" dangerouslySetInnerHTML={{ __html: event.description.substring(0, CONST.BIG_LIMIT) }}>
-											// 	{/* {event.description.substring(0, CONST.BIG_LIMIT)} */}
-											// 	&nbsp;<Link to={`${this.props.links.events}/${event.id}`}> ...more</Link>
-											// </p>
-											<p>This event is has a long description. <br/> Click to read all details about it.</p>
-										}
+										<p>{event.featured_summary}</p>
 									</div>
 								</div>
 							</div>
@@ -198,7 +190,7 @@ class EventsPage extends React.Component {
 									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											<b>{location.unit? `, ${location.unit}` : ''} </b> <b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
+											<b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
 										</li>
 										:
 										null
