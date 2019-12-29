@@ -5,7 +5,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import CONST from '../../Constants'
+// import CONST from '../../Constants'
 import * as moment from 'moment';
 import Funnel from './Funnel';
 import Error404 from './../Errors/404';
@@ -190,7 +190,7 @@ class EventsPage extends React.Component {
 									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											<b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
+											<b>{location.address? `${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
 										</li>
 										:
 										null

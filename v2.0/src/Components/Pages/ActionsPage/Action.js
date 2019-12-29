@@ -71,10 +71,8 @@ class Action extends React.Component {
 										<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 									</div>
 									<div className="float_right" >
-
-										Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
+										Cost<span> {this.renderCost(this.getTag("cost"), "cost")} </span>
 									</div>
-
 								</div>
 							</div>
 							{ /* buttons for adding todo, marking as complete and getting more info */}
@@ -278,7 +276,37 @@ class Action extends React.Component {
 		}
 		return null;
 	}
+
+	renderCost(tag, name) {
+		if (tag) {
+			if (tag.points === 1) {
+				return (
+					<div>
+						&nbsp;&nbsp;&nbsp;&nbsp;$
+					</div>
+				);
+			}
+			if (tag.points === 2) {
+				return (
+					<div>
+						&nbsp;&nbsp;$$
+					</div>
+				);
+			}
+			if (tag.points === 3) {
+				return (
+					<div>
+						&nbsp;$$$
+					</div>
+				);
+			}
+		}
+		return null;
+	}
 }
+
+
+
 const mapStoreToProps = (store) => {
 	return ({
 		links: store.links,

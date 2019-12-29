@@ -22,7 +22,7 @@ class Counter extends React.Component {
                     <div className="count-outer">
                         <CountUp end={this.props.end} duration={3}/>
                     </div>
-                    <h6 className="">{this.props.title}</h6>
+                    <h6 className="">{this.props.title} {this.props.unit && `(in ${this.props.unit})`}</h6>
                 </div>
         );
     }

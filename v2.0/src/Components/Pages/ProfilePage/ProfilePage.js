@@ -83,6 +83,7 @@ class ProfilePage extends React.Component {
 			}
 		}
 		const { user } = this.props;
+		console.log(this.props.done)
 
 		return (
 			<>
@@ -109,7 +110,7 @@ class ProfilePage extends React.Component {
 														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
 													<div className="column counter-column col-lg-4 col-6"  >
-														<Counter end={this.props.done ? this.props.done.length * 10 : 0} unit={"tons"} icon={"fa fa-leaf"} title={"Tons of Carbon Saved"} />
+														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"GHG"} icon={"fa fa-leaf"} title={"Carbon Saved"} />
 													</div>
 												</div>
 											</div>
@@ -138,7 +139,7 @@ class ProfilePage extends React.Component {
 																	className=""
 																	onClick={() => this.setState({ addingHH: false })}
 																	style={{ color: 'white', width: '99%', padding: 13, borderRadius: 6, background: 'indianred', borderColor: 'indianred' }}>Cancel
-                                                                </button>
+                                </button>
 															</>
 															:
 															<button className="thm-btn btn-finishing" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>

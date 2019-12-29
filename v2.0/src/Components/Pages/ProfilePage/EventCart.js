@@ -67,7 +67,7 @@ class EventCart extends React.Component {
                     </td>
                     <td>
                         <div className="column-box">
-                                <p> {event.location? `${event.location.street}, ${event.location.city}`: null}</p>
+                                <p> {event.location? `${event.location.street && event.location.street+', '} ${event.location.city && event.location.city + ', '}`: null}</p>
                                 <p> {date? date.toLocaleDateString() : null}</p>
                         </div>
                     </td>
@@ -117,7 +117,7 @@ class EventCart extends React.Component {
                     </td>
                     <td className="prod-column">
                         <div className="column-box">
-                            <p>{event.location? `${event.location.street}, ${event.location.city}`: null}</p>
+                            <p>{event.location? `${event.location.street && event.location.street+', '} ${event.location.city && event.location.city + ', '}`: null}</p>
                         </div>
                     </td>
                     <td className="prod-column">

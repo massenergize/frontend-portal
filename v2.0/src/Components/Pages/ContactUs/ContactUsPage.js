@@ -72,7 +72,7 @@ class ContactUsPage extends React.Component {
                   <h3>Contact <b>{name}</b> </h3>
                   <p>We are always striving to make this better and welcome your feedback! Reach an individual {name} organizer by clicking on their name or fill in the form to contact all organizers</p>
                   {this.ejectLocation(location)}
-                  {this.ejectAdmins(admins)}
+                  {/* {this.ejectAdmins(admins)} */}
                 </div>
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <ContactPageForm admins={admins} community_id={id} />
