@@ -110,7 +110,7 @@ class ProfilePage extends React.Component {
 														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
 													<div className="column counter-column col-lg-4 col-6"  >
-														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"GHG"} icon={"fa fa-leaf"} title={"Carbon Saved"} />
+														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"lbs CO2 emissions"} icon={"fa fa-leaf"} title={"Impact"} />
 													</div>
 												</div>
 											</div>

@@ -128,8 +128,8 @@ class TeamsPage extends React.Component {
 									<th>Actions Completed</th>
 									<th>Average Actions/Household</th>
 									<th>
-										<Tooltip text="Brad's paragraph here" dir="left">
-											<span className="has-tooltip">Carbon Impact</span>
+										<Tooltip text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members" dir="left">
+											<span className="has-tooltip">Emissions Impact</span>
 										</Tooltip>
 									</th>
 									<th>Key Contact</th>
