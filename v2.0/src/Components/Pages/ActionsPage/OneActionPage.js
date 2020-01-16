@@ -108,7 +108,7 @@ class OneActionPage extends React.Component {
 
 	renderTagBar(tag, name) {
 
-		const diff = name.toLowerCase() === "Difficulty".toLowerCase() ? true : false;
+		const diff = name.toLowerCase() === "Cost".toLowerCase() ? true : false;
 		if (tag) {
 
 			if (tag.points === 1) {
@@ -139,6 +139,33 @@ class OneActionPage extends React.Component {
 		}
 		return null;
 	}
+	renderCost(tag, name) {
+		if (tag) {
+			if (tag.points === 1) {
+				return (
+					<div>
+						&nbsp;&nbsp;&nbsp;&nbsp;$
+					</div>
+				);
+			}
+			if (tag.points === 2) {
+				return (
+					<div>
+						&nbsp;&nbsp;$$
+					</div>
+				);
+			}
+			if (tag.points === 3) {
+				return (
+					<div>
+						&nbsp;$$$
+					</div>
+				);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * renders the action on the page
 	 */
@@ -172,7 +199,7 @@ class OneActionPage extends React.Component {
 									<span>{this.renderTagBar(this.getTag("impact"), "impact")}</span>
 								</div>
 								<div className="float_right" style={{ marginRight: 50 }} >
-									Difficulty<span> {this.renderTagBar(this.getTag("difficulty"), "difficulty")} </span>
+									Cost<span> {this.renderCost(this.getTag("cost"), "cost")} </span>
 								</div>
 							</div>
 

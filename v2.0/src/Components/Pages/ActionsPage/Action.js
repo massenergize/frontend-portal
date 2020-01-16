@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
     "image": action's image
     "impact": level of impact (high medium low)
     "categories": categories of the action (Home Energy, Clean Transportation...)
-    "difficulty": difficulty (high medium low)
+    "cost": cost (high medium low)
     "tags": actions' tags (sustainable, heat ...)
     "match": match is passed from Route
  */
@@ -61,7 +61,7 @@ class Action extends React.Component {
 									<Link className="cool-font" to={this.props.links.actions + "/" + this.props.action.id}> {this.props.action.title} </Link>
 								</h4>
 							</div>
-							{ /* Impact and Difficulty tags*/}
+							{ /* Impact and cost tags*/}
 							<div className="price-box2" onClick={() => { this.gotoAction() }} >
 								<div className="clearfix" >
 									<div className="float_left">
