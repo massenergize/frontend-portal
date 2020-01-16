@@ -126,7 +126,7 @@ class TeamsPage extends React.Component {
 									<th>Team Name</th>
 									<th>Households</th>
 									<th>Actions Completed</th>
-									<th>Average Actions/Household</th>
+									<th>Actions / Household</th>
 									<th>
 										<Tooltip text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members" dir="left">
 											<span className="has-tooltip">Emissions Impact</span>
@@ -173,11 +173,10 @@ class TeamsPage extends React.Component {
 			const desc = obj.team.description.length > 70 ? obj.team.description.substr(0, 70) + "..." : obj.team.description;
 			return (
 				<tr key={index.toString()}>
-					<td>{obj.team.name} &nbsp;
+					<td>{obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">
 							<div>
 								<small className="more-hyperlink" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.toggleModal() }}>More...</small>
-								<span className="fa fa-info-circle" style={{ color: "#428a36" }}></span>
 							</div>
 						</Tooltip>
 					</td>
@@ -190,7 +189,7 @@ class TeamsPage extends React.Component {
 						:
 						<td>
 							<Link to={this.props.links.signin}>Sign In</Link> to contact admin
-				</td>
+						</td>
 					}
 					{this.props.user ?
 						<td>
@@ -200,7 +199,7 @@ class TeamsPage extends React.Component {
 								:
 								<button className='thm-btn round-me' onClick={() => {
 									this.joinTeam(obj.team)
-								}}><i className='fa fa-user-plus' > </i> Join </button>
+								}}><i className='fa fa-user-plus' ></i> Join </button>
 							}
 
 						</td>
