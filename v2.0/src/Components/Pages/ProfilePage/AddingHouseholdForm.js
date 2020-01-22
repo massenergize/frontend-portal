@@ -154,21 +154,37 @@ class AddingHouseholdForm extends React.Component {
 			"email": user && user.email,
 			"community": community && community.id
 		}
-		apiCall('users.households.add', body).then(json => {
-			if (json.success) {
-				if (!householdID) {
+
+		if (householdID) {
+			body["household_id"] = householdID;
+			console.log(body);
+			apiCall('users.households.edit', body).then(json => {
+				if (json.success) {
+					this.props.editHousehold(json.data);
+					this.props.closeForm();
+				}
+				else {
+					this.props.editHousehold(json.data);
+					this.props.closeForm();
+				}
+			}
+			).catch(error => {
+				console.log(error);
+			})
+		} else {
+			apiCall('users.households.add', body).then(json => {
+				if (json.success) {
 					this.props.addHousehold(json.data);
+					this.props.closeForm();
 				} else {
 					this.props.editHousehold(json.data);
 					this.props.closeForm();
 				}
-			}else{
-				this.props.editHousehold(json.data);
-				this.props.closeForm();
 			}
-		}).catch(error => {
-			console.log(error);
-		})
+			).catch(error => {
+				console.log(error);
+			})
+		}
 	}
 }
 
