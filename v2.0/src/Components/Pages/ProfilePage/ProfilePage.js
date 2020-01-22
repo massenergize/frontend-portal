@@ -353,7 +353,7 @@ class ProfilePage extends React.Component {
 		teams.forEach(team => {
 			this.props.reduxTeamAddHouse(team);
 		})
-		this.addHouseToImpact();
+		// BHN - causes exception - this.addHouseToImpact();
 	}
 	editHousehold = (household) => {
 		this.props.reduxEditHousehold(household);
@@ -385,7 +385,7 @@ class ProfilePage extends React.Component {
 		})
 	}
 	addHouseToImpact() {
-		this.changeDataByName("EngagedHouseholdsData", 1)
+		this.changeDataByName("EngagedHouseholdsData", 1);
 	}
 	changeDataByName(name, number) {
 		const communityData = this.props.communityData || []
@@ -397,7 +397,6 @@ class ProfilePage extends React.Component {
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
 		postJson(URLS.DATA + '/' + data.id, body).then(json => {
-			console.log(json);
 			if (json.success) {
 				data = {
 					...data,
@@ -424,7 +423,7 @@ class ProfilePage extends React.Component {
 			}
 
 			apiCall('communities.leave', body).then(json => {
-				console.log(json);
+				//console.log(json);
 				if (json.success) {
 					this.props.reduxLeaveCommunity(community);
 				}
