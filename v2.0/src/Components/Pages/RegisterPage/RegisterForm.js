@@ -24,6 +24,10 @@ const INITIAL_STATE = {
 	firstName: '',
 	lastName: '',
 	preferredName: '',
+	address: '',
+	city: '',
+	state: '',
+	zip: '',
 	serviceProvider: false,
 	termsAndServices: false,
 	showTOSError: false,
@@ -159,6 +163,10 @@ class RegisterFormBase extends React.Component {
 			firstName,
 			lastName,
 			preferredName,
+			address,
+			city,
+			state,
+			zip,
 			serviceProvider,
 			termsAndServices,
 		} = this.state;
@@ -189,6 +197,73 @@ class RegisterFormBase extends React.Component {
 								<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
 								<input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
 							</div>
+							<div className="form-group">
+								<input type="text" name="address" value={address} onChange={this.onChange} placeholder="Street Address (optional)"/>
+							</div>
+							<div className="form-group">
+								<input type="text" name="city" value={city} onChange={this.onChange} placeholder="City / Town"/>
+							</div>
+							<div className="form-group">
+								<select value={state} className="form-control" onChange={event => this.setState({ state: event.target.value })} placeholder="State">
+									<option value=""  >--</option>
+									<option value="AL">Alabama</option>
+									<option value="AK">Alaska</option>
+									<option value="AZ">Arizona</option>
+									<option value="AR">Arkansas</option>
+									<option value="CA">California</option>
+									<option value="CO">Colorado</option>
+									<option value="CT">Connecticut</option>
+									<option value="DE">Delaware</option>
+									<option value="DC">Washington, D.C.</option>
+									<option value="FL">Florida</option>
+									<option value="GA">Georgia</option>
+									<option value="HI">Hawaii</option>
+									<option value="ID">Idaho</option>
+									<option value="IL">Illinois</option>
+									<option value="IN">Indiana</option>
+									<option value="IA">Iowa</option>
+									<option value="KS">Kansas</option>
+									<option value="KY">Kentucky</option>
+									<option value="LA">Louisiana</option>
+									<option value="ME">Maine</option>
+									<option value="MD">Maryland</option>
+									<option value="MA">Massachusetts</option>
+									<option value="MI">Michigan</option>
+									<option value="MN">Minnesota</option>
+									<option value="MS">Mississippi</option>
+									<option value="MO">Missouri</option>
+									<option value="MT">Montana</option>
+									<option value="NE">Nebraska</option>
+									<option value="NV">Nevada</option>
+									<option value="NH">New Hampshire</option>
+									<option value="NJ">New Jersey</option>
+									<option value="NM">New Mexico</option>
+									<option value="NY">New York</option>
+									<option value="NC">North Carolina</option>
+									<option value="ND">North Dakota</option>
+									<option value="OH">Ohio</option>
+									<option value="OK">Oklahoma</option>
+									<option value="OR">Oregon</option>
+									<option value="PA">Pennsylvania</option>
+									<option value="RI">Rhode Island</option>
+									<option value="SC">South Carolina</option>
+									<option value="SD">South Dakota</option>
+									<option value="TN">Tennessee</option>
+									<option value="TX">Texas</option>
+									<option value="UT">Utah</option>
+									<option value="VT">Vermont</option>
+									<option value="VA">Virginia</option>
+									<option value="WA">Washington</option>
+									<option value="WV">West Virginia</option>
+									<option value="WI">Wisconsin</option>
+									<option value="WY">Wyoming</option>
+								</select>
+							</div>
+
+							<div className="form-group">
+								<input type="text" name="zip" value={zip} onChange={this.onChange} placeholder="Home ZIP Code" required/>
+							</div>
+
 							<label className="checkbox-container">
 								<input className="checkbox" type="checkbox" name="serviceProvider" onChange={() => { this.setState({ serviceProvider: !serviceProvider }) }} checked={serviceProvider} />
 								<span className="checkmark"></span>
@@ -278,16 +353,18 @@ class RegisterFormBase extends React.Component {
 			this.setState({ error: 'Invalid reCAPTCHA, please try again' });
 		} else {
 			/** Collects the form data and sends it to the backend */
-			const { firstName, lastName, preferredName, serviceProvider, termsAndServices } = this.state;
+			const { firstName, lastName, preferredName, address, city, state, zip, serviceProvider, termsAndServices } = this.state;
 			if (!termsAndServices) {
 				this.setState({ showTOSError: true });
 				return;
 			}
 			const { auth, community } = this.props;
+			const location = address + ', ' + city + ', ' + state + ', ' + zip;
 			const body = {
 				"full_name": firstName + ' ' + lastName,
 				"preferred_name": preferredName === "" ? firstName : preferredName,
 				"email": auth.email,
+				"location": location,
 				"is_vendor": serviceProvider,
 				"accepts_terms_and_conditions": termsAndServices,
 				subdomain: community && community.subdomain
