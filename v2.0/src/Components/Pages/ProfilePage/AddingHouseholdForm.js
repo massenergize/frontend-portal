@@ -18,11 +18,13 @@ class AddingHouseholdForm extends React.Component {
 		var address = '';
 		var city = '';
 		var state = 'MA';
+		var zip = '';
 		if (props.location && props.location !== '') {
 			var locationparts = props.location.split(', ')
 			address = locationparts[0];
 			city = locationparts[1];
 			state = locationparts[2];
+			zip = locationparts[3];
 		}
 		this.state = {
 			name: props.name ? props.name : INITIAL_STATE.name,
@@ -31,6 +33,7 @@ class AddingHouseholdForm extends React.Component {
 			address: address,
 			city: city,
 			state: state,
+			zip: zip,
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -119,6 +122,10 @@ class AddingHouseholdForm extends React.Component {
 						<option value="WY">Wyoming</option>
 					</select>
 				</div>
+				<div className="col">
+					<p>ZIP Code</p>
+					<input type="text" className="form-control" name="zip" value={this.state.zip ? this.state.zip : ""} onChange={this.onChange} />
+				</div>
 				<div className="col p-0">
 					<button className="thm-btn bg-cl-1" type="submit" style={{ marginTop:10,padding:8,width: '99%' }}>{!this.props.householdID ? "Add household" : "Submit Changes"}</button>
 				</div>
@@ -138,7 +145,7 @@ class AddingHouseholdForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 		const { user, community, householdID } = this.props;
-		const location = this.state.address + ', ' + this.state.city + ', ' + this.state.state;
+		const location = this.state.address + ', ' + this.state.city + ', ' + this.state.state + ', ' + this.state.zip;
 		const body = {
 			"name": this.state.name,
 			"unit_type": this.state.unittype,
@@ -147,7 +154,6 @@ class AddingHouseholdForm extends React.Component {
 			"email": user && user.email,
 			"community": community && community.id
 		}
-
 		apiCall('users.households.add', body).then(json => {
 			if (json.success) {
 				if (!householdID) {

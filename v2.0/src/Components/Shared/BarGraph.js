@@ -70,10 +70,22 @@ class BarGraph extends React.Component {
 			},
 			series: this.props.series
 		}
+		var theSeries = this.props.series;
+		if (this.props.stacked) {
+			var num = theSeries.length;
+			var len = theSeries[0].data.length;
+			for (var i=1; i<num; i++) {
+				for (var j=0; j<len; j++) {
+					if (theSeries[i].data[j] > theSeries[i-1].data[j] )
+						theSeries[i].data[j] -= theSeries[i-1].data[j]
+				}
+			}
+		}
+
 		return (
 			<Chart style={{ margin: 'auto' }}
 				options={options}
-				series={this.props.series}
+				series={theSeries}
 				type="bar"
 			// width="80%"
 			/>

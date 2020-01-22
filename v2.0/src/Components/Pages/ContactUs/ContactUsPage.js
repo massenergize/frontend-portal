@@ -70,7 +70,7 @@ class ContactUsPage extends React.Component {
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>Contact <b>{name}</b> </h3>
-                  <p>We are always striving to make this better and welcome your feedback! Reach an individual {name} organizer by clicking on their name or fill in the form to contact all organizers</p>
+                  <p>We are always striving to make this better and welcome your feedback! Reach an <em>{name}</em> organizer by filling in the form.</p>
                   {this.ejectLocation(location)}
                   {/* {this.ejectAdmins(admins)} */}
                 </div>

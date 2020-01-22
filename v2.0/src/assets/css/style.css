@@ -6013,6 +6013,11 @@ span.has-tooltip {
 
 .teams-table th {
     font-size: large;
+    text-align: center;
+}
+
+.teams-table td {
+    text-align: center;
 }
 
 .our-team {

@@ -83,7 +83,6 @@ class ProfilePage extends React.Component {
 			}
 		}
 		const { user } = this.props;
-		console.log(this.props.done)
 
 		return (
 			<>
@@ -110,7 +109,8 @@ class ProfilePage extends React.Component {
 														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
 													<div className="column counter-column col-lg-4 col-6"  >
-														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"GHG"} icon={"fa fa-leaf"} title={"Carbon Saved"} />
+														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"lbs CO2"} icon={"fa fa-leaf"} title={"Impact"} 
+																info={"A persons Carbon footprint is the amount of greenhouse gas (GHG) emissions from their energy use and personal consumption.  These emissions are measured in pounds of CO2 per year. The Impact reported here is the estimated reduction annually from the actions completed, using typical average assumptions."}/>
 													</div>
 												</div>
 											</div>
@@ -139,7 +139,7 @@ class ProfilePage extends React.Component {
 																	className=""
 																	onClick={() => this.setState({ addingHH: false })}
 																	style={{ color: 'white', width: '99%', padding: 13, borderRadius: 6, background: 'indianred', borderColor: 'indianred' }}>Cancel
-                                </button>
+                                								</button>
 															</>
 															:
 															<button className="thm-btn btn-finishing" onClick={() => this.setState({ addingHH: true, editingHH: null })}>If you have another household, let us know</button>
@@ -325,7 +325,7 @@ class ProfilePage extends React.Component {
 								className=""
 								onClick={() => this.setState({ addingHH: false, editingHH: null })}
 								style={{ color: 'white', width: '99%', padding: 13, borderRadius: 6, background: 'indianred', borderColor: 'indianred' }}>Cancel
-                        </button>
+                        	</button>
 						</td>
 					</tr>
 				)

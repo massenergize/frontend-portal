@@ -28,6 +28,7 @@ class ImpactPage extends React.Component {
 				</div>
 			)
 		}
+		//console.log(this.props.communitiesStats)
 		let stats = this.props.communitiesStats ?this.props.communitiesStats.data.slice(0):[];
 		stats = stats.sort((a, b) => {
 			return b.actions_completed - a.actions_completed;
@@ -59,7 +60,7 @@ class ImpactPage extends React.Component {
 				data: [],
 			},
 			{
-				name: "State Reported",
+				name: "Additional State or Partner Reported",
 				data: [],
 			}
 		];
