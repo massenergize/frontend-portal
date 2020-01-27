@@ -24,7 +24,6 @@ const INITIAL_STATE = {
 	firstName: '',
 	lastName: '',
 	preferredName: '',
-	address: '',
 	city: '',
 	state: '',
 	zip: '',
@@ -163,7 +162,6 @@ class RegisterFormBase extends React.Component {
 			firstName,
 			lastName,
 			preferredName,
-			address,
 			city,
 			state,
 			zip,
@@ -196,9 +194,6 @@ class RegisterFormBase extends React.Component {
 							<div className="form-group">
 								<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
 								<input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
-							</div>
-							<div className="form-group">
-								<input type="text" name="address" value={address} onChange={this.onChange} placeholder="Street Address (optional)"/>
 							</div>
 							<div className="form-group">
 								<input type="text" name="city" value={city} onChange={this.onChange} placeholder="City / Town"/>
@@ -353,13 +348,13 @@ class RegisterFormBase extends React.Component {
 			this.setState({ error: 'Invalid reCAPTCHA, please try again' });
 		} else {
 			/** Collects the form data and sends it to the backend */
-			const { firstName, lastName, preferredName, address, city, state, zip, serviceProvider, termsAndServices } = this.state;
+			const { firstName, lastName, preferredName, city, state, zip, serviceProvider, termsAndServices } = this.state;
 			if (!termsAndServices) {
 				this.setState({ showTOSError: true });
 				return;
 			}
 			const { auth, community } = this.props;
-			const location = address + ', ' + city + ', ' + state + ', ' + zip;
+			const location = ' , ' + city + ', ' + state + ', ' + zip;
 			const body = {
 				"full_name": firstName + ' ' + lastName,
 				"preferred_name": preferredName === "" ? firstName : preferredName,
