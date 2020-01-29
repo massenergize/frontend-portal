@@ -11,22 +11,46 @@ import { connect } from 'react-redux'
  *      link
  */
 class IconBox extends React.Component {
+
+	isValidUrl(string) {
+		try {
+		  new URL(string);
+		  return true;
+		} catch (_) {
+		  return false;  
+		}
+	}
+
+	renderBoxStuff() {
+		return (
+			<>
+			<div className="icon-box text-center" >
+			<span className={this.props.icon}></span>
+			</div>
+			
+			<h4 className="cool-font">{this.props.title}</h4>
+			<p className="cool-font">{this.props.description}</p>
+			</>
+		);
+	}
+
 	render() {
 		return (
 			<div className="service-item center hover-service-item" style={{background:'white'}}>
-				<Link to={`${this.props.links.home}${this.props.link}`} style={{ width: '100%', height: '100%' }}>
-
-					<div className="icon-box text-center" >
-						<span className={this.props.icon}></span>
-					</div>
-					<h4 className="cool-font">{this.props.title}</h4>
-					<p className="cool-font">{this.props.description}</p>
-				</Link>
-
+				{this.isValidUrl(this.props.link) ? 
+					<a href={`${this.props.link}`} style={{ width: '100%', height: '100%' }} target={"_blank"}>
+					{this.renderBoxStuff()}
+					</a>
+				:
+					<Link to={`${this.props.links.home}${this.props.link}`} style={{ width: '100%', height: '100%' }}>
+					{this.renderBoxStuff()}
+					</Link>
+				}
 			</div>
 
 		);
 	}
+
 }
 const mapStoreToProps = (store) => {
 	return ({
