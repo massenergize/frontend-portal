@@ -62,8 +62,8 @@ class RegisterFormBase extends React.Component {
 		}
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
-
-		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified) {
+		
+		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified && this.props.user.accepts_terms_and_conditions) {
 			return <Redirect to={this.props.links.profile} />;
 		}
 		return (
@@ -102,9 +102,10 @@ class RegisterFormBase extends React.Component {
 			return this.renderPage1()
 		} else if (page === 2) {
 			return this.renderPage2()
-		} else if (page === 3) {
-			return this.renderPage3()
-		}
+		} 
+		/*else if (page === 3) {
+			return this.renderPage3() 
+		}*/
 	}
 	renderPage1 = () => {
 		const {
@@ -192,7 +193,7 @@ class RegisterFormBase extends React.Component {
 								<input type="text" name="lastName" value={lastName} onChange={this.onChange} placeholder="Last Name" required />
 							</div>
 							<div className="form-group">
-								<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
+								<span className="adon-icon"><span className="fa fa-user"></span></span>
 								<input type="text" name="preferredName" value={preferredName} onChange={this.onChange} placeholder="Enter a Preferred Name or Nickname" />
 							</div>
 							<div className="form-group">
@@ -200,6 +201,7 @@ class RegisterFormBase extends React.Component {
 							</div>
 							<div className="form-group">
 								<select value={state} className="form-control" onChange={event => this.setState({ state: event.target.value })} placeholder="State">
+									<option value=""  >State</option>
 									<option value=""  >--</option>
 									<option value="AL">Alabama</option>
 									<option value="AK">Alaska</option>
@@ -296,8 +298,11 @@ class RegisterFormBase extends React.Component {
 	}
 
 	sendVerificationEmail = () => {
-		console.log(process.env.EMAIL_REDIRECT_URL)
-		this.props.firebase.auth().currentUser.sendEmailVerification().then(() => console.log('email sent'));
+		console.log(window.location.origin+window.location.pathname)
+		var actionCodeSettings = {
+			url: window.location.href, /* window.location.origin + window.location.pathname,*/
+		}  
+		this.props.firebase.auth().currentUser.sendEmailVerification(actionCodeSettings).then(() => console.log('email sent'));
 	}
 	onReCaptchaChange = (value) => {
 		if (!value) {

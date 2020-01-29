@@ -58,7 +58,7 @@ class LoginFormBase extends React.Component {
 								Or sign in with
                             {/* <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button> */}
 								<button onClick={this.signInWithGoogle} id="google" type="button" className="img-circle google round-me raise"><span className="fa fa-google"></span></button>
-								<button onClick={this.signInWithFacebook} id="google" type="button" className="img-circle google round-me raise" style={{background:'#398add' }}><span className="fa fa-facebook"></span></button>
+								<button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle google round-me raise" style={{background:'#398add' }}><span className="fa fa-facebook"></span></button>
 							</div>
 						</div>
 					</form>
@@ -71,7 +71,10 @@ class LoginFormBase extends React.Component {
 
 	forgotPassword = () => {
 		if (this.state.email !== '') {
-			this.props.firebase.auth().sendPasswordResetEmail(this.state.email)
+			var actionCodeSettings = {
+				url: window.location.href
+			}
+			this.props.firebase.auth().sendPasswordResetEmail(this.state.email, actionCodeSettings)
 				.then(function (user) {
 					alert('Please check your email...')
 				}).catch(function (e) {
