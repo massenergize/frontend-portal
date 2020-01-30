@@ -89,13 +89,13 @@ class NavBarBurger extends React.Component {
 						<div className="row no-gutter width-100">
 							<div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" >
 								{/*  main-logo col d-flex  align-items-center*/}
-								<div onClick={() => { window.location = links.home }} className="" style={{ cursor: 'pointer', position: 'relative', padding: 18, marginLeft: -100 }}>
+								<div onClick={() => { window.location = links.home }} className="" style={{ cursor: 'pointer', position: 'relative', padding: 0, marginLeft: '20px' }}>
 									{/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
 									<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small> */}
 									<Link to={links.home} >
 										{/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
 										<div style={{ display: 'table-cell', verticalAlign: 'middle', fontFamily: 'verdana', fontSize: '30px', textTransform: 'uppercase', fontWeight: 'bold', height: '35px', color: '#8dc63f' }}>
-											<img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+											<img src={communitylogo ? communitylogo : logo} alt="" style={{ display: "inline-block"}} className='header-logo' />
 											{communitylogo ? null : <>&nbsp;{header ? header.title : null}</>}
 											{/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
                                         <>&nbsp;Concord</> */}
@@ -148,6 +148,7 @@ class NavBarBurger extends React.Component {
 			borderTop: "5px solid #8dc63f",
 			borderRadius: "0",
 			padding: "0",
+			minwidth: "100px"
 		};
 		const { links } = this.props;
 		return Object.keys(navLinks).map(key => {
@@ -210,7 +211,7 @@ class NavBarBurger extends React.Component {
 		} else {
 			return (
 				<Link className="cool-font new-sign-in float-right round-me raise" to={links.signin} >
-					<i className="fa fa-user" style={{ padding: "0px 2px" }} />{'\u00A0'}
+					<i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'}
 					Sign In
                 </Link>
 			);
