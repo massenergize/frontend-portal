@@ -105,10 +105,9 @@ export async function apiCallNoToken(destinationUrl, dataToSend = {}, relocation
 
 //THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(destinationUrl, dataToSend = {}, relocationPage = null) {
-	var idToken = localStorage.getItem("idToken");
 	var params = {}
+	var idToken = localStorage.getItem("idToken");
 
-	idToken =  localStorage.getItem("idToken");
 	if (IS_SANDBOX){
 		dataToSend = { is_dev: true, ...dataToSend};
 	}

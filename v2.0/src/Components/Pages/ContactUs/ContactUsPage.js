@@ -28,11 +28,10 @@ class ContactUsPage extends React.Component {
   ejectLocation(location) {
     
     if (location) {
-    
       return (
         <div>
           <h4>Location</h4>
-          <p>{location.city? `${location.city}` : ''}  {location.state? `, ${location.state}` : ''}  {location.zipcode? `, ${location.zipcode}` : ''}</p>
+          <p>{location.city? location.city : ''}{location.state? `, ${location.state}` : ''}{location.zipcode? `, ${location.zipcode}` : ''}</p>
         </div>
       )
     } else {

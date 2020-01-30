@@ -164,7 +164,7 @@ class TeamsPage extends React.Component {
 		teamsSorted = teamsSorted.sort((a, b) => {
 			return b.avrgActionsPerMember - a.avrgActionsPerMember;
 		});
-		console.log(teamsSorted);
+
 		return teamsSorted.map((obj, index) => {
 			this.goalsList(obj.team.id).then(json => {
 				if (json && json.success && json.data.length > 0) {

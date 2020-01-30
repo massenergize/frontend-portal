@@ -221,6 +221,7 @@ export default function (state = initialState, action) {
 			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			const newTeam = {
 				...team,
+				members: team.households + 1,
 				households: team.households + action.payload.member.households,
 				actions: team.actions + action.payload.member.actions,
 				actions_completed: team.actions_completed + action.payload.member.actions_completed,
@@ -241,6 +242,7 @@ export default function (state = initialState, action) {
 					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.team.id }),
 					{
 						...team,
+						members: team.members - 1,
 						households: team.households - action.payload.member.households,
 						actions: team.actions - action.payload.member.actions,
 						actions_completed: team.actions_completed - action.payload.member.actions_completed,

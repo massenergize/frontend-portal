@@ -29,7 +29,6 @@ class AddingHouseholdForm extends React.Component {
 		this.state = {
 			name: props.name ? props.name : INITIAL_STATE.name,
 			unittype: props.unittype ? props.unittype : INITIAL_STATE.unittype,
-
 			address: address,
 			city: city,
 			state: state,
@@ -56,10 +55,6 @@ class AddingHouseholdForm extends React.Component {
 						<input type='radio' name="unittype" id="unit_commercial" value="COMMERCIAL" checked={this.state.unittype === 'COMMERCIAL'} onChange={this.onChange} />
 						<label htmlFor='unit_commercial' className="ml-2" value="unit_commercial">Commercial</label>
 					</div>
-				</div>
-				<div className="col">
-					<p>Street Address</p>
-					<input type="text" className="form-control" name="address" value={this.state.address ? this.state.address : ""} onChange={this.onChange} />
 				</div>
 				<div className="col">
 					<p>City / Town</p>

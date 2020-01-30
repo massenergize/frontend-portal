@@ -46,6 +46,7 @@ class ContactPageForm extends Component {
     }
   
     apiCall("admins.messages.add",data).then(res=>{
+      alert("Thanks for contacting the community administrator. You should receive a response within a few days.");
       console.log(res, data)
      if(res.success){
        spin.style.display = "none";
