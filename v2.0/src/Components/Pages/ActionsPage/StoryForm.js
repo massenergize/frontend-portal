@@ -226,10 +226,11 @@ class StoryForm extends React.Component {
 		} else {
 			//postJson(URLS.TESTIMONIALS, body).then(json => {
 			apiCall(`testimonials.add`, body).then(json => {
-				console.log(json);
+				
 				if (json && json.success) {
 					this.setState({
-						...INITIAL_STATE,
+            ...INITIAL_STATE,
+            selected_tags:[],
 						message: "Thank you for submitting your story! Our community admins will review it and post it soon."
 					})
 					if (this.props.closeForm) this.props.closeForm('Thank you for submitting your testimonial. Your community admins will review it and post it soon.');
