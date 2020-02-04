@@ -122,7 +122,7 @@ class NavBarBurger extends React.Component {
 								:
 								<div className="col-lg-7 col-md-4 col-sm-6 col-6 menu-column">
 									<div style={styles.container} className="push-to-right">
-										<nav className="padding-0 menuzord d-flex ml-auto" style={{ display: 'inline-block', padding: 20, paddingTop: 33 }} id="main_menu" >
+										<nav className="padding-0 menuzord d-flex ml-auto" style={{ display: 'inline-block', padding:"33px 0px 20px " }} id="main_menu" >
 											<ul className="cool-font menuzord-menu height-100 d-flex flex-row">
 												{this.renderNavLinks(this.props.navLinks)}
 											</ul>
