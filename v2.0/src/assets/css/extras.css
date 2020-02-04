@@ -265,7 +265,7 @@
 
 .home-events-img{
   width:100%; 
-  height:300px !important; 
+  height:260px !important; 
   object-fit: cover;
 }
 .home-event-hover:hover{
@@ -498,7 +498,7 @@
 }
 
 .push-to-right{
-  right:-180px;
+  right:-140px;
 }
 .modal-close-x:hover{
   background:darkred;

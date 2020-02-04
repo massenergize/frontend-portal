@@ -22,12 +22,14 @@ import defaultImg from './../../../../src/assets/images/blog/i9.jpg';
 class Events extends React.Component {
   renderEvents() {
     const events = this.props.events;
+    
 
     if( !events){
       return <div><p>No upcoming events. See <Link to={this.props.links.events}>all events</Link> </p></div>
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
+        const ev_name = event.name.length > 40 ? event.name.substring(0,35) +"..." : event.name;
         const format = "MMMM Do YYYY, h:mm a";
 				const date = new Date(event.start_date_and_time);
 				const endDate = new Date(event.end_date_and_time);
@@ -37,10 +39,10 @@ class Events extends React.Component {
         const img = event.image.url ? event.image.url : defaultImg;
         return (
           <article key = {index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{marginBottom:10,marginTop:10}} onClick ={()=>{window.location = this.props.links.events + "/"+event.id}}>
-            <div className="z-depth-1"style={{borderRadius:15}}>
+            <div className="z-depth-1"style={{borderRadius:15,height:415}}>
               <img alt="IMG" src={img} className="home-events-img" />
               <div style={{ padding: 11,paddingLeft:17,height:120 }}>
-                <h6 className="zero-margin-btm">{event.name}</h6>
+                <h6 className="zero-margin-btm">{ev_name}</h6>
                 {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
                
                 {location ?
