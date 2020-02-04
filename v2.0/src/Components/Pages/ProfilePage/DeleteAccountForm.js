@@ -21,13 +21,6 @@ class DeleteAccountFormBase extends React.Component {
         return (
             <form onSubmit={this.onSubmit}>
                 <p> Are you sure you want to delete your account? </p>
-                {this.getProvider() === 'email_and_password' ?
-                    <>
-                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} required />
-                        <p>Password <span className="text-danger">*</span></p>
-                    </>
-                    : null
-                }
                 <input
                     type="radio"
                     id="yes_im_sure"
@@ -45,6 +38,15 @@ class DeleteAccountFormBase extends React.Component {
                     style={{ display: "inline-block" }}
                 />
                 <label htmlFor="nope_not_sure" style={{ display: "inline-block" }}> No</label>
+
+                {this.getProvider() === 'email_and_password' ?
+                    <>
+                        <p>Password <span className="text-danger">*</span>
+                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} required />
+                        </p>
+                    </>
+                    : null
+                }
                 <br />
                 <button className="thm-btn bg-cl-1" type="submit">{"Submit"}</button>
                 <button className="thm-btn red" type='button' onClick={() => this.props.closeForm()}> Cancel </button>
@@ -76,7 +78,7 @@ class DeleteAccountFormBase extends React.Component {
             this.props.firebase.auth().currentUser.reauthenticateWithCredential(cred).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
                     deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
-                        console.log(json)
+                        /* console.log(json) */
                         this.props.firebase.auth().signOut();
                         this.props.reduxLogout();
                     })
