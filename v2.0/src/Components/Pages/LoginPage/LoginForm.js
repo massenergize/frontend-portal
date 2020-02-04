@@ -78,6 +78,8 @@ class LoginFormBase extends React.Component {
 				.then(function (user) {
 					alert('Please check your email...')
 				}).catch(function (e) {
+					/* could check that e.code == "auth/user-not-found" */
+					alert(e.message)
 					console.log(e)
 				})
 		} else {
