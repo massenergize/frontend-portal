@@ -166,7 +166,6 @@ export async function rawCall(destinationUrl, dataToSend = {}, relocationPage = 
   const idToken = localStorage.getItem("idToken");
   var params = {};
   if (idToken) {
-		console.log("yes, I did find the token");
     params = {
       credentials: 'include',
       method: 'POST',
