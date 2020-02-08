@@ -276,6 +276,10 @@ class OneActionPage extends React.Component {
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'testimonials' })
 							}} data-toggle="tab">Testimonials</button></li>
+						<li id="deeptab" className={this.state.tab === 'deep' ? "active" : ''}>
+							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
+								this.setState({ tab: 'deep' })
+							}} data-toggle="tab">Deep Dive</button></li>
 
 					</ul>
 					<div className="tab-content">
@@ -292,6 +296,15 @@ class OneActionPage extends React.Component {
 							<div className="product-details-content">
 								<div className="desc-content-box">
 									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p>
+								</div>
+							</div>
+						</div>
+						{/* steps to take */}
+						<div className={this.state.tab === 'deep' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="deep">
+							<div className="product-details-content">
+								<div className="desc-content-box">
+									{/* <p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p> */}
+									<p className="cool-font" > <center>Coming Soon...!</center></p>
 								</div>
 							</div>
 						</div>
