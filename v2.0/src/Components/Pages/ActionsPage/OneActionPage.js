@@ -204,17 +204,17 @@ class OneActionPage extends React.Component {
 							</div>
 
 							{/* displays the action's info: impact, difficulty, tags and categories*/}
-							<div className="clearfix" style={{ marginLeft: "40px", marginTop: 10 }}>
+							<div className="clearfix" style={{ position:'relative' , marginLeft: "40px", marginTop: 10 }}>
 								{/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
 
 								{!this.props.user ?
-									// <Tooltip text='Sign in to make a TODO list' style={{display:'inline-block'}}>
-									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me '>
+									 <Tooltip text='Sign in to make a TODO list' >
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me td'>
 										Add Todo
                                                     </p>
-									// </Tooltip>
+									 </Tooltip>
 									:
 									<button
 										className={this.state.status === "TODO" ? "thm-btn action-btns cool-font style-4 selected" : "thm-btn style-4 action-btns cool-font"}
@@ -223,11 +223,11 @@ class OneActionPage extends React.Component {
 								}
 								&nbsp;
                                 {!this.props.user ?
-									// <Tooltip text='Sign in to mark actions as completed' style={{display:'inline-block'}}>
-									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me'>
+									 <Tooltip text='Sign in to mark actions as completed' >
+									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me done-it'>
 										Done It
                                                     </p>
-									// </Tooltip>
+									 </Tooltip>
 									:
 									<button
 										className={this.state.status === "DONE" ? "thm-btn style-4 selected action-btns cool-font " : "thm-btn style-4 action-btns  cool-font"}
@@ -255,7 +255,7 @@ class OneActionPage extends React.Component {
 							</div>
 						</div>
 						{/* action image */}
-						<div className="col-lg-6 col-md-12"><div className="img-box">
+						<div className="col-lg-6 col-md-12"><div className="img-box action-pic-fix">
 							<img src={action.image ? action.image.url : null} alt="" data-imagezoom="true" className="img-responsive raise" style={{ marginTop: "20px", borderRadius: 9 }} />
 						</div></div>
 					</div>
