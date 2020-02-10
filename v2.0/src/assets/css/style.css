@@ -33,6 +33,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Google+Sans:400,400i,700');
 @import url(./bootstrap.min.css);
 @import url(./bootstrap-select.min.css);
 @import url(./jquery.bootstrap-touchspin.css);
@@ -60,14 +61,35 @@
 @import url(./responsive.css);
 @import url(./animate.min.css);
 @import url(./animate.min.css);
+@import url('./extras.css');
 
 /* ==============================
    2. Global styles
    ============================== */
-
+   
+html {
+    font-family:'Google Sans','Open Sans', sans-serif;
+}
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Open Sans', sans-serif;
     color: #999;
+}
+
+body.burger-menu-open {
+    overflow: hidden;
+}
+
+.burger-menu-overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 50;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+body.burger-menu-open .burger-menu-overlay {
+    display: block;
 }
 
 h1,
@@ -87,17 +109,23 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
 ul {
     list-style-type: none;
 }
+ul.normal {
+    list-style-type: disc;
+}
+ul.normal li {
+    margin-left: 2em;
+}
 
 p {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
+    font-size: large;
     color: #999;
     line-height: 26px;
     font-weight: 400;
@@ -121,6 +149,10 @@ img {
     display: inline-block;
 }
 
+.header-logo { 
+    max-width: 150px;
+}
+
 button {
     border: none;
     outline: none;
@@ -132,7 +164,7 @@ button {
 
 input,
 textarea {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     display: block;
     font-size: 16px;
     line-height: 28px;
@@ -199,7 +231,7 @@ textarea {
 
 .font-normal {
     color: #999 !important;
-    font-size: 14px !important;
+    font-size: inherit !important;
 }
 
 .width-100 {
@@ -230,6 +262,11 @@ textarea {
     border-bottom: 1px solid #f7f7f7;
 }
 
+.normal {
+    color: inherit;
+    font-size: inherit;
+}
+
 @media (min-width: 1200px) {
     .container {
         padding: 0;
@@ -248,11 +285,44 @@ textarea {
     display: inline-block;
     padding: 0 38px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+    margin: 2px;
 }
-
+.thm-btn:disabled {
+    background:#aaa;
+    border:#aaa;
+}
 .thm-btn:hover {
     background: transparent;
     color: #8dc63f;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.selected {
+    background: transparent;
+    color: #8dc63f;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.red {
+    position: relative;
+    background:red;
+    font-size: 14px;
+    line-height: 30px;
+    border-radius: 5px;
+    color: #ffffff;
+    border: 1px solid red;
+    font-weight: 700;
+    display: inline-block;
+    padding: 0 38px;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+.thm-btn.red:disabled {
+    background:#aaa;
+    border:#aaa;
+}
+.thm-btn.red:hover {
+    background: transparent;
+    color: red;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 
@@ -283,8 +353,7 @@ textarea {
 .thm-btn.style-4 {
     position: relative;
     background: #8dc63f;
-    font-size: 9px;
-    font-family: 'oxygen', 'verdana';
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 20px;
     border-radius: 5px;
     color: #ffffff;
@@ -297,7 +366,53 @@ textarea {
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
 }
 
+.thm-btn.style-4.red {
+    position: relative;
+    background: red;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
+    line-height: 20px;
+    border-radius: 5px;
+    color: #ffffff;
+    border: 1px solid red;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    padding: 0 3px;
+    margin-left: 2px;
+    transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.style-4.red:hover {
+    background: transparent;
+    color: red;
+    transition: all .3s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.style-4:disabled {
+    background:#aaa;
+    border:#aaa;
+}
+.thm-btn.style-4.disabled {
+    background:#aaa;
+    border:#aaa;
+}
+.thm-btn.style-4:disabled:hover {
+    background:#aaa;
+    border:#aaa;
+    color:white;
+}
+.thm-btn.style-4.disabled:hover {
+    background:#aaa;
+    border:#aaa;
+    color:white;
+}
 .thm-btn.style-4:hover {
+    background: transparent;
+    color: #8dc63f;
+    transition: all .3s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.thm-btn.style-4.selected {
     background: transparent;
     color: #8dc63f;
     transition: all .3s cubic-bezier(0.4, 0, 1, 1);
@@ -463,7 +578,7 @@ textarea {
 .accordion .acc-btn p {
     color: #303030;
     font-size: 16px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .accordion .acc-btn.active p {}
@@ -585,6 +700,27 @@ textarea {
     color: #8dc63f;
 }
 
+/*============= cards ===============*/
+.card.spacing {
+    margin-bottom: 30px;
+}
+
+/*============= graphs ===============*/
+/* .apexcharts-svg {
+    position: absolute;
+    top: -25%;
+} */
+
+.apex-chart.circle-graph {
+    margin-bottom: -100px;
+}
+
+@media (max-width: 992px) { 
+    .apex-chart.circle-graph {
+        margin-bottom: 0px;
+    }
+}
+
 
 /*============= default-form ===============*/
 
@@ -699,7 +835,7 @@ textarea {
 .select-box .btn:after {
     position: absolute;
     content: "\f107";
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
     color: #8dc63f;
     width: 20px;
@@ -980,7 +1116,7 @@ textarea {
 .chicklet-list label {
     display: block;
     font-size: 16px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-weight: normal;
     background: #ffffff;
     border: 1px solid #f4f4f4;
@@ -1009,7 +1145,7 @@ textarea {
     left: -30px;
     top: 9px;
     font-size: 16px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
@@ -1153,7 +1289,7 @@ textarea {
 
 #polyglotLanguageSwitcher span.trigger:before {
     content: '\f107';
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     position: absolute;
     color: #cdcdcd;
     top: 0;
@@ -1163,7 +1299,7 @@ textarea {
 }
 
 #polyglotLanguageSwitcher a {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     display: inline-block;
     font-size: 14px;
     color: #333;
@@ -1208,12 +1344,6 @@ textarea {
 
 
 /*======logo========*/
-
-.main-logo {
-    margin: 7px 0;
-    width: 9em;
-}
-
 
 /*=====menu========*/
 
@@ -1268,10 +1398,12 @@ textarea {
     float: left;
 }
 .menuzord-menu > li a:not(.dropdown-item) {
+  padding: 11px 12px !important;
+  font-size:13px !important;
   position: relative;
-  color: #303030;
+  color: #888;
   font-weight: 700;
-  font-family: "Verdana", sans-serif;
+  font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 .menuzord-menu > li:hover a:not(.dropdown-item) {
     color: #8dc63f;
@@ -1289,6 +1421,23 @@ textarea {
     border-top: 3px solid #8dc63f;
     right: auto !important;
 }
+ul.dropdown li ul.dropdown {
+    padding: 0 10px;
+    min-width: 230px;
+    background: #fff;
+    border-top: 3px solid #8dc63f;
+    right: auto !important;
+}
+
+ul.dropdown li a {
+    padding: 14px 0 14px;
+    color: #303030;
+    font-weight: 700;
+    text-transform: capitalize;
+    border-bottom: 1px solid #f4f4f4;
+    transition: .5s ease-in-out;
+    font-size: 13px;
+  }
 
 .menuzord-menu ul.dropdown li a {
   padding: 14px 0 14px;
@@ -1298,6 +1447,13 @@ textarea {
   border-bottom: 1px solid #f4f4f4;
   transition: .5s ease-in-out;
   font-size: 14px;
+}
+ul.dropdown li:hover a {
+    padding-left: 0px;
+    padding-right: 0px;
+    color: #8dc63f;
+    transition: .5s ease-in-out;
+    font-size: 14px;
 }
 .menuzord-menu ul.dropdown li:hover a {
     padding-left: 0px;
@@ -1313,7 +1469,7 @@ textarea {
 .menuzord-menu .title {
     font-size: 20px;
     margin-bottom: 30px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .menuzord-menu>li>.megamenu {
@@ -1385,7 +1541,7 @@ textarea {
     margin-top: 15px;
     line-height: 26px;
     font-size: 16px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .event-section2 .item .lower-content h4 a {
@@ -1407,7 +1563,7 @@ textarea {
 
 .event-section2 .item .lower-content .post-meta i {
     margin-right: 5px;
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .event-section2 .item .lower-content .default_link {
@@ -1463,7 +1619,7 @@ textarea {
     top: -5px;
     font-size: 16px;
     color: #303030;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 25px;
 }
 
@@ -1473,7 +1629,7 @@ textarea {
 }
 
 .megamenu .post-info i {
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -1640,7 +1796,7 @@ textarea {
 }
 
 .tparrows:before {
-    font-family: 'icomoon';
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 60px;
 }
 
@@ -1768,18 +1924,21 @@ textarea {
 
 .service {
     background-size: cover;
-    background: #19220e;
+    /* background: #003000; */
+    background:white;
 }
 
 .service .section-title h2 {
-    line-height: 20px;
+    /* line-height: 20px; */
     color: #aaa;
 }
 
 .service .service-item {
+    width: 100%;
     margin-bottom: 30px;
-    border: 1px solid #f4f4f4;
-    padding: 28px 14px 25px;
+    border: 1px solid #ffd2cc;
+    border-radius: 3px;
+    padding: 28px 14px 5px;
     position: relative;
 }
 
@@ -1811,6 +1970,7 @@ textarea {
 
 .service .service-item .icon-box span {
     position: relative;
+    top: -10px;
     color: #8dc63f;
     font-size: 45px;
     transition: .5s ease;
@@ -1906,7 +2066,7 @@ textarea {
     padding-left: 23px;
     transition: all 0.5s ease;
     position: relative;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .default-sidebar .service-catergory li a:hover {
@@ -1929,7 +2089,7 @@ textarea {
     right: 20px;
     top: 0px;
     color: #a0a0a0;
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .default-sidebar .event-filter {
@@ -2043,7 +2203,7 @@ textarea {
     margin-bottom: 15px;
     color: #777777;
     font-weight: 300;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .tabs-style-one.tabs-box {
@@ -2069,7 +2229,7 @@ textarea {
     margin-left: -33px;
     left: 50%;
     font-weight: 300;
-    font-family: 'Roboto Slab', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 40px;
 }
 
@@ -2087,7 +2247,7 @@ textarea {
     padding: 25px 0 50px;
     color: #383838;
     font-size: 18px;
-    font-family: 'Roboto Slab', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -2172,7 +2332,7 @@ textarea {
 }
 
 .urgent-cause2 .content .donate {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #999;
     font-size: 16px;
 }
@@ -2204,7 +2364,7 @@ textarea {
 
 .urgent-cause2 .content .donator {
     color: #8dc63f;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     margin-top: 10px;
     border-bottom: 1px solid #8dc63f;
@@ -2284,7 +2444,7 @@ textarea {
     position: absolute;
     text-align: center;
     right: 0px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: -23px;
     bottom: 15px;
     width: 46px;
@@ -2420,7 +2580,7 @@ textarea {
     top: 25px;
     background: #8dc63f;
     color: #fff;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     line-height: 35px;
     padding: 0 15px;
@@ -2448,7 +2608,7 @@ textarea {
 }
 
 .urgent-cause .content .donate {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #999;
     font-size: 16px;
     border-bottom: 1px solid #f4f4f4;
@@ -2483,7 +2643,7 @@ textarea {
 
 .urgent-cause .content .donator {
     color: #e87542;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     margin-top: 10px;
     border-bottom: 1px solid #e87542;
@@ -2574,7 +2734,7 @@ textarea {
     position: absolute;
     text-align: center;
     right: 0px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: -23px;
     bottom: 15px;
     width: 46px;
@@ -2709,7 +2869,7 @@ textarea {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-cause .share .tag-box a:hover {
@@ -2721,7 +2881,7 @@ textarea {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-cause .share .social {
@@ -2758,7 +2918,7 @@ textarea {
 .single-cause .share .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -2829,14 +2989,14 @@ textarea {
 .fact-counter.style-1 .count-outer {
     font-size: 16px;
     color: #8dc63f;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin-top: 40px;
     margin-bottom: 10px;
 }
 
 .fact-counter.style-1 h5 {
     font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #e6e6e5;
 }
 
@@ -2873,18 +3033,14 @@ textarea {
 .fact-counter.style-2 .column {
     position: relative;
     text-align: center;
-    margin-left: 0px;
-    margin-right: 0px;
     z-index: 5;
 }
 
 .fact-counter.style-2 .item {
     position: relative;
     background: #fff;
-    margin-left: 0px;
-    margin-right: 0px;
-    height: 250px;
-    width: 100%;
+    margin:10px 10px 10px 10px;
+    height: 220px;
     border: 1px solid #fff;
 }
 
@@ -2906,7 +3062,7 @@ textarea {
     font-size: 40px;
     font-weight: 400;
     padding: 0px 0px 0px;
-    font-family: 'Roboto Slab', Sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
 }
 
@@ -3417,7 +3573,8 @@ textarea {
     transition: .5s ease-in-out;
     margin-bottom: 50px;
     overflow: hidden;
-    border: 1px solid rgba(244, 244, 244, 0.1);
+    padding: 1em;
+    border: 1px dashed #ddd;
 }
 
 .event-style1 .item.style-2 {
@@ -3435,12 +3592,12 @@ textarea {
 }
 
 .event-style1 .item.style-2 .clearfix {
-    padding: 19px;
+    /* padding: 19px; */
 }
 
 .event-style1 .item .lower-content {
     position: relative;
-    padding: 18px 19px 0;
+    padding: 0px 19px 0;
     border-left: 0px;
 }
 
@@ -3531,6 +3688,8 @@ textarea {
     display: block;
     overflow: hidden;
     position: relative;
+    width: 100%;
+    max-height: 350px;
 }
 
 .event-style1 .item .img-holder a {
@@ -3540,8 +3699,7 @@ textarea {
 
 .event-style1 .item .img-holder img {
     transition: all 0.5s ease 0s;
-    width: 100%;
-    height: 100%;
+    object-fit: fill;
 }
 
 .event-style1 .item .overlay {
@@ -3642,7 +3800,7 @@ textarea {
     transition: .5s ease-in-out;
     margin-bottom: 50px;
     overflow: hidden;
-    border: 1px solid #f4f4f4;
+    border: 1px solid #cacaca;
 }
 
 .event-style2 .item .img-column {
@@ -3719,7 +3877,7 @@ textarea {
 
 .event-style2 .item .lower-content .text p {
     margin-bottom: 15px;
-    font-size: 14px;
+    font-size: 1rem;
     color: #999;
 }
 
@@ -3734,7 +3892,7 @@ textarea {
     line-height: 30px;
     transition: all 300ms ease;
     color: #303030;
-    font-size: 22px;
+    font-size: 1.3rem;
 }
 
 .event-style2 .item .lower-content h4:hover {
@@ -3744,7 +3902,7 @@ textarea {
 
 .event-style2 .item .post-meta {
     color: #8dc63f;
-    font-size: 15px;
+    font-size: 1rem;
     border-top: 1px solid #f4f4f4;
     padding: 17px 19px;
 }
@@ -4108,7 +4266,7 @@ textarea {
     border: 2px solid #8dc63f;
     background: #ffffff;
     font-weight: 700;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     line-height: 14px;
     padding-top: 13px;
     color: #8dc63f;
@@ -4306,7 +4464,7 @@ textarea {
 .testimonials-section .author h4 span {
     color: #8dc63f;
     font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -4355,7 +4513,7 @@ textarea {
 
 .testimonial2 {
     position: relative;
-    padding: 80px 0 20px;
+    padding: 20px 0 20px;
 }
 
 .testimonial2 .item {
@@ -4387,6 +4545,7 @@ textarea {
     line-height: 28px;
     margin-bottom: 15px;
     margin-top: 12px;
+    font-size: 1.3rem;
 }
 
 .testimonial2 .author h4 {
@@ -4800,7 +4959,7 @@ textarea {
 .blog-sidebar .popular-post .item .post-thumb a:after {
     position: absolute;
     content: "\f0c1";
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     left: 0px;
     top: 0px;
     text-align: center;
@@ -5162,7 +5321,7 @@ textarea {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .share-box .tag-box a:hover {
@@ -5174,7 +5333,7 @@ textarea {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .share-box .social {
@@ -5211,7 +5370,7 @@ textarea {
 .share-box .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -5410,6 +5569,11 @@ textarea {
 
 ***/
 
+span.has-tooltip {
+    border-bottom: 1px dotted gray;
+    cursor: help;
+}
+
 .clients-section .section-title {
     margin-bottom: 10px;
 }
@@ -5483,8 +5647,8 @@ textarea {
 
 .main-footer {
     position: relative;
-    background: #111709;
-    padding: 25px 0 80px;
+    background: #003000;
+    /* padding: 25px 0 80px; */
 }
 
 .main-footer .footer-widget {
@@ -5492,7 +5656,7 @@ textarea {
 }
 
 .main-footer .section-title {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .main-footer .section-title:after,
@@ -5541,14 +5705,14 @@ textarea {
 
 .main-footer .link-column li {
     position: relative;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .main-footer .link-column li a {
     position: relative;
     margin-left: 15px;
     color: #999;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-weight: 300;
     font-size: 16px;
 }
@@ -5658,7 +5822,7 @@ textarea {
 .main-footer .contact-column button {
     position: absolute;
     right: 0;
-    top: 0;
+    bottom: 0;
     height: 42px;
     width: 40px;
     line-height: 42px;
@@ -5669,26 +5833,24 @@ textarea {
 .main-footer .contact-column p {
     padding-bottom: 19px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #363636;
+    /* border-bottom: 1px solid #363636; */
 }
 
 
 /*===========footer bottom ================*/
 
 .footer-bottom {
-    background: #111709;
-    border-top: 1px solid #19220e;
+    background: #003000;
+    border-top: 1px solid #2b2f25;
     padding: 21px 0;
 }
 
 .footer-bottom .copy-text {
     color: #848484;
-    font-size: 14px;
 }
 
 .footer-bottom .copy-text a {
     color: #8dc63f;
-    font-size: 14px;
 }
 
 .footer-bottom a {
@@ -5697,6 +5859,12 @@ textarea {
     transition: .3s ease;
 }
 
+/*===========footer bottom ================*/
+.coders {
+    background-color: #002000;
+    padding: 1em;
+    text-align: center;
+}
 
 /************************** 
 * Inner Banner styles 
@@ -5728,22 +5896,23 @@ textarea {
     vertical-align: middle;
     font-size: 40px;
     font-weight: 700;
-    text-transform: uppercase;
     line-height: 60px;
     color: #fff;
+    background: #00000077;
 }
 
 .inner-banner .box {
     position: relative;
     display: table;
-    height: 280px;
+    height: 240px;
     width: 100%;
     text-align: center;
 }
 
 .breadcumb-wrapper {
-    background: rgb(66, 138, 54);
-    padding: 10px 0;
+    background: #ecffd3;
+    height: 30px;
+    line-height: 30px;
     border-bottom: 1px solid #f4f4f4;
 }
 
@@ -5754,41 +5923,43 @@ textarea {
     list-style: none;
     font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
     color: #8dc63f;
+    display: inline-block;
 }
 
-.breadcumb-wrapper ul.link-list li a {
-    color: #222;
-    text-transform: uppercase;
+.breadcumb-wrapper ul.link-list li .link {
+    color: #398846;
     font-weight: 700;
     font-size: 14px;
     transition: .3s ease;
+    display: inline-block;
 }
 
-.breadcumb-wrapper ul.link-list li a:hover {
+.breadcumb-wrapper ul.link-list li .link:hover {
     transition: .3s ease;
+    color: #141413;
 }
 
-.breadcumb-wrapper ul.link-list li a i {
+.breadcumb-wrapper ul.link-list li .link i {
     color: #fac012;
     margin-right: 7px;
 }
 
-.breadcumb-wrapper ul.link-list li a:after {
-    content: "\f105";
-    font-family: 'FontAwesome';
+.breadcumb-wrapper ul.link-list li .link:after {
+    content: ">";
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin: 0 10px;
+    display: inline-block;
 }
 
-.breadcumb-wrapper a.get-qoute {
+.breadcumb-wrapper .link.get-qoute {
     text-transform: uppercase;
     font-weight: 700;
     color: #8dc63f;
     font-size: 14px;
 }
 
-.breadcumb-wrapper a.get-qoute i {
+.breadcumb-wrapper .link.get-qoute i {
     margin-left: 7px;
     color: #8dc63f;
     margin-right: 7px;
@@ -5839,6 +6010,15 @@ textarea {
    Team Member styles
 ============================== 
 ***/
+
+.teams-table th {
+    font-size: large;
+    text-align: center;
+}
+
+.teams-table td {
+    text-align: center;
+}
 
 .our-team {
     position: relative;
@@ -6295,7 +6475,7 @@ textarea {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #777;
     color: #252525;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     border-radius: 0px;
     padding: 5px;
@@ -6456,9 +6636,9 @@ textarea {
 }
 
 .single-event .content {
-    padding: 20px 30px 40px;
-    border-left: 1px solid #f4f4f4;
-    border-right: 1px solid #f4f4f4;
+    /* padding: 20px 30px 40px; */
+    /* border-left: 1px solid #f4f4f4; */
+    /* border-right: 1px solid #f4f4f4; */
 }
 
 .single-event .section-title {
@@ -6473,7 +6653,7 @@ textarea {
 .single-event .content .text p {}
 
 .single-event .event-timeline {
-    background: #f7f7f7;
+    background: #f6fff4;
     padding: 40px 30px 20px;
 }
 
@@ -6547,7 +6727,7 @@ textarea {
     transition: .3s ease;
     line-height: 30px;
     text-transform: capitalize;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-event .share .tag-box a:hover {
@@ -6559,7 +6739,7 @@ textarea {
     color: #252525;
     margin-right: 13px;
     font-size: 18px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .single-event .share .social {
@@ -6597,7 +6777,7 @@ textarea {
 .single-event .share .tag-box li {
     margin: 0;
     display: inline-block;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     color: #303030;
     font-size: 18px;
 }
@@ -6647,7 +6827,7 @@ textarea {
 .countdown-timer li span.hours,
 .countdown-timer li span.minutes,
 .countdown-timer li span.seconds {
-    font-family: 'Roboto Slab', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 24px;
     color: #fff;
     font-weight: 700;
@@ -6656,7 +6836,7 @@ textarea {
 
 .countdown-timer li span.timeRef {
     position: relative;
-    font-family: 'Roboto Slab', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
     color: #fff;
     font-weight: 700;
@@ -6747,8 +6927,9 @@ textarea {
     background: #fafafa;
 }
 
-.cart-outer h1 {
-    color: #333;
+.cart-outer h3 {
+    color: #FFF;
+    background: #428A36;
 }
 
 .cart-section .cart-outer .select-box:before {
@@ -6770,7 +6951,7 @@ textarea {
     text-transform: capitalize;
     font-size: 16px;
     border-radius: 7px;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     background: #f7f7f7;
 }
 
@@ -6840,13 +7021,31 @@ textarea {
     font-weight: 400;
     color: #8dc63f;
 }
-
+.done-btn{
+    display:inline-block;
+    margin:auto;
+}
+.remove-btn{
+    display:inline-block;
+    margin:auto;
+}
+.edit-btn{
+    display:inline-block;
+    margin:auto;
+}
 .remove-btn .fa {
     display: inline-block;
     font-size: 24px;
     line-height: 30px;
     transition: .5s ease;
     color: red;
+}
+.edit-btn .fa {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 30px;
+    transition: .5s ease;
+    color: green;
 }
 
 .done-btn .fa {
@@ -6858,13 +7057,16 @@ textarea {
     color: green;
 }
 
-.cart-table tbody tr .done-btn .fa:hover {
-    color: #0a0;
+ .done-btn .fa:hover {
+    color: darkgreen;
     transition: .5s ease;
 }
-
-.cart-table tbody tr .remove-btn .fa:hover {
-    color: #a00;
+.edit-btn .fa:hover {
+    color: darkgreen;
+    transition: .5s ease;
+}
+.remove-btn .fa:hover {
+    color: darkred;
     transition: .5s ease;
 }
 
@@ -7000,7 +7202,7 @@ textarea {
     color: #222;
     border-right: 1px solid #f4f4f4;
     font-weight: 400;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .cart-section .totals-table li {
@@ -7080,7 +7282,7 @@ textarea {
     outline: none;
     height: 50px;
     padding-left: 15px;
-    font-family: "Roboto Slab", serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .cart-section .qty .input-group {
@@ -7224,7 +7426,7 @@ textarea {
 
 .checkout-area .form form .field-label {
     color: #222;
-    font-family: "Roboto Slab", Sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     text-transform: capitalize;
     font-weight: 400;
     margin-bottom: 8px;
@@ -7450,7 +7652,7 @@ textarea {
     font-size: 16px;
     font-weight: 400;
     line-height: 28px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     padding: 10px 18px;
     position: relative;
     width: 50%;
@@ -7503,7 +7705,7 @@ textarea {
 .cart-total .payment-options .option-block .checkbox label span {
     color: #303030;
     padding-left: 5px;
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 16px;
 }
 
@@ -7687,7 +7889,7 @@ textarea {
 
 .single-shop-item .content-box .inner-box {
     border-bottom: 1px dashed #eee;
-    height: 7em;
+    /* height: 7em; */
     padding: 14px 20px;
 }
 
@@ -7720,7 +7922,7 @@ textarea {
 }
 
 .single-shop-item .content-box h4 {
-    font-size: 15px;
+    font-size: 1.3rem;
     margin: 0px 0px;
     line-height: 1.4em;
     color: #222;
@@ -7761,7 +7963,7 @@ textarea {
     font-size: 14px;
     padding-left: 10px;
     line-height: 20px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 
@@ -7830,7 +8032,7 @@ textarea {
 
 .sidebar_categories ul li a:before {
     content: '\f114';
-    font-family: 'FontAwesome';
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin-right: 10px;
 }
 
@@ -8065,7 +8267,7 @@ textarea {
     color: #8dc63f;
     font-size: 16px;
     font-weight: 400;
-    font-family: 'Roboto';
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .best_sellers .best_selling_item {
@@ -8331,6 +8533,7 @@ textarea {
     margin-top: -50px;
     margin-bottom: 33px;
     position: relative;
+    width: 500px;
     left: -31px;
 }
 
@@ -8340,23 +8543,22 @@ textarea {
     margin-bottom: -1px;
 }
 
-.product-tab-box .tab-menu li a {
+.product-tab-box .tab-menu li button{
     border: 1px solid transparent;
     border-radius: 0;
     display: block;
     margin-right: 10px;
-    padding: 13px 35px;
+    padding: 13px 5px;
     color: #1f1f1f;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: capitalize;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     background: #f7f7f7;
     transition: all 500ms ease;
 }
 
-.product-tab-box .tab-menu li.active a,
-.product-tab-box .tab-menu li:hover a {
+.product-tab-box .tab-menu li.active button,
+.product-tab-box .tab-menu li:hover button {
     background: #8dc63f;
     color: #fff;
     border-color: #8dc63f;
@@ -8431,7 +8633,7 @@ textarea {
     font-size: 24px;
     font-weight: 600;
     text-transform: uppercase;
-    font-family: 'Roboto Slab', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     margin: 0 0 28px;
 }
 
@@ -8443,7 +8645,7 @@ textarea {
 
 .product-tab-box .tab-content .product-details-content .highlight li:before {
     content: "\f00c";
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     color: #ab7442;
@@ -8467,7 +8669,7 @@ textarea {
 
 .review-form .add-rating-box .add-rating-title h4 {
     color: #292929;
-    font-family: "Roboto Slab", sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 400;
     margin: 0 0 10px;
@@ -8727,7 +8929,7 @@ textarea {
     font-size: 14px;
 }
 
-.social-links-two a {
+.social-links-two button {
     position: relative;
     display: inline-block;
     font-size: 14px;
@@ -8745,11 +8947,29 @@ textarea {
     -o-transition: all 0.5s ease;
 }
 
-.social-links-two a:hover {
+.social-links-three button {
+    position: relative;
+    display: inline-block;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
+    font-size: 14px;
+    height: 42px;
+    line-height: 45px;
+    text-align: center;
+    color: #ffffff;
+    background: #b2dd4c;
+    margin: 0px 10px;
+    padding: 0px 10px;
+    transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+}
+
+.social-links-two button:hover {
     opacity: 0.80;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
-
 .social-links-two .facebook {
     background: #3b5998;
 }
@@ -8758,12 +8978,23 @@ textarea {
     background: #33ccfe;
 }
 
-.social-links-two .google-plus {
+.social-links-two .google {
+    background: #dd4b39;
+}
+.social-links-three .facebook {
+    background: #3b5998;
+}
+
+.social-links-three .twitter {
+    background: #33ccfe;
+}
+
+.social-links-three .google {
     background: #dd4b39;
 }
 
 .shop-sidebar .section-title {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .shop-sidebar .category-style-one {
@@ -8853,7 +9084,7 @@ textarea {
 .best_sellers .best_selling_item .img_holder a:after {
     position: absolute;
     content: "\f0c1";
-    font-family: FontAwesome;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
     left: 0px;
     top: 0px;
     text-align: center;
@@ -8894,7 +9125,7 @@ textarea {
     font-size: 18px;
     font-weight: 400;
     margin: 0 0 20px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .not-found-content p {
@@ -9065,7 +9296,6 @@ article.slide-item.center {}
     padding-left: 0;
 }
 
-
 /* Tooltip text */
 
 .remove-btn .tooltiptext {
@@ -9094,7 +9324,7 @@ article.slide-item.center {}
     top: 20px;
     right: 40px;
     font-size: 20px;
-    font-family: Verdana, Tahoma, sans-serif;
+    font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
 }
 
 .login-link:hover {
@@ -9157,12 +9387,60 @@ article.slide-item.center {}
     cursor:pointer;
     border-bottom:1px solid #aaa; 
     border-radius:3px;
+    padding: 10px 0;
 }
-.accordian-header i{
-    float:right;
-    text-align: center center;
-}
-
 .accordian-content.hidden {
     display: none;
 }
+
+.profile-table {
+    margin: auto;
+    border: solid 1px lightgray;
+}
+.profile-table th{
+    padding:15px;
+    background: #eee;
+}
+.profile-table td{
+    padding:15px;
+    border: solid 1px #aaa;
+}
+.profile-table td button{
+    display: block;
+    margin: 5px auto;
+}
+.apexcharts-canvas { 
+    margin: auto;
+}
+
+.thumbnail { 
+    width: 50px;
+    height: 50px;
+}
+
+button.as-link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #007bff;
+    cursor: pointer;
+}
+
+button.as-link:hover {
+    color: #0056b3;
+}
+
+.householdForm .col p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.review-form p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.home-subtitle {
+    background: #003000;
+    color: white;
+}   

@@ -1,82 +1,94 @@
 import React from 'react'
 import FooterInfo from './FooterInfo'
-import FooterEvents from './FooterEvents'
 import FooterLinks from './FooterLinks'
+import { Link } from 'react-router-dom'
+import SubscribeForm from './SubscribeForm';
+import { connect } from 'react-redux'
+import {IS_PROD, IS_SANDBOX, BUILD_VERSION} from '../../config/config'
 /**
  * Footer section has place for links, 
  */
-class Footer extends React.Component{
-    render(){
-        return (
-            <div className="d-flex flex-column">
-                <footer className="main-footer">
-                    {/* <!--Widgets Section--> */}
-                    <div className="widgets-section">
-                        <div className="container">
-                            <div className="row">
-                                {/* <!--Big Column--> */}
-                                <div className="big-column col-lg-6 col-md-12">
-                                    <div className="row clearfix">
-                                        {/* <!--Footer Column--> */}
-                                        <FooterInfo
-                                            info={this.props.data? this.props.data.footerInfo : {}}
-                                        />
-                                        {/* <!--Footer Column--> */}
-                                        <FooterLinks
-                                            title={this.props.data.footerLinks.title}
-                                            links={this.props.data.footerLinks.links}
-                                        />
-                                    </div>
-                                </div>
-                                {/* <!--Big Column--> */}
-                                <div className="big-column col-lg-6 col-md-12">
-                                    <div className="row clearfix">
-                                        {/* <!--Footer Column--> */}
-                                        <FooterEvents
-                                            events={this.props.data.events}
-                                        />
-                                        {/* <!--Footer Column--> */}
-                                        <div className="col-md-6 col-sm-12">
-                                            <div className="footer-widget contact-column">
-                                                <div className="section-title">
-                                                    <h4>Subscribe Us</h4>
-                                                </div>
-                                                <h5>Subscribe to our newsletter!</h5>
-                                                <form action="/">
-                                                    <input type="email" placeholder="Email address...."/>
-                                                    <button type="submit"><i className="fa fa-paper-plane"></i></button>
-                                                </form>
-                                                <p>We don’t do mail to spam and your mail <br/>id is confidential.</p>
+class Footer extends React.Component {
 
-                                                <ul className="social-icon">
-                                                    <li><a href="/"><i className="fa fa-facebook"></i></a></li>
-                                                    <li><a href="/"><i className="fa fa-twitter"></i></a></li>
-                                                    <li><a href="/"><i className="fa fa-google-plus"></i></a></li>
-                                                    <li><a href="/"><i className="fa fa-linkedin"></i></a></li>
-                                                    <li><a href="/"><i className="fa fa-feed"></i></a></li>
-                                                    <li><a href="/"><i className="fa fa-skype"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <section className="footer-bottom">
-                    <div className="container">
-                        <div className="pull-left copy-text">
-                            <p><a href="https://massenergize.org">Copyrights © 2019</a> All Rights Reserved. Powered by <a href="https://massenergize.org">MassEnergize</a></p>
+	render() {
+		let BUILD_VERSION_TEXT = BUILD_VERSION
+		if(IS_PROD && IS_SANDBOX){
+			// prod sandbox
+			BUILD_VERSION_TEXT = "Production Build (Sandbox) " + BUILD_VERSION_TEXT
+		}else if(IS_PROD && !IS_SANDBOX){
+			//prod main
+			BUILD_VERSION_TEXT = "Production Build " + BUILD_VERSION_TEXT
+	
+		}else if(!IS_PROD && IS_SANDBOX){
+			// dev sandbox
+			BUILD_VERSION_TEXT = "Development Build (Sandbox) " + BUILD_VERSION_TEXT
+	
+		}else{
+			// dev sandbox
+			BUILD_VERSION_TEXT = "Development Build " + BUILD_VERSION_TEXT
+		}
+	
+		return (
+			<div className="d-flex flex-column">
+				<footer className="main-footer m-footer-color">
+					{/* <!--Widgets Section--> */}
+					<div className="widgets-section">
+						<div className="container">
+							{/* <!--Big Column--> */}
+							<div className="big-column">
+								<div className="row clearfix">
+									{/* <!--Footer Column--> */}
+									<FooterInfo
+										info={this.props.footerInfo ? this.props.footerInfo : {}}
+									/>
+									{/* <!--Footer Column--> */}
+									<FooterLinks
+										title="Quick Links"
+										links={this.props.footerLinks}
+									/>
+									{/* <!--Footer Column--> */}
+									<div className="col-12 col-md-4">
+										<SubscribeForm />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</footer>
+				<section className="footer-bottom m-footer-color">
+					<div className="container">
+						<div className="pull-left copy-text">
+							<p className="cool-font"><a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">Copyright © 2019</a> All Rights Reserved. Powered by <a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">MassEnergize</a></p>
 
-                        </div>
-                        <div className="pull-right get-text">
-                            <a href="/">Join Us Now!</a>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        );
-    }
+						</div>
+						<div className="pull-right get-text">
+							<Link to={this.props.links.donate}>Donate Now</Link>
+						</div>
+					</div>
+				</section>
+				<section className="coders " style={{ background: 'black' }}>
+					<div className="container">
+						<p className="m-0" style={{ fontSize: '12px' }}>Made with&nbsp;
+							<span className="fa fa-heart text-danger"></span> by&nbsp;
+								<u>Samuel Opoku-Agyemang</u>
+								&nbsp;&nbsp;
+								<u>Kieran O'Day</u>
+							&nbsp;&nbsp;
+								<u>Mingle Li</u>
+							&nbsp;&nbsp;
+								<u>Frimpong Opoku-Agyemang</u>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<u>{BUILD_VERSION_TEXT}</u>
+						</p>
+					</div>
+				</section>
+			</div>
+		);
+	}
 }
-export default Footer;
+const mapStoreToProps = (store) => {
+	return ({
+		links: store.links
+	});
+}
+export default connect(mapStoreToProps)(Footer);

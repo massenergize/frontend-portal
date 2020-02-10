@@ -1,0 +1,4 @@
+npm run build  && aws2 s3 sync build/ s3://community.massenergize.org
+npm run build  && aws2 s3 sync build/ s3://community-dev.massenergize.org
+npm run build  && aws2 s3 sync build/ s3://sandbox.community.massenergize.org
+npm run build  && aws2 s3 sync build/ s3://sandbox.community-dev.massenergize.org

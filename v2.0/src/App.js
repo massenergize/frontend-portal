@@ -1,49 +1,57 @@
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import {Switch, Route} from 'react-router-dom';
-
-import './assets/css/style.css';
-
-import HomePage from './Components/Pages/HomePage'
-import ActionsPage from './Components/Pages/ActionsPage'
-import OneActionPage from './Components/Pages/OneActionPage'
-import AboutUsPage from './Components/Pages/AboutUsPage'
-import StoriesPage from './Components/Pages/StoriesPage'
-import LoginPage from './Components/Pages/LoginPage'
-import EventsPage from './Components/Pages/EventsPage'
-import OneEventPage from './Components/Pages/OneEventPage'
-import ProfilePage from './Components/Pages/ProfilePage'
-
+import React, { Component } from 'react'
+import { Switch, Route } from 'react-router-dom'
+import './assets/css/style.css'
+import AppRouter from './AppRouter'
+import { connect } from 'react-redux'
+import { reduxLoadCommunities } from './redux/actions/pageActions'
+import { apiCallNoToken } from './api/functions'
+import CommunitySelectPage from './components/Pages/CommunitySelectPage';
+import { reduxLogout } from './redux/actions/userActions'
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			error: null
+		}
+	}
+	componentDidMount() {
+		apiCallNoToken("communities.list").then(json => {
+			if (json.success) {
+				this.props.reduxLoadCommunities(json.data);
+			}
+		}).catch(err => this.setState({ error: err.message }))
+	}
 	render() {
+	
 		return (
-			<div>
-				<Helmet>
-					<meta charset="UTF-8" />
-					<title>Mass Energize</title>
-					<meta name="viewport" content="width=device-width, initial-scale=1" />
-					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-				</Helmet>
-				<Switch>
-					<Route exact path="/" component={HomePage} />
-					<Route path="/home" component={HomePage} />
-					<Route exact path="/actions" component={ActionsPage}/>
-					<Route path="/aboutus" component={AboutUsPage}/>
-					<Route path="/actions/:id" component={OneActionPage}/>
-					<Route path="/stories" component={StoriesPage}/>
-					<Route exact path="/events" component={EventsPage}/>
-					<Route path="/events/:id" component={OneEventPage}/>
-					<Route path="/login" component={LoginPage}/>
-					<Route path="/profile" component={ProfilePage}/>
-					{/*<Route path="/contact" component={Contact} /> */}
-					<Route component={()=>
-						<div>
-							FOUR OR FOR: PAGE NOT FOUND
-						</div>
-					}/>
-				</Switch>
-			</div>
-		);
+			<>
+				{this.state.error ?
+					<>
+						{this.showError(this.state.error)}
+					</>
+					:
+					<Switch>
+						<Route path='/:subdomain' component={AppRouter} />
+						<Route component={CommunitySelectPage}/>
+					</Switch>
+				}
+			</>
+		)
+	}
+	showError = (error) => {
+		return (
+			<p className='text-center text-danger'> {error} </p>
+		)
 	}
 }
-export default App;
+const mapStateToProps = (store)=>{
+	return {
+		user: store.user, 
+	
+	}
+}
+const mapDispatchToProps = {
+	reduxLoadCommunities,
+	reduxLogout
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

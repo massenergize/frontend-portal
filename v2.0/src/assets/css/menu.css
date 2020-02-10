@@ -46,7 +46,7 @@ License: http://codecanyon.net/licenses
 
 /* FONT
 ======================================*/
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
 
 
 /* 1 - MENU CONTAINER
@@ -110,7 +110,7 @@ License: http://codecanyon.net/licenses
 	padding: 26px 15px;
 	display: inline-block;
 	text-decoration: none;
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: 600;
 	color: #888;
 	outline: 0;
@@ -122,6 +122,9 @@ License: http://codecanyon.net/licenses
 .menuzord-menu > li.active a:not(.dropdown-item),
 .menuzord-menu > li:hover a:not(.dropdown-item){
 	color: #8dc63f;
+}
+.menuzord-menu .dropdown-item {
+    border-bottom: 1px solid #eee;
 }
 
 /* 4 - DROPDOWN

@@ -1,17 +1,7 @@
-// Defining CONSTANTS object for manipulation...
-const CONSTANTS = {
-    URL: {
-       // ROOT: "http://api.massenergize.org"
-        ROOT: "http://localhost:8000"
-    }
+const CONST = {
+   
 }
+CONST['LIMIT'] = 140
+CONST['BIG_LIMIT'] = 400
 
-// ...and dependence on other defined constants
-CONSTANTS.URL["USER"] = CONSTANTS.URL.ROOT + "/user/";
-CONSTANTS.URL["ACTIONS"] = CONSTANTS.URL.USER + "actions";
-CONSTANTS.URL["MENU"] = CONSTANTS.URL.USER + "menu";
-CONSTANTS.URL["ABOUTUS"] = CONSTANTS.URL.USER + "aboutus"
-CONSTANTS.URL["EVENTS"] = CONSTANTS.URL.USER + "events"
-CONSTANTS.URL["STORIES"] = CONSTANTS.URL.USER + "stories"
-
-export default CONSTANTS;
+export default CONST;
