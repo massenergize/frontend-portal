@@ -1,9 +1,22 @@
 
 
 
+
+.td{
+  position:absolute !important;
+}
+.done-it{
+  position: absolute !important;
+  right:80px !important; 
+  top:-2px !important;
+  margin-bottom: 30px;
+}
 /* MOBILE PHONE ARE */
 
 @media only screen and ( max-width: 785px){
+  .action-pic-fix{
+    margin-top:40px !important;
+  }
   .mob-btn-left-fix{
     left:-48px;
   }
