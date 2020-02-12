@@ -109,7 +109,7 @@ class ServicesPage extends React.Component {
 									<h5 className="text-center" style={{ color: 'darkgray' }}>Click to view each provider's services</h5>
 								</div>
 
-								<div className="row pt-3 pb-3">
+								<div className="row pt-3 pb-3" style={{maxHeight:700, overflowY:'scroll'}}>
 									{this.renderVendors(vendors)}
 								</div>
 							</div>
