@@ -1,6 +1,6 @@
 import React from 'react'
 import URLS from '../../../api/urls';
-import { postJson } from '../../../api/functions'
+import { postJson,apiCall } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -26,7 +26,8 @@ class OneActionPage extends React.Component {
 			expanded: null,
 			showTestimonialLink: false,
 			numberToShow: 3,
-			tab: 'description'
+      tab: 'description',
+      question:null
 		}
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -37,13 +38,14 @@ class OneActionPage extends React.Component {
 	render() {
 		if (!this.props.actions) {
 			return <LoadingCircle />;
-		}
+    }
+    
 		const action = this.props.actions.filter(action => {
 			return action.id === Number(this.props.match.params.id)
 		})[0]
 		if(!action){
 			return <Error404 />
-		}
+    }
 		this.chooseFontSize();
 		return (
 			<>
@@ -170,11 +172,29 @@ class OneActionPage extends React.Component {
 	 * renders the action on the page
 	 */
 
+   sendQuestion(){
+     var text= this.refs.question_body.value; 
+     if(text.trim()==""){
+       alert("Please type a question. Thank you!")
+       return 
+     }
+     this.refs.question_body.value = "";
+      apiCall("send-question",{question:this.state.question})
+      .then((res)=>{
+        if(res.success){
+          alert("Your message has been sent. Thank you for taking the time!")
+          
+        }
+      });
+   }
 	renderAction(action) {
+    console.log(action.about);
 		if (!this.props.stories) {
 			return <LoadingCircle />
 		}
 
+    const community = this.props.communityData ? this.props.communityData.community :null;
+    const login_link = community? community.name:'' ;
 		const stories = this.props.stories.filter(story => {
 			if (story.action) {
 				return story.action.id === Number(this.props.match.params.id)
@@ -276,10 +296,17 @@ class OneActionPage extends React.Component {
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'testimonials' })
 							}} data-toggle="tab">Testimonials</button></li>
+						<li id="reviewtab" className={this.state.tab === 'question' ? "active" : ''}>
+							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
+								this.setState({ tab: 'question' })
+							}} data-toggle="tab">Ask A Question</button></li>
+              {action.deep_dive ?
 						<li id="deeptab" className={this.state.tab === 'deep' ? "active" : ''}>
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'deep' })
 							}} data-toggle="tab">Deep Dive</button></li>
+
+              : null }
 
 					</ul>
 					<div className="tab-content">
@@ -299,12 +326,26 @@ class OneActionPage extends React.Component {
 								</div>
 							</div>
 						</div>
-						{/* steps to take */}
+						{/* if it has deep dive */}
 						<div className={this.state.tab === 'deep' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="deep">
 							<div className="product-details-content">
 								<div className="desc-content-box">
+									<p className="cool-font" dangerouslySetInnerHTML={{ __html: action.deep_dive }}></p>
+									{/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
+								</div>
+							</div>
+						</div>
+						<div className={this.state.tab === 'question' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="question">
+							<div className="product-details-content">
+								<div className="desc-content-box">
 									{/* <p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p> */}
-									<p className="cool-font" > <center>Coming Soon...!</center></p>
+								<textarea className="form-control" ref="question_body" rows={5} style={{padding:25}} placeholder="Please type your question here..." />
+                {this.props.user ? 
+                  <button onClick ={()=>{this.sendQuestion()}} style={{marginTop:10, padding:'14px 41px' }} className="btn btn-success round-me pull-right">Send Question</button>
+                  : 
+                  
+                  <a href={"/"+login_link+"/signin"} style={{marginTop:10, padding:'14px 41px', background:'gray', border:'gray', color:'white',textDecoration:'none' }} className="btn btn-success round-me pull-right">Sign In To Send</a>
+                }
 								</div>
 							</div>
 						</div>
@@ -448,7 +489,6 @@ class OneActionPage extends React.Component {
 			real_estate_unit: actionRel.real_estate_unit.id,
 		}
 		postJson(URLS.USER + '/' + this.props.user.id + '/action/' + actionRel.id, body).then(json => {
-			console.log(json);
 			if (json.success) {
 				this.props.reduxMoveToDone(json.data);
 				this.addToImpact(json.data.action);
@@ -474,7 +514,6 @@ class OneActionPage extends React.Component {
 			real_estate_unit: hid
 		}
 		postJson(URLS.USER + "/" + this.props.user.id + "/actions", body).then(json => {
-			console.log(json)
 			if (json.success) {
 				//set the state here
 				if (status === "TODO") {

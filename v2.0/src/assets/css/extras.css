@@ -227,7 +227,7 @@
   background:white;
   -webkit-box-shadow: 0 0 0; 
   border-radius: 10px;
-  opacity:.4;
+  opacity:.2;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -489,6 +489,7 @@
     padding:25px;
     border-radius: 10px;
 }
+
 
 
 .mass-engergize-about{
