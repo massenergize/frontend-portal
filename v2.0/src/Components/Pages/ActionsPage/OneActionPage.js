@@ -188,6 +188,7 @@ class OneActionPage extends React.Component {
       });
    }
 	renderAction(action) {
+    console.log(action.about);
 		if (!this.props.stories) {
 			return <LoadingCircle />
 		}
@@ -343,7 +344,7 @@ class OneActionPage extends React.Component {
                   <button onClick ={()=>{this.sendQuestion()}} style={{marginTop:10, padding:'14px 41px' }} className="btn btn-success round-me pull-right">Send Question</button>
                   : 
                   
-                  <a href={"/"+login_link+"/signin"} style={{marginTop:10, padding:'14px 41px', background:'gray', border:'gray', color:'black',textDecoration:'none' }} className="btn btn-success round-me pull-right">SignIn To Send</a>
+                  <a href={"/"+login_link+"/signin"} style={{marginTop:10, padding:'14px 41px', background:'gray', border:'gray', color:'white',textDecoration:'none' }} className="btn btn-success round-me pull-right">Sign In To Send</a>
                 }
 								</div>
 							</div>
