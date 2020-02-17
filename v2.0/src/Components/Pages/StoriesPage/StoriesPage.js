@@ -92,7 +92,7 @@ class StoriesPage extends React.Component {
 								</div>
 								<div className="col-md-8 col-lg-8 col-sm-12 ">
 									<PageTitle>Testimonials</PageTitle>
-									<div className="row">
+									<div className="row" style={{maxHeight:700, overflowY:'scroll'}}>
 										{this.renderStories(stories)}
 									</div>
 								</div>

@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 const INITIAL_STATE = {
     email: '',
     name: '',
-    message: 'Your mail id is confidential'
+    message: 'Your name and email are confidential and intended solely for sending you our Newsletter'
 };
 
 class SubscribeForm extends React.Component {

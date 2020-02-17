@@ -58,7 +58,7 @@ class Footer extends React.Component {
 				<section className="footer-bottom m-footer-color">
 					<div className="container">
 						<div className="pull-left copy-text">
-							<p className="cool-font"><a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">Copyright © 2019</a> All Rights Reserved. Powered by <a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">MassEnergize</a></p>
+							<p className="cool-font"><a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">Copyright © 2020</a> All Rights Reserved. Powered by <a target="_blank" href="https://massenergize.org" rel="noopener noreferrer">MassEnergize</a></p>
 
 						</div>
 						<div className="pull-right get-text">

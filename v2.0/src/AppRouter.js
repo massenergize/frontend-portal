@@ -209,6 +209,19 @@ class AppRouter extends Component {
 		}
 	}
 
+  // right back
+  // modifiedMenu(menu){
+  //   console.log(menu)
+  //   var oldAbout = menu[3];
+  //   var oldActions = menu[1];
+  //   var abtSliced = oldAbout.children.filter( item => item.name !=="impact");
+  //   var actionsSliced = oldActions.children.slice(1)
+  //   var newAction = {name:'Actions',children:[{link:'/actions',name:'Actions'},...actionsSliced]}; 
+  //   var newAbout= {name:'About Us',children:[{link:'/impact',name:'Our Impact'},...abtSliced]}; 
+  //    menu[1] = newAction;
+  //    //menu[3] = newAbout;
+  //    return menu;
+  // }
 
 	render() {
 		document.body.style.overflowX = 'hidden';
@@ -238,13 +251,13 @@ class AppRouter extends Component {
 		const homeChil =[ 
 			{ name:"current-home",link:"/"}, 
 			{name: "All Communities",link:"http://"+window.location.host, special:true}
-		];
+    ];
 		const droppyHome = {name:"Home",children:homeChil}
-		finalMenu = [droppyHome,...finalMenu];
+    finalMenu = [droppyHome,...finalMenu];
+    
 
 		const communityInfo = this.state.community || {};
 		const footerInfo = {name: communityInfo.owner_name, phone: communityInfo.owner_phone_number, email: communityInfo.owner_email }
-
 		return (
 			<div className="boxed-wrapper">
 				<div className="burger-menu-overlay"></div>
