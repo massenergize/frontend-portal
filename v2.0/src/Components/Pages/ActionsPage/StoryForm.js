@@ -33,7 +33,6 @@ class StoryForm extends React.Component {
       picFile: null,
       selected_tags: [],
       anonymous: false,
-      anonymous: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
