@@ -4,7 +4,7 @@ import PageTitle from '../../Shared/PageTitle';
 import Tooltip from '../../Shared/Tooltip';
 import Table from 'react-bootstrap/Table';
 import { apiCall } from '../../../api/functions'
-import { reduxJoinTeam } from '../../../redux/actions/userActions'
+import { reduxJoinTeam, reduxLeaveTeam } from '../../../redux/actions/userActions'
 import { reduxAddTeamMember, reduxRemoveTeamMember } from '../../../redux/actions/pageActions'
 import { Link } from 'react-router-dom'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
@@ -197,7 +197,7 @@ class TeamsPage extends React.Component {
 					{this.props.user ?
 						<td>
 							{this.inTeam(obj.team.id) ?
-								<button className='thm-btn red round-me' onClick={() => { this.leaveTeam(this.props.user.id, obj.team.id) }}><i className='fa fa-hand-peace-o'> </i> Leave</button>
+								<button className='thm-btn red round-me' onClick={() => { this.leaveTeam(this.props.user, obj.team) }}><i className='fa fa-hand-peace-o'> </i> Leave</button>
 
 								:
 								<button className='thm-btn round-me' onClick={() => {
@@ -232,17 +232,27 @@ class TeamsPage extends React.Component {
 		return apiCall(`goals.list`, body);
 	}
 
-	leaveTeam = (user_id, team_id) => {
+	leaveTeam = (user, team) => {
 		const body = {
-			team_id: team_id,
-			user_id: user_id
+			team_id: team.id,
+			user_id: user.id
 		}
 		apiCall(`teams.leave`, body).then(json => {
-			if (json) {
-				if (json.success) {
-					window.location.reload();
-				}
+			// speed up by using redux store
+			if (json.success) {
+				this.props.reduxLeaveTeam(team);
+				this.props.reduxRemoveTeamMember({
+					team: team,
+					member: {
+						households: this.props.user.households.length,
+						actions: this.props.todo && this.props.done ? this.props.todo.length + this.props.done.length : 0,
+						actions_completed: this.props.done.length,
+						actions_todo: this.props.todo.length
+					}
+				});
 			}
+		}).catch(error => {
+			console.log(error);
 		});
 	}
 	joinTeam = (team) => {
@@ -281,6 +291,7 @@ const mapStoreToProps = (store) => {
 }
 const mapDispatchToProps = {
 	reduxJoinTeam,
+	reduxLeaveTeam,
 	reduxAddTeamMember,
 	reduxRemoveTeamMember
 }
