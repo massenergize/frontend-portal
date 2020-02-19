@@ -336,8 +336,8 @@ class OneActionPage extends React.Component {
 							</div>
 						</div>
 						<div className={this.state.tab === 'question' ? "tab-pane active cool-font" : 'tab-pane cool-font'} id="question">
-							<div className="product-details-content">
-								<div className="desc-content-box">
+							<div className="product-details-content clearfix">
+								<div className="desc-content-box clearfix">
 									{/* <p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p> */}
 								<textarea className="form-control" ref="question_body" rows={5} style={{padding:25}} placeholder="Please type your question here..." />
                 {this.props.user ? 
