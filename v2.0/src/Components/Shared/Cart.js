@@ -189,8 +189,7 @@ class Cart extends React.Component {
 	}
 
 	removeFromCart = (actionRel) => {
-		//console.log("I am the real", actionRel)
-		const status = actionRel.status;
+    const status = actionRel.status;
 		deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
 			if (json.success) {
 				if (status === 'TODO')
