@@ -542,6 +542,6 @@ const mapDispatchToProps = {
 	reduxRemoveTeamMember,
 	reduxTeamRemoveHouse,
 	reduxTeamRemoveAction,
-	reduxTeamAddHouse
+	reduxTeamAddHouse 
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(withFirebase(ProfilePage));
