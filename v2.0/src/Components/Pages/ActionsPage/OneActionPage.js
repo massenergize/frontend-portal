@@ -174,7 +174,7 @@ class OneActionPage extends React.Component {
 
    sendQuestion(){
      var text= this.refs.question_body.value; 
-     if(text.trim()==""){
+     if(text.trim()===""){
        alert("Please type a question. Thank you!")
        return 
      }

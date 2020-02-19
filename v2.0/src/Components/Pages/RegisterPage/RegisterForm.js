@@ -175,7 +175,7 @@ class RegisterFormBase extends React.Component {
 				<form onSubmit={this.onFinalSubmit}>
 					{this.props.firebase.auth().currentUser && !this.props.firebase.auth().currentUser.emailVerified ?
 						<>
-							<p> We sent a link to your email address. Please verify your email and sign in to continue.
+							<p> We sent a link to your email address. Please check your email and follow the link to continue. If you don't see a message, be sure to check your junk mail folder.
                                     <button type='button' className="as-link" onClick={this.sendVerificationEmail}> Resend Verification Email </button>
 								<br />
 								<Link to={this.props.links.signin} onClick={() => this.props.firebase.auth().signOut()}> Sign in</Link>
