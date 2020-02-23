@@ -306,7 +306,8 @@ class StoryForm extends React.Component {
             </div>
           </div>
           {this.state.message ? (
-            <p className="text-success">{this.state.message}</p>
+            <i></i>
+            // <p className="text-success">{this.state.message}</p>
           ) : null}
           {this.state.error ? (
             <p className="text-danger">{this.state.error}</p>
