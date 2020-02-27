@@ -296,10 +296,12 @@ class OneActionPage extends React.Component {
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'testimonials' })
 							}} data-toggle="tab">Testimonials</button></li>
+				{ false ?
 						<li id="reviewtab" className={this.state.tab === 'question' ? "active" : ''}>
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
 								this.setState({ tab: 'question' })
 							}} data-toggle="tab">Ask A Question</button></li>
+				: null } 
               {action.deep_dive ?
 						<li id="deeptab" className={this.state.tab === 'deep' ? "active" : ''}>
 							<button className="cool-font" style={{ fontSize: this.state.fontSize }} onClick={() => {
