@@ -11,19 +11,82 @@
   top:-2px !important;
   margin-bottom: 30px;
 }
-/* MOBILE PHONE ARE */
+
+/* ========= PC EXCLUSIVE ===== */
+
+@media only screen and ( min-width: 785px){
+  .header-logo{
+    max-width: 110px;
+    margin-left: 90px;
+  }
+  .pc-vanish{
+    display:none;
+  }
+}
+/* MOBILE PHONE AREA */
 
 @media only screen and ( max-width: 785px){
+
+  
+
+ 
+
+
+  .card1{
+    left:20px !important;
+  }
+  .card2{
+    left:30px !important;
+  }
+  .mob-profile-card-fix{
+    position:absolute !important;
+    height: 170px !important;
+    padding:1px 42px !important;
+  }
+
+  .mob-icon-fix{
+    margin-bottom: -13px !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+  }
+
+  .h6-card-fix{
+    font-size:.7rem !important;
+  }
+  .mob-login-white-cleaner{
+    margin-top:-20px !important;
+  }
+  .mob-title-fix{
+    font-size:1.45rem !important;
+  }
+  .mob-sweet-b-10{
+    margin-bottom:10px !important;
+  }
+  .mob-login-card-fix{
+    padding:28px 35px !important;
+  }
+  .mob-vendor-white-cleaner{
+    margin-top:-100px !important;
+  }
+  .mob-icon-white-fix{
+    margin-top:-107px !important;
+  }
+  .header-logo{
+    max-width: 110px;
+    margin-left: 0px;
+    margin-top: 22px;
+    /* height: 40px; */
+  }
+  .phone-vanish{
+    display:none;
+  }
   .action-pic-fix{
     margin-top:40px !important;
   }
   .mob-btn-left-fix{
     left:-48px;
   }
-  .header-logo{
-    max-width: 110px;
-    margin-left: 90px;
-  }
+ 
   .mob-pad-absolute-0{
     padding: 0px !important;
   }
@@ -87,7 +150,6 @@
   height:130px;
   z-index:0;
   object-fit: contain;
-   
     display: inline-block;
     border: solid 2px #beda9f;
     width: auto;
@@ -215,6 +277,7 @@
 }
 ::-webkit-scrollbar {
   width: 4px;
+  height:4px
   
 }
 .indiv-done-it{

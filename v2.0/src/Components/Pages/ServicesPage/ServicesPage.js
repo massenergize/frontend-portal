@@ -96,7 +96,7 @@ class ServicesPage extends React.Component {
 					<div className="container">
 						<div className="row">
 
-							<div className="col-md-3">
+							<div className="col-md-3 mob-vendor-white-cleaner">
 								<div className="event-filter raise" style={{ marginTop: 90, padding: 45, borderRadius: 15 }}>
 									<h4>Filter by...</h4>
 									<Funnel type="service" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_services.length} />

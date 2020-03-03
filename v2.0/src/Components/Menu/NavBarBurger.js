@@ -293,22 +293,22 @@ class SubMenuItem extends React.Component {
 	handleClick() {
 		this.setState({ open: !this.state.open });
 	}
-
+ 
 	//---------WHERE TO SETUP WEIRD SPECIAL MENU ITEMS IN BURGERED MENU ---------
 	renderSubmenuItems(items) {
 		const { links } = this.props;
-		const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community" }
+		//const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community 1" }
 		return items.map((item, key) => {
 			if (item.special) {
 				return (
 					<MenuItem key={key}
 						onClick={(e) => { e.preventDefault(); window.location = item.link }}
 					>
-						{comm.name}
+						{item.name}
 					</MenuItem>
 				)
 			} else {
-				const name = this.props.communityName ? this.props.communityName : "My Community";
+				const name = this.props.communityName ? this.props.communityName : "My Community 2";
 				return (
 					<MenuItem key={key}
 						href={links.home + item.link}

@@ -35,17 +35,17 @@ class LoginFormBase extends React.Component {
 
 		const { email, password, error } = this.state;
 		return (
-			< div className="styled-form login-form" style={{ height: window.screen.height, marginTop: 100 }}>
-				<div className="z-depth-1" style={{padding:55, borderRadius:12}}>
-					<div className="section-title style-2">
-						<h3>Sign in</h3>
+			< div className="styled-form login-form mob-login-white-cleaner" style={{ height: window.screen.height, marginTop: 100 }}>
+				<div className="z-depth-1 mob-login-card-fix" style={{padding:55, borderRadius:12}}>
+					<div className="section-title style-2 mob-sweet-b-10">
+						<h3 className="mog-title-fix">Sign in</h3>
 					</div>
 					<form onSubmit={this.onSubmit}>
-						<div className="form-group">
+						<div className="form-group mob-sweet-b-10">
 							<span className="adon-icon"><span className="fa fa-envelope-o"></span></span>
 							<input type="email" name="email" value={email} onChange={this.onChange} placeholder="Enter email" />
 						</div>
-						<div className="form-group">
+						<div className="form-group mob-sweet-b-10">
 							<span className="adon-icon"><span className="fa fa-unlock-alt"></span></span>
 							<input type="password" name="password" value={password} onChange={this.onChange} placeholder="Enter Password" />
 						</div>

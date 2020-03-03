@@ -98,17 +98,41 @@ class ProfilePage extends React.Component {
 							<div className="row" style={{ paddingRight: "0px", marginRight: "0px" }}>
 								<div className="col-lg-9 col-md-9  col-12">
 									{this.renderForm(this.state.editingProfileForm)}
-									<section className="fact-counter style-2 sec-padd" >
+                  {/* ------ PC VERSION --------- */}
+									<section className="fact-counter style-2 sec-padd phone-vanish" >
 										<div className="container" style={{ padding: 0 }}>
 											<div className="counter-outer" style={{ background: "white", width: "100%" }}>
-												<div className="row no-gutter">
+												<div className="row no-gutter"  >
 													<div className="column counter-column col-lg-4 col-6 ">
 														<Counter end={this.props.done ? this.props.done.length : 0} icon={"fa fa-check-circle"} title={"Actions Completed"} />
 													</div>
 													<div className="column counter-column  d-lg-block d-none col-4 ">
 														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
 													</div>
-													<div className="column counter-column col-lg-4 col-6"  >
+													<div className="column counter-column col-lg-4 col-6"  >				
+														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"lbs CO2"} icon={"fa fa-leaf"} title={"Impact"} 
+																info={"A persons Carbon footprint is the amount of greenhouse gas (GHG) emissions from their energy use and personal consumption.  These emissions are measured in pounds of CO2 per year. The Impact reported here is the estimated reduction annually from the actions completed, using typical average assumptions."}/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</section>
+
+                  {/* ------ MOBILE VERSIOn ------- */}
+									<section className="fact-counter style-2 sec-padd" >
+										<div className="container" style={{ padding: 0 }}>
+											<div className="counter-outer" style={{ background: "white", width: "100%" }}>
+												<div className="row no-gutter pc-vanish"  style={{overflowX:'scroll', height:210, marginLeft:-70}} >
+													{/* <div className="column counter-column col-lg-4 col-6 "> */}
+													<div className="column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 ">
+														<Counter end={this.props.done ? this.props.done.length : 0} icon={"fa fa-check-circle"} title={"Actions Completed"} />
+													</div>
+													{/* <div className="column counter-column  d-lg-block d-none col-4 "> */}
+													<div className="column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6  card1">
+														<Counter end={this.props.todo ? this.props.todo.length : 0} icon={"fa fa-smile-o"} title={"Actions To Do"} />
+													</div>
+													{/* <div className="column counter-column col-lg-4 col-6"  > */}
+													<div className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2"  >
 														<Counter end={(this.props.done || []).map(t => t.action && t.action.calculator_action ?  t.action.calculator_action.average_points : 0).reduce((partial_sum, a) => partial_sum + a,0)} unit={"lbs CO2"} icon={"fa fa-leaf"} title={"Impact"} 
 																info={"A persons Carbon footprint is the amount of greenhouse gas (GHG) emissions from their energy use and personal consumption.  These emissions are measured in pounds of CO2 per year. The Impact reported here is the estimated reduction annually from the actions completed, using typical average assumptions."}/>
 													</div>
@@ -208,7 +232,7 @@ class ProfilePage extends React.Component {
 										<Cart title="Completed Actions" actionRels={this.props.done} status="DONE" /> : null}
 									{this.props.rsvps ?
 										<EventCart title="Event RSVPs" eventRSVPs={this.props.rsvps.filter(rsvp => rsvp.attendee && rsvp.attendee.id === this.props.user.id)} /> : null}
-									<center><button className='text-center summary-finish raise' onClick={() => this.setState({ printing: true })} > Summary Of Your Actions</button></center>
+									<center><button className='text-center summary-finish raise' style={{marginBottom:30}} onClick={() => this.setState({ printing: true })} > Summary Of Your Actions</button></center>
 								</div>
 							</div>
 						}
