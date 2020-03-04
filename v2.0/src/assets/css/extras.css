@@ -12,12 +12,20 @@
   margin-bottom: 30px;
 }
 
+
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .mob-modal-p{
+    text-align: justify;
+    margin: 20px;
+    max-height: 500px;
+    overflow-y: scroll;
+  }
   .header-logo{
     max-width: 110px;
     margin-left: 90px;
+    left:15%;
   }
   .pc-vanish{
     display:none;
@@ -32,6 +40,31 @@
  
 
 
+  .mob-modal-pic-tweak{
+    height:60px !important; 
+    width:60px !important; 
+    top: -35px !important; 
+    left:12px !important;
+  }
+  .mob-modal-close-x{
+    top:16px !important; 
+    right:8px !important;
+  }
+  .mob-modal-title{
+    font-size:16px;
+  }
+  .mob-modal-p{
+    font-size:13px; 
+    text-align: justify;
+    max-height:420px; 
+    overflow-y:scroll;
+  }
+  .mob-modal-card{
+    top:16% !important; 
+    width:97% !important;
+    left:15% !important;
+    height:550px !important;
+  }
   .card1{
     left:20px !important;
   }
@@ -78,7 +111,7 @@
     /* height: 40px; */
   }
   .phone-vanish{
-    display:none;
+    display:none !important;
   }
   .action-pic-fix{
     margin-top:40px !important;
@@ -573,7 +606,7 @@
     position: absolute; 
     right: 35px; 
     cursor:pointer;
-    border:solid 1px darkred; 
+    border:solid 1px #298b00; 
     padding:4px 9px;
     color:#585858;
 }
