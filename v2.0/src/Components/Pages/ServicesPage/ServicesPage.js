@@ -139,7 +139,7 @@ class ServicesPage extends React.Component {
 						<div className="card-body pref-height vendor-hover" style={{ padding: 0, borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
 							<div className="col-12 text-center" style={{ padding: 0 }}>
 								<Link to={`${this.props.links.services}/${vendor.id}`}>
-									<img className="w-100" style={{ minHeight: 200, maxHeight: 200, objectFit: 'cover', borderTopRightRadius: 12, borderTopLeftRadius: 12 }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
+									<img className="w-100" style={{ minHeight: 200, maxHeight: 200, objectFit: 'contain', borderTopRightRadius: 12, borderTopLeftRadius: 12 }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
 								</Link>
 								<Link to={`${this.props.links.services}/${vendor.id}`}>
 									<h4 className="pt-3" style={{ fontSize: 14 }}>{vendor.name}</h4>

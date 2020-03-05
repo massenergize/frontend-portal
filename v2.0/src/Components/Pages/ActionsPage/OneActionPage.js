@@ -188,7 +188,6 @@ class OneActionPage extends React.Component {
       });
    }
 	renderAction(action) {
-    console.log(action.about);
 		if (!this.props.stories) {
 			return <LoadingCircle />
 		}
@@ -231,26 +230,26 @@ class OneActionPage extends React.Component {
 
 								{!this.props.user ?
 									 <Tooltip text='Sign in to make a TODO list' >
-									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me td'>
+									<p className=' has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font'>
 										Add Todo
                                                     </p>
 									 </Tooltip>
 									:
-									<button
-										className={this.state.status === "TODO" ? "thm-btn action-btns cool-font style-4 selected" : "thm-btn style-4 action-btns cool-font"}
+									<button 
+										className={this.state.status === "TODO" ? " thm-btn action-btns cool-font style-4 selected mob-font" : " thm-btn style-4 action-btns cool-font mob-font"}
 										onClick={() => this.openForm("TODO")}
 									> Add Todo </button>
 								}
 								&nbsp;
                                 {!this.props.user ?
 									 <Tooltip text='Sign in to mark actions as completed' >
-									<p className='has-tooltip thm-btn style-4 disabled action-btns line-me done-it'>
+									<p className=' has-tooltip thm-btn style-4 disabled action-btns line-me done-it mob-font'>
 										Done It
                                                     </p>
 									 </Tooltip>
 									:
 									<button
-										className={this.state.status === "DONE" ? "thm-btn style-4 selected action-btns cool-font " : "thm-btn style-4 action-btns  cool-font"}
+										className={this.state.status === "DONE" ? "thm-btn style-4 selected action-btns cool-font  mob-font" : " thm-btn style-4 action-btns  cool-font mob-font"}
 										onClick={() => this.openForm("DONE")}
 									> Done It </button>
 								}

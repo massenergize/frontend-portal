@@ -16,6 +16,14 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .filter-search-input{
+    width:120%;
+    padding:10px 25px !important; 
+    border:solid 1px #eafff3; 
+    border-radius:55px;
+    margin-left:-15px !important;
+  }
+  
   .mob-modal-p{
     text-align: justify;
     margin: 20px;
@@ -26,6 +34,7 @@
     max-width: 110px;
     margin-left: 90px;
     left:15%;
+    margin-top:24px;
   }
   .pc-vanish{
     display:none;
@@ -33,12 +42,48 @@
 }
 /* MOBILE PHONE AREA */
 
+
 @media only screen and ( max-width: 785px){
 
-  
 
+
+
+  
+  .pt-3 h1{
+    font-size:21px !important;
+  }
+  
+  .mob-story-form-tweak{
+    padding:31px 7px !important;
+  }
+  .mob-event-cards-fix{
+    padding-right:0px !important;
+  }
+  .mob-event-white-cleaner{
+    margin-top:-65px !important;
+  }
+  .mob-contact-white-cleaner{
+    margin-top:-45px;
+  }
+ .mob-contact-form-tweak{
+   padding:19px !important;
+ }
  
 
+  .mob-zero-padding{
+    padding:0px !important;
+  }
+  .mob-zero-margin{
+    margin:0px !important;
+  }
+  .filter-search-input{
+    width:110%;
+    padding:10px 25px !important; 
+    border:solid 1px #eafff3; 
+    border-radius:55px;
+    margin-left:-15px !important;
+  }
+  
 
   .mob-modal-pic-tweak{
     height:60px !important; 
@@ -101,6 +146,8 @@
   .mob-vendor-white-cleaner{
     margin-top:-100px !important;
   }
+
+  
   .mob-icon-white-fix{
     margin-top:-107px !important;
   }
@@ -371,13 +418,6 @@
 .pref-height{
   min-height:265px !important; 
   max-height:265px !important;
-}
-.filter-search-input{
-  width:120%;
-  padding:10px 25px !important; 
-  border:solid 1px #eafff3; 
-  border-radius:55px;
-  margin-left:-15px !important;
 }
 
 .home-events-img{

@@ -121,7 +121,7 @@ class StoryForm extends React.Component {
       this.setState({ vendor: "" });
     return (
       <div
-        className="review-form "
+        className="review-form mob-story-form-tweak"
         style={{ border: "1px solid lightgray", borderRadius: 10, padding: 25 }}
       >
         {this.props.noMessage ? null : (

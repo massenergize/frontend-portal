@@ -60,8 +60,8 @@ class ContactPageForm extends Component {
   }
   render() {
     return (
-      <div className="container">
-        <div className="m-form-outer z-depth-1">
+      <div className="container mob-zero-margin mob-zero-padding">
+        <div className="m-form-outer z-depth-1 mob-contact-form-tweak">
           <h5 className="text-center" style={{ marginBottom: 9 }}>Contact Admins Here</h5>
           {/* <select name="admin" onChange = {(event)=>{this.handleText(event)}} className="form-control" style={{ margin: 6 }}>
             <option>All</option>

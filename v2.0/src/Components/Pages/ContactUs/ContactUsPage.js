@@ -65,7 +65,7 @@ class ContactUsPage extends React.Component {
           <div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
             <div style={{ marginTop: 70 }}></div>
 
-            <div className="container" >
+            <div className="container mob-contact-white-cleaner" >
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>Contact <b>{name}</b> </h3>
@@ -73,7 +73,7 @@ class ContactUsPage extends React.Component {
                   {this.ejectLocation(location)}
                   {/* {this.ejectAdmins(admins)} */}
                 </div>
-                <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 mob-zero-padding">
                   <ContactPageForm admins={admins} community_id={id} />
                 </div>
               </div>
