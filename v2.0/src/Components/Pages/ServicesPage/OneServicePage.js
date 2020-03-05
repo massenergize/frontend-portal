@@ -44,10 +44,10 @@ class OneServicePage extends React.Component {
 		return (
 			<div className="col-12" key={vendor.vendor}>
 				<div className="card rounded-0 spacing" style={{ borderColor: '#f9f7f7' }}>
-					<div className="card-body">
+					<div className="card-body mob-zero-padding">
 						<div className="row">
 							<div className="col-md-5 col-12 text-center">
-								<img className="w-100 raise" style={{ marginBottom:6,borderRadius:12,minHeight: 225, maxHeight: 225, objectFit: 'cover' }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
+								<img className="w-100 raise" style={{ marginBottom:6,borderRadius:12,minHeight: 225, maxHeight: 225, objectFit: 'contain',padding:10 }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
 								{vendor.address ?
 									<div className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner" style={{borderRadius:5}}>
 										<span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
@@ -55,7 +55,7 @@ class OneServicePage extends React.Component {
 								}
 							</div>
 							<div className="col-md-7 col-12 mt-3">
-								<h1 className="pt-3">{vendor.name}</h1>
+								<h1 className="pt-3 mobile-title">{vendor.name}</h1>
 								<p>
 									&nbsp;&nbsp;&nbsp;&nbsp;{vendor.description}
 								</p>

@@ -94,7 +94,7 @@ class EventsPage extends React.Component {
 	renderSideBar() {
 		return (
 			<div className="blog-sidebar sec-padd">
-				<div className="event-filter raise" style={{ padding: 45, borderRadius: 15 }}>
+				<div className="event-filter raise mob-event-white-cleaner" style={{ padding: 45, borderRadius: 15 }}>
 					<h4>Filter by...</h4>
 					<Funnel type="event" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_events.length} />
 				</div>
@@ -121,7 +121,7 @@ class EventsPage extends React.Component {
 									</div>
 									<div className="col-lg-9 col-md-9 col-12" >
 										<PageTitle>Events and Campaigns</PageTitle>
-										<div className="outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9,paddingRight:40 }}>
+										<div className="mob-event-cards-fix outer-box sec-padd event-style2" style={{ paddingTop:0,marginTop:9,paddingRight:40 }}>
 											{this.renderEvents(found)}
 										</div>
 									</div>

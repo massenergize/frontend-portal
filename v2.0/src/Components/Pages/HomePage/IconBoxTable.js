@@ -43,10 +43,10 @@ class IconBoxTable extends React.Component {
 	render() {
 		const boxes = this.props.boxes; 
 		return (
-			<section className="service p-5">
+			<section className="service p-5 mob-icon-white-fix">
 				<div className="container">
 					<div className="section-title center ">
-						<h4 className="text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4>
+						<h4 className="phone-vanish text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4>
 					</div>
 					<div className="row d-flex flex-row">
 						{this.renderBoxes(boxes)}

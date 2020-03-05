@@ -96,7 +96,7 @@ class ServicesPage extends React.Component {
 					<div className="container">
 						<div className="row">
 
-							<div className="col-md-3">
+							<div className="col-md-3 mob-vendor-white-cleaner">
 								<div className="event-filter raise" style={{ marginTop: 90, padding: 45, borderRadius: 15 }}>
 									<h4>Filter by...</h4>
 									<Funnel type="service" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_services.length} />
@@ -139,7 +139,7 @@ class ServicesPage extends React.Component {
 						<div className="card-body pref-height vendor-hover" style={{ padding: 0, borderTopRightRadius: 12, borderTopLeftRadius: 12 }}>
 							<div className="col-12 text-center" style={{ padding: 0 }}>
 								<Link to={`${this.props.links.services}/${vendor.id}`}>
-									<img className="w-100" style={{ minHeight: 200, maxHeight: 200, objectFit: 'cover', borderTopRightRadius: 12, borderTopLeftRadius: 12 }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
+									<img className="w-100" style={{ minHeight: 200, maxHeight: 200, objectFit: 'contain', borderTopRightRadius: 12, borderTopLeftRadius: 12 }} src={vendor.logo ? vendor.logo.url : notFound} alt={vendor.name} />
 								</Link>
 								<Link to={`${this.props.links.services}/${vendor.id}`}>
 									<h4 className="pt-3" style={{ fontSize: 14 }}>{vendor.name}</h4>

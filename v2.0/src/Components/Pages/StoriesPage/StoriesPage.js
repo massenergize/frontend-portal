@@ -85,7 +85,7 @@ class StoriesPage extends React.Component {
 						<div className="container">
 							<div className="row masonary-layout">
 								<div className="col-md-3">
-									<div className="event-filter raise" style={{ marginTop: 48, padding: 45, borderRadius: 15 }}>
+									<div className="event-filter raise mob-login-white-cleaner" style={{ marginTop: 48, padding: 45, borderRadius: 15 }}>
 										<h4>Filter by...</h4>
 										<Funnel type="testimonial" boxClick={this.handleBoxClick} search={() => { console.log("No Search") }} foundNumber={0} />
 									</div>
@@ -97,7 +97,7 @@ class StoriesPage extends React.Component {
 									</div>
 								</div>
 							</div>
-							<div className="col-12 " style={{ marginTop: 80 }}>
+							<div className="col-12 mob-zero-padding" style={{ marginTop: 80 }}>
 								{this.props.user ?
 									<StoryForm uid={this.props.user.id} />
 									:
