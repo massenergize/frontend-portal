@@ -150,7 +150,7 @@
   }
   .header-logo{
     max-width: 110px;
-    margin-left: 0px;
+    margin-left: -10px;
     margin-top: 22px;
     /* height: 40px; */
   }

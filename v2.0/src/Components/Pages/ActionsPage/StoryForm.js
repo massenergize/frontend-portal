@@ -33,6 +33,7 @@ class StoryForm extends React.Component {
       picFile: null,
       selected_tags: [],
       anonymous: false,
+      preferredName: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -77,6 +78,12 @@ class StoryForm extends React.Component {
     });
   }
 
+
+  handlePreferredName(event){
+    const val = event.target.value;
+    var string = val.trim() !=="" ? val.trim() : null;
+    this.setState({preferredName:string})
+  }
   removeTag(id) {
     const old = this.state.selected_tags;
     const newOne = old.filter(item => item.id !== id);
@@ -95,7 +102,6 @@ class StoryForm extends React.Component {
   }
   check(type) {
     //if true then make me anonymous
-    console.log("I have been clicked");
     if (type) {
       this.setState({ anonymous: true });
       document.getElementById("real_name").checked = false;
@@ -216,24 +222,40 @@ class StoryForm extends React.Component {
               <b>Community Organizer</b>, but how would you like it to be
               displayed?
             </p>
-            <div onClick = {()=>{this.toggleAnonymous(true)}} className="cursor">
+            <div
+              onClick={() => {
+                this.toggleAnonymous(true);
+              }}
+              className="cursor"
+            >
               <input
                 type="checkbox"
-                checked={this.state.anonymous ? true: false}
+                checked={this.state.anonymous ? true : false}
                 style={{ display: "inline" }}
               />{" "}
               <small>Anonymous</small> <br />
             </div>
-            <div onClick = {()=>{this.toggleAnonymous(false)}} className="cursor">
+            <div
+              onClick={() => {
+                this.toggleAnonymous(false);
+              }}
+              className="cursor"
+            >
               <input
                 type="checkbox"
-                checked = {!this.state.anonymous ? true : false}
+                checked={!this.state.anonymous ? true : false}
                 style={{ display: "inline" }}
               />
-              <small>
-                "Shelly from{" "}
-                {this.props.community ? this.props.community.name : "..."}"
-              </small>
+              <small> Preferred Name</small>
+              {!this.state.anonymous ? (
+                <input
+                onChange ={(event)=>this.handlePreferredName(event)}
+                  type="text"
+                  maxLength="20"
+                  className="form-control"
+                  placeholder="Write the name your prefer ( max - 20 Char )"
+                />
+              ) : null}
             </div>
           </div>
           <div className="field-label">
@@ -263,6 +285,7 @@ class StoryForm extends React.Component {
                 onChange={event => {
                   this.setState({ picFile: event.target.value });
                 }}
+                style={{paddingTop:4}}
                 className="form-control"
               />
             </div>
@@ -290,6 +313,7 @@ class StoryForm extends React.Component {
                   style={{
                     width: "100%",
                     borderColor: "lightgray",
+                    color:'#9e9e9e',
                     borderRadius: 6
                   }}
                   required
@@ -307,8 +331,8 @@ class StoryForm extends React.Component {
           </div>
           {this.state.message ? (
             <i></i>
-            // <p className="text-success">{this.state.message}</p>
-          ) : null}
+          ) : // <p className="text-success">{this.state.message}</p>
+          null}
           {this.state.error ? (
             <p className="text-danger">{this.state.error}</p>
           ) : null}
@@ -358,7 +382,8 @@ class StoryForm extends React.Component {
       community_id: this.props.community.id,
       image: this.state.picFile ? this.state.picFile : defaultUser,
       tags: this.state.selected_tags ? this.state.selected_tags : null,
-      anonymous: this.state.anonymous
+      anonymous: this.state.anonymous, 
+      preferredName:this.state.preferredName
     };
     // if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
     // 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
