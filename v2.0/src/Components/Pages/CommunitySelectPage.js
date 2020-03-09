@@ -26,7 +26,15 @@ class CommunitySelectPage extends React.Component {
 		if (this.props.communities) {
 			this.setState({ mirror_communities: [...this.props.communities] })
 		}
-	}
+  }
+  
+  showSearchBar(){
+    if(this.props.communities.length >= 50){
+      return(
+        <input onChange = {(event)=>{this.handleSearch(event)}}type="text" placeholder="Search for your community..." className="form-control font-textbox round-me land-textbox" />
+      )
+    }
+  }
 	render() {
 		const communities = this.state.mirror_communities.length ===0 ?this.props.communities :this.state.mirror_communities;
 		
@@ -39,7 +47,7 @@ class CommunitySelectPage extends React.Component {
 							<img alt="IMG" className='text-center' style={{ margin: 'auto', display: 'block', maxWidth: '200px', marginTop: '16%', marginBottom: 10 }} src={logo} />
 							<h1 className='text-center raise-my-text'> <span style={{ color: '#ed5a14' }}>Welcome to </span>our <span style={{ color: 'green' }}>Community Portal</span> </h1>
 							<p className='text-center' style={{ fontSize: '1.2rem', color: "rgb(195, 195, 195)", fontWeight: '400' }}> Select Your Community Below</p>
-							<input onChange = {(event)=>{this.handleSearch(event)}}type="text" placeholder="Search for your community..." className="form-control font-textbox round-me land-textbox" />
+                {this.showSearchBar()}
 							<ul className='text-center' style={{marginBottom:10}}>
 								{Object.keys(communities).map(key => {
 									const com = communities[key];

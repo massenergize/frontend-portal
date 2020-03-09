@@ -16,6 +16,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .pc-icon-div-container-fix{
+    margin-top:-110px
+  }
   .filter-search-input{
     width:120%;
     padding:10px 25px !important; 
@@ -44,11 +47,6 @@
 
 
 @media only screen and ( max-width: 785px){
-
-
-
-
-  
   .pt-3 h1{
     font-size:21px !important;
   }
@@ -68,7 +66,6 @@
  .mob-contact-form-tweak{
    padding:19px !important;
  }
- 
 
   .mob-zero-padding{
     padding:0px !important;
