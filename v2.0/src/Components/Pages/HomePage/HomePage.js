@@ -37,11 +37,11 @@ class HomePage extends React.Component {
 		const graphs = [
 			{
 				title: 'Actions Completed',
-				data: comGoals ? { target: comGoals.target_number_of_actions, attained: comGoals.attained_number_of_actions } : null
+				data: comGoals ? { target: comGoals.target_number_of_actions, attained: comGoals.attained_number_of_actions + comGoals.organic_attained_number_of_actions} : null
 			},
 			{
 				title: 'Households Engaged',
-				data: comGoals ? { target: comGoals.target_number_of_households, attained: comGoals.attained_number_of_households } : null
+				data: comGoals ? { target: comGoals.target_number_of_households, attained: comGoals.attained_number_of_households + comGoals.organic_attained_number_of_households} : null
 			},
 			// {
 			// 	title: 'Actions Completed',
