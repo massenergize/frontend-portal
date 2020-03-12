@@ -116,6 +116,7 @@ class StoryForm extends React.Component {
     this.setState({ anonymous: val });
   }
   render() {
+   
     const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
       return (
@@ -173,11 +174,13 @@ class StoryForm extends React.Component {
               </div>{" "}
               &nbsp; &nbsp; &nbsp;
               {this.state.vid === "other" ? (
-                <div
-                  className="field-label"
-                  style={{ display: "inline-block" }}
+                <div 
+                  
+                  style={{ display: "inline-block", marginTop:5 }}
                 >
                   <input
+                    placeholder="Who helped you? "
+                    className="form-control"
                     type="text"
                     name="vendor"
                     value={this.state.vendor}
@@ -383,8 +386,10 @@ class StoryForm extends React.Component {
       image: this.state.picFile ? this.state.picFile : defaultUser,
       tags: this.state.selected_tags ? this.state.selected_tags : null,
       anonymous: this.state.anonymous, 
-      preferredName:this.state.preferredName
+      preferred_name:this.state.preferredName,
+      other_vendor: this.state.vendor? this.state.vendor : null
     };
+
     // if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
     // 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
     if (this.count(this.state.body) > this.state.limit) {

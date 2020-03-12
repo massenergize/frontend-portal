@@ -137,6 +137,7 @@ class StoriesPage extends React.Component {
 		}
 	}
 	renderStories(stories) {
+    console.log("I am the stories:::", stories);
 		if (stories.length === 0) {
 
 			return (
