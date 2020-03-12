@@ -1,4 +1,24 @@
 
+
+.fa-m-right{
+  margin-right:7px;
+}
+.okay-btn{
+  background:white; 
+  border-radius: 55px; 
+  padding:5px 15px;
+  margin:6px;
+  color:black;
+  font-weight: 600;
+  cursor:pointer;
+}
+.okay-btn:hover{
+  background:#f67b61; 
+  color:white; 
+  transition: .4s;
+  
+}
+
 .ash-paper{
   margin-top: 11px;
   border:solid 0px rgb(141, 198, 63); 
@@ -8,7 +28,7 @@
   width:100%; 
   padding:20px 50px; 
   min-height: 150px;
-  background:#f6f9f6; 
+  background:#f1faf44a; 
   border-radius: 10px;
 }
 .m-label{
@@ -32,6 +52,20 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .toast-bar{
+    padding: 17px 30px ;
+      text-align: center;
+      position: fixed;
+      bottom: 0px;
+      width: 98%;
+      z-index: 30;
+      background: #28a745;
+      left: 0px;
+      margin: 10px;
+      color: white;
+      right: 190px;
+      border-radius: 6px;
+  }
   .pc-icon-div-container-fix{
     margin-top:-110px
   }
@@ -63,6 +97,20 @@
 
 
 @media only screen and ( max-width: 785px){
+  .toast-bar{
+    padding: 17px 30px ;
+      text-align: center;
+      position: fixed;
+      bottom: 0px;
+      width: 98%;
+      z-index: 30;
+      background: #28a745;
+      left: -7px;
+      margin: 10px;
+      color: white;
+      right: 190px;
+      border-radius: 6px;
+  }
   .pt-3 h1{
     font-size:21px !important;
   }

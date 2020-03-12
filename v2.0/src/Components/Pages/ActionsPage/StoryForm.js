@@ -2,6 +2,7 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import defaultUser from "./../../Shared/default-user.png";
+import Toast from "../Notification/Toast";
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -12,6 +13,8 @@ const INITIAL_STATE = {
   aid: "--",
   vid: "--",
   vendor: "",
+  preferredName: "",
+  picFile: null,
   message: "Already completed an action? Tell Us Your Story",
   limit: 9000
 };
@@ -19,6 +22,7 @@ const INITIAL_STATE = {
 class StoryForm extends React.Component {
   constructor(props) {
     super(props);
+    this.closeToast = this.closeToast.bind(this);
     var message = "Already completed an action? Tell Us Your Story";
     if (props.aid)
       message = "Already completed this action? Tell Us Your Story";
@@ -33,7 +37,8 @@ class StoryForm extends React.Component {
       picFile: null,
       selected_tags: [],
       anonymous: false,
-      preferredName: null
+      notificationState: null, 
+     
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -78,11 +83,10 @@ class StoryForm extends React.Component {
     });
   }
 
-
-  handlePreferredName(event){
+  handlePreferredName(event) {
     const val = event.target.value;
-    var string = val.trim() !=="" ? val.trim() : null;
-    this.setState({preferredName:string})
+    var string = val.trim() !== "" ? val.trim() : null;
+    this.setState({ preferredName: string });
   }
   removeTag(id) {
     const old = this.state.selected_tags;
@@ -100,6 +104,9 @@ class StoryForm extends React.Component {
       }
     }
   }
+  closeToast(){
+    this.setState({notificationState:null})
+  }
   check(type) {
     //if true then make me anonymous
     if (type) {
@@ -116,7 +123,6 @@ class StoryForm extends React.Component {
     this.setState({ anonymous: val });
   }
   render() {
-   
     const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
       return (
@@ -131,6 +137,12 @@ class StoryForm extends React.Component {
         className="review-form mob-story-form-tweak"
         style={{ border: "1px solid lightgray", borderRadius: 10, padding: 25 }}
       >
+
+        {/* <button onClick = {()=>{this.setState({notificationState:"Good", notificationMessage:"Your testimonial went through successfully!"})}}>Good</button>
+        <button onClick = {()=>{this.setState({notificationState:"Bad",notificationMessage:"Your testimonial failed!"})}}>Bad</button> */}
+        {this.state.notificationState ? (
+          <Toast msg={this.state.notificationMessage} closeFxn={this.closeToast} notificationState={this.state.notificationState} />
+        ) : null}
         {this.props.noMessage ? null : (
           <div className="tab-title-h4 text center">
             <h4 className="p-2">{this.state.message}</h4>
@@ -174,10 +186,7 @@ class StoryForm extends React.Component {
               </div>{" "}
               &nbsp; &nbsp; &nbsp;
               {this.state.vid === "other" ? (
-                <div 
-                  
-                  style={{ display: "inline-block", marginTop:5 }}
-                >
+                <div style={{ display: "inline-block", marginTop: 5 }}>
                   <input
                     placeholder="Who helped you? "
                     className="form-control"
@@ -204,6 +213,7 @@ class StoryForm extends React.Component {
               {this.ejectSelectedTags()}
               <div className="combo-box-wrapper" style={{ marginTop: 15 }}>
                 <select
+                  ref="category_select"
                   className="w-100 select-undefault"
                   onChange={event => {
                     this.handleTagChoice(event);
@@ -252,11 +262,13 @@ class StoryForm extends React.Component {
               <small> Preferred Name</small>
               {!this.state.anonymous ? (
                 <input
-                onChange ={(event)=>this.handlePreferredName(event)}
+                  value={this.state.preferredName}
+                  onChange={event => this.handlePreferredName(event)}
                   type="text"
                   maxLength="20"
                   className="form-control"
-                  placeholder="Write the name your prefer ( max - 20 Char )"
+                  placeholder="Write the name you prefer ( max - 20 Char )"
+                  required
                 />
               ) : null}
             </div>
@@ -283,12 +295,14 @@ class StoryForm extends React.Component {
             >
               <p style={{ margin: 15 }}>Upload an image</p>
               <input
+                ref="picFile"
                 type="file"
                 name="image"
+                value={this.state.picFile}
                 onChange={event => {
                   this.setState({ picFile: event.target.value });
                 }}
-                style={{paddingTop:4}}
+                style={{ paddingTop: 4 }}
                 className="form-control"
               />
             </div>
@@ -316,7 +330,7 @@ class StoryForm extends React.Component {
                   style={{
                     width: "100%",
                     borderColor: "lightgray",
-                    color:'#9e9e9e',
+                    color: "#9e9e9e",
                     borderRadius: 6
                   }}
                   required
@@ -354,6 +368,11 @@ class StoryForm extends React.Component {
       error: null
     });
   }
+
+  cleanUp(){
+    this.refs.picFile.value = "";
+    this.refs.category_select.value = "--";
+  }
   renderOptions(choices) {
     return Object.keys(choices).map(key => {
       var choice = choices[key];
@@ -385,11 +404,11 @@ class StoryForm extends React.Component {
       community_id: this.props.community.id,
       image: this.state.picFile ? this.state.picFile : defaultUser,
       tags: this.state.selected_tags ? this.state.selected_tags : null,
-      anonymous: this.state.anonymous, 
-      preferred_name:this.state.preferredName,
-      other_vendor: this.state.vendor? this.state.vendor : null
+      anonymous: this.state.anonymous,
+      preferred_name: this.state.preferredName,
+      other_vendor: this.state.vendor ? this.state.vendor : null
     };
-
+    
     // if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
     // 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
     if (this.count(this.state.body) > this.state.limit) {
@@ -401,9 +420,12 @@ class StoryForm extends React.Component {
           this.setState({
             ...INITIAL_STATE,
             selected_tags: [],
+            notificationState:"Good",
+            notificationMessage:"Sent successfully! Our community admins will review it and post it soon.",
             message:
               "Thank you for submitting your story! Our community admins will review it and post it soon."
           });
+          this.cleanUp()
           if (this.props.closeForm)
             this.props.closeForm(
               "Thank you for submitting your testimonial. Your community admins will review it and post it soon."
@@ -411,6 +433,7 @@ class StoryForm extends React.Component {
         } else {
           this.setState({
             ...INITIAL_STATE,
+            notificationMessage:"There was an error submitting your testimonial",
             error: "There was an error submitting your testimonial"
           });
           if (this.props.closeForm)
