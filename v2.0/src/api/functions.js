@@ -186,7 +186,7 @@ export async function rawCall(destinationUrl, dataToSend = {}, relocationPage = 
     }
   }
 
-  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
+  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
 
   try {
     const json = await response.json();
@@ -196,6 +196,49 @@ export async function rawCall(destinationUrl, dataToSend = {}, relocationPage = 
     return json;
   } catch (error) {
     return { success: false, error: error.toString() };
+  }
+}
+export async function apiCallWithMedia(destinationUrl, dataToSend = {}, relocationPage = null) {
+  var params = {}
+	var idToken = localStorage.getItem("idToken");
+
+	if (IS_SANDBOX){
+		dataToSend = { is_dev: true, ...dataToSend};
+	}
+  const formData = new FormData();
+  Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
+  console.log("I am the form data", formData);
+	params = {
+		credentials: 'include',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			Authorization: `Bearer ${idToken}`
+		},
+		body: formData
+	}
+
+  if (!idToken) delete params.headers.Authorization
+  
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
+
+  try {
+		const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    } else if(!json.success) {
+			if (json.error === "Signature has expired"){
+				localStorage.removeItem('idToken');
+				// window.alert("Session Expired.  Please reload and sign in again.")
+				console.log(destinationUrl, json)
+				window.location.href = window.location
+			}else{
+				console.log(destinationUrl, json.error)
+			}
+		}
+    return json;
+  } catch (error) {
+    return { success: false, error };
   }
 }
 /**

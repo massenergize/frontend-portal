@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall } from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
@@ -148,7 +148,7 @@ class StoryForm extends React.Component {
             <h4 className="p-2">{this.state.message}</h4>
           </div>
         )}
-        <form onSubmit={this.onSubmit} style={{ margin: "20px" }}>
+        <form onSubmit={this.onSubmit} style={{ margin: "20px" }} >
           {this.props.aid ? null : (
             <>
               <p> Which action is this testimonial about? </p>
@@ -298,9 +298,8 @@ class StoryForm extends React.Component {
                 ref="picFile"
                 type="file"
                 name="image"
-                value={this.state.picFile}
                 onChange={event => {
-                  this.setState({ picFile: event.target.value });
+                  this.setState({ picFile: event.target.files[0] });
                 }}
                 style={{ paddingTop: 4 }}
                 className="form-control"
@@ -386,6 +385,7 @@ class StoryForm extends React.Component {
   }
   onSubmit(event) {
     event.preventDefault();
+    const form = new FormData();
     /** Collects the form data and sends it to the backend */
     const body = {
       user_email: this.props.user.email,
@@ -408,6 +408,21 @@ class StoryForm extends React.Component {
       preferred_name: this.state.preferredName,
       other_vendor: this.state.vendor ? this.state.vendor : null
     };
+
+    // Object.keys(body).map(item=>{
+    //   if(item ==="image"){
+    //     form.append(item, body[item],body[item].name)
+    //   }
+    //   else{
+    //     form.append(item, body[item]);
+    //   }
+    //   console.log("I am le form", form);
+    // });
+
+    // console.log(body);
+   
+
+    
     
     // if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
     // 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
@@ -415,7 +430,7 @@ class StoryForm extends React.Component {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
       //postJson(URLS.TESTIMONIALS, body).then(json => {
-      apiCall(`testimonials.add`, body).then(json => {
+      apiCallWithMedia(`testimonials.add`, body).then(json => {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,
@@ -433,6 +448,8 @@ class StoryForm extends React.Component {
         } else {
           this.setState({
             ...INITIAL_STATE,
+            selected_tags: [],
+            notificationState:"Bad",
             notificationMessage:"There was an error submitting your testimonial",
             error: "There was an error submitting your testimonial"
           });
