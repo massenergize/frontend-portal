@@ -12,6 +12,7 @@ import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/page
 import Tooltip from '../../Shared/Tooltip'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Error404 from './../Errors/404';
+import * as moment from 'moment';
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -416,8 +417,9 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
 				{Object.keys(stories).map((key) => {
-					const story = stories[key];
-					const date = new Date(story.created_at);
+          const story = stories[key];
+          const format = "MMMM Do YYYY";
+					const date = moment(story.created_at).format(format);
 					if (key < this.state.numberToShow) {
 						return (
 							<div className="single-review-box" style={{paddingLeft:0,paddingBottom:5}} key={key}>
@@ -427,12 +429,12 @@ class OneActionPage extends React.Component {
 								<div className="text-holder">
 									<div className="top">
 										<div className="name pull-left">
-											<h4>{story.user.full_name} – {date.toLocaleDateString()}:</h4>
+											<h4>{story.title} </h4>
 										</div>
 									</div>
 									<div className="text">
 										<h6>
-											{story.title}
+											{story.user.full_name}<small className="m-label">{date}</small>
 											{this.state.expanded && this.state.expanded === story.id ?
 												<button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
 											}

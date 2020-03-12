@@ -21,7 +21,7 @@ class ChooseHHForm extends React.Component {
   }
   render() {
     //Dont show anything if the user has only one household
-    if (this.props.user.households.length === 1) {
+    if (this.props.user && this.props.user.households.length === 1) {
       if (this.props.open) {
         this.handleSubmit(null);
         return <div></div>;

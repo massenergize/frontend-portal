@@ -1,7 +1,23 @@
 
+.ash-paper{
+  margin-top: 11px;
+  border:solid 0px rgb(141, 198, 63); 
+  border-top-width: 20px;
 
-
-
+  text-align: left;
+  width:100%; 
+  padding:20px 50px; 
+  min-height: 150px;
+  background:#f6f9f6; 
+  border-radius: 10px;
+}
+.m-label{
+  border-radius: 4px;
+    font-weight: 900;
+    padding: 3px 10px;
+    background: #e8e6e6;
+    margin:4px 9px;
+}
 .td{
   position:absolute !important;
 }
@@ -353,10 +369,11 @@
   background:crimson;
 }
 ::-webkit-scrollbar {
-  width: 4px;
-  height:4px
+  width: 0px;
+  height:0px
   
 }
+
 .indiv-done-it{
   background:gray !important; 
   color:white !important; 
@@ -558,7 +575,7 @@
 .combo-box-wrapper{
   border-radius: 6px;
   padding:7px; 
-  background:#f9f7e3 !important; 
+  background:rgb(245, 255, 222) !important; 
   margin:4px;
 }
 .select-undefault{

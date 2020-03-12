@@ -38,6 +38,7 @@ class OneServicePage extends React.Component {
 	}
 
 	renderVendor(vendor) {
+    console.log("I am the vendor::: ", vendor);
 		const stories = this.props.testimonials.filter(story => {
 			return story.vendor && story.vendor.id === Number(this.props.match.params.id)
 		})
@@ -53,6 +54,12 @@ class OneServicePage extends React.Component {
 										<span className="fa fa-map-pin"></span> {vendor.address.city}, {vendor.address.state}
 									</div> : null
 								}
+                <div className="ash-paper">
+                  <h6 ><b><i className="fa fa-phone"></i> </b> 23423344356</h6>
+                  <h6 ><b><i className="fa fa-envelope"></i> </b> mrfimpong@gmail.com</h6>
+                  <h6 style={{marginBottom:0}}><b>Key Contact</b></h6>
+                  <small style={{color:"gray"}}>Frimpong, mrfimpong@gmail.com</small>
+                </div>
 							</div>
 							<div className="col-md-7 col-12 mt-3">
 								<h1 className="pt-3 mobile-title">{vendor.name}</h1>
