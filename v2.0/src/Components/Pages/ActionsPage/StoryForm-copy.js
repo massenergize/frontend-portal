@@ -385,6 +385,7 @@ class StoryForm extends React.Component {
   }
   onSubmit(event) {
     event.preventDefault();
+    const form = new FormData();
     /** Collects the form data and sends it to the backend */
     const body = {
       user_email: this.props.user.email,

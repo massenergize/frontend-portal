@@ -140,7 +140,19 @@ class ProfilePage extends React.Component {
 											</div>
 										</div>
 									</section>
-
+                  <table className="profile-table" style={{ width: '100%' }}>
+										<tbody>
+											<tr>
+												<th> Your teams </th>
+												<th></th>
+											</tr>
+											{this.renderTeams(user.teams)}
+											<tr>
+												<td colSpan={2} align='center'><Link className="thm-btn btn-finishing" to={this.props.links.teams} style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
+											</tr>
+										</tbody>
+									</table>
+									<br />
 									<table className="profile-table" style={{ width: '100%' }}>
 										<tbody>
 											<tr>
@@ -178,19 +190,7 @@ class ProfilePage extends React.Component {
 										<p className='text-danger'> {this.state.deletingHHError}</p> : null
 									}
 									<br />
-									<table className="profile-table" style={{ width: '100%' }}>
-										<tbody>
-											<tr>
-												<th> Your teams </th>
-												<th></th>
-											</tr>
-											{this.renderTeams(user.teams)}
-											<tr>
-												<td colSpan={2} align='center'><Link className="thm-btn btn-finishing" to={this.props.links.teams} style={{ margin: '5px' }}>{this.props.user.teams.length > 0 ? 'Join another Team' : 'Join a Team!'}</Link></td>
-											</tr>
-										</tbody>
-									</table>
-									<br />
+								
 									<table className="profile-table" style={{ width: '100%' }}>
 										<tbody>
 											<tr>
