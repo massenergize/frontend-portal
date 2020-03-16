@@ -179,7 +179,7 @@ class StoryForm extends React.Component {
                   value={this.state.vid}
                   onChange={event => this.setState({ vid: event.target.value })}
                 >
-                  <option value={"--"}>Did it myself!</option>
+                  <option value={"--"}>--</option>
                   {this.renderOptions(this.props.vendors)}
                   <option value={"other"}>Other</option>
                 </select>

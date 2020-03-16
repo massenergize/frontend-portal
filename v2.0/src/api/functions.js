@@ -164,7 +164,6 @@ export async function apiCallWithMedia(
   const formData = new FormData();
   Object.keys(dataToSend).map(i => {
     formData.append(i, dataToSend[i]);
-    console.log("shubmilil---->", dataToSend[i])
   });
   params = {
     credentials: "include",
@@ -182,6 +181,7 @@ export async function apiCallWithMedia(
 
   try {
     const json = await response.json();
+    console.log("THIS IS THE END: ", json);
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     } else if (!json.success) {
