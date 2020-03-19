@@ -351,6 +351,7 @@ textarea {
 }
 
 .thm-btn.style-4 {
+ 
     position: relative;
     background: #8dc63f;
     font-family: 'Google Sans', 'Oxygen', 'Open Sans', sans-serif;
@@ -364,6 +365,7 @@ textarea {
     padding: 0 3px;
     margin-left: 2px;
     transition: all .5s cubic-bezier(0.4, 0, 1, 1);
+    font-size:13px;
 }
 
 .thm-btn.style-4.red {

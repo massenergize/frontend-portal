@@ -10,13 +10,21 @@ class StoryModal extends Component {
   }
 
   render() {
+    console.log(this.props.content)
+    var userName ="Anonymous"; 
+    const anonymous = this.props.content ? this.props.content.ano:null; 
+    if(!anonymous){
+      userName = this.props.content.user ? this.props.content.user : userName; //else just pust the default user name
+    }
+   
     return (
       <div>
         <div className="modal-box z-depth-2 mob-modal-card"  style={{height:630,top:'19%'}}>
           <h4 className=" modal-close-x mob-modal-close-x round-me" onClick = {()=>{this.props.close()}}><span className="fa fa-close"></span></h4>
           <center>
-            <h5 className="mob-modal-tittle" style={{ marginBottom:-10, textTransform: 'capitalize' }}>{this.props.content.title}</h5>
-            <div>
+            <h5 className="mob-modal-tittle" style={{ marginBottom:8, textTransform: 'capitalize' }}>{this.props.content.title}</h5>
+            <h6 className="story-name">{userName}</h6>
+            <div style={{marginTop:-20}}>
               {!this.props.content.image ?
                 <img className="testi-green-monster mob-modal-pic-tweak " src={leafy} alt="IMG"/>
                 :
@@ -34,4 +42,4 @@ class StoryModal extends Component {
   }
 }
 
-export default StoryModal
+export default StoryModal;

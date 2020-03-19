@@ -38,6 +38,7 @@ class StoryForm extends React.Component {
       selected_tags: [],
       anonymous: false,
       notificationState: null, 
+      spinner:false,
      
     };
 
@@ -293,7 +294,7 @@ class StoryForm extends React.Component {
                 borderRadius: 10
               }}
             >
-              <p style={{ margin: 15 }}>Upload an image</p>
+              {/* <p style={{ margin: 15 }}>Upload an image</p>
               <input
                 ref="picFile"
                 type="file"
@@ -303,7 +304,7 @@ class StoryForm extends React.Component {
                 }}
                 style={{ paddingTop: 4 }}
                 className="form-control"
-              />
+              /> */}
             </div>
           </div>
           <div className="row">
@@ -341,7 +342,7 @@ class StoryForm extends React.Component {
           <div className="row">
             <div className="col-md-12">
               <button className="thm-btn bg-cl-1 btn-finishing" type="submit">
-                Submit Now
+                Submit Now <i  style={{display:this.state.spinner?'inline-block' :'none'}}className="fa fa-spinner fa-spin"></i>
               </button>
             </div>
           </div>
@@ -368,8 +369,12 @@ class StoryForm extends React.Component {
     });
   }
 
+  toggleSpinner(val){
+    this.setState({spinner:val});
+  }
+
   cleanUp(){
-    this.refs.picFile.value = "";
+    //this.refs.picFile.value = "";
     this.refs.category_select.value = "--";
   }
   renderOptions(choices) {
@@ -385,6 +390,7 @@ class StoryForm extends React.Component {
   }
   onSubmit(event) {
     event.preventDefault();
+    this.toggleSpinner(true);
     /** Collects the form data and sends it to the backend */
     const body = {
       user_email: this.props.user.email,
@@ -401,7 +407,7 @@ class StoryForm extends React.Component {
       body: this.state.body,
       title: this.state.title,
       community_id: this.props.community.id,
-      image: this.state.picFile ? this.state.picFile : defaultUser,
+      // image: this.state.picFile ? this.state.picFile : defaultUser,
       tags: this.state.selected_tags ? this.state.selected_tags : null,
       anonymous: this.state.anonymous,
       preferred_name: this.state.preferredName,
@@ -413,7 +419,7 @@ class StoryForm extends React.Component {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
       //postJson(URLS.TESTIMONIALS, body).then(json => {
-      apiCallWithMedia(`testimonials.add`, body).then(json => {
+      apiCall(`testimonials.add`, body).then(json => {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,
@@ -424,6 +430,7 @@ class StoryForm extends React.Component {
               "Thank you for submitting your story! Our community admins will review it and post it soon."
           });
           this.cleanUp()
+          this.toggleSpinner(false);
           if (this.props.closeForm)
             this.props.closeForm(
               "Thank you for submitting your testimonial. Your community admins will review it and post it soon."
@@ -437,10 +444,12 @@ class StoryForm extends React.Component {
             error: "There was an error submitting your testimonial"
           });
           this.cleanUp()
+          this.toggleSpinner(false);
           if (this.props.closeForm)
             this.props.closeForm(
               "There was an error submitting your testimonial. We are sorry."
             );
+            this.toggleSpinner(false);
         }
       });
     }
