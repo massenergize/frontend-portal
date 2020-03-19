@@ -120,10 +120,10 @@ class ImpactPage extends React.Component {
 
 								</div>
 
-								<div className="card rounded-0 mb-4">
+								{/* <div className="card rounded-0 mb-4">
 									<div className="card-header text-center bg-white">
 										<h4 className="cool-font"> See How We Compare To Our Neighbors</h4>
-										{/* <p style={{top:240,position:'absolute',fontSize:14, transform:'rotateZ(-90deg',left:-133}}>Number Of Actions Completed By Community</p> */}
+									
 									</div>
 									<div className="card-body ">
 										<BarGraph
@@ -131,9 +131,9 @@ class ImpactPage extends React.Component {
 											series={communityImpact.series}
 											colors={["#428a36", "#FB5521"]}
 										/>
-										{/* <center><p style={{fontSize:16,margin:0}}>Communities</p></center> */}
+									
 									</div>
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>

@@ -55,7 +55,7 @@ class ActionsPage extends React.Component {
 										onChange={this.handleChange} //runs when any category is selected or unselected
 									></SideBar>
 									{this.props.user ?
-										<div>
+										<div className="phone-vanish">
 											{this.props.todo ?
 												<Cart title="To Do List" actionRels={this.props.todo} status="TODO" /> : null}
 											{this.props.done ?

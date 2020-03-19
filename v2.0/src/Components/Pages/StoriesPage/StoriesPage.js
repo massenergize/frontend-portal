@@ -19,7 +19,7 @@ class StoriesPage extends React.Component {
 			limit: 140, //size of a tweet
 			expanded: null,
 			check_values: null,
-			modal_content: { image: null, title: null, desc: null }
+			modal_content: { image: null, title: null, desc: null,ano:null,user:null }
 		}
 	}
 	findCommon() {
@@ -85,7 +85,7 @@ class StoriesPage extends React.Component {
 						<div className="container">
 							<div className="row masonary-layout">
 								<div className="col-md-3">
-									<div className="event-filter raise mob-login-white-cleaner" style={{ marginTop: 48, padding: 45, borderRadius: 15 }}>
+									<div className="event-filter raise mob-login-white-cleaner" style={{ marginTop: 48, padding: "45px 37px", borderRadius: 15 }}>
 										<h4>Filter by...</h4>
 										<Funnel type="testimonial" boxClick={this.handleBoxClick} search={() => { console.log("No Search") }} foundNumber={0} />
 									</div>
@@ -130,13 +130,20 @@ class StoriesPage extends React.Component {
 			)
 		}
 	}
-	renderMoreBtn(body, id,title,imageObj) {
-		var content = { image:imageObj, title:title, desc:body};
+	renderMoreBtn(body, id,title,imageObj,ano,user) {
+		var content = { image:imageObj, title:title, desc:body,ano:ano,user:user};
 		if (body.length > 100 && !this.state.expanded) {
 			return <button className="testi-more" onClick={() => { this.setState({ expanded: id, modal_content:content })}}>More...</button>
 		}
-	}
+  }
+  showMoreForCard(body, id,title,imageObj,ano,user){
+    var content = { image:imageObj, title:title, desc:body,ano:ano,user:user};
+    if (body.length > 100 && !this.state.expanded) {
+      this.setState({ expanded: id, modal_content:content })
+    }
+  }
 	renderStories(stories) {
+    console.log("I am the stories:::", stories);
 		if (stories.length === 0) {
 
 			return (
@@ -168,13 +175,13 @@ class StoriesPage extends React.Component {
 						<div className="testi-card">
 							<div >
 								{this.renderImage(story.file)}
-								<div className="testi-para z-depth-1" >
+								<div className="testi-para z-depth-1" onClick ={()=>{this.showMoreForCard(story.body, story.id,story.title,story.file,story.anonymous,story.preferred_name)}}>
 									<p style={{ marginBottom: 6 }}><b>{story.title.length > 30 ? story.title.substring(0, 30) + "..." : story.title}</b></p>
 									{story.action ?
 										<a href={`${this.props.links.actions}/${story.action.id}`} className="testi-anchor">{story.action.title > 70 ? story.action.title.substring(0, 70) + "..." : story.action.title}</a>
 										: null}
 									<p>{body}</p>
-									{this.renderMoreBtn(story.body, story.id,story.title,story.file)}
+									{this.renderMoreBtn(story.body, story.id,story.title,story.file,story.anonymous,story.preferred_name)}
 								</div>
 
 							</div>

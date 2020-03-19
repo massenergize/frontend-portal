@@ -154,6 +154,7 @@ class LoginFormBase extends React.Component {
 
 
 	fetchMassToken = async (fireToken, email) => {
+    console.log("I am th firetoken", fireToken);
 		const body = { idToken: fireToken };
 		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;

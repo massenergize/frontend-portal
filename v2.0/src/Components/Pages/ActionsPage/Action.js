@@ -92,7 +92,7 @@ class Action extends React.Component {
             this.removeFromCart(this.actionIsInTodo());
           }}
           >
-            Add Todo
+            Add to Do
           </p>
         </Tooltip>
       );
@@ -107,7 +107,7 @@ class Action extends React.Component {
           onClick={() => this.openForm("TODO")}
         >
           {" "}
-          Add Todo{" "}
+          Add to Do{" "}
         </button>
       );
     }

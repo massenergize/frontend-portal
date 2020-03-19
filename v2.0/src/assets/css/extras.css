@@ -1,7 +1,52 @@
 
 
+.story-name{
+  display: inline;
+    margin-top: 140px;
+    background: #cef6a3;
+    padding: 3px 20px 5px;
+    border-radius: 55px;
+    font-size: 11px;
+    font-weight: 800;
+}
+.fa-m-right{
+  margin-right:7px;
+}
+.okay-btn{
+  background:white; 
+  border-radius: 55px; 
+  padding:5px 15px;
+  margin:6px;
+  color:black;
+  font-weight: 600;
+  cursor:pointer;
+}
+.okay-btn:hover{
+  background:#f67b61; 
+  color:white; 
+  transition: .4s;
+  
+}
 
+.ash-paper{
+  margin-top: 11px;
+  border:solid 0px rgb(141, 198, 63); 
+  border-top-width: 20px;
 
+  text-align: left;
+  width:100%; 
+  padding:20px 50px; 
+  min-height: 150px;
+  background:#f1faf44a; 
+  border-radius: 10px;
+}
+.m-label{
+  border-radius: 4px;
+    font-weight: 900;
+    padding: 3px 10px;
+    background: #e8e6e6;
+    margin:4px 9px;
+}
 .td{
   position:absolute !important;
 }
@@ -16,6 +61,23 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .toast-bar{
+    padding: 17px 30px ;
+      text-align: center;
+      position: fixed;
+      bottom: 0px;
+      width: 98%;
+      z-index: 30;
+      background: #28a745;
+      left: 0px;
+      margin: 10px;
+      color: white;
+      right: 190px;
+      border-radius: 6px;
+  }
+  .pc-icon-div-container-fix{
+    margin-top:-110px
+  }
   .filter-search-input{
     width:120%;
     padding:10px 25px !important; 
@@ -44,11 +106,20 @@
 
 
 @media only screen and ( max-width: 785px){
-
-
-
-
-  
+  .toast-bar{
+    padding: 17px 30px ;
+      text-align: center;
+      position: fixed;
+      bottom: 0px;
+      width: 98%;
+      z-index: 30;
+      background: #28a745;
+      left: -7px;
+      margin: 10px;
+      color: white;
+      right: 190px;
+      border-radius: 6px;
+  }
   .pt-3 h1{
     font-size:21px !important;
   }
@@ -68,7 +139,6 @@
  .mob-contact-form-tweak{
    padding:19px !important;
  }
- 
 
   .mob-zero-padding{
     padding:0px !important;
@@ -153,7 +223,7 @@
   }
   .header-logo{
     max-width: 110px;
-    margin-left: 0px;
+    margin-left: -10px;
     margin-top: 22px;
     /* height: 40px; */
   }
@@ -356,10 +426,11 @@
   background:crimson;
 }
 ::-webkit-scrollbar {
-  width: 4px;
-  height:4px
+  width: 0px;
+  height:0px
   
 }
+
 .indiv-done-it{
   background:gray !important; 
   color:white !important; 
@@ -561,7 +632,7 @@
 .combo-box-wrapper{
   border-radius: 6px;
   padding:7px; 
-  background:#f9f7e3 !important; 
+  background:rgb(245, 255, 222) !important; 
   margin:4px;
 }
 .select-undefault{
