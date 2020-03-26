@@ -3,11 +3,12 @@
 .story-name{
   display: inline;
     margin-top: 140px;
-    background: #cef6a3;
+    background: #8dc63f;
     padding: 3px 20px 5px;
     border-radius: 55px;
     font-size: 11px;
     font-weight: 800;
+    color:white;
 }
 .fa-m-right{
   margin-right:7px;
@@ -368,9 +369,10 @@
 
 
 .testi-more{
+  width:100%;
   cursor:pointer;
   margin-right: 10px;
-  float: right; 
+  /* float: right;  */
   clear: both;
   font-size:12px;
   border:solid 1px #f6c7cb; 

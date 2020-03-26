@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import leafy from './leafy.png';
+import * as moment from "moment";
 class StoryModal extends Component {
   constructor(props) {
     super(props)
@@ -7,10 +8,12 @@ class StoryModal extends Component {
     this.state = {
 
     }
-  }
+  } 
 
   render() {
-    console.log(this.props.content)
+
+    const format = "MMM, Do YYYY";
+    const date = moment(this.props.content? this.props.content.date:null).format(format);
     var userName ="Anonymous"; 
     const anonymous = this.props.content ? this.props.content.ano:null; 
     if(!anonymous){
@@ -23,7 +26,7 @@ class StoryModal extends Component {
           <h4 className=" modal-close-x mob-modal-close-x round-me" onClick = {()=>{this.props.close()}}><span className="fa fa-close"></span></h4>
           <center>
             <h5 className="mob-modal-tittle" style={{ marginBottom:8, textTransform: 'capitalize' }}>{this.props.content.title}</h5>
-            <h6 className="story-name">{userName}</h6>
+            <small className="story-name">{userName}</small><small className="m-label round-me">{date}</small>
             <div style={{marginTop:-20}}>
               {!this.props.content.image ?
                 <img className="testi-green-monster mob-modal-pic-tweak " src={leafy} alt="IMG"/>

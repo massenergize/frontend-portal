@@ -263,9 +263,9 @@ class StoryForm extends React.Component {
                   value={this.state.preferredName}
                   onChange={event => this.handlePreferredName(event)}
                   type="text"
-                  maxLength="20"
+                  maxLength="15"
                   className="form-control"
-                  placeholder="Write the name you prefer ( max - 20 Char )"
+                  placeholder="Write the name you prefer ( max - 15 Char )"
                   required
                 />
               ) : null}
@@ -282,7 +282,7 @@ class StoryForm extends React.Component {
               required
             />
           </div>
-          <div className="row">
+          {/* <div className="row">
             <div
               className="col-md-12 "
               style={{
@@ -291,7 +291,7 @@ class StoryForm extends React.Component {
                 borderRadius: 10
               }}
             >
-              {/* <p style={{ margin: 15 }}>Upload an image</p>
+              <p style={{ margin: 15 }}>Upload an image</p>
               <input
                 ref="picFile"
                 type="file"
@@ -301,9 +301,9 @@ class StoryForm extends React.Component {
                 }}
                 style={{ paddingTop: 4 }}
                 className="form-control"
-              /> */}
+              />
             </div>
-          </div>
+          </div> */}
           <div className="row">
             <div className="col-md-12">
               <div className="field-label">

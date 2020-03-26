@@ -243,7 +243,7 @@ class ProfileBtnDropdown extends React.Component {
 
 	render() {
 		return (
-			<button className=" float-right new-sign-in raise" onClick={this.handleClick} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
+			<button className=" float-right new-sign-in raise cool-font" onClick={this.handleClick} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
 				<i className="fa fa-user" />{'\u00A0'}
 				{this.props.userName}
 				<span className="fa fa-angle-down text-white ml-1"></span>
