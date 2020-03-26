@@ -211,7 +211,7 @@ class NavBarBurger extends React.Component {
 		} else {
 			return (
 				<Link className="cool-font new-sign-in float-right round-me raise" to={links.signin} >
-					<i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'}
+					{/* <i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'} */}
 					Sign In
                 </Link>
 			);
@@ -244,7 +244,7 @@ class ProfileBtnDropdown extends React.Component {
 	render() {
 		return (
 			<button className=" float-right new-sign-in raise cool-font" onClick={this.handleClick} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
-				<i className="fa fa-user" />{'\u00A0'}
+				{/* <i className="fa fa-user" />{'\u00A0'} */}
 				{this.props.userName}
 				<span className="fa fa-angle-down text-white ml-1"></span>
 			</button>

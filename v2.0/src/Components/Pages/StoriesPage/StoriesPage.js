@@ -102,7 +102,7 @@ class StoriesPage extends React.Component {
           <section className="testimonial2">
             <div className="container">
               <div className="row masonary-layout">
-                <div className="col-md-3">
+                <div className="col-md-3 phone-vanish">
                   <div
                     className="event-filter raise mob-login-white-cleaner"
                     style={{
@@ -127,8 +127,8 @@ class StoriesPage extends React.Component {
                   <div
                     className="row"
                     style={{
-                      maxHeight: 700,
-                      overflowY: "scroll",
+                      // maxHeight: 700,
+                      // overflowY: "scroll",
                       paddingBottom: 50
                     }}
                   >
@@ -278,8 +278,8 @@ class StoriesPage extends React.Component {
                         : story.title}
                     </b>
                   </p>
-                  <small className="story-name">{creatorName}</small>
-                  <small className="m-label round-me">{date}</small>
+                  <small className="story-name" style={{fontSize:'69%'}}>{creatorName}</small>
+                  <small className="m-label round-me"  style={{fontSize:'69%'}}>{date}</small>
                   <p style={{fontSize:"medium"}}>{body}</p>
 
                   {story.action ? (

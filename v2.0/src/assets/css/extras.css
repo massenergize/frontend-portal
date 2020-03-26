@@ -88,6 +88,8 @@
   }
   
   .mob-modal-p{
+    padding-top:25px; 
+    padding-right:20px;
     text-align: justify;
     margin: 20px;
     max-height: 500px;
@@ -107,6 +109,10 @@
 
 
 @media only screen and ( max-width: 785px){
+
+  .mob-line-break{
+    display:block;
+  }
   .mob-cancel-title-white{
     margin-bottom: 10px !important;
   }
@@ -172,13 +178,16 @@
     left:12px !important;
   }
   .mob-modal-close-x{
-    top:16px !important; 
+    background-color: white;
+    top:-20px !important; 
     right:8px !important;
   }
   .mob-modal-title{
     font-size:16px;
   }
   .mob-modal-p{
+    padding-top:30px; 
+    padding-right:20px;
     font-size:13px; 
     text-align: justify;
     max-height:420px; 
@@ -744,7 +753,8 @@
   right:-140px;
 }
 .modal-close-x:hover{
-  background:darkred;
+  background:#ff7600;
+  border-color:#ff7600;
   color:white; 
   transition: .4s;
 }
