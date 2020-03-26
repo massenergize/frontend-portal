@@ -22,7 +22,7 @@ class HomePage extends React.Component {
 
 						<h3 className='text-center' style={{ marginBottom:20,color: 'lightgray' }}> Sorry, the page you are looking for, could not be found. <br />Please try again later, or use the links on the navigation bar </h3>
 						<p className='text-center'><a href={"http://"+window.location.host} className="mass-domain-link "  >Find My Community</a> </p>
-					</center>
+					</center> 
 
 				</div>
 			)
@@ -63,7 +63,7 @@ class HomePage extends React.Component {
 					: null
 				}
 				<div className="" style={{ padding: 30, background: 'white', color: "#383838" }}>
-					<h4 align='center' className="cool-font">{communityDescription ? communityDescription : "Welcome To Our Page"}</h4>
+					<h4 align='center' className="cool-font mob-font-lg">{communityDescription ? communityDescription : "Welcome To Our Page"}</h4>
 					{/* <p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p> */}
 				</div>
 				{this.props.pageData.show_featured_links ?

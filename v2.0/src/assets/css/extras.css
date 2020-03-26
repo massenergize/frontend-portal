@@ -3,11 +3,12 @@
 .story-name{
   display: inline;
     margin-top: 140px;
-    background: #cef6a3;
+    background: #8dc63f;
     padding: 3px 20px 5px;
     border-radius: 55px;
     font-size: 11px;
     font-weight: 800;
+    color:white;
 }
 .fa-m-right{
   margin-right:7px;
@@ -64,11 +65,11 @@
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
-      position: fixed;
+      /* position: fixed; */
       bottom: 0px;
       width: 98%;
       z-index: 30;
-      background: #28a745;
+      background: #8dc63f;
       left: 0px;
       margin: 10px;
       color: white;
@@ -87,6 +88,8 @@
   }
   
   .mob-modal-p{
+    padding-top:25px; 
+    padding-right:20px;
     text-align: justify;
     margin: 20px;
     max-height: 500px;
@@ -106,14 +109,27 @@
 
 
 @media only screen and ( max-width: 785px){
+
+  .mob-line-break{
+    display:block;
+  }
+  .mob-cancel-title-white{
+    margin-bottom: 10px !important;
+  }
+  .mob-font-lg{
+    font-size:1rem !important;
+  }
+  .mob-helper{
+    margin-top:60px;
+  }
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
-      position: fixed;
+      /* position: fixed; */
       bottom: 0px;
       width: 98%;
       z-index: 30;
-      background: #28a745;
+      background: #8dc63f;
       left: -7px;
       margin: 10px;
       color: white;
@@ -162,13 +178,16 @@
     left:12px !important;
   }
   .mob-modal-close-x{
-    top:16px !important; 
+    background-color: white;
+    top:-20px !important; 
     right:8px !important;
   }
   .mob-modal-title{
     font-size:16px;
   }
   .mob-modal-p{
+    padding-top:30px; 
+    padding-right:20px;
     font-size:13px; 
     text-align: justify;
     max-height:420px; 
@@ -220,6 +239,7 @@
   
   .mob-icon-white-fix{
     margin-top:-107px !important;
+    margin-bottom:-70px !important;
   }
   .header-logo{
     max-width: 110px;
@@ -234,7 +254,9 @@
     margin-top:40px !important;
   }
   .mob-btn-left-fix{
-    left:-48px;
+    position: absolute;
+    left:48%; 
+
   }
  
   .mob-pad-absolute-0{
@@ -356,9 +378,10 @@
 
 
 .testi-more{
+  width:100%;
   cursor:pointer;
   margin-right: 10px;
-  float: right; 
+  /* float: right;  */
   clear: both;
   font-size:12px;
   border:solid 1px #f6c7cb; 
@@ -436,7 +459,7 @@
   color:white !important; 
 }
 .indiv-done-it:hover{
-  background:red !important; 
+  background:#ff7600 !important; 
   transition: .1s ease-in-out;
 }
 .vendor-hover:hover{
@@ -730,7 +753,8 @@
   right:-140px;
 }
 .modal-close-x:hover{
-  background:darkred;
+  background:#ff7600;
+  border-color:#ff7600;
   color:white; 
   transition: .4s;
 }

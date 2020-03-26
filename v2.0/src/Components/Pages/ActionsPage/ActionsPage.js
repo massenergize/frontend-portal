@@ -47,7 +47,7 @@ class ActionsPage extends React.Component {
 						<div className="container">
 							<div className="row">
 								{/* renders the sidebar */}
-								<div className="col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo" style={{paddingTop:60}}>
+								<div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo" style={{paddingTop:60}}>
 									<SideBar
 										search ={this.handleSearch}
 										foundNumber={this.state.mirror_actions.length}

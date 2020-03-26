@@ -23,7 +23,7 @@ class SideBar extends React.Component {
 			</div>
 		);
 	}
-
+ 
 	renderTagCollection(tagCol) {
 		if (!tagCol) {
 			return <p>No Filter Available</p>;

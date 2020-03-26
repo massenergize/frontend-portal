@@ -28,7 +28,7 @@ class FooterInfo extends React.Component {
 						<img src={communitylogo ? communitylogo : logo} alt="LOGO" style={{ display: "inline-block" }} className='header-logo' />
 					</Link></figure>
 					<ul className="contact-info">
-						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Contact</i></li>
+						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Organizer</i></li>
 						{this.props.info.email &&
 							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={`/${community.subdomain}/contactus`}>Click to email Community Organizer </Link> </li>
 						}

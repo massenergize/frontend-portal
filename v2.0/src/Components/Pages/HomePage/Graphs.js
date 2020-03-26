@@ -43,7 +43,7 @@ class Graphs extends React.Component {
 		}
 		return (
 			<section className="fact-counter style-2 no-padd">
-				<h4 className="section-title text-center" style={{fontSize:20}}>Help Us Reach Our Goal</h4>
+				<h4 className="section-title text-center mob-cancel-title-white" style={{fontSize:20}}>Help Us Reach Our Goal</h4>
 				<div className="container">
 					<div className="row no-gutter clearfix">
 						{dumbycol}

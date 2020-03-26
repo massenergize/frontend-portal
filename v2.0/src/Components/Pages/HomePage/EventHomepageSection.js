@@ -79,7 +79,7 @@ class Events extends React.Component {
               <Link to={`${this.props.links.events}`} className="cool-font thm-btn mb-4 btn-finishing raise pull-right float-right mob-btn-left-fix">All Events</Link>
             </div>
           </div>
-          <div className="row">
+          <div className="row mob-helper">
             {this.renderEvents()}
           </div>
         </div>

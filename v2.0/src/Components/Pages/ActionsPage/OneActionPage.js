@@ -36,7 +36,7 @@ class OneActionPage extends React.Component {
 		window.addEventListener("resize", this.chooseFontSize);
 	}
 
-	render() {
+	render() { 
 		if (!this.props.actions) {
 			return <LoadingCircle />;
     }
@@ -232,14 +232,14 @@ class OneActionPage extends React.Component {
 								{!this.props.user ?
 									 <Tooltip text='Sign in to make a TODO list' >
 									<p className=' has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font'>
-										Add Todo
+										Add to Do
                                                     </p>
 									 </Tooltip>
 									:
 									<button 
 										className={this.state.status === "TODO" ? " thm-btn action-btns cool-font style-4 selected mob-font" : " thm-btn style-4 action-btns cool-font mob-font"}
 										onClick={() => this.openForm("TODO")}
-									> Add Todo </button>
+									> Add to Do </button>
 								}
 								&nbsp;
                                 {!this.props.user ?
@@ -417,7 +417,11 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
 				{Object.keys(stories).map((key) => {
+          var creatorName = "Anonymous"; 
           const story = stories[key];
+          if(!story.anononymous){
+            creatorName = story.preferred_name ? story.preferred_name : creatorName; 
+          }
           const format = "MMMM Do YYYY";
 					const date = moment(story.created_at).format(format);
 					if (key < this.state.numberToShow) {
@@ -434,7 +438,7 @@ class OneActionPage extends React.Component {
 									</div>
 									<div className="text">
 										<h6>
-											{story.user.full_name}<small className="m-label">{date}</small>
+											<small className="story-name">{creatorName}</small><small className="m-label round-me">{date}</small>
 											{this.state.expanded && this.state.expanded === story.id ?
 												<button className='as-link' style={{ float: 'right' }} onClick={() => { this.setState({ expanded: null }) }}>close</button> : null
 											}
