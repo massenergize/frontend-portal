@@ -249,7 +249,7 @@ class Action extends React.Component {
                       {!this.props.user ? (
                         <Tooltip text="Sign in to make a TODO list">
                           <p className="has-tooltip thm-btn style-4 action-btns disabled">
-                            Add Todo
+                            Add to Do
                           </p>
                         </Tooltip>
                       ) : 
