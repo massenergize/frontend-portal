@@ -232,14 +232,14 @@ class OneActionPage extends React.Component {
 								{!this.props.user ?
 									 <Tooltip text='Sign in to make a TODO list' >
 									<p className=' has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font'>
-										Add Todo
+										Add to Do
                                                     </p>
 									 </Tooltip>
 									:
 									<button 
 										className={this.state.status === "TODO" ? " thm-btn action-btns cool-font style-4 selected mob-font" : " thm-btn style-4 action-btns cool-font mob-font"}
 										onClick={() => this.openForm("TODO")}
-									> Add Todo </button>
+									> Add to Do </button>
 								}
 								&nbsp;
                                 {!this.props.user ?

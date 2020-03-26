@@ -85,14 +85,14 @@ class StoriesPage extends React.Component {
 						<div className="container">
 							<div className="row masonary-layout">
 								<div className="col-md-3">
-									<div className="event-filter raise mob-login-white-cleaner" style={{ marginTop: 48, padding: "45px 37px", borderRadius: 15 }}>
+									<div className="event-filter raise mob-login-white-cleaner" style={{ marginTop: 48, padding: "45px 28px", borderRadius: 15 }}>
 										<h4>Filter by...</h4>
 										<Funnel type="testimonial" boxClick={this.handleBoxClick} search={() => { console.log("No Search") }} foundNumber={0} />
 									</div>
 								</div>
 								<div className="col-md-8 col-lg-8 col-sm-12 ">
 									<PageTitle>Testimonials</PageTitle>
-									<div className="row" style={{maxHeight:700, overflowY:'scroll'}}>
+									<div className="row" style={{maxHeight:700, overflowY:'scroll',paddingBottom:30}}>
 										{this.renderStories(stories)}
 									</div>
 								</div>
@@ -143,7 +143,7 @@ class StoriesPage extends React.Component {
     }
   }
 	renderStories(stories) {
-    console.log("I am the stories:::", stories);
+
 		if (stories.length === 0) {
 
 			return (

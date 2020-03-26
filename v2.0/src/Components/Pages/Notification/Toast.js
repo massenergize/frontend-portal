@@ -8,11 +8,21 @@ class Toast extends Component {
   }
 
   render() {
-    let color = this.props.notificationState === "Good" ? "#28a745": "red";
-    return (<div className="toast-bar z-depth-1" style={{background:color}}>
-      <p style={{color:"white", display:'inline'}}>{this.props.msg}</p>
-      <small className="okay-btn" onClick = {()=>{this.props.closeFxn()}}> Okay</small>
-    </div>);
+    let color = this.props.notificationState === "Good" ? "#8dc63f" : "red";
+    return (
+      <div className="toast-bar round-me" style={{ background: color }}>
+        <p style={{ color: "white", display: "inline" }}>{this.props.msg}</p>
+        <small
+          className="okay-btn"
+          onClick={() => {
+            this.props.closeFxn();
+          }}
+        >
+          {" "}
+          Okay
+        </small>
+      </div>
+    );
   }
 }
 

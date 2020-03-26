@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall,apiCallWithMedia} from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
@@ -37,9 +37,8 @@ class StoryForm extends React.Component {
       picFile: null,
       selected_tags: [],
       anonymous: false,
-      notificationState: null, 
-      spinner:false,
-     
+      notificationState: null,
+      spinner: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -105,8 +104,8 @@ class StoryForm extends React.Component {
       }
     }
   }
-  closeToast(){
-    this.setState({notificationState:null})
+  closeToast() {
+    this.setState({ notificationState: null });
   }
   check(type) {
     //if true then make me anonymous
@@ -138,18 +137,16 @@ class StoryForm extends React.Component {
         className="review-form mob-story-form-tweak"
         style={{ border: "1px solid lightgray", borderRadius: 10, padding: 25 }}
       >
-
-        {/* <button onClick = {()=>{this.setState({notificationState:"Good", notificationMessage:"Your testimonial went through successfully!"})}}>Good</button>
-        <button onClick = {()=>{this.setState({notificationState:"Bad",notificationMessage:"Your testimonial failed!"})}}>Bad</button> */}
-        {this.state.notificationState ? (
+        {/* {this.state.notificationState ? (
           <Toast msg={this.state.notificationMessage} closeFxn={this.closeToast} notificationState={this.state.notificationState} />
-        ) : null}
+        ) : null} */}
+
         {this.props.noMessage ? null : (
           <div className="tab-title-h4 text center">
             <h4 className="p-2">{this.state.message}</h4>
           </div>
         )}
-        <form onSubmit={this.onSubmit} style={{ margin: "20px" }} >
+        <form onSubmit={this.onSubmit} style={{ margin: "20px" }}>
           {this.props.aid ? null : (
             <>
               <p> Which action is this testimonial about? </p>
@@ -342,8 +339,21 @@ class StoryForm extends React.Component {
           <div className="row">
             <div className="col-md-12">
               <button className="thm-btn bg-cl-1 btn-finishing" type="submit">
-                Submit Now <i  style={{display:this.state.spinner?'inline-block' :'none'}}className="fa fa-spinner fa-spin"></i>
+                Submit Now{" "}
+                <i
+                  style={{
+                    display: this.state.spinner ? "inline-block" : "none"
+                  }}
+                  className="fa fa-spinner fa-spin"
+                ></i>
               </button>
+              {this.state.notificationState ? (
+                <Toast
+                  msg={this.state.notificationMessage}
+                  closeFxn={this.closeToast}
+                  notificationState={this.state.notificationState}
+                />
+              ) : null}
             </div>
           </div>
           {this.state.message ? (
@@ -369,11 +379,11 @@ class StoryForm extends React.Component {
     });
   }
 
-  toggleSpinner(val){
-    this.setState({spinner:val});
+  toggleSpinner(val) {
+    this.setState({ spinner: val });
   }
 
-  cleanUp(){
+  cleanUp() {
     //this.refs.picFile.value = "";
     this.refs.category_select.value = "--";
   }
@@ -424,32 +434,34 @@ class StoryForm extends React.Component {
           this.setState({
             ...INITIAL_STATE,
             selected_tags: [],
-            notificationState:"Good",
-            notificationMessage:"Sent successfully! Our community admins will review it and post it soon.",
+            notificationState: "Good",
+            notificationMessage:
+              "Sent successfully! Your community organizer will review it and post it soon.",
             message:
-              "Thank you for submitting your story! Our community admins will review it and post it soon."
+              "Thank you for submitting your story! Your community organizer will review it and post it soon."
           });
-          this.cleanUp()
+          this.cleanUp();
           this.toggleSpinner(false);
           if (this.props.closeForm)
             this.props.closeForm(
-              "Thank you for submitting your testimonial. Your community admins will review it and post it soon."
+              "Thank you for submitting your testimonial. Your community organizer will review it and post it soon."
             );
         } else {
           this.setState({
             ...INITIAL_STATE,
             selected_tags: [],
-            notificationState:"Bad",
-            notificationMessage:"There was an error submitting your testimonial",
+            notificationState: "Bad",
+            notificationMessage:
+              "There was an error submitting your testimonial",
             error: "There was an error submitting your testimonial"
           });
-          this.cleanUp()
+          this.cleanUp();
           this.toggleSpinner(false);
           if (this.props.closeForm)
             this.props.closeForm(
               "There was an error submitting your testimonial. We are sorry."
             );
-            this.toggleSpinner(false);
+          this.toggleSpinner(false);
         }
       });
     }

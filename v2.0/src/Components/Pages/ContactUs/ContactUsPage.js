@@ -69,7 +69,7 @@ class ContactUsPage extends React.Component {
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>Contact <b>{name}</b> </h3>
-                  <p>We are always striving to make this better and welcome your feedback! Reach the community admin for <em>{name}</em> by filling in the form.</p>
+                  <p>We are always striving to make this better and welcome your feedback! Reach the community organizer for <em>{name}</em> by filling in the form.</p>
                   {this.ejectLocation(location)}
                   {/* {this.ejectAdmins(admins)} */}
                 </div>

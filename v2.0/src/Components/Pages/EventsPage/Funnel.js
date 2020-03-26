@@ -21,12 +21,13 @@ class EventFilter extends Component {
     if (tags) {
       return tags.map(tag => {
         return (
-          <label style={{ marginBottom: "0px", marginTop: "0px" }} className="checkbox-container" >
+          <label  className="checkbox-container" style={{borderBottom:'1px solid #eaeaea',marginBottom: "0px", marginTop: "0px"}}>
             <p style={{
               marginLeft: "25px",
               marginBottom: "0px",
               marginTop: "0px",
-              padding: "4px 0 5px 0"
+              padding: "4px 0 5px 0",
+              fontSize:17
             }}>{tag.name}</p>
             <input className="checkbox" type="checkbox" onChange={(event) => { this.props.boxClick(event) }} name="boxes" value={tag.id} />
             <span className="checkmark"></span>

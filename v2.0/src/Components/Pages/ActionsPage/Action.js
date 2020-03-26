@@ -86,7 +86,7 @@ class Action extends React.Component {
       todo.filter(t => t.action.id === action.id).length > 0 ? true : false;
     if (exists) {
       return (
-        <Tooltip text="You have already added this">
+        <Tooltip text="Thank you for adding this. Click again to remove.">
           <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it" 
           onClick={() => {
             this.removeFromCart(this.actionIsInTodo());
@@ -106,8 +106,7 @@ class Action extends React.Component {
           }
           onClick={() => this.openForm("TODO")}
         >
-          {" "}
-          Add to Do{" "}
+          Add to Do
         </button>
       );
     }

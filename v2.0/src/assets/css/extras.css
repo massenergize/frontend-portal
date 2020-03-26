@@ -64,11 +64,11 @@
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
-      position: fixed;
+      /* position: fixed; */
       bottom: 0px;
       width: 98%;
       z-index: 30;
-      background: #28a745;
+      background: #8dc63f;
       left: 0px;
       margin: 10px;
       color: white;
@@ -106,14 +106,23 @@
 
 
 @media only screen and ( max-width: 785px){
+  .mob-cancel-title-white{
+    margin-bottom: 10px !important;
+  }
+  .mob-font-lg{
+    font-size:1rem !important;
+  }
+  .mob-helper{
+    margin-top:60px;
+  }
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
-      position: fixed;
+      /* position: fixed; */
       bottom: 0px;
       width: 98%;
       z-index: 30;
-      background: #28a745;
+      background: #8dc63f;
       left: -7px;
       margin: 10px;
       color: white;
@@ -220,6 +229,7 @@
   
   .mob-icon-white-fix{
     margin-top:-107px !important;
+    margin-bottom:-70px !important;
   }
   .header-logo{
     max-width: 110px;
@@ -234,7 +244,9 @@
     margin-top:40px !important;
   }
   .mob-btn-left-fix{
-    left:-48px;
+    position: absolute;
+    left:48%; 
+
   }
  
   .mob-pad-absolute-0{
@@ -436,7 +448,7 @@
   color:white !important; 
 }
 .indiv-done-it:hover{
-  background:red !important; 
+  background:#ff7600 !important; 
   transition: .1s ease-in-out;
 }
 .vendor-hover:hover{

@@ -29,7 +29,7 @@ class IconBoxTable extends React.Component {
 		}
 		return Object.keys(boxes).map((key, index) => {
 			var box = boxes[key];
-			return <div className="col-lg-3 col-md-6 col-sm-6 col-12 d-flex flex-row" key={index}>
+			return <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-12 d-flex flex-row" key={index}>
 				<IconBox
 					key={index}
 					title={box.title}
