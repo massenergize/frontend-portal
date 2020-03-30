@@ -75,7 +75,7 @@
   
   .done-it-correction{
     float: right;
-    margin-top: -43px;
+    margin-top: -43px !important;
     right: 150px;
   }
   .toast-bar{
