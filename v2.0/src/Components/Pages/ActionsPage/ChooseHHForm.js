@@ -100,9 +100,9 @@ class ChooseHHForm extends React.Component {
         this.props.closeForm();
       }
     }
-    this.setState({
-      choice: null
-    });
+    // this.setState({
+    //   choice: null
+    // });
   };
   renderRadios(households) {
     if (!households) return <div />;
