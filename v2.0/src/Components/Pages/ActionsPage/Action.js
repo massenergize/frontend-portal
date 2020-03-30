@@ -106,7 +106,7 @@ class Action extends React.Component {
           }
           onClick={() => this.openForm("TODO")}
         >
-          Add to Do
+          Add to Do  
         </button>
       );
     }
@@ -118,7 +118,7 @@ class Action extends React.Component {
       done.filter(t => t.action.id === action.id).length > 0 ? true : false;
     if (exists) {
       return (
-        <Tooltip text="You have already done this. Check your profile to see your whole list.">
+        <Tooltip text="Thanks for adding, click again to remove.">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it"
             onClick={() => {

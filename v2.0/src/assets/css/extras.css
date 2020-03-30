@@ -1,5 +1,13 @@
 
 
+.acc-item{
+  color:#848484 !important;
+  cursor: pointer;
+}
+.acc-item:hover{
+  color: #8dc63f !important; 
+  transition: .4s ease-in-out;
+}
 .story-name{
   display: inline;
     margin-top: 140px;
@@ -57,11 +65,19 @@
   top:-2px !important;
   margin-bottom: 30px;
 }
-
+.todo-correction{
+  float:left;
+}
 
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  
+  .done-it-correction{
+    float: right;
+    margin-top: -43px;
+    right: 150px;
+  }
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
@@ -110,6 +126,11 @@
 
 @media only screen and ( max-width: 785px){
 
+  .done-it-correction{
+    float: right;
+    margin-top: -43px;
+    right: 95px;
+  }
   .mob-line-break{
     display:block;
   }
@@ -120,7 +141,7 @@
     font-size:1rem !important;
   }
   .mob-helper{
-    margin-top:60px;
+    margin-top:67px;
   }
   .toast-bar{
     padding: 17px 30px ;
@@ -254,7 +275,8 @@
     margin-top:40px !important;
   }
   .mob-btn-left-fix{
-    position: absolute;
+    position: absolute !important;
+    margin-top: 7px;
     left:48%; 
 
   }
@@ -271,7 +293,7 @@
     margin: 0px !important;
   }
   .mob-event-section{
-    padding-top:10px;
+    padding-top:10px !important;
   }
   .mob-homepage-chart-h{
     height:250px !important;
@@ -454,9 +476,12 @@
   
 }
 
+
+
 .indiv-done-it{
   background:gray !important; 
   color:white !important; 
+  cursor:pointer;
 }
 .indiv-done-it:hover{
   background:#ff7600 !important; 

@@ -22,7 +22,7 @@ class EventFilter extends Component {
       return tags.map(tag => {
         return (
           <label  className="checkbox-container" style={{borderBottom:'1px solid #eaeaea',marginBottom: "0px", marginTop: "0px"}}>
-            <p style={{
+            <p className="acc-item" style={{
               marginLeft: "25px",
               marginBottom: "0px",
               marginTop: "0px",
