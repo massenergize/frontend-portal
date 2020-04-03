@@ -1,5 +1,5 @@
 // Defining URLS object for manipulation...
-import { IS_PROD, IS_LOCAL } from '../config/config'
+import { IS_PROD, IS_LOCAL } from '../config'
 
 
 let URLS = {}
