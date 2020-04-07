@@ -92,7 +92,7 @@ class Action extends React.Component {
             this.removeFromCart(this.actionIsInTodo());
           }}
           >
-            Add to Do
+            To Do
           </p>
         </Tooltip>
       );
@@ -106,7 +106,7 @@ class Action extends React.Component {
           }
           onClick={() => this.openForm("TODO")}
         >
-          Add to Do  
+          To Do  
         </button>
       );
     }
@@ -249,7 +249,7 @@ class Action extends React.Component {
                       {!this.props.user ? (
                         <Tooltip text="Sign in to make a TODO list">
                           <p className="has-tooltip thm-btn style-4 action-btns disabled">
-                            Add to Do
+                            To Do
                           </p>
                         </Tooltip>
                       ) : 

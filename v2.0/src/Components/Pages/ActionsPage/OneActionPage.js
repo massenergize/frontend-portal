@@ -252,7 +252,7 @@ class OneActionPage extends React.Component {
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
-            Add to Do
+            To Do
           </p>
         </Tooltip>
       );
@@ -266,7 +266,7 @@ class OneActionPage extends React.Component {
           }
           onClick={() => this.openForm("TODO")}
         >
-          Add to Do
+          To Do
         </button>
       );
     }
@@ -368,7 +368,7 @@ class OneActionPage extends React.Component {
                 {!this.props.user ? (
                   <Tooltip text="Sign in to make a TODO list">
                     <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font">
-                      Add to Do
+                      To Do
                     </p>
                   </Tooltip>
                 ) : (
@@ -499,7 +499,7 @@ class OneActionPage extends React.Component {
                 </button>
               </li>
             ) : null}
-            {action.deep_dive ? (
+            {(action.deep_dive && action.deep_dive !=="<p><br></p>") ? (
               <li
                 id="deeptab"
                 className={this.state.tab === "deep" ? "active" : ""}
@@ -530,7 +530,7 @@ class OneActionPage extends React.Component {
               <div className="product-details-content">
                 <div className="desc-content-box">
                   <p
-                    className="cool-font"
+                    className="cool-font make-me-dark"
                     dangerouslySetInnerHTML={{ __html: action.about }}
                   ></p>
                 </div>
@@ -548,7 +548,7 @@ class OneActionPage extends React.Component {
               <div className="product-details-content">
                 <div className="desc-content-box">
                   <p
-                    className="cool-font"
+                    className="cool-font make-me-dark"
                     dangerouslySetInnerHTML={{ __html: action.steps_to_take }}
                   ></p>
                 </div>
@@ -566,7 +566,7 @@ class OneActionPage extends React.Component {
               <div className="product-details-content">
                 <div className="desc-content-box">
                   <p
-                    className="cool-font"
+                    className="cool-font make-me-dark"
                     dangerouslySetInnerHTML={{ __html: action.deep_dive }}
                   ></p>
                   {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
@@ -628,7 +628,7 @@ class OneActionPage extends React.Component {
               }
               id="review"
             >
-              <div className="review-box">
+              <div className="review-box make-me-dark">
                 {/* Reviews */}
                 {this.renderStories(stories)}
                 {this.state.numberToShow < stories.length ? (
@@ -654,7 +654,7 @@ class OneActionPage extends React.Component {
                   />
                 </div>
               ) : (
-                <p>
+                <p className="make-me-dark">
                   <Link to={this.props.links.signin}> Sign In </Link> to submit
                   your own story about taking this Action
                 </p>
@@ -703,7 +703,7 @@ class OneActionPage extends React.Component {
     });
   }
   renderStories = stories => {
-    if (stories.length === 0) return <p> No stories about this action yet </p>;
+    if (stories.length === 0) return <p > No stories about this action yet </p>;
     return (
       <>
         {/* <div className="tab-title-h4">
