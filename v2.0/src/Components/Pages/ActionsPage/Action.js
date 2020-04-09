@@ -78,13 +78,26 @@ class Action extends React.Component {
     }
     return null;
   }
-
-  checkTodoAndReturn() {
+  checkTodo(){
     var action = this.props.action;
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
       todo.filter(t => t.action.id === action.id).length > 0 ? true : false;
-    if (exists) {
+      return exists;
+  }
+
+  checkTodoAndReturn() {
+      if(this.checkDone()){
+        return (
+          <Tooltip text="Cant use this feature, you have already done the action.">
+            <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it" 
+            >
+              To Do
+            </p>
+          </Tooltip>
+        );
+      }
+    if (this.checkTodo()) {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it" 
@@ -111,12 +124,16 @@ class Action extends React.Component {
       );
     }
   }
-  checkDoneAndReturn() {
+  checkDone(){
     var action = this.props.action;
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter(t => t.action.id === action.id).length > 0 ? true : false;
-    if (exists) {
+      return exists
+  }
+  checkDoneAndReturn() {
+    
+    if (this.checkDone()) {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
@@ -146,6 +163,7 @@ class Action extends React.Component {
     }
   }
   render() {
+   
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
     if (this.shouldRender()) {
@@ -312,10 +330,12 @@ class Action extends React.Component {
                                   <button
                                     className="as-link"
                                     style={{ display: "inline-block" }}
-                                    onClick={() =>
-                                      this.setState({
-                                        showTestimonialForm: true
-                                      })
+                                    onClick={() =>{
+                                      window.location = this.props.links? this.props.links.testimonials:"#";
+                                      // this.setState({
+                                      //   showTestimonialForm: true
+                                     // })
+                                    }
                                     }
                                   >
                                     testimonial
@@ -343,6 +363,7 @@ class Action extends React.Component {
                         }
                         closeForm={this.closeForm}
                       />
+                      
                     </div>
                   </div>
                 </div>

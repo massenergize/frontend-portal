@@ -21,8 +21,6 @@ class OneServicePage extends React.Component {
     const vendor = this.props.serviceProviders.filter(vendor => {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
-
-    console.log("I am the vendor::::", vendor);
     return (
       <>
         <div className="boxed_wrapper">
