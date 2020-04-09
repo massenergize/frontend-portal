@@ -1,5 +1,11 @@
 
+.make-me-dark{
+  color:#373535 !important;
+}
 
+.make-me-dark p{
+  color:#373535 !important;
+}
 .acc-item{
   color:#848484 !important;
   cursor: pointer;
@@ -12,7 +18,7 @@
   display: inline;
     margin-top: 140px;
     background: #8dc63f;
-    padding: 3px 20px 5px;
+    padding: 3px 20px 3px;
     border-radius: 55px;
     font-size: 11px;
     font-weight: 800;
@@ -59,12 +65,7 @@
 .td{
   position:absolute !important;
 }
-.done-it{
-  position: absolute !important;
-  right:80px !important; 
-  top:-2px !important;
-  margin-bottom: 30px;
-}
+
 .todo-correction{
   float:left;
 }
@@ -72,11 +73,18 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .mob-homepage-chart-h{height:250px !important}
   
   .done-it-correction{
     float: right;
-    margin-top: -43px !important;
-    right: 150px;
+    margin-top: -21px !important;
+    right: 184px !important;
+  }
+  .done-it{
+    position: absolute !important;
+    right:170px !important; 
+    top:0px !important;
+    margin-bottom: 30px;
   }
   .toast-bar{
     padding: 17px 30px ;
@@ -126,10 +134,17 @@
 
 @media only screen and ( max-width: 785px){
 
+  .done-it{
+    position: absolute !important;
+    right:80px !important; 
+    top:0px !important;
+    margin-bottom: 30px;
+  }
+
   .done-it-correction{
     float: right;
-    margin-top: -43px;
-    right: 95px;
+    margin-top: -22px;
+    right: 160px !important;
   }
   .mob-line-break{
     display:block;
@@ -296,7 +311,7 @@
     padding-top:10px !important;
   }
   .mob-homepage-chart-h{
-    height:250px !important;
+    height:280px !important;
   }
   .mob-pad-0{
     padding:0px !important;
@@ -305,7 +320,7 @@
     margin:0px !important;
   }
   .mob-impact-pad-fix{
-    padding:70px !important;
+    padding:35px !important;
   }
   .mob-actions-page-padding-remove{
     padding-right:0px !important;
@@ -330,7 +345,7 @@
 .mob-actions-page-padding-remove{
   padding-right:40px;
 }
-.mob-homepage-chart-h{height:250px !important}
+
 .land-textbox{}
 .mob-impact-pad-fix{}
 .mob-pad-0{}

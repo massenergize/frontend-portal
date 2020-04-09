@@ -21,7 +21,6 @@ class OneServicePage extends React.Component {
     const vendor = this.props.serviceProviders.filter(vendor => {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
-
     return (
       <>
         <div className="boxed_wrapper">
@@ -47,9 +46,10 @@ class OneServicePage extends React.Component {
     });
     const phone = vendor.phone_number ? vendor.phone_number : "Not Provided";
     const email = vendor.email ? vendor.email : "Not Provided";
-    const key_contact = vendor.key_contact.email && vendor.key_contact.name
-      ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
-      : "Not Provided";
+    const key_contact =
+      vendor.key_contact.email && vendor.key_contact.name
+        ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
+        : "Not Provided";
     return (
       <div className="col-12" key={vendor.vendor}>
         <div
@@ -72,13 +72,13 @@ class OneServicePage extends React.Component {
                   src={vendor.logo ? vendor.logo.url : notFound}
                   alt={vendor.name}
                 />
-                {vendor.address ? (
+                {vendor.location ? (
                   <div
                     className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner"
                     style={{ borderRadius: 5 }}
                   >
                     <span className="fa fa-map-pin fa-m-right"></span>{" "}
-                    {vendor.address.city}, {vendor.address.state}
+                    {vendor.location.city}, {vendor.location.state}
                   </div>
                 ) : null}
                 <div className="ash-paper">
@@ -95,20 +95,31 @@ class OneServicePage extends React.Component {
                     {email}
                   </h6>
                   <h6 style={{ marginBottom: 0 }}>
-                    <b>Key Contact</b>
+                    <b>More Information</b>
                   </h6>
-                  {vendor.key_contact.email && vendor.key_contact.name ? (
+                  {vendor.website ? (
+                    <a
+                      href={vendor.website}
+                      target="_blank"
+                      style={{ color: "#f56d39" }}
+                    >
+                      {"Visit Our Website"}
+                    </a>
+                  ) : (
+                    <small style={{ color: "gray" }}>Not Provided</small>
+                  )}
+                  {/* {vendor.key_contact.email && vendor.key_contact.name ? (
                     <a href={`mailto::${vendor.key_contact.email}`} style={{color:'#f56d39'}}>
                       {key_contact}
                     </a>
                   ) : (
                     <small style={{ color: "gray" }}>{key_contact}</small>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="col-md-7 col-12 mt-3">
                 <h1 className="pt-3 mobile-title">{vendor.name}</h1>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;{vendor.description}</p>
+                <p className="make-me-dark" style={{textAlign:'justify'}}>{vendor.description}</p>
               </div>
               {vendor.services && vendor.services.length > 0 ? (
                 <div className="col-12" style={{ margin: 40 }}>

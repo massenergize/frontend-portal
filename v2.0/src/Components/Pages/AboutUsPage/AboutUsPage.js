@@ -36,7 +36,7 @@ class AboutUsPage extends React.Component {
 					}
 					<div className={paragraphContent ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
 						<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
-						<div className="community-about-text cool-font" style={{color:'gray',fontSize:'large', textAlign:'justify'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
+						<div className="community-about-text cool-font make-me-dark" style={{fontSize:'large', textAlign:'justify'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 					</div>
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 						<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
