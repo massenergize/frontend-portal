@@ -21,7 +21,7 @@ class DonatePage extends React.Component {
 					<div className="container p-5">
 						<PageTitle>{title}</PageTitle>
 						<center>
-							<p>{pageData && pageData.description ? pageData.description : 'Your contribution will support our MassEnergize initiative greatly. Feel free to donate any amount by clicking the button below!'}</p>
+							<p className="make-me-dark">{pageData && pageData.description ? pageData.description : 'Your contribution will support our MassEnergize initiative greatly. Feel free to donate any amount by clicking the button below!'}</p>
 						{
 							pageData.sub_title? 
 							<small>{pageData.sub_title}</small>

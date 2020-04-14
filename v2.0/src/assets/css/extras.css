@@ -143,7 +143,7 @@
 
   .done-it-correction{
     float: right;
-    margin-top: -22px;
+    margin-top: -22px !important;
     right: 160px !important;
   }
   .mob-line-break{

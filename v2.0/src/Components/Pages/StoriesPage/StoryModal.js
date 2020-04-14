@@ -59,7 +59,7 @@ class StoryModal extends Component {
               <div
                 // style={{ marginTop: 30, maxHeight: 610, overflowY: "scroll" }}
               >
-                <p className="mob-modal-p">{this.props.content.desc}</p>
+                <p className="mob-modal-p make-me-dark">{this.props.content.desc}</p>
               </div>
             </div>
           </center>

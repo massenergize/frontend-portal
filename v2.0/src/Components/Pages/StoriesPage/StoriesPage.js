@@ -271,7 +271,7 @@ class StoriesPage extends React.Component {
                     );
                   }}
                 >
-                  <p style={{ marginBottom: 6,textTransform:"capitalize" }}>
+                  <p style={{ marginBottom: 6,textTransform:"capitalize" }} className="make-me-dark">
                     <b>
                       {story.title.length > 30
                         ? story.title.substring(0, 30) + "..."
@@ -280,7 +280,7 @@ class StoriesPage extends React.Component {
                   </p>
                   <small className="story-name" style={{fontSize:'69%'}}>{creatorName}</small>
                   <small className="m-label round-me"  style={{fontSize:'69%'}}>{date}</small>
-                  <p style={{fontSize:"medium"}}>{body}</p>
+                  <p style={{fontSize:"medium"}} className="make-me-dark">{body}</p>
 
                   {story.action ? (
                     <div>
