@@ -81,8 +81,8 @@ class OneServicePage extends React.Component {
                     {vendor.location.city}, {vendor.location.state}
                   </div>
                 ) : null}
-                <div className="ash-paper">
-                  <h6>
+                <div className="ash-paper z-depth-1">
+                  <h6 className="make-me-dark">
                     <b>
                       <i className="fa fa-phone fa-m-right"></i>{" "}
                     </b>{" "}
@@ -94,9 +94,13 @@ class OneServicePage extends React.Component {
                     </b>{" "}
                     {email}
                   </h6>
-                  <h6 style={{ marginBottom: 0 }}>
+                  <h6 style={{ marginBottom: 0 }} className="make-me-dark">
+                    {vendor.website? 
                     <b>More Information</b>
-                  </h6>
+                    :null
+                  }
+                    
+                  </h6 >
                   {vendor.website ? (
                     <a
                       href={vendor.website}
@@ -105,9 +109,7 @@ class OneServicePage extends React.Component {
                     >
                       {"Visit Our Website"}
                     </a>
-                  ) : (
-                    <small style={{ color: "gray" }}>Not Provided</small>
-                  )}
+                  ) : null}
                   {/* {vendor.key_contact.email && vendor.key_contact.name ? (
                     <a href={`mailto::${vendor.key_contact.email}`} style={{color:'#f56d39'}}>
                       {key_contact}

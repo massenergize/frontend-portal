@@ -149,7 +149,7 @@ class StoryForm extends React.Component {
         <form onSubmit={this.onSubmit} style={{ margin: "20px" }}>
           {this.props.aid ? null : (
             <>
-              <p> Which action is this testimonial about? </p>
+              <p className="make-me-dark"> Which action is this testimonial about? </p>
               <div className="combo-box-wrapper">
                 <select
                   className="w-100 select-undefault "
@@ -170,7 +170,7 @@ class StoryForm extends React.Component {
 					</div> */}
           {this.props.vid ? null : (
             <>
-              <p> Who helped you complete this action? </p>
+              <p className="make-me-dark"> Who helped you complete this action? </p>
               <div className="combo-box-wrapper">
                 <select
                   className="w-100 select-undefault"
@@ -204,7 +204,7 @@ class StoryForm extends React.Component {
 
           {cols ? (
             <>
-              <p style={{ marginBottom: 4 }}>
+              <p style={{ marginBottom: 4 }} className="make-me-dark">
                 {" "}
                 Choose all the categories this testimonial belongs to.{" "}
               </p>
@@ -227,7 +227,7 @@ class StoryForm extends React.Component {
             <br />
           )}
 
-          <div className="">
+          <div className="make-me-dark">
             <p>
               Your name and email will be known to the{" "}
               <b>Community Organizer</b>, but how would you like it to be
@@ -271,7 +271,7 @@ class StoryForm extends React.Component {
               ) : null}
             </div>
           </div>
-          <div className="field-label">
+          <div className="field-label make-me-dark">
             <p>Story Title*</p>
             <input
               type="text"
@@ -306,7 +306,7 @@ class StoryForm extends React.Component {
           </div> */}
           <div className="row">
             <div className="col-md-12">
-              <div className="field-label">
+              <div className="field-label make-me-dark">
                 <p style={{ display: "inline-block", float: "left" }}>
                   Your Story*
                 </p>

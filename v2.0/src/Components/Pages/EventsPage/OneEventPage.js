@@ -62,16 +62,16 @@ class OneEventPage extends React.Component {
 											</li> */}
 										<li key='time'><b>Date<br /> </b>
 											<div style={{ paddingLeft: 20 }}>
-												{textyStart}<br />
+												<span className="make-me-dark">{textyStart}</span><br />
 												<b><span className="text text-success"> TO </span> </b><br />
-												{textyEnd}
+												<span className="make-me-dark">{textyEnd}</span>
 											</div>
 										</li>
 										{location ?
-											<li>
+											<li >
 												{/* House Number, Street Name, Town, State */}
 												<i className="fa fa-map-marker" />
-												<b>Venue:</b>  <b>{location.unit? `, ${location.unit}` : ''} </b> <b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}  
+												<b>Venue:</b>  <span className="make-me-dark"><b>{location.unit? `, ${location.unit}` : ''} </b> <b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}  </span>
 											</li>
 											:
 											null
