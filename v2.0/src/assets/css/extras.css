@@ -134,6 +134,12 @@
 
 @media only screen and ( max-width: 785px){
 
+
+  .green-done-it-correction{
+    position: absolute !important; 
+    right:30% !important;
+
+  }
   .done-it{
     position: absolute !important;
     right:80px !important; 
@@ -144,7 +150,7 @@
   .done-it-correction{
     float: right;
     margin-top: -22px !important;
-    right: 160px !important;
+    right: 30% !important;
   }
   .mob-line-break{
     display:block;
@@ -493,15 +499,24 @@
 
 
 
+.indiv-done-it-orange{
+  background:#ff7600 !important; 
+  color:white !important; 
+  cursor:pointer;
+}
 .indiv-done-it{
   background:gray !important; 
   color:white !important; 
   cursor:pointer;
 }
-.indiv-done-it:hover{
-  background:#ff7600 !important; 
+.indiv-done-it-orange:hover{
+  background:gray !important; 
   transition: .1s ease-in-out;
 }
+/* .indiv-done-it:hover{
+  background:#ff7600 !important; 
+  transition: .1s ease-in-out;
+} */
 .vendor-hover:hover{
   -webkit-box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
   box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
@@ -547,7 +562,6 @@
 .loc-banner{
   padding:20px !important;
   background-color:#344038 !important;
-  cursor:pointer;
 }
 .pref-height{
   min-height:265px !important; 
