@@ -261,7 +261,7 @@ class OneActionPage extends React.Component {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me todo-correction"
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me todo-correction"
             onClick={() => {
               this.removeFromCart(this.actionIsInTodo());
             }}
@@ -290,7 +290,6 @@ class OneActionPage extends React.Component {
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter(t => t.action.id === action.id).length > 0 ? true : false;
-
       return exists;
   }
   checkDoneAndReturn() {
@@ -299,7 +298,7 @@ class OneActionPage extends React.Component {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it line-me done-it-correction"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange line-me done-it-correction"
             onClick={() => {
               this.removeFromCart(this.actionIsDone());
             }}
@@ -311,15 +310,17 @@ class OneActionPage extends React.Component {
     } else {
       return (
         <button
+        
           className={
             this.state.status === "DONE"
-              ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me"
-              : "thm-btn style-4 action-btns  cool-font mob-font line-me"
+              ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
+              : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
           }
           onClick={() => this.openForm("DONE")}
+         
         >
           {" "}
-          Done It{" "}
+          Done It 
         </button>
       );
     }

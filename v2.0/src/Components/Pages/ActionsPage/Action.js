@@ -100,7 +100,7 @@ class Action extends React.Component {
     if (this.checkTodo()) {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it" 
+          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange" 
           onClick={() => {
             this.removeFromCart(this.actionIsInTodo());
           }}
@@ -137,7 +137,7 @@ class Action extends React.Component {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
               this.removeFromCart(this.actionIsDone());
             }}
