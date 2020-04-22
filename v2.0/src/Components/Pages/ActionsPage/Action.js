@@ -49,7 +49,7 @@ class Action extends React.Component {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
-          const remainder = this.props.done.filter(
+          this.props.done.filter(
             item => item.id !== actionRel.id
           );
           this.props.reduxRemoveFromDone(actionRel);

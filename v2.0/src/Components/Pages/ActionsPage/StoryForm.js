@@ -1,7 +1,7 @@
 import React from "react";
-import { apiCall, apiCallWithMedia } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
-import defaultUser from "./../../Shared/default-user.png";
+// import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
 
 /********************************************************************/

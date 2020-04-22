@@ -11,14 +11,14 @@ class OneServicePage extends React.Component {
     this.state = {
       status: null,
       limit: 140,
-      expanded: null
+      expanded: null,
     };
   }
   render() {
     if (!this.props.serviceProviders || !this.props.testimonials) {
       return <LoadingCircle />;
     }
-    const vendor = this.props.serviceProviders.filter(vendor => {
+    const vendor = this.props.serviceProviders.filter((vendor) => {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
     return (
@@ -27,7 +27,7 @@ class OneServicePage extends React.Component {
           <BreadCrumbBar
             links={[
               { name: "Service Providers", link: this.props.links.services },
-              { name: `Service Provider ${vendor.id}` }
+              { name: `Service Provider ${vendor.id}` },
             ]}
           />
           <div className="container">
@@ -39,17 +39,17 @@ class OneServicePage extends React.Component {
   }
 
   renderVendor(vendor) {
-    const stories = this.props.testimonials.filter(story => {
+    const stories = this.props.testimonials.filter((story) => {
       return (
         story.vendor && story.vendor.id === Number(this.props.match.params.id)
       );
     });
     const phone = vendor.phone_number ? vendor.phone_number : "Not Provided";
     const email = vendor.email ? vendor.email : "Not Provided";
-    const key_contact =
-      vendor.key_contact.email && vendor.key_contact.name
-        ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
-        : "Not Provided";
+    // const key_contact = vendor.key_contact &&
+    //   vendor.key_contact.email && vendor.key_contact.name
+    //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
+    //     : "Not Provided";
     return (
       <div className="col-12" key={vendor.vendor}>
         <div
@@ -67,7 +67,7 @@ class OneServicePage extends React.Component {
                     minHeight: 225,
                     maxHeight: 225,
                     objectFit: "contain",
-                    padding: 10
+                    padding: 10,
                   }}
                   src={vendor.logo ? vendor.logo.url : notFound}
                   alt={vendor.name}
@@ -95,16 +95,13 @@ class OneServicePage extends React.Component {
                     {email}
                   </h6>
                   <h6 style={{ marginBottom: 0 }} className="make-me-dark">
-                    {vendor.website? 
-                    <b>More Information</b>
-                    :null
-                  }
-                    
-                  </h6 >
+                    {vendor.website ? <b>More Information</b> : null}
+                  </h6>
                   {vendor.website ? (
                     <a
                       href={vendor.website}
                       target="_blank"
+                      rel="noopener noreferrer"
                       style={{ color: "#f56d39" }}
                     >
                       {"Visit Our Website"}
@@ -121,7 +118,10 @@ class OneServicePage extends React.Component {
               </div>
               <div className="col-md-7 col-12 mt-3">
                 <h1 className="pt-3 mobile-title">{vendor.name}</h1>
-                <p className="make-me-dark" style={{textAlign:'justify'}}>{vendor.description}</p>
+                <p
+                  className="cool-font make-me-dark"
+                  dangerouslySetInnerHTML={{ __html: vendor.description }}
+                ></p>
               </div>
               {vendor.services && vendor.services.length > 0 ? (
                 <div className="col-12" style={{ margin: 40 }}>
@@ -129,13 +129,13 @@ class OneServicePage extends React.Component {
                     <h4>Services</h4>
                   </span>
                   <ul className="normal">
-                    {vendor.services.map(service => {
+                    {vendor.services.map((service) => {
                       return (
                         <li
                           style={{
                             display: "inline-block",
                             marginLeft: 0,
-                            marginRight: "2em"
+                            marginRight: "2em",
                           }}
                           key={vendor.name + "-" + service.id}
                         >
@@ -179,7 +179,7 @@ class OneServicePage extends React.Component {
       </div>
     );
   }
-  storyCheck = stories => {
+  storyCheck = (stories) => {
     if (stories.length > 0) {
       return (
         <div>
@@ -188,7 +188,7 @@ class OneServicePage extends React.Component {
               style={{
                 background: "rgb(249, 251, 249)",
                 color: "#383838",
-                padding: 26
+                padding: 26,
               }}
             >
               {" "}
@@ -200,7 +200,7 @@ class OneServicePage extends React.Component {
       );
     }
   };
-  renderStories = stories => {
+  renderStories = (stories) => {
     if (stories.length === 0)
       return (
         <div className="text-center">
@@ -212,7 +212,7 @@ class OneServicePage extends React.Component {
         {/* <div className="tab-title-h4">
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
-        {Object.keys(stories).map(key => {
+        {Object.keys(stories).map((key) => {
           const story = stories[key];
           const date = new Date(story.created_at);
           return (
@@ -284,11 +284,11 @@ class OneServicePage extends React.Component {
     );
   };
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     serviceProviders: store.page.serviceProviders,
     testimonials: store.page.testimonials,
-    links: store.links
+    links: store.links,
   };
 };
 export default connect(mapStoreToProps, null)(OneServicePage);
