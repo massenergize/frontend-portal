@@ -162,7 +162,7 @@ export async function apiCallWithMedia(
   }
 
   const formData = new FormData();
-  Object.keys(dataToSend).map(i => {
+  Object.keys(dataToSend).forEach(i => {
     formData.append(i, dataToSend[i]);
   });
   params = {
