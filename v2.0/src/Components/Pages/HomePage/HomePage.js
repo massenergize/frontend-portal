@@ -52,6 +52,14 @@ class HomePage extends React.Component {
 			// 	data: this.props.graphsData ? this.props.graphsData.filter(data => { return data.name === 'EngagedHouseholdsData' })[0] : null
 			// }, 
 		]
+		if (comGoals && comGoals.target_carbon_footprint_reduction>0 ) {
+			graphs.push(
+				{
+					title: 'Carbon Reduction',
+					data: comGoals ? { target: comGoals.target_carbon_footprint_reduction, attained: comGoals.attained_carbon_footprint_reduction + comGoals.organic_attained_carbon_footprint_reduction} : null
+				},
+		)}
+
 		return (
 			<div className="boxed_wrapper" style={{ paddingTop: 91 }}>
 				{welcomeImagesData ?

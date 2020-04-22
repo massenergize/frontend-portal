@@ -99,6 +99,18 @@ class ImpactPage extends React.Component {
 										/>
 									</div>
 								</div>
+								{ goal && goal.target_carbon_footprint_reduction>0 ?
+								<div className="card raise mb-4"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
+
+									<div className="card-body mob-homepage-chart-h">
+										<CircleGraph
+											num={goal ? goal.attained_carbon_footprint_reduction + goal.organic_attained_carbon_footprint_reduction: 0} goal={goal ? goal.target_carbon_footprint_reduction : 0} label={"Carbon Reduction"} size={130}
+											colors={["#111111"]}
+										/>
+									</div>
+								</div>
+								:
+								null }
 							</div>
 							<div className="col-12 col-lg-8">
 								<PageTitle>Our Community's Impact</PageTitle>
