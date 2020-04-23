@@ -23,7 +23,6 @@ class HomePage extends React.Component {
 						<h3 className='text-center' style={{ marginBottom:20,color: 'lightgray' }}> Sorry, the page you are looking for, could not be found. <br />Please try again later, or use the links on the navigation bar </h3>
 						<p className='text-center'><a href={"http://"+window.location.host} className="mass-domain-link "  >Find My Community</a> </p>
 					</center> 
-
 				</div>
 			)
 		}
@@ -43,16 +42,8 @@ class HomePage extends React.Component {
 				title: 'Households Engaged',
 				data: comGoals ? { target: comGoals.target_number_of_households, attained: comGoals.attained_number_of_households + comGoals.organic_attained_number_of_households} : null
 			},
-			// {
-			// 	title: 'Actions Completed',
-			// 	data: this.props.graphsData ? this.props.graphsData.filter(data => { return data.name === 'ActionsCompletedData' })[0] : null
-			// },
-			// {
-			// 	title: 'Households Engaged',
-			// 	data: this.props.graphsData ? this.props.graphsData.filter(data => { return data.name === 'EngagedHouseholdsData' })[0] : null
-			// }, 
 		]
-		if (comGoals && comGoals.target_carbon_footprint_reduction>0 ) {
+		if (comGoals && comGoals.organic_attained_carbon_footprint_reduction && comGoals.target_carbon_footprint_reduction>0 ) {
 			graphs.push(
 				{
 					title: 'Carbon Reduction',
