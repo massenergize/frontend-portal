@@ -129,7 +129,7 @@ class TeamsPage extends React.Component {
 									<th>Actions / Household</th>
 									<th>
 										<Tooltip text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members" dir="left">
-											<span className="has-tooltip">Emissions Impact</span>
+											<span className="has-tooltip">Carbon Impact</span>
 										</Tooltip>
 									</th>
 									<th>Key Contact</th>
@@ -150,8 +150,7 @@ class TeamsPage extends React.Component {
 
 
 
-	renderTeamsData(teamsData) {
-		//console.log(teamsData)		
+	renderTeamsData(teamsData) {		
 		var teamsSorted = teamsData.slice(0);
 		for (let i = 0; i < teamsSorted.length; i++) {
 			let members = teamsSorted[i].members;
@@ -167,12 +166,6 @@ class TeamsPage extends React.Component {
 		});
 
 		return teamsSorted.map((obj, index) => {
-			this.goalsList(obj.team.id).then(json => {
-				if (json && json.success && json.data.length > 0) {
-					var c = json.data[0];
-					document.getElementById('carbo-' + obj.team.id).innerHTML = c;
-				}
-			});
 
 			const desc = obj.team.description.length > 70 ? obj.team.description.substr(0, 70) + "..." : obj.team.description;
 			return (
@@ -188,7 +181,7 @@ class TeamsPage extends React.Component {
 					<td>{obj.members}</td>
 					<td>{obj.actions_completed}</td>
 					<td>{obj.avrgActionsPerMember}</td>
-					<td id={'carbo-' + obj.team.id}>{obj.carbon_footprint_reduction}</td>
+					<td>{obj.carbon_footprint_reduction}</td>
 					{this.props.user ?
 						<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
 						:
