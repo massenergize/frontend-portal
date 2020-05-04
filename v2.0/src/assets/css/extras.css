@@ -1,4 +1,9 @@
 
+
+
+.team-btn-edit{
+  padding:0px 8px !important;
+}
 .make-me-dark{
   color:#373535 !important;
 }
@@ -814,7 +819,7 @@
 }
 
 .contact-admin-btn{
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;;
   background:#73626f; 
   border-radius: 5px;
@@ -823,7 +828,7 @@
   color:white;
 }
 .contact-admin-btn:hover{
-  background:green; 
+  background:#8dc63f; 
   color:white; 
   transition: .4s ease-in-out;
 }

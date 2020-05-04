@@ -132,8 +132,8 @@ class TeamsPage extends React.Component {
 											<span className="has-tooltip">Carbon Impact</span>
 										</Tooltip>
 									</th>
-									<th>Key Contact</th>
-									<th>Join Team</th>
+									<th>Contact</th>
+									<th>Join</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -183,7 +183,7 @@ class TeamsPage extends React.Component {
 					<td>{obj.avrgActionsPerMember}</td>
 					<td>{obj.carbon_footprint_reduction}</td>
 					{this.props.user ?
-						<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact Admin</button></td>
+						<td><button className="contact-admin-btn round-me" onClick={() => { this.setModalContent(obj.team.name, obj.team.description); this.setState({ contact_modal_toggled: true, current_team_id: obj.team.id }) }}>Contact</button></td>
 						:
 						<td>
 							<Link to={this.props.links.signin}>Sign In</Link> to contact admin
@@ -191,13 +191,16 @@ class TeamsPage extends React.Component {
 					}
 					{this.props.user ?
 						<td>
-							{this.inTeam(obj.team.id) ?
-								<button className='thm-btn red round-me' onClick={() => { this.leaveTeam(this.props.user, obj.team) }}><i className='fa fa-hand-peace-o'> </i> Leave</button>
-
-								:
-								<button className='thm-btn round-me' onClick={() => {
+              {this.inTeam(obj.team.id) ?
+              <Tooltip text="This will remove you from the team">
+								<button className='thm-btn red round-me team-btn-edit' onClick={() => { this.leaveTeam(this.props.user, obj.team) }}><i className='fa fa-trash'> </i></button>
+              </Tooltip>
+                :
+                <Tooltip text="This will add you to the team">
+								<button className='thm-btn round-me team-btn-edit' onClick={() => {
 									this.joinTeam(obj.team)
-								}}><i className='fa fa-user-plus' ></i> Join </button>
+								}}><i className='fa fa-user-plus' ></i> </button>
+                </Tooltip>
 							}
 
 						</td>

@@ -82,10 +82,11 @@ class StoryForm extends React.Component {
       );
     });
   }
-
+P
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;
+    console.log(string);
     this.setState({ preferredName: string });
   }
   removeTag(id) {
@@ -260,7 +261,7 @@ class StoryForm extends React.Component {
               <small> Preferred Name</small>
               {!this.state.anonymous ? (
                 <input
-                  value={this.state.preferredName}
+                  
                   onChange={event => this.handlePreferredName(event)}
                   type="text"
                   maxLength="15"

@@ -346,7 +346,7 @@ class Action extends React.Component {
                             </>
                           )}
                         </>
-                      ) : null}
+                      ) : null} 
                       <ChooseHHForm
                         aid={this.props.action.id}
                         status={this.state.status}

@@ -82,21 +82,19 @@ class OneServicePage extends React.Component {
                   </div>
                 ) : null}
                 <div className="ash-paper z-depth-1">
-                  <h6 className="make-me-dark">
+                  <h6 className="make-me-dark" style={{marginBottom:"5px !important"}}>
                     <b>
                       <i className="fa fa-phone fa-m-right"></i>{" "}
                     </b>{" "}
                     {phone}
                   </h6>
-                  <h6>
+                  <h6 style={{marginBottom:"5px !important"}}>
                     <b>
                       <i className="fa fa-envelope fa-m-right"></i>{" "}
                     </b>{" "}
                     {email}
                   </h6>
-                  <h6 style={{ marginBottom: 0 }} className="make-me-dark">
-                    {vendor.website ? <b>More Information</b> : null}
-                  </h6>
+                
                   {vendor.website ? (
                     <a
                       href={vendor.website}
@@ -104,7 +102,7 @@ class OneServicePage extends React.Component {
                       rel="noopener noreferrer"
                       style={{ color: "#f56d39" }}
                     >
-                      {"Visit Our Website"}
+                      <i className="fa fa-globe fa-m-right" ></i> {vendor.website}
                     </a>
                   ) : null}
                   {/* {vendor.key_contact.email && vendor.key_contact.name ? (
