@@ -41,8 +41,23 @@ class OneActionPage extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener("resize", this.chooseFontSize);
+    const { id } = this.props.match.params;
+    const actionResponse = await apiCall('/actions.info', { action_id: id})
+
+    if (actionResponse && !actionResponse.success) {
+      return;
+    }
+    if (actionResponse && actionResponse.success) {
+      await this.setStateAsync({ action: actionResponse.data });
+    }    
+  }
+
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve);
+    });
   }
 
   render() {
@@ -116,7 +131,7 @@ class OneActionPage extends React.Component {
     );
   }
 
-  async getMyAction() {
+  getMyAction() {
     const action = this.props.actions.filter(action => {
       return action.id === Number(this.props.match.params.id);
     })[0];
