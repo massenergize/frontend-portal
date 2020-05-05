@@ -49,10 +49,11 @@ class OneActionPage extends React.Component {
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
-
-    const action = this.props.actions.filter(action => {
-      return action.id === Number(this.props.match.params.id);
-    })[0];
+    var action = this.getMyAction();
+    //this.props.actions.filter(action => {
+    //  return action.id === Number(this.props.match.params.id);
+    //})[0];
+    console.log(action)
     if (!action) {
       return <Error404 />;
     }
@@ -115,11 +116,26 @@ class OneActionPage extends React.Component {
     );
   }
 
-  getMyAction() {
+  async getMyAction() {
     const action = this.props.actions.filter(action => {
       return action.id === Number(this.props.match.params.id);
     })[0];
-    if (action) return action;
+    if (action) {
+      console.log("first return")
+      return action;
+    }
+    await apiCall('actions.info', { action_id: this.props.match.params.id }).then(json => {
+          if (json.success) {
+            console.log("push action")
+            this.props.actions.push(json.data);
+          }
+        }).catch(err => this.setState({ error: err.message }))
+
+    const action1 = this.props.actions.filter(action1 => {
+      return action1.id === Number(this.props.match.params.id);
+    })[0];
+    if (action1) return action1;  
+    
     return null;
   }
 
@@ -333,6 +349,7 @@ class OneActionPage extends React.Component {
     const community = this.props.communityData
       ? this.props.communityData.community
       : null;
+    
     const login_link = community ? community.name : "";
     const stories = this.props.stories.filter(story => {
       if (story.action) {
