@@ -1,6 +1,11 @@
 
 
-
+.team-img{
+  height:60px !important; 
+  width:60px !important; 
+  object-fit: contain !important;
+ 
+}
 .team-btn-edit{
   padding:0px 8px !important;
 }

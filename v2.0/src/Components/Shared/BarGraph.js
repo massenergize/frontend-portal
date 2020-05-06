@@ -34,7 +34,7 @@ class BarGraph extends React.Component {
 				text: this.props.title,
 				style: {
 					fontSize: '28px',
-					fontFamily: "'Verdana', sans-serif",
+					fontFamily: "'Google Sans', sans-serif",
 					color: '#263238'
 				},
 			},
