@@ -37,38 +37,42 @@ class OneActionPage extends React.Component {
       showTestimonialLink: false,
       numberToShow: 3,
       tab: "description",
-      question: null
+      question: null,
+      action: null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  async componentDidMount() {
-    window.addEventListener("resize", this.chooseFontSize);
-    const { id } = this.props.match.params;
-    const actionResponse = await apiCall('/actions.info', { action_id: id})
 
-    if (actionResponse && !actionResponse.success) {
-      return;
-    }
-    if (actionResponse && actionResponse.success) {
-      await this.setStateAsync({ action: actionResponse.data });
-    }    
+  componentDidMount() {
+    window.addEventListener("resize", this.chooseFontSize);
+
+    console.log("componentDidMount");
+    const { id } = this.props.match.params;
+    this.fetch(id)
   }
 
-  setStateAsync(state) {
-    return new Promise((resolve) => {
-      this.setState(state, resolve);
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params !== prevProps.match.params) {
+      const { id } = this.props.match.params;
+      this.fetch(id);
+    }
+  }
+
+  fetch(id) {
+    apiCall('actions.info', { action_id: id}).then(json => {
+      if (json.success) {
+        //console.log(json.data)
+        this.setState({ action: json.data })
+      }
+    }).catch(err => this.setState({ error: err.message }))
   }
 
   render() {
-    if (!this.props.actions) {
-      return <LoadingCircle />;
+    const action = this.getMyAction();
+    if (!action) {
+        return <LoadingCircle />;
     }
-    var action = this.getMyAction();
-    //this.props.actions.filter(action => {
-    //  return action.id === Number(this.props.match.params.id);
-    //})[0];
-    console.log(action)
+
     if (!action) {
       return <Error404 />;
     }
@@ -132,26 +136,7 @@ class OneActionPage extends React.Component {
   }
 
   getMyAction() {
-    const action = this.props.actions.filter(action => {
-      return action.id === Number(this.props.match.params.id);
-    })[0];
-    if (action) {
-      console.log("first return")
-      return action;
-    }
-    await apiCall('actions.info', { action_id: this.props.match.params.id }).then(json => {
-          if (json.success) {
-            console.log("push action")
-            this.props.actions.push(json.data);
-          }
-        }).catch(err => this.setState({ error: err.message }))
-
-    const action1 = this.props.actions.filter(action1 => {
-      return action1.id === Number(this.props.match.params.id);
-    })[0];
-    if (action1) return action1;  
-    
-    return null;
+    return this.state.action;
   }
 
   /* getParticularCollection(name) {
