@@ -40,29 +40,30 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
     };
+    this.loading = false;
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("resize", this.chooseFontSize);
 
-    console.log("componentDidMount");
     const { id } = this.props.match.params;
     this.fetch(id)
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params !== prevProps.match.params) {
+  componentDidUpdate() {
+    if (!this.loading && this.props.match.params !== this.state.action.id) {
       const { id } = this.props.match.params;
       this.fetch(id);
     }
   }
 
   fetch(id) {
+    this.loading = true;
     apiCall('actions.info', { action_id: id}).then(json => {
       if (json.success) {
-        //console.log(json.data)
         this.setState({ action: json.data })
+        this.loading = false;
       }
     }).catch(err => this.setState({ error: err.message }))
   }
