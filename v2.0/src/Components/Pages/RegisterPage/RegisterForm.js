@@ -58,7 +58,7 @@ class RegisterFormBase extends React.Component {
 		if (this.props.auth.isEmpty) {
 			page = 1;
 		} else {
-			page = 2;
+			page = 2; 
 		}
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];

@@ -139,11 +139,6 @@ class LoginFormBase extends React.Component {
 				.signInWithPopup(facebookProvider)
 				.then(auth => {
 					this.fetchMassToken(auth.user._lat, auth.user.email);
-					// this.fetchAndLogin(auth.user.email).then(success => {
-					// 	if (success) {
-					// 		console.log('yay')
-					// 	}
-					// });
 					this.setState({ ...INITIAL_STATE });
 				})
 				.catch(err => {
