@@ -71,8 +71,8 @@ class ImpactPage extends React.Component {
 				graph2Series[0].data.push(el.value);
 				graph2Series[1].data.push(el.reported_value);
 			}
-		})
-
+    });
+ 
 		return (
 			<>
 
@@ -111,7 +111,7 @@ class ImpactPage extends React.Component {
 								</div>
 								:
 								null }
-							</div>
+							</div> 
 							<div className="col-12 col-lg-8">
 								<PageTitle>Our Community's Impact</PageTitle>
 								<div className="card rounded-0 mb-4" style={{ marginTop: 15 }}>
