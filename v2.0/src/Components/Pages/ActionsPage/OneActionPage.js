@@ -373,6 +373,7 @@ class OneActionPage extends React.Component {
                   {action.title}
                 </h2>
               </div>
+              {/* displays the action's info: impact, difficulty, tags and categories*/}
               <div style={{ padding: 15, position: "relative" }}>
                 <div className="" style={{ display: "inline-block" }}>
                   <Tooltip
@@ -391,7 +392,8 @@ class OneActionPage extends React.Component {
                 </div>
               </div>
 
-              {/* displays the action's info: impact, difficulty, tags and categories*/}
+              { /* displays ToDo and Done buttons if action is available in this community and not deleted*/
+              !action.is_deleted && action.community.id === community.id ? (
               <div
                 className="clearfix"
                 style={{
@@ -456,6 +458,11 @@ class OneActionPage extends React.Component {
                   </p>
                 ) : null}
               </div>
+            ) : (
+              <div classname="cool-font">
+                This action is not available.  It was from a different community or was deleted.          
+              </div>
+            )}
             </div>
             {/* action image */}
             <div className="col-lg-6 col-md-12">
