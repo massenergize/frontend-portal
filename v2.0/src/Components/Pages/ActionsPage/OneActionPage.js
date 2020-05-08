@@ -359,6 +359,9 @@ class OneActionPage extends React.Component {
       return false;
     });
 
+    // actions are available if they aren't deleted and the action community is same as the current community (assuming we know it)
+    const action_available = action.is_deleted ? false : (community ? community.id === action.community.id : true);
+
     return (
       <div>
         <div className="product-content-box">
@@ -393,7 +396,7 @@ class OneActionPage extends React.Component {
               </div>
 
               { /* displays ToDo and Done buttons if action is available in this community and not deleted*/
-              !action.is_deleted && action.community.id === community.id ? (
+              action_available ? (
               <div
                 className="clearfix"
                 style={{
@@ -459,7 +462,7 @@ class OneActionPage extends React.Component {
                 ) : null}
               </div>
             ) : (
-              <div classname="cool-font">
+              <div className="cool-font">
                 This action is not available.  It was from a different community or was deleted.          
               </div>
             )}
