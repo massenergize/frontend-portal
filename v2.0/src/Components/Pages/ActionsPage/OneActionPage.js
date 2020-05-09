@@ -37,22 +37,43 @@ class OneActionPage extends React.Component {
       showTestimonialLink: false,
       numberToShow: 3,
       tab: "description",
-      question: null
+      question: null,
+      action: null,
     };
+    this.loading = false;
     this.handleChange = this.handleChange.bind(this);
   }
+
   componentDidMount() {
     window.addEventListener("resize", this.chooseFontSize);
+
+    const { id } = this.props.match.params;
+    this.fetch(id)
+  }
+
+  componentDidUpdate() {
+    if (!this.loading && this.props.match.params !== this.state.action.id) {
+      const { id } = this.props.match.params;
+      this.fetch(id);
+    }
+  }
+
+  fetch(id) {
+    this.loading = true;
+    apiCall('actions.info', { action_id: id}).then(json => {
+      if (json.success) {
+        this.setState({ action: json.data })
+        this.loading = false;
+      }
+    }).catch(err => this.setState({ error: err.message }))
   }
 
   render() {
-    if (!this.props.actions) {
-      return <LoadingCircle />;
+    const action = this.getMyAction();
+    if (!action) {
+        return <LoadingCircle />;
     }
 
-    const action = this.props.actions.filter(action => {
-      return action.id === Number(this.props.match.params.id);
-    })[0];
     if (!action) {
       return <Error404 />;
     }
@@ -116,11 +137,7 @@ class OneActionPage extends React.Component {
   }
 
   getMyAction() {
-    const action = this.props.actions.filter(action => {
-      return action.id === Number(this.props.match.params.id);
-    })[0];
-    if (action) return action;
-    return null;
+    return this.state.action;
   }
 
   /* getParticularCollection(name) {
@@ -333,6 +350,7 @@ class OneActionPage extends React.Component {
     const community = this.props.communityData
       ? this.props.communityData.community
       : null;
+    
     const login_link = community ? community.name : "";
     const stories = this.props.stories.filter(story => {
       if (story.action) {
@@ -340,6 +358,9 @@ class OneActionPage extends React.Component {
       }
       return false;
     });
+
+    // actions are available if they aren't deleted and the action community is same as the current community (assuming we know it)
+    const action_available = action.is_deleted ? false : (community ? community.id === action.community.id : true);
 
     return (
       <div>
@@ -355,6 +376,7 @@ class OneActionPage extends React.Component {
                   {action.title}
                 </h2>
               </div>
+              {/* displays the action's info: impact, difficulty, tags and categories*/}
               <div style={{ padding: 15, position: "relative" }}>
                 <div className="" style={{ display: "inline-block" }}>
                   <Tooltip
@@ -373,7 +395,8 @@ class OneActionPage extends React.Component {
                 </div>
               </div>
 
-              {/* displays the action's info: impact, difficulty, tags and categories*/}
+              { /* displays ToDo and Done buttons if action is available in this community and not deleted*/
+              action_available ? (
               <div
                 className="clearfix"
                 style={{
@@ -438,6 +461,11 @@ class OneActionPage extends React.Component {
                   </p>
                 ) : null}
               </div>
+            ) : (
+              <div className="cool-font">
+                This action is not available.  It was from a different community or was deleted.          
+              </div>
+            )}
             </div>
             {/* action image */}
             <div className="col-lg-6 col-md-12">

@@ -212,7 +212,7 @@ class TeamsPage extends React.Component {
         <tr key={index.toString()}>
           {logo ? (
             <td>
-              <img src={logo} className="team-img"></img>
+              <img src={logo} alt="" className="team-img"></img>
             </td>
           ) : (
             <td></td>
