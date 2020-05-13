@@ -6,6 +6,10 @@
   object-fit: contain !important;
  
 }
+
+.fake-show{
+  opacity: 0 !important;
+}
 .team-btn-edit{
   padding:0px 8px !important;
 }
@@ -83,6 +87,18 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .more-hyperlink{
+    font-size:15px !important;
+    font-weight: 700;
+    margin:3;
+    cursor:pointer;
+    color:#f67b61;
+  }
+  .more-hyperlink:hover{
+    color:#8dc63f; 
+    transition: .4s;
+  }
+  
   .mob-homepage-chart-h{height:250px !important}
   
   .done-it-correction{
@@ -145,6 +161,19 @@
 @media only screen and ( max-width: 785px){
 
 
+
+  .more-hyperlink{
+    font-size:17px !important;
+    font-weight: 700;
+    margin:3;
+    cursor:pointer;
+    color:#f67b61;
+  }
+  .more-hyperlink:hover{
+    color:#8dc63f; 
+    transition: .4s;
+  }
+  
   .green-done-it-correction{
     position: absolute !important; 
     right:30% !important;
@@ -767,16 +796,6 @@
   cursor:pointer;
 }
 
-.more-hyperlink{
-  font-size:15px !important;
-  font-weight: 700;
-  margin:3;
-  cursor:pointer;
-}
-.more-hyperlink:hover{
-  color:green; 
-  transition: .4s;
-}
 
 .modal-box{
   position: fixed;

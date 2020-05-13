@@ -5,6 +5,7 @@
 /** USER ACTIONS */
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const SHOW_REG ='SHOW_REG';
 
 export const LOAD_TODO = 'LOAD_TODO'
 export const ADD_TO_TODO = 'ADD_TO_TODO'

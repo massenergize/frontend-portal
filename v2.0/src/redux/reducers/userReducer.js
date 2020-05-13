@@ -16,18 +16,25 @@ import {
   ADD_COMMUNITY,
   REMOVE_COMMUNITY,
   JOIN_TEAM,
-  LEAVE_TEAM
+  LEAVE_TEAM,
+  SHOW_REG
 } from '../actions/types';
 
 const initialState = {
-  info: null,
+  info: undefined,
   todo: null,
   done: null,
+  show_reg_status: false
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
     /**************************/
+    case SHOW_REG:
+      return {
+        ...state, 
+        show_reg_status: action.payload
+      }
     case LOGIN:
       return {
         ...state,

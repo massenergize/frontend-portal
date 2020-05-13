@@ -160,7 +160,8 @@ class TeamsPage extends React.Component {
             <Table bordered hover responsive className="teams-table">
               <thead>
                 <tr>
-                  <th></th>
+                  <th className="fake-show">Team Image </th>
+                 
                   <th>Team Name</th>
                   <th>Households</th>
                   <th>Actions Completed</th>
@@ -217,7 +218,7 @@ class TeamsPage extends React.Component {
           ) : (
             <td></td>
           )}
-
+ 
           <td>
             {obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">

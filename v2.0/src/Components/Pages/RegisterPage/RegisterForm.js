@@ -9,7 +9,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { postJson, apiCall, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
+import { reduxLogin, reduxLoadDone, reduxLoadTodo,reduxShowReg } from '../../../redux/actions/userActions';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import LoadingCircle from '../../Shared/LoadingCircle';
@@ -42,7 +42,7 @@ class RegisterFormBase extends React.Component {
 		this.state = {
 			...INITIAL_STATE,
 			persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
-			form: props.form ? props.form : 1
+      form: props.form ? props.form : 1 
 		}
 
 		this.onChange = this.onChange.bind(this);
@@ -62,10 +62,20 @@ class RegisterFormBase extends React.Component {
 		}
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
-		
+    
+    //Set registration value to true when the user is actually not registered
+    if(this.props.user.info === null){
+      this.props.reduxShowReg(true);
+    }
+
 		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified && this.props.user.accepts_terms_and_conditions) {
 			return <Redirect to={this.props.links.profile} />;
-		}
+    }
+
+    // Just show a loading bar when the real User value hasnt come through yet instead of showing the registration page
+    if(this.props.user.info === undefined && this.props.user.show_reg_status === false){
+      return <LoadingCircle />
+    }
 		return (
 			<>
 				<div>
@@ -153,7 +163,7 @@ class RegisterFormBase extends React.Component {
 					
 					</div>
 		
-					<p>Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>
+					<p>Already have an account? <Link className="energize-link"to={this.props.links.signin}>Sign In</Link></p>
 				</div>
 			</div>
 		);
@@ -476,4 +486,4 @@ const mapStoreToProps = (store) => {
 		community: store.page.community,
 	}
 }
-export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);
+export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo,reduxShowReg })(RegisterForm);
