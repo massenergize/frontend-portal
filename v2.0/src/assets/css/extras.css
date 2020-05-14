@@ -1,5 +1,17 @@
 
 
+.req-team-btn{
+  background:#f67b61; 
+  border-width: 0px !important;
+  padding:10px 32px; 
+  margin-bottom: 17px;
+}
+
+.req-team-btn:hover{
+  background:#8dc63f; 
+  transition: .4s ease-in-out;
+}
+
 .team-img{
   height:60px !important; 
   width:60px !important; 
@@ -162,6 +174,14 @@
 
 
 
+  .mob-team-title{
+    font-size:16px !important; 
+    font-weight: 600;
+  }
+
+  .mob-team-text{
+    font-size:15px !important;
+  }
   .more-hyperlink{
     font-size:17px !important;
     font-weight: 700;
