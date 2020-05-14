@@ -38,6 +38,29 @@ class OneServicePage extends React.Component {
     );
   }
 
+  changeToAbsoluteURL(string) {
+    const prefix = "http://";
+    var webbie = string ? string : null;
+    if (webbie) {
+      var temp,first_letter;
+      if(webbie.includes("://")){
+        //it means its already an absolute url 
+        return webbie ;
+      }
+      first_letter = webbie[0]; 
+      if(first_letter ==="/"){
+        //Now check if website starts with "/"(admin put a relative path of some website)
+        //remove the beginning slash 
+        temp = webbie.substr(1,webbie.length -1)
+        return prefix+temp;
+      }
+      //if its just a raw link, just add the prefix 
+
+      return prefix + webbie;
+    }
+
+    return webbie;
+  }
   renderVendor(vendor) {
     const stories = this.props.testimonials.filter((story) => {
       return (
@@ -50,6 +73,9 @@ class OneServicePage extends React.Component {
     //   vendor.key_contact.email && vendor.key_contact.name
     //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
     //     : "Not Provided";
+
+
+  
     return (
       <div className="col-12" key={vendor.vendor}>
         <div
@@ -82,27 +108,35 @@ class OneServicePage extends React.Component {
                   </div>
                 ) : null}
                 <div className="ash-paper z-depth-1">
-                  <h6 className="make-me-dark" style={{marginBottom:"5px !important"}}>
+                  <h6
+                    className="make-me-dark"
+                    style={{ marginBottom: "5px !important" }}
+                  >
                     <b>
                       <i className="fa fa-phone fa-m-right"></i>{" "}
                     </b>{" "}
                     {phone}
                   </h6>
-                  <h6 style={{marginBottom:"5px !important"}}>
+                  <a
+                    style={{ marginBottom: "5px !important", color: "black" }}
+                    href={`mailto:${email}`}
+                  >
                     <b>
                       <i className="fa fa-envelope fa-m-right"></i>{" "}
                     </b>{" "}
                     {email}
-                  </h6>
-                
+                  </a>
+
                   {vendor.website ? (
                     <a
-                      href={vendor.website}
-                      target="_blank"
+                      onClick={() => {
+                        window.open(this.changeToAbsoluteURL(vendor.website), "_blank");
+                      }}
                       rel="noopener noreferrer"
-                      style={{ color: "#f56d39" }}
+                      style={{ color: "#f56d39", cursor: "pointer" }}
                     >
-                      <i className="fa fa-globe fa-m-right" ></i> {vendor.website}
+                      <i className="fa fa-globe fa-m-right"></i>{" "}
+                      {vendor.website}
                     </a>
                   ) : null}
                   {/* {vendor.key_contact.email && vendor.key_contact.name ? (
