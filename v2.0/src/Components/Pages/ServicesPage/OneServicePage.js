@@ -108,24 +108,26 @@ class OneServicePage extends React.Component {
                   </div>
                 ) : null}
                 <div className="ash-paper z-depth-1">
-                  <h6
-                    className="make-me-dark"
-                    style={{ marginBottom: "5px !important" }}
+                  
+                  
+                  <a
+                    style={{ marginBottom: "6px", color: "black" }}
+                    href={`callto:${phone}`}
                   >
                     <b>
-                      <i className="fa fa-phone fa-m-right"></i>{" "}
+                      <i className="fa fa-envelope fa-m-right"></i>{" "}
                     </b>{" "}
                     {phone}
-                  </h6>
+                  </a><br/>
                   <a
-                    style={{ marginBottom: "5px !important", color: "black" }}
+                    style={{ marginBottom: "6px", color: "black" }}
                     href={`mailto:${email}`}
                   >
                     <b>
                       <i className="fa fa-envelope fa-m-right"></i>{" "}
                     </b>{" "}
                     {email}
-                  </a>
+                  </a><br/>
 
                   {vendor.website ? (
                     <a
@@ -136,7 +138,7 @@ class OneServicePage extends React.Component {
                       style={{ color: "#f56d39", cursor: "pointer" }}
                     >
                       <i className="fa fa-globe fa-m-right"></i>{" "}
-                      {vendor.website}
+                      {vendor.website.length >33 ? vendor.website.substr(0,33)+"...": vendor.website}
                     </a>
                   ) : null}
                   {/* {vendor.key_contact.email && vendor.key_contact.name ? (
