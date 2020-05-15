@@ -86,7 +86,7 @@ class ImpactPage extends React.Component {
 								<div className="card  mb-4 raise"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
 									<div className="card-body mob-homepage-chart-h">
 										<CircleGraph
-											num={goal ? goal.attained_number_of_households + goal.organic_attained_number_of_households : 0} goal={goal ? goal.target_number_of_households : 0} label={'Households Engaged'} size={130}
+											num={goal ? goal.attained_number_of_households + goal.organic_attained_number_of_households : 0} goal={goal ? goal.target_number_of_households : 0} label={'Households Engaged'} size={100}
 											colors={["#428a36"]}
 										/>
 									</div>
@@ -94,7 +94,7 @@ class ImpactPage extends React.Component {
 								<div className="card raise mb-4"  style={{borderRadius:10,background:'transparent',borderColor:'#ecf3ee'}}>
 									<div className="card-body mob-homepage-chart-h">
 										<CircleGraph
-											num={goal ? goal.attained_number_of_actions + goal.organic_attained_number_of_actions: 0} goal={goal ? goal.target_number_of_actions : 0} label={"Actions Completed"} size={130}
+											num={goal ? goal.attained_number_of_actions + goal.organic_attained_number_of_actions: 0} goal={goal ? goal.target_number_of_actions : 0} label={"Actions Completed"} size={100}
 											colors={["#FB5521"]}
 										/>
 									</div>
@@ -104,7 +104,7 @@ class ImpactPage extends React.Component {
 
 									<div className="card-body mob-homepage-chart-h">
 										<CircleGraph
-											num={goal ? goal.attained_carbon_footprint_reduction + goal.organic_attained_carbon_footprint_reduction: 0} goal={goal ? goal.target_carbon_footprint_reduction : 0} label={"Carbon Reduction"} size={130}
+											num={goal ? goal.attained_carbon_footprint_reduction + goal.organic_attained_carbon_footprint_reduction: 0} goal={goal ? goal.target_carbon_footprint_reduction : 0} label={"Carbon Reduction"} size={100}
 											colors={["#111111"]}
 										/>
 									</div>
