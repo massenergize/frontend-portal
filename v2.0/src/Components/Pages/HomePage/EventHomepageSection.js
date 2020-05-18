@@ -42,9 +42,10 @@ class Events extends React.Component {
             <div className="z-depth-1"style={{borderRadius:15,height:415}}>
               <img alt="IMG" src={img} className="home-events-img" />
               <div style={{ padding: 11,paddingLeft:17,height:120 }}>
-                <h6 className="zero-margin-btm">{ev_name}</h6>
+                <h6 className="zero-margin-btm"><b>{ev_name}</b></h6>
+                <small style={{fontSize:11}} className="text text-default text-sm-right">{event.featured_summary}</small>
                 {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
-               
+                <br/>
                 {location ?
                   <small style={{fontSize:11}} className="text text-default text-sm-right"> <b>{location.unit? `, ${location.unit}` : ''} </b> <b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}</small>
                   :
