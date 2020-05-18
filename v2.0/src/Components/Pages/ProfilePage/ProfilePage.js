@@ -269,7 +269,7 @@ class ProfilePage extends React.Component {
 								</>
 								: null
 							}
-							<Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'delete' })}>Delete Account</Dropdown.Item>
+							<Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'delete' })}>Delete Profile</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
 					&nbsp;&nbsp;

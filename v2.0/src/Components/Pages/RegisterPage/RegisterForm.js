@@ -138,7 +138,7 @@ class RegisterFormBase extends React.Component {
 						{error && <p style={{ color: "red" }}> {error} </p>}
 						<div className="clearfix">
 							<div className="form-group pull-left">
-								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Account</button>
+								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Profile</button>
 							</div>
 						</div>
 					</form>
@@ -154,7 +154,7 @@ class RegisterFormBase extends React.Component {
 					
 					</div>
 		
-					<p>Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>				</div>
+					<p>Already have a profile? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>				</div>
 			</div>
 		);
 	}
@@ -183,7 +183,7 @@ class RegisterFormBase extends React.Component {
 						</>
 						:
 						<>
-							<center><p style={{ color: 'red' }}> Please finish creating your account before you continue</p></center>
+							<center><p style={{ color: 'red' }}> Please finish creating your profile before you continue</p></center>
 							<div className="form-group">
 								<span className="adon-icon"><span className="fa fa-user"></span></span>
 								<input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
@@ -283,10 +283,10 @@ class RegisterFormBase extends React.Component {
 						<div className="form-group pull-left">
 							{this.props.auth.emailVerified ?
 								<button type="submit" className="thm-btn" >
-									Finish Creating Account
+									Finish Creating Profile
                                 </button> : null
 							}
-							<Tooltip text='Cancelling in the middle of registration will delete your account'>
+							<Tooltip text='Cancelling in the middle of registration will delete your profile'>
 								<button onClick={this.deleteFirebaseAccount} style={{marginTop:10}} className="raise round-me thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
