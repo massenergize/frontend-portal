@@ -82,7 +82,6 @@ class StoryForm extends React.Component {
       );
     });
   }
-
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;

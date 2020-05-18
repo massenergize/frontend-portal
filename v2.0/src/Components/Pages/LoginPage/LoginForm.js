@@ -63,8 +63,7 @@ class LoginFormBase extends React.Component {
 						</div>
 					</form>
 					<p><button className=" energize-link" onClick={this.forgotPassword} > Forgot Password </button></p>
-					<p> Don't have an account? <Link className="energize-link" to={this.props.links.signup}>Register Here</Link> </p>
-				</div>
+					<p> Don't have an account? <Link className="energize-link" to={this.props.links.signup}>Register Here</Link> </p>				</div>
 			</div >
 		);
 	}

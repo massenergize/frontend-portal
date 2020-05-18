@@ -20,9 +20,17 @@ import {
   ADD_COMMUNITY, 
   REMOVE_COMMUNITY,
   JOIN_TEAM,
-  LEAVE_TEAM
+  LEAVE_TEAM,
+  SHOW_REG
 } from './types'
 
+/** used to identify weather or not the registration page should be shown or not */
+export const reduxShowReg = (value) => dispatch => {
+    return dispatch({
+      type: SHOW_REG,
+      payload: value
+    });
+}
 /** stores the user data when a user logs in */
 export const reduxLogin = (user) => dispatch => {
     return dispatch({

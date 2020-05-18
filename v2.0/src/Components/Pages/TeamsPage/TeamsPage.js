@@ -114,6 +114,7 @@ class TeamsPage extends React.Component {
     }
   };
   render() {
+    
     const teams = this.props.teamsPage;
     if (teams === null) {
       return (
@@ -150,6 +151,7 @@ class TeamsPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div className="p-5" style={{ height: window.screen.height - 120 }}>
             <PageTitle>Teams in this Community</PageTitle>
+           <center> <button  onClick = {()=>{window.open(this.props.links.contactus,"_blank")}}className="btn btn-success round-me req-team-btn raise">Request Team Creation</button></center>
             <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
@@ -160,7 +162,8 @@ class TeamsPage extends React.Component {
             <Table bordered hover responsive className="teams-table">
               <thead>
                 <tr>
-                  <th></th>
+                  <th className="fake-show">Team Image </th>
+                 
                   <th>Team Name</th>
                   <th>Households</th>
                   <th>Actions Completed</th>
@@ -217,7 +220,7 @@ class TeamsPage extends React.Component {
           ) : (
             <td></td>
           )}
-
+ 
           <td>
             {obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">
@@ -240,6 +243,7 @@ class TeamsPage extends React.Component {
           <td>{obj.carbon_footprint_reduction}</td>
           {this.props.user ? (
             <td>
+              <center>
               <button
                 className="contact-admin-btn round-me"
                 onClick={() => {
@@ -252,6 +256,7 @@ class TeamsPage extends React.Component {
               >
                 Contact
               </button>
+              </center>
             </td>
           ) : (
             <td>
