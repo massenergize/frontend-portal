@@ -17,12 +17,6 @@ function hasTimeInterval(date1, date2) {
     return date1.getHours() !== 0 && date2.getHours() !== 0;
 }
 
-
-/** questions for date formatting stuff:
-  - 3:00pm or 3pm?
-  - adding 3-letter day code when same day?
- */
-
 /**
  * returns a formatted date string which varies depending on the relationship between provided dates
  * @param startDate 
