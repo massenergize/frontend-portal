@@ -9,7 +9,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Funnel from './Funnel';
 import Error404 from './../Errors/404';
 import notFound from './not-found.jpg';
-import { dateFormat } from '../../Utils';
+import { dateFormatString, locationFormatJSX } from '../../Utils';
 
 
 /**
@@ -154,7 +154,7 @@ class EventsPage extends React.Component {
 		}
 		if (events) {
 			return events.map(event => {
-				const dateString = dateFormat(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
+				const dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 				const location = event.location;
 				return (
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
@@ -182,7 +182,7 @@ class EventsPage extends React.Component {
 									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											<b>{location.address? `${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
+                      {locationFormatJSX(location)}
 										</li>
 										:
 										null
