@@ -3,7 +3,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import notFound from './not-found.jpg';
-import { dateFormatTuple } from '../../Utils';
+import { dateFormatStringTuple, locationFormatJSX } from '../../Utils';
 
 class OneEventPage extends React.Component {
 	/**
@@ -36,7 +36,7 @@ class OneEventPage extends React.Component {
 	renderEvent(event) {
 		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
         let startDate, endDate;
-        [startDate, endDate] = dateFormatTuple(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
+        [startDate, endDate] = dateFormatStringTuple(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 		const location = event.location;
 
 		return (
@@ -69,7 +69,7 @@ class OneEventPage extends React.Component {
 											<li >
 												{/* House Number, Street Name, Town, State */}
 												<i className="fa fa-map-marker" />
-												<b>Venue:</b>  <span className="make-me-dark"><b>{location.unit? `, ${location.unit}` : ''} </b> <b>{location.address? `, ${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}  </span>
+                                                <b>Venue:</b>  <span className="make-me-dark">{locationFormatJSX(location)}</span>
 											</li>
 											:
 											null

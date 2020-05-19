@@ -1,4 +1,5 @@
-import * as moment from 'moment';
+import * as moment from 'moment'
+import React from 'react'
 
 function sameYear(date1, date2) {
     return date1.getFullYear() === date2.getFullYear();
@@ -17,7 +18,7 @@ function hasTimeInterval(date1, date2) {
 }
 
 
-/** Details for consideration:
+/** questions for date formatting stuff:
   - 3:00pm or 3pm?
   - adding 3-letter day code when same day?
  */
@@ -27,7 +28,7 @@ function hasTimeInterval(date1, date2) {
  * @param startDate 
  * @param endDate 
  */
-export function dateFormat(startDate, endDate) {
+export function dateFormatString(startDate, endDate) {
 
     const startDateMoment = moment(startDate);
     const endDateMoment = moment(endDate);
@@ -69,7 +70,25 @@ export function dateFormat(startDate, endDate) {
  * @param startDate 
  * @param endDate 
  */
-export function dateFormatTuple(startDate, endDate) {
+export function dateFormatStringTuple(startDate, endDate) {
     const format = "MMMM Do YYYY, h:mm a";
     return [moment(startDate).format(format), moment(endDate).format(format)];
+}
+
+/**
+ * returns JSX-formatted version of the provided date
+ * @param location
+ */
+export function locationFormatJSX(location) {
+
+    let firstLine = location.unit ? `${location.unit}, ${location.address}`
+        : `${location.address}`;
+
+    return (
+        <span>
+            <b>{firstLine}</b>
+            {location.city ? `, ${location.city}` : ''}
+            {location.state ? `, ${location.state}` : ''}
+        </span>
+    );
 }
