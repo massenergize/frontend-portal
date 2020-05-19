@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as moment from 'moment';
 import defaultImg from './../../../../src/assets/images/blog/i9.jpg';
+import { dateFormat } from '../../Utils';
+
 /**
  * Events section displays upcoming events,
  * @props
@@ -30,11 +31,8 @@ class Events extends React.Component {
     if (events.length !== 0) {
       return events.map((event, index) => {
         const ev_name = event.name.length > 40 ? event.name.substring(0,35) +"..." : event.name;
-        const format = "MMMM Do YYYY, h:mm a";
-				const date = new Date(event.start_date_and_time);
-				const endDate = new Date(event.end_date_and_time);
-				const textyStart = moment(date).format(format);
-				const textyEnd = moment(endDate).format(format);
+          const dateString = dateFormat(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
+				
         const location = event.location;
         const img = event.image.url ? event.image.url : defaultImg;
         return (
@@ -51,7 +49,7 @@ class Events extends React.Component {
                   :
                   null
                 }
-                <p style={{fontSize:12}}className="text text-success zero-margin-btm">{`${textyStart} - ${textyEnd}`}</p>
+                <p style={{fontSize:12}}className="text text-success zero-margin-btm">{dateString}</p>
               </div>
             </div>
           </article>
