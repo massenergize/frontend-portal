@@ -112,7 +112,7 @@ class OneServicePage extends React.Component {
                   
                   <a
                     style={{ marginBottom: "6px", color: "black" }}
-                    href={`callto:${phone}`}
+                    href={`tel:${phone}`}
                   >
                     <b>
                       <i className="fa fa-envelope fa-m-right"></i>{" "}
