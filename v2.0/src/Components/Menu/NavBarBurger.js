@@ -153,7 +153,12 @@ class NavBarBurger extends React.Component {
 		const { links } = this.props;
 		return Object.keys(navLinks).map(key => {
 			var navLink = navLinks[key];
-			if (navLink.children) {
+            if (navLink.children) {
+                
+                const CustomNavLink = React.forwardRef((props, ref) => (
+                    <Link ref={ref} className="cool-font" to="" onClick={e => { e.preventDefault(); props.onClick(e); }}> {props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>)
+                );
+
 				return (
 					<li className="d-flex flex-column justify-content-center" key={navLink.name}>
 						<Dropdown onSelect={() => null}>
@@ -198,7 +203,16 @@ class NavBarBurger extends React.Component {
 			borderRadius: "0",
 			padding: "0",
 		};
-		if (auth.uid && user.info) {
+        if (auth.uid && user.info) {
+            
+            const ProfileBtnDropdown = React.forwardRef((props, ref) => (
+                < button ref={ref} className=" float-right new-sign-in raise cool-font" onClick={e => { e.preventDefault(); props.onClick(e); }} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
+                    {/* <i className="fa fa-user" />{'\u00A0'} */}
+                    {props.userName}
+                    <span className="fa fa-angle-down text-white ml-1"></span>
+                </button >)
+            );
+
 			return (
 				<Dropdown onSelect={() => null} className="d-flex">
 					<Dropdown.Toggle as={ProfileBtnDropdown} userName={user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
@@ -229,51 +243,6 @@ const mapStoreToProps = (store) => {
 }
 export default connect(mapStoreToProps, { reduxLogout })(withFirebase(NavBarBurger));
 // export default NavBarBurger;
-
-class ProfileBtnDropdown extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-		this.handleClick = this.handleClick.bind(this);
-	}
-	handleClick(e) {
-		e.preventDefault();
-
-		this.props.onClick(e);
-	}
-
-	render() {
-		return (
-			<button className=" float-right new-sign-in raise cool-font" onClick={this.handleClick} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
-				{/* <i className="fa fa-user" />{'\u00A0'} */}
-				{this.props.userName}
-				<span className="fa fa-angle-down text-white ml-1"></span>
-			</button>
-		);
-	}
-}
-
-/* For Navbar (Normal) Dropdown Link */
-class CustomNavLink extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick(e) {
-		e.preventDefault();
-
-		this.props.onClick(e);
-	}
-
-	render() {
-		return (
-			// <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
-			<Link className="cool-font" to="" onClick={this.handleClick}>{this.props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>
-			// </li>
-		);
-	}
-}
 
 // ======================== BURGERED vvv =========================== //
 
