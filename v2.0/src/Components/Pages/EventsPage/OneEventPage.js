@@ -2,8 +2,9 @@ import React from 'react'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import * as moment from 'moment';
 import notFound from './not-found.jpg';
+import { dateFormatTuple } from '../../Utils';
+
 class OneEventPage extends React.Component {
 	/**
 	* renders a single event from the passes id prop 
@@ -34,11 +35,7 @@ class OneEventPage extends React.Component {
 
 	renderEvent(event) {
 		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
-		const format = "MMMM Do YYYY, h:mm a";
-		const date = new Date(event.start_date_and_time);
-		const endDate = new Date(event.end_date_and_time);
-		const textyStart = moment(date).format(format);
-		const textyEnd = moment(endDate).format(format);
+		const dateStringTuple = dateFormatTuple(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 		const location = event.location;
 
 		return (
@@ -62,9 +59,9 @@ class OneEventPage extends React.Component {
 											</li> */}
 										<li key='time'><b>Date<br /> </b>
 											<div style={{ paddingLeft: 20 }}>
-												<span className="make-me-dark">{textyStart}</span><br />
+                                                <span className="make-me-dark">{dateStringTuple[0]}</span><br />
 												<b><span className="text text-success"> TO </span> </b><br />
-												<span className="make-me-dark">{textyEnd}</span>
+												<span className="make-me-dark">{dateStringTuple[1]}</span>
 											</div>
 										</li>
 										{location ?
