@@ -24,7 +24,7 @@ class NavBarBurger extends React.Component {
 	}
 	handleResize = () => {
 		this.setState({
-			menuBurgered: window.outerWidth < 992
+			menuBurgered: window.innerWidth < 992
 		})
 		this.forceUpdate();
 	};
