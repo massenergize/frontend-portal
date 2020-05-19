@@ -51,6 +51,11 @@ class RegisterFormBase extends React.Component {
 		this.onFinalSubmit = this.onFinalSubmit.bind(this);
 	}
 
+
+  componentDidMount(){
+    // in case a user goes to signup straight via url and not clicking, set the show_reg_val to true
+    this.props.reduxShowReg(true);
+  }
 	render() {
 		if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
 
@@ -125,7 +130,7 @@ class RegisterFormBase extends React.Component {
 			error,
 		} = this.state;
 		return (
-			<div className="styled-form register-form" style={{ height: window.screen.height - 60, marginTop: 100 }}>
+			<div className="styled-form register-form" style={{ height: window.screen.height - 60, marginTop: 15 }}>
 				<div className="z-depth-1" style={{ padding: 46, borderRadius: 12 }}>
 					<div className="section-title style-2">
 						<h3>Register With Email and Password</h3>
