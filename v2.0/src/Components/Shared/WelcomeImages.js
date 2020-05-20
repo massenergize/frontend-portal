@@ -1,7 +1,8 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel'
 
-/** Renders an image banner that has one, two or three images across it based on screen size
+/** Renders an image banner that is either three images wide, or a carousel of three images
+ * depending on the window width
  */
 class WelcomeImages extends React.Component {
     componentDidMount() {
@@ -13,7 +14,6 @@ class WelcomeImages extends React.Component {
     handleResize = () => {
         this.forceUpdate();
     };
-
 
     /** TODO:
      * implement the changes mentioned in ticket #100 for the first case
@@ -35,9 +35,7 @@ class WelcomeImages extends React.Component {
             return (
                 <div className="inner-banner text-center" style={bannerstyle}>
                     <div className="container">
-                        <div className="box">
-                            {/* <h1>{this.props.title}</h1> */}
-                        </div>
+                        <div className="box"></div>
                     </div>
                 </div>
             );
