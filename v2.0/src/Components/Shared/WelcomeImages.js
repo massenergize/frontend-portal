@@ -1,55 +1,81 @@
 import React from 'react'
+import Carousel from 'react-bootstrap/Carousel'
 
 /** Renders an image banner that has one, two or three images across it based on screen size
  */
 class WelcomeImages extends React.Component {
-	componentDidMount() {
-		window.addEventListener('resize', this.handleResize);
-	}
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.handleResize);
-	}
-	handleResize = () => {
-		this.forceUpdate();
-	};
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+    handleResize = () => {
+        this.forceUpdate();
+    };
 
-	render() {
-		//works best with tall images from online, my images are too big(2-5mb) so they slow it down but these are good
-		var picture1 = this.props.data[0].url;
-		var picture2 = this.props.data[1].url;
-		var picture3 = this.props.data[2].url;
 
-		var bannerstyle; //checks the width and changes how many images are displayed based on that
-		if (window.innerWidth > 1100) {
-			bannerstyle = {
-				backgroundImage: `url(${picture1}), url(${picture2}), url(${picture3})`,
-				backgroundSize: "33.333333%",
-				backgroundPosition: "left top, center top, right top"
-			}
-		} else if (window.innerWidth > 750) {
-			bannerstyle = {
-				backgroundImage: `url(${picture1}), url(${picture2})`,
-				backgroundSize: "50%",
-				backgroundPosition: "left top, right top"
-			}
-		} else {
-			bannerstyle = {
-				backgroundImage: `url(${picture1})`,
-				backgroundSize: "cover",
-				backgroundPosition: "left top"
-			}
-		}
-		//TODO make this only one or only two images depending on screen size.
-		return (
-			<div className="inner-banner text-center" style={bannerstyle}>
-				<div className="container">
-					<div className="box">
-						{/* <h1>{this.props.title}</h1> */}
-					</div>
-				</div>
-			</div>
-		);
-	}
+    /** TODO:
+     * implement the changes mentioned in ticket #100 for the first case
+     * work on performance and formatting for the second case
+     */
+
+    render() {
+        var picture1 = this.props.data[0].url;
+        var picture2 = this.props.data[1].url;
+        var picture3 = this.props.data[2].url;
+
+
+        if (window.innerWidth > 900) {
+            var bannerstyle = {
+                backgroundImage: `url(${picture1}), url(${picture2}), url(${picture3})`,
+                backgroundSize: "33.333333%",
+                backgroundPosition: "left top, center top, right top"
+            }
+            return (
+                <div className="inner-banner text-center" style={bannerstyle}>
+                    <div className="container">
+                        <div className="box">
+                            {/* <h1>{this.props.title}</h1> */}
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div className="inner-banner text-center">
+                    <div className="container">
+                        <div className="box">
+                            <Carousel
+                                interval={3000}
+                                fade
+                                indicators={false}
+                                controls={false}
+                                pauseOnHover={false}
+                            >
+                                <Carousel.Item>
+                                    <div style={{ height: '250px' }} >
+                                        <img src={picture1} alt="" />
+                                    </div>
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <div style={{ height: '250px' }}>
+                                        <img src={picture2} alt="" />
+                                    </div>
+                                </Carousel.Item>
+                                <Carousel.Item>
+                                    <div style={{ height: '250px' }}>
+                                        <img src={picture3} alt="" />
+                                    </div>
+                                </Carousel.Item>
+                            </Carousel>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+    }
 }
 
 
