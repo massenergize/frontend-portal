@@ -77,7 +77,7 @@ class HomePage extends React.Component {
 
 					<Graphs
 						graphs={graphs}
-						size={148}
+						size={120}
 					/>
 					: null
 				}
