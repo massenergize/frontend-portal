@@ -37,7 +37,7 @@ class Events extends React.Component {
         const img = event.image.url ? event.image.url : defaultImg;
         return (
           <article key={index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{ marginBottom: 10, marginTop: 10 }} onClick={() => { window.location = this.props.links.events + "/" + event.id }}>
-            <div className="z-depth-1" style={{ borderRadius: 15, height: 415 }}>
+            <div className="z-depth-1" style={{ borderRadius: 15, height: 460 }}>
               <img alt="IMG" src={img} className="home-events-img" />
               <div style={{ padding: 11, paddingLeft: 17, height: 120 }}>
                 <h5 className="zero-margin-btm"><b>{ev_name}</b></h5>
@@ -49,7 +49,7 @@ class Events extends React.Component {
                   :
                   null
                 }
-                <p style={{ fontSize: 14 }} className="text text-success zero-margin-btm">{dateString}</p>
+                <p style={{ fontSize: 13 }} className="text text-success zero-margin-btm">{dateString}</p>
               </div>
             </div>
           </article>
