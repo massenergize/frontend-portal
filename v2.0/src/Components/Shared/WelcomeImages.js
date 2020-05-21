@@ -15,61 +15,72 @@ class WelcomeImages extends React.Component {
         this.forceUpdate();
     };
 
-    /** TODO:
-     * implement the changes mentioned in ticket #100 for the first case
-     * work on performance and formatting for the second case
-     */
-
     render() {
         var picture1 = this.props.data[0].url;
         var picture2 = this.props.data[1].url;
         var picture3 = this.props.data[2].url;
 
+        var imageStyle = {
+            height: '100%',
+            width: 'auto',
+            objectFit: "cover"
+        }
 
-        if (window.innerWidth > 900) {
-            var bannerstyle = {
-                backgroundImage: `url(${picture1}), url(${picture2}), url(${picture3})`,
-                backgroundSize: "33.333333%",
-                backgroundPosition: "left top, center top, right top"
+        if (window.innerWidth > 700) {
+
+            var bannerStyle = {
+                height: '300px',
+                overflow: 'hidden',
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateRows: '1fr'
             }
+            imageStyle["minWidth"] = window.innerWidth / 3 + 'px';
+
             return (
-                <div className="inner-banner text-center" style={bannerstyle}>
-                    <div className="container">
-                        <div className="box"></div>
-                    </div>
+                <div className="inner-banner text-center" style={bannerStyle}>
+                    <img src={picture1} alt="" style={imageStyle} />
+                    <img src={picture2} alt="" style={imageStyle} />
+                    <img src={picture3} alt="" style={imageStyle} />
                 </div>
             );
+
         } else {
+
+            let divStyle = {
+                height: '300px',
+                display: 'block',
+            };
+            imageStyle["minWidth"] = window.innerWidth + 'px';
+
             return (
-                <div className="inner-banner text-center">
-                    <div className="container">
-                        <div className="box">
-                            <Carousel
-                                interval={3000}
-                                fade
-                                indicators={false}
-                                controls={false}
-                                pauseOnHover={false}
-                            >
-                                <Carousel.Item>
-                                    <div style={{ height: '250px' }} >
-                                        <img src={picture1} alt="" />
-                                    </div>
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <div style={{ height: '250px' }}>
-                                        <img src={picture2} alt="" />
-                                    </div>
-                                </Carousel.Item>
-                                <Carousel.Item>
-                                    <div style={{ height: '250px' }}>
-                                        <img src={picture3} alt="" />
-                                    </div>
-                                </Carousel.Item>
-                            </Carousel>
-                        </div>
-                    </div>
+                <div className="inner-banner text-center" >
+
+                    <Carousel
+                        interval={3000}
+                        fade
+                        indicators={false}
+                        controls={false}
+                        pauseOnHover={false}
+                    >
+                        <Carousel.Item>
+                            <div style={divStyle}>
+                                <img src={picture2} alt="" style={imageStyle} />
+                            </div>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <div style={divStyle}>
+                                <img src={picture1} alt="" style={imageStyle} />
+                            </div>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <div style={divStyle}>
+                                <img src={picture3} alt="" style={imageStyle} />
+                            </div>
+                        </Carousel.Item>
+                    </Carousel>
                 </div>
+
             );
         }
 
