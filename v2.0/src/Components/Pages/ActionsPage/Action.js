@@ -456,6 +456,7 @@ class Action extends React.Component {
     const tags = this.props.action.tags.filter(tag => {
       return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
     });
+    console.log(tags)
     return tags && tags.length > 0 ? tags[0] : null;
   }
 
@@ -500,6 +501,9 @@ class Action extends React.Component {
       }
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
+      }
+      if (tag.name)  {
+        return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
       }
     }
     return null;
