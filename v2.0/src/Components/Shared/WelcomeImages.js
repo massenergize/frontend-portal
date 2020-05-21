@@ -16,9 +16,7 @@ class WelcomeImages extends React.Component {
     };
 
     render() {
-        var picture1 = this.props.data[0].url;
-        var picture2 = this.props.data[1].url;
-        var picture3 = this.props.data[2].url;
+        var images = this.props.data.map(data => data.url);
 
         var imageStyle = {
             height: '100%',
@@ -35,13 +33,13 @@ class WelcomeImages extends React.Component {
                 gridTemplateColumns: '1fr 1fr 1fr',
                 gridTemplateRows: '1fr'
             }
-            imageStyle["minWidth"] = window.innerWidth / 3 + 'px';
+            imageStyle["minWidth"] = window.innerWidth / images.length + 'px';
 
             return (
                 <div className="inner-banner text-center" style={bannerStyle}>
-                    <img src={picture1} alt="" style={imageStyle} />
-                    <img src={picture2} alt="" style={imageStyle} />
-                    <img src={picture3} alt="" style={imageStyle} />
+                    {images.map(image =>
+                        <img src={image} alt="" style={imageStyle} />)
+                    }
                 </div>
             );
 
@@ -63,27 +61,18 @@ class WelcomeImages extends React.Component {
                         controls={false}
                         pauseOnHover={false}
                     >
-                        <Carousel.Item>
-                            <div style={divStyle}>
-                                <img src={picture2} alt="" style={imageStyle} />
-                            </div>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <div style={divStyle}>
-                                <img src={picture1} alt="" style={imageStyle} />
-                            </div>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <div style={divStyle}>
-                                <img src={picture3} alt="" style={imageStyle} />
-                            </div>
-                        </Carousel.Item>
+                        {images.map(image => (
+                            <Carousel.Item>
+                                <div style={divStyle}>
+                                    <img src={image} alt="" style={imageStyle} />
+                                </div>
+                            </Carousel.Item>))
+                        }
                     </Carousel>
                 </div>
 
             );
         }
-
     }
 }
 
