@@ -187,6 +187,8 @@ class OneActionPage extends React.Component {
     }
     return null;
   }
+
+  /* tag.points is a crude hardcoding; should just text align center and show tag name */
   renderCost(tag, name) {
     if (tag) {
       if (tag.points === 1) {
@@ -197,6 +199,9 @@ class OneActionPage extends React.Component {
       }
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
+      }
+      if (tag.name)  {
+        return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
       }
     }
     return null;
