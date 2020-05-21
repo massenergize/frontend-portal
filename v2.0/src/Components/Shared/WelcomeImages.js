@@ -1,8 +1,8 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel'
 
-/** Renders an image banner that is either three images wide, or a carousel of three images
- * depending on the window width
+/** Renders an arbititary amount of images beside eachother, until the window is skinny enough
+ * at which point renders a carousel that cycles all of the images
  */
 class WelcomeImages extends React.Component {
     componentDidMount() {
@@ -75,6 +75,5 @@ class WelcomeImages extends React.Component {
         }
     }
 }
-
 
 export default WelcomeImages;
