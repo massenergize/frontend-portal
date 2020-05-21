@@ -20,7 +20,7 @@ class DeleteAccountFormBase extends React.Component {
     render() {
         return (
             <form onSubmit={this.onSubmit}>
-                <p> Are you sure you want to delete your account? </p>
+                <p> Are you sure you want to delete your profile? </p>
                 <input
                     type="radio"
                     id="yes_im_sure"
@@ -85,7 +85,7 @@ class DeleteAccountFormBase extends React.Component {
                 });
             })
         } else if (provider === 'google') {
-            //this.setState({ error: 'Sorry, deleting accounts that use google sign in is not yet supported' });
+            //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
             this.props.firebase.auth().signInWithPopup(googleProvider).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
                     deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
@@ -99,7 +99,7 @@ class DeleteAccountFormBase extends React.Component {
             })
             return;
         } else if (provider === 'facebook') {
-            //this.setState({ error: 'Sorry, deleting accounts that use facebook sign in is not yet supported' });
+            //this.setState({ error: 'Sorry, deleting profiles that use facebook sign in is not yet supported' });
             this.props.firebase.auth().signInWithPopup(facebookProvider).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
                     deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
@@ -113,7 +113,7 @@ class DeleteAccountFormBase extends React.Component {
             })
             return;
         } else {
-            this.setState({ error: 'Unknown authorization provider. Unable to delete account' });
+            this.setState({ error: 'Unknown authorization provider. Unable to delete profile' });
             return;
         }
     }

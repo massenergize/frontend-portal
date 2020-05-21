@@ -9,7 +9,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { postJson, apiCall, rawCall } from '../../../api/functions';
 import URLS from '../../../api/urls';
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
-import { reduxLogin, reduxLoadDone, reduxLoadTodo,reduxShowReg } from '../../../redux/actions/userActions';
+import { reduxLogin, reduxLoadDone, reduxLoadTodo } from '../../../redux/actions/userActions';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import LoadingCircle from '../../Shared/LoadingCircle';
@@ -52,10 +52,7 @@ class RegisterFormBase extends React.Component {
 	}
 
 
-  componentDidMount(){
-    // in case a user goes to signup straight via url and not clicking, set the show_reg_val to true
-    this.props.reduxShowReg(true);
-  }
+ 
 	render() {
 		if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
 
@@ -68,19 +65,10 @@ class RegisterFormBase extends React.Component {
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
     
-    //Set registration value to true when the user is actually not registered
-    if(this.props.user.info === null){
-      this.props.reduxShowReg(true);
-    }
-
 		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified && this.props.user.accepts_terms_and_conditions) {
 			return <Redirect to={this.props.links.profile} />;
     }
 
-    // Just show a loading bar when the real User value hasnt come through yet instead of showing the registration page
-    if(this.props.user.info === undefined && this.props.user.show_reg_status === false){
-      return <LoadingCircle />
-    }
 		return (
 			<>
 				<div>
@@ -152,7 +140,7 @@ class RegisterFormBase extends React.Component {
 						{error && <p style={{ color: "red" }}> {error} </p>}
 						<div className="clearfix">
 							<div className="form-group pull-left">
-								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Account</button>
+								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Profile</button>
 							</div>
 						</div>
 					</form>
@@ -168,8 +156,7 @@ class RegisterFormBase extends React.Component {
 					
 					</div>
 		
-					<p>Already have an account? <Link className="energize-link"to={this.props.links.signin}>Sign In</Link></p>
-				</div>
+					<p>Already have a profile? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>				</div>
 			</div>
 		);
 	}
@@ -198,7 +185,7 @@ class RegisterFormBase extends React.Component {
 						</>
 						:
 						<>
-							<center><p style={{ color: 'red' }}> Please finish creating your account before you continue</p></center>
+							<center><p style={{ color: 'red' }}> Please finish creating your profile before you continue</p></center>
 							<div className="form-group">
 								<span className="adon-icon"><span className="fa fa-user"></span></span>
 								<input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
@@ -298,10 +285,10 @@ class RegisterFormBase extends React.Component {
 						<div className="form-group pull-left">
 							{this.props.auth.emailVerified ?
 								<button type="submit" className="thm-btn" >
-									Finish Creating Account
+									Finish Creating Profile
                                 </button> : null
 							}
-							<Tooltip text='Cancelling in the middle of registration will delete your account'>
+							<Tooltip text='Cancelling in the middle of registration will delete your profile'>
 								<button onClick={this.deleteFirebaseAccount} style={{marginTop:10}} className="raise round-me thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
@@ -491,4 +478,4 @@ const mapStoreToProps = (store) => {
 		community: store.page.community,
 	}
 }
-export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo,reduxShowReg })(RegisterForm);
+export default connect(mapStoreToProps, { reduxLogin, reduxLoadDone, reduxLoadTodo })(RegisterForm);
