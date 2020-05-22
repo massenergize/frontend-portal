@@ -48,11 +48,19 @@ class RegisterFormBase extends React.Component {
 		this.onChange = this.onChange.bind(this);
 		this.isInvalid = this.isInvalid.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.onFinalSubmit = this.onFinalSubmit.bind(this);
+    this.onFinalSubmit = this.onFinalSubmit.bind(this);
+    this.setRegProtocol = this.setRegProtocol.bind(this);
 	}
 
 
- 
+
+  getRegProtocol(){
+    return localStorage.getItem("reg_protocol");
+  }
+  setRegProtocol(){
+    window.localStorage.setItem("reg_protocol","show");
+  }
+
 	render() {
 		if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
 
@@ -64,7 +72,8 @@ class RegisterFormBase extends React.Component {
 		}
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
-    
+  
+
 		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified && this.props.user.accepts_terms_and_conditions) {
 			return <Redirect to={this.props.links.profile} />;
     }
@@ -170,7 +179,16 @@ class RegisterFormBase extends React.Component {
 			zip,
 			serviceProvider,
 			termsAndServices,
-		} = this.state;
+    } = this.state;
+    
+ 
+
+    //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in 
+    //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the 
+    //loading circle to be skipped and to show the form
+    if(!this.getRegProtocol()){
+      return <LoadingCircle />
+    }
 		return (
 			< div className="styled-form register-form" style={{  height: window.screen.height, marginTop: 100 }}>
 				<div className="z-depth-1" style={{padding:40, borderRadius:12,}}>
@@ -336,9 +354,9 @@ class RegisterFormBase extends React.Component {
 
 
 	onSubmit(event) {
+    this.setRegProtocol();
 		event.preventDefault();
 		const { email, passwordOne } = this.state;
-
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.createUserWithEmailAndPassword(email, passwordOne)
@@ -352,7 +370,7 @@ class RegisterFormBase extends React.Component {
 		});
 	};
 	onFinalSubmit(event) {
-		event.preventDefault();
+    event.preventDefault();
 		if (!this.state.termsAndServices) {
 			this.setState({ error: 'You need to agree to the terms and services' });
 		} else if (!this.state.captchaConfirmed) {
@@ -428,6 +446,7 @@ class RegisterFormBase extends React.Component {
 	}
 
 	fetchMassToken = async (fireToken, email) => {
+    this.setRegProtocol();
 		const body = { idToken: fireToken };
 		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;

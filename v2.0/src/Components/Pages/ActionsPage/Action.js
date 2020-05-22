@@ -456,7 +456,6 @@ class Action extends React.Component {
     const tags = this.props.action.tags.filter(tag => {
       return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
     });
-    console.log(tags)
     return tags && tags.length > 0 ? tags[0] : null;
   }
 

@@ -8,61 +8,65 @@ import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
 
 class NavBarBurger extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			menuBurgered: window.innerWidth < 992,
-			menuOpen: false,
-		}
-		this.handleLinkClick = this.handleLinkClick.bind(this);
-	}
-	componentDidMount() {
-		window.addEventListener('resize', this.handleResize);
-	}
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.handleResize);
-	}
-	handleResize = () => {
-		this.setState({
-			menuBurgered: window.innerWidth < 992
-		})
-		this.forceUpdate();
-	};
-	handleMenuClick() {
-		this.setState({ menuOpen: !this.state.menuOpen });
-	}
-	handleLinkClick() {
-		this.setState({ menuOpen: !this.state.menuOpen });
-	}
-	render() {
-		var communitylogo = null;
-		var header = null
-		var communityName = this.props.pageData ? this.props.pageData.community.name : "communities";
-		if (this.props.pageData) {
-			//header = section(this.props.pageData, 'HomeHeader');
-			communitylogo = this.props.pageData.community.logo ? this.props.pageData.community.logo.url : null;
-		}
-		const { links } = this.props;
-		const styles = {
-			container: {
-				position: 'relative',
-				width: '100%',
-				height: '80px',
-				zIndex: '99',
-				display: 'flex',
-				background: 'white',
-				color: '#333',
-				fontFamily: 'Verdana',
-			},
-			body: {
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				filter: this.state.menuOpen ? 'blur(2px)' : null,
-				transition: 'filter 0.5s ease',
-			},
-		}
-		if (!links) return null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuBurgered: window.innerWidth < 992,
+      menuOpen: false,
+    };
+    this.handleLinkClick = this.handleLinkClick.bind(this);
+  }
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+  handleResize = () => {
+    this.setState({
+      menuBurgered: window.innerWidth < 992,
+    });
+    this.forceUpdate();
+  };
+  handleMenuClick() {
+    this.setState({ menuOpen: !this.state.menuOpen });
+  }
+  handleLinkClick() {
+    this.setState({ menuOpen: !this.state.menuOpen });
+  }
+  render() {
+    var communitylogo = null;
+    var header = null;
+    var communityName = this.props.pageData
+      ? this.props.pageData.community.name
+      : "communities";
+    if (this.props.pageData) {
+      //header = section(this.props.pageData, 'HomeHeader');
+      communitylogo = this.props.pageData.community.logo
+        ? this.props.pageData.community.logo.url
+        : null;
+    }
+    const { links } = this.props;
+    const styles = {
+      container: {
+        position: "relative",
+        width: "100%",
+        height: "80px",
+        zIndex: "99",
+        display: "flex",
+        background: "white",
+        color: "#333",
+        fontFamily: "Verdana",
+      },
+      body: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        filter: this.state.menuOpen ? "blur(2px)" : null,
+        transition: "filter 0.5s ease",
+      },
+    };
+    if (!links) return null;
 
     // Only for burgered
     const menuItems = this.props.navLinks.map((val, index) => {
@@ -242,102 +246,172 @@ class NavBarBurger extends React.Component {
       );
     });
   }
+  // NORMAL STATE
+  renderNavLinks(navLinks) {
+    if (!navLinks) {
+      return <li key="noLinks">No PageLinks to Display</li>;
+    }
+    const style = {
+      borderTop: "5px solid #8dc63f",
+      borderRadius: "0",
+      padding: "0",
+      minwidth: "100px",
+    };
+    const { links } = this.props;
+    return Object.keys(navLinks).map((key) => {
+      var navLink = navLinks[key];
+      if (navLink.children) {
+        const CustomNavLink = React.forwardRef((props, ref) => (
+          <Link
+            ref={ref}
+            className="cool-font"
+            to=""
+            onClick={(e) => {
+              e.preventDefault();
+              props.onClick(e);
+            }}
+          >
+            {" "}
+            {props.navLink.name}{" "}
+            <span className="font-normal fa fa-angle-down"></span>
+          </Link>
+        ));
 
-	// 		</div>
-	// 	)
-	// }
-	// NORMAL STATE
-	renderNavLinks(navLinks) {
-		if (!navLinks) {
-			return <li key="noLinks">No PageLinks to Display</li>
-		}
-		const style = {
-			borderTop: "5px solid #8dc63f",
-			borderRadius: "0",
-			padding: "0",
-			minwidth: "100px"
-		};
-		const { links } = this.props;
-		return Object.keys(navLinks).map(key => {
-			var navLink = navLinks[key];
-            if (navLink.children) {
-                
-                const CustomNavLink = React.forwardRef((props, ref) => (
-                    <Link ref={ref} className="cool-font" to="" onClick={e => { e.preventDefault(); props.onClick(e); }}> {props.navLink.name} <span className="font-normal fa fa-angle-down"></span></Link>)
-                );
+        return (
+          <li
+            className="d-flex flex-column justify-content-center"
+            key={navLink.name}
+          >
+            <Dropdown onSelect={() => null}>
+              <Dropdown.Toggle
+                as={CustomNavLink}
+                navLink={navLink}
+                id="dropdown-custom-components"
+              ></Dropdown.Toggle>
+              <Dropdown.Menu style={style}>
+                {this.renderDropdownItems(navLink.children)}
+              </Dropdown.Menu>
+            </Dropdown>
+          </li>
+        );
+      }
+      return (
+        <li
+          className="d-flex flex-column justify-content-center"
+          key={navLink.name}
+        >
+          <Link className="cool-font" to={`${links.home}${navLink.link}`}>
+            {navLink.name}
+          </Link>
+        </li>
+      );
+    });
+  }
 
-				return (
-					<li className="d-flex flex-column justify-content-center" key={navLink.name}>
-						<Dropdown onSelect={() => null}>
-							<Dropdown.Toggle as={CustomNavLink} navLink={navLink} id="dropdown-custom-components"></Dropdown.Toggle>
-							<Dropdown.Menu style={style}>
-								{this.renderDropdownItems(navLink.children)}
-							</Dropdown.Menu>
-						</Dropdown>
-					</li>
-				);
-			}
-			return <li className="d-flex flex-column justify-content-center" key={navLink.name}><Link className="cool-font" to={`${links.home}${navLink.link}`}>{navLink.name}</Link></li>
-		});
-	}
+  //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
+  renderDropdownItems(children) {
+    if (!this.props.links) return;
+    const { links } = this.props;
+    const comm = this.props.pageData
+      ? this.props.pageData.community
+      : { name: "My Community" };
+    return children.map((child, key) => {
+      if (child.special) {
+        return (
+          <Link
+            to={`${links.home}#`}
+            key={key}
+            className="cool-font dropdown-item p-3 small "
+            onClick={() => {
+              window.location = child.link;
+            }}
+          >
+            {child.name}
+          </Link>
+        );
+      } else {
+        return (
+          <Link
+            key={key}
+            to={`${links.home}${child.link}`}
+            className="cool-font dropdown-item p-3 small "
+            onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+          >
+            {child.name === "current-home" ? comm.name : child.name}
+          </Link>
+        );
+      }
+    });
+  }
+  renderLogin() {
+    const { links } = this.props;
+    const { auth, user } = this.props;
+    const style = {
+      borderTop: "5px solid #8dc63f",
+      borderRadius: "0",
+      padding: "0",
+    };
+    if (auth.uid && user.info) {
+      const ProfileBtnDropdown = React.forwardRef((props, ref) => (
+        <button
+          ref={ref}
+          className=" float-right new-sign-in raise cool-font"
+          onClick={(e) => {
+            e.preventDefault();
+            props.onClick(e);
+          }}
+          style={{
+            margin: "auto 0 auto 10px",
+            fontSize: "12px",
+            fontWeight: 600,
+          }}
+        >
+          {/* <i className="fa fa-user" />{'\u00A0'} */}
+          {props.userName}
+          <span className="fa fa-angle-down text-white ml-1"></span>
+        </button>
+      ));
 
-	//----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
-	renderDropdownItems(children) {
-		if (!this.props.links) return;
-		const { links } = this.props;
-		const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community" }
-		return children.map((child, key) => {
-			if (child.special) {
-				return (
-					<Link to={`${links.home}#`} key={key} className="cool-font dropdown-item p-3 small " onClick={() => { window.location = child.link; }}>{child.name}</Link>
-				);
-			}
-			else {
-				return (
-					<Link key={key} to={`${links.home}${child.link}`} className="cool-font dropdown-item p-3 small " onClick={() => document.dispatchEvent(new MouseEvent('click'))}>{child.name === "current-home" ? comm.name : child.name}</Link>
-				);
-			}
-		});
-	}
-	renderLogin() {
-		const { links } = this.props;
-		const {
-			auth,
-			user
-		} = this.props;
-		const style = {
-			borderTop: "5px solid #8dc63f",
-			borderRadius: "0",
-			padding: "0",
-		};
-        if (auth.uid && user.info) {
-            
-            const ProfileBtnDropdown = React.forwardRef((props, ref) => (
-                < button ref={ref} className=" float-right new-sign-in raise cool-font" onClick={e => { e.preventDefault(); props.onClick(e); }} style={{ margin: 'auto 0 auto 10px', fontSize: '12px', fontWeight: 600 }}>
-                    {/* <i className="fa fa-user" />{'\u00A0'} */}
-                    {props.userName}
-                    <span className="fa fa-angle-down text-white ml-1"></span>
-                </button >)
-            );
-
-			return (
-				<Dropdown onSelect={() => null} className="d-flex">
-					<Dropdown.Toggle as={ProfileBtnDropdown} userName={user.info.preferred_name} id="dropdown-custom-components"></Dropdown.Toggle>
-					<Dropdown.Menu style={style}>
-						<Link to={links.profile} className="dropdown-item p-3 small font-weight-bold cool-font" onClick={() => document.dispatchEvent(new MouseEvent('click'))}>My Profile</Link>
-						<button className="dropdown-item p-3 small font-weight-bold cool-font" onClick={() => { this.props.firebase.auth().signOut(); this.props.reduxLogout();localStorage.removeItem("idToken");  }}><SignOutLink>Sign Out</SignOutLink></button>
-					</Dropdown.Menu>
-				</Dropdown>
-			);
-		} else {
-			return (
-				<Link className="cool-font new-sign-in float-right round-me raise" to={links.signin} >
-					{/* <i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'} */}
-					Sign In
-                </Link>
-			);
-		}
-	}
+      return (
+        <Dropdown onSelect={() => null} className="d-flex">
+          <Dropdown.Toggle
+            as={ProfileBtnDropdown}
+            userName={user.info.preferred_name}
+            id="dropdown-custom-components"
+          ></Dropdown.Toggle>
+          <Dropdown.Menu style={style}>
+            <Link
+              to={links.profile}
+              className="dropdown-item p-3 small font-weight-bold cool-font"
+              onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+            >
+              My Profile
+            </Link>
+            <button
+              className="dropdown-item p-3 small font-weight-bold cool-font"
+              onClick={() => {
+                this.props.firebase.auth().signOut();
+                this.props.reduxLogout();
+                localStorage.removeItem("idToken");
+              }}
+            >
+              <SignOutLink>Sign Out</SignOutLink>
+            </button>
+          </Dropdown.Menu>
+        </Dropdown>
+      );
+    } else {
+      return (
+        <Link
+          className="cool-font new-sign-in float-right round-me raise"
+          to={links.signin}
+        >
+          {/* <i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'} */}
+          Sign In
+        </Link>
+      );
+    }
+  }
 }
 const mapStoreToProps = (store) => {
   return {
