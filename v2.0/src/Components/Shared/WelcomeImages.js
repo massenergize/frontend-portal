@@ -1,56 +1,79 @@
 import React from 'react'
+import Carousel from 'react-bootstrap/Carousel'
 
-/** Renders an image banner that has one, two or three images across it based on screen size
+/** Renders an arbititary amount of images beside eachother, until the window is skinny enough
+ * at which point renders a carousel that cycles all of the images
  */
 class WelcomeImages extends React.Component {
-	componentDidMount() {
-		window.addEventListener('resize', this.handleResize);
-	}
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.handleResize);
-	}
-	handleResize = () => {
-		this.forceUpdate();
-	};
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+    handleResize = () => {
+        this.forceUpdate();
+    };
 
-	render() {
-		//works best with tall images from online, my images are too big(2-5mb) so they slow it down but these are good
-		var picture1 = this.props.data[0].url;
-		var picture2 = this.props.data[1].url;
-		var picture3 = this.props.data[2].url;
+    render() {
+        var images = this.props.data.map(data => data.url);
 
-		var bannerstyle; //checks the width and changes how many images are displayed based on that
-		if (window.innerWidth > 1100) {
-			bannerstyle = {
-				backgroundImage: `url(${picture1}), url(${picture2}), url(${picture3})`,
-				backgroundSize: "33.333333%",
-				backgroundPosition: "left top, center top, right top"
-			}
-		} else if (window.innerWidth > 750) {
-			bannerstyle = {
-				backgroundImage: `url(${picture1}), url(${picture2})`,
-				backgroundSize: "50%",
-				backgroundPosition: "left top, right top"
-			}
-		} else {
-			bannerstyle = {
-				backgroundImage: `url(${picture1})`,
-				backgroundSize: "cover",
-				backgroundPosition: "left top"
-			}
-		}
-		//TODO make this only one or only two images depending on screen size.
-		return (
-			<div className="inner-banner text-center" style={bannerstyle}>
-				<div className="container">
-					<div className="box">
-						{/* <h1>{this.props.title}</h1> */}
-					</div>
-				</div>
-			</div>
-		);
-	}
+        var imageStyle = {
+            height: '100%',
+            width: 'auto',
+            objectFit: "cover"
+        }
+
+        if (window.innerWidth > 700) {
+
+            var bannerStyle = {
+                height: '300px',
+                overflow: 'hidden',
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateRows: '1fr'
+            }
+            imageStyle["minWidth"] = window.innerWidth / images.length + 'px';
+
+            return (
+                <div className="inner-banner text-center" style={bannerStyle}>
+                    {images.map(image =>
+                        <img src={image} alt="" style={imageStyle} />)
+                    }
+                </div>
+            );
+
+        } else {
+
+            let divStyle = {
+                height: '300px',
+                display: 'block',
+            };
+            imageStyle["minWidth"] = window.innerWidth + 'px';
+
+            return (
+                <div className="inner-banner text-center" >
+
+                    <Carousel
+                        interval={3000}
+                        fade
+                        indicators={false}
+                        controls={false}
+                        pauseOnHover={false}
+                    >
+                        {images.map(image => (
+                            <Carousel.Item>
+                                <div style={divStyle}>
+                                    <img src={image} alt="" style={imageStyle} />
+                                </div>
+                            </Carousel.Item>))
+                        }
+                    </Carousel>
+                </div>
+
+            );
+        }
+    }
 }
-
 
 export default WelcomeImages;

@@ -3,7 +3,7 @@ import LoadingCircle from '../../Shared/LoadingCircle'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import notFound from './not-found.jpg';
-import { dateFormatJSXVerbose, locationFormatJSX } from '../../Utils';
+import { dateFormatString, locationFormatJSX } from '../../Utils';
 
 class OneEventPage extends React.Component {
 	/**
@@ -35,7 +35,7 @@ class OneEventPage extends React.Component {
 
 	renderEvent(event) {
 		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
-        let dateJSX = dateFormatJSXVerbose(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
+        let dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 		const location = event.location;
 
 		return (
@@ -59,7 +59,7 @@ class OneEventPage extends React.Component {
 											</li> */}
 										<li key='time'><b>Date<br /> </b>
 											<div style={{ paddingLeft: 20 }}>
-                                                <span className="make-me-dark">{dateJSX}</span>
+                                                <span className="make-me-dark">{dateString}</span>
 											</div>
 										</li>
 										{location ?
