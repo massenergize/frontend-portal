@@ -1,9 +1,9 @@
-import React from "react";
-import LoadingCircle from "../../Shared/LoadingCircle";
-import { connect } from "react-redux";
-import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import notFound from "./not-found.jpg";
-import { dateFormatJSXVerbose, locationFormatJSX } from "../../Utils";
+import React from 'react'
+import LoadingCircle from '../../Shared/LoadingCircle'
+import { connect } from 'react-redux'
+import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import notFound from './not-found.jpg';
+import { dateFormatString, locationFormatJSX } from '../../Utils';
 
 class OneEventPage extends React.Component {
   /**
@@ -37,94 +37,60 @@ class OneEventPage extends React.Component {
     );
   }
 
-  renderEvent(event) {
-    if (!event)
-      return (
-        <div>
-          {" "}
-          ...oops couldn't find event with id: {this.props.match.params.id}
-        </div>
-      );
-    let dateJSX = dateFormatJSXVerbose(
-      new Date(event.start_date_and_time),
-      new Date(event.end_date_and_time)
-    );
-    const location = event.location;
+ 
 
-    return (
-      <section className="event-section style-3">
-        <div className="container">
-          <h3
-            className="cool-font text-center"
-            style={{ textTransform: "capitalize" }}
-          >
-            {event.name}
-          </h3>
-          <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
-            <div className="row">
-              <div className="col-12 col-lg-6">
-                <div
-                  className="img-box raise"
-                  style={{ height: 340, borderRadius: 10 }}
-                >
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                    src={event.image ? event.image.url : notFound}
-                    alt=""
-                  />
-                </div>
-                <div
-                  className="event-timeline "
-                  style={{ margin: "10px 0px", borderRadius: 12 }}
-                >
-                  {/* <div className="section-title style-2">
+	renderEvent(event) {
+		if (!event) return (<div> ...oops couldn't find event with id: {this.props.match.params.id}</div>);
+        let dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
+		const location = event.location;
+
+		return (
+			<section className="event-section style-3">
+				<div className="container">
+					<h3 className="cool-font text-center" style={{textTransform:'capitalize'}}>{event.name}</h3>
+					<div className="single-event sec-padd" style={{borderWidth:0}}>
+						<div className="row">
+							<div className="col-12 col-lg-6">
+								<div className="img-box raise" style={{ height: 340, borderRadius: 10 }}>
+									<img style={{ width: '100%', height:'100%', objectFit: 'cover' }} src={event.image ? event.image.url : notFound} alt="" />
+
+								</div>
+								<div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>
+									{/* <div className="section-title style-2">
                                             <h3>Event Schedule</h3>
 																				</div> */}
                   <ul>
                     {/* <li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
 												<b> - </b>{endDate.toLocaleString()}
 											</li> */}
-                    <li key="time">
-                      <b>
-                        Date
-                        <br />{" "}
-                      </b>
-                      <div style={{ paddingLeft: 20 }}>
-                        <span className="make-me-dark">{dateJSX}</span>
-                      </div>
-                    </li>
-                    {location ? (
-                      <li>
-                        {/* House Number, Street Name, Town, State */}
-                        <i className="fa fa-map-marker" />
-                        <b>Venue:</b>{" "}
-                        <span className="make-me-dark">
-                          {locationFormatJSX(location)}
-                        </span>
-                      </li>
-                    ) : null}
-                  </ul>
-                </div>
-                {/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
-              </div>
-              <div className="col-12 col-lg-6">
-                <div className="text">
-                  <h5 className="cool-font" style={{ color: "lightgray" }}>
-                    About
-                  </h5>
-                  <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: event.description }}
-                  ></p>
-                  <br />
-                  <p className="cool-font">{event.moreinfo}</p>
-                </div>
-              </div>
-            </div>
+										<li key='time'><b>Date<br /> </b>
+											<div style={{ paddingLeft: 20 }}>
+                                                <span className="make-me-dark">{dateString}</span>
+											</div>
+										</li>
+										{location ?
+											<li >
+												{/* House Number, Street Name, Town, State */}
+												<i className="fa fa-map-marker" />
+                                                <b>Venue:</b>  <span className="make-me-dark">{locationFormatJSX(location)}</span>
+											</li>
+											:
+											null
+										}
+									</ul>
+								</div>
+								{/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
+							</div>
+							<div className="col-12 col-lg-6">
+								<div className="text">
+									<h5 className="cool-font" style={{ color: 'lightgray' }}>About</h5>
+									<p className="cool-font make-me-dark" dangerouslySetInnerHTML={{ __html: event.description }}></p>
+									<br />
+									<p className="cool-font">{event.moreinfo}</p>
+								</div>
+							</div>
+
+						</div>
 
             <div className="content">
               <div className="row">

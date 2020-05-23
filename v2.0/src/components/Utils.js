@@ -58,41 +58,6 @@ export function dateFormatString(startDate, endDate) {
     return dateString;
 }
 
-/**
- * returns a two-tuple (length-two array) containing formatted strings for the provided dates
- * for easy use in cases where the dates are used as seperate strings
- * @param startDate 
- * @param endDate 
- */
-export function dateFormatStringTuple(startDate, endDate) {
-    const format = "MMMM Do YYYY, h:mm a";
-    return [moment(startDate).format(format), moment(endDate).format(format)];
-}
-
-/**
- * returns a JSX-formatted date which varies depending on the relationship between provided dates
- * when start and end dates are on different days, it provides a more wordy string than dateFormatString
- * and includes line breaks
- * @param startDate 
- * @param endDate 
- */
-export function dateFormatJSXVerbose(startDate, endDate) {
-    if (sameDay(startDate, endDate))
-        return (
-            <span>
-                {dateFormatString(startDate, endDate)}
-            </span>
-        );
-
-    let startString, endString;
-    [startString, endString] = dateFormatStringTuple(startDate, endDate);
-    return (
-        <span>
-            {startString} <br /><b>to</b><br /> {endString}
-        </span>
-    );
-
-}
 
 /**
  * returns JSX-formatted version of the provided date
