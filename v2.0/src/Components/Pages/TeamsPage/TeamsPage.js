@@ -4,6 +4,7 @@ import PageTitle from "../../Shared/PageTitle";
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
+import teams_pop from "./teams_pop.jpg";
 import {
   reduxJoinTeam,
   reduxLeaveTeam,
@@ -32,6 +33,7 @@ class TeamsPage extends React.Component {
       modal_toggled: false,
       modal_content: { title: "...", desc: "..." },
       alert: false,
+      sorted_Teams:null
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -113,8 +115,60 @@ class TeamsPage extends React.Component {
       );
     }
   };
-  render() {
+
+  sortByNumberOfHouseholds(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.households - a.households
+      }); 
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+
+  sortByActionsCompleted(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.actions_completed - a.actions_completed
+      }); 
     
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByActionsPerHousehold(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return Number(b.actions_completed) - Number(a.actions_completed)
+      }); 
+      
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByCarbonImpact(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.carbon_footprint_reduction - a.carbon_footprint_reduction
+      }); 
+     
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByTeamName(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        if( a.team.name.toLowerCase()> b.team.name.toLowerCase()) return 1; 
+        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1 ;
+      }); 
+    
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+
+  render() {
     const teams = this.props.teamsPage;
     if (teams === null) {
       return (
@@ -149,9 +203,22 @@ class TeamsPage extends React.Component {
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div className="p-5" style={{ height: window.screen.height - 120 }}>
-            <PageTitle>Teams in this Community</PageTitle>
-           <center> <button  onClick = {()=>{window.open(this.props.links.contactus,"_blank")}}className="btn btn-success round-me req-team-btn raise">Request Team Creation</button></center>
+          <div className="p-5" style={{ height: window.screen.height - 120, marginTop:-77 }}>
+            {/* <PageTitle>Teams in this Community</PageTitle> */}
+            <center>
+      
+            <img src={teams_pop} style={{width:489,margin:15, marginLeft:"-13%"}} /><br/>
+              <button
+                onClick={() => {
+                  window.open(this.props.links.contactus, "_blank");
+                }}
+                className="btn btn-success round-me req-team-btn raise"
+              >
+                Request Team Creation
+              </button> <br/>
+              
+
+            </center>
             <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
@@ -163,12 +230,11 @@ class TeamsPage extends React.Component {
               <thead>
                 <tr>
                   <th className="fake-show">Team Image </th>
-                 
-                  <th>Team Name</th>
-                  <th>Households</th>
-                  <th>Actions Completed</th>
-                  <th>Actions / Household</th>
-                  <th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByTeamName()}}>Team Name</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByNumberOfHouseholds()}}>Households</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByActionsCompleted()}}>Actions Completed</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByActionsPerHousehold()}}>Actions / Household</th>  
+                  <th className="sort-btns" onClick = {()=>{this.sortByCarbonImpact()}}>
                     <Tooltip
                       text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members"
                       dir="left"
@@ -204,6 +270,8 @@ class TeamsPage extends React.Component {
       return b.avrgActionsPerMember - a.avrgActionsPerMember;
     });
 
+    //"force-listen" to the user requested sort
+    teamsSorted = this.state.sorted_Teams ? this.state.sorted_Teams : teamsSorted;
     return teamsSorted.map((obj, index) => {
       const logo = obj.team.logo ? obj.team.logo.url : null;
 
@@ -220,7 +288,7 @@ class TeamsPage extends React.Component {
           ) : (
             <td></td>
           )}
- 
+
           <td>
             {obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">
@@ -237,25 +305,25 @@ class TeamsPage extends React.Component {
               </div>
             </Tooltip>
           </td>
-          <td>{obj.members}</td>
+          <td>{obj.households}</td>
           <td>{obj.actions_completed}</td>
           <td>{obj.avrgActionsPerMember}</td>
           <td>{obj.carbon_footprint_reduction}</td>
           {this.props.user ? (
             <td>
               <center>
-              <button
-                className="contact-admin-btn round-me"
-                onClick={() => {
-                  this.setModalContent(obj.team.name, obj.team.description);
-                  this.setState({
-                    contact_modal_toggled: true,
-                    current_team_id: obj.team.id,
-                  });
-                }}
-              >
-                Contact
-              </button>
+                <button
+                  className="contact-admin-btn round-me"
+                  onClick={() => {
+                    this.setModalContent(obj.team.name, obj.team.description);
+                    this.setState({
+                      contact_modal_toggled: true,
+                      current_team_id: obj.team.id,
+                    });
+                  }}
+                >
+                  Contact
+                </button>
               </center>
             </td>
           ) : (
