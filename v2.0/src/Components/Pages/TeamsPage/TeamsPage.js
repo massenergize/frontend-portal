@@ -33,6 +33,7 @@ class TeamsPage extends React.Component {
       modal_toggled: false,
       modal_content: { title: "...", desc: "..." },
       alert: false,
+      sorted_Teams:null
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -114,6 +115,59 @@ class TeamsPage extends React.Component {
       );
     }
   };
+
+  sortByNumberOfHouseholds(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.households - a.households
+      }); 
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+
+  sortByActionsCompleted(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.actions_completed - a.actions_completed
+      }); 
+    
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByActionsPerHousehold(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return Number(b.actions_completed) - Number(a.actions_completed)
+      }); 
+      
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByCarbonImpact(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        return b.carbon_footprint_reduction - a.carbon_footprint_reduction
+      }); 
+     
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+  sortByTeamName(){
+    var set = this.props.teamsPage; 
+    if(set){
+      var rebuilt = set.sort((a,b) =>{
+        if( a.team.name.toLowerCase()> b.team.name.toLowerCase()) return 1; 
+        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1 ;
+      }); 
+    
+      this.setState({sorted_Teams: rebuilt});
+    }
+  }
+
   render() {
     const teams = this.props.teamsPage;
     if (teams === null) {
@@ -176,12 +230,11 @@ class TeamsPage extends React.Component {
               <thead>
                 <tr>
                   <th className="fake-show">Team Image </th>
-
-                  <th>Team Name</th>
-                  <th>Households</th>
-                  <th>Actions Completed</th>
-                  <th>Actions / Household</th>
-                  <th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByTeamName()}}>Team Name</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByNumberOfHouseholds()}}>Households</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByActionsCompleted()}}>Actions Completed</th>
+                  <th className="sort-btns" onClick = {()=>{this.sortByActionsPerHousehold()}}>Actions / Household</th>  
+                  <th className="sort-btns" onClick = {()=>{this.sortByCarbonImpact()}}>
                     <Tooltip
                       text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members"
                       dir="left"
@@ -217,6 +270,8 @@ class TeamsPage extends React.Component {
       return b.avrgActionsPerMember - a.avrgActionsPerMember;
     });
 
+    //"force-listen" to the user requested sort
+    teamsSorted = this.state.sorted_Teams ? this.state.sorted_Teams : teamsSorted;
     return teamsSorted.map((obj, index) => {
       const logo = obj.team.logo ? obj.team.logo.url : null;
 
@@ -250,7 +305,7 @@ class TeamsPage extends React.Component {
               </div>
             </Tooltip>
           </td>
-          <td>{obj.members}</td>
+          <td>{obj.households}</td>
           <td>{obj.actions_completed}</td>
           <td>{obj.avrgActionsPerMember}</td>
           <td>{obj.carbon_footprint_reduction}</td>
