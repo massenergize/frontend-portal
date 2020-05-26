@@ -32,6 +32,7 @@ class OneActionPage extends React.Component {
     super(props);
     this.state = {
       status: null,
+      loading: false,
       limit: 140,
       expanded: null,
       showTestimonialLink: false,
@@ -40,7 +41,6 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
     };
-    this.loading = false;
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -52,25 +52,29 @@ class OneActionPage extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.loading && this.props.match.params !== this.state.action.id) {
+    if (!this.state.loading && this.state.action &&this.props.match.params !== this.state.action.id) {
       const { id } = this.props.match.params;
       this.fetch(id);
     }
   }
 
   fetch(id) {
-    this.loading = true;
+    this.setState({ loading: true });
     apiCall('actions.info', { action_id: id}).then(json => {
       if (json.success) {
-        this.setState({ action: json.data })
-        this.loading = false;
+        this.setState({
+          action: json.data,
+          loading: false
+        })
+      } else {
+        this.setState({ loading: false });
       }
-    }).catch(err => this.setState({ error: err.message }))
+    }).catch(err => this.setState({ error: err.message, loading: false }))
   }
 
   render() {
     const action = this.getMyAction();
-    if (!action) {
+    if (this.state.loading) {
         return <LoadingCircle />;
     }
 

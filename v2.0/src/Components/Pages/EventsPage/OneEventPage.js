@@ -2,20 +2,53 @@ import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import Error404 from "./../Errors/404";
+import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatJSXVerbose, locationFormatJSX } from "../../Utils";
 import oops from "./oops.png";
-class OneEventPage extends React.Component {
-  /**
-   * renders a single event from the passes id prop
-   */
-  render() {
-    if (!this.props.events) return <LoadingCircle />;
 
-    const event = this.props.events.filter((event) => {
-      return event.id === Number(this.props.match.params.id);
-    })[0];
-    //avoids trying to render before the promise from the server is fulfilled
+class OneEventPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      event: null,
+      loading: false
+    }
+  }
+
+  fetch(id) {
+    this.setState({ loading: true });
+    apiCall('events.info', { event_id: id }).then(json => {
+      if (json.success) {
+        this.setState({
+          event: json.data,
+          loading: false
+        })
+      } else {
+        this.setState({ loading: false });
+      }
+    }).catch(err => this.setState({ error: err.message, loading: false }))
+  }
+
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.fetch(id);
+  }
+
+  render() {
+
+    const event = this.state.event;
+
+    if (this.state.loading) {
+      return <LoadingCircle />;
+    }
+    if (!event) {
+      return <Error404 />;
+    }
+
     return (
       <>
         <div className="boxed_wrapper">
@@ -43,11 +76,11 @@ class OneEventPage extends React.Component {
         <div style={{ height: window.screen.height - 120 }}>
           {" "}
           <center>
-            <img src={oops} style={{width:"20%", marginTop:'10%'}} />
-            <h4 style={{ marginTop:15, color:"rgb(155, 155, 155)"}}>
-              ...oops, couldn't find this event 
+            <img src={oops} style={{ width: "20%", marginTop: '10%' }} />
+            <h4 style={{ marginTop: 15, color: "rgb(155, 155, 155)" }}>
+              ...oops, couldn't find this event
             </h4>
-            <small style={{color:'#ffa4ad'}}>Look into > <i>event id: {this.props.match.params.id}</i></small>
+            <small style={{ color: '#ffa4ad' }}>Look into > <i>event id: {this.props.match.params.id}</i></small>
           </center>
         </div>
       );
