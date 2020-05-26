@@ -45,8 +45,9 @@ class OneEventPage extends React.Component {
           <center>
             <img src={oops} style={{width:"20%", marginTop:'10%'}} />
             <h4 style={{ marginTop:15, color:"rgb(155, 155, 155)"}}>
-              ...oops couldn't find event with id: <i>{this.props.match.params.id}</i>
+              ...oops, couldn't find this event 
             </h4>
+            <small style={{color:'#ffa4ad'}}>Look into > <i>event id: {this.props.match.params.id}</i></small>
           </center>
         </div>
       );
