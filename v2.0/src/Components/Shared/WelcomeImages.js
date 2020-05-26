@@ -46,7 +46,7 @@ class WelcomeImages extends React.Component {
         } else {
 
             let divStyle = {
-                height: '300px',
+                height: '200px',
                 display: 'block',
             };
             imageStyle["minWidth"] = window.innerWidth + 'px';
