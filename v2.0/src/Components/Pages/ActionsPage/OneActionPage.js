@@ -63,14 +63,14 @@ class OneActionPage extends React.Component {
     apiCall('actions.info', { action_id: id}).then(json => {
       if (json.success) {
         this.setState({ action: json.data })
-        this.loading = false;
       }
     }).catch(err => this.setState({ error: err.message }))
+    this.loading = false;
   }
 
   render() {
     const action = this.getMyAction();
-    if (!action) {
+    if (this.loading) {
         return <LoadingCircle />;
     }
 
