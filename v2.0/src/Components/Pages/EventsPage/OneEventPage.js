@@ -13,25 +13,22 @@ class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: null,
-      loading: false
+      event: null
     }
+    this.loading = false;
   }
 
   fetch(id) {
-    this.setState({ loading: true });
+    this.loading = true;
     apiCall('events.info', { event_id: id }).then(json => {
       if (json.success) {
         this.setState({
           event: json.data,
-          loading: false
         })
-      } else {
-        this.setState({ loading: false });
       }
-    }).catch(err => this.setState({ error: err.message, loading: false }))
+    }).catch(err => this.setState({ error: err.message}))
+    this.loading = false;
   }
-
 
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -42,7 +39,7 @@ class OneEventPage extends React.Component {
 
     const event = this.state.event;
 
-    if (this.state.loading) {
+    if (this.loading) {
       return <LoadingCircle />;
     }
     if (!event) {
