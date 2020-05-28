@@ -158,7 +158,7 @@ class ActionsPage extends React.Component {
 			//just update the state here
 		}).catch(err => {
 			console.log(err)
-		})
+		}) 
 	}
 	moveToDoneByActionId(aid, hid) {
 		const actionRel = this.props.todo.filter(actionRel => {
