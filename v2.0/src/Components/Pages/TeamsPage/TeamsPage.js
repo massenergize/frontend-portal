@@ -136,11 +136,16 @@ class TeamsPage extends React.Component {
       this.setState({ sorted_Teams: rebuilt });
     }
   }
+  findAverage(actionsNo, households){
+    var number = Number(actionsNo)/households;
+    number = !isNaN(number) ? number.toFixed(1) : 0;
+    return number
+  }
   sortByActionsPerHousehold() {
     var set = this.props.teamsPage;
     if (set) {
       var rebuilt = set.sort((a, b) => {
-        return Number(b.actions_completed) - Number(a.actions_completed);
+        return this.findAverage(b.actions_completed,b.households) - this.findAverage(a.actions_completed, a.households) ;
       });
 
       this.setState({ sorted_Teams: rebuilt });
@@ -162,6 +167,7 @@ class TeamsPage extends React.Component {
       var rebuilt = set.sort((a, b) => {
         if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
         if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
+        return 0;
       });
 
       this.setState({ sorted_Teams: rebuilt });
@@ -287,7 +293,7 @@ class TeamsPage extends React.Component {
                     }}
                   >
                     <Tooltip
-                      text="Click this to sort by number ratio of actions per household"
+                      text="Click this to sort by number of actions per household"
                       dir="bottom"
                     >
                     <span className="has-tooltip">Actions / Household</span>
