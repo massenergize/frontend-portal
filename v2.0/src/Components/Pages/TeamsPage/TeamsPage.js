@@ -33,7 +33,7 @@ class TeamsPage extends React.Component {
       modal_toggled: false,
       modal_content: { title: "...", desc: "..." },
       alert: false,
-      sorted_Teams:null
+      sorted_Teams: null,
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -116,55 +116,55 @@ class TeamsPage extends React.Component {
     }
   };
 
-  sortByNumberOfHouseholds(){
-    var set = this.props.teamsPage; 
-    if(set){
-      var rebuilt = set.sort((a,b) =>{
-        return b.households - a.households
-      }); 
-      this.setState({sorted_Teams: rebuilt});
+  sortByNumberOfHouseholds() {
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.households - a.households;
+      });
+      this.setState({ sorted_Teams: rebuilt });
     }
   }
 
-  sortByActionsCompleted(){
-    var set = this.props.teamsPage; 
-    if(set){
-      var rebuilt = set.sort((a,b) =>{
-        return b.actions_completed - a.actions_completed
-      }); 
-    
-      this.setState({sorted_Teams: rebuilt});
+  sortByActionsCompleted() {
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.actions_completed - a.actions_completed;
+      });
+
+      this.setState({ sorted_Teams: rebuilt });
     }
   }
-  sortByActionsPerHousehold(){
-    var set = this.props.teamsPage; 
-    if(set){
-      var rebuilt = set.sort((a,b) =>{
-        return Number(b.actions_completed) - Number(a.actions_completed)
-      }); 
-      
-      this.setState({sorted_Teams: rebuilt});
+  sortByActionsPerHousehold() {
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return Number(b.actions_completed) - Number(a.actions_completed);
+      });
+
+      this.setState({ sorted_Teams: rebuilt });
     }
   }
-  sortByCarbonImpact(){
-    var set = this.props.teamsPage; 
-    if(set){
-      var rebuilt = set.sort((a,b) =>{
-        return b.carbon_footprint_reduction - a.carbon_footprint_reduction
-      }); 
-     
-      this.setState({sorted_Teams: rebuilt});
+  sortByCarbonImpact() {
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.carbon_footprint_reduction - a.carbon_footprint_reduction;
+      });
+
+      this.setState({ sorted_Teams: rebuilt });
     }
   }
-  sortByTeamName(){
-    var set = this.props.teamsPage; 
-    if(set){
-      var rebuilt = set.sort((a,b) =>{
-        if( a.team.name.toLowerCase()> b.team.name.toLowerCase()) return 1; 
-        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1 ;
-      }); 
-    
-      this.setState({sorted_Teams: rebuilt});
+  sortByTeamName() {
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
+        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
+      });
+
+      this.setState({ sorted_Teams: rebuilt });
     }
   }
 
@@ -203,11 +203,23 @@ class TeamsPage extends React.Component {
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div className="p-5" style={{ height: window.screen.height - 120, marginTop:-77 }}>
+          <div
+            className="p-5"
+            style={{ height: window.screen.height - 120, marginTop: -77 }}
+          >
             {/* <PageTitle>Teams in this Community</PageTitle> */}
             <center>
-      
-            <img src={teams_pop} style={{width:489,margin:15, marginLeft:"-13%"}} /><br/>
+              <img
+                src={teams_pop}
+                style={{ width: 409, margin: 15, marginLeft: "-8%" }}
+              />
+              <br />
+              <p style={{ color: "black" }}>
+                A team is a group in a community that wants to work together. It
+                could be a school, congregation,
+                <br />a group of neighbors or friends, book club, highschool
+                sports team. Get creative!
+              </p>
               <button
                 onClick={() => {
                   window.open(this.props.links.contactus, "_blank");
@@ -215,9 +227,8 @@ class TeamsPage extends React.Component {
                 className="btn btn-success round-me req-team-btn raise"
               >
                 Request Team Creation
-              </button> <br/>
-              
-
+              </button>{" "}
+              <br />
             </center>
             <p
               className="mob-appear"
@@ -230,14 +241,67 @@ class TeamsPage extends React.Component {
               <thead>
                 <tr>
                   <th className="fake-show">Team Image </th>
-                  <th className="sort-btns" onClick = {()=>{this.sortByTeamName()}}>Team Name</th>
-                  <th className="sort-btns" onClick = {()=>{this.sortByNumberOfHouseholds()}}>Households</th>
-                  <th className="sort-btns" onClick = {()=>{this.sortByActionsCompleted()}}>Actions Completed</th>
-                  <th className="sort-btns" onClick = {()=>{this.sortByActionsPerHousehold()}}>Actions / Household</th>  
-                  <th className="sort-btns" onClick = {()=>{this.sortByCarbonImpact()}}>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByTeamName();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by team name"
+                      dir="bottom"
+                    >
+                     <span className="has-tooltip"> Team Name</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByNumberOfHouseholds();
+                    }}
+                  >
+                     <Tooltip
+                      text="Click this to sort by number of households in a team"
+                      dir="bottom"
+                    >
+                    <span className="has-tooltip">Households</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByActionsCompleted();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by number of actions completed by members of a team"
+                      dir="bottom"
+                    >
+                    <span className="has-tooltip">Actions Completed</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByActionsPerHousehold();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by number ratio of actions per household"
+                      dir="bottom"
+                    >
+                    <span className="has-tooltip">Actions / Household</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByCarbonImpact();
+                    }}
+                  >
                     <Tooltip
                       text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members"
-                      dir="left"
+                      dir="bottom"
                     >
                       <span className="has-tooltip">Carbon Impact</span>
                     </Tooltip>
@@ -271,7 +335,9 @@ class TeamsPage extends React.Component {
     });
 
     //"force-listen" to the user requested sort
-    teamsSorted = this.state.sorted_Teams ? this.state.sorted_Teams : teamsSorted;
+    teamsSorted = this.state.sorted_Teams
+      ? this.state.sorted_Teams
+      : teamsSorted;
     return teamsSorted.map((obj, index) => {
       const logo = obj.team.logo ? obj.team.logo.url : null;
 
