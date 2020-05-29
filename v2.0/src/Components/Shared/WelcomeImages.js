@@ -6,79 +6,80 @@ import Carousel from 'react-bootstrap/Carousel'
  */
 class WelcomeImages extends React.Component {
 
-    constructor(props) {
-      super(props);
-      this.imageURLs = this.props.data.map(data => data.url);
-    }
+	constructor(props) {
+		super(props);
+		this.imageURLs = this.props.data.map(data => data.url);
+		this.numImages = this.imageURLs.length;
+	}
 
-    componentDidMount() {
-        window.addEventListener('resize', this.handleResize);
-    }
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
-    }
-    handleResize = () => {
-        this.forceUpdate();
-    };
+	componentDidMount() {
+		window.addEventListener('resize', this.handleResize);
+	}
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.handleResize);
+	}
+	handleResize = () => {
+		this.forceUpdate();
+	};
 
-    render() {
-      
-        var imageStyle = {
-          height: '100%',
-          width: '100%',
-          objectFit: "cover"
-        }
+	render() {
 
-        if (window.innerWidth > 700) {
+		let imageStyle = {
+			height: '100%',
+			width: '100%',
+			objectFit: "cover"
+		}
 
-            var bannerStyle = {
-              width: '100%',
-              height: (window.innerWidth/(4 * this.imageURLs.length)) * 3 + 'px',
-              overflow: 'hidden',
-              display: 'grid',
-              gridTemplateColumns: '1fr '.repeat(this.imageURLs.length),
-              gridTemplateRows: '1fr'
-            }
+		if (window.innerWidth > 700) {
 
-            return (
-                <div className="inner-banner text-center" style={bannerStyle}>
-                    {this.imageURLs.map(image =>
-                        <img src={image} alt="" style={imageStyle} />)
-                    }
-                </div>
-            );
+			let divStyle = {
+				width: '100%',
+				height: (window.innerWidth / (4 * this.numImages)) * 3 + 'px',
+				overflow: 'hidden',
+				display: 'grid',
+				gridTemplateColumns: '1fr '.repeat(this.numImages),
+				gridTemplateRows: '1fr'
+			}
 
-        } else {
+			return (
+				<div className="inner-banner text-center" style={divStyle}>
+					{this.imageURLs.map(image =>
+						<img src={image} alt="" style={imageStyle} />)
+					}
+				</div>
+			);
 
-            let divStyle = {
-							width: '100%',
-							display: 'block',
-							height: (window.innerWidth / 4) * 3 + 'px'
-            };
+		} else {
 
-            return (
-                <div className="inner-banner text-center" >
+			let divStyle = {
+				width: '100%',
+				display: 'block',
+				height: (window.innerWidth / 4) * 3 + 'px'
+			};
 
-                    <Carousel
-                        interval={3000}
-                        fade
-                        indicators={false}
-                        controls={false}
-                        pauseOnHover={false}
-                    >
-                        {this.imageURLs.map(image => (
-                            <Carousel.Item>
-                                <div style={divStyle}>
-                                    <img src={image} alt="" style={imageStyle} />
-                                </div>
-                            </Carousel.Item>))
-                        }
-                    </Carousel>
-                </div>
+			return (
+				<div className="inner-banner text-center" >
 
-            );
-        }
-    }
+					<Carousel
+						interval={3000}
+						fade
+						indicators={false}
+						controls={false}
+						pauseOnHover={false}
+					>
+						{this.imageURLs.map(image => (
+							<Carousel.Item>
+								<div style={divStyle}>
+									<img src={image} alt="" style={imageStyle} />
+								</div>
+							</Carousel.Item>))
+						}
+					</Carousel>
+				</div>
+
+			);
+		}
+	}
 }
 
 export default WelcomeImages;
