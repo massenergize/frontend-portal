@@ -257,7 +257,7 @@ class Action extends React.Component {
                         }
                         className="thm-btn style-4 action-btns cool-font"
                       >
-                        {" "}
+                        {" "} 
                         More Info
                       </Link>
                     </div>
@@ -375,7 +375,7 @@ class Action extends React.Component {
     } else {
       return null;
     }
-  }
+  } 
 
   openForm = status => {
     this.setState({
