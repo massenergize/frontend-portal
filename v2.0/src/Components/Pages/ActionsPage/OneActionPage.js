@@ -92,7 +92,7 @@ class OneActionPage extends React.Component {
               <div
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
-              >
+          >
                 <div className="col-md-9">
                   <div className="single-products-details">
                     {this.renderAction(action)}
