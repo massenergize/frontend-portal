@@ -5,6 +5,12 @@ import Carousel from 'react-bootstrap/Carousel'
  * at which point renders a carousel that cycles all of the images
  */
 class WelcomeImages extends React.Component {
+
+    constructor(props) {
+      super(props);
+      this.imageURLs = this.props.data.map(data => data.url);
+    }
+
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
     }
@@ -16,28 +22,27 @@ class WelcomeImages extends React.Component {
     };
 
     render() {
-        var images = this.props.data.map(data => data.url);
-
+      
         var imageStyle = {
-            height: '100%',
-            width: 'auto',
-            objectFit: "cover"
+          height: '100%',
+          width: '100%',
+          objectFit: "cover"
         }
 
         if (window.innerWidth > 700) {
 
             var bannerStyle = {
-                height: '300px',
-                overflow: 'hidden',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr 1fr',
-                gridTemplateRows: '1fr'
+              width: '100%',
+              height: (window.innerWidth/(4 * this.imageURLs.length)) * 3 + 'px',
+              overflow: 'hidden',
+              display: 'grid',
+              gridTemplateColumns: '1fr '.repeat(this.imageURLs.length),
+              gridTemplateRows: '1fr'
             }
-            imageStyle["minWidth"] = window.innerWidth / images.length + 'px';
 
             return (
                 <div className="inner-banner text-center" style={bannerStyle}>
-                    {images.map(image =>
+                    {this.imageURLs.map(image =>
                         <img src={image} alt="" style={imageStyle} />)
                     }
                 </div>
@@ -46,10 +51,10 @@ class WelcomeImages extends React.Component {
         } else {
 
             let divStyle = {
-                height: '200px',
-                display: 'block',
+							width: '100%',
+							display: 'block',
+							height: (window.innerWidth / 4) * 3 + 'px'
             };
-            imageStyle["minWidth"] = window.innerWidth + 'px';
 
             return (
                 <div className="inner-banner text-center" >
@@ -61,7 +66,7 @@ class WelcomeImages extends React.Component {
                         controls={false}
                         pauseOnHover={false}
                     >
-                        {images.map(image => (
+                        {this.imageURLs.map(image => (
                             <Carousel.Item>
                                 <div style={divStyle}>
                                     <img src={image} alt="" style={imageStyle} />
