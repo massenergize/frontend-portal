@@ -257,7 +257,7 @@ class Action extends React.Component {
                         }
                         className="thm-btn style-4 action-btns cool-font"
                       >
-                        {" "}
+                        {" "} 
                         More Info
                       </Link>
                     </div>
@@ -375,7 +375,7 @@ class Action extends React.Component {
     } else {
       return null;
     }
-  }
+  } 
 
   openForm = status => {
     this.setState({
@@ -500,6 +500,9 @@ class Action extends React.Component {
       }
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
+      }
+      if (tag.name)  {
+        return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
       }
     }
     return null;

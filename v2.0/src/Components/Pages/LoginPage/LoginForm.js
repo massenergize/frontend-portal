@@ -31,8 +31,9 @@ class LoginFormBase extends React.Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	render() {
 
+  
+	render() {
 		const { email, password, error } = this.state;
 		return (
 			< div className="styled-form login-form mob-login-white-cleaner" style={{ height: window.screen.height, marginTop: 100 }}>
@@ -63,7 +64,7 @@ class LoginFormBase extends React.Component {
 						</div>
 					</form>
 					<p><button className=" energize-link" onClick={this.forgotPassword} > Forgot Password </button></p>
-					<p> Don't have an account? <Link className="energize-link" to={this.props.links.signup}>Register Here</Link> </p>				</div>
+					<p> Don't have a profile? <Link className="energize-link" to={this.props.links.signup}>Register Here</Link> </p>				</div>
 			</div >
 		);
 	}
@@ -153,7 +154,7 @@ class LoginFormBase extends React.Component {
 			const idToken = massToken.data.idToken;
 			localStorage.setItem("idToken", idToken.toString());
 			this.fetchAndLogin(email).then(success => {
-				if (success)
+        if (success)
 					console.log('yay');
 			});
 
@@ -172,7 +173,8 @@ class LoginFormBase extends React.Component {
 				this.props.reduxLoadTodo(todo.data);
 				const done = await getJson(`${URLS.USER}/e/${email}/actions?status=DONE`)
 				this.props.reduxLoadDone(done.data);
-				this.props.tryingToLogin(false);
+        this.props.tryingToLogin(false);
+        
 				return true;
 			}
 			console.log('fetch and login failed');

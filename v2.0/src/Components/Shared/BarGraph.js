@@ -59,7 +59,8 @@ class BarGraph extends React.Component {
 					legend: {
 						position: 'bottom',
 						offsetX: -10,
-						offsetY: 0
+            offsetY: 0,
+            fontFamily:"Google Sans"
 					}
 				}
 			}],

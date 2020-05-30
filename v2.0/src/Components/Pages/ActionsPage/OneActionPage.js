@@ -63,14 +63,14 @@ class OneActionPage extends React.Component {
     apiCall('actions.info', { action_id: id}).then(json => {
       if (json.success) {
         this.setState({ action: json.data })
-        this.loading = false;
       }
     }).catch(err => this.setState({ error: err.message }))
+    this.loading = false;
   }
 
   render() {
     const action = this.getMyAction();
-    if (!action) {
+    if (this.loading) {
         return <LoadingCircle />;
     }
 
@@ -92,7 +92,7 @@ class OneActionPage extends React.Component {
               <div
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
-              >
+          >
                 <div className="col-md-9">
                   <div className="single-products-details">
                     {this.renderAction(action)}
@@ -187,6 +187,8 @@ class OneActionPage extends React.Component {
     }
     return null;
   }
+
+  /* tag.points is a crude hardcoding; should just text align center and show tag name */
   renderCost(tag, name) {
     if (tag) {
       if (tag.points === 1) {
@@ -197,6 +199,9 @@ class OneActionPage extends React.Component {
       }
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
+      }
+      if (tag.name)  {
+        return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
       }
     }
     return null;

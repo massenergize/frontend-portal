@@ -134,7 +134,7 @@ class AddingHouseholdForm extends React.Component {
 			[event.target.name]: event.target.value,
 			error: null
 		});
-		console.log(this.state.unittype)
+	
 	};
 
 	onSubmit = (event) => {
@@ -152,7 +152,6 @@ class AddingHouseholdForm extends React.Component {
 
 		if (householdID) {
 			body["household_id"] = householdID;
-			console.log(body);
 			apiCall('users.households.edit', body).then(json => {
 				if (json.success) {
 					this.props.editHousehold(json.data);

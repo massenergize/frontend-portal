@@ -7,14 +7,23 @@
   margin-bottom: 17px;
 }
 
+.sort-btns{
+  cursor: pointer;
+}
+
+.sort-btns:hover{
+    color:#8dc63f;
+    transform: scale(1.03);
+    transition: .4s ease-in-out;
+}
 .req-team-btn:hover{
   background:#8dc63f; 
-  transition: .4s ease-in-out;
+  transition: .3s ease-in-out;
 }
 
 .team-img{
-  height:60px !important; 
-  width:60px !important; 
+  height:80px !important; 
+  width:80px !important; 
   object-fit: contain !important;
  
 }

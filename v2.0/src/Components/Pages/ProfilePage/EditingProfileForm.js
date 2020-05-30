@@ -81,7 +81,7 @@ class EditingProfileForm extends React.Component {
 		}
 	}
 	deleteAccount() {
-		this.setState({ error: "Sorry, we don't support deleting accounts yet" });
+		this.setState({ error: "Sorry, we don't support deleting profiles yet" });
 	}
 }
 

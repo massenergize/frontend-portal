@@ -44,14 +44,14 @@ class CircleGraph extends React.Component {
 							name: {
 								offsetY: -3,
 								color: "#666",
-								fontSize: "13px",
-								fontFamily: "Verdana-bold"
+								fontSize: "11px",
+								fontFamily: "Google Sans"
 							},
 							value: {
 								offsetY: 3,
 								color: "#666",
 								fontSize: "18px",
-								fontFamily: "Verdana",
+								fontFamily: "Google Sans",
 								show: true,
 								formatter: () => {
 									// return this.props.num + "/" + this.props.goal;
