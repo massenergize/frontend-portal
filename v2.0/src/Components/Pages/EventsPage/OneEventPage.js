@@ -5,7 +5,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Error404 from "./../Errors/404";
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
-import { dateFormatJSXVerbose, locationFormatJSX } from "../../Utils";
+import { dateFormatString, locationFormatJSX } from "../../Utils";
 import oops from "./oops.png";
 
 class OneEventPage extends React.Component {
@@ -73,7 +73,7 @@ class OneEventPage extends React.Component {
         <div style={{ height: window.screen.height - 120 }}>
           {" "}
           <center>
-            <img src={oops} style={{ width: "20%", marginTop: '10%' }} />
+            <img src={oops} alt="" style={{ width: "20%", marginTop: '10%' }} />
             <h4 style={{ marginTop: 15, color: "rgb(155, 155, 155)" }}>
               ...oops, couldn't find this event
             </h4>
@@ -81,7 +81,7 @@ class OneEventPage extends React.Component {
           </center>
         </div>
       );
-    let dateJSX = dateFormatJSXVerbose(
+    let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
     );
@@ -130,7 +130,7 @@ class OneEventPage extends React.Component {
                         <br />{" "}
                       </b>
                       <div style={{ paddingLeft: 20 }}>
-                        <span className="make-me-dark">{dateJSX}</span>
+                        <span className="make-me-dark">{dateString}</span>
                       </div>
                     </li>
                     {location ? (
