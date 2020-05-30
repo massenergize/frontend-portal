@@ -223,8 +223,8 @@ class TeamsPage extends React.Component {
               <p style={{ color: "black" }}>
                 A team is a group in a community that wants to work together. It
                 could be a school, congregation,
-                <br />a group of neighbors or friends, book club, highschool
-                sports team. Get creative!
+                a group of neighbors or friends,
+                a sports team. Get creative!
               </p>
               <button
                 onClick={() => {
