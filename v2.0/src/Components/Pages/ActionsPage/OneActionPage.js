@@ -40,7 +40,7 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
     };
-    this.loading = false;
+    this.loading = true;
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -52,7 +52,8 @@ class OneActionPage extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.loading && this.props.match.params !== this.state.action.id) {
+    if (!this.loading && 
+      (!this.state.action || this.props.match.params !== this.state.action.id)) {
       const { id } = this.props.match.params;
       this.fetch(id);
     }
