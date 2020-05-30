@@ -73,7 +73,7 @@ class OneEventPage extends React.Component {
         <div style={{ height: window.screen.height - 120 }}>
           {" "}
           <center>
-            <img src={oops} style={{ width: "20%", marginTop: '10%' }} />
+            <img src={oops} alt="" style={{ width: "20%", marginTop: '10%' }} />
             <h4 style={{ marginTop: 15, color: "rgb(155, 155, 155)" }}>
               ...oops, couldn't find this event
             </h4>
