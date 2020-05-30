@@ -336,9 +336,13 @@ class TeamsPage extends React.Component {
       teamsSorted[i]["avrgActionsPerMember"] = avrg;
     }
 
+    //AD-HOC! This is for demo-ing JCAN so "Congregation Beth El" shows up first
     teamsSorted = teamsSorted.sort((a, b) => {
-      return b.avrgActionsPerMember - a.avrgActionsPerMember;
+      if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return -1;
+      if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return 1;
+      return 0;
     });
+
 
     //"force-listen" to the user requested sort
     teamsSorted = this.state.sorted_Teams
