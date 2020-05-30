@@ -4,6 +4,7 @@ import PageTitle from "../../Shared/PageTitle";
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
+import teams_pop from "./teams_pop.jpg";
 import {
   reduxJoinTeam,
   reduxLeaveTeam,
@@ -114,7 +115,6 @@ class TeamsPage extends React.Component {
     }
   };
   render() {
-    
     const teams = this.props.teamsPage;
     if (teams === null) {
       return (
@@ -149,9 +149,22 @@ class TeamsPage extends React.Component {
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div className="p-5" style={{ height: window.screen.height - 120 }}>
-            <PageTitle>Teams in this Community</PageTitle>
-           <center> <button  onClick = {()=>{window.open(this.props.links.contactus,"_blank")}}className="btn btn-success round-me req-team-btn raise">Request Team Creation</button></center>
+          <div className="p-5" style={{ height: window.screen.height - 120, marginTop:-77 }}>
+            {/* <PageTitle>Teams in this Community</PageTitle> */}
+            <center>
+      
+            <img src={teams_pop} style={{width:489,margin:15, marginLeft:"-13%"}} /><br/>
+              <button
+                onClick={() => {
+                  window.open(this.props.links.contactus, "_blank");
+                }}
+                className="btn btn-success round-me req-team-btn raise"
+              >
+                Request Team Creation
+              </button> <br/>
+              
+
+            </center>
             <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
@@ -163,7 +176,7 @@ class TeamsPage extends React.Component {
               <thead>
                 <tr>
                   <th className="fake-show">Team Image </th>
-                 
+
                   <th>Team Name</th>
                   <th>Households</th>
                   <th>Actions Completed</th>
@@ -220,7 +233,7 @@ class TeamsPage extends React.Component {
           ) : (
             <td></td>
           )}
- 
+
           <td>
             {obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">
@@ -244,18 +257,18 @@ class TeamsPage extends React.Component {
           {this.props.user ? (
             <td>
               <center>
-              <button
-                className="contact-admin-btn round-me"
-                onClick={() => {
-                  this.setModalContent(obj.team.name, obj.team.description);
-                  this.setState({
-                    contact_modal_toggled: true,
-                    current_team_id: obj.team.id,
-                  });
-                }}
-              >
-                Contact
-              </button>
+                <button
+                  className="contact-admin-btn round-me"
+                  onClick={() => {
+                    this.setModalContent(obj.team.name, obj.team.description);
+                    this.setState({
+                      contact_modal_toggled: true,
+                      current_team_id: obj.team.id,
+                    });
+                  }}
+                >
+                  Contact
+                </button>
               </center>
             </td>
           ) : (

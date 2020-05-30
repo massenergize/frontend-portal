@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import notFound from "./not-found.jpg";
 import { dateFormatJSXVerbose, locationFormatJSX } from "../../Utils";
-
+import oops from "./oops.png";
 class OneEventPage extends React.Component {
   /**
    * renders a single event from the passes id prop
@@ -40,9 +40,14 @@ class OneEventPage extends React.Component {
   renderEvent(event) {
     if (!event)
       return (
-        <div>
+        <div style={{ height: window.screen.height - 120 }}>
           {" "}
-          ...oops couldn't find event with id: {this.props.match.params.id}
+          <center>
+            <img src={oops} style={{width:"20%", marginTop:'10%'}} />
+            <h4 style={{ marginTop:15, color:"rgb(155, 155, 155)"}}>
+              ...oops couldn't find event with id: <i>{this.props.match.params.id}</i>
+            </h4>
+          </center>
         </div>
       );
     let dateJSX = dateFormatJSXVerbose(
