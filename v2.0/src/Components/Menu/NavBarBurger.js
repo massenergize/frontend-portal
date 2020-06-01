@@ -289,8 +289,6 @@ class NavBarBurger extends React.Component {
       borderRadius: "0",
       padding: "0",
     };
-    console.log(auth.uid)
-    console.log(user.info)
     if (auth.uid && user.info) {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
