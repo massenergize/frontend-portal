@@ -130,8 +130,7 @@ class LoginFormBase extends React.Component {
 					console.log(err);
 					this.setState({ error: err.message });
 				});
-		});
-
+    });
 	}
 	signInWithFacebook = () => {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
