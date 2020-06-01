@@ -336,6 +336,10 @@ class TeamsPage extends React.Component {
       teamsSorted[i]["avrgActionsPerMember"] = avrg;
     }
 
+    teamsSorted = teamsSorted.sort((a, b) => {
+      return b.avrgActionsPerMember - a.avrgActionsPerMember;
+    });
+
     //"force-listen" to the user requested sort
     teamsSorted = this.state.sorted_Teams
       ? this.state.sorted_Teams

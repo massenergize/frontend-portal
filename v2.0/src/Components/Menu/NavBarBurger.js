@@ -223,7 +223,7 @@ class NavBarBurger extends React.Component {
           >
             <Dropdown onSelect={() => null}>
               <Dropdown.Toggle
-                // as={CustomToggle(navLink)}
+                as={CustomToggle(navLink)}
                 navLink={navLink}
                 id="dropdown-custom-components"
               ></Dropdown.Toggle>
@@ -246,6 +246,7 @@ class NavBarBurger extends React.Component {
       );
     });
   }
+
   //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
   renderDropdownItems(children) {
     if (!this.props.links) return;
@@ -363,6 +364,77 @@ export default connect(mapStoreToProps, { reduxLogout })(
   withFirebase(NavBarBurger)
 );
 // export default NavBarBurger;
+
+class ProfileBtnDropdown extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick(e) {
+    e.preventDefault();
+
+    this.props.onClick(e);
+  }
+
+  render() {
+    return (
+      <button
+        className=" float-right new-sign-in raise cool-font"
+        onClick={this.handleClick}
+        style={{
+          margin: "auto 0 auto 10px",
+          fontSize: "12px",
+          fontWeight: 600,
+        }}
+      >
+        {/* <i className="fa fa-user" />{'\u00A0'} */}
+        {this.props.userName}
+        <span className="fa fa-angle-down text-white ml-1"></span>
+      </button>
+    );
+  }
+}
+
+// New react requires the use of "forwardRef" so we use this instead of "CustomNavLink"
+const CustomToggle = function (navItem) {
+  return React.forwardRef(({ child, onClick }, ref) => {
+    return (
+      <Link
+        ref={ref}
+        className="cool-font"
+        onClick={onClick}
+      >
+        {navItem.name} <span className="font-normal fa fa-angle-down"></span>
+      </Link>
+    );
+  });
+};
+
+/* For Navbar (Normal) Dropdown Link */
+class CustomNavLink extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+
+    this.props.onClick(e);
+  }
+
+  render() {
+    return (
+      // <li className="d-flex flex-column justify-content-center dropdown" key={this.props.navLink.name} onClick={this.handleClick}>
+      <Link className="cool-font" to="" onClick={this.handleClick}>
+        {this.props.navLink.name}{" "}
+        <span className="font-normal fa fa-angle-down"></span>
+      </Link>
+      // </li>
+    );
+  }
+}
 
 // ======================== BURGERED vvv =========================== //
 
