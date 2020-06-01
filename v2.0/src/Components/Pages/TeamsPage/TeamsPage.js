@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import PageTitle from "../../Shared/PageTitle";
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
@@ -217,14 +216,15 @@ class TeamsPage extends React.Component {
             <center>
               <img
                 src={teams_pop}
+                alt=""
                 style={{ width: 409, margin: 15, marginLeft: "-8%" }}
               />
               <br />
               <p style={{ color: "black" }}>
                 A team is a group in a community that wants to work together. It
                 could be a school, congregation,
-                <br />a group of neighbors or friends, book club, highschool
-                sports team. Get creative!
+                a group of neighbors or friends,
+                a sports team. Get creative!
               </p>
               <button
                 onClick={() => {
