@@ -246,7 +246,6 @@ class NavBarBurger extends React.Component {
       );
     });
   }
-
   //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
   renderDropdownItems(children) {
     if (!this.props.links) return;
@@ -290,6 +289,8 @@ class NavBarBurger extends React.Component {
       borderRadius: "0",
       padding: "0",
     };
+    console.log(auth.uid)
+    console.log(user.info)
     if (auth.uid && user.info) {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
