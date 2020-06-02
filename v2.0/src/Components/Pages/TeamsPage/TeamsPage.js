@@ -160,16 +160,19 @@ class TeamsPage extends React.Component {
       this.setState({ sorted_Teams: rebuilt });
     }
   }
+  sortByName(set){
+    var rebuilt = set.sort((a, b) => {
+      if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
+      if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
+      return 0;
+    });
+
+    return rebuilt;
+  }
   sortByTeamName() {
     var set = this.props.teamsPage;
     if (set) {
-      var rebuilt = set.sort((a, b) => {
-        if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
-        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
-        return 0;
-      });
-
-      this.setState({ sorted_Teams: rebuilt });
+      this.setState({ sorted_Teams: this.sortByName(set) });
     }
   }
 
@@ -222,7 +225,7 @@ class TeamsPage extends React.Component {
               <br />
               <p style={{ color: "black" }}>
                 A team is a group in a community that wants to work together. It
-                could be a school, congregation,
+                could be a school, congregation,<br/>
                 a group of neighbors or friends,
                 a sports team. Get creative!
               </p>
@@ -327,14 +330,14 @@ class TeamsPage extends React.Component {
 
   renderTeamsData(teamsData) {
     var teamsSorted = teamsData.slice(0);
-    for (let i = 0; i < teamsSorted.length; i++) {
-      let members = teamsSorted[i].members;
-      //let households = teamsSorted[i].households;
-      let actions_completed = teamsSorted[i].actions_completed;
-      var avrg = Number(actions_completed) / Number(members);
-      avrg = !isNaN(avrg) ? avrg.toFixed(1) : 0;
-      teamsSorted[i]["avrgActionsPerMember"] = avrg;
-    }
+    // for (let i = 0; i < teamsSorted.length; i++) {
+    //   let members = teamsSorted[i].members;
+    //   //let households = teamsSorted[i].households;
+    //   let actions_completed = teamsSorted[i].actions_completed;
+    //   var avrg = Number(actions_completed) / Number(members);
+    //   avrg = !isNaN(avrg) ? avrg.toFixed(1) : 0;
+    //   teamsSorted[i]["avrgActionsPerMember"] = avrg;
+    // }
 
     //"force-listen" to the user requested sort
     teamsSorted = this.state.sorted_Teams
