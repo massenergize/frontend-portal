@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class OneTeamPage extends React.Component {
     componentDidMount() {
-        console.log("team with ID: ", this.props.match.params.id)
+        console.log("team page for ID: ", this.props.match.params.id);
     }
     render() {
         return null;
@@ -17,4 +17,10 @@ const mapStoreToProps = store => {
         links: store.links
     };
 };
-export default connect(mapStoreToProps)(OneTeamPage);
+const mapDispatchToProps = {
+    reduxJoinTeam,
+    reduxLeaveTeam,
+    reduxAddTeamMember,
+    reduxRemoveTeamMember,
+  };
+export default connect(mapStoreToProps, mapDispatchToProps)(OneTeamPage);

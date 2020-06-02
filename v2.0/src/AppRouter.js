@@ -21,6 +21,7 @@ import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
 import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
+import CompareTeamsPage from "./components/Pages/TeamsPage/CompareTeamsPage";
 import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
@@ -302,6 +303,7 @@ class AppRouter extends Component {
             <Route path={links.testimonials} component={StoriesPage} />
             <Route exact path={links.teams} component={TeamsPage} />
             <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+            <Route path={`${links.teams}/compare`} component={CompareTeamsPage} />
             <Route path={links.impact} component={ImpactPage} />
             <Route path={links.donate} component={DonatePage} />
             <Route exact path={links.events} component={EventsPage} />

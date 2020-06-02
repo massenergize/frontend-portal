@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PageTitle from '../../Shared/PageTitle';
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
@@ -196,7 +197,7 @@ class TeamsPage extends React.Component {
             }}
           >
             {" "}
-            Sorry, there are not teams for this community yet :({" "}
+            There are no teams for this community yet :({" "}
           </h2>
           {/* <LoadingCircle /> */}
         </div>
@@ -212,29 +213,39 @@ class TeamsPage extends React.Component {
             className="p-5"
             style={{ height: window.screen.height - 120, marginTop: -77 }}
           >
-            {/* <PageTitle>Teams in this Community</PageTitle> */}
+            <PageTitle>Teams in this Community</PageTitle>
             <center>
-              <img
-                src={teams_pop}
-                alt=""
-                style={{ width: 409, margin: 15, marginLeft: "-8%" }}
-              />
-              <br />
               <p style={{ color: "black" }}>
                 A team is a group in a community that wants to work together. It
                 could be a school, congregation,
                 a group of neighbors or friends,
                 a sports team. Get creative!
               </p>
-              <button
+            <div>
+            <button
                 onClick={() => {
                   window.open(this.props.links.contactus, "_blank");
                 }}
-                className="btn btn-success round-me req-team-btn raise"
+                className="btn btn-success round-me start-team-btn raise"
               >
-                Request Team Creation
+                                Start a Team
               </button>{" "}
-              <br />
+                <div style={{
+                    width: '10px',
+                    height: 'auto',
+                    display: 'inline-block'
+                }}>
+                </div>
+              <button
+                onClick={() => {
+                    window.location = `${this.props.links.teams + "/compare"}`;
+                }}
+                className="btn btn-success round-me comp-teams-btn raise"
+              >
+                Compare Teams
+              </button>{" "}
+            </div>
+            <br />
             </center>
             <p
               className="mob-appear"

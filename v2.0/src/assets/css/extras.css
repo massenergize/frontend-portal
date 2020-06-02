@@ -1,11 +1,18 @@
 
+.start-team-btn{
+    background: #8dc63f;; 
+    border-width: 0px !important;
+    padding:10px 32px; 
+    margin-bottom: 17px;
+  }
 
-.req-team-btn{
+.comp-teams-btn{
   background:#f67b61; 
   border-width: 0px !important;
   padding:10px 32px; 
   margin-bottom: 17px;
 }
+
 
 .sort-btns{
   cursor: pointer;
@@ -16,8 +23,12 @@
     transform: scale(1.03);
     transition: .4s ease-in-out;
 }
-.req-team-btn:hover{
-  background:#8dc63f; 
+.start-team-btn:hover{
+    background:#373535; 
+    transition: .3s ease-in-out;
+  }
+.comp-teams-btn:hover{
+  background:#373535; 
   transition: .3s ease-in-out;
 }
 
