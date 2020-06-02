@@ -1,13 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux";
-import {
-    reduxJoinTeam,
-    reduxLeaveTeam,
-  } from "../../../redux/actions/userActions";
-  import {
-    reduxAddTeamMember,
-    reduxRemoveTeamMember,
-  } from "../../../redux/actions/pageActions";
 
 class CompareTeamsPage extends React.Component {
     componentDidMount() {

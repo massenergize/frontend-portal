@@ -136,8 +136,8 @@ class TeamsPage extends React.Component {
       this.setState({ sorted_Teams: rebuilt });
     }
   }
-  findAverage(actionsNo, households){
-    var number = Number(actionsNo)/households;
+  findAverage(actionsNo, households) {
+    var number = Number(actionsNo) / households;
     number = !isNaN(number) ? number.toFixed(1) : 0;
     return number
   }
@@ -145,7 +145,7 @@ class TeamsPage extends React.Component {
     var set = this.props.teamsPage;
     if (set) {
       var rebuilt = set.sort((a, b) => {
-        return this.findAverage(b.actions_completed,b.households) - this.findAverage(a.actions_completed, a.households) ;
+        return this.findAverage(b.actions_completed, b.households) - this.findAverage(a.actions_completed, a.households);
       });
 
       this.setState({ sorted_Teams: rebuilt });
@@ -221,33 +221,33 @@ class TeamsPage extends React.Component {
                 a group of neighbors or friends,
                 a sports team. Get creative!
               </p>
-            <div>
-            <button
-                onClick={() => {
-                  window.open(this.props.links.contactus, "_blank");
-                }}
-                className="btn btn-success round-me start-team-btn raise"
-              >
-                                Start a Team
+              <div>
+                <button
+                  onClick={() => {
+                    window.open(this.props.links.contactus, "_blank");
+                  }}
+                  className="btn btn-success round-me start-team-btn raise"
+                >
+                  Start a Team
               </button>{" "}
                 <div style={{
-                    width: '10px',
-                    height: 'auto',
-                    display: 'inline-block'
+                  width: '10px',
+                  height: 'auto',
+                  display: 'inline-block'
                 }}>
                 </div>
-              <button
-                onClick={() => {
+                <button
+                  onClick={() => {
                     window.location = `${this.props.links.teams + "/compare"}`;
-                }}
-                className="btn btn-success round-me comp-teams-btn raise"
-              >
-                Compare Teams
+                  }}
+                  className="btn btn-success round-me comp-teams-btn raise"
+                >
+                  Compare Teams
               </button>{" "}
-            </div>
-            <br />
+              </div>
+              <br />
             </center>
-            <p
+            {/* <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
             >
@@ -328,12 +328,43 @@ class TeamsPage extends React.Component {
                 </tr>
               </thead>
               <tbody>{this.renderTeamsData(teams)}</tbody>
-            </Table>
+            </Table> */}
+            {this.renderTeams(teams)}
             {this.showAlert()}
           </div>
         </div>
       </>
     );
+  }
+
+  renderTeams(teams) {
+    //split the teams into those that the user is on and the teams that the user is not
+    const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
+      return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
+    }, [[], []]);
+
+    console.log(myTeams, otherTeams);
+
+    return (
+      <div>
+        {/*render "my teams" title*/}
+        <div>
+          {/*if no user logged in, say they need to log in to join teams*/}
+          {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+          {myTeams.map(team => this.renderTeam(team))}
+        </div>
+        {/*render "all teams" title*/}
+        <div>
+          {/*if no user logged in, say they need to log in to join teams*/}
+          {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+          {otherTeams.map(team => this.renderTeam(team))}
+        </div>
+      </div>
+    )
+  }
+
+  renderTeam(team) {
+    //render a single team
   }
 
   renderTeamsData(teamsData) {
@@ -365,8 +396,8 @@ class TeamsPage extends React.Component {
               <img src={logo} alt="" className="team-img"></img>
             </td>
           ) : (
-            <td></td>
-          )}
+              <td></td>
+            )}
 
           <td>
             {obj.team.name}
@@ -406,10 +437,10 @@ class TeamsPage extends React.Component {
               </center>
             </td>
           ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to contact admin
-            </td>
-          )}
+              <td>
+                <Link to={this.props.links.signin}>Sign In</Link> to contact admin
+              </td>
+            )}
           {this.props.user ? (
             <td>
               {this.inTeam(obj.team.id) ? (
@@ -424,28 +455,29 @@ class TeamsPage extends React.Component {
                   </button>
                 </Tooltip>
               ) : (
-                <Tooltip text="This will add you to the team">
-                  <button
-                    className="thm-btn round-me team-btn-edit"
-                    onClick={() => {
-                      this.joinTeam(obj.team);
-                    }}
-                  >
-                    <i className="fa fa-user-plus"></i>{" "}
-                  </button>
-                </Tooltip>
-              )}
+                  <Tooltip text="This will add you to the team">
+                    <button
+                      className="thm-btn round-me team-btn-edit"
+                      onClick={() => {
+                        this.joinTeam(obj.team);
+                      }}
+                    >
+                      <i className="fa fa-user-plus"></i>{" "}
+                    </button>
+                  </Tooltip>
+                )}
             </td>
           ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to join a team
-            </td>
-          )}
+              <td>
+                <Link to={this.props.links.signin}>Sign In</Link> to join a team
+              </td>
+            )}
           {/* <td>{obj.ghgSaved}</td> */}
         </tr>
       );
     });
   }
+
   inTeam = (team_id) => {
     if (!this.props.user) {
       return false;
