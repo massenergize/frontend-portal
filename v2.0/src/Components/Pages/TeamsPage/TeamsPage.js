@@ -362,6 +362,12 @@ class TeamsPage extends React.Component {
     );
   }
 
+  //change the width sizing to be grid-based and thus better for mobile?
+  //make my own CSS classes wherever I define a style object
+  //figure out how to vertically center the wrapping div for team stats within the card
+  //do the image formatting
+  //deal with all API stuff and data flow
+
   renderTeams(teams) {
     const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
@@ -372,9 +378,6 @@ class TeamsPage extends React.Component {
     const subheaderStyle = { color: "#888", fontStyle: 'italic' };
 
     return (
-      //change the width sizing to be grid-based and better for mobile
-      //make my own CSS classes wherever I define a style object
-      //make the height of a given card fixed
 
       <div style={{
         width: '80%',
@@ -432,7 +435,7 @@ class TeamsPage extends React.Component {
               <div className="col-6">
                 {this.renderTeamStats(team)}
               </div>
-              <div className="col-3">
+              <div className="col-3" >
                 {this.renderTeamLogo(teamObj)}
               </div>
             </>
@@ -442,7 +445,7 @@ class TeamsPage extends React.Component {
             </div>
           }
         </div>
-      </div>
+      </div >
     );
   }
 
@@ -467,11 +470,8 @@ class TeamsPage extends React.Component {
   }
 
   renderTeamStats(team) {
-    //figure out how to vertically center the div too!
     return (
-      <div style={{
-        textAlign: 'center'
-      }}>
+      <div style={{ textAlign: 'center' }}>
         <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
         <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
         <p><b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
@@ -482,7 +482,6 @@ class TeamsPage extends React.Component {
   renderTeamLogo(teamObj) {
     return <img src={teamObj.logo.url} alt="" />;
   }
-
 
   renderTeamsData(teamsData) {
     var teamsSorted = teamsData.slice(0);
