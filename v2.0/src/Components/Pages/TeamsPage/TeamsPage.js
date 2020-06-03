@@ -213,6 +213,7 @@ class TeamsPage extends React.Component {
             className="p-5"
             style={{ height: window.screen.height - 120, marginTop: -77 }}
           >
+            <br />
             <PageTitle>Teams in this Community</PageTitle>
             <center>
               <p style={{ color: "black" }}>
@@ -329,7 +330,9 @@ class TeamsPage extends React.Component {
               </thead>
               <tbody>{this.renderTeamsData(teams)}</tbody>
             </Table> */}
-            {this.renderTeams(teams)}
+            <div className="boxed_wrapper">
+              {this.renderTeams(teams)}
+            </div>
             {this.showAlert()}
           </div>
         </div>
@@ -346,26 +349,70 @@ class TeamsPage extends React.Component {
     console.log(myTeams, otherTeams);
 
     return (
-      <div>
-        {/*render "my teams" title*/}
-        <div>
-          {/*if no user logged in, say they need to log in to join teams*/}
-          {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+      //TODO: change this to something grid-based?
+      <div style={{
+        width: '80%',
+        margin: 'auto'
+      }}>
+        {/*if no user logged in, say they need to log in to join teams*/}
+        {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+        <div className="mob-event-cards-fix outer-box sec-padd event-style2">
           {myTeams.map(team => this.renderTeam(team))}
         </div>
         {/*render "all teams" title*/}
-        <div>
-          {/*if no user logged in, say they need to log in to join teams*/}
-          {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+        {/*if no user logged in, say they need to log in to join teams*/}
+        {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
+        <div className="mob-event-cards-fix outer-box sec-padd event-style2">
           {otherTeams.map(team => this.renderTeam(team))}
         </div>
-      </div>
-    )
+      </div >
+    );
   }
 
+  //render a single team
   renderTeam(team) {
-    //render a single team
+    const teamObj = team.team;
+    const teamLogo = teamObj.logo;
+    return (
+      <div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.teams + "/" + teamObj.id}` }} key={teamObj.id}>
+        <div className="row no-gutter">
+          <div className="col-lg-3 col-12">
+            {this.renderTeamTitle(team)}
+          </div>
+          {teamLogo ?
+            <>
+              <div className="col-lg-7 col-12">
+                {this.renderTeamStats(team)}
+              </div>
+              <div className="col-lg-2 col-12">
+                {this.renderTeamLogo(team)}
+              </div>
+            </>
+            :
+            <div className="col-lg-9 col-12">
+              {this.renderTeamStats(team)}
+            </div>
+          }
+        </div>
+      </div>
+    );
   }
+
+  renderTeamTitle(team) {
+    {/* render team title, tagline, and join button */ }
+    return <h1>team title stuff</h1>;
+  }
+
+  renderTeamStats(team) {
+    {/* render team stats */ }
+    return <h1>team stats</h1>;
+  }
+
+  renderTeamLogo(team) {
+    {/* render team logo */ }
+    return <h1>team logo</h1>;
+  }
+
 
   renderTeamsData(teamsData) {
     var teamsSorted = teamsData.slice(0);
