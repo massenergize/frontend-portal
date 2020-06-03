@@ -12,11 +12,11 @@ import {
   reduxAddToTodo,
   reduxMoveToDone,
   reduxRemoveFromDone,
-  reduxRemoveFromTodo
+  reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
 import {
   reduxChangeData,
-  reduxTeamAddAction
+  reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -39,6 +39,7 @@ class OneActionPage extends React.Component {
       tab: "description",
       question: null,
       action: null,
+      showTodoMsg: false,
     };
     this.loading = true;
     this.handleChange = this.handleChange.bind(this);
@@ -48,12 +49,14 @@ class OneActionPage extends React.Component {
     window.addEventListener("resize", this.chooseFontSize);
 
     const { id } = this.props.match.params;
-    this.fetch(id)
+    this.fetch(id);
   }
 
   componentDidUpdate() {
-    if (!this.loading && 
-      (!this.state.action || this.props.match.params !== this.state.action.id)) {
+    if (
+      !this.loading &&
+      (!this.state.action || this.props.match.params !== this.state.action.id)
+    ) {
       const { id } = this.props.match.params;
       this.fetch(id);
     }
@@ -61,18 +64,20 @@ class OneActionPage extends React.Component {
 
   fetch(id) {
     this.loading = true;
-    apiCall('actions.info', { action_id: id}).then(json => {
-      if (json.success) {
-        this.setState({ action: json.data })
-      }
-    }).catch(err => this.setState({ error: err.message }))
+    apiCall("actions.info", { action_id: id })
+      .then((json) => {
+        if (json.success) {
+          this.setState({ action: json.data });
+        }
+      })
+      .catch((err) => this.setState({ error: err.message }));
     this.loading = false;
   }
 
   render() {
     const action = this.getMyAction();
     if (this.loading) {
-        return <LoadingCircle />;
+      return <LoadingCircle />;
     }
 
     if (!action) {
@@ -85,7 +90,7 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: `Action ${action.id}` }
+              { name: `Action ${action.id}` },
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
@@ -93,7 +98,7 @@ class OneActionPage extends React.Component {
               <div
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
-          >
+              >
                 <div className="col-md-9">
                   <div className="single-products-details">
                     {this.renderAction(action)}
@@ -152,7 +157,7 @@ class OneActionPage extends React.Component {
 	} */
 
   getTag(name) {
-    const tags = this.getMyAction().tags.filter(tag => {
+    const tags = this.getMyAction().tags.filter((tag) => {
       return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
     });
     return tags && tags.length > 0 ? tags[0] : null;
@@ -201,7 +206,7 @@ class OneActionPage extends React.Component {
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
       }
-      if (tag.name)  {
+      if (tag.name) {
         return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
       }
     }
@@ -219,7 +224,7 @@ class OneActionPage extends React.Component {
       return;
     }
     this.refs.question_body.value = "";
-    apiCall("send-question", { question: this.state.question }).then(res => {
+    apiCall("send-question", { question: this.state.question }).then((res) => {
       if (res.success) {
         alert("Your message has been sent. Thank you for taking the time!");
       }
@@ -228,7 +233,7 @@ class OneActionPage extends React.Component {
   actionIsInTodo() {
     var action = this.getMyAction();
     var todo = this.props.todo ? this.props.todo : [];
-    var data = todo.filter(t => t.action.id === action.id);
+    var data = todo.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];
     }
@@ -238,23 +243,21 @@ class OneActionPage extends React.Component {
   actionIsDone() {
     var action = this.getMyAction();
     var done = this.props.done ? this.props.done : [];
-    var data = done.filter(t => t.action.id === action.id);
+    var data = done.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];
     }
     return null;
   }
-  removeFromCart = actionRel => {
+  removeFromCart = (actionRel) => {
     const status = actionRel.status;
     deleteJson(
       `${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`
-    ).then(json => {
+    ).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
-          this.props.done.filter(
-            item => item.id !== actionRel.id
-          );
+          this.props.done.filter((item) => item.id !== actionRel.id);
           this.props.reduxRemoveFromDone(actionRel);
           //this.props.reduxLoadDone(remainder);
         }
@@ -265,27 +268,24 @@ class OneActionPage extends React.Component {
     var action = this.getMyAction();
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
-      todo.filter(t => t.action.id === action.id).length > 0 ? true : false;
+      todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
 
-
-      if(this.checkDone()){
-        return (
-          <Tooltip text="Can't use this feature, you have already done the action">
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me todo-correction"
-            
-          >
+    if (this.checkDone()) {
+      return (
+        <Tooltip text="Can't use this feature, you have already done the action">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me todo-correction">
             To Do
           </p>
         </Tooltip>
-        );
-      }
+      );
+    }
     if (exists) {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me todo-correction"
             onClick={() => {
+              this.setState({showTodoMsg:false})
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
@@ -308,21 +308,21 @@ class OneActionPage extends React.Component {
       );
     }
   }
-  checkDone(){
+  checkDone() {
     var action = this.getMyAction();
     var done = this.props.done ? this.props.done : [];
     var exists =
-      done.filter(t => t.action.id === action.id).length > 0 ? true : false;
-      return exists;
+      done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
+    return exists;
   }
   checkDoneAndReturn() {
-    
     if (this.checkDone()) {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange line-me done-it-correction"
             onClick={() => {
+              this.setState({showTestimonialLink:false});
               this.removeFromCart(this.actionIsDone());
             }}
           >
@@ -333,17 +333,18 @@ class OneActionPage extends React.Component {
     } else {
       return (
         <button
-        
           className={
             this.state.status === "DONE"
               ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
               : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
           }
-          onClick={() => this.openForm("DONE")}
-         
+          onClick={() => {
+            this.openForm("DONE");
+            this.setState({ showTodoMsg: false });
+          }}
         >
           {" "}
-          Done It 
+          Done It
         </button>
       );
     }
@@ -356,9 +357,9 @@ class OneActionPage extends React.Component {
     const community = this.props.communityData
       ? this.props.communityData.community
       : null;
-    
+
     const login_link = community ? community.name : "";
-    const stories = this.props.stories.filter(story => {
+    const stories = this.props.stories.filter((story) => {
       if (story.action) {
         return story.action.id === Number(this.props.match.params.id);
       }
@@ -366,7 +367,11 @@ class OneActionPage extends React.Component {
     });
 
     // actions are available if they aren't deleted and the action community is same as the current community (assuming we know it)
-    const action_available = action.is_deleted ? false : (community ? community.id === action.community.id : true);
+    const action_available = action.is_deleted
+      ? false
+      : community
+      ? community.id === action.community.id
+      : true;
 
     return (
       <div>
@@ -401,77 +406,102 @@ class OneActionPage extends React.Component {
                 </div>
               </div>
 
-              { /* displays ToDo and Done buttons if action is available in this community and not deleted*/
-              action_available ? (
-              <div
-                className="clearfix"
-                style={{
-                  position: "relative",
-                  marginLeft: "40px",
-                  marginTop: 10
-                }}
-              >
-                {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
+              {
+                /* displays ToDo and Done buttons if action is available in this community and not deleted*/
+                action_available ? (
+                  <div
+                    className="clearfix"
+                    style={{
+                      position: "relative",
+                      marginLeft: "40px",
+                      marginTop: 10,
+                    }}
+                  >
+                    {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-                {!this.props.user ? (
-                  <Tooltip text="Sign in to make a TODO list">
-                    <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font">
-                      To Do
-                    </p>
-                  </Tooltip>
-                ) : (
-                  this.checkTodoAndReturn()
-                )}
-                &nbsp;
-                {!this.props.user ? (
-                  <Tooltip text="Sign in to mark actions as completed">
-                    <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me done-it mob-font">
-                      Done It
-                    </p>
-                  </Tooltip>
-                ) : (
-                  this.checkDoneAndReturn()
-                )}
-                {this.state.status ? (
-                  <div style={{ paddingTop: "20px" }}>
-                    <ChooseHHForm
-                      aid={action.id}
-                      status={this.state.status}
-                      open={this.state.status ? true : false}
-                      user={this.props.user}
-                      addToCart={(aid, hid, status) =>
-                        this.addToCart(aid, hid, status)
-                      }
-                      inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
-                      moveToDone={(aid, hid) =>
-                        this.moveToDoneByActionId(aid, hid)
-                      }
-                      closeForm={this.closeForm}
-                    />{" "}
+                    {!this.props.user ? (
+                      <Tooltip text="Sign in to make a TODO list">
+                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font">
+                          To Do
+                        </p>
+                      </Tooltip>
+                    ) : (
+                      this.checkTodoAndReturn()
+                    )}
+                    &nbsp;
+                    {!this.props.user ? (
+                      <Tooltip text="Sign in to mark actions as completed">
+                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me done-it mob-font">
+                          Done It
+                        </p>
+                      </Tooltip>
+                    ) : (
+                      this.checkDoneAndReturn()
+                    )}
+                    {this.state.status ? (
+                      <div style={{ paddingTop: "20px" }}>
+                        <ChooseHHForm
+                          aid={action.id}
+                          status={this.state.status}
+                          open={this.state.status ? true : false}
+                          user={this.props.user}
+                          addToCart={(aid, hid, status) =>
+                            this.addToCart(aid, hid, status)
+                          }
+                          inCart={(aid, hid, cart) =>
+                            this.inCart(aid, hid, cart)
+                          }
+                          moveToDone={(aid, hid) =>
+                            this.moveToDoneByActionId(aid, hid)
+                          }
+                          closeForm={this.closeForm}
+                        />{" "}
+                      </div>
+                    ) : null}
+                    {this.state.showTestimonialLink ? (
+                      <div>
+                        <p style={{ marginTop: 30,fontSize:15 }} className="phone-vanish">
+                          Nice job! How was your experience with this action?
+                          Tell us about it in a{" "}
+                          <a
+                            href="#testimonials-form"
+                            className="as-link"
+                            style={{ display: "inline-block" }}
+                            onClick={() =>
+                              this.setState({ tab: "testimonials" })
+                            }
+                          >
+                            testimonial
+                          </a>
+                          .
+                        </p>
+                        <p className="pc-vanish" style={{marginTop:30, fontSize:15}}>
+                          Nice job! How was your experience with this action?
+                          Tell us about it in a Tell us about it in a{" "}
+                          <a
+                            href={this.props.links.testimonials}
+                            className="as-link"
+                            style={{ display: "inline-block" }}
+                          >
+                            testimonial
+                          </a>
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
-                {this.state.showTestimonialLink ? (
-                  <p>
-                    Nice job! How was your experience with this action? Tell us
-                    about it in a{" "}
-                    <a
-                      href="#testimonials-form"
-                      className="as-link"
-                      style={{ display: "inline-block" }}
-                      onClick={() => this.setState({ tab: "testimonials" })}
-                    >
-                      testimonial
-                    </a>
-                    .
-                  </p>
-                ) : null}
-              </div>
-            ) : (
-              <div className="cool-font">
-                This action is not available.  It was from a different community or was deleted.          
-              </div>
-            )}
+                ) : (
+                  <div className="cool-font">
+                    This action is not available. It was from a different
+                    community or was deleted.
+                  </div>
+                )
+              }
+              {this.state.showTodoMsg ? (
+                <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
+                  Nicely done! You have now added this action to your todo list.
+                </p>
+              ) : null}
             </div>
             {/* action image */}
             <div className="col-lg-6 col-md-12">
@@ -553,7 +583,7 @@ class OneActionPage extends React.Component {
                 </button>
               </li>
             ) : null}
-            {(action.deep_dive && action.deep_dive !=="<p><br></p>") ? (
+            {action.deep_dive && action.deep_dive !== "<p><br></p>" ? (
               <li
                 id="deeptab"
                 className={this.state.tab === "deep" ? "active" : ""}
@@ -664,7 +694,7 @@ class OneActionPage extends React.Component {
                         background: "gray",
                         border: "gray",
                         color: "white",
-                        textDecoration: "none"
+                        textDecoration: "none",
                       }}
                       className="btn btn-success round-me pull-right"
                     >
@@ -726,23 +756,23 @@ class OneActionPage extends React.Component {
     }
     if (fontSize !== this.state.fontSize) {
       this.setState({
-        fontSize: fontSize
+        fontSize: fontSize,
       });
     }
   };
-  openForm = status => {
+  openForm = (status) => {
     this.setState({
-      status: status
+      status: status,
     });
   };
   closeForm = () => {
     this.setState({
-      status: null
+      status: null,
     });
   };
 
   renderTags(tags) {
-    return Object.keys(tags).map(key => {
+    return Object.keys(tags).map((key) => {
       var tagColName = "";
       if (tags[key].tag_collection.name !== "Category") {
         tagColName = tags[key].tag_collection.name + "-";
@@ -756,14 +786,14 @@ class OneActionPage extends React.Component {
       );
     });
   }
-  renderStories = stories => {
-    if (stories.length === 0) return <p > No stories about this action yet </p>;
+  renderStories = (stories) => {
+    if (stories.length === 0) return <p> No stories about this action yet </p>;
     return (
       <>
         {/* <div className="tab-title-h4">
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
-        {Object.keys(stories).map(key => {
+        {Object.keys(stories).map((key) => {
           var creatorName = "Anonymous";
           const story = stories[key];
           if (!story.anononymous) {
@@ -860,7 +890,7 @@ class OneActionPage extends React.Component {
    */
   inCart = (aid, hid, cart) => {
     if (!this.props.todo) return false;
-    const checkTodo = this.props.todo.filter(actionRel => {
+    const checkTodo = this.props.todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
@@ -871,7 +901,7 @@ class OneActionPage extends React.Component {
     }
 
     if (!this.props.done) return false;
-    const checkDone = this.props.done.filter(actionRel => {
+    const checkDone = this.props.done.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
@@ -881,30 +911,30 @@ class OneActionPage extends React.Component {
 
     return checkTodo.length > 0 || checkDone.length > 0;
   };
-  moveToDone = actionRel => {
+  moveToDone = (actionRel) => {
     const body = {
       status: "DONE",
       action: actionRel.action.id,
-      real_estate_unit: actionRel.real_estate_unit.id
+      real_estate_unit: actionRel.real_estate_unit.id,
     };
     postJson(
       URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id,
       body
     )
-      .then(json => {
+      .then((json) => {
         if (json.success) {
+          this.setState({ showTestimonialLink: true });
           this.props.reduxMoveToDone(json.data);
           this.addToImpact(json.data.action);
-          this.setState({ showTestimonialLink: true });
         }
         //just update the state here
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
   moveToDoneByActionId(aid, hid) {
-    const actionRel = this.props.todo.filter(actionRel => {
+    const actionRel = this.props.todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
@@ -916,58 +946,60 @@ class OneActionPage extends React.Component {
     const body = {
       action: aid,
       status: status,
-      real_estate_unit: hid
+      real_estate_unit: hid,
     };
     postJson(URLS.USER + "/" + this.props.user.id + "/actions", body)
-      .then(json => {
+      .then((json) => {
         if (json.success) {
           //set the state here
           if (status === "TODO") {
             this.props.reduxAddToTodo(json.data);
+            this.setState({ showTodoMsg: aid });
           } else if (status === "DONE") {
+            this.setState({ showTestimonialLink: true });
             this.props.reduxAddToDone(json.data);
             this.addToImpact(json.data.action);
-            this.setState({ showTestimonialLink: true });
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
   addToImpact(action) {
     this.changeDataByName("ActionsCompletedData", 1);
-    action.tags.forEach(tag => {
+    action.tags.forEach((tag) => {
       if (tag.tag_collection && tag.tag_collection.name === "Category") {
         this.changeData(tag.id, 1);
       }
     });
-    Object.keys(this.props.user.teams).forEach(key => {
+    Object.keys(this.props.user.teams).forEach((key) => {
       this.props.reduxTeamAddAction(this.props.user.teams[key]);
     });
   }
   changeDataByName(name, number) {
-    var data = this.props.communityData.filter(data => {
+    if (!this.props.communityData) return null;
+    var data = this.props.communityData.filter((data) => {
       return data.name === name;
     })[0];
 
     const body = {
-      value: data.value + number > 0 ? data.value + number : 0
+      value: data.value + number > 0 ? data.value + number : 0,
     };
-    postJson(URLS.DATA + "/" + data.id, body).then(json => {
+    postJson(URLS.DATA + "/" + data.id, body).then((json) => {
       console.log(json);
       if (json.success) {
         data = {
           ...data,
-          value: data.value + number > 0 ? data.value + number : 0
+          value: data.value + number > 0 ? data.value + number : 0,
         };
         this.props.reduxChangeData(data);
       }
     });
   }
   changeData(tagid, number) {
-    var data = this.props.communityData.filter(data => {
+    var data = this.props.communityData.filter((data) => {
       if (data.tag) {
         console.log(data.tag);
         return data.tag === tagid;
@@ -979,21 +1011,21 @@ class OneActionPage extends React.Component {
       return;
     }
     const body = {
-      value: data.value + number > 0 ? data.value + number : 0
+      value: data.value + number > 0 ? data.value + number : 0,
     };
-    postJson(URLS.DATA + "/" + data.id, body).then(json => {
+    postJson(URLS.DATA + "/" + data.id, body).then((json) => {
       console.log(json);
       if (json.success) {
         data = {
           ...data,
-          value: data.value + number > 0 ? data.value + number : 0
+          value: data.value + number > 0 ? data.value + number : 0,
         };
         this.props.reduxChangeData(data);
       }
     });
   }
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     auth: store.firebase.auth,
     user: store.user.info,
@@ -1003,7 +1035,7 @@ const mapStoreToProps = store => {
     stories: store.page.testimonials,
     communityData: store.page.communityData,
     links: store.links,
-    collection: store.page.collection
+    collection: store.page.collection,
   };
 };
 const mapDispatchToProps = {
@@ -1013,7 +1045,7 @@ const mapDispatchToProps = {
   reduxChangeData,
   reduxTeamAddAction,
   reduxRemoveFromDone,
-  reduxRemoveFromTodo
+  reduxRemoveFromTodo,
 };
 
 export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);

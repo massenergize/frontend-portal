@@ -764,6 +764,7 @@
   color:white;
   background:#8dc63f;
   margin:18px;
+  outline: 0 !important;
 }
 .m-cart-header{
   padding:11px; 
