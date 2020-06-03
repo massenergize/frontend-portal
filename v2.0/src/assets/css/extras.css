@@ -1,6 +1,6 @@
 
 .start-team-btn{
-    background: #8dc63f;; 
+    background: #8dc63f; 
     border-width: 0px !important;
     padding:10px 32px; 
     margin-bottom: 17px;
@@ -13,6 +13,12 @@
   margin-bottom: 17px;
 }
 
+.join-team-btn{
+    background:#8dc63f; 
+    border-width: 0px !important;
+    padding:10px 10px; 
+    margin-bottom: 10px;
+  }
 
 .sort-btns{
   cursor: pointer;

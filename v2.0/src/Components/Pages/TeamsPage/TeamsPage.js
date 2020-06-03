@@ -5,7 +5,6 @@ import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
 import teams_pop from "./teams_pop.jpg";
-
 import {
   reduxJoinTeam,
   reduxLeaveTeam,
@@ -186,15 +185,15 @@ class TeamsPage extends React.Component {
 
       this.showSortNotification(false);
       this.setState({ sorted_Teams: rebuilt });
-      
+
     }
   }
   showSortNotification(which) {
-    if(which){
-      this.setState({sorting:which});
-    }else{
+    if (which) {
+      this.setState({ sorting: which });
+    } else {
       setTimeout(() => {
-        this.setState({sorting:which})
+        this.setState({ sorting: which })
       }, 400);
     }
   }
@@ -234,51 +233,45 @@ class TeamsPage extends React.Component {
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div
-            className="p-5"
-            style={{ height: window.screen.height - 120, marginTop: -77 }}
-          >
-            <br />
-            <PageTitle>Teams in this Community</PageTitle>
-            <center>
-              <p style={{ color: "black" }}>
-                A team is a group in a community that wants to work together. It
-                could be a school, congregation,
-                <br />a group of neighbors or friends, a sports team. Get
-                creative!
+
+          <PageTitle>Teams in this Community</PageTitle>
+          <center>
+            <p style={{ color: "black", margin: '0px 20px 20px' }}>
+              Teams are groups in a community that wants to collaborate. It
+              could be a school, congregation, a group of neighbors or friends, a sports team. Get
+              creative!
               </p>
-              <div>
-                <button
-                  onClick={() => {
-                    window.open(this.props.links.contactus, "_blank");
-                  }}
-                  className="btn btn-success round-me start-team-btn raise"
-                >
-                  Start a Team
+            <div>
+              <button
+                onClick={() => {
+                  window.open(this.props.links.contactus, "_blank");
+                }}
+                className="btn btn-success round-me start-team-btn raise"
+              >
+                Start a Team
               </button>{" "}
-                <div style={{
-                  width: '10px',
-                  height: 'auto',
-                  display: 'inline-block'
-                }}>
-                </div>
-                <button
-                  onClick={() => {
-                    window.location = `${this.props.links.teams + "/compare"}`;
-                  }}
-                  className="btn btn-success round-me comp-teams-btn raise"
-                >
-                  Compare Teams
-              </button>{" "}
+              <div style={{
+                width: '10px',
+                height: 'auto',
+                display: 'inline-block'
+              }}>
               </div>
-              <br />
-              {this.state.sorting ? (
-                <p className="text text-success teams-sort-not">
-                  <i className="fa fa-spinner fa-spin"></i> Rearranging teams...{" "}
-                </p>
-              ) : null}
-            </center>
-            {/* <p
+              <button
+                onClick={() => {
+                  window.location = `${this.props.links.teams + "/compare"}`;
+                }}
+                className="btn btn-success round-me comp-teams-btn raise"
+              >
+                Compare Teams
+              </button>{" "}
+            </div>
+            {this.state.sorting ? (
+              <p className="text text-success teams-sort-not">
+                <i className="fa fa-spinner fa-spin"></i> Rearranging teams...{" "}
+              </p>
+            ) : null}
+          </center>
+          {/* <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
             >
@@ -360,66 +353,81 @@ class TeamsPage extends React.Component {
               </thead>
               <tbody>{this.renderTeamsData(teams)}</tbody>
             </Table> */}
-            <div className="boxed_wrapper">
-              {this.renderTeams(teams)}
-            </div>
-            {this.showAlert()}
+          <div className="boxed_wrapper">
+            {this.renderTeams(teams)}
           </div>
+          {this.showAlert()}
         </div>
       </>
     );
   }
 
   renderTeams(teams) {
-    //split the teams into those that the user is on and the teams that the user is not
     const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
     }, [[], []]);
 
     console.log(myTeams, otherTeams);
 
+    const subheaderStyle = { color: "#888", fontStyle: 'italic' };
+
     return (
-      //TODO: change this to something grid-based?
+      //change the width sizing to be grid-based and better for mobile
+      //make my own CSS classes wherever i define a style object
+      //make the height of a given card fixed
+
       <div style={{
         width: '80%',
         margin: 'auto'
       }}>
-        {/*if no user logged in, say they need to log in to join teams*/}
-        {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
-        <div className="mob-event-cards-fix outer-box sec-padd event-style2">
-          {myTeams.map(team => this.renderTeam(team))}
-        </div>
-        {/*render "all teams" title*/}
-        {/*if no user logged in, say they need to log in to join teams*/}
-        {/*if user logged in and myTeams.length === 0, encourage them to join teams*/}
-        <div className="mob-event-cards-fix outer-box sec-padd event-style2">
+        <h3 style={subheaderStyle}>My Teams</h3>
+        {myTeams.length > 0 ?
+          <div>
+            {myTeams.map(team => this.renderTeam(team))}
+          </div>
+          :
+          <p>
+            {this.props.user ?
+              "You have not joined any teams. View the teams in this community below."
+              :
+              "You must sign in to view your teams."
+            }
+          </p>
+        }
+        <hr></hr>
+        <h3 style={subheaderStyle}>Other Teams</h3>
+        <div>
           {otherTeams.map(team => this.renderTeam(team))}
         </div>
       </div >
     );
   }
 
-  //render a single team
   renderTeam(team) {
     const teamObj = team.team;
     const teamLogo = teamObj.logo;
     return (
-      <div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.teams + "/" + teamObj.id}` }} key={teamObj.id}>
-        <div className="row no-gutter">
-          <div className="col-lg-3 col-12">
-            {this.renderTeamTitle(team)}
+      <div className="item style-1 clearfix m-action-item" onClick={(e) => {
+        const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
+        if (!joinTeamBtn.contains(e.target)) {
+          window.location = `${this.props.links.teams + "/" + teamObj.id}`
+        }
+      }} key={teamObj.id}>
+        <div className="row no-gutter flex-nowrap">
+          <div className="col-3">
+            {this.renderTeamTitle(teamObj)}
           </div>
           {teamLogo ?
             <>
-              <div className="col-lg-7 col-12">
+              <div className="col-7">
                 {this.renderTeamStats(team)}
               </div>
-              <div className="col-lg-2 col-12">
-                {this.renderTeamLogo(team)}
+              <div className="col-2">
+                {this.renderTeamLogo(teamObj)}
               </div>
             </>
             :
-            <div className="col-lg-9 col-12">
+            <div className="col-9">
               {this.renderTeamStats(team)}
             </div>
           }
@@ -428,19 +436,36 @@ class TeamsPage extends React.Component {
     );
   }
 
-  renderTeamTitle(team) {
-    {/* render team title, tagline, and join button */ }
-    return <h1>team title stuff</h1>;
+  renderTeamTitle(teamObj) {
+    return (
+      <>
+        <h5>{teamObj.name}</h5>
+        <p>{teamObj.description}</p>
+        {!this.inTeam(teamObj.id) &&
+          <button
+            onClick={() => {
+              //figure this out - if closed team, need to prompt team admin.
+              //if open, need to make API calls and re - render such that team moves to "my teams" 
+            }}
+            className="btn btn-success round-me join-team-btn raise"
+          >
+            Join Team
+        </button>
+        }
+      </>
+    );
   }
 
   renderTeamStats(team) {
-    {/* render team stats */ }
-    return <h1>team stats</h1>;
+    return (<>
+      <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
+      <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
+      <p><b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
+    </>);
   }
 
-  renderTeamLogo(team) {
-    {/* render team logo */ }
-    return <h1>team logo</h1>;
+  renderTeamLogo(teamObj) {
+    return <img src={teamObj.logo.url} alt="" />;
   }
 
 
