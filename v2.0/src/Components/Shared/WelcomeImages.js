@@ -5,6 +5,14 @@ import Carousel from 'react-bootstrap/Carousel'
  * at which point renders a carousel that cycles all of the images
  */
 class WelcomeImages extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.imageURLs = this.props.data.map(data => data.url);
+        this.numImages = this.imageURLs.length;
+        this.carouselWidthPercent = '70%';
+    }
+
     componentDidMount() {
         window.addEventListener('resize', this.handleResize);
     }
@@ -16,28 +24,27 @@ class WelcomeImages extends React.Component {
     };
 
     render() {
-        var images = this.props.data.map(data => data.url);
 
-        var imageStyle = {
+        let imageStyle = {
             height: '100%',
-            width: 'auto',
+            width: '100%',
             objectFit: "cover"
         }
 
         if (window.innerWidth > 700) {
 
-            var bannerStyle = {
-                height: '300px',
+            let divStyle = {
+                width: '100%',
+                height: (window.innerWidth / (4 * this.numImages)) * 3 + 'px',
                 overflow: 'hidden',
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateColumns: '1fr '.repeat(this.numImages),
                 gridTemplateRows: '1fr'
             }
-            imageStyle["minWidth"] = window.innerWidth / images.length + 'px';
 
             return (
-                <div className="inner-banner text-center" style={bannerStyle}>
-                    {images.map(image =>
+                <div className="inner-banner text-center" style={divStyle}>
+                    {this.imageURLs.map(image =>
                         <img src={image} alt="" style={imageStyle} />)
                     }
                 </div>
@@ -46,13 +53,15 @@ class WelcomeImages extends React.Component {
         } else {
 
             let divStyle = {
-                height: '200px',
+                width: this.carouselWidthPercent,
                 display: 'block',
+                margin: 'auto',
+                height: ((window.innerWidth / 4) * 3) *
+                    (parseFloat(this.carouselWidthPercent) / 100) + 'px'
             };
-            imageStyle["minWidth"] = window.innerWidth + 'px';
 
             return (
-                <div className="inner-banner text-center" >
+                <div className="inner-banner text-center">
 
                     <Carousel
                         interval={3000}
@@ -61,7 +70,7 @@ class WelcomeImages extends React.Component {
                         controls={false}
                         pauseOnHover={false}
                     >
-                        {images.map(image => (
+                        {this.imageURLs.map(image => (
                             <Carousel.Item>
                                 <div style={divStyle}>
                                     <img src={image} alt="" style={imageStyle} />

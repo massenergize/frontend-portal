@@ -29,7 +29,7 @@ class IconBoxTable extends React.Component {
 		}
 		return Object.keys(boxes).map((key, index) => {
 			var box = boxes[key];
-			return <div className="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-12 d-flex flex-row" key={index}>
+            return <div className="col-lg-3 col-6 d-flex flex-row" key={index}>
 				<IconBox
 					key={index}
 					title={box.title}
@@ -43,7 +43,7 @@ class IconBoxTable extends React.Component {
 	render() {
 		const boxes = this.props.boxes; 
 		return (
-			<section className="service p-5 mob-icon-white-fix pc-icon-div-container-fix">
+			<section className="service mob-icon-white-fix pc-icon-div-container-fix">
 				<div className="container">
 					<div className="section-title center ">
 						{/* <h4 className="phone-vanish text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4> */}
