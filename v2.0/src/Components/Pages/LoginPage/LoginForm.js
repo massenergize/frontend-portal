@@ -131,7 +131,7 @@ class LoginFormBase extends React.Component {
 					this.setState({ error: err.message });
 				});
     });
-	}
+	} 
 	signInWithFacebook = () => {
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
@@ -158,7 +158,9 @@ class LoginFormBase extends React.Component {
 			});
 
 		}).catch(err => { 
-			console.log("Error MASSTOKEN: ", err);
+      window.localStorage.setItem("reg_protocol","show");
+      console.log("Error MASSTOKEN: ", err);
+      window.location.reload();
 		});
 	}
 	fetchAndLogin = async (email) => {

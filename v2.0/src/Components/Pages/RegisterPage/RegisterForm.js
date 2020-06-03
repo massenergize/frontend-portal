@@ -408,6 +408,7 @@ class RegisterFormBase extends React.Component {
 	}
 
 	deleteFirebaseAccount = () => {
+    window.localStorage.removeItem("reg_protocol");
 		this.props.firebase.auth().currentUser.delete();
 		this.props.firebase.auth().signOut();
 	}
