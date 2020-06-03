@@ -373,7 +373,7 @@ class TeamsPage extends React.Component {
 
     return (
       //change the width sizing to be grid-based and better for mobile
-      //make my own CSS classes wherever i define a style object
+      //make my own CSS classes wherever I define a style object
       //make the height of a given card fixed
 
       <div style={{
@@ -406,23 +406,33 @@ class TeamsPage extends React.Component {
   renderTeam(team) {
     const teamObj = team.team;
     const teamLogo = teamObj.logo;
+
+    const cardStyle = {
+      marginTop: '20px',
+      marginBottom: '20px',
+      height: '160px',
+      border: '1px solid black'
+    }
+
     return (
-      <div className="item style-1 clearfix m-action-item" onClick={(e) => {
-        const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
-        if (!joinTeamBtn.contains(e.target)) {
-          window.location = `${this.props.links.teams + "/" + teamObj.id}`
-        }
-      }} key={teamObj.id}>
+      <div className="item style-1 clearfix m-action-item vendor-hover"
+        style={cardStyle}
+        onClick={(e) => {
+          const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
+          if (!joinTeamBtn.contains(e.target)) {
+            window.location = `${this.props.links.teams + "/" + teamObj.id}`
+          }
+        }} key={teamObj.id}>
         <div className="row no-gutter flex-nowrap">
           <div className="col-3">
             {this.renderTeamTitle(teamObj)}
           </div>
           {teamLogo ?
             <>
-              <div className="col-7">
+              <div className="col-6">
                 {this.renderTeamStats(team)}
               </div>
-              <div className="col-2">
+              <div className="col-3">
                 {this.renderTeamLogo(teamObj)}
               </div>
             </>
@@ -438,8 +448,8 @@ class TeamsPage extends React.Component {
 
   renderTeamTitle(teamObj) {
     return (
-      <>
-        <h5>{teamObj.name}</h5>
+      <div style={{ marginTop: '20px', marginLeft: '20px' }} >
+        <h4><b>{teamObj.name}</b></h4>
         <p>{teamObj.description}</p>
         {!this.inTeam(teamObj.id) &&
           <button
@@ -452,16 +462,21 @@ class TeamsPage extends React.Component {
             Join Team
         </button>
         }
-      </>
+      </ div>
     );
   }
 
   renderTeamStats(team) {
-    return (<>
-      <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
-      <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
-      <p><b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
-    </>);
+    //figure out how to vertically center the div too!
+    return (
+      <div style={{
+        textAlign: 'center'
+      }}>
+        <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
+        <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
+        <p><b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
+      </div>
+    );
   }
 
   renderTeamLogo(teamObj) {
