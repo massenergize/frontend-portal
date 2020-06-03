@@ -10,7 +10,7 @@ class WelcomeImages extends React.Component {
         super(props);
         this.imageURLs = this.props.data.map(data => data.url);
         this.numImages = this.imageURLs.length;
-        this.carouselWidthPercent = '80%';
+        this.carouselWidthPercent = '70%';
     }
 
     componentDidMount() {
