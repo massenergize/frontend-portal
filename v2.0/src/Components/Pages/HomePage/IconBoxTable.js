@@ -43,7 +43,7 @@ class IconBoxTable extends React.Component {
 	render() {
 		const boxes = this.props.boxes; 
 		return (
-			<section className="service p-5 mob-icon-white-fix pc-icon-div-container-fix">
+			<section className="service mob-icon-white-fix pc-icon-div-container-fix">
 				<div className="container">
 					<div className="section-title center ">
 						{/* <h4 className="phone-vanish text-white cool-font m-service-title" >{boxes.length ===0?'': this.props.title}</h4> */}

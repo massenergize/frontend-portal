@@ -61,7 +61,7 @@ class WelcomeImages extends React.Component {
             };
 
             return (
-                <div className="inner-banner text-center" style={divStyle}>
+                <div className="inner-banner text-center">
 
                     <Carousel
                         interval={3000}
@@ -72,7 +72,9 @@ class WelcomeImages extends React.Component {
                     >
                         {this.imageURLs.map(image => (
                             <Carousel.Item>
-                                <img src={image} alt="" style={imageStyle} />
+                                <div style={divStyle}>
+                                    <img src={image} alt="" style={imageStyle} />
+                                </div>
                             </Carousel.Item>))
                         }
                     </Carousel>
