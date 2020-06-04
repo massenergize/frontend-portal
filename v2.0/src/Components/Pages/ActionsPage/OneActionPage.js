@@ -794,7 +794,7 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
         {Object.keys(stories).map((key) => {
-          var creatorName = "Anonymous";
+          var creatorName = "Unknown user";
           const story = stories[key];
           if (!story.anononymous) {
             creatorName = story.preferred_name
