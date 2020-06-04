@@ -363,10 +363,13 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
-   - change the width sizing to be grid-based and thus better for mobile
-   - lower font size on mobile screens
+   - total overhaul of sizing:
+      - make team card height dynamic?
+      - lock image aspect ratio at 4:3?
+      - wrap the stats to the bottom on thin widths?
+      - make stats font size smaller on thin windows and/or make the oval background divs get taller?
+      - really just have to look into using responsive sizing and not raw pixel values
    - go over all CSS and use external files and classes instead!!!
-   - if possible, figure out how to vertically center contents of teams card without using raw pixel values
    - deal with all API stuff and data flow
   */
 
@@ -381,8 +384,7 @@ class TeamsPage extends React.Component {
 
     return (
 
-      <div style={{
-        width: '80%',
+      <div className='col-11 col-sm-10 col-md-9 col-lg-8 col-xl-7' style={{
         margin: 'auto'
       }}>
         <h3 style={subheaderStyle}>My Teams</h3>
@@ -417,7 +419,8 @@ class TeamsPage extends React.Component {
       marginBottom: '20px',
       height: '160px',
       border: '1px solid black',
-      paddingTop: '10px',
+      padding: '5px',
+      margin: 'auto'
     }
 
     return (
@@ -475,27 +478,30 @@ class TeamsPage extends React.Component {
 
     const pStyle = {
       color: 'black',
-      height: '35px',
-      padding: '5px 0',
-      textAlign: 'center'
+      height: '42px',
+      lineHeight: '15px',
+      textAlign: 'center',
+      fontSize: 14,
+      padding: '3px',
+      margin: "3px 0"
     }
 
     return (
       <div style={{ width: '90%', display: 'block', margin: 'auto' }}>
         <div style={{
-          borderRadius: 30,
+          borderRadius: 20,
           background: '#f67b6130'
         }}>
           <p style={pStyle}><b>{team.households}</b> households - <b>{team.members}</b> members</p>
         </div>
         <div style={{
-          borderRadius: 30,
+          borderRadius: 20,
           background: '#8dc63f30'
         }}>
           <p style={pStyle}><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
         </div>
         <div style={{
-          borderRadius: 30,
+          borderRadius: 20,
           background: '#8dc63f30'
         }}>
           <p style={pStyle}> <b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
