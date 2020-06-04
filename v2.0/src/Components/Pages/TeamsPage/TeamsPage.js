@@ -362,11 +362,13 @@ class TeamsPage extends React.Component {
     );
   }
 
-  //change the width sizing to be grid-based and thus better for mobile?
-  //make my own CSS classes wherever I define a style object
-  //figure out how to vertically center the wrapping div for team stats within the card
-  //do the image formatting
-  //deal with all API stuff and data flow
+  /* TODO:
+   - change the width sizing to be grid-based and thus better for mobile
+   - lower font size on mobile screens
+   - go over all CSS and use external files and classes instead!!!
+   - if possible, figure out how to vertically center contents of teams card without using raw pixel values
+   - deal with all API stuff and data flow
+  */
 
   renderTeams(teams) {
     const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
@@ -414,7 +416,8 @@ class TeamsPage extends React.Component {
       marginTop: '20px',
       marginBottom: '20px',
       height: '160px',
-      border: '1px solid black'
+      border: '1px solid black',
+      paddingTop: '10px',
     }
 
     return (
@@ -451,14 +454,13 @@ class TeamsPage extends React.Component {
 
   renderTeamTitle(teamObj) {
     return (
-      <div style={{ marginTop: '20px', marginLeft: '20px' }} >
+      <div style={{ width: '90%', display: 'block', margin: 'auto' }} >
         <h4><b>{teamObj.name}</b></h4>
         <p>{teamObj.description}</p>
         {!this.inTeam(teamObj.id) &&
           <button
             onClick={() => {
-              //figure this out - if closed team, need to prompt team admin.
-              //if open, need to make API calls and re - render such that team moves to "my teams" 
+              //TODO
             }}
             className="btn btn-success round-me join-team-btn raise"
           >
@@ -470,17 +472,47 @@ class TeamsPage extends React.Component {
   }
 
   renderTeamStats(team) {
+
+    const pStyle = {
+      color: 'black',
+      height: '35px',
+      padding: '5px 0',
+      textAlign: 'center'
+    }
+
     return (
-      <div style={{ textAlign: 'center' }}>
-        <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
-        <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
-        <p><b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
-      </div>
+      <div style={{ width: '90%', display: 'block', margin: 'auto' }}>
+        <div style={{
+          borderRadius: 30,
+          background: '#f67b6130'
+        }}>
+          <p style={pStyle}><b>{team.households}</b> households - <b>{team.members}</b> members</p>
+        </div>
+        <div style={{
+          borderRadius: 30,
+          background: '#8dc63f30'
+        }}>
+          <p style={pStyle}><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
+        </div>
+        <div style={{
+          borderRadius: 30,
+          background: '#8dc63f30'
+        }}>
+          <p style={pStyle}> <b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
+        </div>
+      </ div>
     );
   }
 
   renderTeamLogo(teamObj) {
-    return <img src={teamObj.logo.url} alt="" />;
+    return <img className='z-depth-1' style={{
+      height: '138px',
+      width: '90%',
+      objectFit: "cover",
+      display: 'block',
+      margin: 'auto',
+      borderRadius: 10
+    }} src={teamObj.logo.url} alt="" />;
   }
 
   renderTeamsData(teamsData) {
