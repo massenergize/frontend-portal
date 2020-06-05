@@ -16,9 +16,10 @@
 .join-team-btn{
     background:#8dc63f; 
     border-width: 0px !important;
-    padding:10px 10px; 
-    margin-bottom: 10px;
-  }
+    padding:10px 10px;
+    font-size: 12;
+    font-style: italic;
+}
 
 .sort-btns{
   cursor: pointer;
