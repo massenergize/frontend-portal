@@ -88,7 +88,7 @@ class TeamsPage extends React.Component {
           <div className="boxed_wrapper">
             {this.renderTeams(teams)}
           </div>
-          
+
         </div>
       </>
     );

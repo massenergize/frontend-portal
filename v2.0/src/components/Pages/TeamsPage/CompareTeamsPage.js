@@ -18,7 +18,7 @@ import ContactModal from "../../Shared/ContactModal";
 import Modal from "../../Shared/DescModal";
 import LoadingCircle from "../../Shared/LoadingCircle";
 
-class TeamsPage extends React.Component {
+class CompareTeamsPage extends React.Component {
   constructor(props) {
     super(props);
     this.handleText = this.handleText.bind(this);
@@ -557,4 +557,4 @@ const mapDispatchToProps = {
   reduxAddTeamMember,
   reduxRemoveTeamMember,
 };
-export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);
+export default connect(mapStoreToProps, mapDispatchToProps)(CompareTeamsPage);
