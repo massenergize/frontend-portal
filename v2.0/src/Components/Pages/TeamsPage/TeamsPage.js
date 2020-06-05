@@ -41,7 +41,6 @@ class TeamsPage extends React.Component {
             {" "}
             There are no teams for this community yet :({" "}
           </h2>
-          {/* <LoadingCircle /> */}
         </div>
       );
     }
@@ -94,12 +93,17 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
+   - cleanup the loading circle/no community stuff
+   - add positive feedback upon team join
+   - want team card info bars to be tall, but using fixed padding causes overflow on mobile.
+      - make three responsively and collectively take up card height
+   - sidebar? search bar? any sorting other than alphabetical default?
    - image sizing options:
       - keep card design and lock image aspect ratio at 4:3
       - drop the info at the bottom of the card on mobile and put the title/image accross the top
       - keep the image getting super squished depending on screen size
    - make font sizes smaller on thin windows? (CSS media queries?)
-   - deal with all API stuff and data flow
+   - will we have closed/open teams? will require more complex data flow
   */
 
   renderTeams(teams) {
@@ -125,9 +129,15 @@ class TeamsPage extends React.Component {
         }
         <hr></hr>
         <h3 className="teams-subheader">Other Teams</h3>
-        <div>
-          {otherTeams.map(team => this.renderTeam(team))}
-        </div>
+        {otherTeams.length > 0 ?
+          <div>
+            {otherTeams.map(team => this.renderTeam(team))}
+          </div>
+          :
+          <p>
+            You are a member of every team in this community!
+          </p>
+        }
       </div >
     );
   }
@@ -175,7 +185,8 @@ class TeamsPage extends React.Component {
         {!this.inTeam(teamObj.id) &&
           <button
             onClick={() => {
-              //TODO
+              this.joinTeam(teamObj);
+              this.forceUpdate();
             }}
             className="btn btn-success round-me join-team-btn raise"
           >
