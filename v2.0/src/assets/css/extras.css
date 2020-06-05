@@ -1,24 +1,23 @@
+.start-team-btn {
+  background: #8dc63f; 
+  border-width: 0px !important;
+  padding: 10px 32px; 
+  margin-bottom: 17px;
+}
 
-.start-team-btn{
-    background: #8dc63f; 
-    border-width: 0px !important;
-    padding:10px 32px; 
-    margin-bottom: 17px;
-  }
-
-.comp-teams-btn{
+.comp-teams-btn {
   background:#f67b61; 
   border-width: 0px !important;
   padding:10px 32px; 
   margin-bottom: 17px;
 }
 
-.join-team-btn{
-    background:#8dc63f; 
-    border-width: 0px !important;
-    padding:10px 10px;
-    font-size: 12;
-    font-style: italic;
+.join-team-btn {
+  background:#8dc63f; 
+  border-width: 0px !important;
+  padding: 10px 10px;
+  font-size: 14px;
+  font-style: italic;
 }
 
 .sort-btns{

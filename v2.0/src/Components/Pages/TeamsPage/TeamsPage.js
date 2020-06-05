@@ -48,20 +48,20 @@ class TeamsPage extends React.Component {
       <>
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-
           <PageTitle>Teams in this Community</PageTitle>
+
           <center>
-            <p style={{ color: "black", margin: '0px 20px 20px' }}>
+            <p className="col-9">
               Teams are groups in a community that wants to collaborate. It
               could be a school, congregation, a group of neighbors or friends, a sports team. Get
               creative!
-              </p>
+            </p>
             <div>
               <button
+                className="btn btn-success round-me start-team-btn raise"
                 onClick={() => {
                   window.open(this.props.links.contactus, "_blank");
                 }}
-                className="btn btn-success round-me start-team-btn raise"
               >
                 Start a Team
               </button>{" "}
@@ -72,10 +72,10 @@ class TeamsPage extends React.Component {
               }}>
               </div>
               <button
+                className="btn btn-success round-me comp-teams-btn raise"
                 onClick={() => {
                   window.location = `${this.props.links.teams + "/compare"}`;
                 }}
-                className="btn btn-success round-me comp-teams-btn raise"
               >
                 Compare Teams
               </button>{" "}
@@ -93,7 +93,11 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
+   - revamp start team behaviour
    - cleanup the loading circle/no community stuff
+   - two buttons on top:
+      - why fully black on hover? want to just darken like join team button
+      - improve positioning on mobile
    - add positive feedback upon team join
    - want team card info bars to be tall, but using fixed padding causes overflow on mobile.
       - make three responsively and collectively take up card height
