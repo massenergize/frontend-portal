@@ -363,12 +363,10 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
-   - total overhaul of sizing:
-      - make team card height dynamic?
+   - sizing:
       - lock image aspect ratio at 4:3?
-      - wrap the stats to the bottom on thin widths?
-      - make stats font size smaller on thin windows and/or make the oval background divs get taller?
-      - really just have to look into using responsive sizing and not raw pixel values
+      - make stats font size smaller on thin windows?
+      - center stats within their own div
    - go over all CSS and use external files and classes instead!!!
    - deal with all API stuff and data flow
   */
@@ -419,8 +417,9 @@ class TeamsPage extends React.Component {
       marginBottom: '20px',
       height: '160px',
       border: '1px solid black',
-      padding: '5px',
-      margin: 'auto'
+      padding: '10px',
+      display: 'flex',
+      alignItems: 'center'
     }
 
     return (
@@ -432,7 +431,7 @@ class TeamsPage extends React.Component {
             window.location = `${this.props.links.teams + "/" + teamObj.id}`
           }
         }} key={teamObj.id}>
-        <div className="row no-gutter flex-nowrap">
+        <div className="row no-gutter flex-nowrap" style={{ width: '100%', height: '100%' }}>
           <div className="col-3">
             {this.renderTeamTitle(teamObj)}
           </div>
@@ -441,7 +440,7 @@ class TeamsPage extends React.Component {
               <div className="col-6">
                 {this.renderTeamStats(team)}
               </div>
-              <div className="col-3" >
+              <div className="col-3">
                 {this.renderTeamLogo(teamObj)}
               </div>
             </>
@@ -478,9 +477,9 @@ class TeamsPage extends React.Component {
 
     const pStyle = {
       color: 'black',
-      height: '42px',
       lineHeight: '15px',
       textAlign: 'center',
+      verticalAlign: 'middle',
       fontSize: 14,
       padding: '3px',
       margin: "3px 0"
@@ -512,7 +511,7 @@ class TeamsPage extends React.Component {
 
   renderTeamLogo(teamObj) {
     return <img className='z-depth-1' style={{
-      height: '138px',
+      height: '100%',
       width: '90%',
       objectFit: "cover",
       display: 'block',
