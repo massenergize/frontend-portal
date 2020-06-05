@@ -9447,4 +9447,60 @@ button.as-link:hover {
 .home-subtitle {
     background: #003000;
     color: white;
-}   
+}  
+
+/* Teams Page Styles */
+.teams-subheader {
+  color: #888;
+  font-style: italic
+}
+
+.team-card {
+  margin: 20px 0;
+  height: 160px;
+  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.team-card-column {
+  display: flex;
+  align-items: center;
+}
+
+.team-card-content {
+  width: 95%;
+  display: block;
+  margin: auto
+}
+
+.info-section {
+  border-radius: 20px
+}
+
+.info-section.household {
+  background: #f67b6130
+}
+
+.info-section.data {
+  background: #8dc63f30
+}
+
+.info-section p {
+    color: black;
+    line-height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    padding: 8px;
+    margin: 3px 0;
+}
+
+.team-card-img {
+  height: 100%;
+  display: block;
+  margin: auto;
+  object-fit: cover;
+  border-radius: 10px
+}

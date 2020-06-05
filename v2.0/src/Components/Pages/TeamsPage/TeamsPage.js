@@ -22,7 +22,6 @@ class TeamsPage extends React.Component {
     if (teams === null) {
       return (
         <div className="boxed_wrapper">
-          {/* <h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2> */}
           <LoadingCircle />
         </div>
       );
@@ -95,11 +94,11 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
-   - sizing:
-      - lock image aspect ratio at 4:3?
-      - make stats font size smaller on thin windows?
-      - center stats within their own div
-   - go over all CSS and use external files and classes instead!!!
+   - image sizing options:
+      - keep card design and lock image aspect ratio at 4:3
+      - drop the info at the bottom of the card on mobile and put the title/image accross the top
+      - keep the image getting super squished depending on screen size
+   - make font sizes smaller on thin windows? (CSS media queries?)
    - deal with all API stuff and data flow
   */
 
@@ -108,15 +107,9 @@ class TeamsPage extends React.Component {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
     }, [[], []]);
 
-    console.log(myTeams, otherTeams);
-
-    const subheaderStyle = { color: "#888", fontStyle: 'italic' };
-
     return (
-      <div className='col-11 col-sm-10 col-md-9 col-lg-8 col-xl-7' style={{
-        margin: 'auto'
-      }}>
-        <h3 style={subheaderStyle}>My Teams</h3>
+      <div className='col-11 col-sm-10 col-md-9 col-lg-8 col-xl-7' style={{ margin: 'auto' }}>
+        <h3 className="teams-subheader">My Teams</h3>
         {myTeams.length > 0 ?
           <div>
             {myTeams.map(team => this.renderTeam(team))}
@@ -131,7 +124,7 @@ class TeamsPage extends React.Component {
           </p>
         }
         <hr></hr>
-        <h3 style={subheaderStyle}>Other Teams</h3>
+        <h3 className="teams-subheader">Other Teams</h3>
         <div>
           {otherTeams.map(team => this.renderTeam(team))}
         </div>
@@ -143,19 +136,8 @@ class TeamsPage extends React.Component {
     const teamObj = team.team;
     const teamLogo = teamObj.logo;
 
-    const cardStyle = {
-      marginTop: '20px',
-      marginBottom: '20px',
-      height: '160px',
-      border: '1px solid black',
-      padding: '10px',
-      display: 'flex',
-      alignItems: 'center'
-    }
-
     return (
-      <div className="item style-1 clearfix m-action-item vendor-hover"
-        style={cardStyle}
+      <div className=" team-card item style-1 clearfix m-action-item vendor-hover"
         onClick={(e) => {
           const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
           if (!joinTeamBtn.contains(e.target)) {
@@ -163,20 +145,20 @@ class TeamsPage extends React.Component {
           }
         }} key={teamObj.id}>
         <div className="row no-gutter flex-nowrap" style={{ width: '100%', height: '100%' }}>
-          <div className="col-3">
+          <div className="col-3 team-card-column">
             {this.renderTeamTitle(teamObj)}
           </div>
           {teamLogo ?
             <>
-              <div className="col-6">
+              <div className="col-6 team-card-column">
                 {this.renderTeamStats(team)}
               </div>
-              <div className="col-3">
+              <div className="col-3 team-card-column">
                 {this.renderTeamLogo(teamObj)}
               </div>
             </>
             :
-            <div className="col-9">
+            <div className="col-9 team-card-column">
               {this.renderTeamStats(team)}
             </div>
           }
@@ -187,7 +169,7 @@ class TeamsPage extends React.Component {
 
   renderTeamTitle(teamObj) {
     return (
-      <div style={{ width: '90%', display: 'block', margin: 'auto' }} >
+      <div className="team-card-content" >
         <h4><b>{teamObj.name}</b></h4>
         <p>{teamObj.description}</p>
         {!this.inTeam(teamObj.id) &&
@@ -205,52 +187,23 @@ class TeamsPage extends React.Component {
   }
 
   renderTeamStats(team) {
-
-    const pStyle = {
-      color: 'black',
-      lineHeight: '15px',
-      textAlign: 'center',
-      verticalAlign: 'middle',
-      fontSize: 14,
-      padding: '3px',
-      margin: "3px 0"
-    }
-
     return (
-      <div style={{
-        width: '90%', display: 'block', margin: 'auto',
-      }}>
-        <div style={{
-          borderRadius: 20,
-          background: '#f67b6130'
-        }}>
-          <p style={pStyle}><b>{team.households}</b> households - <b>{team.members}</b> members</p>
+      <div className="team-card-content">
+        <div className="info-section household">
+          <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
         </div>
-        <div style={{
-          borderRadius: 20,
-          background: '#8dc63f30'
-        }}>
-          <p style={pStyle}><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
+        <div className="info-section data">
+          <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
         </div>
-        <div style={{
-          borderRadius: 20,
-          background: '#8dc63f30'
-        }}>
-          <p style={pStyle}> <b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
+        <div className="info-section data">
+          <p> <b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
         </div>
       </ div>
     );
   }
 
   renderTeamLogo(teamObj) {
-    return <img className='z-depth-1' style={{
-      height: '100%',
-      width: '90%',
-      objectFit: "cover",
-      display: 'block',
-      margin: 'auto',
-      borderRadius: 10
-    }} src={teamObj.logo.url} alt="" />;
+    return <img className='z-depth-1 team-card-img' src={teamObj.logo.url} alt="" />
   }
 
   inTeam = (team_id) => {
@@ -262,13 +215,6 @@ class TeamsPage extends React.Component {
         return team.id === team_id;
       }).length > 0
     );
-  };
-
-  goalsList = (team_id) => {
-    const body = {
-      team_id: team_id,
-    };
-    return apiCall(`goals.list`, body);
   };
 
   joinTeam = (team) => {
