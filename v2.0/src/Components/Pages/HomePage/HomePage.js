@@ -43,7 +43,7 @@ class HomePage extends React.Component {
 				data: comGoals ? { target: comGoals.target_number_of_households, attained: comGoals.attained_number_of_households + comGoals.organic_attained_number_of_households} : null
 			},
 		]
-		if (comGoals && comGoals.organic_attained_carbon_footprint_reduction && comGoals.target_carbon_footprint_reduction>0 ) {
+		if (comGoals  && comGoals.target_carbon_footprint_reduction>0 ) {
 			graphs.push(
 				{
 					title: 'Carbon Reduction',
@@ -77,7 +77,7 @@ class HomePage extends React.Component {
 
 					<Graphs
 						graphs={graphs}
-						size={148}
+						size={120}
 					/>
 					: null
 				}

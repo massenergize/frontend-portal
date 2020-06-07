@@ -48,8 +48,18 @@ class RegisterFormBase extends React.Component {
 		this.onChange = this.onChange.bind(this);
 		this.isInvalid = this.isInvalid.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.onFinalSubmit = this.onFinalSubmit.bind(this);
+    this.onFinalSubmit = this.onFinalSubmit.bind(this);
+    this.setRegProtocol = this.setRegProtocol.bind(this);
 	}
+
+
+
+  getRegProtocol(){
+    return localStorage.getItem("reg_protocol");
+  }
+  setRegProtocol(){
+    window.localStorage.setItem("reg_protocol","show");
+  }
 
 	render() {
 		if (!this.props.auth || !this.props.user || !this.props.policies) return <LoadingCircle />
@@ -62,7 +72,8 @@ class RegisterFormBase extends React.Component {
 		}
 		const TOS = this.props.policies.filter(x => x.name === "Terms of Service")[0];
 		const PP = this.props.policies.filter(x => x.name === "Privacy Policy")[0];
-    
+  
+
 		if (this.props.user.info && this.props.user.todo && this.props.user.done && this.props.auth.emailVerified && this.props.user.accepts_terms_and_conditions) {
 			return <Redirect to={this.props.links.profile} />;
     }
@@ -116,7 +127,7 @@ class RegisterFormBase extends React.Component {
 			error,
 		} = this.state;
 		return (
-			<div className="styled-form register-form" style={{ height: window.screen.height - 60, marginTop: 100 }}>
+			<div className="styled-form register-form" style={{ height: window.screen.height - 60, marginTop: 15 }}>
 				<div className="z-depth-1" style={{ padding: 46, borderRadius: 12 }}>
 					<div className="section-title style-2">
 						<h3>Register With Email and Password</h3>
@@ -138,7 +149,7 @@ class RegisterFormBase extends React.Component {
 						{error && <p style={{ color: "red" }}> {error} </p>}
 						<div className="clearfix">
 							<div className="form-group pull-left">
-								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Account</button>
+								<button type="submit" disabled={this.isInvalid()} className="thm-btn round-me raise">Create Profile</button>
 							</div>
 						</div>
 					</form>
@@ -154,7 +165,7 @@ class RegisterFormBase extends React.Component {
 					
 					</div>
 		
-					<p>Already have an account? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>				</div>
+					<p>Already have a profile? <Link className="energize-link" to={this.props.links.signin}>Sign In</Link></p>				</div>
 			</div>
 		);
 	}
@@ -168,7 +179,16 @@ class RegisterFormBase extends React.Component {
 			zip,
 			serviceProvider,
 			termsAndServices,
-		} = this.state;
+    } = this.state;
+    
+ 
+
+    //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in 
+    //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the 
+    //loading circle to be skipped and to show the form
+    if(!this.getRegProtocol()){
+      return <LoadingCircle />
+    }
 		return (
 			< div className="styled-form register-form" style={{  height: window.screen.height, marginTop: 100 }}>
 				<div className="z-depth-1" style={{padding:40, borderRadius:12,}}>
@@ -183,7 +203,7 @@ class RegisterFormBase extends React.Component {
 						</>
 						:
 						<>
-							<center><p style={{ color: 'red' }}> Please finish creating your account before you continue</p></center>
+							<center><p style={{ color: 'red' }}> Please finish creating your profile before you continue</p></center>
 							<div className="form-group">
 								<span className="adon-icon"><span className="fa fa-user"></span></span>
 								<input type="text" name="firstName" value={firstName} onChange={this.onChange} placeholder="First Name" required />
@@ -283,10 +303,10 @@ class RegisterFormBase extends React.Component {
 						<div className="form-group pull-left">
 							{this.props.auth.emailVerified ?
 								<button type="submit" className="thm-btn" >
-									Finish Creating Account
+									Finish Creating Profile
                                 </button> : null
 							}
-							<Tooltip text='Cancelling in the middle of registration will delete your account'>
+							<Tooltip text='Cancelling in the middle of registration will delete your profile'>
 								<button onClick={this.deleteFirebaseAccount} style={{marginTop:10}} className="raise round-me thm-btn red"> Cancel </button>
 							</Tooltip>
 						</div>
@@ -334,9 +354,9 @@ class RegisterFormBase extends React.Component {
 
 
 	onSubmit(event) {
+    this.setRegProtocol();
 		event.preventDefault();
 		const { email, passwordOne } = this.state;
-
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth()
 				.createUserWithEmailAndPassword(email, passwordOne)
@@ -350,7 +370,7 @@ class RegisterFormBase extends React.Component {
 		});
 	};
 	onFinalSubmit(event) {
-		event.preventDefault();
+    event.preventDefault();
 		if (!this.state.termsAndServices) {
 			this.setState({ error: 'You need to agree to the terms and services' });
 		} else if (!this.state.captchaConfirmed) {
@@ -388,6 +408,7 @@ class RegisterFormBase extends React.Component {
 	}
 
 	deleteFirebaseAccount = () => {
+    window.localStorage.removeItem("reg_protocol");
 		this.props.firebase.auth().currentUser.delete();
 		this.props.firebase.auth().signOut();
 	}
@@ -426,6 +447,7 @@ class RegisterFormBase extends React.Component {
 	}
 
 	fetchMassToken = async (fireToken, email) => {
+    this.setRegProtocol();
 		const body = { idToken: fireToken };
 		rawCall("auth/verify", body).then(massToken => {
 			const idToken = massToken.data.idToken;

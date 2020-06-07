@@ -6,7 +6,7 @@ import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
-  reduxRemoveFromTodo
+  reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
 import URLS from "../../../api/urls";
 import { deleteJson } from "../../../api/functions";
@@ -32,26 +32,24 @@ class Action extends React.Component {
       status: null,
       showTestimonialForm: false,
       message: null,
-      action_is_done: null
+      action_is_done: null,
     };
   }
   gotoAction() {
-    window.location = `${this.props.links.actions +
-      "/" +
-      this.props.action.id}`;
+    window.location = `${
+      this.props.links.actions + "/" + this.props.action.id
+    }`;
   }
 
-  removeFromCart = actionRel => {
+  removeFromCart = (actionRel) => {
     const status = actionRel.status;
     deleteJson(
       `${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`
-    ).then(json => {
+    ).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
-          this.props.done.filter(
-            item => item.id !== actionRel.id
-          );
+          this.props.done.filter((item) => item.id !== actionRel.id);
           this.props.reduxRemoveFromDone(actionRel);
           //this.props.reduxLoadDone(remainder);
         }
@@ -62,48 +60,49 @@ class Action extends React.Component {
   actionIsInTodo() {
     var action = this.props.action;
     var todo = this.props.todo ? this.props.todo : [];
-    var data = todo.filter(t => t.action.id === action.id);
+    var data = todo.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];
-    } 
+    }
 
     return null;
   }
   actionIsDone() {
     var action = this.props.action;
     var done = this.props.done ? this.props.done : [];
-    var data = done.filter(t => t.action.id === action.id);
+    var data = done.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];
     }
     return null;
   }
-  checkTodo(){
+  checkTodo() {
     var action = this.props.action;
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
-      todo.filter(t => t.action.id === action.id).length > 0 ? true : false;
-      return exists;
+      todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
+    return exists;
   }
 
   checkTodoAndReturn() {
-      if(this.checkDone()){
-        return (
-          <Tooltip text="Cant use this feature, you have already done the action.">
-            <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it" 
-            >
-              To Do
-            </p>
-          </Tooltip>
-        );
-      }
+    if (this.checkDone()) {
+      return (
+        <Tooltip text="Cant use this feature, you have already done the action.">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it">
+            To Do
+          </p>
+        </Tooltip>
+      );
+    }
     if (this.checkTodo()) {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange" 
-          onClick={() => {
-            this.removeFromCart(this.actionIsInTodo());
-          }}
+          <p
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            onClick={() => {
+              this.setState({showTodoMsg:false});
+              this.removeFromCart(this.actionIsInTodo());
+            }}
           >
             To Do
           </p>
@@ -119,26 +118,26 @@ class Action extends React.Component {
           }
           onClick={() => this.openForm("TODO")}
         >
-          To Do  
+          To Do
         </button>
       );
     }
   }
-  checkDone(){
+  checkDone() {
     var action = this.props.action;
     var done = this.props.done ? this.props.done : [];
     var exists =
-      done.filter(t => t.action.id === action.id).length > 0 ? true : false;
-      return exists
+      done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
+    return exists;
   }
   checkDoneAndReturn() {
-    
     if (this.checkDone()) {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
+              this.setState({message:null});
               this.removeFromCart(this.actionIsDone());
             }}
           >
@@ -154,7 +153,7 @@ class Action extends React.Component {
               ? "thm-btn style-4 selected cool-font action-btns"
               : "thm-btn style-4 cool-font action-btns"
           }
-          onClick={() => this.openForm("DONE")}
+          onClick={() => {this.openForm("DONE"); this.props.toggleShowTodoMsg()}}
         >
           {" "}
           Done It{" "}
@@ -163,7 +162,6 @@ class Action extends React.Component {
     }
   }
   render() {
-   
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
     if (this.shouldRender()) {
@@ -270,10 +268,9 @@ class Action extends React.Component {
                             To Do
                           </p>
                         </Tooltip>
-                      ) : 
+                      ) : (
                         this.checkTodoAndReturn()
-                      
-                      }
+                      )}
                     </div>
                   </div>
                   <div className="col-md-4 col-sm-4 col-lg-4 col-4">
@@ -286,9 +283,7 @@ class Action extends React.Component {
                         </Tooltip>
                       ) : (
                         this.checkDoneAndReturn()
-                      )
-                     
-                      }
+                      )}
                     </div>
                   </div>
                   <div className="col-12">
@@ -311,10 +306,10 @@ class Action extends React.Component {
                               <StoryForm
                                 aid={this.props.action.id}
                                 noMessage={true}
-                                closeForm={message =>
+                                closeForm={(message) =>
                                   this.setState({
                                     message: message,
-                                    showTestimonialForm: false
+                                    showTestimonialForm: false,
                                   })
                                 }
                               ></StoryForm>
@@ -330,13 +325,14 @@ class Action extends React.Component {
                                   <button
                                     className="as-link"
                                     style={{ display: "inline-block" }}
-                                    onClick={() =>{
-                                      window.location = this.props.links? this.props.links.testimonials:"#";
+                                    onClick={() => {
+                                      window.location = this.props.links
+                                        ? this.props.links.testimonials
+                                        : "#";
                                       // this.setState({
                                       //   showTestimonialForm: true
-                                     // })
-                                    }
-                                    }
+                                      // })
+                                    }}
                                   >
                                     testimonial
                                   </button>
@@ -346,7 +342,7 @@ class Action extends React.Component {
                             </>
                           )}
                         </>
-                      ) : null} 
+                      ) : null}
                       <ChooseHHForm
                         aid={this.props.action.id}
                         status={this.state.status}
@@ -363,7 +359,12 @@ class Action extends React.Component {
                         }
                         closeForm={this.closeForm}
                       />
-                      
+                      {this.props.showTodoMsg === this.props.action.id ? (
+                        <p>
+                          Nicely done! You have now added this action to your
+                          todo list.
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -377,15 +378,15 @@ class Action extends React.Component {
     }
   }
 
-  openForm = status => {
+  openForm = (status) => {
     this.setState({
-      status: status
+      status: status,
     });
     this.props.openHHForm(this.props.action.id);
   };
   closeForm = () => {
     this.setState({
-      status: null
+      status: null,
     });
     this.props.closeHHForm();
   };
@@ -403,7 +404,7 @@ class Action extends React.Component {
       return false;
 
     var tagSet = new Set(); //create a set of the action's tag ids
-    this.props.action.tags.forEach(tag => {
+    this.props.action.tags.forEach((tag) => {
       tagSet.add(tag.id);
     });
 
@@ -453,7 +454,7 @@ class Action extends React.Component {
   // }
 
   getTag(name) {
-    const tags = this.props.action.tags.filter(tag => {
+    const tags = this.props.action.tags.filter((tag) => {
       return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
     });
     return tags && tags.length > 0 ? tags[0] : null;
@@ -501,21 +502,24 @@ class Action extends React.Component {
       if (tag.points === 3) {
         return <div>&nbsp;$$$</div>;
       }
+      if (tag.name) {
+        return <div>&nbsp;&nbsp;&nbsp;&nbsp;{tag.name}</div>;
+      }
     }
     return null;
   }
 }
 
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     links: store.links,
     todo: store.user.todo,
     done: store.user.done,
-    collection: store.page.collection
+    collection: store.page.collection,
   };
 };
 const mapDispatchToProps = {
   reduxRemoveFromDone,
-  reduxRemoveFromTodo
+  reduxRemoveFromTodo,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(Action);

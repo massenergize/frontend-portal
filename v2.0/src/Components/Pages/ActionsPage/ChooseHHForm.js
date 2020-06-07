@@ -9,7 +9,8 @@ class ChooseHHForm extends React.Component {
     super(props);
 
     this.state = {
-      error: null
+      error: null,
+      choice: null,
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -39,14 +40,18 @@ class ChooseHHForm extends React.Component {
               {this.renderRadios(this.props.user.households)}
               <div>
                 <button
-                  className="thm-btn style-4"
+                  style={{padding:'2px 11px',marginRight: 7}}
+                  className="thm-btn style-4 round-me"
                   type="submit"
-                  disabled={this.state.error ? true : false}
+                  disabled={
+                    this.state.error ? true : !this.state.choice ? true : false
+                  }
                 >
                   Submit
                 </button>
                 <button
-                  className="thm-btn style-4 red"
+                style={{padding:'2px 11px'}}
+                  className="thm-btn style-4 red round-me"
                   onClick={this.props.closeForm}
                 >
                   {" "}
@@ -60,45 +65,39 @@ class ChooseHHForm extends React.Component {
     );
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     const houses = this.props.user.households;
-    var choice = this.state.choice;
+    var choices = this.state.choice;
     if (event) event.preventDefault();
-    if (houses.length === 1 ) {
-       choice = houses[0].id;
+    if (houses.length === 1) {
+      choices = [houses[0].id];
     } else {
       if (!this.state.choice) {
         this.setState({
           choice: null,
-          error: "Please select a household"
+          error: "Please select a household",
         });
         return;
       }
     }
 
     if (this.props.status === "TODO") {
-      
-      if (!this.props.inCart(this.props.aid, choice)) {
-        this.props.addToCart(
-          this.props.aid,
-          choice,
-          this.props.status
-        );
-        this.props.closeForm();
-      }
+      choices.forEach((choice) => {
+        if (!this.props.inCart(this.props.aid, choice)) {
+          this.props.addToCart(this.props.aid, choice, this.props.status);
+          this.props.closeForm();
+        }
+      });
     } else if (this.props.status === "DONE") {
-    
-      if (!this.props.inCart(this.props.aid, choice)) {
-        this.props.addToCart(
-          this.props.aid,
-          choice,
-          this.props.status
-        );
-        this.props.closeForm();
-      } else if (this.props.inCart(this.props.aid, choice, "TODO")) {
-        this.props.moveToDone(this.props.aid, choice);
-        this.props.closeForm();
-      }
+      choices.forEach((choice) => {
+        if (!this.props.inCart(this.props.aid, choice)) {
+          this.props.addToCart(this.props.aid, choice, this.props.status);
+          this.props.closeForm();
+        } else if (this.props.inCart(this.props.aid, choice, "TODO")) {
+          this.props.moveToDone(this.props.aid, choice);
+          this.props.closeForm();
+        }
+      });
     }
     // this.setState({
     //   choice: null
@@ -109,21 +108,25 @@ class ChooseHHForm extends React.Component {
 
     return households
       .filter(
-        household =>
+        (household) =>
           (this.props.status === "DONE" &&
             !this.props.inCart(this.props.aid, household.id, "DONE")) ||
           (this.props.status === "TODO" &&
             !this.props.inCart(this.props.aid, household.id))
       )
-      .map(household => (
+      .map((household) => (
         <div key={household.id} style={{ display: "inline-block" }}>
           <input
             id={"" + household.name + household.id}
-            type="radio"
+            type="checkbox"
             value={household.id}
             name="hhchoice"
             onChange={this.onChange}
-            checked={Number(this.state.choice) === Number(household.id)}
+            checked={
+              this.state.choice
+                ? this.state.choice.includes(household.id)
+                : false
+            }
             style={{ display: "inline-block" }}
           />
           &nbsp;
@@ -135,11 +138,24 @@ class ChooseHHForm extends React.Component {
         </div>
       ));
   }
+
+  addIn(householdID) {
+    var content = this.state.choice;
+    if (!content) return null;
+    if (content.includes(Number(householdID))) {
+      content = content.filter((item) => item !== Number(householdID));
+      return content.length > 0 ? content : null;
+    } else {
+      return [...content, Number(householdID)];
+    }
+  }
   //updates the state when form elements are changed
   onChange(event) {
+    var content = this.state.choice;
+    var init = [Number(event.target.value)];
     this.setState({
       error: null,
-      choice: event.target.value
+      choice: content ? this.addIn(event.target.value) : init,
     });
   }
 
@@ -161,10 +177,10 @@ class ChooseHHForm extends React.Component {
       if (!this.state.error && !this.state.choice) {
         if (housesAvailable.length === 0) {
           this.setState({
-            error: `You have already added this action for all of your households`
+            error: `You have already added this action for all of your households`,
           });
         } else {
-          this.setState({ choice: housesAvailable[0] });
+          // this.setState({ choice: housesAvailable[0] });
         }
       }
     }

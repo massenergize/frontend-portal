@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 // import CONST from '../../Constants'
-import * as moment from 'moment';
 import Funnel from './Funnel';
 import Error404 from './../Errors/404';
 import notFound from './not-found.jpg';
+import { dateFormatString, locationFormatJSX } from '../../Utils';
 
 
 /**
@@ -154,11 +154,7 @@ class EventsPage extends React.Component {
 		}
 		if (events) {
 			return events.map(event => {
-				const format = "MMMM Do YYYY, h:mm a";
-				const date = new Date(event.start_date_and_time);
-				const endDate = new Date(event.end_date_and_time);
-				const textyStart = moment(date).format(format);
-				const textyEnd = moment(endDate).format(format);
+				const dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 				const location = event.location;
 				return (
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
@@ -182,15 +178,11 @@ class EventsPage extends React.Component {
 							{/* renders the  date time and location of the event */}
 							<div className="col-12">
 								<ul className="post-meta list_inline">
-									{this.sameDay(date, endDate) ?
-										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
-										:
-										<li><i className="fa fa-clock-o"></i> {textyStart} - {textyEnd}</li>
-									}
+									{dateString}
 									{location ?
 										<li>
 											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-											<b>{location.address? `${location.address}` : ''}</b> {location.city? `, ${location.city}` : ''}{location.state? `, ${location.state}` : ''}
+                      {locationFormatJSX(location)}
 										</li>
 										:
 										null
@@ -212,15 +204,7 @@ class EventsPage extends React.Component {
 		return RSVPs[0];
 	}
 
-	/**
-	 * checks if a two dates are on the same day ignoring time
-	 * @param  someDate
-	 */
-	sameDay(someDate, someOtherDate) {
-		return someDate.getDate() === someOtherDate.getDate() &&
-			someDate.getMonth() === someOtherDate.getMonth() &&
-			someDate.getFullYear() === someOtherDate.getFullYear()
-	}
+
 }
 
 const mapStoreToProps = (store) => {

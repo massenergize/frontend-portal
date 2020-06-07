@@ -58,6 +58,11 @@ class ProfilePage extends React.Component {
 		}
 	}
 
+
+  componentDidMount(){
+    // disable the registration protocol to prevent the form from ever showing again, until enabled
+    localStorage.removeItem("reg_protocol");
+  }
 	render() {
 
 		if (!this.props.user){
@@ -269,7 +274,7 @@ class ProfilePage extends React.Component {
 								</>
 								: null
 							}
-							<Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'delete' })}>Delete Account</Dropdown.Item>
+							<Dropdown.Item onClick={() => this.setState({ editingProfileForm: 'delete' })}>Delete Profile</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
 					&nbsp;&nbsp;

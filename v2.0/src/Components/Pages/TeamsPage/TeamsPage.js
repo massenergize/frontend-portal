@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import PageTitle from "../../Shared/PageTitle";
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
+import teams_pop from "./teams_pop.jpg";
+
 import {
   reduxJoinTeam,
   reduxLeaveTeam,
@@ -32,6 +33,8 @@ class TeamsPage extends React.Component {
       modal_toggled: false,
       modal_content: { title: "...", desc: "..." },
       alert: false,
+      sorted_Teams: null,
+      sorting: false
     };
     this.toggleModal = this.toggleModal.bind(this);
   }
@@ -113,8 +116,89 @@ class TeamsPage extends React.Component {
       );
     }
   };
+
+  sortByNumberOfHouseholds() {
+    this.showSortNotification(true);
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.households - a.households;
+      });
+      this.showSortNotification(false);
+      this.setState({ sorted_Teams: rebuilt });
+    }
+  }
+
+  sortByActionsCompleted() {
+    this.showSortNotification(true);
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.actions_completed - a.actions_completed;
+      });
+
+      this.showSortNotification(false);
+      this.setState({ sorted_Teams: rebuilt });
+    }
+  }
+  findAverage(actionsNo, households) {
+    var number = Number(actionsNo) / households;
+    number = !isNaN(number) ? number.toFixed(1) : 0;
+    return number;
+  }
+  sortByActionsPerHousehold() {
+    this.showSortNotification(true);
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return (
+          this.findAverage(b.actions_completed, b.households) -
+          this.findAverage(a.actions_completed, a.households)
+        );
+      });
+
+      this.showSortNotification(false);
+      this.setState({ sorted_Teams: rebuilt });
+    }
+  }
+  sortByCarbonImpact() {
+    this.showSortNotification(true);
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        return b.carbon_footprint_reduction - a.carbon_footprint_reduction;
+      });
+
+      this.showSortNotification(false);
+      this.setState({ sorted_Teams: rebuilt });
+    }
+  }
+  sortByTeamName() {
+    this.showSortNotification(true);
+    var set = this.props.teamsPage;
+    if (set) {
+      var rebuilt = set.sort((a, b) => {
+        if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
+        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
+        return 0;
+      });
+
+      this.showSortNotification(false);
+      this.setState({ sorted_Teams: rebuilt });
+      
+    }
+  }
+  showSortNotification(which) {
+    if(which){
+      this.setState({sorting:which});
+    }else{
+      setTimeout(() => {
+        this.setState({sorting:which})
+      }, 400);
+    }
+  }
+
   render() {
-    
     const teams = this.props.teamsPage;
     if (teams === null) {
       return (
@@ -149,9 +233,39 @@ class TeamsPage extends React.Component {
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div className="p-5" style={{ height: window.screen.height - 120 }}>
-            <PageTitle>Teams in this Community</PageTitle>
-           <center> <button  onClick = {()=>{window.open(this.props.links.contactus,"_blank")}}className="btn btn-success round-me req-team-btn raise">Request Team Creation</button></center>
+          <div
+            className="p-5"
+            style={{ height: window.screen.height - 120, marginTop: -77 }}
+          >
+            {/* <PageTitle>Teams in this Community</PageTitle> */}
+            <center>
+              <img
+                src={teams_pop}
+                alt=""
+                style={{ width: 409, margin: 15, marginLeft: "-8%" }}
+              />
+              <br />
+              <p style={{ color: "black" }}>
+                A team is a group in a community that wants to work together. It
+                could be a school, congregation,
+                <br />a group of neighbors or friends, a sports team. Get
+                creative!
+              </p>
+              <button
+                onClick={() => {
+                  window.open(this.props.links.contactus, "_blank");
+                }}
+                className="btn btn-success round-me req-team-btn raise"
+              >
+                Request Team Creation
+              </button>{" "}
+              <br />
+              {this.state.sorting ? (
+                <p className="text text-success teams-sort-not">
+                  <i className="fa fa-spinner fa-spin"></i> Rearranging teams...{" "}
+                </p>
+              ) : null}
+            </center>
             <p
               className="mob-appear"
               style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
@@ -163,15 +277,67 @@ class TeamsPage extends React.Component {
               <thead>
                 <tr>
                   <th className="fake-show">Team Image </th>
-                 
-                  <th>Team Name</th>
-                  <th>Households</th>
-                  <th>Actions Completed</th>
-                  <th>Actions / Household</th>
-                  <th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByTeamName();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by team name"
+                      dir="bottom"
+                    >
+                      <span className="has-tooltip"> Team Name</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByNumberOfHouseholds();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by number of households in a team"
+                      dir="bottom"
+                    >
+                      <span className="has-tooltip">Households</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByActionsCompleted();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by number of actions completed by members of a team"
+                      dir="bottom"
+                    >
+                      <span className="has-tooltip">Actions Completed</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByActionsPerHousehold();
+                    }}
+                  >
+                    <Tooltip
+                      text="Click this to sort by number of actions per household"
+                      dir="bottom"
+                    >
+                      <span className="has-tooltip">Actions / Household</span>
+                    </Tooltip>
+                  </th>
+                  <th
+                    className="sort-btns"
+                    onClick={() => {
+                      this.sortByCarbonImpact();
+                    }}
+                  >
                     <Tooltip
                       text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members"
-                      dir="left"
+                      dir="bottom"
                     >
                       <span className="has-tooltip">Carbon Impact</span>
                     </Tooltip>
@@ -204,6 +370,10 @@ class TeamsPage extends React.Component {
       return b.avrgActionsPerMember - a.avrgActionsPerMember;
     });
 
+    //"force-listen" to the user requested sort
+    teamsSorted = this.state.sorted_Teams
+      ? this.state.sorted_Teams
+      : teamsSorted;
     return teamsSorted.map((obj, index) => {
       const logo = obj.team.logo ? obj.team.logo.url : null;
 
@@ -220,7 +390,7 @@ class TeamsPage extends React.Component {
           ) : (
             <td></td>
           )}
- 
+
           <td>
             {obj.team.name}
             <Tooltip title={obj.team.name} text={desc} dir="right">
@@ -237,25 +407,25 @@ class TeamsPage extends React.Component {
               </div>
             </Tooltip>
           </td>
-          <td>{obj.members}</td>
+          <td>{obj.households}</td>
           <td>{obj.actions_completed}</td>
           <td>{obj.avrgActionsPerMember}</td>
           <td>{obj.carbon_footprint_reduction}</td>
           {this.props.user ? (
             <td>
               <center>
-              <button
-                className="contact-admin-btn round-me"
-                onClick={() => {
-                  this.setModalContent(obj.team.name, obj.team.description);
-                  this.setState({
-                    contact_modal_toggled: true,
-                    current_team_id: obj.team.id,
-                  });
-                }}
-              >
-                Contact
-              </button>
+                <button
+                  className="contact-admin-btn round-me"
+                  onClick={() => {
+                    this.setModalContent(obj.team.name, obj.team.description);
+                    this.setState({
+                      contact_modal_toggled: true,
+                      current_team_id: obj.team.id,
+                    });
+                  }}
+                >
+                  Contact
+                </button>
               </center>
             </td>
           ) : (

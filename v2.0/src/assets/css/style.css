@@ -1928,6 +1928,9 @@ ul.dropdown li:hover a {
     background-size: cover;
     /* background: #003000; */
     background:white;
+    padding: 2rem;
+    padding-bottom: 3rem;
+    padding-top: 3rem;
 }
 
 .service .section-title h2 {
@@ -1937,10 +1940,10 @@ ul.dropdown li:hover a {
 
 .service .service-item {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     border: 1px solid #ffd2cc;
     border-radius: 3px;
-    padding: 28px 14px 5px;
+    padding: 20px 5px 5px;
     position: relative;
 }
 
@@ -1963,10 +1966,10 @@ ul.dropdown li:hover a {
 
 .service .service-item .icon-box {
     position: relative;
-    height: 80px;
-    width: 80px;
-    margin: 17px auto 40px;
-    line-height: 120px;
+    height: 70px;
+    width: 70px;
+    margin: 5px auto 20px;
+    line-height: 110px;
     transition: .4s ease;
 }
 
@@ -1997,7 +2000,6 @@ ul.dropdown li:hover a {
 
 .service .service-item h4 {
     font-size: 20px;
-    margin-bottom: 10px;
     color: #aaa;
 }
 
