@@ -82,18 +82,16 @@ class TeamsPage extends React.Component {
             </div>
 
           </center>
-
-          <div className="boxed_wrapper">
-            {this.renderTeams(teams)}
-          </div>
-
+          {this.renderTeams(teams)}
         </div>
       </>
     );
   }
 
   /* TODO:
-   - revamp start team behaviour
+   - testing with real API data from JCAN, too much text to fit on mobile w/ current design
+      - need to have height of card be variable, and wrap the stats/image (together, in one div) below title
+   - revamp "start team" behaviour
    - cleanup the loading circle/no community stuff
    - two buttons on top:
       - why fully black on hover? want to just darken like join team button
@@ -102,9 +100,6 @@ class TeamsPage extends React.Component {
    - want team card info bars to be tall, but using fixed padding causes overflow on mobile.
       - make three responsively and collectively take up card height
    - sidebar? search bar? any sorting other than alphabetical default?
-   - image sizing options:
-      - keep card design and lock image aspect ratio at 4:3
-      - drop the info at the bottom of the card on mobile and put the title/image accross the top
       - keep the image getting super squished depending on screen size
    - make font sizes smaller on thin windows? (CSS media queries?)
    - will we have closed/open teams? will require more complex data flow
@@ -116,7 +111,7 @@ class TeamsPage extends React.Component {
     }, [[], []]);
 
     return (
-      <div className='col-11 col-sm-10 col-md-9 col-lg-8 col-xl-7' style={{ margin: 'auto' }}>
+      <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
         <h3 className="teams-subheader">My Teams</h3>
         {myTeams.length > 0 ?
           <div>
@@ -138,9 +133,7 @@ class TeamsPage extends React.Component {
             {otherTeams.map(team => this.renderTeam(team))}
           </div>
           :
-          <p>
-            You are a member of every team in this community!
-          </p>
+          <p>You are a member of every team in this community!</p>
         }
       </div >
     );
@@ -151,9 +144,10 @@ class TeamsPage extends React.Component {
     const teamLogo = teamObj.logo;
 
     return (
-      <div className=" team-card item style-1 clearfix m-action-item vendor-hover"
+      <div className="team-card m-action-item vendor-hover"
         onClick={(e) => {
           const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
+          //the whole event card should redirect to the individual team page except the join team button
           if (!joinTeamBtn.contains(e.target)) {
             window.location = `${this.props.links.teams + "/" + teamObj.id}`
           }
@@ -168,7 +162,7 @@ class TeamsPage extends React.Component {
                 {this.renderTeamStats(team)}
               </div>
               <div className="col-3 team-card-column">
-                {this.renderTeamLogo(teamObj)}
+                {this.renderTeamLogo(teamLogo)}
               </div>
             </>
             :
@@ -182,10 +176,16 @@ class TeamsPage extends React.Component {
   }
 
   renderTeamTitle(teamObj) {
+
+    //to be replaced by a team tagline, inherently limited to some amount of characters
+    const teamDescription = teamObj.description.length > 40 ?
+      teamObj.description.substring(0, 40) + "..."
+      : teamObj.description;
+
     return (
       <div className="team-card-content" >
-        <h4><b>{teamObj.name}</b></h4>
-        <p>{teamObj.description}</p>
+        <h4 className="team-title"><b>{teamObj.name}</b></h4>
+        <p className="team-description">{teamDescription}</p>
         {!this.inTeam(teamObj.id) &&
           <button
             onClick={() => {
@@ -202,23 +202,38 @@ class TeamsPage extends React.Component {
   }
 
   renderTeamStats(team) {
+
+    const actions = team.actions_completed;
+    const carbonSaved = team.carbon_footprint_reduction;
+
+    let actionsPerHousehold, carbonSavedPerHousehold;
+    //used team.members to be consistent with how I'm displaying households below
+    const households = team.members;
+
+    if (households !== 0) {
+      actionsPerHousehold = (actions / households).toFixed(1);
+      carbonSavedPerHousehold = (carbonSaved / households).toFixed(1);
+    } else {
+      actionsPerHousehold = carbonSavedPerHousehold = 0;
+    }
+
     return (
       <div className="team-card-content">
         <div className="info-section household">
-          <p><b>{team.households}</b> households - <b>{team.members}</b> members</p>
+          <p><b>{households}</b> household{(households !== 1) && 's'}</p>
         </div>
         <div className="info-section data">
-          <p><b>{team.actions_completed}</b> actions completed (<b>{team.actions_completed / team.households}</b> per household)</p>
+          <p><b>{actions}</b> actions completed (<b>{actionsPerHousehold}</b> per household)</p>
         </div>
         <div className="info-section data">
-          <p> <b>{team.carbon_footprint_reduction}</b> lbs. carbon saved (<b>{team.carbon_footprint_reduction / team.households}</b> per household)</p>
+          <p> <b>{carbonSaved}</b> lbs. carbon saved (<b>{carbonSavedPerHousehold}</b> per household)</p>
         </div>
       </ div>
     );
   }
 
-  renderTeamLogo(teamObj) {
-    return <img className='z-depth-1 team-card-img' src={teamObj.logo.url} alt="" />
+  renderTeamLogo(teamLogo) {
+    return <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
   }
 
   inTeam = (team_id) => {
