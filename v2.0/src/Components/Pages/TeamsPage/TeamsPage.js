@@ -10,6 +10,7 @@ import {
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
+import { addCommasToNumber } from "../../Utils"
 
 class TeamsPage extends React.Component {
 
@@ -66,7 +67,7 @@ class TeamsPage extends React.Component {
                 >
                   Start a Team
               </button>
-              <button
+                <button
                   className="btn btn-success round-me comp-teams-btn raise"
                   onClick={() => {
                     window.location = `${this.props.links.teams + "/compare"}`;
@@ -205,19 +206,19 @@ class TeamsPage extends React.Component {
       actionsPerHousehold = (actions / households).toFixed(1);
       carbonSavedPerHousehold = (carbonSaved / households).toFixed(1);
     } else {
-      actionsPerHousehold = carbonSavedPerHousehold = 0;
+      actionsPerHousehold = carbonSavedPerHousehold = "0.0";
     }
 
     return (
       <div className="team-card-content">
         <div className="info-section household">
-          <p><b>{households}</b> household{(households !== 1) && 's'}</p>
+          <p><b>{addCommasToNumber(households)}</b> household{(households !== 1) && 's'}</p>
         </div>
         <div className="info-section data">
-          <p><b>{actions}</b> actions completed (<b>{actionsPerHousehold}</b> per household)</p>
+          <p><b>{addCommasToNumber(actions)}</b> actions completed (<b>{addCommasToNumber(actionsPerHousehold)}</b> per household)</p>
         </div>
         <div className="info-section data">
-          <p> <b>{carbonSaved}</b> lbs. carbon saved (<b>{carbonSavedPerHousehold}</b> per household)</p>
+          <p> <b>{addCommasToNumber(carbonSaved)}</b> lbs. carbon saved (<b>{addCommasToNumber(carbonSavedPerHousehold)}</b> per household)</p>
         </div>
       </ div>
     );
