@@ -48,41 +48,43 @@ class TeamsPage extends React.Component {
       <>
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <PageTitle>Teams in this Community</PageTitle>
+          <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
-          <center>
-            <p className="col-9">
-              Teams are groups in a community that wants to collaborate. It
-              could be a school, congregation, a group of neighbors or friends, a sports team. Get
-              creative!
-            </p>
-            <div>
-              <button
-                className="btn btn-success round-me start-team-btn raise"
-                onClick={() => {
-                  window.open(this.props.links.contactus, "_blank");
-                }}
-              >
-                Start a Team
+            <PageTitle>Teams in this Community</PageTitle>
+            <center>
+              <p>
+                Teams are groups in a community that wants to collaborate. It
+                could be a school, congregation, a group of neighbors or friends, a sports team. Get
+                creative!
+              </p>
+              <div>
+                <button
+                  className="btn btn-success round-me start-team-btn raise"
+                  onClick={() => {
+                    window.open(this.props.links.contactus, "_blank");
+                  }}
+                >
+                  Start a Team
               </button>{" "}
-              <div style={{
-                width: '10px',
-                height: 'auto',
-                display: 'inline-block'
-              }}>
+                <div style={{
+                  width: '10px',
+                  height: 'auto',
+                  display: 'inline-block'
+                }}>
+                </div>
+                <button
+                  className="btn btn-success round-me comp-teams-btn raise"
+                  onClick={() => {
+                    window.location = `${this.props.links.teams + "/compare"}`;
+                  }}
+                >
+                  Compare Teams
+              </button>{" "}
               </div>
-              <button
-                className="btn btn-success round-me comp-teams-btn raise"
-                onClick={() => {
-                  window.location = `${this.props.links.teams + "/compare"}`;
-                }}
-              >
-                Compare Teams
-              </button>{" "}
-            </div>
 
-          </center>
-          {this.renderTeams(teams)}
+            </center>
+            {this.renderTeams(teams)}
+          </div>
         </div>
       </>
     );
@@ -90,7 +92,7 @@ class TeamsPage extends React.Component {
 
   /* TODO:
    - testing with real API data from JCAN, too much text to fit on mobile w/ current design
-      - need to have height of card be variable, and wrap the stats/image (together, in one div) below title
+      - wrap the stats/image (together, in one div?) below title on thin screens
    - revamp "start team" behaviour
    - cleanup the loading circle/no community stuff
    - two buttons on top:
@@ -111,7 +113,7 @@ class TeamsPage extends React.Component {
     }, [[], []]);
 
     return (
-      <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
+      <div>
         <h3 className="teams-subheader">My Teams</h3>
         {myTeams.length > 0 ?
           <div>
