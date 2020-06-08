@@ -50,7 +50,7 @@ class TeamsPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
-            <PageTitle>Teams in this Community</PageTitle>
+            <PageTitle style={{ margin: "0 30px" }}>Teams in this Community</PageTitle>
             <center>
               <p>
                 Teams are groups in a community that wants to collaborate. It
@@ -65,21 +65,15 @@ class TeamsPage extends React.Component {
                   }}
                 >
                   Start a Team
-              </button>{" "}
-                <div style={{
-                  width: '10px',
-                  height: 'auto',
-                  display: 'inline-block'
-                }}>
-                </div>
-                <button
+              </button>
+              <button
                   className="btn btn-success round-me comp-teams-btn raise"
                   onClick={() => {
                     window.location = `${this.props.links.teams + "/compare"}`;
                   }}
                 >
                   Compare Teams
-              </button>{" "}
+              </button>
               </div>
 
             </center>
@@ -91,13 +85,9 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
-   - testing with real API data from JCAN, too much text to fit on mobile w/ current design
-      - wrap the stats/image (together, in one div?) below title on thin screens
+   - figure out join button redirecting bug
    - revamp "start team" behaviour
    - cleanup the loading circle/no community stuff
-   - two buttons on top:
-      - why fully black on hover? want to just darken like join team button
-      - improve positioning on mobile
    - add positive feedback upon team join
    - want team card info bars to be tall, but using fixed padding causes overflow on mobile.
       - make three responsively and collectively take up card height
@@ -149,9 +139,8 @@ class TeamsPage extends React.Component {
       <div className="team-card m-action-item vendor-hover"
         onClick={(e) => {
           const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
-          //the whole event card should redirect to the individual team page except the join team button
-          if (!joinTeamBtn.contains(e.target)) {
-            window.location = `${this.props.links.teams + "/" + teamObj.id}`
+          if (!(joinTeamBtn == e.target)) {
+            window.location = `${this.props.links.teams + "/" + teamObj.id}`;
           }
         }} key={teamObj.id}>
         <div className="row no-gutter flex-nowrap" style={{ width: '100%', height: '100%' }}>

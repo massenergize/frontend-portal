@@ -184,15 +184,15 @@ class CompareTeamsPage extends React.Component {
 
       this.showSortNotification(false);
       this.setState({ sorted_Teams: rebuilt });
-      
+
     }
   }
   showSortNotification(which) {
-    if(which){
-      this.setState({sorting:which});
-    }else{
+    if (which) {
+      this.setState({ sorting: which });
+    } else {
       setTimeout(() => {
-        this.setState({sorting:which})
+        this.setState({ sorting: which })
       }, 400);
     }
   }
@@ -231,7 +231,11 @@ class CompareTeamsPage extends React.Component {
         {this.renderContactModal()}
         {this.renderModal()}
         <div className="boxed_wrapper">
-          <BreadCrumbBar links={[{ name: "Teams" }]} />
+          <BreadCrumbBar
+            links={[
+              { link: this.props.links.teams, name: "Teams" },
+              { name: "Compare" },
+            ]} />
           <div
             className="p-5"
             style={{ height: window.screen.height - 120, marginTop: -77 }}
@@ -387,8 +391,8 @@ class CompareTeamsPage extends React.Component {
               <img src={logo} alt="" className="team-img"></img>
             </td>
           ) : (
-            <td></td>
-          )}
+              <td></td>
+            )}
 
           <td>
             {obj.team.name}
@@ -428,10 +432,10 @@ class CompareTeamsPage extends React.Component {
               </center>
             </td>
           ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to contact admin
-            </td>
-          )}
+              <td>
+                <Link to={this.props.links.signin}>Sign In</Link> to contact admin
+              </td>
+            )}
           {this.props.user ? (
             <td>
               {this.inTeam(obj.team.id) ? (
@@ -446,23 +450,23 @@ class CompareTeamsPage extends React.Component {
                   </button>
                 </Tooltip>
               ) : (
-                <Tooltip text="This will add you to the team">
-                  <button
-                    className="thm-btn round-me team-btn-edit"
-                    onClick={() => {
-                      this.joinTeam(obj.team);
-                    }}
-                  >
-                    <i className="fa fa-user-plus"></i>{" "}
-                  </button>
-                </Tooltip>
-              )}
+                  <Tooltip text="This will add you to the team">
+                    <button
+                      className="thm-btn round-me team-btn-edit"
+                      onClick={() => {
+                        this.joinTeam(obj.team);
+                      }}
+                    >
+                      <i className="fa fa-user-plus"></i>{" "}
+                    </button>
+                  </Tooltip>
+                )}
             </td>
           ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to join a team
-            </td>
-          )}
+              <td>
+                <Link to={this.props.links.signin}>Sign In</Link> to join a team
+              </td>
+            )}
           {/* <td>{obj.ghgSaved}</td> */}
         </tr>
       );

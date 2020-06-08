@@ -9558,7 +9558,8 @@ button.as-link:hover {
 }
 
 .team-card-img {
-    height: 100%;
+    height: auto;
+    max-height: 180px;
     display: block;
     margin: auto;
     object-fit: cover;

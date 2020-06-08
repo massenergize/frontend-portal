@@ -2,6 +2,7 @@
   background: #8dc63f; 
   border-width: 0px !important;
   padding: 10px 32px; 
+  margin: 0 10px;
   margin-bottom: 17px;
 }
 
@@ -9,6 +10,7 @@
   background:#f67b61; 
   border-width: 0px !important;
   padding:10px 32px; 
+  margin: 0 10px;
   margin-bottom: 17px;
 }
 
@@ -29,12 +31,8 @@
     transform: scale(1.03);
     transition: .4s ease-in-out;
 }
-.start-team-btn:hover{
-    background:#373535; 
-    transition: .3s ease-in-out;
-  }
 .comp-teams-btn:hover{
-  background:#373535; 
+  background:#b35846; 
   transition: .3s ease-in-out;
 }
 
