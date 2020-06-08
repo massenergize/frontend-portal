@@ -26,24 +26,6 @@ class TeamsPage extends React.Component {
           <LoadingCircle />
         </div>
       );
-    } else if (teams.length === 0) {
-      return (
-        <div className="boxed_wrapper">
-          <h2
-            className="text-center"
-            style={{
-              color: "#9e9e9e",
-              margin: "190px 150px",
-              padding: "30px",
-              border: "solid 2px #fdf9f9",
-              borderRadius: 10,
-            }}
-          >
-            {" "}
-            There are no teams for this community yet :({" "}
-          </h2>
-        </div>
-      );
     }
     return (
       <>
@@ -86,19 +68,23 @@ class TeamsPage extends React.Component {
   }
 
   /* TODO:
-   - figure out join button redirecting bug
+   - improve join button position on mobile
    - revamp "start team" behaviour
    - cleanup the loading circle/no community stuff
    - add positive feedback upon team join
-   - want team card info bars to be tall, but using fixed padding causes overflow on mobile.
-      - make three responsively and collectively take up card height
    - sidebar? search bar? any sorting other than alphabetical default?
-      - keep the image getting super squished depending on screen size
-   - make font sizes smaller on thin windows? (CSS media queries?)
-   - will we have closed/open teams? will require more complex data flow
+   - contingent on DB changes:
+    - custom community page subheading
+    - team taglines
+    - closed/open teams
   */
 
   renderTeams(teams) {
+
+    if (teams.length === 0) {
+      return <p>There are no teams in this community yet. You can start one by clicking the "Start a Team" button above!</p>
+    }
+
     const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
     }, [[], []]);
@@ -113,7 +99,7 @@ class TeamsPage extends React.Component {
           :
           <p>
             {this.props.user ?
-              "You have not joined any teams. View the teams in this community below."
+              "You have not joined any teams. Explore the teams in this community below."
               :
               "You must sign in to view your teams."
             }
@@ -139,29 +125,33 @@ class TeamsPage extends React.Component {
     return (
       <div className="team-card m-action-item vendor-hover"
         onClick={(e) => {
-          const joinTeamBtn = document.getElementsByClassName("join-team-btn")[0];
-          if (!(joinTeamBtn == e.target)) {
+          if (!(e.target.classList.contains("join-team-btn"))) {
             window.location = `${this.props.links.teams + "/" + teamObj.id}`;
           }
         }} key={teamObj.id}>
-        <div className="row no-gutter flex-nowrap" style={{ width: '100%', height: '100%' }}>
-          <div className="col-3 team-card-column">
+        <div className="row no-gutter flex" style={{ width: '100%', height: '100%' }}>
+          <div className="col-sm-3 team-card-column">
             {this.renderTeamTitle(teamObj)}
           </div>
-          {teamLogo ?
-            <>
-              <div className="col-6 team-card-column">
-                {this.renderTeamStats(team)}
-              </div>
-              <div className="col-3 team-card-column">
-                {this.renderTeamLogo(teamLogo)}
-              </div>
-            </>
-            :
-            <div className="col-9 team-card-column">
-              {this.renderTeamStats(team)}
+          <div className="col-sm-9">
+            <div className="row" style={{ margin: '0 auto' }}>
+              {teamLogo ?
+                <>
+                  <div className="col-8 team-card-column">
+                    {this.renderTeamStats(team)}
+                  </div>
+                  <div className="col-4 team-card-column">
+                    {this.renderTeamLogo(teamLogo)}
+                  </div>
+                </>
+                :
+                <div className="team-card-column">
+                  {this.renderTeamStats(team)}
+                </div>
+              }
             </div>
-          }
+          </div>
+
         </div>
       </div >
     );
@@ -170,8 +160,8 @@ class TeamsPage extends React.Component {
   renderTeamTitle(teamObj) {
 
     //to be replaced by a team tagline, inherently limited to some amount of characters
-    const teamDescription = teamObj.description.length > 40 ?
-      teamObj.description.substring(0, 40) + "..."
+    const teamDescription = teamObj.description.length > 70 ?
+      teamObj.description.substring(0, 70) + "..."
       : teamObj.description;
 
     return (
