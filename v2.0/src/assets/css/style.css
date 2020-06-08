@@ -9523,6 +9523,7 @@ button.as-link:hover {
 .team-card-column {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .team-card-content {

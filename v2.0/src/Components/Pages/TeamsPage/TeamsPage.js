@@ -70,7 +70,6 @@ class TeamsPage extends React.Component {
   /* TODO:
    - improve join button position on mobile
    - revamp "start team" behaviour
-   - cleanup the loading circle/no community stuff
    - add positive feedback upon team join
    - sidebar? search bar? any sorting other than alphabetical default?
    - contingent on DB changes:
