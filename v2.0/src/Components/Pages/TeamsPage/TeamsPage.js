@@ -67,17 +67,6 @@ class TeamsPage extends React.Component {
     );
   }
 
-  /* TODO:
-   - improve join button position on mobile
-   - revamp "start team" behaviour
-   - add positive feedback upon team join
-   - sidebar? search bar? any sorting other than alphabetical default?
-   - contingent on DB changes:
-    - custom community page subheading
-    - team taglines
-    - closed/open teams
-  */
-
   renderTeams(teams) {
 
     if (teams.length === 0) {
@@ -188,7 +177,6 @@ class TeamsPage extends React.Component {
     const carbonSaved = team.carbon_footprint_reduction;
 
     let actionsPerHousehold, carbonSavedPerHousehold;
-    //used team.members to be consistent with how I'm displaying households below
     const households = team.members;
 
     if (households !== 0) {
