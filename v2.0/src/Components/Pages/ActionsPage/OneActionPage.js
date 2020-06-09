@@ -52,15 +52,15 @@ class OneActionPage extends React.Component {
     this.fetch(id);
   }
 
-  componentDidUpdate() {
-    if (
-      !this.loading &&
-      (!this.state.action || this.props.match.params !== this.state.action.id)
-    ) {
-      const { id } = this.props.match.params;
-      this.fetch(id);
-    }
-  }
+  //componentDidUpdate() {
+  //  if (
+  //    !this.loading &&
+  //    (!this.state.action || this.props.match.params !== this.state.action.id)
+  //  ) {
+  //    const { id } = this.props.match.params;
+  //    this.fetch(id);
+  //  }
+ // }
 
   fetch(id) {
     this.loading = true;
