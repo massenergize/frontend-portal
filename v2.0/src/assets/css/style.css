@@ -9504,7 +9504,7 @@ button.as-link:hover {
     align-items: center;
 }
 
-.team-title {
+.team-card-title {
     font-size: 20px;
     line-height: 21px;
     margin: 0;
@@ -9512,7 +9512,7 @@ button.as-link:hover {
     hyphens: auto;
 }
 
-.team-description {
+.team-card-description {
     font-size: 15px;
     line-height: 16px;
     margin: 5px 0 10px;

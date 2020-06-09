@@ -10,7 +10,7 @@ import {
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { addCommasToNumber } from "../../Utils"
+import TeamInfoBars from "./TeamInfoBars";
 
 class TeamsPage extends React.Component {
 
@@ -19,8 +19,8 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const teams = this.props.teamsPage;
-    if (teams === null) {
+    const teamsStats = this.props.teamsPage;
+    if (teamsStats === null) {
       return (
         <div className="boxed_wrapper">
           <LoadingCircle />
@@ -60,20 +60,20 @@ class TeamsPage extends React.Component {
               </div>
 
             </center>
-            {this.renderTeams(teams)}
+            {this.renderTeams(teamsStats)}
           </div>
         </div>
       </>
     );
   }
 
-  renderTeams(teams) {
+  renderTeams(teamsStats) {
 
-    if (teams.length === 0) {
+    if (teamsStats.length === 0) {
       return <p>There are no teams in this community yet. You can start one by clicking the "Start a Team" button above!</p>
     }
 
-    const [myTeams, otherTeams] = teams.reduce(([pass, fail], team) => {
+    const [myTeams, otherTeams] = teamsStats.reduce(([pass, fail], team) => {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
     }, [[], []]);
 
@@ -82,7 +82,7 @@ class TeamsPage extends React.Component {
         <h3 className="teams-subheader">My Teams</h3>
         {myTeams.length > 0 ?
           <div>
-            {myTeams.map(team => this.renderTeam(team))}
+            {myTeams.map(teamStats => this.renderTeam(teamStats))}
           </div>
           :
           <p>
@@ -97,7 +97,7 @@ class TeamsPage extends React.Component {
         <h3 className="teams-subheader">Other Teams</h3>
         {otherTeams.length > 0 ?
           <div>
-            {otherTeams.map(team => this.renderTeam(team))}
+            {otherTeams.map(teamStats => this.renderTeam(teamStats))}
           </div>
           :
           <p>You are a member of every team in this community!</p>
@@ -106,8 +106,8 @@ class TeamsPage extends React.Component {
     );
   }
 
-  renderTeam(team) {
-    const teamObj = team.team;
+  renderTeam(teamStats) {
+    const teamObj = teamStats.team;
     const teamLogo = teamObj.logo;
 
     return (
@@ -126,15 +126,15 @@ class TeamsPage extends React.Component {
               {teamLogo ?
                 <>
                   <div className="col-8 team-card-column">
-                    {this.renderTeamStats(team)}
+                    <TeamInfoBars teamStats={teamStats} />
                   </div>
                   <div className="col-4 team-card-column">
-                    {this.renderTeamLogo(teamLogo)}
+                    <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
                   </div>
                 </>
                 :
                 <div className="team-card-column">
-                  {this.renderTeamStats(team)}
+                  <TeamInfoBars teamStats={teamStats} />
                 </div>
               }
             </div>
@@ -153,10 +153,10 @@ class TeamsPage extends React.Component {
       : teamObj.description;
 
     return (
-      <div className="row team-card-content" style={{marginLeft: 0, marginRight: 0}}>
+      <div className="row team-card-content" style={{ marginLeft: 0, marginRight: 0 }}>
         <div className="col-9 col-sm-12">
-          <h4 className="team-title"><b>{teamObj.name}</b></h4>
-          <p className="team-description">{teamDescription}</p>
+          <h4 className="team-card-title"><b>{teamObj.name}</b></h4>
+          <p className="team-card-description">{teamDescription}</p>
         </div>
         <div className="col-3 col-sm-12">
           {!this.inTeam(teamObj.id) &&
@@ -173,40 +173,6 @@ class TeamsPage extends React.Component {
         </div>
       </div>
     );
-  }
-
-  renderTeamStats(team) {
-
-    const actions = team.actions_completed;
-    const carbonSaved = team.carbon_footprint_reduction;
-
-    let actionsPerHousehold, carbonSavedPerHousehold;
-    const households = team.members;
-
-    if (households !== 0) {
-      actionsPerHousehold = (actions / households).toFixed(1);
-      carbonSavedPerHousehold = (carbonSaved / households).toFixed(1);
-    } else {
-      actionsPerHousehold = carbonSavedPerHousehold = "0.0";
-    }
-
-    return (
-      <div className="team-card-content">
-        <div className="info-section household">
-          <p><b>{addCommasToNumber(households)}</b> household{(households !== 1) && 's'}</p>
-        </div>
-        <div className="info-section data">
-          <p><b>{addCommasToNumber(actions)}</b> actions completed (<b>{addCommasToNumber(actionsPerHousehold)}</b> per household)</p>
-        </div>
-        <div className="info-section data">
-          <p> <b>{addCommasToNumber(carbonSaved)}</b> lbs. carbon saved (<b>{addCommasToNumber(carbonSavedPerHousehold)}</b> per household)</p>
-        </div>
-      </ div>
-    );
-  }
-
-  renderTeamLogo(teamLogo) {
-    return <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
   }
 
   inTeam = (team_id) => {
