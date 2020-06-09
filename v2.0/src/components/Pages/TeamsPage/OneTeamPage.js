@@ -18,9 +18,9 @@ class OneTeamPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      team: null
+      team: null,
+      loading: true
     }
-    this.loading = true;
   }
 
   fetch(id) {
@@ -28,12 +28,11 @@ class OneTeamPage extends React.Component {
       if (json.success) {
         this.setState({
           team: json.data,
+          loading: false
         })
       }
-      this.loading = false;
     }).catch(err => {
-      this.setState({ error: err.message });
-      this.loading = false;
+      this.setState({ error: err.message, loading: false });
     })
 
   }
@@ -47,7 +46,7 @@ class OneTeamPage extends React.Component {
 
     const team = this.state.team;
 
-    if (this.loading) {
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
     if (!team) {

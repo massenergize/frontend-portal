@@ -9498,7 +9498,7 @@ button.as-link:hover {
 .team-card {
     margin-bottom: 20px;
     height: auto;
-    border: 1px solid black;
+    border: 2px solid black;
     padding: 10px;
     display: flex;
     align-items: center;
