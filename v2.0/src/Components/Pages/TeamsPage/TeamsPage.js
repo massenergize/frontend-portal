@@ -153,21 +153,25 @@ class TeamsPage extends React.Component {
       : teamObj.description;
 
     return (
-      <div className="team-card-content" >
-        <h4 className="team-title"><b>{teamObj.name}</b></h4>
-        <p className="team-description">{teamDescription}</p>
-        {!this.inTeam(teamObj.id) &&
-          <button
-            onClick={() => {
-              this.joinTeam(teamObj);
-              this.forceUpdate();
-            }}
-            className="btn btn-success round-me join-team-btn raise"
-          >
-            Join Team
-        </button>
-        }
-      </ div>
+      <div className="row team-card-content" style={{marginLeft: 0, marginRight: 0}}>
+        <div className="col-9 col-sm-12">
+          <h4 className="team-title"><b>{teamObj.name}</b></h4>
+          <p className="team-description">{teamDescription}</p>
+        </div>
+        <div className="col-3 col-sm-12">
+          {!this.inTeam(teamObj.id) &&
+            <button
+              onClick={() => {
+                this.joinTeam(teamObj);
+                this.forceUpdate();
+              }}
+              className="btn btn-success round-me join-team-btn raise"
+            >
+              Join Team
+            </button>
+          }
+        </div>
+      </div>
     );
   }
 
