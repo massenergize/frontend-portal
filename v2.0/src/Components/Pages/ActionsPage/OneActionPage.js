@@ -40,8 +40,8 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
       showTodoMsg: false,
+      loading: true
     };
-    this.loading = true;
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -60,25 +60,23 @@ class OneActionPage extends React.Component {
   //    const { id } = this.props.match.params;
   //    this.fetch(id);
   //  }
- // }
+  // }
 
   fetch(id) {
     apiCall("actions.info", { action_id: id })
       .then((json) => {
         if (json.success) {
-          this.setState({ action: json.data });
+          this.setState({ action: json.data, loading: false });
         }
-        this.loading = false;
       })
-        .catch((err) => {
-            this.setState({ error: err.message });
-            this.loading = false;
-        });
+      .catch((err) => {
+        this.setState({ error: err.message, loading: false });
+      });
   }
 
   render() {
     const action = this.getMyAction();
-    if (this.loading) {
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
 
@@ -126,16 +124,16 @@ class OneActionPage extends React.Component {
                     />
                   </div>
                 ) : (
-                  <div
-                    className="col-md-4"
-                    style={{ paddingRight: "0px", marginRight: "0px" }}
-                  >
-                    <p>
-                      <Link to={this.props.links.signin}> Sign In </Link> to add
+                    <div
+                      className="col-md-4"
+                      style={{ paddingRight: "0px", marginRight: "0px" }}
+                    >
+                      <p>
+                        <Link to={this.props.links.signin}> Sign In </Link> to add
                       actions to your todo list or to mark them as complete
                     </p>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
             </div>
           </section>
@@ -287,7 +285,7 @@ class OneActionPage extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me todo-correction"
             onClick={() => {
-              this.setState({showTodoMsg:false})
+              this.setState({ showTodoMsg: false })
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
@@ -324,7 +322,7 @@ class OneActionPage extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange line-me done-it-correction"
             onClick={() => {
-              this.setState({showTestimonialLink:false});
+              this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
             }}
           >
@@ -372,8 +370,8 @@ class OneActionPage extends React.Component {
     const action_available = action.is_deleted
       ? false
       : community
-      ? community.id === action.community.id
-      : true;
+        ? community.id === action.community.id
+        : true;
 
     return (
       <div>
@@ -429,8 +427,8 @@ class OneActionPage extends React.Component {
                         </p>
                       </Tooltip>
                     ) : (
-                      this.checkTodoAndReturn()
-                    )}
+                        this.checkTodoAndReturn()
+                      )}
                     &nbsp;
                     {!this.props.user ? (
                       <Tooltip text="Sign in to mark actions as completed">
@@ -439,8 +437,8 @@ class OneActionPage extends React.Component {
                         </p>
                       </Tooltip>
                     ) : (
-                      this.checkDoneAndReturn()
-                    )}
+                        this.checkDoneAndReturn()
+                      )}
                     {this.state.status ? (
                       <div style={{ paddingTop: "20px" }}>
                         <ChooseHHForm
@@ -463,7 +461,7 @@ class OneActionPage extends React.Component {
                     ) : null}
                     {this.state.showTestimonialLink ? (
                       <div>
-                        <p style={{ marginTop: 30,fontSize:15 }} className="phone-vanish">
+                        <p style={{ marginTop: 30, fontSize: 15 }} className="phone-vanish">
                           Nice job! How was your experience with this action?
                           Tell us about it in a{" "}
                           <a
@@ -478,7 +476,7 @@ class OneActionPage extends React.Component {
                           </a>
                           .
                         </p>
-                        <p className="pc-vanish" style={{marginTop:30, fontSize:15}}>
+                        <p className="pc-vanish" style={{ marginTop: 30, fontSize: 15 }}>
                           Nice job! How was your experience with this action?
                           Tell us about it in a Tell us about it in a{" "}
                           <a
@@ -493,11 +491,11 @@ class OneActionPage extends React.Component {
                     ) : null}
                   </div>
                 ) : (
-                  <div className="cool-font">
-                    This action is not available. It was from a different
-                    community or was deleted.
-                  </div>
-                )
+                    <div className="cool-font">
+                      This action is not available. It was from a different
+                      community or was deleted.
+                    </div>
+                  )
               }
               {this.state.showTodoMsg ? (
                 <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
@@ -688,21 +686,21 @@ class OneActionPage extends React.Component {
                       Send Question
                     </button>
                   ) : (
-                    <a
-                      href={"/" + login_link + "/signin"}
-                      style={{
-                        marginTop: 10,
-                        padding: "14px 41px",
-                        background: "gray",
-                        border: "gray",
-                        color: "white",
-                        textDecoration: "none",
-                      }}
-                      className="btn btn-success round-me pull-right"
-                    >
-                      Sign In To Send
-                    </a>
-                  )}
+                      <a
+                        href={"/" + login_link + "/signin"}
+                        style={{
+                          marginTop: 10,
+                          padding: "14px 41px",
+                          background: "gray",
+                          border: "gray",
+                          color: "white",
+                          textDecoration: "none",
+                        }}
+                        className="btn btn-success round-me pull-right"
+                      >
+                        Sign In To Send
+                      </a>
+                    )}
                 </div>
               </div>
             </div>
@@ -740,11 +738,11 @@ class OneActionPage extends React.Component {
                   />
                 </div>
               ) : (
-                <p className="make-me-dark">
-                  <Link to={this.props.links.signin}> Sign In </Link> to submit
+                  <p className="make-me-dark">
+                    <Link to={this.props.links.signin}> Sign In </Link> to submit
                   your own story about taking this Action
-                </p>
-              )}
+                  </p>
+                )}
             </div>
           </div>
         </div>
@@ -826,17 +824,17 @@ class OneActionPage extends React.Component {
                       <small className="story-name">{creatorName}</small>
                       <small className="m-label round-me">{date}</small>
                       {this.state.expanded &&
-                      this.state.expanded === story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: null });
-                          }}
-                        >
-                          close
-                        </button>
-                      ) : null}
+                        this.state.expanded === story.id ? (
+                          <button
+                            className="as-link"
+                            style={{ float: "right" }}
+                            onClick={() => {
+                              this.setState({ expanded: null });
+                            }}
+                          >
+                            close
+                          </button>
+                        ) : null}
                     </h6>
 
                     <p>
@@ -844,17 +842,17 @@ class OneActionPage extends React.Component {
                         ? story.body
                         : story.body.substring(0, this.state.limit)}
                       {this.state.limit < story.body.length &&
-                      this.state.expanded !== story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: story.id });
-                          }}
-                        >
-                          more...
-                        </button>
-                      ) : null}
+                        this.state.expanded !== story.id ? (
+                          <button
+                            className="as-link"
+                            style={{ float: "right" }}
+                            onClick={() => {
+                              this.setState({ expanded: story.id });
+                            }}
+                          >
+                            more...
+                          </button>
+                        ) : null}
                     </p>
                   </div>
                   {story.vendor ? (
