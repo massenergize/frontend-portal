@@ -15,19 +15,22 @@ class OneEventPage extends React.Component {
     this.state = {
       event: null
     }
-    this.loading = false;
+    this.loading = true;
   }
 
   fetch(id) {
-    this.loading = true;
     apiCall('events.info', { event_id: id }).then(json => {
       if (json.success) {
         this.setState({
           event: json.data,
         })
       }
-    }).catch(err => this.setState({ error: err.message}))
-    this.loading = false;
+      this.loading = false;
+    }).catch(err => {
+        this.setState({ error: err.message });
+        this.loading = false;
+    })
+    
   }
 
   componentDidMount() {
