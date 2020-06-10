@@ -247,6 +247,12 @@
 
 
 
+  .phone-big-title{
+    font-size:1.6rem !important;
+  }
+  .phone-medium-title{
+    font-size: 1rem !important;
+  }
   .mob-team-title{
     font-size:16px !important; 
     font-weight: 600;
