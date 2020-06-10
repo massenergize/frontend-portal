@@ -13,7 +13,6 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamInfoBars from "./TeamInfoBars";
-import PageTitle from '../../Shared/PageTitle';
 
 class OneTeamPage extends React.Component {
 
@@ -68,10 +67,10 @@ class OneTeamPage extends React.Component {
               { name: `Team ${team ? team.id : "..."}` },
             ]}
           />
-          <PageTitle style={{ margin: "0 15px" }}>{team.name}</PageTitle>
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
             <center>
-              <p>
+              <h2 className="cool-font" style={{ marginBottom: 0 }}>{team.name}</h2>
+              <p style={{ marginBottom: 0 }}>
                 {team.description.length > 70 ?
                   team.description.substring(0, 70) + "..."
                   : team.description}
@@ -79,10 +78,9 @@ class OneTeamPage extends React.Component {
               <div>
                 {!this.inTeam(team.id) ?
                   <button
-                    className="btn btn-success round-me start-team-btn raise"
+                    className="btn btn-success round-me join-team-btn-big raise"
                     onClick={() => {
                       this.joinTeam(team);
-                      this.forceUpdate();
                     }}
                   >
                     Join Team
@@ -92,20 +90,19 @@ class OneTeamPage extends React.Component {
                     className="btn btn-success round-me leave-team-btn raise"
                     onClick={() => {
                       this.leaveTeam(team);
-                      this.forceUpdate();
                     }}
                   >
                     Leave Team
                   </button>
                 }
                 <button
-                  className="btn btn-success round-me comp-teams-btn raise"
+                  className="btn btn-success round-me contact-admin-btn-new raise"
                   onClick={() => {
-                    //TODO
+                    return false;
                   }}
                 >
                   Contact Admin
-              </button>
+                </button>
               </div>
 
               <div className="row">
@@ -115,7 +112,7 @@ class OneTeamPage extends React.Component {
                       <TeamInfoBars teamStats={teamStats} />
                     </div>
                     <div className="col-4 team-card-column">
-                      <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
+                      <img className='z-depth-1 one-team-img' src={teamLogo.url} alt="" />
                     </div>
                   </>
                   :
@@ -125,6 +122,41 @@ class OneTeamPage extends React.Component {
                 }
               </div>
             </center>
+          </div>
+          <br />
+          <div className='col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10' style={{ margin: 'auto' }}>
+            <div className="row">
+              <div className="col-sm-5 col-12">
+                <div className="one-team-content-section">
+                  <p>
+                    {team.description}
+                  </p>
+                </div>
+              </div>
+              <div className="col-sm-7 col-12">
+                <div className="one-team-content-section">
+                  <p>
+                    Team stats graphs will go here
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-7 col-12">
+                <div className="one-team-content-section">
+                  <p>
+                    List of team's actions will go here
+                  </p>
+                </div>
+              </div>
+              <div className="col-sm-5 col-12">
+                <div className="one-team-content-section">
+                  <p>
+                    List of team members will go here
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </>
@@ -163,6 +195,7 @@ class OneTeamPage extends React.Component {
               actions_todo: this.props.todo.length,
             },
           });
+          this.forceUpdate();
         }
       })
       .catch((error) => {
@@ -191,6 +224,7 @@ class OneTeamPage extends React.Component {
               actions_todo: this.props.todo.length,
             },
           });
+          this.forceUpdate();
         }
       })
       .catch((error) => {

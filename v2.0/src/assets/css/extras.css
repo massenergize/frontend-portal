@@ -14,7 +14,7 @@
   margin-bottom: 17px;
 }
 
-.join-team-btn {
+.join-team-btn-small {
   background:#8dc63f; 
   border-width: 0px !important;
   padding: 10px 10px;
@@ -22,13 +22,27 @@
   font-style: italic;
 }
 
+.join-team-btn-big {
+    background:#8dc63f; 
+    border-width: 0px !important;
+    padding: 5px 10px; 
+    margin: 5px;
+}
+
 .leave-team-btn {
     background: darkgray; 
     border-width: 0px !important;
-    padding: 10px 32px; 
-    margin: 0 10px;
-    margin-bottom: 17px;
+    padding: 5px 10px; 
+    margin: 5px;
 }
+
+.contact-admin-btn-new {
+    background: #f67b61; 
+    border-width: 0px !important;
+    padding: 5px 10px; 
+    margin: 5px;
+}
+
 
 .sort-btns{
   cursor: pointer;
@@ -39,14 +53,18 @@
     transform: scale(1.03);
     transition: .4s ease-in-out;
 }
-.comp-teams-btn:hover{
+.contact-admin-btn-new:hover{
   background:#b35846; 
-  transition: .3s ease-in-out;
+  transition: .15s ease-in-out;
 }
 .leave-team-btn:hover {
     background: #616161; 
-    transition: .3s ease-in-out;
-  }
+    transition: .15s ease-in-out;
+}
+.contact-admin-btn:hover {
+  background:#b35846; 
+  transition: .15s ease-in-out;
+}
 
 .team-img{
   height:80px !important; 

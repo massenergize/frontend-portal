@@ -9498,10 +9498,18 @@ button.as-link:hover {
 .team-card {
     margin-bottom: 20px;
     height: auto;
-    border: 2px solid black;
+    border: 2px solid #f3f3f3;
+    cursor:pointer;
+    border-radius: 12px;
     padding: 10px;
     display: flex;
     align-items: center;
+}
+
+.team-card:hover {
+  -webkit-box-shadow:0 4px 0px 0 rgba(0,0,0,-0.84),0 4px 0px 0 rgba(0,0,0,.12);
+  box-shadow:0 4px 0px 0 rgba(0,0,0,-.84),0 4px 10px 0 rgba(0,0,0,.12);
+  transition: .2s ease-in-out;
 }
 
 .team-card-title {
@@ -9558,15 +9566,31 @@ button.as-link:hover {
     color: black;
     text-align: center;
     vertical-align: middle;
-    padding: 12px;
-    margin: 5px 0;
+    padding: 8px;
+    margin: 4px 0;
 }
 
 .team-card-img {
     height: auto;
-    max-height: 180px;
+    max-height: 150px;
     display: block;
     margin: auto;
     object-fit: cover;
     border-radius: 10px
+}
+
+.one-team-content-section {
+  margin: 10px 0px;
+  height: auto;
+  border: 2px solid #f3f3f3;
+  padding: 10px;
+  display: flex;
+  border-radius: 12px;
+}
+
+.one-team-img {
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
 }

@@ -30,7 +30,7 @@ class TeamsPage extends React.Component {
     return (
       <>
         <div className="boxed_wrapper">
-          <BreadCrumbBar links={[{ name: "Teams" }]} />
+          <BreadCrumbBar links={[{ name: "Teams" }]}/>
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
             <PageTitle style={{ margin: "0 30px" }}>Teams in this Community</PageTitle>
@@ -111,9 +111,9 @@ class TeamsPage extends React.Component {
     const teamLogo = teamObj.logo;
 
     return (
-      <div className="team-card m-action-item vendor-hover"
+      <div className="team-card"
         onClick={(e) => {
-          if (!(e.target.classList.contains("join-team-btn"))) {
+          if (!(e.target.classList.contains("join-team-btn-small"))) {
             window.location = `${this.props.links.teams + "/" + teamObj.id}`;
           }
         }} key={teamObj.id}>
@@ -163,9 +163,8 @@ class TeamsPage extends React.Component {
             <button
               onClick={() => {
                 this.joinTeam(teamObj);
-                this.forceUpdate();
               }}
-              className="btn btn-success round-me join-team-btn raise"
+              className="btn btn-success round-me join-team-btn-small raise"
             >
               Join Team
             </button>
@@ -207,6 +206,7 @@ class TeamsPage extends React.Component {
               actions_todo: this.props.todo.length,
             },
           });
+          this.forceUpdate();
         }
       })
       .catch((error) => {
