@@ -53,6 +53,25 @@
     transform: scale(1.03);
     transition: .4s ease-in-out;
 }
+
+.start-team-btn:hover{
+    background:#517325; 
+    transition: .15s ease-in-out;
+  }
+.comp-teams-btn:hover{
+    background:#b35846; 
+    transition: .15s ease-in-out;
+}
+
+.join-team-btn-small:hover{
+  background:#517325; 
+  transition: .15s ease-in-out;
+}
+
+.join-team-btn-big:hover{
+  background:#517325; 
+  transition: .15s ease-in-out;
+}
 .contact-admin-btn-new:hover{
   background:#b35846; 
   transition: .15s ease-in-out;
