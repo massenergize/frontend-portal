@@ -14,10 +14,6 @@ import TeamInfoBars from "./TeamInfoBars";
 
 class TeamsPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const teamsStats = this.props.teamsPage;
     if (teamsStats === null) {

@@ -64,7 +64,7 @@ class OneTeamPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.teams, name: "Teams" },
-              { name: `Team ${team ? team.id : "..."}` },
+              { name: team.name },
             ]}
           />
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
@@ -127,32 +127,30 @@ class OneTeamPage extends React.Component {
           <div className='col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10' style={{ margin: 'auto' }}>
             <div className="row">
               <div className="col-sm-5 col-12">
-                <div className="one-team-content-section">
-                  <p>
-                    {team.description}
-                  </p>
+                <div className="row" style={{ margin: 0 }}>
+                  <div className="one-team-content-section">
+                    <h5><b>Description</b></h5>
+                    <p>
+                      {team.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="row" style={{ margin: 0 }}>
+                  <div className="one-team-content-section">
+                    <h5><b>Members</b></h5>
+                    <p>
+                      <ul>
+                        {team.members.map(member => <li>{member.preferred_name}</li>)}
+                      </ul>
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="col-sm-7 col-12">
                 <div className="one-team-content-section">
+                  <h5><b>Stats</b></h5>
                   <p>
-                    Team stats graphs will go here
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-7 col-12">
-                <div className="one-team-content-section">
-                  <p>
-                    List of team's actions will go here
-                  </p>
-                </div>
-              </div>
-              <div className="col-sm-5 col-12">
-                <div className="one-team-content-section">
-                  <p>
-                    List of team members will go here
+                    {/* graphs will go here! */}
                   </p>
                 </div>
               </div>

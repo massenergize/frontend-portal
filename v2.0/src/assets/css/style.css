@@ -9498,7 +9498,7 @@ button.as-link:hover {
 .team-card {
     margin-bottom: 20px;
     height: auto;
-    border: 2px solid #f3f3f3;
+    border: 3px solid #f3f3f3;
     cursor:pointer;
     border-radius: 12px;
     padding: 10px;
@@ -9580,12 +9580,26 @@ button.as-link:hover {
 }
 
 .one-team-content-section {
-  margin: 10px 0px;
+  margin:  5px 0px;
   height: auto;
-  border: 2px solid #f3f3f3;
+  width: 100%;
+  border: 3px solid #f3f3f3;
   padding: 10px;
-  display: flex;
   border-radius: 12px;
+}
+
+.one-team-content-section h5{
+  text-align: center;
+}
+
+.one-team-content-section p{
+  margin: 0px;
+}
+
+.one-team-content-section ul{
+  margin: 0px;
+  padding-left: 20px;
+  list-style-type: circle;
 }
 
 .one-team-img {
