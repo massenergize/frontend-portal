@@ -26,7 +26,7 @@ class TeamsPage extends React.Component {
     return (
       <>
         <div className="boxed_wrapper">
-          <BreadCrumbBar links={[{ name: "Teams" }]}/>
+          <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
             <PageTitle style={{ margin: "0 30px" }}>Teams in this Community</PageTitle>
@@ -40,7 +40,7 @@ class TeamsPage extends React.Component {
                 <button
                   className="btn btn-success round-me start-team-btn raise"
                   onClick={() => {
-                    window.open(this.props.links.contactus, "_blank");
+                    //TODO
                   }}
                 >
                   Start a Team
@@ -54,7 +54,9 @@ class TeamsPage extends React.Component {
                   Compare Teams
               </button>
               </div>
-
+              <p style={{ fontSize: 'medium', marginBottom: 0 }}>
+                Click on a team to view its individual page.
+              </p>
             </center>
             {this.renderTeams(teamsStats)}
           </div>
@@ -162,7 +164,7 @@ class TeamsPage extends React.Component {
               }}
               className="btn btn-success round-me join-team-btn-small raise"
             >
-              Join Team
+              Join
             </button>
           }
         </div>

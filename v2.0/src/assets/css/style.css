@@ -9545,7 +9545,7 @@ button.as-link:hover {
 }
 
 .info-section.members {
-    background: #f67b6130
+    background: #f6986130
 }
 
 .info-section.members p {
@@ -9570,9 +9570,9 @@ button.as-link:hover {
     margin: 4px 0;
 }
 
-.team-card-img {
+.team-img {
     height: auto;
-    max-height: 150px;
+    max-height: 160px;
     display: block;
     margin: auto;
     object-fit: cover;
@@ -9600,11 +9600,4 @@ button.as-link:hover {
   margin: 0px;
   padding-left: 20px;
   list-style-type: circle;
-}
-
-.one-team-img {
-  height: auto;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
 }

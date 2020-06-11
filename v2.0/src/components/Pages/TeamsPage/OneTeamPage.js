@@ -58,6 +58,15 @@ class OneTeamPage extends React.Component {
     )[0];
     const teamLogo = team.logo;
 
+    const header = <>
+      <h2 className="cool-font">{team.name}</h2>
+      <p>
+        {team.description.length > 70 ?
+          team.description.substring(0, 70) + "..."
+          : team.description}
+      </p>
+    </>;
+
     return (
       <>
         <div className="boxed_wrapper">
@@ -67,63 +76,36 @@ class OneTeamPage extends React.Component {
               { name: team.name },
             ]}
           />
-          <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
-            <center>
-              <h2 className="cool-font" style={{ marginBottom: 0 }}>{team.name}</h2>
-              <p style={{ marginBottom: 0 }}>
-                {team.description.length > 70 ?
-                  team.description.substring(0, 70) + "..."
-                  : team.description}
-              </p>
-              <div>
-                {!this.inTeam(team.id) ?
-                  <button
-                    className="btn btn-success round-me join-team-btn-big raise"
-                    onClick={() => {
-                      this.joinTeam(team);
-                    }}
-                  >
-                    Join Team
-                  </button>
-                  :
-                  <button
-                    className="btn btn-success round-me leave-team-btn raise"
-                    onClick={() => {
-                      this.leaveTeam(team);
-                    }}
-                  >
-                    Leave Team
-                  </button>
-                }
-                <button
-                  className="btn btn-success round-me contact-admin-btn-new raise"
-                  onClick={() => {
-                    return false;
-                  }}
-                >
-                  Contact Admin
-                </button>
-              </div>
-
-              <div className="row">
-                {teamLogo ?
-                  <>
-                    <div className="col-8 team-card-column">
-                      <TeamInfoBars teamStats={teamStats} />
-                    </div>
-                    <div className="col-4 team-card-column">
-                      <img className='z-depth-1 one-team-img' src={teamLogo.url} alt="" />
-                    </div>
-                  </>
-                  :
-                  <div className="team-card-column">
-                    <TeamInfoBars teamStats={teamStats} />
+          <div className='col-12 col-sm-9 col-md-6 col-lg-5 col-xl-5' style={{ margin: 'auto' }}>
+            <div className="row">
+              {teamLogo ?
+                <>
+                  <div className="col-4 team-card-column">
+                    <img className='z-depth-1 team-img' src={teamLogo.url} alt="" />
                   </div>
-                }
+                  <div className="col-8 team-card-column">
+                    <div>
+                      {header}
+                    </div>
+                  </div>
+                </>
+                :
+                <div className="col-12 team-card-column">
+                  <center>
+                    {header}
+                  </center>
+                </div>
+              }
+            </div>
+            <div className="row">
+              <div className="team-card-column">
+                <TeamInfoBars teamStats={teamStats} />
               </div>
-            </center>
+            </div>
           </div>
+
           <br />
+
           <div className='col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10' style={{ margin: 'auto' }}>
             <div className="row">
               <div className="col-sm-5 col-12">
@@ -156,6 +138,43 @@ class OneTeamPage extends React.Component {
               </div>
             </div>
           </div>
+
+          <br />
+
+          <div>
+            <center>
+              {!this.inTeam(team.id) ?
+                <button
+                  className="btn btn-success round-me join-team-btn-big raise"
+                  onClick={() => {
+                    this.joinTeam(team);
+                  }}
+                >
+                  Join Team
+                  </button>
+                :
+                <button
+                  className="btn btn-success round-me leave-team-btn raise"
+                  onClick={() => {
+                    this.leaveTeam(team);
+                  }}
+                >
+                  Leave Team
+                  </button>
+              }
+              <button
+                className="btn btn-success round-me contact-admin-btn-new raise"
+                onClick={() => {
+                  //TODO
+                }}
+              >
+                Contact Admin
+                </button>
+            </center>
+          </div>
+
+          <br />
+
         </div>
       </>
     );
