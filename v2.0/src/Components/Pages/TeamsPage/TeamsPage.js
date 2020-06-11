@@ -14,6 +14,36 @@ import TeamInfoBars from "./TeamInfoBars";
 
 class TeamsPage extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchedTeams: [],
+      searching: false
+    }
+  }
+
+  handleSearch(event) {
+    const query = event.target.value.trim();
+    if (query === "") {
+      this.setState({ searching: false });
+      return;
+    }
+
+    let allTeamStats = this.props.teamsPage;
+    let searchedTeamStats = [];
+    for (var i = 0; i < allTeamStats.length; i++) {
+      const teamStats = allTeamStats[i];
+      if (teamStats.team.name.toLowerCase().includes(query.toLowerCase())) {
+        searchedTeamStats.push(teamStats);
+      }
+    }
+    this.setState({
+      searchedTeams: searchedTeamStats,
+      searching: true
+    });
+  }
+
+
   render() {
     const teamsStats = this.props.teamsPage;
     if (teamsStats === null) {
@@ -54,11 +84,16 @@ class TeamsPage extends React.Component {
                   Compare Teams
               </button>
               </div>
-              <p style={{ fontSize: 'medium', marginBottom: 0 }}>
-                Click on a team to view its individual page.
-              </p>
+              <div className='col-12 col-sm-10'>
+                <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+              </div>
             </center>
-            {this.renderTeams(teamsStats)}
+            <br />
+            {this.state.searching ?
+              this.renderTeams(this.state.searchedTeams)
+              :
+              this.renderTeams(teamsStats)
+            }
           </div>
         </div>
       </>
@@ -66,6 +101,21 @@ class TeamsPage extends React.Component {
   }
 
   renderTeams(teamsStats) {
+
+    if (this.state.searching) {
+      return (
+        <div>
+          <h3 className="teams-subheader">Search Results</h3>
+          {teamsStats.length > 0 ?
+            <div>
+              {teamsStats.map(teamStats => this.renderTeam(teamStats))}
+            </div>
+            :
+            <p>There are no teams which match your search.</p>
+          }
+        </div>
+      );
+    }
 
     if (teamsStats.length === 0) {
       return <p>There are no teams in this community yet. You can start one by clicking the "Start a Team" button above!</p>
@@ -83,22 +133,23 @@ class TeamsPage extends React.Component {
             {myTeams.map(teamStats => this.renderTeam(teamStats))}
           </div>
           :
-          <p>
-            {this.props.user ?
-              "You have not joined any teams. Explore the teams in this community below."
+          <>{
+            this.props.user ?
+              <p>You have not joined any teams. Explore the teams in this community below.</p>
               :
-              "You must sign in to view your teams."
-            }
-          </p>
+              <p>You must sign in to view your teams.</p>
+          }
+          </>
         }
         <hr></hr>
         <h3 className="teams-subheader">Other Teams</h3>
-        {otherTeams.length > 0 ?
-          <div>
-            {otherTeams.map(teamStats => this.renderTeam(teamStats))}
-          </div>
-          :
-          <p>You are a member of every team in this community!</p>
+        {
+          otherTeams.length > 0 ?
+            <div>
+              {otherTeams.map(teamStats => this.renderTeam(teamStats))}
+            </div>
+            :
+            <p>You are a member of every team in this community!</p>
         }
       </div >
     );

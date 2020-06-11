@@ -77,20 +77,20 @@ class OneTeamPage extends React.Component {
             ]}
           />
           <div className='col-12 col-sm-9 col-md-6 col-lg-5 col-xl-5' style={{ margin: 'auto' }}>
-            <div className="row">
+            <div className="row no-gutters">
               {teamLogo ?
                 <>
                   <div className="col-4 team-card-column">
                     <img className='z-depth-1 team-img' src={teamLogo.url} alt="" />
                   </div>
                   <div className="col-8 team-card-column">
-                    <div>
+                    <div style={{ paddingRight: "15px" }}>
                       {header}
                     </div>
                   </div>
                 </>
                 :
-                <div className="col-12 team-card-column">
+                <div className="col-12">
                   <center>
                     {header}
                   </center>

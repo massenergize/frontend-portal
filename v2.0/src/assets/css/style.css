@@ -9495,6 +9495,13 @@ button.as-link:hover {
     font-style: italic
 }
 
+.teams-search {
+  padding:8px 8px 8px 20px;
+  border: solid 2px #f3f3f3; 
+  border-radius:55px;
+  width: 100%;
+}
+
 .team-card {
     margin-bottom: 20px;
     height: auto;
