@@ -9544,11 +9544,11 @@ button.as-link:hover {
     border-radius: 20px
 }
 
-.info-section.household {
+.info-section.members {
     background: #f67b6130
 }
 
-.info-section.household p {
+.info-section.members p {
     font-size: 16px;
     line-height: 17px;
 }
