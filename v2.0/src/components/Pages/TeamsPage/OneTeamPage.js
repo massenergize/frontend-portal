@@ -143,24 +143,30 @@ class OneTeamPage extends React.Component {
 
           <div>
             <center>
-              {!this.inTeam(team.id) ?
-                <button
-                  className="btn btn-success round-me join-team-btn-big raise"
-                  onClick={() => {
-                    this.joinTeam(team);
-                  }}
-                >
-                  Join Team
+              {this.props.user ?
+                <>
+                  {!this.inTeam(team.id) ?
+                    <button
+                      className="btn btn-success round-me join-team-btn-big raise"
+                      onClick={() => {
+                        this.joinTeam(team);
+                      }}
+                    >
+                      Join Team
                   </button>
+                    :
+                    <button
+                      className="btn btn-success round-me leave-team-btn raise"
+                      onClick={() => {
+                        this.leaveTeam(team);
+                      }}
+                    >
+                      Leave Team
+                  </button>
+                  }
+                </>
                 :
-                <button
-                  className="btn btn-success round-me leave-team-btn raise"
-                  onClick={() => {
-                    this.leaveTeam(team);
-                  }}
-                >
-                  Leave Team
-                  </button>
+                <p>Sign in to join this team.</p>
               }
               <button
                 className="btn btn-success round-me contact-admin-btn-new raise"
@@ -169,7 +175,7 @@ class OneTeamPage extends React.Component {
                 }}
               >
                 Contact Admin
-                </button>
+              </button>
             </center>
           </div>
 

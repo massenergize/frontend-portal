@@ -24,7 +24,7 @@ class TeamsPage extends React.Component {
 
   handleSearch(event) {
     const query = event.target.value.trim();
-    if (query === "") {
+    if (query === "" || this.props.teamsPage.length === 0) {
       this.setState({ searching: false });
       return;
     }
@@ -89,10 +89,17 @@ class TeamsPage extends React.Component {
               </div>
             </center>
             <br />
-            {this.state.searching ?
-              this.renderTeams(this.state.searchedTeams)
+            {teamsStats.length > 0 ?
+              <>
+                {
+                  this.state.searching ?
+                    this.renderTeams(this.state.searchedTeams)
+                    :
+                    this.renderTeams(teamsStats)
+                }
+              </>
               :
-              this.renderTeams(teamsStats)
+              <p>There are no teams in this community yet. You can start one by clicking the button above!</p>
             }
           </div>
         </div>
@@ -102,55 +109,44 @@ class TeamsPage extends React.Component {
 
   renderTeams(teamsStats) {
 
-    if (this.state.searching) {
-      return (
-        <div>
-          <h3 className="teams-subheader">Search Results</h3>
-          {teamsStats.length > 0 ?
-            <div>
-              {teamsStats.map(teamStats => this.renderTeam(teamStats))}
-            </div>
-            :
-            <p>There are no teams which match your search.</p>
-          }
-        </div>
-      );
-    }
-
-    if (teamsStats.length === 0) {
-      return <p>There are no teams in this community yet. You can start one by clicking the "Start a Team" button above!</p>
-    }
-
     const [myTeams, otherTeams] = teamsStats.reduce(([pass, fail], team) => {
       return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
     }, [[], []]);
+    const userInNoTeams = this.props.user && !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(true));
+    const userInAllTeams = this.props.user && !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(false));
+
+    let myTeamsContent;
+    let otherTeamsContent;
+
+    if (userInNoTeams) {
+      myTeamsContent = <p>You have not joined any teams. Explore the teams in this community below.</p>;
+    } else if (myTeams.length > 0) {
+      myTeamsContent = <div>
+        {myTeams.map(teamStats => this.renderTeam(teamStats))}
+      </div>;
+    } else if (!this.props.user) {
+      myTeamsContent = <p>You must sign in to join teams.</p>;
+    } else {
+      myTeamsContent = <p>None of your teams match the search.</p>;
+    }
+
+    if (userInAllTeams) {
+      otherTeamsContent = <p>You are a member of every team in this community!</p>;
+    } else if (otherTeams.length > 0) {
+      otherTeamsContent = <div>
+        {otherTeams.map(teamStats => this.renderTeam(teamStats))}
+      </div>;
+    } else {
+      otherTeamsContent = <p>None of the other teams match the search.</p>;
+    }
 
     return (
       <div>
         <h3 className="teams-subheader">My Teams</h3>
-        {myTeams.length > 0 ?
-          <div>
-            {myTeams.map(teamStats => this.renderTeam(teamStats))}
-          </div>
-          :
-          <>{
-            this.props.user ?
-              <p>You have not joined any teams. Explore the teams in this community below.</p>
-              :
-              <p>You must sign in to view your teams.</p>
-          }
-          </>
-        }
+        {myTeamsContent}
         <hr></hr>
         <h3 className="teams-subheader">Other Teams</h3>
-        {
-          otherTeams.length > 0 ?
-            <div>
-              {otherTeams.map(teamStats => this.renderTeam(teamStats))}
-            </div>
-            :
-            <p>You are a member of every team in this community!</p>
-        }
+        {otherTeamsContent}
       </div >
     );
   }
@@ -178,7 +174,7 @@ class TeamsPage extends React.Component {
                     <TeamInfoBars teamStats={teamStats} />
                   </div>
                   <div className="col-4 team-card-column">
-                    <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
+                    <img className='z-depth-1 team-img' src={teamLogo.url} alt="" />
                   </div>
                 </>
                 :
@@ -208,7 +204,7 @@ class TeamsPage extends React.Component {
           <p className="team-card-description">{teamDescription}</p>
         </div>
         <div className="col-3 col-sm-12">
-          {!this.inTeam(teamObj.id) &&
+          {(this.props.user && !this.inTeam(teamObj.id)) &&
             <button
               onClick={() => {
                 this.joinTeam(teamObj);
