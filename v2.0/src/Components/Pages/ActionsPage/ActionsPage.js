@@ -27,10 +27,13 @@ class ActionsPage extends React.Component {
 			loaded: false,
 			openAddForm: null,
 			testimonialLink: null,
-			mirror_actions:[]
+      mirror_actions:[],
+      showTodoMsg:false
 		}
 		this.handleChange = this.handleChange.bind(this);
-	}
+  }
+  
+ 
 	render() {
 		
 		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
@@ -122,7 +125,9 @@ class ActionsPage extends React.Component {
 				HHFormOpen={this.state.openAddForm === action.id}
 				showTestimonialLink={this.state.testimonialLink === action.id}
 				closeHHForm={() => this.setState({ openAddForm: null })}
-				openHHForm={(aid) => this.setState({ openAddForm: aid })}
+        openHHForm={(aid) => this.setState({ openAddForm: aid })}
+        showTodoMsg = {this.state.showTodoMsg}
+        toggleShowTodoMsg={()=>{this.setState({showTodoMsg:false})}}
 			/>
 		});
 	}
@@ -180,12 +185,13 @@ class ActionsPage extends React.Component {
 			if (json.success) {
 				//set the state here
 				if (status === "TODO") {
-					this.props.reduxAddToTodo(json.data);
+          this.props.reduxAddToTodo(json.data);
+          this.setState({showTodoMsg:aid})
 				}
 				else if (status === "DONE") {
 					this.props.reduxAddToDone(json.data);
 					// this.addToImpact(json.data.action);
-					this.setState({ testimonialLink: aid });
+					this.setState({ testimonialLink: aid, showTodoMsg:false });
 				}
 			}
 		}).catch(error => {

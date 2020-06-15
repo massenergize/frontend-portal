@@ -13,21 +13,22 @@ class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: null
+      event: null,
+      loading: true
     }
-    this.loading = false;
   }
 
   fetch(id) {
-    this.loading = true;
     apiCall('events.info', { event_id: id }).then(json => {
       if (json.success) {
         this.setState({
           event: json.data,
+          loading: false
         })
       }
-    }).catch(err => this.setState({ error: err.message}))
-    this.loading = false;
+    }).catch(err => {
+      this.setState({ error: err.message, loading: false });
+    })
   }
 
   componentDidMount() {
@@ -39,7 +40,7 @@ class OneEventPage extends React.Component {
 
     const event = this.state.event;
 
-    if (this.loading) {
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
     if (!event) {
