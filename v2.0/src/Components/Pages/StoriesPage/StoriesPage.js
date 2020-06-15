@@ -252,7 +252,7 @@ class StoriesPage extends React.Component {
       var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12 mob-testy-card-fix";
 
       return (
-        <div className={cn} style={{ marginRight: 40 }}>
+        <div className={cn} style={{ marginRight: 40,marginBottom:25 }}>
           <div className="">
             <div className="testi-card">
               <div>
@@ -274,7 +274,7 @@ class StoriesPage extends React.Component {
                   <p style={{ marginBottom: 6,textTransform:"capitalize" }} className="make-me-dark">
                     <b>
                       {story.title.length > 30
-                        ? story.title.substring(0, 30) + "..."
+                        ? story.title.substring(0, 25) + "..."
                         : story.title}
                     </b>
                   </p>
