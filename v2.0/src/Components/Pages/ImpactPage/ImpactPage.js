@@ -13,6 +13,13 @@ import { Bar } from "react-chartjs-2";
 // Replace Households Engaged by Categories with Actions Completed by Category
 
 class ImpactPage extends React.Component {
+
+  shortenWords(word){
+    //shorten all two-worded strings except "home energy"
+    let stringArr = word.split(" "); 
+    if( word.toLowerCase() ==="home energy") return word; 
+    return stringArr[0];
+  }
   render() {
     if (!this.props.comData) {
       return (
@@ -106,11 +113,12 @@ class ImpactPage extends React.Component {
         graph2Categories.push(el.name);
         graph2Series[0].data.push(el.value);
         graph2Series[1].data.push(el.reported_value);
-        phoneImpact.labels.push(el.name);
+        phoneImpact.labels.push(this.shortenWords(el.name));
         phoneImpact.datasets[0].data.push(el.value);
         phoneImpact.datasets[1].data.push(el.reported_value);
       }
     });
+   
 
     return (
       <>
@@ -223,7 +231,7 @@ class ImpactPage extends React.Component {
                 </div>
 
                 <div
-                  style={{ width: "100%", height: "46vh" }}
+                  style={{ position:"relative", width: "100%", height: "46vh", padding:10, marginBottom:25 }}
                   className=" pc-vanish"
                 >
                   <Bar

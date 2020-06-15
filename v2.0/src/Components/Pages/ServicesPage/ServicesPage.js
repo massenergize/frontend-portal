@@ -90,7 +90,7 @@ class ServicesPage extends React.Component {
       this.state.mirror_services.length > 0
         ? this.state.mirror_services
         : this.findCommon();
-
+ 
     return (
       <>
         <div className="boxed_wrapper">
@@ -100,7 +100,7 @@ class ServicesPage extends React.Component {
               <div className="phone-vanish col-md-3 mob-vendor-white-cleaner">
                 <div
                   className="event-filter raise"
-                  style={{ marginTop: 90, padding: 45, borderRadius: 15 }}
+                  style={{ marginTop: 90, padding: "45px 32px", borderRadius: 15 }}
                 >
                   <h4>Filter by...</h4>
                   <Funnel
@@ -111,7 +111,7 @@ class ServicesPage extends React.Component {
                   />
                 </div>
               </div>
-              <div className="col-md-8 col-lg-8 col-sm-12 ">
+              <div className="col-md-9 col-lg-9 col-sm-12 ">
                 <div>
                   <h3 className="text-center">Service Providers</h3>
                   <h5 className="text-center" style={{ color: "darkgray" }}>
