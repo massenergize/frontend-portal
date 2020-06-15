@@ -83,7 +83,7 @@ class OneTeamPage extends React.Component {
                 <div className="team-card-column">
                   <div style={{ margin: '0 auto' }} >
                     <div style={{ display: 'flex' }}>
-                      <img className='z-depth-1 one-team-image' src={teamLogo.url} alt="" />
+                      <img className='one-team-image' src={teamLogo.url} alt="" />
                       <div className="team-card-column">{header}</div>
                     </div>
                   </div>
@@ -103,7 +103,6 @@ class OneTeamPage extends React.Component {
               </div>
             </div>
           </div>
-
 
           <br />
 
