@@ -94,7 +94,7 @@ class EventsPage extends React.Component {
 	renderSideBar() {
 		return (
 			<div className="blog-sidebar sec-padd">
-				<div className="phone-vanish event-filter raise mob-event-white-cleaner" style={{ padding: "45px 37px", borderRadius: 15 }}>
+				<div className="phone-vanish event-filter raise mob-event-white-cleaner" style={{ padding: "45px 33px", borderRadius: 15 }}>
 					<h4>Filter by...</h4>
 					<Funnel type="event" boxClick={this.handleBoxClick} search={this.handleSearch} foundNumber={this.state.mirror_events.length} />
 				</div>
