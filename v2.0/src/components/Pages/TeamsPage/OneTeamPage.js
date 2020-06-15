@@ -13,6 +13,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamInfoBars from "./TeamInfoBars";
+import TeamActionsGraph from "./TeamActionsGraph";
 
 class OneTeamPage extends React.Component {
 
@@ -130,10 +131,8 @@ class OneTeamPage extends React.Component {
               </div>
               <div className="col-sm-7 col-12">
                 <div className="one-team-content-section">
-                  <h5><b>Stats</b></h5>
-                  <p>
-                    {/* graphs will go here! */}
-                  </p>
+                  <h5><b>Actions Completed</b></h5>
+                  <TeamActionsGraph teamID={team.id} />
                 </div>
               </div>
             </div>
