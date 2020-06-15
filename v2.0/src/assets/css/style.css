@@ -9577,13 +9577,24 @@ button.as-link:hover {
     margin: 4px 0;
 }
 
-.team-img {
+.team-card-img {
     height: auto;
-    max-height: 160px;
+    max-height: 120px;
     display: block;
     margin: auto;
     object-fit: cover;
     border-radius: 10px
+}
+
+.one-team-image {
+  width: auto;
+  height: auto;
+  max-width: 40%;
+  max-height: 150px;
+  margin: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px
 }
 
 .one-team-content-section {

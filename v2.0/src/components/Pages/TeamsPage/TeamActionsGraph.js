@@ -1,5 +1,4 @@
 import React from 'react';
-import LoadingCircle from "../../Shared/LoadingCircle";
 import { Bar } from "react-chartjs-2";
 import { apiCall } from "../../../api/functions";
 

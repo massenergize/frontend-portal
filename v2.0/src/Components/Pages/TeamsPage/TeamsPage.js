@@ -174,7 +174,7 @@ class TeamsPage extends React.Component {
                     <TeamInfoBars teamStats={teamStats} />
                   </div>
                   <div className="col-4 team-card-column">
-                    <img className='z-depth-1 team-img' src={teamLogo.url} alt="" />
+                    <img className='z-depth-1 team-card-img' src={teamLogo.url} alt="" />
                   </div>
                 </>
                 :

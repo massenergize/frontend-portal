@@ -59,14 +59,14 @@ class OneTeamPage extends React.Component {
     )[0];
     const teamLogo = team.logo;
 
-    const header = <>
-      <h2 className="cool-font">{team.name}</h2>
-      <p>
+    const header = <div style={{ margin: '10px' }}>
+      <h2 className="cool-font" style={{ margin: '0' }}>{team.name}</h2>
+      <p style={{ margin: '0' }}>
         {team.description.length > 70 ?
           team.description.substring(0, 70) + "..."
           : team.description}
       </p>
-    </>;
+    </div >;
 
     return (
       <>
@@ -78,32 +78,32 @@ class OneTeamPage extends React.Component {
             ]}
           />
           <div className='col-12 col-sm-9 col-md-6 col-lg-5 col-xl-5' style={{ margin: 'auto' }}>
-            <div className="row no-gutters">
+            <div className="row">
               {teamLogo ?
-                <>
-                  <div className="col-4 team-card-column">
-                    <img className='z-depth-1 team-img' src={teamLogo.url} alt="" />
-                  </div>
-                  <div className="col-8 team-card-column">
-                    <div style={{ paddingRight: "15px" }}>
-                      {header}
+                <div className="team-card-column">
+                  <div style={{ margin: '0 auto' }} >
+                    <div style={{ display: 'flex' }}>
+                      <img className='z-depth-1 one-team-image' src={teamLogo.url} alt="" />
+                      <div className="team-card-column">{header}</div>
                     </div>
                   </div>
-                </>
+                </div>
                 :
-                <div className="col-12">
-                  <center>
+                <div className="team-card-column">
+                  <center className="team-card-content">
                     {header}
                   </center>
                 </div>
               }
             </div>
+
             <div className="row">
               <div className="team-card-column">
                 <TeamInfoBars teamStats={teamStats} />
               </div>
             </div>
           </div>
+
 
           <br />
 
