@@ -51,8 +51,10 @@ class HomePage extends React.Component {
 				},
 		)}
 
+    const topPadding = document.getElementsByTagName("nav")[0].offsetHeight + 1;
+
 		return (
-			<div className="boxed_wrapper" style={{ paddingTop: 91 }}>
+			<div className="boxed_wrapper" style={{ paddingTop: topPadding }}>
 				{welcomeImagesData ?
 
 					<WelcomeImages
