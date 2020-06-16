@@ -56,7 +56,7 @@ class TeamActionsGraph extends React.Component {
       labels: [],
       datasets: [
         {
-          label: 'Actions Completed',
+          label: 'Actions',
           data: [],
           backgroundColor: "rgba(251, 85, 33, 0.85)",
         }
