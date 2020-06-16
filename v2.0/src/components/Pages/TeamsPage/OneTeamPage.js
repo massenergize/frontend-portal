@@ -108,7 +108,7 @@ class OneTeamPage extends React.Component {
 
           <div className='col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10' style={{ margin: 'auto' }}>
             <div className="row">
-              <div className="col-sm-5 col-12">
+              <div className="col-md-5 col-12">
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section">
                     <h5><b>Description</b></h5>
@@ -128,7 +128,7 @@ class OneTeamPage extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-7 col-12">
+              <div className="col-md-7 col-12">
                 <div className="one-team-content-section">
                   <h5><b>Actions Completed</b></h5>
                   <TeamActionsGraph teamID={team.id} />

@@ -15,7 +15,7 @@ class TeamActionsGraph extends React.Component {
   fetch(id) {
     apiCall('graphs.actions.completed.byTeam', { team_id: id }).then(json => {
       if (json.success)
-        this.setState({ graphData: json.data, loading: false });
+        this.setState({ graphResponse: json.data, loading: false });
     }).catch(err => {
       this.setState({ error: err.message, loading: false });
     }).finally(() => this.setState({ loading: false }));
@@ -33,7 +33,7 @@ class TeamActionsGraph extends React.Component {
 
 
   componentDidMount() {
-    const { id } = this.props.teamID;
+    const id = this.props.teamID;
     this.fetch(id);
   }
 
@@ -45,6 +45,7 @@ class TeamActionsGraph extends React.Component {
 
   render() {
     const { loading, graphResponse } = this.state;
+
     if (loading)
       return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
@@ -55,15 +56,10 @@ class TeamActionsGraph extends React.Component {
       labels: [],
       datasets: [
         {
-          label: "Self Reported",
+          label: 'Actions Completed',
           data: [],
           backgroundColor: "rgba(251, 85, 33, 0.85)",
-        },
-        {
-          label: "Additional State or Partner Reported",
-          data: [],
-          backgroundColor: "#ff9a9a",
-        },
+        }
       ],
     };
 
@@ -71,7 +67,6 @@ class TeamActionsGraph extends React.Component {
       if (el) {
         actions.labels.push(this.shortenWords(el.name));
         actions.datasets[0].data.push(el.value);
-        actions.datasets[1].data.push(el.reported_value);
       }
     });
 
