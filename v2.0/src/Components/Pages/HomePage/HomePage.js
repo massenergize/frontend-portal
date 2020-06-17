@@ -1,10 +1,10 @@
-import React from 'react'
-import WelcomeImages from '../../Shared/WelcomeImages'
+import React from 'react';
+import WelcomeImages from '../../Shared/WelcomeImages';
 import Graphs from './Graphs';
 import IconBoxTable from './IconBoxTable';
 import Events from './EventHomepageSection';
-import { connect } from 'react-redux'
-import oops from './oops.png';
+import { connect } from 'react-redux';
+import Error404 from '../Errors/404.js';
 
 /*
 * The Home Page of the MassEnergize
@@ -14,17 +14,7 @@ class HomePage extends React.Component {
 	render() {
 
 		if (!this.props.pageData) {
-			return (
-				<div className="boxed_wrapper" style={{ paddingTop: 221, height: window.screen.height }}>
-					<center>
-						<img src={oops} alt="IMG" style={{ marginBottom:20,height: 200, width: 200 }} />
-						<h1 style={{ color: 'lightgray' }}>OOPS!</h1>
-
-						<h3 className='text-center' style={{ marginBottom:20,color: 'lightgray' }}> Sorry, the page you are looking for, could not be found. <br />Please try again later, or use the links on the navigation bar </h3>
-						<p className='text-center'><a href={"http://"+window.location.host} className="mass-domain-link "  >Find My Community</a> </p>
-					</center> 
-				</div>
-			)
+			return <Error404 />
 		}
 		const comGoals = this.props.pageData ? this.props.pageData.goal : null;
 		const communityDescription = this.props.pageData.description;

@@ -146,7 +146,7 @@ class NavBarBurger extends React.Component {
                 </Link>
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6">
                   <div style={styles.container}>
                     <MenuButton
                       open={this.state.menuOpen}
@@ -567,13 +567,17 @@ class Menu extends React.Component {
   }
 
   render() {
+
+    const navBar = document.getElementById("nav-bar");
+    const topPadding = navBar ? (navBar.offsetHeight) + 1 : 91;
+    
     const styles = {
       container: {
         position: !this.props.submenu ? "absolute" : "relative",
-        width: !this.props.submenu ? "50%" : "100%",
+        width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - 80px)"
+            ? "calc(100vh - " + topPadding + "px)"
             : "100%"
           : 0,
         display: "flex",
