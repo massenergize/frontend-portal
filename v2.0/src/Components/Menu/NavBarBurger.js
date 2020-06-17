@@ -108,6 +108,7 @@ class NavBarBurger extends React.Component {
             width: "100%",
             background: "white",
           }}
+          id="nav-bar"
         >
           <div className="container">
             <div className="row no-gutter width-100">
@@ -165,21 +166,21 @@ class NavBarBurger extends React.Component {
                   </Menu>
                 </div>
               ) : (
-                  <div className="col-lg-7 col-md-4 col-sm-6 col-6 menu-column">
-                    <div style={styles.container} className="push-to-right">
+                  <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+                    <div style={styles.container}>
                       <nav
-                        className="padding-0 menuzord d-flex ml-auto"
+                        className="padding-0 menuzord d-flex"
                         style={{
                           display: "inline-block",
-                          padding: "33px 0px 20px ",
+                          padding: "30px 0px",
+                          flexGrow: 1
                         }}
                         id="main_menu"
                       >
-                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row">
+                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto'}}>
                           {this.renderNavLinks(this.props.navLinks)}
                         </ul>
                       </nav>
-
                       {this.renderLogin()}
                     </div>
                   </div>
@@ -343,7 +344,7 @@ class NavBarBurger extends React.Component {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
           ref={ref}
-          className=" float-right new-sign-in raise cool-font"
+          className="new-sign-in raise cool-font"
           onClick={(e) => {
             e.preventDefault();
             props.onClick(e);
@@ -351,7 +352,7 @@ class NavBarBurger extends React.Component {
           style={{
             margin: "auto 0 auto 10px",
             fontSize: "12px",
-            fontWeight: 600,
+            fontWeight: 600
           }}
         >
           {/* <i className="fa fa-user" />{'\u00A0'} */}
