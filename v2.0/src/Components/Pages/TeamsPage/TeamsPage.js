@@ -11,6 +11,7 @@ import {
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
+import { Link } from "react-router-dom";
 
 class TeamsPage extends React.Component {
 
@@ -75,14 +76,11 @@ class TeamsPage extends React.Component {
                 >
                   Start a Team
               </button>
-                <button
-                  className="btn btn-success round-me comp-teams-btn raise"
-                  onClick={() => {
-                    window.location = `${this.props.links.teams + "/compare"}`;
-                  }}
-                >
-                  Compare Teams
-              </button>
+                <Link to={`${this.props.links.teams + "/compare"}`}>
+                  <button className="btn btn-success round-me comp-teams-btn raise">
+                    Compare Teams
+                  </button>
+                </Link>
               </div>
               <div className='col-12 col-sm-10'>
                 <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
@@ -156,36 +154,32 @@ class TeamsPage extends React.Component {
     const teamLogo = teamObj.logo;
 
     return (
-      <div className="team-card"
-        onClick={(e) => {
-          if (!(e.target.classList.contains("join-team-btn-small"))) {
-            window.location = `${this.props.links.teams + "/" + teamObj.id}`;
-          }
-        }} key={teamObj.id}>
-        <div className="row no-gutter flex" style={{ width: '100%', height: '100%' }}>
-          <div className="col-sm-3 team-card-column">
-            {this.renderTeamTitle(teamObj)}
-          </div>
-          <div className="col-sm-9">
-            <div className="row" style={{ margin: '0 auto' }}>
-              {teamLogo ?
-                <>
-                  <div className="col-8 team-card-column">
+      <div className="team-card" key={teamObj.id}>
+        <Link to={`${this.props.links.teams + "/" + teamObj.id} `} style={{ width: '100%' }}>
+          <div className="row no-gutter flex" style={{ width: '100%', height: '100%' }}>
+            <div className="col-sm-3 team-card-column">
+              {this.renderTeamTitle(teamObj)}
+            </div>
+            <div className="col-sm-9">
+              <div className="row" style={{ margin: '0 auto' }}>
+                {teamLogo ?
+                  <>
+                    <div className="col-8 team-card-column">
+                      <TeamInfoBars teamStats={teamStats} />
+                    </div>
+                    <div className="col-4 team-card-column">
+                      <img className='team-card-img' src={teamLogo.url} alt="" />
+                    </div>
+                  </>
+                  :
+                  <div className="team-card-column">
                     <TeamInfoBars teamStats={teamStats} />
                   </div>
-                  <div className="col-4 team-card-column">
-                    <img className='team-card-img' src={teamLogo.url} alt="" />
-                  </div>
-                </>
-                :
-                <div className="team-card-column">
-                  <TeamInfoBars teamStats={teamStats} />
-                </div>
-              }
+                }
+              </div>
             </div>
           </div>
-
-        </div>
+        </Link>
       </div >
     );
   }
@@ -206,7 +200,9 @@ class TeamsPage extends React.Component {
         <div className="col-3 col-sm-12">
           {(this.props.user && !this.inTeam(teamObj.id)) &&
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 this.joinTeam(teamObj);
               }}
               className="btn btn-success round-me join-team-btn-small raise"
