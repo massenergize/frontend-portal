@@ -152,10 +152,6 @@ img {
     display: inline-block;
 }
 
-.header-logo {
-    max-width: 150px;
-}
-
 button {
     border: none;
     outline: none;
@@ -1406,6 +1402,9 @@ textarea {
 .theme_menu .menu-column {
     padding-left: 0;
     position: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .theme_menu .menuzord {

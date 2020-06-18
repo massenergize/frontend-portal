@@ -169,6 +169,13 @@
   float:left;
 }
 
+.header-logo{
+  max-width: 150px;
+  max-height: 100px;
+  margin-left: 30px;
+  margin: 10px;
+}
+
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
@@ -229,12 +236,6 @@
     margin: 20px;
     max-height: 500px;
     overflow-y: scroll;
-  }
-  .header-logo{
-    max-width: 110px;
-    margin-left: 90px;
-    left:15%;
-    margin-top:24px;
   }
   .pc-vanish{
     display:none;
@@ -420,12 +421,6 @@
   .mob-icon-white-fix{
     margin-top:-107px !important;
     margin-bottom:-70px !important;
-  }
-  .header-logo{
-    max-width: 110px;
-    margin-left: -10px;
-    margin-top: 22px;
-    /* height: 40px; */
   }
   .phone-vanish{
     display:none !important;

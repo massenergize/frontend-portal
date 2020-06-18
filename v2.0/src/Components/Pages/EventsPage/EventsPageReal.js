@@ -156,41 +156,43 @@ class EventsPage extends React.Component {
 			return events.map(event => {
 				const dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 				const location = event.location;
-				return (
-					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
-						<div className="row no-gutter">
-							{/* renders the image */}
-							<div className="col-lg-4 col-12">
-								<figure className="raise-2" style={{ marginTop: 15, marginRight: 10, marginLeft: 20, borderRadius: 10, height: 190 }}>
-									<Link className="" to={this.props.links.events + "/" + event.id}><img className="force-height-event" style={{ width:'100%', height:'100%' ,objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url : notFound} alt="" /></Link>
-									{/* if the date has passed already the calender div should be all gray */}
-								</figure>
-							</div>
-							{/* renders the event text */}
-							<div className=" col-lg-8 col-12 ">
-								<div className="lower-content ">
-									<Link className="cool-font" to={this.props.links.events + "/" + event.id}><h4 className="cool-font"> {event.name} </h4></Link>
-									<div className="text">
-										<p>{event.featured_summary}</p>
-									</div>
-								</div>
-							</div>
-							{/* renders the  date time and location of the event */}
-							<div className="col-12">
-								<ul className="post-meta list_inline">
-									{dateString}
-									{location ?
-										<li>
-											&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
-                      {locationFormatJSX(location)}
-										</li>
-										:
-										null
-									}
-								</ul>
-							</div>
-						</div>
-					</div>
+        return (
+          <Link to={`${this.props.links.events + "/" + event.id}`}>
+					  <div className="item style-1 clearfix m-action-item" key={event.id}>
+					  	<div className="row no-gutter">
+					  		{/* renders the image */}
+					  		<div className="col-lg-4 col-12">
+					  			<figure className="raise-2" style={{ marginTop: 15, marginRight: 10,   marginLeft: 20, borderRadius: 10, height: 190 }}>
+					  				<Link className="" to={this.props.links.events + "/" + event.id}><img   className="force-height-event" style={{ width:'100%', height:'100%' ,  objectFit: 'cover', borderRadius: 10 }} src={event.image ? event.image.url :   notFound} alt="" /></Link>
+					  				{/* if the date has passed already the calender div should be all gray */}
+					  			</figure>
+					  		</div>
+					  		{/* renders the event text */}
+					  		<div className=" col-lg-8 col-12 ">
+					  			<div className="lower-content ">
+					  				<Link className="cool-font" to={this.props.links.events + "/" + event.id}><h4   className="cool-font"> {event.name} </h4></Link>
+					  				<div className="text">
+					  					<p>{event.featured_summary}</p>
+					  				</div>
+					  			</div>
+					  		</div>
+					  		{/* renders the  date time and location of the event */}
+					  		<div className="col-12">
+					  			<ul className="post-meta list_inline">
+					  				{dateString}
+					  				{location ?
+					  					<li>
+					  						&nbsp;|&nbsp;&nbsp;&nbsp;<i className="fa fa-map-marker" />
+                        {locationFormatJSX(location)}
+					  					</li>
+					  					:
+					  					null
+					  				}
+					  			</ul>
+					  		</div>
+					  	</div>
+            </div>
+          </Link>
 				);
 
 			});

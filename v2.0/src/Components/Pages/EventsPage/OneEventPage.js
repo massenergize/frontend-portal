@@ -28,7 +28,7 @@ class OneEventPage extends React.Component {
       }
     }).catch(err => {
       this.setState({ error: err.message, loading: false });
-    })
+    }).finally(() => this.setState({ loading: false }));
   }
 
   componentDidMount() {

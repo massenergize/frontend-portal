@@ -36,22 +36,24 @@ class Events extends React.Component {
         const location = event.location;
         const img = event.image.url ? event.image.url : defaultImg;
         return (
-          <article key={index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{ marginBottom: 10, marginTop: 10 }} onClick={() => { window.location = this.props.links.events + "/" + event.id }}>
-            <div className="z-depth-1" style={{ borderRadius: 15, height: 460 }}>
-              <img alt="IMG" src={img} className="home-events-img" />
-              <div style={{ padding: 11, paddingLeft: 17, height: 120 }}>
-                <h5 className="zero-margin-btm"><b>{ev_name}</b></h5>
-                <small style={{ fontSize: 11 }} className="text text-default text-sm-right">{event.featured_summary}</small>
-                {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
-                <br />
-                {location ?
-                  <small style={{ fontSize: 12 }} className="text text-default text-sm-right">{locationFormatJSX(location)}</small>
-                  :
-                  null
-                }
-                <p style={{ fontSize: 13 }} className="text text-success zero-margin-btm">{dateString}</p>
+          <article key={index.toString()} className="cursor home-events-hover col-md-4 col-lg-4 col-sm-6 col-xs-12" style={{ marginBottom: 10, marginTop: 10 }} >
+            <Link to={this.props.links.events + "/" + event.id} style={{color: 'black'}}>
+              <div className="z-depth-1" style={{ borderRadius: 15, height: 460 }}>
+                <img alt="IMG" src={img} className="home-events-img" />
+                <div style={{ padding: 11, paddingLeft: 17, height: 120 }}>
+                  <h5 className="zero-margin-btm"><b>{ev_name}</b></h5>
+                  <small style={{ fontSize: 12, color:'#999999' }} className="text text-default text-sm-right">{event.featured_summary}</small>
+                  {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
+                  <br />
+                  {location ?
+                    <small style={{ fontSize: 12 }} className="text text-default text-sm-right">{locationFormatJSX(location)}</small>
+                    :
+                    null
+                  }
+                  <p style={{ fontSize: 13 }} className="text text-success zero-margin-btm">{dateString}</p>
+                </div>
               </div>
-            </div>
+            </Link>
           </article>
         )
       })
