@@ -14,6 +14,7 @@ import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamInfoBars from "./TeamInfoBars";
 import TeamActionsGraph from "./TeamActionsGraph";
+import TeamMembersList from "./TeamMembersList";
 
 class OneTeamPage extends React.Component {
 
@@ -119,15 +120,9 @@ class OneTeamPage extends React.Component {
                 </div>
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section">
-                    <h5><b>Members</b></h5>
-                    <ul>
-                      {team.members.map(member =>
-                        <li key={member.id}>
-                          {member.preferred_name ?
-                            member.preferred_name
-                            : member.full_name}</li>
-                      )}
-                    </ul>
+                    <h5 style={{ margin: 0 }}><b>Members</b></h5>
+                    <p style={{ fontSize: "11px", textAlign: 'center' }}>You may have to scroll to see all members</p>
+                    <TeamMembersList teamID={team.id} />
                   </div>
                 </div>
               </div>

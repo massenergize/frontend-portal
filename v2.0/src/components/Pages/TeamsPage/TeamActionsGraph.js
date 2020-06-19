@@ -21,17 +21,6 @@ class TeamActionsGraph extends React.Component {
     }).finally(() => this.setState({ loading: false }));
   }
 
-  //gets actions for a COMMUNITY, to test the graph before new team actions endpoint was active
-  // fetch(id) {
-  //   apiCall('graphs.actions.completed', { community_id: 82 }).then(json => {
-  //     if (json.success)
-  //       this.setState({ graphResponse: json.data, loading: false });
-  //   }).catch(err => {
-  //     this.setState({ error: err.message, loading: false });
-  //   }).finally(() => this.setState({ loading: false }));
-  // }
-
-
   componentDidMount() {
     const id = this.props.teamID;
     this.fetch(id);
