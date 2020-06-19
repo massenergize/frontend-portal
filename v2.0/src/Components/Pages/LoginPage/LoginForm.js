@@ -102,6 +102,7 @@ class LoginFormBase extends React.Component {
 	};
 
 	onSubmit(event) {
+    event.preventDefault();
 		//firebase prop comes from the withFirebase higher component
 		this.props.firebase.auth().setPersistence(this.state.persistence).then(() => {
 			this.props.firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -113,7 +114,7 @@ class LoginFormBase extends React.Component {
 					this.setState({ error: err.message });
 				});
 		});
-		event.preventDefault();
+		
 	};
 
 	//KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD: 
