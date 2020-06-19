@@ -71,7 +71,7 @@ class OneActionPage extends React.Component {
       })
       .catch((err) => {
         this.setState({ error: err.message, loading: false });
-      });
+      }).finally(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -90,7 +90,8 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: `Action ${action.id}` },
+              // { name: `Action ${action.id}` },
+              { name: action ? action.title : "..." }
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>

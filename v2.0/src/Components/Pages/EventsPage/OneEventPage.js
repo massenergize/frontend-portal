@@ -28,7 +28,7 @@ class OneEventPage extends React.Component {
       }
     }).catch(err => {
       this.setState({ error: err.message, loading: false });
-    })
+    }).finally(() => this.setState({ loading: false }));
   }
 
   componentDidMount() {
@@ -53,7 +53,8 @@ class OneEventPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              { name: `Event ${event ? event.id : "..."}` },
+              // { name: `Event ${event ? event.id : "..."}` },
+              {name: event ? event.name: "..."}
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
