@@ -49,12 +49,14 @@ class TeamMembersList extends React.Component {
                 </li>
               )}
             </ul>
-            <p>
-              {numAnonymous} user{numAnonymous !== 1 && 's'} would prefer to remain anonymous.
-            </p>
+            {numAnonymous > 0 &&
+              <p>
+                {numAnonymous} user{numAnonymous !== 1 && 's'} would prefer to remain anonymous.
+              </p>
+            }
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
