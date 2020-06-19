@@ -61,7 +61,7 @@ class OneTeamPage extends React.Component {
 
     const header = <div style={{ margin: '10px' }}>
       <h2 className="cool-font" style={{ margin: '0' }}>{team.name}</h2>
-      <p style={{ margin: '0' }}>
+      <p style={{ margin: '0', fontSize: '16px' }}>
         {team.description.length > 70 ?
           team.description.substring(0, 70) + "..."
           : team.description}
@@ -120,11 +120,14 @@ class OneTeamPage extends React.Component {
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section">
                     <h5><b>Members</b></h5>
-                    <p>
-                      <ul>
-                        {team.members.map(member => <li>{member.preferred_name}</li>)}
-                      </ul>
-                    </p>
+                    <ul>
+                      {team.members.map(member =>
+                        <li key={member.id}>
+                          {member.preferred_name ?
+                            member.preferred_name
+                            : member.full_name}</li>
+                      )}
+                    </ul>
                   </div>
                 </div>
               </div>

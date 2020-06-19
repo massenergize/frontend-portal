@@ -9614,6 +9614,8 @@ button.as-link:hover {
 }
 
 .one-team-content-section ul{
+  color: #999;
+  font-size : 18px;
   margin: 0px;
   padding-left: 20px;
   list-style-type: circle;
