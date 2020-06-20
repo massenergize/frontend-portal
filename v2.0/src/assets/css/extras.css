@@ -1,6 +1,30 @@
 
-
-
+.c-tooltip-text-paper{
+  position: absolute;
+  padding:0px 9px; 
+  min-width: 200px;
+  max-width: 360px;
+  overflow-wrap: break-word;
+  background:white;
+  border: solid 1px white;
+  border-radius: 5px;
+}
+.triangle{
+  border:solid 15px red;
+  width:0px;
+  border-left-color: white;
+  border-right-color:white;
+  border-bottom-color:white;
+}
+.c-tooltip-msg-container{
+  padding-left: 10px;
+  display:none;
+  position:absolute; 
+}
+.c-tooltip-container:hover .c-tooltip-msg-container{
+  display: block;
+  transition: .4s ease-in-out;
+}
 
 
 .req-team-btn{
@@ -100,13 +124,13 @@
     background: #e8e6e6;
     margin:4px 9px;
 }
-.td{
+/* .td{
   position:absolute !important;
-}
+} */
 
-.todo-correction{
+/* .todo-correction{
   float:left;
-}
+} */
 
 .header-logo{
   max-width: 150px;
@@ -118,6 +142,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and ( min-width: 785px){
+  .btn-envelope{
+    margin-left: 16%;
+  }
   .more-hyperlink{
     font-size:15px !important;
     font-weight: 700;
@@ -132,17 +159,18 @@
   
   .mob-homepage-chart-h{height:250px !important}
   
-  .done-it-correction{
+  /* .done-it-correction{
     float: right;
     margin-top: -21px !important;
     right: 184px !important;
-  }
-  .done-it{
+
+  } */
+  /* .done-it{
     position: absolute !important;
     right:170px !important; 
     top:0px !important;
     margin-bottom: 30px;
-  }
+  } */
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
@@ -186,7 +214,9 @@
 @media only screen and ( max-width: 785px){
 
 
-
+  .btn-envelope{
+    margin-left:9% !important;
+  }
   .phone-big-title{
     font-size:1.6rem !important;
   }
@@ -213,23 +243,23 @@
     transition: .4s;
   }
   
-  .green-done-it-correction{
+  /* .green-done-it-correction{
     position: absolute !important; 
     right:30% !important;
 
-  }
-  .done-it{
+  } */
+  /* .done-it{
     position: absolute !important;
     right:80px !important; 
     top:0px !important;
     margin-bottom: 30px;
-  }
+  } */
 
-  .done-it-correction{
+  /* .done-it-correction{
     float: right;
     margin-top: -22px !important;
     right: 30% !important;
-  }
+  } */
   .mob-line-break{
     display:block;
   }
