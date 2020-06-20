@@ -26,7 +26,7 @@ class CustomTooltip extends Component {
             <span style={{ fontSize: 12 }}>{this.props.text}</span>
           </div>
         </div>
-        <div id="hoverable-item" style={{ display: "inline-block" }}>
+        <div id="hoverable-item" style={{ display: "inline-block", cursor:"pointer" }}>
           {this.props.children}
         </div>
       </div>
