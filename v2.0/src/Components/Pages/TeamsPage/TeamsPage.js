@@ -1,17 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import PageTitle from '../../Shared/PageTitle';
-import { apiCall } from "../../../api/functions";
-import {
-  reduxJoinTeam
-} from "../../../redux/actions/userActions";
-import {
-  reduxAddTeamMember
-} from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
 import { Link } from "react-router-dom";
+import JoinTeamModal from "./JoinTeamModal";
 
 class TeamsPage extends React.Component {
 
@@ -19,7 +13,8 @@ class TeamsPage extends React.Component {
     super(props);
     this.state = {
       searchedTeams: [],
-      searching: false
+      searching: false,
+      joiningTeamID: null
     }
   }
 
@@ -54,9 +49,17 @@ class TeamsPage extends React.Component {
         </div>
       );
     }
+
+    const joiningTeam = this.state.joiningTeam;
     return (
       <>
+
+        {joiningTeam &&
+          <JoinTeamModal team={joiningTeam} onJoin={this.onTeamJoin} onClose={this.onJoinModalClose} />
+        }
+
         <div className="boxed_wrapper">
+
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
@@ -203,7 +206,7 @@ class TeamsPage extends React.Component {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.joinTeam(teamObj);
+                this.setState({ joiningTeam: teamObj });
               }}
               className="btn btn-success round-me join-team-btn-small raise"
             >
@@ -226,47 +229,22 @@ class TeamsPage extends React.Component {
     );
   };
 
-  joinTeam = (team) => {
-    const body = {
-      user_id: this.props.user.id,
-      team_id: team.id,
-    };
-    apiCall("teams.join", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxJoinTeam(team);
-          this.props.reduxAddTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
-            },
-          });
-          this.forceUpdate();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  //TODO: any positive feedback for having joined team?
+  onTeamJoin = (joinedTeam) => {
+    this.setState({ joiningTeam: null });
+  }
+
+  onJoinModalClose = () => {
+    this.setState({ joiningTeam: null });
+  }
 
 }
+
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    todo: store.user.todo,
-    done: store.user.done,
     teamsPage: store.page.teamsPage,
     links: store.links,
   };
 };
-const mapDispatchToProps = {
-  reduxJoinTeam,
-  reduxAddTeamMember
-};
-export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);
+export default connect(mapStoreToProps, null)(TeamsPage);

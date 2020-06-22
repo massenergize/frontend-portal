@@ -9620,3 +9620,17 @@ button.as-link:hover {
   padding-left: 20px;
   list-style-type: circle;
 }
+
+.team-modal{
+  height: auto;
+  width: auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  margin: 0 auto;
+  z-index: 101;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

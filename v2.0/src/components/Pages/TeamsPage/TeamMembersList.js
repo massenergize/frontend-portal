@@ -11,9 +11,8 @@ class TeamMembersList extends React.Component {
     }
   }
 
-  //to be replaced with different endpoint that doesn't return sensitive data
   fetch(id) {
-    apiCall('teams.members', { team_id: id }).then(json => {
+    apiCall('teams.members.preferredNames', { team_id: id }).then(json => {
       if (json.success)
         this.setState({ membersResponse: json.data, loading: false });
     }).catch(err => {
