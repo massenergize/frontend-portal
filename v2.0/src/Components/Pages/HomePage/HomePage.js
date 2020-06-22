@@ -70,7 +70,8 @@ class HomePage extends React.Component {
 
 					<Graphs
 						graphs={graphs}
-						size={120}
+            size={120}
+            goals ={comGoals}
 					/>
 					: null
 				}

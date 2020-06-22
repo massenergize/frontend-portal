@@ -1,4 +1,27 @@
 
+.impact-graph-title{
+  font-size:.8rem !important;
+}
+.imp-desc-box{
+  padding:10px; 
+  border:solid 1px white; 
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.homepage-all-events-btn{
+  color:black;
+  margin-top:15px;
+  padding:10px 30px; 
+  text-align: center;
+    border:solid 1px #8dc63f;
+    width:70%;
+    outline: 0 !important;
+}
+.homepage-all-events-btn:hover{
+  color: white;
+  background-color: #8dc63f;
+  transition: .4s;
+}
 .c-tooltip-text-paper{
   position: absolute;
   padding:0px 9px; 
@@ -141,7 +164,11 @@
 
 /* ========= PC EXCLUSIVE ===== */
 
-@media only screen and ( min-width: 785px){
+@media only screen and ( min-width: 768px){
+
+  .home-page-graph-tweak{
+    margin-top: 20px !important;
+  }
   .btn-envelope{
     margin-left: 16%;
   }
@@ -158,6 +185,7 @@
   }
   
   .mob-homepage-chart-h{height:250px !important}
+  .imp-chart-h{height:250px !important}
   
   /* .done-it-correction{
     float: right;
@@ -207,13 +235,25 @@
   .pc-vanish{
     display:none;
   }
-}
-/* MOBILE PHONE AREA */
 
 
-@media only screen and ( max-width: 785px){
+  /* ------------------------------- TABLETS ----------------------------- */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .tablet-vanish{
+      display:none !important;
+    }
 
 
+
+   
+   
+  }}
+
+/* ------------------------ MOBILE PHONE AREA ------------------------- */
+@media only screen and ( max-width: 767px){
+  .home-page-graph-tweak{
+    margin:10px !important;
+  }
   .btn-envelope{
     margin-left:9% !important;
   }
@@ -270,7 +310,8 @@
     font-size:1rem !important;
   }
   .mob-helper{
-    margin-top:67px;
+    /* margin-top:67px; */
+    margin-top:7px !important;
   }
   .toast-bar{
     padding: 17px 30px ;
@@ -419,7 +460,7 @@
     padding-top:10px !important;
   }
   .mob-homepage-chart-h{
-    height:280px !important;
+    height:200px !important;
   }
   .mob-pad-0{
     padding:0px !important;
