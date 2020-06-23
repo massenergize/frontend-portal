@@ -46,7 +46,7 @@ class JoinTeamModal extends React.Component {
               <button
                 style={{ marginTop: '10px', marginBottom: '0px' }}
                 type="submit"
-                className="btn btn-success round-me join-team-btn-big raise"
+                className="btn btn-success round-me join-team-btn raise"
               >
                 Join Team
             </button>

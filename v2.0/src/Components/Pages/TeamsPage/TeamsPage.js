@@ -57,33 +57,17 @@ class TeamsPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
 
-            <PageTitle style={{ margin: "0 30px" }}>Teams in this Community</PageTitle>
+            <PageTitle style={{ margin: "0 30px" }}>Teams in {this.props.communityData.community.name}</PageTitle>
             <center>
               <p>
-                Teams are groups in a community that wants to collaborate. It
-                could be a school, congregation, a group of neighbors or friends, a sports team. Get
+                Teams are groups in a community who want to collaborate. They
+                can represent a school, congregation, group of neighbors, or sports team. Get
                 creative!
               </p>
-              <div>
-                <button
-                  className="btn btn-success round-me start-team-btn raise"
-                  onClick={() => {
-                    //TODO
-                  }}
-                >
-                  Start a Team
-              </button>
-                <Link to={`${this.props.links.teams + "/compare"}`}>
-                  <button className="btn btn-success round-me comp-teams-btn raise">
-                    Compare Teams
-                  </button>
-                </Link>
-              </div>
               <div className='col-12 col-sm-10'>
                 <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
               </div>
             </center>
-            <br />
             {teamsStats.length > 0 ?
               <>
                 {
@@ -94,9 +78,26 @@ class TeamsPage extends React.Component {
                 }
               </>
               :
-              <p>There are no teams in this community yet. You can start one by clicking the button above!</p>
+              <p>There are no teams in this community yet. You can start one by clicking the start team button at the bottom of the page!</p>
             }
           </div>
+          <br />
+          <center>
+            <button
+              className="btn btn-success round-me start-team-btn raise"
+              onClick={() => {
+                //TODO
+              }}
+            >
+              Start a Team
+              </button>
+            <Link to={`${this.props.links.teams + "/compare"}`}>
+              <button className="btn btn-success round-me comp-teams-btn raise">
+                Compare Teams
+              </button>
+            </Link>
+          </center>
+          <br />
         </div>
       </>
     );
@@ -104,51 +105,66 @@ class TeamsPage extends React.Component {
 
   renderTeams(teamsStats) {
 
-    const [myTeams, otherTeams] = teamsStats.reduce(([pass, fail], team) => {
-      return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
-    }, [[], []]);
-    const userInNoTeams = this.props.user && !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(true));
-    const userInAllTeams = this.props.user && !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(false));
+    if (!this.props.user) {
+      return (
+        <>
+          <p>Click on a team below to join it!</p>
+          <hr></hr>
+          {teamsStats.length > 0 ?
+            teamsStats.map(teamStats => this.renderTeam(teamStats))
+            :
+            <p>None of the teams match your search.</p>
+          }
+        </>
+      )
 
-    let myTeamsContent;
-    let otherTeamsContent;
-
-    if (userInNoTeams) {
-      myTeamsContent = <p>You have not joined any teams. Explore the teams in this community below.</p>;
-    } else if (myTeams.length > 0) {
-      myTeamsContent = <div>
-        {myTeams.map(teamStats => this.renderTeam(teamStats))}
-      </div>;
-    } else if (!this.props.user) {
-      myTeamsContent = <p>You must sign in to join teams.</p>;
     } else {
-      myTeamsContent = <p>None of your teams match the search.</p>;
-    }
 
-    if (userInAllTeams) {
-      otherTeamsContent = <p>You are a member of every team in this community!</p>;
-    } else if (otherTeams.length > 0) {
-      otherTeamsContent = <div>
-        {otherTeams.map(teamStats => this.renderTeam(teamStats))}
-      </div>;
-    } else {
-      otherTeamsContent = <p>None of the other teams match the search.</p>;
-    }
+      const [myTeams, otherTeams] = teamsStats.reduce(([pass, fail], team) => {
+        return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
+      }, [[], []]);
+      const userInNoTeams = !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(true));
+      const userInAllTeams = !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(false));
 
-    return (
-      <div>
-        <h3 className="teams-subheader">My Teams</h3>
-        {myTeamsContent}
-        <hr></hr>
-        <h3 className="teams-subheader">Other Teams</h3>
-        {otherTeamsContent}
-      </div >
-    );
+      let myTeamsContent;
+      let otherTeamsContent;
+
+      if (userInNoTeams) {
+        myTeamsContent = <p>You have not joined any teams. Explore the teams in this community below.</p>;
+      } else if (myTeams.length > 0) {
+        myTeamsContent = <div>
+          {myTeams.map(teamStats => this.renderTeam(teamStats))}
+        </div>;
+      } else {
+        myTeamsContent = <p>None of your teams match the search.</p>;
+      }
+
+      if (userInAllTeams) {
+        otherTeamsContent = <p>You are a member of every team in this community!</p>;
+      } else if (otherTeams.length > 0) {
+        otherTeamsContent = <div>
+          {otherTeams.map(teamStats => this.renderTeam(teamStats))}
+        </div>;
+      } else {
+        otherTeamsContent = <p>None of the other teams match the search.</p>;
+      }
+
+      return (
+        <div>
+          <h3 className="teams-subheader">My Teams</h3>
+          {myTeamsContent}
+          <hr></hr>
+          <h3 className="teams-subheader">Other Teams</h3>
+          {otherTeamsContent}
+        </div >
+      );
+    }
   }
 
   renderTeam(teamStats) {
     const teamObj = teamStats.team;
     const teamLogo = teamObj.logo;
+
     //to be replaced by a team tagline, inherently limited to some amount of characters
     const teamDescription = teamObj.description.length > 70 ?
       teamObj.description.substring(0, 70) + "..."
@@ -199,15 +215,6 @@ class TeamsPage extends React.Component {
     );
   };
 
-  //TODO: any positive feedback for joined team?
-  onTeamJoin = (joinedTeam) => {
-    this.setState({ joiningTeam: null });
-  }
-
-  onJoinModalClose = () => {
-    this.setState({ joiningTeam: null });
-  }
-
 }
 
 const mapStoreToProps = (store) => {
@@ -215,6 +222,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     teamsPage: store.page.teamsPage,
     links: store.links,
+    communityData: store.page.homePage
   };
 };
 export default connect(mapStoreToProps, null)(TeamsPage);

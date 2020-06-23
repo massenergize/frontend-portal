@@ -55,15 +55,6 @@ class OneTeamPage extends React.Component {
     )[0];
     const teamLogo = team.logo;
 
-    const header = <div style={{ margin: '10px' }}>
-      <h2 className="cool-font" style={{ margin: '0' }}>{team.name}</h2>
-      <p style={{ margin: '0', fontSize: '16px' }}>
-        {team.description.length > 70 ?
-          team.description.substring(0, 70) + "..."
-          : team.description}
-      </p>
-    </div >;
-
     return (
       <>
 
@@ -81,31 +72,56 @@ class OneTeamPage extends React.Component {
               { name: team.name },
             ]}
           />
-          <div className='col-12 col-sm-9 col-md-6 col-lg-5 col-xl-5' style={{ margin: 'auto' }}>
-            <div className="row">
-              {teamLogo ?
+          <div className='col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6' style={{ margin: 'auto' }}>
+
+            <div className="team-card-column" style={{ margin: '0 auto', display: 'flex' }}>
+              {teamLogo &&
                 <div className="team-card-column">
-                  <div style={{ margin: '0 auto' }} >
-                    <div style={{ display: 'flex' }}>
-                      <img className='one-team-image' src={teamLogo.url} alt="" />
-                      <div className="team-card-column">{header}</div>
-                    </div>
+                  <img className='one-team-image team-card-content' src={teamLogo.url} alt="" />
+                </div>}
+              <div className="team-card-column">
+                <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
+              </div>
+              <div className="team-card-column">
+                {!this.inTeam(team.id) ?
+                  <button
+                    style={{ margin: 'auto' }}
+                    className="btn btn-success round-me join-team-btn raise"
+                    onClick={() => {
+                      this.setState({ modalOpen: true });
+                    }}
+                  >
+                    Join Team
+                </button>
+                  :
+                  <div className="team-card-content">
+                    <p
+                      style={{ color: '#8dc63f', textAlign: 'center', margin: 0 }}>
+                      &#10003; in this team
+                  </p>
                   </div>
-                </div>
-                :
-                <div className="team-card-column">
-                  <center className="team-card-content">
-                    {header}
-                  </center>
-                </div>
-              }
+                }
+              </div>
+
             </div>
 
             <div className="row">
               <div className="team-card-column">
+                <p className="team-card-content" style={{ textAlign: 'center', margin: '5px 0' }}>
+                  {team.description.length > 70 ?
+                    team.description.substring(0, 70) + "..."
+                    : team.description}
+                </p>
+              </div>
+            </div>
+
+            <div className='row'>
+              <div className="team-card-column">
                 <TeamInfoBars teamStats={teamStats} />
               </div>
             </div>
+
+
           </div>
 
           <br />
@@ -142,31 +158,6 @@ class OneTeamPage extends React.Component {
 
           <div>
             <center>
-              {this.props.user ?
-                <>
-                  {!this.inTeam(team.id) ?
-                    <button
-                      className="btn btn-success round-me join-team-btn-big raise"
-                      onClick={() => {
-                        this.setState({ modalOpen: true });
-                      }}
-                    >
-                      Join Team
-                  </button>
-                    :
-                    <button
-                      className="btn btn-success round-me leave-team-btn raise"
-                      onClick={() => {
-                        this.setState({ modalOpen: true });
-                      }}
-                    >
-                      Leave Team
-                  </button>
-                  }
-                </>
-                :
-                <p>Sign in to join this team.</p>
-              }
               <button
                 className="btn btn-success round-me contact-admin-btn-new raise"
                 onClick={() => {
@@ -176,6 +167,18 @@ class OneTeamPage extends React.Component {
                 Contact Admin
               </button>
             </center>
+            {this.props.user && this.inTeam(team.id) &&
+              <center>
+                <button
+                  className="btn btn-success round-me leave-team-btn raise"
+                  onClick={() => {
+                    this.setState({ modalOpen: true });
+                  }}
+                >
+                  Leave Team
+                  </button>
+              </center>
+            }
           </div>
 
           <br />

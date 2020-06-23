@@ -14,20 +14,14 @@
   margin-bottom: 17px;
 }
 
-.join-team-btn-small {
+.join-team-btn {
   background:#8dc63f; 
   border-width: 0px !important;
-  padding: 8px 18px;
+  padding: 4px 15px;
   font-size: 17px;
   font-style: italic;
 }
 
-.join-team-btn-big {
-    background:#8dc63f; 
-    border-width: 0px !important;
-    padding: 5px 10px; 
-    margin: 5px;
-}
 
 .leave-team-btn {
     background: darkgray; 
@@ -39,7 +33,7 @@
 .contact-admin-btn-new {
     background: #f67b61; 
     border-width: 0px !important;
-    padding: 5px 10px; 
+    padding: 8px 12px; 
     margin: 5px;
 }
 
@@ -63,12 +57,7 @@
     transition: .15s ease-in-out;
 }
 
-.join-team-btn-small:hover{
-  background:#517325; 
-  transition: .15s ease-in-out;
-}
-
-.join-team-btn-big:hover{
+.join-team-btn:hover{
   background:#517325; 
   transition: .15s ease-in-out;
 }
