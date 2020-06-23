@@ -9,7 +9,7 @@ import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinTeamModal from "./JoinTeamModal";
 import LeaveTeamModal from "./LeaveTeamModal"
-
+import ContactAdminModal from "./ContactAdminModal";
 class OneTeamPage extends React.Component {
 
   constructor(props) {
@@ -17,7 +17,8 @@ class OneTeamPage extends React.Component {
     this.state = {
       team: null,
       loading: true,
-      modalOpen: false
+      teamModalOpen: false,
+      contactModalOpen: false
     }
   }
 
@@ -58,11 +59,15 @@ class OneTeamPage extends React.Component {
     return (
       <>
 
-        {this.state.modalOpen && (
+        {this.state.contactModalOpen && (
+          <ContactAdminModal team={team} onClose={this.onContactModalClose} />
+        )}
+
+        {this.state.teamModalOpen && (
           this.inTeam(team.id) ?
-            <LeaveTeamModal team={team} onLeave={this.onTeamLeave} onClose={this.onLeaveModalClose} />
+            <LeaveTeamModal team={team} onLeave={this.onTeamJoinOrLeave} onClose={this.onTeamModalClose} />
             :
-            <JoinTeamModal team={team} onJoin={this.onTeamJoin} onClose={this.onJoinModalClose} />
+            <JoinTeamModal team={team} onJoin={this.onTeamJoinOrLeave} onClose={this.onTeamModalClose} />
         )}
 
         <div className="boxed_wrapper">
@@ -88,7 +93,7 @@ class OneTeamPage extends React.Component {
                     style={{ margin: 'auto' }}
                     className="btn btn-success round-me join-team-btn raise"
                     onClick={() => {
-                      this.setState({ modalOpen: true });
+                      this.setState({ teamModalOpen: true });
                     }}
                   >
                     Join Team
@@ -161,7 +166,7 @@ class OneTeamPage extends React.Component {
               <button
                 className="btn btn-success round-me contact-admin-btn-new raise"
                 onClick={() => {
-                  //TODO
+                  this.setState({ contactModalOpen: true });
                 }}
               >
                 Contact Admin
@@ -172,7 +177,7 @@ class OneTeamPage extends React.Component {
                 <button
                   className="btn btn-success round-me leave-team-btn raise"
                   onClick={() => {
-                    this.setState({ modalOpen: true });
+                    this.setState({ teamModalOpen: true });
                   }}
                 >
                   Leave Team
@@ -199,23 +204,18 @@ class OneTeamPage extends React.Component {
     );
   };
 
-  //TODO: any positive feedback for having joined team?
-  onTeamJoin = (joinedTeam) => {
-    this.setState({ modalOpen: false, remountForcer: Math.random() });
+  onTeamJoinOrLeave = () => {
+    this.setState({ teamModalOpen: false, remountForcer: Math.random() });
   }
 
-  onJoinModalClose = () => {
-    this.setState({ modalOpen: false });
+  onTeamModalClose = () => {
+    this.setState({ teamModalOpen: false });
   }
 
-  //TODO: any feedback for having left team?
-  onTeamLeave = (leftTeam) => {
-    this.setState({ modalOpen: false, remountForcer: Math.random() });
+  onContactModalClose = () => {
+    this.setState({ contactModalOpen: false });
   }
 
-  onLeaveModalClose = () => {
-    this.setState({ modalOpen: false });
-  }
 
 }
 

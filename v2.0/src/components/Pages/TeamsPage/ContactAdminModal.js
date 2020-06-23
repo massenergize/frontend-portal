@@ -1,0 +1,84 @@
+import React from "react";
+import { apiCall } from "../../../api/functions";
+import { connect } from "react-redux";
+
+class ContactAdminModal extends React.Component {
+
+  render() {
+
+    return (
+      <>
+        <div style={{ width: '100%', height: "100%" }}>
+          <div className="team-modal">
+            <h4 onClick={() => { this.props.onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
+            <h4 style={{ paddingRight: '60px' }}>Contact admin of <b>{this.props.team.name}</b></h4>
+            <br />
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              this.sendMessage();
+            }
+            }>
+
+              <div>
+                <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{marginBottom: "10px"}}/>
+                <textarea id="contact-textarea" name="msg" className="form-control" rows={7} placeholder="Message..." required>
+                </textarea>
+                <button
+                  style={{ marginTop: '10px', marginBottom: '0px' }}
+                  type="submit"
+                  className="btn btn-success round-me contact-admin-btn-new raise"
+                >
+                  Send
+                </button>
+
+                <br />
+
+                <span id="sender-spinner" style={{ display: 'none' }} className="text text-success">sending <i className="fa fa-spinner fa-spin" /></span>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <div className="desc-modal-container">
+        </div>
+      </>
+    );
+  }
+
+  //Taken directly from old teams page
+  //Have to go through it and modify to suit our purposes and add callback props
+
+  // sendMessage = () => {
+  //   var spinner = document.getElementById("sender-spinner");
+  //   var msg = this.state.contact_content.msg.trim();
+  //   var title = this.state.contact_content.title.trim();
+  //   const body = {
+  //     team_id: this.state.current_team_id,
+  //     title: title,
+  //     message: msg,
+  //   };
+  //   const me = this;
+  //   if (msg !== "" && title !== "") {
+  //     spinner.style.display = "block";
+  //     apiCall(`teams.contactAdmin`, body).then((json) => {
+  //       document.getElementById("contact-textarea").value = "";
+  //       document.getElementById("contact-title").value = "";
+  //       spinner.style.display = "none";
+  //       me.toggleContact();
+  //       this.setState({ alert: true });
+  //     });
+  //   } else {
+  //     alert("Please add a message & title!");
+  //   }
+  // };
+
+}
+
+const mapStoreToProps = (store) => {
+  return {
+    user: store.user.info
+  };
+};
+
+export default connect(mapStoreToProps, null)(ContactAdminModal);
