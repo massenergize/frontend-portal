@@ -5,7 +5,6 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
 import { Link } from "react-router-dom";
-import JoinTeamModal from "./JoinTeamModal";
 
 class TeamsPage extends React.Component {
 
@@ -50,13 +49,8 @@ class TeamsPage extends React.Component {
       );
     }
 
-    const joiningTeam = this.state.joiningTeam;
     return (
       <>
-
-        {joiningTeam &&
-          <JoinTeamModal team={joiningTeam} onJoin={this.onTeamJoin} onClose={this.onJoinModalClose} />
-        }
 
         <div className="boxed_wrapper">
 
@@ -155,13 +149,20 @@ class TeamsPage extends React.Component {
   renderTeam(teamStats) {
     const teamObj = teamStats.team;
     const teamLogo = teamObj.logo;
+    //to be replaced by a team tagline, inherently limited to some amount of characters
+    const teamDescription = teamObj.description.length > 70 ?
+      teamObj.description.substring(0, 70) + "..."
+      : teamObj.description;
 
     return (
       <div className="team-card" key={teamObj.id}>
         <Link to={`${this.props.links.teams + "/" + teamObj.id} `} style={{ width: '100%' }}>
           <div className="row no-gutter flex" style={{ width: '100%', height: '100%' }}>
             <div className="col-sm-3 team-card-column">
-              {this.renderTeamTitle(teamObj)}
+              <div className="team-card-content">
+                <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
+                <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamDescription}</p>
+              </div>
             </div>
             <div className="col-sm-9">
               <div className="row" style={{ margin: '0 auto' }}>
@@ -184,37 +185,6 @@ class TeamsPage extends React.Component {
           </div>
         </Link>
       </div >
-    );
-  }
-
-  renderTeamTitle(teamObj) {
-
-    //to be replaced by a team tagline, inherently limited to some amount of characters
-    const teamDescription = teamObj.description.length > 70 ?
-      teamObj.description.substring(0, 70) + "..."
-      : teamObj.description;
-
-    return (
-      <div className="row team-card-content" style={{ marginLeft: 0, marginRight: 0 }}>
-        <div className="col-9 col-sm-12">
-          <h4 className="team-card-title"><b>{teamObj.name}</b></h4>
-          <p className="team-card-description">{teamDescription}</p>
-        </div>
-        <div className="col-3 col-sm-12">
-          {(this.props.user && !this.inTeam(teamObj.id)) &&
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.setState({ joiningTeam: teamObj });
-              }}
-              className="btn btn-success round-me join-team-btn-small raise"
-            >
-              Join
-            </button>
-          }
-        </div>
-      </div>
     );
   }
 

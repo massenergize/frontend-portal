@@ -93,8 +93,8 @@ class JoinTeamModal extends React.Component {
                 this.props.todo && this.props.done
                   ? this.props.todo.length + this.props.done.length
                   : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
+              actions_completed: this.props.done ? this.props.done.length : 0,
+              actions_todo: this.props.todo ? this.props.todo.length : 0,
             },
           });
           this.props.onJoin(team);
