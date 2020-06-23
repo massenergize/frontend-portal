@@ -35,20 +35,20 @@ class JoinTeamModal extends React.Component {
             }>
               {preferredName ?
                 <p>
-                  You will join this team with the display name <i>{preferredName}</i>.
-              </p>
+                  You will join this team with the preferred name <i>{preferredName}</i>
+                </p>
                 :
                 <>
-                  <p>You must enter a display name to join the team:</p>
+                  <p>You must enter a preferred name to join the team.</p>
                   <input className="form-control" type="text" name="preferred-name" id="preferred-name" placeholder="Preferred name..." required />
                 </>
               }
               <button
                 style={{ marginTop: '10px', marginBottom: '0px' }}
                 type="submit"
-                className="btn btn-success round-me start-team-btn raise"
+                className="btn btn-success round-me join-team-btn-big raise"
               >
-                Join
+                Join Team
             </button>
             </form>
           </div>

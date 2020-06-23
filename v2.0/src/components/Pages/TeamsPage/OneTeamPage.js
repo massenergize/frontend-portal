@@ -1,13 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux";
-import {
-  reduxJoinTeam,
-  reduxLeaveTeam,
-} from "../../../redux/actions/userActions";
-import {
-  reduxAddTeamMember,
-  reduxRemoveTeamMember,
-} from "../../../redux/actions/pageActions";
 import Error404 from "./../Errors/404";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -15,6 +7,8 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamInfoBars from "./TeamInfoBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
+import JoinTeamModal from "./JoinTeamModal";
+import LeaveTeamModal from "./LeaveTeamModal"
 
 class OneTeamPage extends React.Component {
 
@@ -22,7 +16,8 @@ class OneTeamPage extends React.Component {
     super(props);
     this.state = {
       team: null,
-      loading: true
+      loading: true,
+      modalOpen: false
     }
   }
 
@@ -71,6 +66,14 @@ class OneTeamPage extends React.Component {
 
     return (
       <>
+
+        {this.state.modalOpen && (
+          this.inTeam(team.id) ?
+            <LeaveTeamModal team={team} onLeave={this.onTeamLeave} onClose={this.onLeaveModalClose} />
+            :
+            <JoinTeamModal team={team} onJoin={this.onTeamJoin} onClose={this.onJoinModalClose} />
+        )}
+
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
@@ -122,14 +125,14 @@ class OneTeamPage extends React.Component {
                   <div className="one-team-content-section">
                     <h5 style={{ margin: 0 }}><b>Members</b></h5>
                     <p style={{ fontSize: "11px", textAlign: 'center' }}>You may have to scroll to see all members</p>
-                    <TeamMembersList teamID={team.id} />
+                    <TeamMembersList key={this.state.remountForcer} teamID={team.id} />
                   </div>
                 </div>
               </div>
               <div className="col-md-7 col-12">
                 <div className="one-team-content-section">
                   <h5><b>Actions Completed</b></h5>
-                  <TeamActionsGraph teamID={team.id} />
+                  <TeamActionsGraph key={this.state.remountForcer} teamID={team.id} />
                 </div>
               </div>
             </div>
@@ -145,7 +148,7 @@ class OneTeamPage extends React.Component {
                     <button
                       className="btn btn-success round-me join-team-btn-big raise"
                       onClick={() => {
-                        this.joinTeam(team);
+                        this.setState({ modalOpen: true });
                       }}
                     >
                       Join Team
@@ -154,7 +157,7 @@ class OneTeamPage extends React.Component {
                     <button
                       className="btn btn-success round-me leave-team-btn raise"
                       onClick={() => {
-                        this.leaveTeam(team);
+                        this.setState({ modalOpen: true });
                       }}
                     >
                       Leave Team
@@ -193,79 +196,31 @@ class OneTeamPage extends React.Component {
     );
   };
 
-  joinTeam = (team) => {
-    const body = {
-      user_id: this.props.user.id,
-      team_id: team.id,
-    };
-    apiCall("teams.join", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxJoinTeam(team);
-          this.props.reduxAddTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
-            },
-          });
-          this.forceUpdate();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  //TODO: any positive feedback for having joined team?
+  onTeamJoin = (joinedTeam) => {
+    this.setState({ modalOpen: false, remountForcer: Math.random() });
+  }
 
-  leaveTeam = (team) => {
-    const body = {
-      user_id: this.props.user.id,
-      team_id: team.id,
-    };
-    apiCall(`teams.leave`, body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxLeaveTeam(team);
-          this.props.reduxRemoveTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
-            },
-          });
-          this.forceUpdate();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  onJoinModalClose = () => {
+    this.setState({ modalOpen: false });
+  }
+
+  //TODO: any feedback for having left team?
+  onTeamLeave = (leftTeam) => {
+    this.setState({ modalOpen: false, remountForcer: Math.random() });
+  }
+
+  onLeaveModalClose = () => {
+    this.setState({ modalOpen: false });
+  }
 
 }
 
 const mapStoreToProps = store => {
   return {
     user: store.user.info,
-    todo: store.user.todo,
-    done: store.user.done,
     links: store.links,
     teamsPage: store.page.teamsPage,
   };
 };
-const mapDispatchToProps = {
-  reduxJoinTeam,
-  reduxLeaveTeam,
-  reduxAddTeamMember,
-  reduxRemoveTeamMember,
-};
-export default connect(mapStoreToProps, mapDispatchToProps)(OneTeamPage);
+export default connect(mapStoreToProps, null)(OneTeamPage);

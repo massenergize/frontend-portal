@@ -229,7 +229,7 @@ class TeamsPage extends React.Component {
     );
   };
 
-  //TODO: any positive feedback for having joined team?
+  //TODO: any positive feedback for joined team?
   onTeamJoin = (joinedTeam) => {
     this.setState({ joiningTeam: null });
   }

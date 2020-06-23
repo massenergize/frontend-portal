@@ -33,6 +33,9 @@ class TeamMembersList extends React.Component {
 
     if (!membersResponse)
       return <p>The members of this team could not be loaded.</p >;
+    
+    if (membersResponse.length === 0)
+      return <p>There are no members of this team.</p>;
 
     const preferredNameMembers = membersResponse.filter(member => member.preferred_name);
     const numAnonymous = membersResponse.filter(member => !member.preferred_name).length;
