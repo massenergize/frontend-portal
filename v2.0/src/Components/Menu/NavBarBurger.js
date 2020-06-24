@@ -7,6 +7,12 @@ import SignOutLink from "../Shared/SignOutLink";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
 
+
+function getHeight() {
+  const navBar = document.getElementById("nav-bar");
+  return navBar ? (navBar.offsetHeight) + 1 : 91;
+}
+
 class NavBarBurger extends React.Component {
   constructor(props) {
     super(props);
@@ -194,15 +200,11 @@ class NavBarBurger extends React.Component {
             </div>
           </div>
         </nav>
-        <div style={{ height: this.getHeight() }}></div>
+        <div style={{ height: getHeight() }}></div>
       </div >
     );
   }
 
-  getHeight = () => {
-    const navBar = document.getElementById("nav-bar");
-    return navBar ? (navBar.offsetHeight) + 1 : 91;
-  }
   // NORMAL STATE
   /* renderNavLinks(navLinks) {
     if (!navLinks) {
@@ -586,7 +588,7 @@ class Menu extends React.Component {
         width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - " + this.getHeight() + "px)"
+            ? "calc(100vh - " + getHeight() + "px)"
             : "100%"
           : 0,
         display: "flex",
