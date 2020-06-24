@@ -79,18 +79,27 @@ class OneTeamPage extends React.Component {
           />
           <div className='col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6' style={{ margin: 'auto' }}>
 
-            <div className="team-card-column" style={{ margin: '0 auto', display: 'flex' }}>
-              {teamLogo &&
-                <div className="team-card-column">
-                  <img className='one-team-image team-card-content' src={teamLogo.url} alt="" />
-                </div>}
-              <div className="team-card-column">
-                <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
+            <div className="team-card-column" style={{ margin: '0 auto' }}>
+              <div className="col-9" style={{ display: 'flex' }}>
+                {teamLogo ?
+                  <>
+                    <div className="team-card-column col-4">
+                      <img className='one-team-image team-card-content' src={teamLogo.url} alt="" />
+                    </div>
+                    <div className="team-card-column col-8">
+                      <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
+                    </div>
+                  </>
+                  :
+                  <div className="team-card-column">
+                    <h2 className="cool-font team-card-content">{team.name}</h2>
+                  </div>
+                }
               </div>
-              <div className="team-card-column">
+              <div className="team-card-column col-3">
                 {!this.inTeam(team.id) ?
                   <button
-                    style={{ margin: 'auto' }}
+                    
                     className="btn btn-success round-me join-team-btn raise"
                     onClick={() => {
                       this.setState({ teamModalOpen: true });
@@ -112,7 +121,7 @@ class OneTeamPage extends React.Component {
 
             <div className="row">
               <div className="team-card-column">
-                <p className="team-card-content" style={{ textAlign: 'center', margin: '5px 0' }}>
+                <p className="team-card-content" style={{ textAlign: 'center', margin: '5px auto' }}>
                   {team.description.length > 70 ?
                     team.description.substring(0, 70) + "..."
                     : team.description}
