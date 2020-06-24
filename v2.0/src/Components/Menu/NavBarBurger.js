@@ -588,7 +588,7 @@ class Menu extends React.Component {
         width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - " + getHeight() + "px)"
+            ? "calc(150vh - " + getHeight() + "px)"
             : "100%"
           : 0,
         display: "flex",
