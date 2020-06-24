@@ -26,7 +26,7 @@ class EventFilter extends Component {
               marginLeft: "25px",
               marginBottom: "0px",
               marginTop: "0px",
-              padding: "4px 0 5px 0",
+              padding: "1px 0 0px 0",
               fontSize:17
             }}>{tag.name}</p>
             <input className="checkbox" type="checkbox" onChange={(event) => { this.props.boxClick(event) }} name="boxes" value={tag.id} />

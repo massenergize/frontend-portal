@@ -5,6 +5,7 @@
   "dependencies": {
     "apexcharts": "^3.14.0",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "code": "^5.2.4",
     "connected-react-router": "^6.6.1",
     "firebase": "^6.6.2",

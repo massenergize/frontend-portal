@@ -100,7 +100,7 @@ class ServicesPage extends React.Component {
               <div className="phone-vanish col-md-3 mob-vendor-white-cleaner">
                 <div
                   className="event-filter raise"
-                  style={{ marginTop: 90, padding: "45px 32px", borderRadius: 15 }}
+                  style={{ marginTop: 90, padding: "45px 27px", borderRadius: 15 }}
                 >
                   <h4>Filter by...</h4>
                   <Funnel
