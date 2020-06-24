@@ -1,5 +1,4 @@
 import React from "react";
-import CircleGraph from "../../Shared/CircleGraph";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createCircleGraphData } from "./../../Utils";

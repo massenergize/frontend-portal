@@ -1,6 +1,5 @@
 import React from "react";
 import BarGraph from "../../Shared/BarGraph";
-import CircleGraph from "../../Shared/CircleGraph";
 import PageTitle from "../../Shared/PageTitle";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
