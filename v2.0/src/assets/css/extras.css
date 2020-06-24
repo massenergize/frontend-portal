@@ -1,20 +1,27 @@
 .start-team-btn {
+  color: white;
   background: #8dc63f; 
   border-width: 0px !important;
-  padding: 10px 32px; 
-  margin: 0 10px;
-  margin-bottom: 17px;
+  padding: 6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
 }
 
 .comp-teams-btn {
+  color: white;
   background:#f67b61; 
   border-width: 0px !important;
-  padding:10px 32px; 
-  margin: 0 10px;
-  margin-bottom: 17px;
+  padding:6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
 }
 
 .join-team-btn {
+  color: white;
   background:#8dc63f; 
   border-width: 0px !important;
   padding: 4px 15px;
@@ -24,6 +31,7 @@
 
 
 .leave-team-btn {
+  color: white;
     background: darkgray; 
     border-width: 0px !important;
     padding: 5px 10px; 
@@ -31,6 +39,7 @@
 }
 
 .contact-admin-btn-new {
+  color: white;
     background: #f67b61; 
     border-width: 0px !important;
     padding: 8px 12px; 
@@ -49,27 +58,33 @@
 }
 
 .start-team-btn:hover{
+  color: white;
     background:#517325; 
     transition: .15s ease-in-out;
   }
 .comp-teams-btn:hover{
+  color: white;
     background:#b35846; 
     transition: .15s ease-in-out;
 }
 
 .join-team-btn:hover{
+  color: white;
   background:#517325; 
   transition: .15s ease-in-out;
 }
 .contact-admin-btn-new:hover{
+  color: white;
   background:#b35846; 
   transition: .15s ease-in-out;
 }
 .leave-team-btn:hover {
+  color: white;
     background: #616161; 
     transition: .15s ease-in-out;
 }
 .contact-admin-btn:hover {
+  color: white;
   background:#b35846; 
   transition: .15s ease-in-out;
 }

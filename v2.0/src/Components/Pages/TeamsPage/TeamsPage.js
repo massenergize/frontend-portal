@@ -60,12 +60,31 @@ class TeamsPage extends React.Component {
             <PageTitle style={{ margin: "0 30px" }}>Teams in {this.props.communityData.community.name}</PageTitle>
             <center>
               <p>
-                Teams are groups in a community who want to collaborate. They
-                can represent a school, congregation, group of neighbors, or sports team. Get
+                Groups collaborating: schools, congregations, neighborhoods, sports teams, and more. Get
                 creative!
               </p>
-              <div className='col-12 col-sm-10'>
-                <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+
+              <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+                <div className="col-12 col-md-8" style={{ paddingRight: '8px', paddingBottom: '10px' }}>
+                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+                </div>
+                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
+                  <button
+                    className="btn round-me start-team-btn raise"
+                    onClick={() => {
+                      window.open(this.props.links.contactus, "_blank");
+                    }}
+                  >
+                    Start Team
+                    </button>
+                </div>
+                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
+                  <Link to={`${this.props.links.teams + "/compare"}`} style={{ height: "100%" }}>
+                    <button className="btn round-me comp-teams-btn raise">
+                      Compare Teams
+                      </button>
+                  </Link>
+                </div>
               </div>
             </center>
             {teamsStats.length > 0 ?
@@ -81,22 +100,6 @@ class TeamsPage extends React.Component {
               <p>There are no teams in this community yet. You can start one by clicking the start team button at the bottom of the page!</p>
             }
           </div>
-          <br />
-          <center>
-            <button
-              className="btn btn-success round-me start-team-btn raise"
-              onClick={() => {
-                //TODO
-              }}
-            >
-              Start a Team
-              </button>
-            <Link to={`${this.props.links.teams + "/compare"}`}>
-              <button className="btn btn-success round-me comp-teams-btn raise">
-                Compare Teams
-              </button>
-            </Link>
-          </center>
           <br />
         </div>
       </>

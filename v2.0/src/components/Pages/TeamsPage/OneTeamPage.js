@@ -80,7 +80,7 @@ class OneTeamPage extends React.Component {
           <div className='col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6' style={{ margin: 'auto' }}>
 
             <div className="team-card-column" style={{ margin: '0 auto' }}>
-              <div className="col-9" style={{ display: 'flex' }}>
+              <div className="col-9 no-gutters" style={{ padding: 0, display: 'flex' }}>
                 {teamLogo ?
                   <>
                     <div className="team-card-column col-4">
@@ -96,11 +96,11 @@ class OneTeamPage extends React.Component {
                   </div>
                 }
               </div>
-              <div className="team-card-column col-3">
+              <div className="team-card-column col-3" style={{ padding: 0 }}>
                 {!this.inTeam(team.id) ?
                   <button
-                    
-                    className="btn btn-success round-me join-team-btn raise"
+
+                    className="btn round-me join-team-btn raise"
                     onClick={() => {
                       this.setState({ teamModalOpen: true });
                     }}
@@ -173,7 +173,7 @@ class OneTeamPage extends React.Component {
           <div>
             <center>
               <button
-                className="btn btn-success round-me contact-admin-btn-new raise"
+                className="btn round-me contact-admin-btn-new raise"
                 onClick={() => {
                   this.setState({ contactModalOpen: true });
                 }}
@@ -184,7 +184,7 @@ class OneTeamPage extends React.Component {
             {this.props.user && this.inTeam(team.id) &&
               <center>
                 <button
-                  className="btn btn-success round-me leave-team-btn raise"
+                  className="btn round-me leave-team-btn raise"
                   onClick={() => {
                     this.setState({ teamModalOpen: true });
                   }}
