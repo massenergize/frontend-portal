@@ -149,27 +149,30 @@ class NavBarBurger extends React.Component {
                 </Link>
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6">
-                  <div style={styles.container}>
-                    <MenuButton
-                      open={this.state.menuOpen}
-                      onClick={() => this.handleMenuClick()}
-                      color="#333"
-                    />
-                    {this.renderLogin()}
-                  </div>
-                  <Menu open={this.state.menuOpen}>
-                    {/* {this.renderLayeredMenu(this.props.navLinks)} */}
-                    {menuItems}
-                    {/* <div style={{marginLeft: "1em"}}>
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6" style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ margin: "auto 0 auto auto" }}>
+                    <div style={styles.container}>
+                      <MenuButton
+                        open={this.state.menuOpen}
+                        onClick={() => this.handleMenuClick()}
+                        color="#333"
+                      />
+                      {this.renderLogin()}
+                    </div>
+                    <Menu open={this.state.menuOpen}>
+                      {/* {this.renderLayeredMenu(this.props.navLinks)} */}
+                      {menuItems}
+                      {/* <div style={{marginLeft: "1em"}}>
                                         <Menu open={true} submenu={true}>
                                             {menuItems}
                                         </Menu>
                                     </div> */}
-                  </Menu>
+                    </Menu>
+                  </div>
                 </div>
               ) : (
                   <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+
                     <div style={styles.container}>
                       <nav
                         className="padding-0 menuzord d-flex"
