@@ -9590,7 +9590,7 @@ button.as-link:hover {
   width: auto;
   height: auto;
   max-width: 160px;
-  max-height: 50px;
+  max-height: 70px;
   margin: auto;
   display: block;
   object-fit: cover;
@@ -9620,6 +9620,9 @@ button.as-link:hover {
   margin: 0px;
   padding-left: 20px;
   list-style-type: circle;
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
 }
 
 .team-modal{

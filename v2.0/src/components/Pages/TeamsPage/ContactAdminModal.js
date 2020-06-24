@@ -20,7 +20,7 @@ class ContactAdminModal extends React.Component {
             }>
 
               <div>
-                <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{marginBottom: "10px"}}/>
+                <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{ marginBottom: "10px" }} />
                 <textarea id="contact-textarea" name="msg" className="form-control" rows={7} placeholder="Message..." required>
                 </textarea>
                 <button
@@ -46,33 +46,29 @@ class ContactAdminModal extends React.Component {
     );
   }
 
-  //Taken directly from old teams page
-  //Have to go through it and modify to suit our purposes and add callback props
+  sendMessage = () => {
+    var spinner = document.getElementById("sender-spinner");
+    var msg = document.getElementById("contact-textarea").value;
+    var title = document.getElementById("contact-title").value;
 
-  // sendMessage = () => {
-  //   var spinner = document.getElementById("sender-spinner");
-  //   var msg = this.state.contact_content.msg.trim();
-  //   var title = this.state.contact_content.title.trim();
-  //   const body = {
-  //     team_id: this.state.current_team_id,
-  //     title: title,
-  //     message: msg,
-  //   };
-  //   const me = this;
-  //   if (msg !== "" && title !== "") {
-  //     spinner.style.display = "block";
-  //     apiCall(`teams.contactAdmin`, body).then((json) => {
-  //       document.getElementById("contact-textarea").value = "";
-  //       document.getElementById("contact-title").value = "";
-  //       spinner.style.display = "none";
-  //       me.toggleContact();
-  //       this.setState({ alert: true });
-  //     });
-  //   } else {
-  //     alert("Please add a message & title!");
-  //   }
-  // };
+    const body = {
+      team_id: this.props.team.id,
+      title: title,
+      message: msg,
+    };
 
+    if (msg !== "" && title !== "") {
+      spinner.style.display = "block";
+      apiCall(`teams.contactAdmin`, body)
+        .then((json) => {
+          document.getElementById("contact-textarea").value = "";
+          document.getElementById("contact-title").value = "";
+          spinner.style.display = "none";
+
+          this.props.onClose();
+        });
+    }
+  };
 }
 
 const mapStoreToProps = (store) => {

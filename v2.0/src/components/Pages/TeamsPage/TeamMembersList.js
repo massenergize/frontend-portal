@@ -33,29 +33,30 @@ class TeamMembersList extends React.Component {
 
     if (!membersResponse)
       return <p>The members of this team could not be loaded.</p >;
-    
+
     if (membersResponse.length === 0)
       return <p>There are no members of this team.</p>;
 
-    const preferredNameMembers = membersResponse.filter(member => member.preferred_name);
-    const numAnonymous = membersResponse.filter(member => !member.preferred_name).length;
+    const [admins, layPeople] = membersResponse.reduce(([pass, fail], member) => {
+      return member.is_admin ? [[...pass, member], fail] : [pass, [...fail, member]];
+    }, [[], []]);
 
     return (
       <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
         <div className="boxed_wrapper">
           <div className="team-members-list">
             <ul>
-              {preferredNameMembers.map(member =>
-                <li key={member.id}>
-                  {member.preferred_name}
+              {admins.map(admin =>
+                <li key={admin.id}>
+                  <b>{admin.preferred_name}</b> <i>(admin)</i>
+                </li>
+              )}
+              {layPeople.map(layPerson =>
+                <li key={layPerson.id}>
+                  {layPerson.preferred_name}
                 </li>
               )}
             </ul>
-            {numAnonymous > 0 &&
-              <p>
-                {numAnonymous} user{numAnonymous !== 1 && 's'} would prefer to remain anonymous.
-              </p>
-            }
           </div>
         </div>
       </div >
