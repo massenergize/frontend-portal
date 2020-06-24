@@ -278,7 +278,6 @@ class AppRouter extends Component {
         {this.props.menu ? (
           <div>
             <NavBarBurger navLinks={finalMenu} />
-            <NavBarOffset />
           </div>
         ) : (
           <LoadingCircle />

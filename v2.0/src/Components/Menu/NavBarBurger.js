@@ -22,6 +22,9 @@ class NavBarBurger extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
   }
+  componentWillReceiveProps() {
+    this.forceUpdate();
+  }
   handleResize = () => {
     this.setState({
       menuBurgered: window.innerWidth < 992,
@@ -177,7 +180,7 @@ class NavBarBurger extends React.Component {
                         }}
                         id="main_menu"
                       >
-                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto'}}>
+                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto' }}>
                           {this.renderNavLinks(this.props.navLinks)}
                         </ul>
                       </nav>
@@ -188,8 +191,14 @@ class NavBarBurger extends React.Component {
             </div>
           </div>
         </nav>
+        <div style={{ height: this.getHeight() }}></div>
       </div >
     );
+  }
+
+  getHeight = () => {
+    const navBar = document.getElementById("nav-bar");
+    return navBar ? (navBar.offsetHeight) + 1 : 91;
   }
   // NORMAL STATE
   /* renderNavLinks(navLinks) {
@@ -568,16 +577,13 @@ class Menu extends React.Component {
 
   render() {
 
-    const navBar = document.getElementById("nav-bar");
-    const topPadding = navBar ? (navBar.offsetHeight) + 1 : 91;
-    
     const styles = {
       container: {
         position: !this.props.submenu ? "absolute" : "relative",
         width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - " + topPadding + "px)"
+            ? "calc(100vh - " + this.getHeight() + "px)"
             : "100%"
           : 0,
         display: "flex",
