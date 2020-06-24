@@ -164,7 +164,7 @@ class Action extends React.Component {
       return (
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
           <div className="single-shop-item m-action-item">
-            <Link to={this.props.links.actions + "/" + this.props.action.id} style={{ color: '#999999' }}>
+            <Link to={this.props.links.actions + "/" + this.props.action.id} style={{ color: '#999999', width: '100%' }}>
               <div
                 className="img-box"
               >
