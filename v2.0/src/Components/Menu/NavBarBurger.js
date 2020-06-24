@@ -7,6 +7,12 @@ import SignOutLink from "../Shared/SignOutLink";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
 
+
+function getHeight() {
+  const navBar = document.getElementById("nav-bar");
+  return navBar ? (navBar.offsetHeight) + 1 : 91;
+}
+
 class NavBarBurger extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +27,9 @@ class NavBarBurger extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+  }
+  componentWillReceiveProps() {
+    this.forceUpdate();
   }
   handleResize = () => {
     this.setState({
@@ -146,27 +155,30 @@ class NavBarBurger extends React.Component {
                 </Link>
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6">
-                  <div style={styles.container}>
-                    <MenuButton
-                      open={this.state.menuOpen}
-                      onClick={() => this.handleMenuClick()}
-                      color="#333"
-                    />
-                    {this.renderLogin()}
-                  </div>
-                  <Menu open={this.state.menuOpen}>
-                    {/* {this.renderLayeredMenu(this.props.navLinks)} */}
-                    {menuItems}
-                    {/* <div style={{marginLeft: "1em"}}>
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6" style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ margin: "auto 0 auto auto" }}>
+                    <div style={styles.container}>
+                      <MenuButton
+                        open={this.state.menuOpen}
+                        onClick={() => this.handleMenuClick()}
+                        color="#333"
+                      />
+                      {this.renderLogin()}
+                    </div>
+                    <Menu open={this.state.menuOpen}>
+                      {/* {this.renderLayeredMenu(this.props.navLinks)} */}
+                      {menuItems}
+                      {/* <div style={{marginLeft: "1em"}}>
                                         <Menu open={true} submenu={true}>
                                             {menuItems}
                                         </Menu>
                                     </div> */}
-                  </Menu>
+                    </Menu>
+                  </div>
                 </div>
               ) : (
                   <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+
                     <div style={styles.container}>
                       <nav
                         className="padding-0 menuzord d-flex"
@@ -177,7 +189,7 @@ class NavBarBurger extends React.Component {
                         }}
                         id="main_menu"
                       >
-                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto'}}>
+                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto' }}>
                           {this.renderNavLinks(this.props.navLinks)}
                         </ul>
                       </nav>
@@ -188,9 +200,11 @@ class NavBarBurger extends React.Component {
             </div>
           </div>
         </nav>
+        <div style={{ height: getHeight() }}></div>
       </div >
     );
   }
+
   // NORMAL STATE
   /* renderNavLinks(navLinks) {
     if (!navLinks) {
@@ -568,16 +582,13 @@ class Menu extends React.Component {
 
   render() {
 
-    const navBar = document.getElementById("nav-bar");
-    const topPadding = navBar ? (navBar.offsetHeight) + 1 : 91;
-    
     const styles = {
       container: {
         position: !this.props.submenu ? "absolute" : "relative",
         width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - " + topPadding + "px)"
+            ? "calc(150vh - " + getHeight() + "px)"
             : "100%"
           : 0,
         display: "flex",

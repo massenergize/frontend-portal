@@ -1,10 +1,8 @@
-import React from 'react'
-import CircleGraph from '../../Shared/CircleGraph'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-
-
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { createCircleGraphData } from "./../../Utils";
+import { Doughnut } from "react-chartjs-2";
 /** Renders the graphs on the home page and a link to the impact page
  * @props :
     graphs
@@ -14,56 +12,107 @@ import { connect } from 'react-redux'
         size
 */
 
-
 class Graphs extends React.Component {
+  renderGraphs(graphs) {
+    if (!graphs) {
+      return <div>No Graphs to Display</div>;
+    }
+    return Object.keys(graphs).map((key) => {
+      let list = [
+        { text: "Households Engaged", key: "households", value : this.props.goals.attained_number_of_households+ this.props.goals.organic_attained_number_of_households },
+        { key: "actions-completed", text: "Actions Completed", value: this.props.goals.attained_number_of_actions +this.props.goals.organic_attained_number_of_actions},
+        { key: "carbon-reduction", text: "Carbon Reduction", value: this.props.goals.attained_carbon_footprint_reduction+ this.props.goals.organic_attained_carbon_footprint_reduction},
+      ];
+      var graph = graphs[key];
+      if (graph.data == null) {
+        return <div>No Graphs to Display</div>;
+      } else {
+        return (
+          <div
+            key={key}
+            className="column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h"
+            data-wow-duration="0ms"
+          >
+            <center>
+              <Doughnut
+                width={180}
+                height={180}
+                options={{
+                  plugins: { datalabels: false },
+                  responsive: false,
+                  maintainAspectRatio: false,
+                  legend: false,
+                  animation: {
+                    duration: 2000,
+                  },
+                }}
+                data={createCircleGraphData(this.props.goals, list[key].key)}
+              />
 
-	renderGraphs(graphs) {
-	
-		if (!graphs) {
-			return <div>No Graphs to Display</div>
-		}
-		return Object.keys(graphs).map(key => {
-			var graph = graphs[key];
-			if (graph.data == null) {
-				return <div>No Graphs to Display</div>
-			} else {
-				return (
-					<div key={key} className="column col-lg-3 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h" data-wow-duration="0ms">
-						<CircleGraph num={graph.data.attained} goal={graph.data.target} label={graph.title} size={this.props.size} />
-					</div>
-				);
-			}
-		});
-	}
+              <p className="impact-graph-title home-page-graph-tweak" >
+                <span
+                  style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
+                >
+                  <b>
+                    {list[key].value}
+                  </b>
+                </span>
+                {list[key].text}
+              </p>
+            </center>
+            {/* <CircleGraph num={graph.data.attained} goal={graph.data.target} label={graph.title} size={this.props.size} /> */}
+          </div>
+        );
+      }
+    });
+  }
 
-	render() {
-		var dumbycol = "";
-		if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
-			dumbycol = <article className={"column col-md-3"}></article>;
-		}
-		return (
-			<section className="fact-counter style-2 no-padd">
-				<h4 className="section-title text-center mob-cancel-title-white" style={{fontSize:20}}>Help Us Reach Our Goal</h4>
-				<div className="container">
-					<div className="row no-gutter clearfix">
-						{dumbycol}
-						{this.renderGraphs(this.props.graphs)}
-						<article className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn" data-wow-duration="0ms">
-							<div className="item mob-our-impact-div">
-								{/* <div className="icon"><i className="fa fa-chart-bar" /></div> */}
-								<Link to={this.props.links.impact} className="thm-btn btn-finishing raise">Our Impact</Link>
-								{/* <h4 className="counter-title">about our community impact</h4> */}
-							</div>
-						</article>
-					</div>
-				</div>
-			</section>
-		);
-	}
+  render() {
+    var dumbycol = "";
+    if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
+      dumbycol = <article className={"column col-md-3"}></article>;
+    }
+    return (
+      <section className="fact-counter style-2 no-padd">
+        <h4
+          className="section-title text-center mob-cancel-title-white"
+          style={{ fontSize: 20 }}
+        >
+          Help Us Reach Our Goal
+        </h4>
+        <div className="container">
+          <div className="row no-gutter clearfix">
+            {dumbycol}
+            {this.renderGraphs(this.props.graphs)}
+
+            
+            {/* <article
+              className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
+              data-wow-duration="0ms"
+            >
+              <div className="item mob-our-impact-div">
+                <div className="icon"><i className="fa fa-chart-bar" /></div>
+                <Link
+                  to={this.props.links.impact}
+                  className="thm-btn btn-finishing raise"
+                >
+                  Our Impact
+                </Link>
+                <h4 className="counter-title">about our community impact</h4>
+              </div>
+            </article> */}
+          </div>
+        </div>
+        <center>
+              <Link to={this.props.links.impact} className="homepage-all-events-btn round-me">Our Impact</Link>
+            </center>
+      </section>
+    );
+  }
 }
 const mapStoreToProps = (store) => {
-	return ({
-		links: store.links
-	});
-}
+  return {
+    links: store.links,
+  };
+};
 export default connect(mapStoreToProps)(Graphs);
