@@ -137,6 +137,7 @@ class Events extends React.Component {
               <Link
                 to={`${this.props.links.events}`}
                 className="homepage-all-events-btn round-me"
+                style={{width:'100%'}}
               >
                 See All Events
               </Link>

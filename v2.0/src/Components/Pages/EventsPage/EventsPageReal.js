@@ -157,7 +157,7 @@ class EventsPage extends React.Component {
 				const dateString = dateFormatString(new Date(event.start_date_and_time), new Date(event.end_date_and_time));
 				const location = event.location;
         return (
-          <Link to={`${this.props.links.events + "/" + event.id}`}>
+          <Link key={event.id.toString()} to={`${this.props.links.events + "/" + event.id}`}>
 					  <div className="item style-1 clearfix m-action-item" key={event.id}>
 					  	<div className="row no-gutter">
 					  		{/* renders the image */}

@@ -49,13 +49,13 @@ import {
   reduxLoadCommunityData,
   reduxLoadCollection,
   reduxLoadCommunityInformation,
-  reduxLoadCommunityAdmins
+  reduxLoadCommunityAdmins,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
   reduxLogin,
   reduxLoadTodo,
-  reduxLoadDone
+  reduxLoadDone,
 } from "./redux/actions/userActions";
 import { reduxLoadLinks } from "./redux/actions/linkActions";
 
@@ -68,7 +68,7 @@ class AppRouter extends Component {
     super(props);
     this.state = {
       triedLogin: false,
-      community: null
+      community: null,
     };
   }
 
@@ -90,23 +90,23 @@ class AppRouter extends Component {
       signup: `/${subdomain}/signup`,
       profile: `/${subdomain}/profile`,
       policies: `/${subdomain}/policies`,
-      contactus: `/${subdomain}/contactus`
+      contactus: `/${subdomain}/contactus`,
     });
 
     // for lazy loading: load these first
     Promise.all([
       apiCall("communities.info", body),
       apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body)
+      apiCall("menus.list", body),
     ])
-      .then(res => {
+      .then((res) => {
         const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
         this.setState({ community: communityInfoResponse.data });
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
         this.props.reduxLoadMenu(mainMenuResponse.data);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ error: err });
         console.log(err);
       });
@@ -123,9 +123,9 @@ class AppRouter extends Component {
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
       apiCall("testimonials.list", body),
-      apiCall("vendors.list", body)
+      apiCall("vendors.list", body),
     ])
-      .then(res => {
+      .then((res) => {
         const [
           aboutUsPageResponse,
           actionsResponse,
@@ -138,7 +138,7 @@ class AppRouter extends Component {
           teamResponse,
           tagCollectionsResponse,
           testimonialsResponse,
-          vendorsResponse
+          vendorsResponse,
         ] = res;
 
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -154,14 +154,14 @@ class AppRouter extends Component {
         this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
         this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ error: err });
         console.log(err);
       });
   }
 
   setStateAsync(state) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(state, resolve);
     });
   }
@@ -173,11 +173,11 @@ class AppRouter extends Component {
     const [
       userInfoResponse,
       userActionsTodoResponse,
-      userActionsCompletedResponse
+      userActionsCompletedResponse,
     ] = await Promise.all([
       apiCall("users.info", { email }),
       apiCall("users.actions.todo.list", { email }),
-      apiCall("users.actions.completed.list", { email })
+      apiCall("users.actions.completed.list", { email }),
     ]);
 
     if (userInfoResponse && userInfoResponse.success && userInfoResponse.data) {
@@ -195,10 +195,12 @@ class AppRouter extends Component {
     var oldAbout = menu[3];
     var oldActions = menu[1];
     if (oldAbout) {
-      var abtSliced = oldAbout.children.filter(item => item.name.toLowerCase() !== "impact");
+      var abtSliced = oldAbout.children.filter(
+        (item) => item.name.toLowerCase() !== "impact"
+      );
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced]
+        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced],
       };
       menu[3] = newAbout;
     }
@@ -206,14 +208,32 @@ class AppRouter extends Component {
       var actionsSliced = oldActions.children.slice(1);
       var newAction = {
         name: "Actions",
-        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced]
+        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
       menu[1] = newAction;
     }
     return menu;
   }
 
+  saveCurrentPageURL() {
+    let host = window.location.host;
+    const loginURL = host + this.props.links.signin;
+    const registerURL = host + this.props.links.signup;
+    const profileURL = host + this.props.links.profile;
+    const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
+    if (
+      this.props.links.signup &&
+      this.props.links.signin &&
+      this.props.links.profile &&
+      currentURL !== loginURL &&
+      currentURL !== registerURL &&
+      currentURL !== profileURL
+    ) {
+      window.localStorage.setItem("last_visited", currentURL);
+    }
+  }
   render() {
+    this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
       return <LoadingCircle />;
@@ -225,9 +245,9 @@ class AppRouter extends Component {
       this.props.auth.uid &&
       !this.props.user
     ) {
-      this.getUser(this.props.auth.email).then(success => {
+      this.getUser(this.props.auth.email).then((success) => {
         this.setState({
-          triedLogin: true
+          triedLogin: true,
         });
       });
     }
@@ -239,19 +259,19 @@ class AppRouter extends Component {
     var finalMenu = [];
     if (this.props.menu) {
       const contactUsItem = { link: "/contactus", name: "Contact Us" };
-      const navMenus = this.props.menu.filter(menu => {
+      const navMenus = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
       })[0].content;
       finalMenu = [...navMenus, contactUsItem];
     }
-    finalMenu = finalMenu.filter(item => item.name !== "Home");
+    finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const homeChil = [
       { name: "current-home", link: "/" },
       {
         name: "All Communities",
         link: "http://" + window.location.host,
-        special: true
-      }
+        special: true,
+      },
     ];
     const droppyHome = { name: "Home", children: homeChil };
     finalMenu = [droppyHome, ...finalMenu];
@@ -261,7 +281,7 @@ class AppRouter extends Component {
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
-      email: communityInfo.owner_email
+      email: communityInfo.owner_email,
     };
     return (
       <div className="boxed-wrapper">
@@ -273,7 +293,7 @@ class AppRouter extends Component {
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
-          /> 
+          />
         </Helmet>
         {this.props.menu ? (
           <div>
@@ -283,43 +303,48 @@ class AppRouter extends Component {
         ) : (
           <LoadingCircle />
         )}
-        {/**if theres a half finsished account the only place a user can go is the register page */
-        (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
-        (this.props.auth.uid && !this.props.auth.emailVerified) ? (
-          <Switch>
-            <Route component={RegisterPage} />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route exact path={links.home} component={HomePage} />
-            <Route exact path={`${links.home}/home`} component={HomePage} />
-            <Route exact path={links.actions} component={ActionsPage} />
-            <Route path={links.aboutus} component={AboutUsPage} />
-            <Route exact path={links.services} component={ServicesPage} />
-            <Route path={`${links.services}/:id`} component={OneServicePage} />
-            <Route path={`${links.actions}/:id`} component={OneActionPage} />
-            <Route path={links.testimonials} component={StoriesPage} />
-            <Route path={links.teams} component={TeamsPage} />
-            <Route path={links.impact} component={ImpactPage} />
-            <Route path={links.donate} component={DonatePage} />
-            <Route exact path={links.events} component={EventsPage} />
-            <Route path={`${links.events}/:id`} component={OneEventPage} />
-            <Route path={links.signin} component={LoginPage} />
-            <Route path={links.signup} component={RegisterPage} />
-            <Route path={links.profile} component={ProfilePage} />
-            <Route path={links.policies} component={PoliciesPage} />
-            <Route path={links.contactus} component={ContactPage} />
-            <Route
-              component={() => {
-                return <Error404 />;
-              }}
-            />
-          </Switch>
-        )}
+        {
+          /**if theres a half finsished account the only place a user can go is the register page */
+          (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
+          (this.props.auth.uid && !this.props.auth.emailVerified) ? (
+            <Switch>
+              <Route component={RegisterPage} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route exact path={links.home} component={HomePage} />
+              <Route exact path={`${links.home}/home`} component={HomePage} />
+              <Route exact path={links.actions} component={ActionsPage} />
+              <Route path={links.aboutus} component={AboutUsPage} />
+              <Route exact path={links.services} component={ServicesPage} />
+              <Route
+                path={`${links.services}/:id`}
+                component={OneServicePage}
+              />
+              <Route path={`${links.actions}/:id`} component={OneActionPage} />
+              <Route path={links.testimonials} component={StoriesPage} />
+              <Route path={links.teams} component={TeamsPage} />
+              <Route path={links.impact} component={ImpactPage} />
+              <Route path={links.donate} component={DonatePage} />
+              <Route exact path={links.events} component={EventsPage} />
+              <Route path={`${links.events}/:id`} component={OneEventPage} />
+              <Route path={links.signin} component={LoginPage} />
+              <Route path={links.signup} component={RegisterPage} />
+              <Route path={links.profile} component={ProfilePage} />
+              <Route path={links.policies} component={PoliciesPage} />
+              <Route path={links.contactus} component={ContactPage} />
+              <Route
+                component={() => {
+                  return <Error404 />;
+                }}
+              />
+            </Switch>
+          )
+        }
         {this.props.menu ? (
           <Footer
             footerLinks={
-              this.props.menu.filter(menu => {
+              this.props.menu.filter((menu) => {
                 return menu.name === "PortalFooterQuickLinks";
               })[0].content
             }
@@ -332,12 +357,12 @@ class AppRouter extends Component {
     );
   }
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     auth: store.firebase.auth,
     menu: store.page.menu,
-    links: store.links
+    links: store.links,
   };
 };
 const mapDispatchToProps = {
@@ -368,6 +393,6 @@ const mapDispatchToProps = {
   reduxLoadLinks,
   reduxLoadCollection,
   reduxLoadCommunityInformation,
-  reduxLoadCommunityAdmins
+  reduxLoadCommunityAdmins,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);
