@@ -221,6 +221,7 @@ class AppRouter extends Component {
     const registerURL = host + this.props.links.signup;
     const profileURL = host + this.props.links.profile;
     const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
+    const realRoute = window.location.pathname;
     if (
       this.props.links.signup &&
       this.props.links.signin &&
@@ -229,9 +230,12 @@ class AppRouter extends Component {
       currentURL !== registerURL &&
       currentURL !== profileURL
     ) {
-      window.localStorage.setItem("last_visited", currentURL);
+      window.localStorage.setItem("last_visited", realRoute);
     }
   }
+
+
+  
   render() {
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
