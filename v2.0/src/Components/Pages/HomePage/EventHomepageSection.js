@@ -96,11 +96,13 @@ class Events extends React.Component {
       });
     } else {
       return (
-        <div>
-          <p>
-            No upcoming events. See{" "}
-            <Link to={this.props.links.events}>all events</Link>{" "}
-          </p>
+        <div style={{ width: "100%", marginTop: 10 }}>
+          <center>
+            <p>
+              No upcoming events. See{" "}
+              <Link to={this.props.links.events}>all events</Link>{" "}
+            </p>
+          </center>
         </div>
       );
     }
@@ -130,15 +132,16 @@ class Events extends React.Component {
             </div>
           </div>
           <div className="row mob-helper">{this.renderEvents()}</div>
-          <center>
-            <Link
-              to={`${this.props.links.events}`}
-              className="homepage-all-events-btn round-me"
-            >
-              See All Events
-            </Link>
-          </center>
-          <div></div>
+          {this.props.events.length !== 0 ? (
+            <center>
+              <Link
+                to={`${this.props.links.events}`}
+                className="homepage-all-events-btn round-me"
+              >
+                See All Events
+              </Link>
+            </center>
+          ) : null}
         </div>
       </section>
     );

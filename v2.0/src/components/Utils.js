@@ -90,7 +90,16 @@ export function createCircleGraphData(goalObj, which) {
       let value =
         goalObj.attained_number_of_households +
         goalObj.organic_attained_number_of_households;
-      let rest = goalObj.target_number_of_households - value;
+      let rest;
+      if (
+        goalObj.attained_number_of_households +
+          goalObj.organic_attained_number_of_households ===
+        0
+      ) {
+        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
+      } else {
+        rest = goalObj.target_number_of_households - value;
+      }
       return {
         labels: ["Households Engaged", ""],
         datasets: [
@@ -106,7 +115,16 @@ export function createCircleGraphData(goalObj, which) {
       let value =
         goalObj.attained_number_of_actions +
         goalObj.organic_attained_number_of_actions;
-      let rest = goalObj.target_number_of_actions - value;
+      let rest;
+      if (
+        goalObj.attained_number_of_actions +
+          goalObj.organic_attained_number_of_actions ===
+        0
+      ) {
+        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
+      } else {
+        rest = goalObj.target_number_of_actions - value;
+      }
       return {
         labels: ["Actions Completed", ""],
         datasets: [
@@ -122,7 +140,16 @@ export function createCircleGraphData(goalObj, which) {
       let value =
         goalObj.attained_carbon_footprint_reduction +
         goalObj.organic_attained_carbon_footprint_reduction;
-      let rest = goalObj.target_carbon_footprint_reduction - value;
+      let rest;
+      if (
+        goalObj.attained_carbon_footprint_reduction +
+          goalObj.organic_attained_carbon_footprint_reduction ===
+        0
+      ) {
+        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
+      } else {
+        rest = goalObj.target_carbon_footprint_reduction - value;
+      }
       return {
         labels: ["Carbon Reducation", ""],
         datasets: [
