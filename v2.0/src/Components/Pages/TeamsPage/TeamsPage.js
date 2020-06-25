@@ -64,7 +64,8 @@ class TeamsPage extends React.Component {
                 creative!
               </p>
 
-              <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+              {/* This is a version that includes a "compare teams" button*/}
+              {/* <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-12 col-md-8" style={{ paddingRight: '8px', paddingBottom: '10px' }}>
                   <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
                 </div>
@@ -85,8 +86,28 @@ class TeamsPage extends React.Component {
                       </button>
                   </Link>
                 </div>
+              </div> */}
+
+              <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+                <div className="col-9">
+                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+                </div>
+                <div className="col-3">
+                  <button
+                    className="btn round-me start-team-btn raise"
+                    onClick={() => {
+                      window.open(this.props.links.contactus, "_blank");
+                    }}
+                  >
+                    Start Team
+                    </button>
+                </div>
               </div>
+
             </center>
+
+            <br />
+
             {teamsStats.length > 0 ?
               <>
                 {
