@@ -92,7 +92,7 @@ class OneTeamPage extends React.Component {
                   </>
                   :
                   <div className="team-card-column">
-                    <h2 className="cool-font team-card-content">{team.name}</h2>
+                    <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
                   </div>
                 }
               </div>
