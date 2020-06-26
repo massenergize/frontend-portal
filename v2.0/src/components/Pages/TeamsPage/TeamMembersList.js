@@ -32,7 +32,7 @@ class TeamMembersList extends React.Component {
       return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
     if (!membersResponse)
-      return <p>The members of this team could not be loaded.</p >;
+      return <p className="error-p">The members of this team could not be loaded.</p >;
 
     if (membersResponse.length === 0)
       return <p>There are no members of this team.</p>;
