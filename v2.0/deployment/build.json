@@ -1,6 +1,6 @@
 {
-  "dev": "2.9.44",
-  "dev-sandbox": "0.9.44",
+  "dev": "2.9.45",
+  "dev-sandbox": "2.9.45",
   "prod": "2.9.42",
   "prod-sandbox": "2.9.42"
 }
