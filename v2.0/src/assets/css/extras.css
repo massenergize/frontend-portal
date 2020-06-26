@@ -1,3 +1,99 @@
+.start-team-btn {
+  color: white;
+  background: #8dc63f; 
+  border-width: 0px !important;
+  padding: 6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
+}
+
+.comp-teams-btn {
+  color: white;
+  background:#f67b61; 
+  border-width: 0px !important;
+  padding:6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
+}
+
+.join-team-btn {
+  color: white;
+  background:#8dc63f; 
+  border-width: 0px !important;
+  padding: 4px 15px;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.leave-team-btn {
+  color: white;
+    background: darkgray; 
+    border-width: 0px !important;
+    padding: 5px 10px; 
+    margin: 5px;
+}
+
+.contact-admin-btn-new {
+  color: white;
+    background: #f67b61; 
+    border-width: 0px !important;
+    padding: 8px 12px; 
+    margin: 5px;
+}
+
+.sort-btns{
+  cursor: pointer;
+}
+
+.sort-btns:hover{
+    color:#8dc63f;
+    transform: scale(1.03);
+    transition: .4s ease-in-out;
+}
+
+.start-team-btn:hover{
+  color: white;
+    background:#517325; 
+    transition: .15s ease-in-out;
+  }
+.comp-teams-btn:hover{
+  color: white;
+    background:#b35846; 
+    transition: .15s ease-in-out;
+}
+
+.join-team-btn:hover{
+  color: white;
+  background:#517325; 
+  transition: .15s ease-in-out;
+}
+.contact-admin-btn-new:hover{
+  color: white;
+  background:#b35846; 
+  transition: .15s ease-in-out;
+}
+.leave-team-btn:hover {
+  color: white;
+    background: #616161; 
+    transition: .15s ease-in-out;
+}
+.contact-admin-btn:hover {
+  color: white;
+  background:#b35846; 
+  transition: .15s ease-in-out;
+}
+
+.team-img{
+  height:80px !important; 
+  width:80px !important; 
+  object-fit: contain !important;
+ 
+}
+
 
 .impact-graph-title{
   font-size:.8rem !important;
@@ -47,35 +143,6 @@
 .c-tooltip-container:hover .c-tooltip-msg-container{
   display: block;
   transition: .4s ease-in-out;
-}
-
-
-.req-team-btn{
-  background:#f67b61; 
-  border-width: 0px !important;
-  padding:10px 32px; 
-  margin-bottom: 17px;
-}
-
-.sort-btns{
-  cursor: pointer;
-}
-
-.sort-btns:hover{
-    color:#8dc63f;
-    transform: scale(1.03);
-    transition: .4s ease-in-out;
-}
-.req-team-btn:hover{
-  background:#8dc63f; 
-  transition: .3s ease-in-out;
-}
-
-.team-img{
-  height:80px !important; 
-  width:80px !important; 
-  object-fit: contain !important;
- 
 }
 
 .fake-show{
@@ -898,7 +965,6 @@
   background:black; 
   opacity:.6;
   z-index:100;
-  cursor:pointer;
 }
 
 

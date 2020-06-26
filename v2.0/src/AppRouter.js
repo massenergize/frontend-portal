@@ -20,6 +20,8 @@ import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
 import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
+import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
+import CompareTeamsPage from "./components/Pages/TeamsPage/CompareTeamsPage";
 import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
@@ -306,44 +308,41 @@ class AppRouter extends Component {
         ) : (
           <LoadingCircle />
         )}
-        {
-          /**if theres a half finsished account the only place a user can go is the register page */
-          (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
-          (this.props.auth.uid && !this.props.auth.emailVerified) ? (
-            <Switch>
-              <Route component={RegisterPage} />
-            </Switch>
-          ) : (
-            <Switch>
-              <Route exact path={links.home} component={HomePage} />
-              <Route exact path={`${links.home}/home`} component={HomePage} />
-              <Route exact path={links.actions} component={ActionsPage} />
-              <Route path={links.aboutus} component={AboutUsPage} />
-              <Route exact path={links.services} component={ServicesPage} />
-              <Route
-                path={`${links.services}/:id`}
-                component={OneServicePage}
-              />
-              <Route path={`${links.actions}/:id`} component={OneActionPage} />
-              <Route path={links.testimonials} component={StoriesPage} />
-              <Route path={links.teams} component={TeamsPage} />
-              <Route path={links.impact} component={ImpactPage} />
-              <Route path={links.donate} component={DonatePage} />
-              <Route exact path={links.events} component={EventsPage} />
-              <Route path={`${links.events}/:id`} component={OneEventPage} />
-              <Route path={links.signin} component={LoginPage} />
-              <Route path={links.signup} component={RegisterPage} />
-              <Route path={links.profile} component={ProfilePage} />
-              <Route path={links.policies} component={PoliciesPage} />
-              <Route path={links.contactus} component={ContactPage} />
-              <Route
-                component={() => {
-                  return <Error404 />;
-                }}
-              />
-            </Switch>
-          )
-        }
+        {/**if theres a half finsished account the only place a user can go is the register page */
+        (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
+        (this.props.auth.uid && !this.props.auth.emailVerified) ? (
+          <Switch>
+            <Route component={RegisterPage} />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route exact path={links.home} component={HomePage} />
+            <Route exact path={`${links.home}/home`} component={HomePage} />
+            <Route exact path={links.actions} component={ActionsPage} />
+            <Route path={links.aboutus} component={AboutUsPage} />
+            <Route exact path={links.services} component={ServicesPage} />
+            <Route path={`${links.services}/:id`} component={OneServicePage} />
+            <Route path={`${links.actions}/:id`} component={OneActionPage} />
+            <Route path={links.testimonials} component={StoriesPage} />
+            <Route exact path={links.teams} component={TeamsPage} />
+            <Route path={`${links.teams}/compare`} component={CompareTeamsPage} />
+            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+            <Route path={links.impact} component={ImpactPage} />
+            <Route path={links.donate} component={DonatePage} />
+            <Route exact path={links.events} component={EventsPage} />
+            <Route path={`${links.events}/:id`} component={OneEventPage} />
+            <Route path={links.signin} component={LoginPage} />
+            <Route path={links.signup} component={RegisterPage} />
+            <Route path={links.profile} component={ProfilePage} />
+            <Route path={links.policies} component={PoliciesPage} />
+            <Route path={links.contactus} component={ContactPage} />
+            <Route
+              component={() => {
+                return <Error404 />;
+              }}
+            />
+          </Switch>
+        )}
         {this.props.menu ? (
           <Footer
             footerLinks={
