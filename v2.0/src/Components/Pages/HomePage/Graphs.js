@@ -17,22 +17,46 @@ class Graphs extends React.Component {
     if (!graphs) {
       return <div>No Graphs to Display</div>;
     }
+    const oneGraphClasses =
+      "column col-lg-12 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    const twoGraphClasses =
+      "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    const threeGraphClasses =
+      "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    var classes;
+    if (graphs.length === 1) classes = oneGraphClasses;
+    if (graphs.length === 2) classes = twoGraphClasses;
+    if (graphs.length >= 3) classes = threeGraphClasses;
     return Object.keys(graphs).map((key) => {
       let list = [
-        { text: "Households Engaged", key: "households", value : this.props.goals.attained_number_of_households+ this.props.goals.organic_attained_number_of_households },
-        { key: "actions-completed", text: "Actions Completed", value: this.props.goals.attained_number_of_actions +this.props.goals.organic_attained_number_of_actions},
-        { key: "carbon-reduction", text: "Carbon Reduction", value: this.props.goals.attained_carbon_footprint_reduction+ this.props.goals.organic_attained_carbon_footprint_reduction},
+        {
+          text: "Households Engaged",
+          key: "households",
+          value:
+            this.props.goals.attained_number_of_households +
+            this.props.goals.organic_attained_number_of_households,
+        },
+        {
+          key: "actions-completed",
+          text: "Actions Completed",
+          value:
+            this.props.goals.attained_number_of_actions +
+            this.props.goals.organic_attained_number_of_actions,
+        },
+        {
+          key: "carbon-reduction",
+          text: "Carbon Reduction",
+          value:
+            this.props.goals.attained_carbon_footprint_reduction +
+            this.props.goals.organic_attained_carbon_footprint_reduction,
+        },
       ];
       var graph = graphs[key];
       if (graph.data == null) {
         return <div>No Graphs to Display</div>;
       } else {
         return (
-          <div
-            key={key}
-            className="column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h"
-            data-wow-duration="0ms"
-          >
+          <div key={key} className={classes} data-wow-duration="0ms">
             <center>
               <Doughnut
                 width={180}
@@ -49,13 +73,11 @@ class Graphs extends React.Component {
                 data={createCircleGraphData(this.props.goals, list[key].key)}
               />
 
-              <p className="impact-graph-title home-page-graph-tweak" >
+              <p className="impact-graph-title home-page-graph-tweak">
                 <span
                   style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
                 >
-                  <b>
-                    {list[key].value}
-                  </b>
+                  <b>{list[key].value}</b>
                 </span>
                 {list[key].text}
               </p>
@@ -68,24 +90,23 @@ class Graphs extends React.Component {
   }
 
   render() {
-    var dumbycol = "";
-    if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
-      dumbycol = <article className={"column col-md-3"}></article>;
-    }
+    // var dumbycol = "";
+    // if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
+    //   dumbycol = <article className={"column col-md-3"}></article>;
+    // }
     return (
       <section className="fact-counter style-2 no-padd">
         <h4
           className="section-title text-center mob-cancel-title-white"
           style={{ fontSize: 20 }}
         >
-          Help Us Reach Our Goal
+          Help Us Reach Our Goals
         </h4>
         <div className="container">
           <div className="row no-gutter clearfix">
-            {dumbycol}
+            {/* {dumbycol} */}
             {this.renderGraphs(this.props.graphs)}
 
-            
             {/* <article
               className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
               data-wow-duration="0ms"
@@ -104,8 +125,14 @@ class Graphs extends React.Component {
           </div>
         </div>
         <center>
-              <Link to={this.props.links.impact} className="homepage-all-events-btn round-me">Our Impact</Link>
-            </center>
+          <Link
+            to={this.props.links.impact}
+            className="homepage-all-events-btn round-me"
+            style={{marginTop:20}}
+          >
+            Our Impact
+          </Link>
+        </center>
       </section>
     );
   }

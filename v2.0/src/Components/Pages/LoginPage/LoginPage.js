@@ -14,10 +14,12 @@ class LoginPage extends React.Component {
 	render() { //avoids trying to render before the promise from the server is fulfilled
 		//pull form from the url
 		// const params = new URLSearchParams(this.props.location.search)
-		// const returnpath = params.get('returnpath');
+    // const returnpath = params.get('returnpath');
+    const last_visited = localStorage.getItem("last_visited");
 		if (!this.state.tryingToLogin) {
-			if (this.props.user.info)
-				return <Redirect to={this.props.links.profile} />
+			if (this.props.user.info){
+				return <Redirect to={last_visited? last_visited: this.props.links.profile} />
+      }
 			if (this.props.auth.isLoaded && !this.props.auth.isEmpty)
 				return <Redirect to={this.props.links.signup} />
 		}
