@@ -56,6 +56,28 @@ class OneTeamPage extends React.Component {
     )[0];
     const teamLogo = team.logo;
 
+    const buttonOrInTeam = <>
+      {!this.inTeam(team.id) ?
+        <button
+
+          className="btn round-me join-team-btn raise"
+          onClick={() => {
+            this.setState({ teamModalOpen: true });
+          }}
+        >
+          Join Team
+      </button>
+        :
+        <div className="team-card-content">
+          <p
+            style={{ color: '#8dc63f', textAlign: 'center', margin: 0 }}>
+            &#10003; in this team
+       </p>
+        </div >
+      }
+    </>
+
+
     return (
       <>
 
@@ -80,43 +102,28 @@ class OneTeamPage extends React.Component {
           <div className='col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6' style={{ margin: 'auto' }}>
 
             <div className="team-card-column" style={{ margin: '0 auto' }}>
-              <div className="col-9 no-gutters" style={{ padding: 0, display: 'flex' }}>
-                {teamLogo ?
-                  <>
-                    <div className="team-card-column col-4">
-                      <img className='one-team-image team-card-content' src={teamLogo.url} alt="" />
-                    </div>
-                    <div className="team-card-column col-8">
-                      <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
-                    </div>
-                  </>
-                  :
-                  <div className="team-card-column">
+              {teamLogo ?
+                <>
+                  <div className="team-card-column col-3">
+                    <img className='one-team-image team-card-content' src={teamLogo.url} alt="" />
+                  </div>
+                  <div className="team-card-column col-6">
                     <h2 style={{ textAlign: 'center' }} className="cool-font team-card-content">{team.name}</h2>
                   </div>
-                }
-              </div>
-              <div className="team-card-column col-3" style={{ padding: 0 }}>
-                {!this.inTeam(team.id) ?
-                  <button
-
-                    className="btn round-me join-team-btn raise"
-                    onClick={() => {
-                      this.setState({ teamModalOpen: true });
-                    }}
-                  >
-                    Join Team
-                </button>
-                  :
-                  <div className="team-card-content">
-                    <p
-                      style={{ color: '#8dc63f', textAlign: 'center', margin: 0 }}>
-                      &#10003; in this team
-                  </p>
+                  <div className="team-card-column col-3" style={{ padding: 0 }}>
+                    {buttonOrInTeam}
                   </div>
-                }
-              </div>
-
+                </>
+                :
+                <>
+                  <div className="team-card-column col-9">
+                    <h2 style={{ textAlign: 'left' }} className="cool-font team-card-content">{team.name}</h2>
+                  </div>
+                  <div className="team-card-column col-3" style={{ padding: 0 }}>
+                    {buttonOrInTeam}
+                  </div>
+                </>
+              }
             </div>
 
             <div className="row">

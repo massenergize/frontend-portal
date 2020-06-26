@@ -118,7 +118,7 @@ class TeamsPage extends React.Component {
                 }
               </>
               :
-              <p>There are no teams in this community yet. You can start one by clicking the start team button at the bottom of the page!</p>
+              <p>There are no teams in this community yet. You can start one by clicking the start team button above!</p>
             }
           </div>
           <br />
