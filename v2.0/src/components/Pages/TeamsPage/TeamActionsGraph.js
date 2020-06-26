@@ -39,7 +39,7 @@ class TeamActionsGraph extends React.Component {
       return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
     if (!graphResponse)
-      return <p>The actions data for this team could not be loaded.</p >;
+      return <p className="error-p">The actions data for this team could not be loaded.</p >;
 
     let actions = {
       labels: [],
