@@ -11,13 +11,19 @@ class TeamMembersList extends React.Component {
     }
   }
 
-  fetch(id) {
-    apiCall('teams.members.preferredNames', { team_id: id }).then(json => {
-      if (json.success)
-        this.setState({ membersResponse: json.data, loading: false });
-    }).catch(err => {
-      this.setState({ error: err.message, loading: false });
-    }).finally(() => this.setState({ loading: false }));
+  async fetch(id) {
+    try {
+      const json = await apiCall("teams.members.preferredNames", { team_id: id });
+      if (json.success) {
+        this.setState({ membersResponse: json.data });
+      } else {
+        this.setState({ error: json.error });
+      }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidMount() {

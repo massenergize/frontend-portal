@@ -7,8 +7,7 @@ import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 class DonatePage extends React.Component {
 
 	render() {
-		// if(!this.props.homePageData) return <Error404 />
-		// if (!this.props.donatePage) return <p className='text-center'> <Error404 /></p>;
+		
 		const pageData = this.props.donatePage;
 		if (pageData == null) return <LoadingCircle />
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'

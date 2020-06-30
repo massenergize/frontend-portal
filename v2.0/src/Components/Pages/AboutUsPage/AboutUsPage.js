@@ -1,10 +1,10 @@
 import React from 'react'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Video from './Video'
+import { Redirect } from "react-router-dom";
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
-import Error404 from './../Errors/404';
 // Carousel from npm react-multi-carousel
 import 'react-multi-carousel/lib/styles.css';
 import LoadingCircle from '../../Shared/LoadingCircle'
@@ -16,7 +16,13 @@ class AboutUsPage extends React.Component {
 		
 		}
 		else if(this.props.pageData ==={} || this.props.community ==={}){
-		return 	<Error404 />
+      return <Redirect to={{
+        pathname: this.props.links.error,
+          state: {
+            errorMessage: "Data unavailable",
+            errorDescription: "Unable to load About Us data"
+          }
+      }} />
 		}
 
 		const pageData = this.props.pageData;
@@ -60,7 +66,8 @@ const mapStoreToProps = (store) => {
 		community: store.page.community,
 		communityAdmins: store.page.communityAdmins,
 		pageData: store.page.aboutUsPage,
-		homePageData:store.page.homePageData
+    homePageData: store.page.homePageData,
+    links: store.links,
 	}
 }
 

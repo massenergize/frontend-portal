@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import Error404 from "./../Errors/404";
+import { Redirect } from "react-router-dom";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -10,6 +10,7 @@ import TeamMembersList from "./TeamMembersList";
 import JoinTeamModal from "./JoinTeamModal";
 import LeaveTeamModal from "./LeaveTeamModal"
 import ContactAdminModal from "./ContactAdminModal";
+
 class OneTeamPage extends React.Component {
 
   constructor(props) {
@@ -22,17 +23,19 @@ class OneTeamPage extends React.Component {
     }
   }
 
-  fetch(id) {
-    apiCall('teams.info', { team_id: id }).then(json => {
+  async fetch(id) {
+    try {
+      const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
-        this.setState({
-          team: json.data,
-          loading: false
-        });
+        this.setState({ team: json.data });
+      } else {
+        this.setState({ error: json.error });
       }
-    }).catch(err => {
-      this.setState({ error: err.message, loading: false });
-    }).finally(() => this.setState({ loading: false }));
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidMount() {
@@ -47,8 +50,15 @@ class OneTeamPage extends React.Component {
     if (loading || !this.props.teamsPage) {
       return <LoadingCircle />;
     }
-    if (!team) {
-      return <Error404 />;
+    if (!team || this.state.error) {
+      return <Redirect to={{
+        pathname: this.props.links.error,
+        state: {
+          errorMessage: "Could not load this Team",
+          errorDescription: this.state.error ? this.state.error : "Unknown cause"
+        }
+      }} />;
+
     }
 
     const teamStats = this.props.teamsPage.filter(otherTeam =>

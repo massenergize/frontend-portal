@@ -2,7 +2,7 @@ import React from "react";
 import URLS from "../../../api/urls";
 import { postJson, apiCall, deleteJson } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
@@ -20,7 +20,6 @@ import {
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Error404 from "./../Errors/404";
 import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
 
@@ -63,16 +62,19 @@ class OneActionPage extends React.Component {
   //  }
   // }
 
-  fetch(id) {
-    apiCall("actions.info", { action_id: id })
-      .then((json) => {
-        if (json.success) {
-          this.setState({ action: json.data, loading: false });
-        }
-      })
-      .catch((err) => {
-        this.setState({ error: err.message, loading: false });
-      }).finally(() => this.setState({ loading: false }));
+  async fetch(id) {
+    try {
+      const json = await apiCall("actions.info", { action_id: id });
+      if (json.success) {
+        this.setState({ action: json.data });
+      } else {
+        this.setState({ error: json.error });
+      }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -81,8 +83,15 @@ class OneActionPage extends React.Component {
       return <LoadingCircle />;
     }
 
-    if (!action) {
-      return <Error404 />;
+    if (!action || this.state.error) {
+      return <Redirect to={{
+        pathname: this.props.links.error,
+        state: {
+          errorMessage: "Could not load this Action",
+          errorDescription: this.state.error ? this.state.error : "Unknown cause"
+        }
+      }} />;
+
     }
     this.chooseFontSize();
     return (
@@ -95,7 +104,7 @@ class OneActionPage extends React.Component {
               { name: action ? action.title : "..." }
             ]}
           />
-      
+
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
             <div className="container">
               <div
@@ -424,27 +433,27 @@ class OneActionPage extends React.Component {
                     {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-                  <div className="btn-envelope">
-                    {!this.props.user ? (
-                      <CustomTooltip text="Sign in to make a TODO list">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
-                          To Do
+                    <div className="btn-envelope">
+                      {!this.props.user ? (
+                        <CustomTooltip text="Sign in to make a TODO list">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
+                            To Do
                         </p>
-                      </CustomTooltip>
-                    ) : (
-                        this.checkTodoAndReturn()
-                      )}
+                        </CustomTooltip>
+                      ) : (
+                          this.checkTodoAndReturn()
+                        )}
                     &nbsp;
                     {!this.props.user ? (
-                      <CustomTooltip text="Sign in to mark actions as completed">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
-                          Done It
+                        <CustomTooltip text="Sign in to mark actions as completed">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
+                            Done It
                         </p>
-                      </CustomTooltip>
-                    ) : (
-                        this.checkDoneAndReturn()
-                      )}
-                      </div>
+                        </CustomTooltip>
+                      ) : (
+                          this.checkDoneAndReturn()
+                        )}
+                    </div>
                     {this.state.status ? (
                       <div style={{ paddingTop: "20px" }}>
                         <ChooseHHForm

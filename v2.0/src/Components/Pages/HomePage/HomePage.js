@@ -1,10 +1,10 @@
 import React from "react";
 import WelcomeImages from "../../Shared/WelcomeImages";
 import Graphs from "./Graphs";
+import { Redirect } from 'react-router-dom'
 import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import { connect } from "react-redux";
-import Error404 from "../Errors/404.js";
 
 /*
  * The Home Page of the MassEnergize
@@ -12,7 +12,13 @@ import Error404 from "../Errors/404.js";
 class HomePage extends React.Component {
   render() {
     if (!this.props.pageData) {
-      return <Error404 />;
+      return <Redirect to={{
+        pathname: this.props.links.error,
+        state: {
+          errorMessage: "Could not load Home Page"
+        }
+      }} />;
+
     }
     const comGoals = this.props.pageData ? this.props.pageData.goal : null;
     const communityDescription = this.props.pageData.description;
@@ -103,6 +109,7 @@ const mapStoreToProps = (store) => {
     pageData: store.page.homePage,
     events: store.page.events,
     graphsData: store.page.communityData,
+    links: store.links
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";
-import Error404 from "./../Errors/404";
+  
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +71,14 @@ class ServicesPage extends React.Component {
   }
   render() {
     if (!this.props.homePageData) {
-      return <Error404 />;
+      return <Redirect to={{
+        pathname: this.props.links.error,
+        state: {
+          errorMessage: "Data unavailable",
+          errorDescription: "Unable to load Service Provider data"
+        }
+      }} />;
+
     }
     var { serviceProviders } = this.props;
 

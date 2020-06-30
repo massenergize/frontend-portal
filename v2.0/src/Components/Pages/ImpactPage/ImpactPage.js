@@ -1,11 +1,11 @@
 import React from "react";
 import BarGraph from "../../Shared/BarGraph";
 import PageTitle from "../../Shared/PageTitle";
+import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { reduxLoadCommunitiesStats } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Error404 from "./../Errors/404";
 import 'chartjs-plugin-datalabels';
 import { Bar, Doughnut } from "react-chartjs-2";
 import {createCircleGraphData} from "./../../Utils";
@@ -22,9 +22,14 @@ class ImpactPage extends React.Component {
    
   render() {
     if (!this.props.comData) {
-      return (
-        <Error404 message="Sorry, there are no stats for this community yet " />
-      );
+      return <Redirect to={{
+        pathname: this.props.links.error,
+        state: {
+          errorMessage: "Data unavailable",
+          errorDescription: "Unable to load Impact data"
+        }
+      }} />;
+
     }
     const community = this.props.communityData
       ? this.props.comData.community
@@ -351,6 +356,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     tagCols: store.page.tagCols,
     comData: store.page.homePage,
+    links: store.links
   };
 };
 export default connect(mapStoreToProps, { reduxLoadCommunitiesStats })(
