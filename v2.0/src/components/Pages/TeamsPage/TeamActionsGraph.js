@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bar } from "react-chartjs-2";
 import { apiCall } from "../../../api/functions";
+import { IS_PROD } from '../../../config/config'
 
 class TeamActionsGraph extends React.Component {
 
@@ -13,7 +14,7 @@ class TeamActionsGraph extends React.Component {
   }
 
   fetch(id) {
-    apiCall('graphs.actions.completed.byTeam', { team_id: id }).then(json => {
+    apiCall('graphs.actions.completed.byTeam', { team_id: id, is_dev: !IS_PROD }).then(json => {
       if (json.success)
         this.setState({ graphResponse: json.data, loading: false });
     }).catch(err => {
