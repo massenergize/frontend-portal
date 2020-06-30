@@ -1,7 +1,7 @@
 import React from 'react'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Video from './Video'
-import { Redirect } from "react-router-dom";
+import ErrorPage from "./../Errors/ErrorPage"
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
@@ -16,13 +16,10 @@ class AboutUsPage extends React.Component {
 		
 		}
 		else if(this.props.pageData ==={} || this.props.community ==={}){
-      return <Redirect to={{
-        pathname: this.props.links.error,
-          state: {
-            errorMessage: "Data unavailable",
-            errorDescription: "Unable to load About Us data"
-          }
-      }} />
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load About Us data"
+      />;
 		}
 
 		const pageData = this.props.pageData;

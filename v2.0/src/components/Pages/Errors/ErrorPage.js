@@ -1,16 +1,19 @@
 import React from 'react';
 import oops from './oops.png';
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class ErrorPage extends React.Component {
 
   render() {
 
-    let errorMessage, errorDescription;
+    const errorMessage = this.props.errorMessage ?
+      "Error: " + this.props.errorMessage :
+      "An error occured.";
 
-    if (this.props.location.state) {
-      errorMessage = this.props.location.state.errorMessage && this.props.location.state.errorMessage;
-      errorDescription = this.props.location.state.errorDescription && this.props.location.state.errorDescription;
-    }
+    const errorDescription = this.props.errorDescription ?
+      this.props.errorDescription :
+      "The cause is unknown.";
 
     //TODO: describe the ways in which user can help report the error
 
@@ -19,16 +22,12 @@ class ErrorPage extends React.Component {
         <div className="boxed_wrapper" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
           <center>
             <img alt="404" src={oops} style={{ marginBottom: 20, height: 100, width: 100 }} />
-            {errorMessage ?
-              <h1 style={{ color: 'lightgray' }}>Error: {errorMessage}</h1>
-              :
-              <h1 style={{ color: 'lightgray' }}>An error has occured.</h1>
-            }
-            {errorDescription ?
-              <h3 className='text-center' style={{ marginBottom: 20, color: 'lightgray' }}> {errorDescription}</h3>
-              :
-              <h3 className='text-center' style={{ marginBottom: 20, color: 'lightgray' }}> We are unable to locate its source.</h3>
-            }
+            <h1 style={{ color: 'lightgray' }}>{errorMessage}</h1>
+            <h3 className='text-center' style={{ marginBottom: 20, color: 'lightgray' }}> {errorDescription}</h3>
+            <p className='text-center'>
+              <Link to={this.props.links.home} className="mass-domain-link ">
+                Return to Home Page
+              </Link> </p>
           </center>
 
         </div>
@@ -37,4 +36,10 @@ class ErrorPage extends React.Component {
   }
 }
 
-export default ErrorPage;
+const mapStoreToProps = (store) => {
+  return {
+    links: store.links
+  };
+};
+
+export default connect(mapStoreToProps, null)(ErrorPage);

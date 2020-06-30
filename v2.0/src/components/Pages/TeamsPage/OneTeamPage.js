@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import LoadingCircle from "../../Shared/LoadingCircle";
+import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamInfoBars from "./TeamInfoBars";
@@ -51,13 +51,10 @@ class OneTeamPage extends React.Component {
       return <LoadingCircle />;
     }
     if (!team || this.state.error) {
-      return <Redirect to={{
-        pathname: this.props.links.error,
-        state: {
-          errorMessage: "Could not load this Team",
-          errorDescription: this.state.error ? this.state.error : "Unknown cause"
-        }
-      }} />;
+      return <ErrorPage
+        errorMessage="Could not load this Team"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
 
     }
 

@@ -2,7 +2,7 @@ import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import { Redirect } from "react-router-dom";
+import ErrorPage from "./../Errors/ErrorPage"
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
@@ -22,7 +22,7 @@ class OneEventPage extends React.Component {
     try {
       const json = await apiCall("events.info", { event_id: id });
       if (json.success) {
-        this.setState({ event : json.data });
+        this.setState({ event: json.data });
       } else {
         this.setState({ error: json.error });
       }
@@ -46,14 +46,10 @@ class OneEventPage extends React.Component {
       return <LoadingCircle />;
     }
     if (!event || this.state.error) {
-      return <Redirect to={{
-        pathname: this.props.links.error,
-        state: {
-          errorMessage: "Could not load this Event",
-          errorDescription: this.state.error ? this.state.error : "Unknown cause"
-        }
-      }} />;
-
+      return <ErrorPage
+        errorMessage="Could not load this Event"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
     }
 
     return (
@@ -63,7 +59,7 @@ class OneEventPage extends React.Component {
             links={[
               { link: this.props.links.events, name: "Events" },
               // { name: `Event ${event ? event.id : "..."}` },
-              {name: event ? event.name: "..."}
+              { name: event ? event.name : "..." }
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>

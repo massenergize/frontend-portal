@@ -2,7 +2,8 @@ import React from 'react'
 import "react-datepicker/dist/react-datepicker.css"
 import PageTitle from '../../Shared/PageTitle';
 import LoadingCircle from '../../Shared/LoadingCircle'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import ErrorPage from "./../Errors/ErrorPage"
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 // import CONST from '../../Constants'
@@ -107,13 +108,10 @@ class EventsPage extends React.Component {
     }
 
     if (!this.props.homePageData)
-      return <Redirect to={{
-      pathname: this.props.links.error,
-      state: {
-        errorMessage: "Data unavailable",
-        errorDescription: "Unable to load Events data"
-      }
-    }} />;
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Events data"
+      />;
 
 		
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();

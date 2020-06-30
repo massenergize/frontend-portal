@@ -2,8 +2,9 @@ import React from "react";
 import URLS from "../../../api/urls";
 import { postJson, apiCall, deleteJson } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
 import ChooseHHForm from "./ChooseHHForm";
@@ -84,14 +85,10 @@ class OneActionPage extends React.Component {
     }
 
     if (!action || this.state.error) {
-      return <Redirect to={{
-        pathname: this.props.links.error,
-        state: {
-          errorMessage: "Could not load this Action",
-          errorDescription: this.state.error ? this.state.error : "Unknown cause"
-        }
-      }} />;
-
+      return <ErrorPage
+        errorMessage="Could not load this Action"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
     }
     this.chooseFontSize();
     return (

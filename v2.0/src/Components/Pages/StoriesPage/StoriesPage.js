@@ -1,7 +1,8 @@
 import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorPage from "./../Errors/ErrorPage";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
@@ -80,13 +81,10 @@ class StoriesPage extends React.Component {
   }
   render() {
     if (!this.props.pageData)
-      return <Redirect to={{
-        pathname: this.props.links.error,
-        state: {
-          errorMessage: "Data unavailable",
-          errorDescription: "Unable to load Testimonials data"
-        }
-      }} />;
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Testimonials data"
+      />;
 
     const stories =
       this.findCommon().length > 0 ? this.findCommon() : this.props.stories;

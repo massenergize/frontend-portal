@@ -1,7 +1,7 @@
 import React from "react";
 import BarGraph from "../../Shared/BarGraph";
 import PageTitle from "../../Shared/PageTitle";
-import { Redirect } from 'react-router-dom'
+import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { reduxLoadCommunitiesStats } from "../../../redux/actions/pageActions";
@@ -22,13 +22,11 @@ class ImpactPage extends React.Component {
    
   render() {
     if (!this.props.comData) {
-      return <Redirect to={{
-        pathname: this.props.links.error,
-        state: {
-          errorMessage: "Data unavailable",
-          errorDescription: "Unable to load Impact data"
-        }
-      }} />;
+      return <ErrorPage
+      errorMessage="Page not found"
+      errorDescription="The page you are trying to access does not exist"
+    />
+
 
     }
     const community = this.props.communityData

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import ErrorPage from "./../Errors/ErrorPage"
 import LoadingCircle from '../../Shared/LoadingCircle'
 import URLS from '../../../api/urls';
 import { apiCall, postJson } from '../../../api/functions'
@@ -40,13 +41,11 @@ class ActionsPage extends React.Component {
     }
 
     if (!this.props.homePageData)
-      return <Redirect to={{
-      pathname: this.props.links.error,
-      state: {
-        errorMessage: "Data unavailable",
-        errorDescription: "Unable to load Actions data"
-      }
-      }} />;
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Actions data"
+      />;
+
 
 		var actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		actions = actions ? actions.sort((a,b)=>{return a.rank - b.rank}): actions;
