@@ -83,10 +83,6 @@ export function locationFormatJSX(location) {
   );
 }
 
-export function addCommasToNumber(x) {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
-
 export function createCircleGraphData(goalObj, which) {
   if (goalObj === null) return {};
   switch (which) {
