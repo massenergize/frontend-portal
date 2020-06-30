@@ -6,7 +6,6 @@ import ErrorPage from "./../Errors/ErrorPage"
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
-import oops from "./oops.png";
 
 class OneEventPage extends React.Component {
 
