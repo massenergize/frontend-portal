@@ -86,7 +86,7 @@ class OneActionPage extends React.Component {
 
     if (!action || this.state.error) {
       return <ErrorPage
-        errorMessage="Could not load this Action"
+        errorMessage="Unable to load this Action"
         errorDescription={this.state.error ? this.state.error : "Unknown cause"}
       />;
     }

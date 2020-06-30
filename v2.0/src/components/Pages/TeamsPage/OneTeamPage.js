@@ -52,7 +52,7 @@ class OneTeamPage extends React.Component {
     }
     if (!team || this.state.error) {
       return <ErrorPage
-        errorMessage="Could not load this Team"
+        errorMessage="Unable to load this Team"
         errorDescription={this.state.error ? this.state.error : "Unknown cause"}
       />;
 

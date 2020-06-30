@@ -23,8 +23,8 @@ class ImpactPage extends React.Component {
   render() {
     if (!this.props.comData) {
       return <ErrorPage
-      errorMessage="Page not found"
-      errorDescription="The page you are trying to access does not exist"
+      errorMessage="Data unavailable"
+      errorDescription="Unable to load Impact data"
     />
 
 

@@ -47,7 +47,7 @@ class OneEventPage extends React.Component {
     }
     if (!event || this.state.error) {
       return <ErrorPage
-        errorMessage="Could not load this Event"
+        errorMessage="Unable to load this Event"
         errorDescription={this.state.error ? this.state.error : "Unknown cause"}
       />;
     }
