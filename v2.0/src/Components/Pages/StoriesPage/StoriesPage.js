@@ -2,11 +2,11 @@ import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorPage from "./../Errors/ErrorPage";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
 import Funnel from "./../EventsPage/Funnel";
-import Error404 from "./../Errors/404";
 import leafy from "./leafy.png";
 import StoryModal from "./StoryModal";
 import * as moment from 'moment';
@@ -81,12 +81,10 @@ class StoriesPage extends React.Component {
   }
   render() {
     if (!this.props.pageData)
-      return (
-        <p className="text-center">
-          {" "}
-          <Error404 />
-        </p>
-      );
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Testimonials data"
+      />;
 
     const stories =
       this.findCommon().length > 0 ? this.findCommon() : this.props.stories;

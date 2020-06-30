@@ -3,11 +3,11 @@ import "react-datepicker/dist/react-datepicker.css"
 import PageTitle from '../../Shared/PageTitle';
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
+import ErrorPage from "./../Errors/ErrorPage"
 import { connect } from 'react-redux'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 // import CONST from '../../Constants'
 import Funnel from './Funnel';
-import Error404 from './../Errors/404';
 import notFound from './not-found.jpg';
 import { dateFormatString, locationFormatJSX } from '../../Utils';
 
@@ -101,8 +101,18 @@ class EventsPage extends React.Component {
 			</div>
 		);
 	}
-	render() {
-		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
+  render() {
+    
+    if (!this.props.events || !this.props.tagCols) {
+      return <LoadingCircle />;
+    }
+
+    if (!this.props.homePageData)
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Events data"
+      />;
+
 		
 		const found = this.state.mirror_events.length > 0 ? this.state.mirror_events : this.findCommon();
 		return (
@@ -116,8 +126,7 @@ class EventsPage extends React.Component {
 							<div className="container">
 								<div className="row">
 									<div className="col-lg-3 col-md-3 col-12" style={{paddingTop:35}}>
-										{this.props.tagCols ?
-											this.renderSideBar() : <LoadingCircle />}
+										{this.renderSideBar()}
 									</div>
 									<div className="col-lg-9 col-md-9 col-12" >
 										<PageTitle>Events and Campaigns</PageTitle>
@@ -145,7 +154,7 @@ class EventsPage extends React.Component {
 		if (this.state.mirror_events.length === 0) {
 			events = this.state.check_values === null ? this.props.events : events;
 		}
-		if (!this.props.events || this.props.events.length === 0) {
+		if (this.props.events.length === 0) {
 			return (
 				<div className='text-center'>
 					<p className="cool-font"> Sorry, looks like there are no upcoming events in your community </p>

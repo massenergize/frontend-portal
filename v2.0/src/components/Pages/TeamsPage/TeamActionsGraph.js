@@ -13,13 +13,19 @@ class TeamActionsGraph extends React.Component {
     }
   }
 
-  fetch(id) {
-    apiCall('graphs.actions.completed.byTeam', { team_id: id, is_dev: !IS_PROD }).then(json => {
-      if (json.success)
-        this.setState({ graphResponse: json.data, loading: false });
-    }).catch(err => {
-      this.setState({ error: err.message, loading: false });
-    }).finally(() => this.setState({ loading: false }));
+  async fetch(id) {
+    try {
+      const json = await apiCall("graphs.actions.completed.byTeam", { team_id: id, is_dev: !IS_PROD });
+      if (json.success) {
+        this.setState({ graphResponse: json.data });
+      } else {
+        this.setState({ error: json.error });
+      }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidMount() {

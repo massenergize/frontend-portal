@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Switch, Route } from "react-router-dom";
 import NavBarBurger from "./components/Menu/NavBarBurger";
-import NavBarOffset from "./components/Menu/NavBarOffset";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
@@ -27,7 +26,8 @@ import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
 
-import Error404 from "./components/Pages/Errors/404";
+import ErrorPage from "./components/Pages/Errors/ErrorPage"
+
 import {
   reduxLoadCommunity,
   reduxLoadHomePage,
@@ -92,7 +92,7 @@ class AppRouter extends Component {
       signup: `/${subdomain}/signup`,
       profile: `/${subdomain}/profile`,
       policies: `/${subdomain}/policies`,
-      contactus: `/${subdomain}/contactus`,
+      contactus: `/${subdomain}/contactus`
     });
 
     // for lazy loading: load these first
@@ -336,10 +336,12 @@ class AppRouter extends Component {
             <Route path={links.profile} component={ProfilePage} />
             <Route path={links.policies} component={PoliciesPage} />
             <Route path={links.contactus} component={ContactPage} />
-            <Route
-              component={() => {
-                return <Error404 />;
-              }}
+            <Route component={() => 
+               <ErrorPage
+                 errorMessage="Page not found"
+                 errorDescription="The page you are trying to access does not exist"
+               />
+              }
             />
           </Switch>
         )}
