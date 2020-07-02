@@ -4,6 +4,7 @@ import { postJson, apiCall, deleteJson } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
 import ChooseHHForm from "./ChooseHHForm";
@@ -20,8 +21,8 @@ import {
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Error404 from "./../Errors/404";
 import * as moment from "moment";
+import CustomTooltip from "../Widgets/CustomTooltip";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -62,16 +63,19 @@ class OneActionPage extends React.Component {
   //  }
   // }
 
-  fetch(id) {
-    apiCall("actions.info", { action_id: id })
-      .then((json) => {
-        if (json.success) {
-          this.setState({ action: json.data, loading: false });
-        }
-      })
-      .catch((err) => {
-        this.setState({ error: err.message, loading: false });
-      }).finally(() => this.setState({ loading: false }));
+  async fetch(id) {
+    try {
+      const json = await apiCall("actions.info", { action_id: id });
+      if (json.success) {
+        this.setState({ action: json.data });
+      } else {
+        this.setState({ error: json.error });
+      }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -80,8 +84,11 @@ class OneActionPage extends React.Component {
       return <LoadingCircle />;
     }
 
-    if (!action) {
-      return <Error404 />;
+    if (!action || this.state.error) {
+      return <ErrorPage
+        errorMessage="Unable to load this Action"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
     }
     this.chooseFontSize();
     return (
@@ -94,6 +101,7 @@ class OneActionPage extends React.Component {
               { name: action ? action.title : "..." }
             ]}
           />
+
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
             <div className="container">
               <div
@@ -273,18 +281,18 @@ class OneActionPage extends React.Component {
 
     if (this.checkDone()) {
       return (
-        <Tooltip text="Can't use this feature, you have already done the action">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me todo-correction">
+        <CustomTooltip text="Can't use this feature, you have already done the action">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me ">
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     }
     if (exists) {
       return (
-        <Tooltip text="Thank you for adding this. Click again to remove.">
+        <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me todo-correction"
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me"
             onClick={() => {
               this.setState({ showTodoMsg: false })
               this.removeFromCart(this.actionIsInTodo());
@@ -292,7 +300,7 @@ class OneActionPage extends React.Component {
           >
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
@@ -319,9 +327,10 @@ class OneActionPage extends React.Component {
   checkDoneAndReturn() {
     if (this.checkDone()) {
       return (
-        <Tooltip text="Thanks for adding, click again to remove.">
+
+        <CustomTooltip text="Thanks for adding, click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange line-me done-it-correction"
+            className="thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
               this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
@@ -329,7 +338,7 @@ class OneActionPage extends React.Component {
           >
             Done It
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
@@ -421,25 +430,27 @@ class OneActionPage extends React.Component {
                     {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-                    {!this.props.user ? (
-                      <Tooltip text="Sign in to make a TODO list">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font">
-                          To Do
+                    <div className="btn-envelope">
+                      {!this.props.user ? (
+                        <CustomTooltip text="Sign in to make a TODO list">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
+                            To Do
                         </p>
-                      </Tooltip>
-                    ) : (
-                        this.checkTodoAndReturn()
-                      )}
+                        </CustomTooltip>
+                      ) : (
+                          this.checkTodoAndReturn()
+                        )}
                     &nbsp;
                     {!this.props.user ? (
-                      <Tooltip text="Sign in to mark actions as completed">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me done-it mob-font">
-                          Done It
+                        <CustomTooltip text="Sign in to mark actions as completed">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
+                            Done It
                         </p>
-                      </Tooltip>
-                    ) : (
-                        this.checkDoneAndReturn()
-                      )}
+                        </CustomTooltip>
+                      ) : (
+                          this.checkDoneAndReturn()
+                        )}
+                    </div>
                     {this.state.status ? (
                       <div style={{ paddingTop: "20px" }}>
                         <ChooseHHForm

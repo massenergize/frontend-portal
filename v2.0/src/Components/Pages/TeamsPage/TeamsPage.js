@@ -1,474 +1,233 @@
 import React from "react";
 import { connect } from "react-redux";
-import Tooltip from "../../Shared/Tooltip";
-import Table from "react-bootstrap/Table";
-import { apiCall } from "../../../api/functions";
-import teams_pop from "./teams_pop.jpg";
-
-import {
-  reduxJoinTeam,
-  reduxLeaveTeam,
-} from "../../../redux/actions/userActions";
-import {
-  reduxAddTeamMember,
-  reduxRemoveTeamMember,
-} from "../../../redux/actions/pageActions";
-import { Link } from "react-router-dom";
+import PageTitle from '../../Shared/PageTitle';
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import ContactModal from "../../Shared/ContactModal";
-import Modal from "../../Shared/DescModal";
 import LoadingCircle from "../../Shared/LoadingCircle";
+import TeamInfoBars from "./TeamInfoBars";
+import { Link } from "react-router-dom";
 
 class TeamsPage extends React.Component {
+
   constructor(props) {
     super(props);
-    this.handleText = this.handleText.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
     this.state = {
-      wholeContent: null,
-      teamsCarbonDetails: [],
-      contact_modal_toggled: false,
-      current_team_id: null,
-      contact_content: { title: "", msg: "" },
-      modal_toggled: false,
-      modal_content: { title: "...", desc: "..." },
-      alert: false,
-      sorted_Teams: null,
-      sorting: false
-    };
-    this.toggleModal = this.toggleModal.bind(this);
-  }
-  renderModal = () => {
-    if (this.state.modal_toggled)
-      return (
-        <Modal content={this.state.modal_content} toggler={this.toggleModal} />
-      );
-  };
-  setModalContent = (title, desc) => {
-    this.setState({ modal_content: { title: title, desc: desc } });
-  };
-  renderContactModal = () => {
-    if (this.state.contact_modal_toggled)
-      return (
-        <ContactModal
-          content={this.state.modal_content}
-          handleTextFxn={this.handleText}
-          sendMessageFxn={this.sendMessage}
-          toggler={this.toggleContact}
-        />
-      );
-  };
-  handleText = (event) => {
-    const old = this.state.contact_content;
-    const newOne = { ...old, [event.target.name]: event.target.value };
-    this.setState({ contact_content: newOne });
-  };
-  sendMessage = () => {
-    var spinner = document.getElementById("sender-spinner");
-    var msg = this.state.contact_content.msg.trim();
-    var title = this.state.contact_content.title.trim();
-    const body = {
-      team_id: this.state.current_team_id,
-      title: title,
-      message: msg,
-    };
-    const me = this;
-    if (msg !== "" && title !== "") {
-      spinner.style.display = "block";
-      apiCall(`teams.contactAdmin`, body).then((json) => {
-        document.getElementById("contact-textarea").value = "";
-        document.getElementById("contact-title").value = "";
-        spinner.style.display = "none";
-        me.toggleContact();
-        this.setState({ alert: true });
-      });
-    } else {
-      alert("Please add a message & title!");
-    }
-  };
-
-  toggleContact = () => {
-    var val = this.state.contact_modal_toggled;
-    this.setState({ contact_modal_toggled: !val });
-  };
-  toggleModal = () => {
-    var val = this.state.modal_toggled;
-    this.setState({ modal_toggled: !val });
-  };
-  showAlert = () => {
-    if (this.state.alert) {
-      return (
-        <div>
-          <p className="alert alert-success alert-dismissible fade show">
-            Your message was successfully sent!
-            <button
-              type="button"
-              className="close"
-              onClick={() => {
-                this.setState({ alert: false });
-              }}
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </p>
-        </div>
-      );
-    }
-  };
-
-  sortByNumberOfHouseholds() {
-    this.showSortNotification(true);
-    var set = this.props.teamsPage;
-    if (set) {
-      var rebuilt = set.sort((a, b) => {
-        return b.households - a.households;
-      });
-      this.showSortNotification(false);
-      this.setState({ sorted_Teams: rebuilt });
+      searchedTeams: [],
+      searching: false,
+      joiningTeamID: null
     }
   }
 
-  sortByActionsCompleted() {
-    this.showSortNotification(true);
-    var set = this.props.teamsPage;
-    if (set) {
-      var rebuilt = set.sort((a, b) => {
-        return b.actions_completed - a.actions_completed;
-      });
+  handleSearch(event) {
+    const query = event.target.value.trim();
+    if (query === "" || this.props.teamsPage.length === 0) {
+      this.setState({ searching: false });
+      return;
+    }
 
-      this.showSortNotification(false);
-      this.setState({ sorted_Teams: rebuilt });
+    let allTeamStats = this.props.teamsPage;
+    let searchedTeamStats = [];
+    for (var i = 0; i < allTeamStats.length; i++) {
+      const teamStats = allTeamStats[i];
+      if (teamStats.team.name.toLowerCase().includes(query.toLowerCase())) {
+        searchedTeamStats.push(teamStats);
+      }
     }
+    this.setState({
+      searchedTeams: searchedTeamStats,
+      searching: true
+    });
   }
-  findAverage(actionsNo, households) {
-    var number = Number(actionsNo) / households;
-    number = !isNaN(number) ? number.toFixed(1) : 0;
-    return number;
-  }
-  sortByActionsPerHousehold() {
-    this.showSortNotification(true);
-    var set = this.props.teamsPage;
-    if (set) {
-      var rebuilt = set.sort((a, b) => {
-        return (
-          this.findAverage(b.actions_completed, b.households) -
-          this.findAverage(a.actions_completed, a.households)
-        );
-      });
 
-      this.showSortNotification(false);
-      this.setState({ sorted_Teams: rebuilt });
-    }
-  }
-  sortByCarbonImpact() {
-    this.showSortNotification(true);
-    var set = this.props.teamsPage;
-    if (set) {
-      var rebuilt = set.sort((a, b) => {
-        return b.carbon_footprint_reduction - a.carbon_footprint_reduction;
-      });
-
-      this.showSortNotification(false);
-      this.setState({ sorted_Teams: rebuilt });
-    }
-  }
-  sortByTeamName() {
-    this.showSortNotification(true);
-    var set = this.props.teamsPage;
-    if (set) {
-      var rebuilt = set.sort((a, b) => {
-        if (a.team.name.toLowerCase() > b.team.name.toLowerCase()) return 1;
-        if (a.team.name.toLowerCase() < b.team.name.toLowerCase()) return -1;
-        return 0;
-      });
-
-      this.showSortNotification(false);
-      this.setState({ sorted_Teams: rebuilt });
-      
-    }
-  }
-  showSortNotification(which) {
-    if(which){
-      this.setState({sorting:which});
-    }else{
-      setTimeout(() => {
-        this.setState({sorting:which})
-      }, 400);
-    }
-  }
 
   render() {
-    const teams = this.props.teamsPage;
-    if (teams === null) {
+    const teamsStats = this.props.teamsPage;
+    if (teamsStats === null) {
       return (
         <div className="boxed_wrapper">
-          {/* <h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Sorry, there are not teams for this community yet :( </h2> */}
           <LoadingCircle />
         </div>
       );
-    } else if (teams.length === 0) {
-      return (
-        <div className="boxed_wrapper">
-          <h2
-            className="text-center"
-            style={{
-              color: "#9e9e9e",
-              margin: "190px 150px",
-              padding: "30px",
-              border: "solid 2px #fdf9f9",
-              borderRadius: 10,
-            }}
-          >
-            {" "}
-            Sorry, there are not teams for this community yet :({" "}
-          </h2>
-          {/* <LoadingCircle /> */}
-        </div>
-      );
     }
+
     return (
       <>
-        {this.renderContactModal()}
-        {this.renderModal()}
+
         <div className="boxed_wrapper">
+
           <BreadCrumbBar links={[{ name: "Teams" }]} />
-          <div
-            className="p-5"
-            style={{ height: window.screen.height - 120, marginTop: -77 }}
-          >
-            {/* <PageTitle>Teams in this Community</PageTitle> */}
+          <div className='col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8' style={{ margin: 'auto' }}>
+
+            <PageTitle style={{ margin: "0 30px" }}>Teams in {this.props.communityData.community.name}</PageTitle>
             <center>
-              <img
-                src={teams_pop}
-                alt=""
-                style={{ width: 409, margin: 15, marginLeft: "-8%" }}
-              />
-              <br />
-              <p style={{ color: "black" }}>
-                A team is a group in a community that wants to work together. It
-                could be a school, congregation,
-                <br />a group of neighbors or friends, a sports team. Get
+              <p>
+                Groups collaborating: schools, congregations, neighborhoods, sports teams, and more. Get
                 creative!
               </p>
-              <button
-                onClick={() => {
-                  window.open(this.props.links.contactus, "_blank");
-                }}
-                className="btn btn-success round-me req-team-btn raise"
-              >
-                Request Team Creation
-              </button>{" "}
-              <br />
-              {this.state.sorting ? (
-                <p className="text text-success teams-sort-not">
-                  <i className="fa fa-spinner fa-spin"></i> Rearranging teams...{" "}
-                </p>
-              ) : null}
+
+              {/* This is a version that includes a "compare teams" button*/}
+              {/* <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+                <div className="col-12 col-md-8" style={{ paddingRight: '8px', paddingBottom: '10px' }}>
+                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+                </div>
+                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
+                  <button
+                    className="btn round-me start-team-btn raise"
+                    onClick={() => {
+                      window.open(this.props.links.contactus, "_blank");
+                    }}
+                  >
+                    Start Team
+                    </button>
+                </div>
+                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
+                  <Link to={`${this.props.links.teams + "/compare"}`} style={{ height: "100%" }}>
+                    <button className="btn round-me comp-teams-btn raise">
+                      Compare Teams
+                      </button>
+                  </Link>
+                </div>
+              </div> */}
+
+              <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+                <div className="col-9">
+                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+                </div>
+                <div className="col-3">
+                  <button
+                    className="btn round-me start-team-btn raise"
+                    onClick={() => {
+                      window.open(this.props.links.contactus, "_blank");
+                    }}
+                  >
+                    Start Team
+                    </button>
+                </div>
+              </div>
+
             </center>
-            <p
-              className="mob-appear"
-              style={{ color: "rgb(116, 176, 229)", textAlign: "center" }}
-            >
-              <i className="fa fa-backward" /> Swipe on your screen to the left,
-              to see all table content <i className="fa fa-backward" />{" "}
-            </p>
-            <Table bordered hover responsive className="teams-table">
-              <thead>
-                <tr>
-                  <th className="fake-show">Team Image </th>
-                  <th
-                    className="sort-btns"
-                    onClick={() => {
-                      this.sortByTeamName();
-                    }}
-                  >
-                    <Tooltip
-                      text="Click this to sort by team name"
-                      dir="bottom"
-                    >
-                      <span className="has-tooltip"> Team Name</span>
-                    </Tooltip>
-                  </th>
-                  <th
-                    className="sort-btns"
-                    onClick={() => {
-                      this.sortByNumberOfHouseholds();
-                    }}
-                  >
-                    <Tooltip
-                      text="Click this to sort by number of households in a team"
-                      dir="bottom"
-                    >
-                      <span className="has-tooltip">Households</span>
-                    </Tooltip>
-                  </th>
-                  <th
-                    className="sort-btns"
-                    onClick={() => {
-                      this.sortByActionsCompleted();
-                    }}
-                  >
-                    <Tooltip
-                      text="Click this to sort by number of actions completed by members of a team"
-                      dir="bottom"
-                    >
-                      <span className="has-tooltip">Actions Completed</span>
-                    </Tooltip>
-                  </th>
-                  <th
-                    className="sort-btns"
-                    onClick={() => {
-                      this.sortByActionsPerHousehold();
-                    }}
-                  >
-                    <Tooltip
-                      text="Click this to sort by number of actions per household"
-                      dir="bottom"
-                    >
-                      <span className="has-tooltip">Actions / Household</span>
-                    </Tooltip>
-                  </th>
-                  <th
-                    className="sort-btns"
-                    onClick={() => {
-                      this.sortByCarbonImpact();
-                    }}
-                  >
-                    <Tooltip
-                      text="Estimated total impact in pounds of CO2-equivalent emissions per year avoided by the actions taken by team members"
-                      dir="bottom"
-                    >
-                      <span className="has-tooltip">Carbon Impact</span>
-                    </Tooltip>
-                  </th>
-                  <th>Contact</th>
-                  <th>Join</th>
-                </tr>
-              </thead>
-              <tbody>{this.renderTeamsData(teams)}</tbody>
-            </Table>
-            {this.showAlert()}
+
+            <br />
+
+            {teamsStats.length > 0 ?
+              <>
+                {
+                  this.state.searching ?
+                    this.renderTeams(this.state.searchedTeams)
+                    :
+                    this.renderTeams(teamsStats)
+                }
+              </>
+              :
+              <p>There are no teams in this community yet. You can start one by clicking the start team button above!</p>
+            }
           </div>
+          <br />
         </div>
       </>
     );
   }
 
-  renderTeamsData(teamsData) {
-    var teamsSorted = teamsData.slice(0);
-    for (let i = 0; i < teamsSorted.length; i++) {
-      let members = teamsSorted[i].members;
-      //let households = teamsSorted[i].households;
-      let actions_completed = teamsSorted[i].actions_completed;
-      var avrg = Number(actions_completed) / Number(members);
-      avrg = !isNaN(avrg) ? avrg.toFixed(1) : 0;
-      teamsSorted[i]["avrgActionsPerMember"] = avrg;
-    }
+  renderTeams(teamsStats) {
 
-    teamsSorted = teamsSorted.sort((a, b) => {
-      return b.avrgActionsPerMember - a.avrgActionsPerMember;
-    });
-
-    //"force-listen" to the user requested sort
-    teamsSorted = this.state.sorted_Teams
-      ? this.state.sorted_Teams
-      : teamsSorted;
-    return teamsSorted.map((obj, index) => {
-      const logo = obj.team.logo ? obj.team.logo.url : null;
-
-      const desc =
-        obj.team.description.length > 70
-          ? obj.team.description.substr(0, 70) + "..."
-          : obj.team.description;
+    if (!this.props.user) {
       return (
-        <tr key={index.toString()}>
-          {logo ? (
-            <td>
-              <img src={logo} alt="" className="team-img"></img>
-            </td>
-          ) : (
-            <td></td>
-          )}
+        <>
+          <p>Click on a team below to join it!</p>
+          <hr></hr>
+          {teamsStats.length > 0 ?
+            teamsStats.map(teamStats => this.renderTeam(teamStats))
+            :
+            <p>None of the teams match your search.</p>
+          }
+        </>
+      )
 
-          <td>
-            {obj.team.name}
-            <Tooltip title={obj.team.name} text={desc} dir="right">
-              <div>
-                <small
-                  className="more-hyperlink"
-                  onClick={() => {
-                    this.setModalContent(obj.team.name, obj.team.description);
-                    this.toggleModal();
-                  }}
-                >
-                  More...
-                </small>
-              </div>
-            </Tooltip>
-          </td>
-          <td>{obj.households}</td>
-          <td>{obj.actions_completed}</td>
-          <td>{obj.avrgActionsPerMember}</td>
-          <td>{obj.carbon_footprint_reduction}</td>
-          {this.props.user ? (
-            <td>
-              <center>
-                <button
-                  className="contact-admin-btn round-me"
-                  onClick={() => {
-                    this.setModalContent(obj.team.name, obj.team.description);
-                    this.setState({
-                      contact_modal_toggled: true,
-                      current_team_id: obj.team.id,
-                    });
-                  }}
-                >
-                  Contact
-                </button>
-              </center>
-            </td>
-          ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to contact admin
-            </td>
-          )}
-          {this.props.user ? (
-            <td>
-              {this.inTeam(obj.team.id) ? (
-                <Tooltip text="This will remove you from the team">
-                  <button
-                    className="thm-btn red round-me team-btn-edit"
-                    onClick={() => {
-                      this.leaveTeam(this.props.user, obj.team);
-                    }}
-                  >
-                    <i className="fa fa-trash"> </i>
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip text="This will add you to the team">
-                  <button
-                    className="thm-btn round-me team-btn-edit"
-                    onClick={() => {
-                      this.joinTeam(obj.team);
-                    }}
-                  >
-                    <i className="fa fa-user-plus"></i>{" "}
-                  </button>
-                </Tooltip>
-              )}
-            </td>
-          ) : (
-            <td>
-              <Link to={this.props.links.signin}>Sign In</Link> to join a team
-            </td>
-          )}
-          {/* <td>{obj.ghgSaved}</td> */}
-        </tr>
+    } else {
+
+      const [myTeams, otherTeams] = teamsStats.reduce(([pass, fail], team) => {
+        return this.inTeam(team.team.id) ? [[...pass, team], fail] : [pass, [...fail, team]];
+      }, [[], []]);
+      const userInNoTeams = !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(true));
+      const userInAllTeams = !(this.props.teamsPage.map(teamStats => this.inTeam(teamStats.team.id)).includes(false));
+
+      let myTeamsContent;
+      let otherTeamsContent;
+
+      if (userInNoTeams) {
+        myTeamsContent = <p>You have not joined any teams. Explore the teams in this community below.</p>;
+      } else if (myTeams.length > 0) {
+        myTeamsContent = <div>
+          {myTeams.map(teamStats => this.renderTeam(teamStats))}
+        </div>;
+      } else {
+        myTeamsContent = <p>None of your teams match the search.</p>;
+      }
+
+      if (userInAllTeams) {
+        otherTeamsContent = <p>You are a member of every team in this community!</p>;
+      } else if (otherTeams.length > 0) {
+        otherTeamsContent = <div>
+          {otherTeams.map(teamStats => this.renderTeam(teamStats))}
+        </div>;
+      } else {
+        otherTeamsContent = <p>None of the other teams match the search.</p>;
+      }
+
+      return (
+        <div>
+          <h3 className="teams-subheader">My Teams</h3>
+          {myTeamsContent}
+          <hr></hr>
+          <h3 className="teams-subheader">Other Teams</h3>
+          {otherTeamsContent}
+        </div >
       );
-    });
+    }
   }
+
+  renderTeam(teamStats) {
+    const teamObj = teamStats.team;
+    const teamLogo = teamObj.logo;
+
+    //to be replaced by a team tagline, inherently limited to some amount of characters
+    const teamDescription = teamObj.description.length > 70 ?
+      teamObj.description.substring(0, 70) + "..."
+      : teamObj.description;
+
+    return (
+      <div className="team-card" key={teamObj.id}>
+        <Link to={`${this.props.links.teams + "/" + teamObj.id} `} style={{ width: '100%' }}>
+          <div className="row no-gutter flex" style={{ width: '100%', height: '100%' }}>
+            <div className="col-sm-3 team-card-column">
+              <div className="team-card-content">
+                <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
+                <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamDescription}</p>
+              </div>
+            </div>
+            <div className="col-sm-9">
+              <div className="row" style={{ margin: '0 auto' }}>
+                {teamLogo ?
+                  <>
+                    <div className="col-8 team-card-column">
+                      <TeamInfoBars teamStats={teamStats} />
+                    </div>
+                    <div className="col-4 team-card-column">
+                      <img className='team-card-img' src={teamLogo.url} alt="" />
+                    </div>
+                  </>
+                  :
+                  <div className="team-card-column">
+                    <TeamInfoBars teamStats={teamStats} />
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </Link>
+      </div >
+    );
+  }
+
   inTeam = (team_id) => {
     if (!this.props.user) {
       return false;
@@ -480,82 +239,14 @@ class TeamsPage extends React.Component {
     );
   };
 
-  goalsList = (team_id) => {
-    const body = {
-      team_id: team_id,
-    };
-    return apiCall(`goals.list`, body);
-  };
-
-  leaveTeam = (user, team) => {
-    const body = {
-      team_id: team.id,
-      user_id: user.id,
-    };
-    apiCall(`teams.leave`, body)
-      .then((json) => {
-        // speed up by using redux store
-        if (json.success) {
-          this.props.reduxLeaveTeam(team);
-          this.props.reduxRemoveTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
-            },
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  joinTeam = (team) => {
-    const body = {
-      user_id: this.props.user.id,
-      team_id: team.id,
-    };
-    apiCall("teams.join", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxJoinTeam(team);
-          this.props.reduxAddTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done.length,
-              actions_todo: this.props.todo.length,
-            },
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 }
+
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    todo: store.user.todo,
-    done: store.user.done,
     teamsPage: store.page.teamsPage,
     links: store.links,
+    communityData: store.page.homePage
   };
 };
-const mapDispatchToProps = {
-  reduxJoinTeam,
-  reduxLeaveTeam,
-  reduxAddTeamMember,
-  reduxRemoveTeamMember,
-};
-export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);
+export default connect(mapStoreToProps, null)(TeamsPage);

@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import ErrorPage from "./../Errors/ErrorPage"
+import LoadingCircle from '../../Shared/LoadingCircle'
 import URLS from '../../../api/urls';
 import { apiCall, postJson } from '../../../api/functions'
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
@@ -10,8 +12,6 @@ import SideBar from '../../Menu/SideBar';
 import Action from './Action';
 import Cart from '../../Shared/Cart';
 import PageTitle from '../../Shared/PageTitle';
-import Error404 from './../Errors/404';
-
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -35,8 +35,18 @@ class ActionsPage extends React.Component {
   
  
 	render() {
-		
-		if (!this.props.homePageData) return <p className='text-center'> <Error404 /></p>;
+    
+    if (!this.props.actions) {
+      return <LoadingCircle />;
+    }
+
+    if (!this.props.homePageData)
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Actions data"
+      />;
+
+
 		var actions = this.state.mirror_actions.length >0 ? this.state.mirror_actions : this.props.actions;
 		actions = actions ? actions.sort((a,b)=>{return a.rank - b.rank}): actions;
 		return (

@@ -2,9 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { Link } from "react-router-dom";
+import ErrorPage from "./../Errors/ErrorPage"
 import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";
-import Error404 from "./../Errors/404";
+import LoadingCircle from "../../Shared/LoadingCircle";
+  
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -70,12 +72,21 @@ class ServicesPage extends React.Component {
     return common;
   }
   render() {
-    if (!this.props.homePageData) {
-      return <Error404 />;
-    }
+
     var { serviceProviders } = this.props;
 
-    if (!serviceProviders || serviceProviders.length === 0) {
+    if (!serviceProviders) {
+      return <LoadingCircle/>
+    }
+
+    if (!this.props.homePageData) {
+      return <ErrorPage
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Service Provider data"
+      />;
+    }
+
+    if (serviceProviders.length === 0) {
       return (
         <div className="text-center">
           <p>
@@ -100,7 +111,7 @@ class ServicesPage extends React.Component {
               <div className="phone-vanish col-md-3 mob-vendor-white-cleaner">
                 <div
                   className="event-filter raise"
-                  style={{ marginTop: 90, padding: "45px 32px", borderRadius: 15 }}
+                  style={{ marginTop: 90, padding: "45px 27px", borderRadius: 15 }}
                 >
                   <h4>Filter by...</h4>
                   <Funnel
