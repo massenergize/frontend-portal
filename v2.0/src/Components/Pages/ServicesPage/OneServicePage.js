@@ -27,7 +27,8 @@ class OneServicePage extends React.Component {
           <BreadCrumbBar
             links={[
               { name: "Service Providers", link: this.props.links.services },
-              { name: `Service Provider ${vendor.id}` },
+              // { name: `Service Provider ${vendor.id}` },
+              {name:vendor ? vendor.name :"..."}
             ]}
           />
           <div className="container">

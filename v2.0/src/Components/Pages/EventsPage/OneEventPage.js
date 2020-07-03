@@ -2,32 +2,34 @@ import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Error404 from "./../Errors/404";
+import ErrorPage from "./../Errors/ErrorPage"
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
-import oops from "./oops.png";
 
 class OneEventPage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      event: null
+      event: null,
+      loading: true
     }
-    this.loading = false;
   }
 
-  fetch(id) {
-    this.loading = true;
-    apiCall('events.info', { event_id: id }).then(json => {
+  async fetch(id) {
+    try {
+      const json = await apiCall("events.info", { event_id: id });
       if (json.success) {
-        this.setState({
-          event: json.data,
-        })
+        this.setState({ event: json.data });
+      } else {
+        this.setState({ error: json.error });
       }
-    }).catch(err => this.setState({ error: err.message}))
-    this.loading = false;
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   componentDidMount() {
@@ -39,11 +41,14 @@ class OneEventPage extends React.Component {
 
     const event = this.state.event;
 
-    if (this.loading) {
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
-    if (!event) {
-      return <Error404 />;
+    if (!event || this.state.error) {
+      return <ErrorPage
+        errorMessage="Unable to load this Event"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
     }
 
     return (
@@ -52,7 +57,8 @@ class OneEventPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              { name: `Event ${event ? event.id : "..."}` },
+              // { name: `Event ${event ? event.id : "..."}` },
+              { name: event ? event.name : "..." }
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
@@ -68,19 +74,6 @@ class OneEventPage extends React.Component {
   }
 
   renderEvent(event) {
-    if (!event)
-      return (
-        <div style={{ height: window.screen.height - 120 }}>
-          {" "}
-          <center>
-            <img src={oops} alt="" style={{ width: "20%", marginTop: '10%' }} />
-            <h4 style={{ marginTop: 15, color: "rgb(155, 155, 155)" }}>
-              ...oops, couldn't find this event
-            </h4>
-            <small style={{ color: '#ffa4ad' }}>Look into > <i>event id: {this.props.match.params.id}</i></small>
-          </center>
-        </div>
-      );
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)

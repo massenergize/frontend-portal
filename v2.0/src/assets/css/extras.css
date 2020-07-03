@@ -1,10 +1,48 @@
+.start-team-btn {
+  color: white;
+  background: #8dc63f; 
+  border-width: 0px !important;
+  padding: 6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
+}
 
-
-.req-team-btn{
+.comp-teams-btn {
+  color: white;
   background:#f67b61; 
   border-width: 0px !important;
-  padding:10px 32px; 
-  margin-bottom: 17px;
+  padding:6px 25px; 
+  margin: 0 8px;
+  height: 100%;
+  font-size: 16px;
+  line-height: 17px
+}
+
+.join-team-btn {
+  color: white;
+  background:#8dc63f; 
+  border-width: 0px !important;
+  padding: 4px 15px;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.leave-team-btn {
+  color: white;
+    background: darkgray; 
+    border-width: 0px !important;
+    padding: 5px 10px; 
+    margin: 5px;
+}
+
+.contact-admin-btn-new {
+  color: white;
+    background: #f67b61; 
+    border-width: 0px !important;
+    padding: 8px 12px; 
+    margin: 5px;
 }
 
 .sort-btns{
@@ -16,9 +54,37 @@
     transform: scale(1.03);
     transition: .4s ease-in-out;
 }
-.req-team-btn:hover{
-  background:#8dc63f; 
-  transition: .3s ease-in-out;
+
+.start-team-btn:hover{
+  color: white;
+    background:#517325; 
+    transition: .15s ease-in-out;
+  }
+.comp-teams-btn:hover{
+  color: white;
+    background:#b35846; 
+    transition: .15s ease-in-out;
+}
+
+.join-team-btn:hover{
+  color: white;
+  background:#517325; 
+  transition: .15s ease-in-out;
+}
+.contact-admin-btn-new:hover{
+  color: white;
+  background:#b35846; 
+  transition: .15s ease-in-out;
+}
+.leave-team-btn:hover {
+  color: white;
+    background: #616161; 
+    transition: .15s ease-in-out;
+}
+.contact-admin-btn:hover {
+  color: white;
+  background:#b35846; 
+  transition: .15s ease-in-out;
 }
 
 .team-img{
@@ -26,6 +92,57 @@
   width:80px !important; 
   object-fit: contain !important;
  
+}
+
+
+.impact-graph-title{
+  font-size:.8rem !important;
+}
+.imp-desc-box{
+  padding:10px; 
+  border:solid 1px white; 
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.homepage-all-events-btn{
+  color:black;
+  margin-top:15px;
+  padding:10px 30px; 
+  text-align: center;
+    border:solid 1px #8dc63f;
+    width:70%;
+    outline: 0 !important;
+}
+.homepage-all-events-btn:hover{
+  color: white;
+  background-color: #8dc63f;
+  transition: .4s;
+}
+.c-tooltip-text-paper{
+  position: absolute;
+  padding:0px 9px; 
+  min-width: 200px;
+  max-width: 360px;
+  overflow-wrap: break-word;
+  background:white;
+  border: solid 1px white;
+  border-radius: 5px;
+}
+.triangle{
+  border:solid 15px red;
+  width:0px;
+  border-left-color: white;
+  border-right-color:white;
+  border-bottom-color:white;
+}
+.c-tooltip-msg-container{
+  padding-left: 10px;
+  display:none;
+  position:absolute; 
+}
+.c-tooltip-container:hover .c-tooltip-msg-container{
+  display: block;
+  transition: .4s ease-in-out;
 }
 
 .fake-show{
@@ -97,17 +214,31 @@
     background: #e8e6e6;
     margin:4px 9px;
 }
-.td{
+/* .td{
   position:absolute !important;
-}
+} */
 
-.todo-correction{
+/* .todo-correction{
   float:left;
+} */
+
+.header-logo{
+  max-width: 150px;
+  max-height: 100px;
+  margin-left: 30px;
+  margin: 10px;
 }
 
 /* ========= PC EXCLUSIVE ===== */
 
-@media only screen and ( min-width: 785px){
+@media only screen and ( min-width: 768px){
+
+  .home-page-graph-tweak{
+    margin-top: 20px !important;
+  }
+  .btn-envelope{
+    margin-left: 16%;
+  }
   .more-hyperlink{
     font-size:15px !important;
     font-weight: 700;
@@ -121,18 +252,20 @@
   }
   
   .mob-homepage-chart-h{height:250px !important}
+  .imp-chart-h{height:250px !important}
   
-  .done-it-correction{
+  /* .done-it-correction{
     float: right;
     margin-top: -21px !important;
     right: 184px !important;
-  }
-  .done-it{
+
+  } */
+  /* .done-it{
     position: absolute !important;
     right:170px !important; 
     top:0px !important;
     margin-bottom: 30px;
-  }
+  } */
   .toast-bar{
     padding: 17px 30px ;
       text-align: center;
@@ -166,23 +299,37 @@
     max-height: 500px;
     overflow-y: scroll;
   }
-  .header-logo{
-    max-width: 110px;
-    margin-left: 90px;
-    left:15%;
-    margin-top:24px;
-  }
   .pc-vanish{
     display:none;
   }
-}
-/* MOBILE PHONE AREA */
 
 
-@media only screen and ( max-width: 785px){
+  /* ------------------------------- TABLETS ----------------------------- */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .tablet-vanish{
+      display:none !important;
+    }
 
 
 
+   
+   
+  }}
+
+/* ------------------------ MOBILE PHONE AREA ------------------------- */
+@media only screen and ( max-width: 767px){
+  .home-page-graph-tweak{
+    margin:10px !important;
+  }
+  .btn-envelope{
+    margin-left:9% !important;
+  }
+  .phone-big-title{
+    font-size:1.6rem !important;
+  }
+  .phone-medium-title{
+    font-size: 1rem !important;
+  }
   .mob-team-title{
     font-size:16px !important; 
     font-weight: 600;
@@ -203,23 +350,23 @@
     transition: .4s;
   }
   
-  .green-done-it-correction{
+  /* .green-done-it-correction{
     position: absolute !important; 
     right:30% !important;
 
-  }
-  .done-it{
+  } */
+  /* .done-it{
     position: absolute !important;
     right:80px !important; 
     top:0px !important;
     margin-bottom: 30px;
-  }
+  } */
 
-  .done-it-correction{
+  /* .done-it-correction{
     float: right;
     margin-top: -22px !important;
     right: 30% !important;
-  }
+  } */
   .mob-line-break{
     display:block;
   }
@@ -230,7 +377,8 @@
     font-size:1rem !important;
   }
   .mob-helper{
-    margin-top:67px;
+    /* margin-top:67px; */
+    margin-top:7px !important;
   }
   .toast-bar{
     padding: 17px 30px ;
@@ -351,12 +499,6 @@
     margin-top:-107px !important;
     margin-bottom:-70px !important;
   }
-  .header-logo{
-    max-width: 110px;
-    margin-left: -10px;
-    margin-top: 22px;
-    /* height: 40px; */
-  }
   .phone-vanish{
     display:none !important;
   }
@@ -385,7 +527,7 @@
     padding-top:10px !important;
   }
   .mob-homepage-chart-h{
-    height:280px !important;
+    height:200px !important;
   }
   .mob-pad-0{
     padding:0px !important;
@@ -823,7 +965,6 @@
   background:black; 
   opacity:.6;
   z-index:100;
-  cursor:pointer;
 }
 
 

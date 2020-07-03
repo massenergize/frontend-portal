@@ -4,6 +4,7 @@ import { postJson, apiCall, deleteJson } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
 import ChooseHHForm from "./ChooseHHForm";
@@ -20,8 +21,8 @@ import {
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Error404 from "./../Errors/404";
 import * as moment from "moment";
+import CustomTooltip from "../Widgets/CustomTooltip";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -40,8 +41,8 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
       showTodoMsg: false,
+      loading: true
     };
-    this.loading = true;
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -52,36 +53,42 @@ class OneActionPage extends React.Component {
     this.fetch(id);
   }
 
-  componentDidUpdate() {
-    if (
-      !this.loading &&
-      (!this.state.action || this.props.match.params !== this.state.action.id)
-    ) {
-      const { id } = this.props.match.params;
-      this.fetch(id);
-    }
-  }
+  //componentDidUpdate() {
+  //  if (
+  //    !this.loading &&
+  //    (!this.state.action || this.props.match.params !== this.state.action.id)
+  //  ) {
+  //    const { id } = this.props.match.params;
+  //    this.fetch(id);
+  //  }
+  // }
 
-  fetch(id) {
-    this.loading = true;
-    apiCall("actions.info", { action_id: id })
-      .then((json) => {
-        if (json.success) {
-          this.setState({ action: json.data });
-        }
-      })
-      .catch((err) => this.setState({ error: err.message }));
-    this.loading = false;
+  async fetch(id) {
+    try {
+      const json = await apiCall("actions.info", { action_id: id });
+      if (json.success) {
+        this.setState({ action: json.data });
+      } else {
+        this.setState({ error: json.error });
+      }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
     const action = this.getMyAction();
-    if (this.loading) {
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
 
-    if (!action) {
-      return <Error404 />;
+    if (!action || this.state.error) {
+      return <ErrorPage
+        errorMessage="Unable to load this Action"
+        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
+      />;
     }
     this.chooseFontSize();
     return (
@@ -90,9 +97,11 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: `Action ${action.id}` },
+              // { name: `Action ${action.id}` },
+              { name: action ? action.title : "..." }
             ]}
           />
+
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
             <div className="container">
               <div
@@ -124,16 +133,16 @@ class OneActionPage extends React.Component {
                     />
                   </div>
                 ) : (
-                  <div
-                    className="col-md-4"
-                    style={{ paddingRight: "0px", marginRight: "0px" }}
-                  >
-                    <p>
-                      <Link to={this.props.links.signin}> Sign In </Link> to add
+                    <div
+                      className="col-md-4"
+                      style={{ paddingRight: "0px", marginRight: "0px" }}
+                    >
+                      <p>
+                        <Link to={this.props.links.signin}> Sign In </Link> to add
                       actions to your todo list or to mark them as complete
                     </p>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
             </div>
           </section>
@@ -272,26 +281,26 @@ class OneActionPage extends React.Component {
 
     if (this.checkDone()) {
       return (
-        <Tooltip text="Can't use this feature, you have already done the action">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me todo-correction">
+        <CustomTooltip text="Can't use this feature, you have already done the action">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me ">
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     }
     if (exists) {
       return (
-        <Tooltip text="Thank you for adding this. Click again to remove.">
+        <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me todo-correction"
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me"
             onClick={() => {
-              this.setState({showTodoMsg:false})
+              this.setState({ showTodoMsg: false })
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
@@ -318,17 +327,18 @@ class OneActionPage extends React.Component {
   checkDoneAndReturn() {
     if (this.checkDone()) {
       return (
-        <Tooltip text="Thanks for adding, click again to remove.">
+
+        <CustomTooltip text="Thanks for adding, click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange line-me done-it-correction"
+            className="thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
-              this.setState({showTestimonialLink:false});
+              this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
             }}
           >
             Done It
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
@@ -370,8 +380,8 @@ class OneActionPage extends React.Component {
     const action_available = action.is_deleted
       ? false
       : community
-      ? community.id === action.community.id
-      : true;
+        ? community.id === action.community.id
+        : true;
 
     return (
       <div>
@@ -420,25 +430,27 @@ class OneActionPage extends React.Component {
                     {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
 									{this.renderTags(action.tags)}
 								</p> */}
-                    {!this.props.user ? (
-                      <Tooltip text="Sign in to make a TODO list">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me td mob-font">
-                          To Do
+                    <div className="btn-envelope">
+                      {!this.props.user ? (
+                        <CustomTooltip text="Sign in to make a TODO list">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
+                            To Do
                         </p>
-                      </Tooltip>
-                    ) : (
-                      this.checkTodoAndReturn()
-                    )}
+                        </CustomTooltip>
+                      ) : (
+                          this.checkTodoAndReturn()
+                        )}
                     &nbsp;
                     {!this.props.user ? (
-                      <Tooltip text="Sign in to mark actions as completed">
-                        <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me done-it mob-font">
-                          Done It
+                        <CustomTooltip text="Sign in to mark actions as completed">
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
+                            Done It
                         </p>
-                      </Tooltip>
-                    ) : (
-                      this.checkDoneAndReturn()
-                    )}
+                        </CustomTooltip>
+                      ) : (
+                          this.checkDoneAndReturn()
+                        )}
+                    </div>
                     {this.state.status ? (
                       <div style={{ paddingTop: "20px" }}>
                         <ChooseHHForm
@@ -461,7 +473,7 @@ class OneActionPage extends React.Component {
                     ) : null}
                     {this.state.showTestimonialLink ? (
                       <div>
-                        <p style={{ marginTop: 30,fontSize:15 }} className="phone-vanish">
+                        <p style={{ marginTop: 30, fontSize: 15 }} className="phone-vanish">
                           Nice job! How was your experience with this action?
                           Tell us about it in a{" "}
                           <a
@@ -476,7 +488,7 @@ class OneActionPage extends React.Component {
                           </a>
                           .
                         </p>
-                        <p className="pc-vanish" style={{marginTop:30, fontSize:15}}>
+                        <p className="pc-vanish" style={{ marginTop: 30, fontSize: 15 }}>
                           Nice job! How was your experience with this action?
                           Tell us about it in a Tell us about it in a{" "}
                           <a
@@ -491,11 +503,11 @@ class OneActionPage extends React.Component {
                     ) : null}
                   </div>
                 ) : (
-                  <div className="cool-font">
-                    This action is not available. It was from a different
-                    community or was deleted.
-                  </div>
-                )
+                    <div className="cool-font">
+                      This action is not available. It was from a different
+                      community or was deleted.
+                    </div>
+                  )
               }
               {this.state.showTodoMsg ? (
                 <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
@@ -686,21 +698,21 @@ class OneActionPage extends React.Component {
                       Send Question
                     </button>
                   ) : (
-                    <a
-                      href={"/" + login_link + "/signin"}
-                      style={{
-                        marginTop: 10,
-                        padding: "14px 41px",
-                        background: "gray",
-                        border: "gray",
-                        color: "white",
-                        textDecoration: "none",
-                      }}
-                      className="btn btn-success round-me pull-right"
-                    >
-                      Sign In To Send
-                    </a>
-                  )}
+                      <a
+                        href={"/" + login_link + "/signin"}
+                        style={{
+                          marginTop: 10,
+                          padding: "14px 41px",
+                          background: "gray",
+                          border: "gray",
+                          color: "white",
+                          textDecoration: "none",
+                        }}
+                        className="btn btn-success round-me pull-right"
+                      >
+                        Sign In To Send
+                      </a>
+                    )}
                 </div>
               </div>
             </div>
@@ -738,11 +750,11 @@ class OneActionPage extends React.Component {
                   />
                 </div>
               ) : (
-                <p className="make-me-dark">
-                  <Link to={this.props.links.signin}> Sign In </Link> to submit
+                  <p className="make-me-dark">
+                    <Link to={this.props.links.signin}> Sign In </Link> to submit
                   your own story about taking this Action
-                </p>
-              )}
+                  </p>
+                )}
             </div>
           </div>
         </div>
@@ -824,17 +836,17 @@ class OneActionPage extends React.Component {
                       <small className="story-name">{creatorName}</small>
                       <small className="m-label round-me">{date}</small>
                       {this.state.expanded &&
-                      this.state.expanded === story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: null });
-                          }}
-                        >
-                          close
-                        </button>
-                      ) : null}
+                        this.state.expanded === story.id ? (
+                          <button
+                            className="as-link"
+                            style={{ float: "right" }}
+                            onClick={() => {
+                              this.setState({ expanded: null });
+                            }}
+                          >
+                            close
+                          </button>
+                        ) : null}
                     </h6>
 
                     <p>
@@ -842,17 +854,17 @@ class OneActionPage extends React.Component {
                         ? story.body
                         : story.body.substring(0, this.state.limit)}
                       {this.state.limit < story.body.length &&
-                      this.state.expanded !== story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: story.id });
-                          }}
-                        >
-                          more...
-                        </button>
-                      ) : null}
+                        this.state.expanded !== story.id ? (
+                          <button
+                            className="as-link"
+                            style={{ float: "right" }}
+                            onClick={() => {
+                              this.setState({ expanded: story.id });
+                            }}
+                          >
+                            more...
+                          </button>
+                        ) : null}
                     </p>
                   </div>
                   {story.vendor ? (

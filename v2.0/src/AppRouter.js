@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Switch, Route } from "react-router-dom";
 import NavBarBurger from "./components/Menu/NavBarBurger";
-import NavBarOffset from "./components/Menu/NavBarOffset";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
@@ -20,12 +19,15 @@ import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
 import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
+import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
+import CompareTeamsPage from "./components/Pages/TeamsPage/CompareTeamsPage";
 import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
 
-import Error404 from "./components/Pages/Errors/404";
+import ErrorPage from "./components/Pages/Errors/ErrorPage"
+
 import {
   reduxLoadCommunity,
   reduxLoadHomePage,
@@ -49,13 +51,13 @@ import {
   reduxLoadCommunityData,
   reduxLoadCollection,
   reduxLoadCommunityInformation,
-  reduxLoadCommunityAdmins
+  reduxLoadCommunityAdmins,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
   reduxLogin,
   reduxLoadTodo,
-  reduxLoadDone
+  reduxLoadDone,
 } from "./redux/actions/userActions";
 import { reduxLoadLinks } from "./redux/actions/linkActions";
 
@@ -68,7 +70,7 @@ class AppRouter extends Component {
     super(props);
     this.state = {
       triedLogin: false,
-      community: null
+      community: null,
     };
   }
 
@@ -97,16 +99,16 @@ class AppRouter extends Component {
     Promise.all([
       apiCall("communities.info", body),
       apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body)
+      apiCall("menus.list", body),
     ])
-      .then(res => {
+      .then((res) => {
         const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
         this.setState({ community: communityInfoResponse.data });
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
         this.props.reduxLoadMenu(mainMenuResponse.data);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ error: err });
         console.log(err);
       });
@@ -123,9 +125,9 @@ class AppRouter extends Component {
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
       apiCall("testimonials.list", body),
-      apiCall("vendors.list", body)
+      apiCall("vendors.list", body),
     ])
-      .then(res => {
+      .then((res) => {
         const [
           aboutUsPageResponse,
           actionsResponse,
@@ -138,7 +140,7 @@ class AppRouter extends Component {
           teamResponse,
           tagCollectionsResponse,
           testimonialsResponse,
-          vendorsResponse
+          vendorsResponse,
         ] = res;
 
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -154,14 +156,14 @@ class AppRouter extends Component {
         this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
         this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ error: err });
         console.log(err);
       });
   }
 
   setStateAsync(state) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(state, resolve);
     });
   }
@@ -173,11 +175,11 @@ class AppRouter extends Component {
     const [
       userInfoResponse,
       userActionsTodoResponse,
-      userActionsCompletedResponse
+      userActionsCompletedResponse,
     ] = await Promise.all([
       apiCall("users.info", { email }),
       apiCall("users.actions.todo.list", { email }),
-      apiCall("users.actions.completed.list", { email })
+      apiCall("users.actions.completed.list", { email }),
     ]);
 
     if (userInfoResponse && userInfoResponse.success && userInfoResponse.data) {
@@ -195,10 +197,12 @@ class AppRouter extends Component {
     var oldAbout = menu[3];
     var oldActions = menu[1];
     if (oldAbout) {
-      var abtSliced = oldAbout.children.filter(item => item.name.toLowerCase() !== "impact");
+      var abtSliced = oldAbout.children.filter(
+        (item) => item.name.toLowerCase() !== "impact"
+      );
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced]
+        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced],
       };
       menu[3] = newAbout;
     }
@@ -206,14 +210,36 @@ class AppRouter extends Component {
       var actionsSliced = oldActions.children.slice(1);
       var newAction = {
         name: "Actions",
-        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced]
+        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
       menu[1] = newAction;
     }
     return menu;
   }
 
+  saveCurrentPageURL() {
+    let host = window.location.host;
+    const loginURL = host + this.props.links.signin;
+    const registerURL = host + this.props.links.signup;
+    const profileURL = host + this.props.links.profile;
+    const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
+    const realRoute = window.location.pathname;
+    if (
+      this.props.links.signup &&
+      this.props.links.signin &&
+      this.props.links.profile &&
+      currentURL !== loginURL &&
+      currentURL !== registerURL &&
+      currentURL !== profileURL
+    ) {
+      window.localStorage.setItem("last_visited", realRoute);
+    }
+  }
+
+
+  
   render() {
+    this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
       return <LoadingCircle />;
@@ -225,9 +251,9 @@ class AppRouter extends Component {
       this.props.auth.uid &&
       !this.props.user
     ) {
-      this.getUser(this.props.auth.email).then(success => {
+      this.getUser(this.props.auth.email).then((success) => {
         this.setState({
-          triedLogin: true
+          triedLogin: true,
         });
       });
     }
@@ -239,19 +265,19 @@ class AppRouter extends Component {
     var finalMenu = [];
     if (this.props.menu) {
       const contactUsItem = { link: "/contactus", name: "Contact Us" };
-      const navMenus = this.props.menu.filter(menu => {
+      const navMenus = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
       })[0].content;
       finalMenu = [...navMenus, contactUsItem];
     }
-    finalMenu = finalMenu.filter(item => item.name !== "Home");
+    finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const homeChil = [
       { name: "current-home", link: "/" },
       {
         name: "All Communities",
         link: "http://" + window.location.host,
-        special: true
-      }
+        special: true,
+      },
     ];
     const droppyHome = { name: "Home", children: homeChil };
     finalMenu = [droppyHome, ...finalMenu];
@@ -261,7 +287,7 @@ class AppRouter extends Component {
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
-      email: communityInfo.owner_email
+      email: communityInfo.owner_email,
     };
     return (
       <div className="boxed-wrapper">
@@ -273,12 +299,11 @@ class AppRouter extends Component {
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
-          /> 
+          />
         </Helmet>
         {this.props.menu ? (
           <div>
             <NavBarBurger navLinks={finalMenu} />
-            <NavBarOffset />
           </div>
         ) : (
           <LoadingCircle />
@@ -299,7 +324,9 @@ class AppRouter extends Component {
             <Route path={`${links.services}/:id`} component={OneServicePage} />
             <Route path={`${links.actions}/:id`} component={OneActionPage} />
             <Route path={links.testimonials} component={StoriesPage} />
-            <Route path={links.teams} component={TeamsPage} />
+            <Route exact path={links.teams} component={TeamsPage} />
+            <Route path={`${links.teams}/compare`} component={CompareTeamsPage} />
+            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
             <Route path={links.impact} component={ImpactPage} />
             <Route path={links.donate} component={DonatePage} />
             <Route exact path={links.events} component={EventsPage} />
@@ -309,17 +336,19 @@ class AppRouter extends Component {
             <Route path={links.profile} component={ProfilePage} />
             <Route path={links.policies} component={PoliciesPage} />
             <Route path={links.contactus} component={ContactPage} />
-            <Route
-              component={() => {
-                return <Error404 />;
-              }}
+            <Route component={() => 
+               <ErrorPage
+                 errorMessage="Page not found"
+                 errorDescription="The page you are trying to access does not exist"
+               />
+              }
             />
           </Switch>
         )}
         {this.props.menu ? (
           <Footer
             footerLinks={
-              this.props.menu.filter(menu => {
+              this.props.menu.filter((menu) => {
                 return menu.name === "PortalFooterQuickLinks";
               })[0].content
             }
@@ -332,12 +361,12 @@ class AppRouter extends Component {
     );
   }
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     auth: store.firebase.auth,
     menu: store.page.menu,
-    links: store.links
+    links: store.links,
   };
 };
 const mapDispatchToProps = {
@@ -368,6 +397,6 @@ const mapDispatchToProps = {
   reduxLoadLinks,
   reduxLoadCollection,
   reduxLoadCommunityInformation,
-  reduxLoadCommunityAdmins
+  reduxLoadCommunityAdmins,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

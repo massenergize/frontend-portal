@@ -35,11 +35,6 @@ class Action extends React.Component {
       action_is_done: null,
     };
   }
-  gotoAction() {
-    window.location = `${
-      this.props.links.actions + "/" + this.props.action.id
-    }`;
-  }
 
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
@@ -100,7 +95,7 @@ class Action extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
-              this.setState({showTodoMsg:false});
+              this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
@@ -137,7 +132,7 @@ class Action extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
             onClick={() => {
-              this.setState({message:null});
+              this.setState({ message: null });
               this.removeFromCart(this.actionIsDone());
             }}
           >
@@ -153,7 +148,7 @@ class Action extends React.Component {
               ? "thm-btn style-4 selected cool-font action-btns"
               : "thm-btn style-4 cool-font action-btns"
           }
-          onClick={() => {this.openForm("DONE"); this.props.toggleShowTodoMsg()}}
+          onClick={() => { this.openForm("DONE"); this.props.toggleShowTodoMsg() }}
         >
           {" "}
           Done It{" "}
@@ -169,209 +164,191 @@ class Action extends React.Component {
       return (
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
           <div className="single-shop-item m-action-item">
-            <div
-              className="img-box"
-              onClick={() => {
-                this.gotoAction();
-              }}
-            >
-              {" "}
-              {/* plug in the image here */}
-              <Link to={this.props.links.actions + "/" + this.props.action.id}>
+            <Link to={this.props.links.actions + "/" + this.props.action.id} style={{ color: '#999999', width: '100%' }}>
+              <div
+                className="img-box"
+              >
+                {" "}
+                {/* plug in the image here */}
                 <img
                   src={
                     this.props.action.image ? this.props.action.image.url : null
                   }
                   alt=""
                 />
-              </Link>
-              {/* animated section on top of the image */}
-              <figcaption className="overlay">
-                <div className="box">
-                  <div className="content">
-                    {/* link is thisurl/id (links to the OneActionPage) */}
-                    <Link
-                      to={this.props.links.actions + "/" + this.props.action.id}
-                    >
-                      <i className="fa fa-link" aria-hidden="true"></i>
-                    </Link>
-                  </div>
-                </div>
-              </figcaption>
-            </div>
-            <div className="content-box">
-              <div
-                className="inner-box"
-                onClick={() => {
-                  this.gotoAction();
-                }}
-              >
-                <h4>
-                  <Link
-                    className="cool-font"
-                    to={this.props.links.actions + "/" + this.props.action.id}
-                  >
-                    {" "}
-                    {this.props.action.title}{" "}
-                  </Link>
-                </h4>
-              </div>
-              {/* Impact and cost tags*/}
-              <div
-                className="price-box2"
-                onClick={() => {
-                  this.gotoAction();
-                }}
-              >
-                <div className="clearfix">
-                  <div className="float_left">
-                    <Tooltip
-                      text="Shows the level of impact this action makes relative to the other actions."
-                      dir="top"
-                    >
-                      <span className="has-tooltip">Impact</span>
-                    </Tooltip>
-                    <span>
-                      {this.renderTagBar(this.getTag("impact"), "impact")}
-                    </span>
-                  </div>
-                  <div className="float_right">
-                    Cost
-                    <span>
-                      {" "}
-                      {this.renderCost(this.getTag("cost"), "cost")}{" "}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {/* buttons for adding todo, marking as complete and getting more info */}
-              <div className="price-box3" style={{ paddingTop: 18 }}>
-                <div className="row no-gutter d-flex align-items-center">
-                  <div className="col-sm-4 col-md-4 col-lg-4 col-4">
-                    <div className="col-centered">
+                {/* animated section on top of the image */}
+                <figcaption className="overlay">
+                  <div className="box">
+                    <div className="content">
+                      {/* link is thisurl/id (links to the OneActionPage) */}
                       <Link
-                        to={
-                          this.props.links.actions + "/" + this.props.action.id
-                        }
-                        className="thm-btn style-4 action-btns cool-font"
+                        to={this.props.links.actions + "/" + this.props.action.id}
                       >
-                        {" "}
-                        More Info
+                        <i className="fa fa-link" aria-hidden="true"></i>
                       </Link>
                     </div>
                   </div>
-                  <div className="col-md-4 col-sm-4 col-lg-4 col-4">
-                    <div className="col-centered">
-                      {!this.props.user ? (
-                        <Tooltip text="Sign in to make a TODO list">
-                          <p className="has-tooltip thm-btn style-4 action-btns disabled">
-                            To Do
+                </figcaption>
+              </div>
+              <div className="content-box">
+                <div
+                  className="inner-box"
+                >
+                  <h4 className="cool-font">
+                    {this.props.action.title}
+                  </h4>
+                </div>
+                {/* Impact and cost tags*/}
+                <div
+                  className="price-box2"
+                >
+                  <div className="clearfix">
+                    <div className="float_left">
+                      <Tooltip
+                        text="Shows the level of impact this action makes relative to the other actions."
+                        dir="top"
+                      >
+                        <span className="has-tooltip">Impact</span>
+                      </Tooltip>
+                      <span>
+                        {this.renderTagBar(this.getTag("impact"), "impact")}
+                      </span>
+                    </div>
+                    <div className="float_right">
+                      Cost
+                    <span>
+                        {" "}
+                        {this.renderCost(this.getTag("cost"), "cost")}{" "}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+            {/* buttons for adding todo, marking as complete and getting more info */}
+            <div className="price-box3" style={{ paddingTop: 18 }}>
+              <div className="row no-gutter d-flex align-items-center">
+                <div className="col-sm-4 col-md-4 col-lg-4 col-4">
+                  <div className="col-centered">
+                    <Link
+                      to={
+                        this.props.links.actions + "/" + this.props.action.id
+                      }
+                      className="thm-btn style-4 action-btns cool-font"
+                    >
+                      {" "}
+                        More Info
+                      </Link>
+                  </div>
+                </div>
+                <div className="col-md-4 col-sm-4 col-lg-4 col-4">
+                  <div className="col-centered">
+                    {!this.props.user ? (
+                      <Tooltip text="Sign in to make a TODO list">
+                        <p className="has-tooltip thm-btn style-4 action-btns disabled">
+                          To Do
                           </p>
-                        </Tooltip>
-                      ) : (
+                      </Tooltip>
+                    ) : (
                         this.checkTodoAndReturn()
                       )}
-                    </div>
                   </div>
-                  <div className="col-md-4 col-sm-4 col-lg-4 col-4">
-                    <div className="col-centered">
-                      {!this.props.user ? (
-                        <Tooltip text="Sign in to mark actions as completed">
-                          <p className="has-tooltip thm-btn style-4 action-btns disabled">
-                            Done It
+                </div>
+                <div className="col-md-4 col-sm-4 col-lg-4 col-4">
+                  <div className="col-centered">
+                    {!this.props.user ? (
+                      <Tooltip text="Sign in to mark actions as completed">
+                        <p className="has-tooltip thm-btn style-4 action-btns disabled">
+                          Done It
                           </p>
-                        </Tooltip>
-                      ) : (
+                      </Tooltip>
+                    ) : (
                         this.checkDoneAndReturn()
                       )}
-                    </div>
                   </div>
-                  <div className="col-12">
-                    <div className="col-centered">
-                      <br></br>
-                      {this.props.showTestimonialLink ? (
-                        <>
-                          {this.state.showTestimonialForm ? (
-                            <>
-                              <button
-                                className="as-link"
-                                onClick={() =>
-                                  this.setState({ showTestimonialForm: false })
-                                }
-                                style={{ margin: "auto" }}
-                              >
-                                {" "}
+                </div>
+                <div className="col-12">
+                  <div className="col-centered">
+                    <br></br>
+                    {this.props.showTestimonialLink ? (
+                      <>
+                        {this.state.showTestimonialForm ? (
+                          <>
+                            <button
+                              className="as-link"
+                              onClick={() =>
+                                this.setState({ showTestimonialForm: false })
+                              }
+                              style={{ margin: "auto" }}
+                            >
+                              {" "}
                                 Cancel
                               </button>
-                              <StoryForm
-                                aid={this.props.action.id}
-                                noMessage={true}
-                                closeForm={(message) =>
-                                  this.setState({
-                                    message: message,
-                                    showTestimonialForm: false,
-                                  })
-                                }
-                              ></StoryForm>
-                            </>
-                          ) : (
+                            <StoryForm
+                              aid={this.props.action.id}
+                              noMessage={true}
+                              closeForm={(message) =>
+                                this.setState({
+                                  message: message,
+                                  showTestimonialForm: false,
+                                })
+                              }
+                            ></StoryForm>
+                          </>
+                        ) : (
                             <>
                               {this.state.message ? (
                                 <p>{this.state.message}</p>
                               ) : (
-                                <p>
-                                  Nice job! How was your experience with this
+                                  <p>
+                                    Nice job! How was your experience with this
                                   action? Tell us about it in a{" "}
-                                  <button
-                                    className="as-link"
-                                    style={{ display: "inline-block" }}
-                                    onClick={() => {
-                                      window.location = this.props.links
-                                        ? this.props.links.testimonials
-                                        : "#";
-                                      // this.setState({
-                                      //   showTestimonialForm: true
-                                      // })
-                                    }}
-                                  >
-                                    testimonial
+                                    <Link to={this.props.links
+                                      ? this.props.links.testimonials
+                                      : "#"}>
+                                      <button
+                                        className="as-link"
+                                        style={{ display: "inline-block" }}
+
+                                      >
+                                        testimonial
                                   </button>
+                                    </Link>
                                   .
-                                </p>
-                              )}
+                                  </p>
+                                )}
                             </>
                           )}
-                        </>
-                      ) : null}
-                      <ChooseHHForm
-                        aid={this.props.action.id}
-                        status={this.state.status}
-                        open={this.props.HHFormOpen}
-                        user={this.props.user}
-                        addToCart={(aid, hid, status) =>
-                          this.props.addToCart(aid, hid, status)
-                        }
-                        inCart={(aid, hid, cart) =>
-                          this.props.inCart(aid, hid, cart)
-                        }
-                        moveToDone={(aid, hid) =>
-                          this.props.moveToDone(aid, hid)
-                        }
-                        closeForm={this.closeForm}
-                      />
-                      {this.props.showTodoMsg === this.props.action.id ? (
-                        <p>
-                          Nicely done! You have now added this action to your
-                          todo list.
-                        </p>
-                      ) : null}
-                    </div>
+                      </>
+                    ) : null}
+                    <ChooseHHForm
+                      aid={this.props.action.id}
+                      status={this.state.status}
+                      open={this.props.HHFormOpen}
+                      user={this.props.user}
+                      addToCart={(aid, hid, status) =>
+                        this.props.addToCart(aid, hid, status)
+                      }
+                      inCart={(aid, hid, cart) =>
+                        this.props.inCart(aid, hid, cart)
+                      }
+                      moveToDone={(aid, hid) =>
+                        this.props.moveToDone(aid, hid)
+                      }
+                      closeForm={this.closeForm}
+                    />
+                    {this.props.showTodoMsg === this.props.action.id ? (
+                      <p>
+                        Nicely done! You have now added this action to your
+                        todo list.
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div >
       );
     } else {
       return null;

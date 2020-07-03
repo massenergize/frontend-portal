@@ -7,6 +7,12 @@ import SignOutLink from "../Shared/SignOutLink";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
 
+
+function getHeight() {
+  const navBar = document.getElementById("nav-bar");
+  return navBar ? (navBar.offsetHeight) + 1 : 91;
+}
+
 class NavBarBurger extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +27,9 @@ class NavBarBurger extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+  }
+  componentWillReceiveProps() {
+    this.forceUpdate();
   }
   handleResize = () => {
     this.setState({
@@ -100,107 +109,102 @@ class NavBarBurger extends React.Component {
         <nav
           className={`theme_menu navbar p-0  z-depth-1 ${
             this.props.sticky ? "fixed-top border-bottom" : ""
-          }`}
+            }`}
           style={{
-            height: "90px",
+            height: "auto",
+            minHeight: '90px',
             position: "fixed",
             width: "100%",
             background: "white",
           }}
+          id="nav-bar"
         >
           <div className="container">
             <div className="row no-gutter width-100">
-              <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex">
+              <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" style={{ display: 'flex', alignItems: 'center' }}>
                 {/*  main-logo col d-flex  align-items-center*/}
-                <div
-                  onClick={() => {
-                    window.location = links.home;
-                  }}
-                  className=""
-                  style={{
-                    cursor: "pointer",
-                    position: "relative",
-                    padding: 0,
-                    marginLeft: "20px",
-                  }}
-                >
-                  {/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
+
+                {/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
 									<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small> */}
-                  <Link to={links.home}>
-                    {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
-                    <div
-                      style={{
-                        display: "table-cell",
-                        verticalAlign: "middle",
-                        fontFamily: "verdana",
-                        fontSize: "30px",
-                        textTransform: "uppercase",
-                        fontWeight: "bold",
-                        height: "35px",
-                        color: "#8dc63f",
-                      }}
-                    >
-                      <img
-                        src={communitylogo ? communitylogo : logo}
-                        alt=""
-                        style={{ display: "inline-block" }}
-                        className="header-logo"
-                      />
-                      {communitylogo ? null : (
-                        <>&nbsp;{header ? header.title : null}</>
-                      )}
-                      {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
+                <Link to={links.home}>
+                  {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
+                  <div
+                    style={{
+                      display: "table-cell",
+                      verticalAlign: "middle",
+                      fontFamily: "verdana",
+                      fontSize: "30px",
+                      textTransform: "uppercase",
+                      fontWeight: "bold",
+                      height: "35px",
+                      color: "#8dc63f",
+                    }}
+                  >
+                    <img
+                      src={communitylogo ? communitylogo : logo}
+                      alt=""
+                      style={{ display: "inline-block" }}
+                      className="header-logo"
+                    />
+                    {communitylogo ? null : (
+                      <>&nbsp;{header ? header.title : null}</>
+                    )}
+                    {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
                                         <>&nbsp;Concord</> */}
-                    </div>
-                  </Link>
-                </div>
+                  </div>
+                </Link>
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
-                  <div style={styles.container}>
-                    <MenuButton
-                      open={this.state.menuOpen}
-                      onClick={() => this.handleMenuClick()}
-                      color="#333"
-                    />
-                    {this.renderLogin()}
-                  </div>
-                  <Menu open={this.state.menuOpen}>
-                    {/* {this.renderLayeredMenu(this.props.navLinks)} */}
-                    {menuItems}
-                    {/* <div style={{marginLeft: "1em"}}>
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6" style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ margin: "auto 0 auto auto" }}>
+                    <div style={styles.container}>
+                      <MenuButton
+                        open={this.state.menuOpen}
+                        onClick={() => this.handleMenuClick()}
+                        color="#333"
+                      />
+                      {this.renderLogin()}
+                    </div>
+                    <Menu open={this.state.menuOpen}>
+                      {/* {this.renderLayeredMenu(this.props.navLinks)} */}
+                      {menuItems}
+                      {/* <div style={{marginLeft: "1em"}}>
                                         <Menu open={true} submenu={true}>
                                             {menuItems}
                                         </Menu>
                                     </div> */}
-                  </Menu>
-                </div>
-              ) : (
-                <div className="col-lg-7 col-md-4 col-sm-6 col-6 menu-column">
-                  <div style={styles.container} className="push-to-right">
-                    <nav
-                      className="padding-0 menuzord d-flex ml-auto"
-                      style={{
-                        display: "inline-block",
-                        padding: "33px 0px 20px ",
-                      }}
-                      id="main_menu"
-                    >
-                      <ul className="cool-font menuzord-menu height-100 d-flex flex-row">
-                        {this.renderNavLinks(this.props.navLinks)}
-                      </ul>
-                    </nav>
-
-                    {this.renderLogin()}
+                    </Menu>
                   </div>
                 </div>
-              )}
+              ) : (
+                  <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+
+                    <div style={styles.container}>
+                      <nav
+                        className="padding-0 menuzord d-flex"
+                        style={{
+                          display: "inline-block",
+                          padding: "30px 0px",
+                          flexGrow: 1
+                        }}
+                        id="main_menu"
+                      >
+                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto' }}>
+                          {this.renderNavLinks(this.props.navLinks)}
+                        </ul>
+                      </nav>
+                      {this.renderLogin()}
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
         </nav>
-      </div>
+        <div style={{ height: getHeight() }}></div>
+      </div >
     );
   }
+
   // NORMAL STATE
   /* renderNavLinks(navLinks) {
     if (!navLinks) {
@@ -246,67 +250,67 @@ class NavBarBurger extends React.Component {
       );
     });
   } */
-    // NORMAL STATE
-    renderNavLinks(navLinks) {
-      if (!navLinks) {
-        return <li key="noLinks">No PageLinks to Display</li>;
-      }
-      const style = {
-        borderTop: "5px solid #8dc63f",
-        borderRadius: "0",
-        padding: "0",
-        minwidth: "100px",
-      };
-      const { links } = this.props;
-      return Object.keys(navLinks).map((key) => {
-        var navLink = navLinks[key];
-        if (navLink.children) {
-          const CustomNavLink = React.forwardRef((props, ref) => (
-            <Link
-              ref={ref}
-              className="cool-font"
-              to=""
-              onClick={(e) => {
-                e.preventDefault();
-                props.onClick(e);
-              }}
-            >
-              {" "}
-              {props.navLink.name}{" "}
-              <span className="font-normal fa fa-angle-down"></span>
-            </Link>
-          ));
-  
-          return (
-            <li
-              className="d-flex flex-column justify-content-center"
-              key={navLink.name}
-            >
-              <Dropdown onSelect={() => null}>
-                <Dropdown.Toggle
-                  as={CustomNavLink}
-                  navLink={navLink}
-                  id="dropdown-custom-components"
-                ></Dropdown.Toggle>
-                <Dropdown.Menu style={style}>
-                  {this.renderDropdownItems(navLink.children)}
-                </Dropdown.Menu>
-              </Dropdown>
-            </li>
-          );
-        }
+  // NORMAL STATE
+  renderNavLinks(navLinks) {
+    if (!navLinks) {
+      return <li key="noLinks">No PageLinks to Display</li>;
+    }
+    const style = {
+      borderTop: "5px solid #8dc63f",
+      borderRadius: "0",
+      padding: "0",
+      minwidth: "100px",
+    };
+    const { links } = this.props;
+    return Object.keys(navLinks).map((key) => {
+      var navLink = navLinks[key];
+      if (navLink.children) {
+        const CustomNavLink = React.forwardRef((props, ref) => (
+          <Link
+            ref={ref}
+            className="cool-font"
+            to=""
+            onClick={(e) => {
+              e.preventDefault();
+              props.onClick(e);
+            }}
+          >
+            {" "}
+            {props.navLink.name}{" "}
+            <span className="font-normal fa fa-angle-down"></span>
+          </Link>
+        ));
+
         return (
           <li
             className="d-flex flex-column justify-content-center"
             key={navLink.name}
           >
-            <Link className="cool-font" to={`${links.home}${navLink.link}`}>
-              {navLink.name}
-            </Link>
+            <Dropdown onSelect={() => null}>
+              <Dropdown.Toggle
+                as={CustomNavLink}
+                navLink={navLink}
+                id="dropdown-custom-components"
+              ></Dropdown.Toggle>
+              <Dropdown.Menu style={style}>
+                {this.renderDropdownItems(navLink.children)}
+              </Dropdown.Menu>
+            </Dropdown>
           </li>
         );
-      });
-    }
+      }
+      return (
+        <li
+          className="d-flex flex-column justify-content-center"
+          key={navLink.name}
+        >
+          <Link className="cool-font" to={`${links.home}${navLink.link}`}>
+            {navLink.name}
+          </Link>
+        </li>
+      );
+    });
+  }
   //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
   renderDropdownItems(children) {
     if (!this.props.links) return;
@@ -354,7 +358,7 @@ class NavBarBurger extends React.Component {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
           ref={ref}
-          className=" float-right new-sign-in raise cool-font"
+          className="new-sign-in raise cool-font"
           onClick={(e) => {
             e.preventDefault();
             props.onClick(e);
@@ -362,7 +366,7 @@ class NavBarBurger extends React.Component {
           style={{
             margin: "auto 0 auto 10px",
             fontSize: "12px",
-            fontWeight: 600,
+            fontWeight: 600
           }}
         >
           {/* <i className="fa fa-user" />{'\u00A0'} */}
@@ -577,13 +581,14 @@ class Menu extends React.Component {
   }
 
   render() {
+
     const styles = {
       container: {
         position: !this.props.submenu ? "absolute" : "relative",
-        width: !this.props.submenu ? "50%" : "100%",
+        width: "50vh",
         height: this.state.open
           ? !this.props.submenu
-            ? "calc(100vh - 80px)"
+            ? "calc(150vh - " + getHeight() + "px)"
             : "100%"
           : 0,
         display: "flex",
@@ -670,8 +675,8 @@ class MenuButton extends React.Component {
           this.props.onClick
             ? this.props.onClick
             : () => {
-                this.handleClick();
-              }
+              this.handleClick();
+            }
         }
       >
         <div style={{ ...styles.line, ...styles.lineTop }} />
