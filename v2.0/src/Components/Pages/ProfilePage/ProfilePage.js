@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import URLS from "../../../api/urls";
 import { apiCall, postJson } from "../../../api/functions";
-
+import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Counter from "./Counter";
@@ -75,6 +75,10 @@ class ProfilePage extends React.Component {
     }
     const myHouseholds = this.props.user.households || [];
     const myCommunities = this.props.user.communities || [];
+
+    if (!this.props.teamsPage) {
+      return <LoadingCircle />;
+    }
 
     if (myHouseholds.length === 0 && !this.state.addedHouse) {
       this.setState({ addedHouse: true });
@@ -222,7 +226,7 @@ class ProfilePage extends React.Component {
                   <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
-                        <th> Your teams </th>
+                        <th> Your Teams </th>
                         <th></th>
                       </tr>
                       {this.renderTeams(user.teams)}
@@ -233,9 +237,7 @@ class ProfilePage extends React.Component {
                             to={this.props.links.teams}
                             style={{ margin: "5px" }}
                           >
-                            {this.props.user.teams.length > 0
-                              ? "Join another Team"
-                              : "Join a Team!"}
+                            View all Teams
                           </Link>
                         </td>
                       </tr>
@@ -532,28 +534,32 @@ class ProfilePage extends React.Component {
   }
   renderTeams(teams) {
     if (!teams) return null;
+
+    const currentCommunityTeamIDs = this.props.teamsPage && this.props.teamsPage.map(teamStats => teamStats.team.id);
+    const inThisCommunity = (team) => ( currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id)) ;
+
     return Object.keys(teams).map((key) => {
       const team = teams[key];
       return (
         <tr key={key}>
           <td>
-            {team.name} &nbsp;
-            <Tooltip title={team.name} text={team.description} dir="right">
-              <span
-                className="fa fa-info-circle"
-                style={{ color: "#428a36" }}
-              ></span>
-            </Tooltip>
+            <h5>{team.name}</h5>
+            {team.description && <p style={{ fontSize: '14px', margin: 0 }}>
+              {team.description.length > 70 ?
+                 team.description.substring(0, 70) + "..."
+                 : team.description}
+            </p>}
           </td>
-          <td>
-            {" "}
-            <button className="remove-btn">
-              {" "}
-              <i
-                className="fa fa-trash"
-                onClick={() => this.leaveTeam(team)}
-              ></i>
-            </button>{" "}
+          <td align="center">
+            {inThisCommunity(team) ?
+              <Link to={`${this.props.links.teams + "/" + team.id} `}>
+                <button className="btn round-me join-team-btn raise">
+                  View
+                </button>
+              </Link>
+              :
+              <p style={{fontSize:'14px', margin: 0}}>Team is in a <br/> different community.</p>
+          }
           </td>
         </tr>
       );
@@ -737,33 +743,6 @@ class ProfilePage extends React.Component {
     }
   };
 
-  leaveTeam = (team) => {
-    if (team && this.props.user) {
-      const body = {
-        user_id: this.props.user.id,
-        team_id: team.id,
-      };
-      apiCall("teams.join", body)
-        .then((json) => {
-          if (json.success) {
-            this.props.reduxLeaveTeam(team);
-            this.props.reduxRemoveTeamMember({
-              team: team,
-              member: {
-                households: this.props.user.households.length,
-                actions: this.props.todo.length + this.props.done.length,
-                actions_completed: this.props.done.length,
-                actions_todo: this.props.todo.length,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
   clearError = () => {
     if (this.state.deletingHHError) {
       this.setState({
@@ -826,6 +805,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
+    teamsPage: store.page.teamsPage,
     communities: store.user.info ? store.user.info.communities : null,
     community: store.page.community,
     communityData: store.page.communityData,
