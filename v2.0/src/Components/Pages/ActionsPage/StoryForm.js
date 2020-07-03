@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall } from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 // import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
@@ -86,7 +86,6 @@ class StoryForm extends React.Component {
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;
-    console.log(string);
     this.setState({ preferredName: string });
   }
 
@@ -440,7 +439,8 @@ class StoryForm extends React.Component {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
       //postJson(URLS.TESTIMONIALS, body).then(json => {
-      apiCall(`testimonials.add`, body).then(json => {
+      console.log(body)
+      apiCallWithMedia(`testimonials.add`, body).then(json => {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,
