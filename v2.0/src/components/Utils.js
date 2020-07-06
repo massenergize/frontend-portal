@@ -161,5 +161,10 @@ export function createCircleGraphData(goalObj, which) {
         ],
       };
     }
+    default:
+      return {
+        labels:[],
+        datasets:[]
+      }
   }
 }
