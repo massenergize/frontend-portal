@@ -226,12 +226,11 @@ class ProfilePage extends React.Component {
                   <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
-                        <th> Your Teams </th>
-                        <th></th>
+                        <th> Your Teams <small>(* outside this community)</small> </th>
                       </tr>
                       {this.renderTeams(user.teams)}
                       <tr>
-                        <td colSpan={2} align="center">
+                        <td  align="center">
                           <Link
                             className="thm-btn btn-finishing"
                             to={this.props.links.teams}
@@ -540,26 +539,24 @@ class ProfilePage extends React.Component {
 
     return Object.keys(teams).map((key) => {
       const team = teams[key];
+
       return (
         <tr key={key}>
           <td>
-            <h5>{team.name}</h5>
-            {team.description && <p style={{ fontSize: '14px', margin: 0 }}>
-              {team.description.length > 70 ?
-                 team.description.substring(0, 70) + "..."
-                 : team.description}
-            </p>}
-          </td>
-          <td align="center">
             {inThisCommunity(team) ?
-              <Link to={`${this.props.links.teams + "/" + team.id} `}>
-                <button className="btn round-me join-team-btn raise">
-                  View
-                </button>
-              </Link>
+              <Link to={`${this.props.links.teams + "/" + team.id} `}><h6>{team.name}</h6></Link>
               :
-              <p style={{fontSize:'14px', margin: 0}}>Team is in a <br/> different community.</p>
-          }
+              <>
+                <h6>{team.name}*</h6>
+              </>
+            }
+            {team.description &&
+              <p style={{ fontSize: '12px', margin: 0 }}>
+                {team.description.length > 70 ?
+                  team.description.substring(0, 70) + "..."
+                  : team.description}
+              </p>
+            }
           </td>
         </tr>
       );
