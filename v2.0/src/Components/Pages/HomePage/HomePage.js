@@ -13,7 +13,8 @@ class HomePage extends React.Component {
   render() {
     if (!this.props.pageData) {
       return <ErrorPage
-        errorMessage="Could not load this Community"
+        errorMessage="Unable to load this Community"
+        invalidCommunity
       />
     }
     const comGoals = this.props.pageData ? this.props.pageData.goal : null;
