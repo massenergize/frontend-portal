@@ -9,6 +9,18 @@
   line-height: 17px
 }
 
+.slight-lift{
+  box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
+  -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
+}
+.round-only-right-side{
+  border-top-right-radius: 55px !important;
+  border-bottom-right-radius: 55px !important;
+}
+.round-only-left-side{
+  border-top-left-radius: 55px !important;
+  border-bottom-left-radius: 55px !important;
+}
 .comp-teams-btn {
   color: white;
   background:#f67b61; 
@@ -105,17 +117,19 @@
   border-bottom-left-radius: 10px;
 }
 .homepage-all-events-btn{
-  color:black;
+  background:#8dc63f; 
+  color:white;
   margin-top:15px;
   padding:10px 30px; 
   text-align: center;
     border:solid 1px #8dc63f;
-    width:70%;
+    /* width:70%; */
     outline: 0 !important;
 }
 .homepage-all-events-btn:hover{
   color: white;
-  background-color: #8dc63f;
+  border-color: #f67b61;
+  background-color: #f67b61;
   transition: .4s;
 }
 .c-tooltip-text-paper{

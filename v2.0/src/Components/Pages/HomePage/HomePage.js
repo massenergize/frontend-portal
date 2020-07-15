@@ -92,7 +92,7 @@ class HomePage extends React.Component {
         {this.props.pageData.show_featured_stats ? (
           <Graphs graphs={graphs} size={120} goals={comGoals} />
         ) : null}
-
+ 
         {this.props.pageData.show_featured_events ? (
           <Events events={events} />
         ) : null}
