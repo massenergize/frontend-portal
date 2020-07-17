@@ -10,6 +10,8 @@ import TeamMembersList from "./TeamMembersList";
 import JoinTeamModal from "./JoinTeamModal";
 import LeaveTeamModal from "./LeaveTeamModal"
 import ContactAdminModal from "./ContactAdminModal";
+import ShareButtons from "../../Shared/ShareButtons";
+import { Helmet } from "react-helmet";
 
 class OneTeamPage extends React.Component {
 
@@ -62,6 +64,9 @@ class OneTeamPage extends React.Component {
       otherTeam.team.id === team.id
     )[0];
     const teamLogo = team.logo;
+    const teamTagline = team.description.length > 70 ?
+      team.description.substring(0, 70) + "..."
+      : team.description;
 
     const buttonOrInTeam = <>
       {!this.inTeam(team.id) ?
@@ -87,6 +92,12 @@ class OneTeamPage extends React.Component {
 
     return (
       <>
+        <Helmet>
+          <meta property="og:title" content={team.name} />
+          <meta property="og:image" content={team.image && team.image.url} />
+          <meta property="og:description" content={teamTagline} />
+          <meta property="og:url" content={window.location.href} />
+        </Helmet>
 
         {this.state.contactModalOpen && (
           <ContactAdminModal team={team} onClose={this.onContactModalClose} />
@@ -136,9 +147,7 @@ class OneTeamPage extends React.Component {
             <div className="row">
               <div className="team-card-column">
                 <p className="team-card-content" style={{ textAlign: 'center', margin: '5px auto' }}>
-                  {team.description.length > 70 ?
-                    team.description.substring(0, 70) + "..."
-                    : team.description}
+                  {teamTagline}
                 </p>
               </div>
             </div>
@@ -184,31 +193,35 @@ class OneTeamPage extends React.Component {
 
           <br />
 
-          <div>
-            <center>
-              <button
-                className="btn round-me contact-admin-btn-new raise"
-                onClick={() => {
-                  this.setState({ contactModalOpen: true });
-                }}
-              >
-                Contact Admin
-              </button>
-            </center>
-            {this.props.user && this.inTeam(team.id) &&
-              <center>
+          <div className="row justify-content-center">
+            <div style={{ paddingRight: '30px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <button
-                  className="btn round-me leave-team-btn raise"
+                  className="btn round-me contact-admin-btn-new raise"
                   onClick={() => {
-                    this.setState({ teamModalOpen: true });
+                    this.setState({ contactModalOpen: true });
                   }}
                 >
-                  Leave Team
+                  Contact Admin
+              </button>
+              </div>
+              {this.props.user && this.inTeam(team.id) &&
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    className="btn round-me leave-team-btn raise"
+                    onClick={() => {
+                      this.setState({ teamModalOpen: true });
+                    }}
+                  >
+                    Leave Team
                   </button>
-              </center>
-            }
+                </div>
+              }
+            </div>
+            <div style={{ display: 'block' }}>
+              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={teamTagline} url={window.location.href} />
+            </div>
           </div>
-
           <br />
 
         </div>

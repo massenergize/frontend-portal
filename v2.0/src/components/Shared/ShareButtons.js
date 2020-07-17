@@ -24,7 +24,7 @@ function ShareButtons(props) {
       <TwitterShareButton url={url} title={pageTitle} hashtags={["MassEnergize", "Sustainability", "CleanEnergy"]}>
         <TwitterIcon size={50} round />
       </TwitterShareButton>
-      {/**TODO: fix the weird error here */}
+      {/**TODO: fix the weird error */}
       <LinkedinShareButton url={url} title={pageTitle} summary={pageDescription} source="MassEnergize">
         <LinkedinIcon size={50} round />
       </LinkedinShareButton>
