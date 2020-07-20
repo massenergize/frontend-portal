@@ -5,6 +5,7 @@ import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
+import logo from "./logo.png";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -300,6 +301,9 @@ class AppRouter extends Component {
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
+          <meta property="og:title" content="MassEnergize" />
+          <meta property="og:image" content={logo} />
+          <meta property="og:description" content="Supporting community action on climate change" />
         </Helmet>
         {this.props.menu ? (
           <div>
