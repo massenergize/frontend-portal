@@ -127,13 +127,13 @@ class Graphs extends React.Component {
         <center>
           <Link
             to={this.props.links.impact}
-            className="homepage-all-events-btn round-me"
+            className="homepage-all-events-btn round-me z-depth-1"
             style={{marginTop:20}}
           >
             Our Impact
           </Link>
         </center>
-      </section>
+      </section> 
     );
   }
 }
