@@ -301,9 +301,6 @@ class AppRouter extends Component {
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
-          <meta property="og:title" content="MassEnergize" />
-          <meta property="og:image" content={logo} />
-          <meta property="og:description" content="Supporting community action on climate change" />
         </Helmet>
         {this.props.menu ? (
           <div>
