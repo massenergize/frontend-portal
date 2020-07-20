@@ -9490,12 +9490,13 @@ button.as-link:hover {
 
 /* Teams Page Styles */
 .teams-subheader {
-    color: #888;
-    font-style: italic
+    color: #c7c7c7;
+    font-size: 1.65rem;
+    /* font-style: italic */
 }
 
 .teams-search {
-  padding:5px 8px 5px 12px;
+  padding:11px 11px 11px 30px;
   border: solid 2px #f3f3f3; 
   border-radius:55px;
   width: 100%;
@@ -9503,19 +9504,22 @@ button.as-link:hover {
 }
 
 .team-card {
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
+    -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
+    padding: 20px;
     margin-bottom: 20px;
     height: auto;
-    border: 3px solid #f3f3f3;
+    /* border: 3px solid #f3f3f3; */
     cursor:pointer;
     border-radius: 12px;
-    padding: 10px;
+    /* padding: 10px; */
     display: flex;
     align-items: center;
 }
 
 .team-card:hover {
   -webkit-box-shadow:0 4px 0px 0 rgba(0,0,0,-0.84),0 4px 0px 0 rgba(0,0,0,.12);
-  box-shadow:0 4px 0px 0 rgba(0,0,0,-.84),0 4px 10px 0 rgba(0,0,0,.12);
+  box-shadow:0 4px 0px 0 rgba(0,0,0,-.84),0 1px 13px 0 rgba(0,0,0,.12);
   transition: .2s ease-in-out;
 }
 
@@ -9601,8 +9605,8 @@ button.as-link:hover {
   margin:  5px 0px;
   height: auto;
   width: 100%;
-  border: 3px solid #f3f3f3;
-  padding: 10px;
+  border: 1px solid #f3f3f3;
+  padding: 25px;
   border-radius: 12px;
 }
 
