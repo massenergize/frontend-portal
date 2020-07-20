@@ -6,6 +6,8 @@ import ErrorPage from "./../Errors/ErrorPage"
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
+import ShareButtons from "../../Shared/ShareButtons";
+import { Helmet } from "react-helmet";
 
 class OneEventPage extends React.Component {
 
@@ -53,11 +55,16 @@ class OneEventPage extends React.Component {
 
     return (
       <>
+        <Helmet>
+          <meta property="og:title" content={event.name} />
+          <meta property="og:image" content={event.image && event.image.url} />
+          <meta property="og:description" content={event.featured_summary} />
+          <meta property="og:url" content={window.location.href} />
+        </Helmet>
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              // { name: `Event ${event ? event.id : "..."}` },
               { name: event ? event.name : "..." }
             ]}
           />
@@ -66,6 +73,7 @@ class OneEventPage extends React.Component {
               <div className="single-products-details">
                 {this.renderEvent(event)}
               </div>
+              <ShareButtons label="Share this event!" pageTitle={event.name} pageDescription={event.featured_summary} url={window.location.href} />
             </div>
           </section>
         </div>
