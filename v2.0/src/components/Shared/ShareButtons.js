@@ -24,8 +24,10 @@ function ShareButtons(props) {
       <TwitterShareButton url={url} title={pageTitle} hashtags={["MassEnergize", "Sustainability", "CleanEnergy"]}>
         <TwitterIcon size={50} round />
       </TwitterShareButton>
-      {/**TODO: fix the weird error */}
-      <LinkedinShareButton url={url} title={pageTitle} summary={pageDescription} source="MassEnergize">
+      {/**https://stackoverflow.com/questions/10713542/how-to-make-a-custom-linkedin-share-button/61583006#61583006 
+       * only providing URL for LinkedIn; other info is taken from Helmet meta tags
+      */}
+      <LinkedinShareButton url={url}>
         <LinkedinIcon size={50} round />
       </LinkedinShareButton>
       <EmailShareButton url={url} subject={pageTitle} body={pageDescription}>
