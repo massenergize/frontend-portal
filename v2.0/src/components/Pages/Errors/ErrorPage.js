@@ -24,10 +24,13 @@ class ErrorPage extends React.Component {
             <img alt="404" src={oops} style={{ marginBottom: 20, height: 100, width: 100 }} />
             <h1 style={{ color: 'lightgray' }}>{errorMessage}</h1>
             <h3 className='text-center' style={{ marginBottom: 20, color: 'lightgray' }}> {errorDescription}</h3>
-            <p className='text-center'>
-              <Link to={this.props.links.home} className="mass-domain-link ">
-                Return to Home Page
-              </Link> </p>
+            {!this.props.invalidCommunity &&
+              <p className='text-center'>
+                <Link to={this.props.links.home} className="mass-domain-link ">
+                  Return to Home Page
+                </Link>
+              </p>
+            }
           </center>
 
         </div>
