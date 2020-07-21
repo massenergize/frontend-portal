@@ -29,8 +29,6 @@ function ShareButtons(props) {
       </EmailShareButton>
     </div>
   </>
-
-
 }
 
 export default ShareButtons;
