@@ -3,10 +3,8 @@ import {
   EmailShareButton,
   TwitterShareButton,
   FacebookShareButton,
-  LinkedinShareButton,
   FacebookIcon,
   TwitterIcon,
-  LinkedinIcon,
   EmailIcon
 } from 'react-share';
 

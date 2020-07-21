@@ -81,12 +81,12 @@ class OneTeamPage extends React.Component {
             Join Team
           </button>
         ) : (
-          <div className="team-card-content">
-            <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
-              &#10003; in this team
+            <div className="team-card-content">
+              <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
+                &#10003; in this team
             </p>
-          </div>
-        )}
+            </div>
+          )}
       </>
     );
 
@@ -111,12 +111,12 @@ class OneTeamPage extends React.Component {
               onClose={this.onTeamModalClose}
             />
           ) : (
-            <JoinTeamModal
-              team={team}
-              onJoin={this.onTeamJoinOrLeave}
-              onClose={this.onTeamModalClose}
-            />
-          ))}
+              <JoinTeamModal
+                team={team}
+                onJoin={this.onTeamJoinOrLeave}
+                onClose={this.onTeamModalClose}
+              />
+            ))}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
@@ -155,23 +155,23 @@ class OneTeamPage extends React.Component {
                   </div>
                 </>
               ) : (
-                <>
-                  <div className="team-card-column col-9">
-                    <h2
-                      style={{ textAlign: "left" }}
-                      className="cool-font team-card-content"
+                  <>
+                    <div className="team-card-column col-9">
+                      <h2
+                        style={{ textAlign: "left" }}
+                        className="cool-font team-card-content"
+                      >
+                        {team.name}
+                      </h2>
+                    </div>
+                    <div
+                      className="team-card-column col-3"
+                      style={{ padding: 0 }}
                     >
-                      {team.name}
-                    </h2>
-                  </div>
-                  <div
-                    className="team-card-column col-3"
-                    style={{ padding: 0 }}
-                  >
-                    {buttonOrInTeam}
-                  </div>
-                </>
-              )}
+                      {buttonOrInTeam}
+                    </div>
+                  </>
+                )}
             </div>
 
             <div className="row">
@@ -219,7 +219,7 @@ class OneTeamPage extends React.Component {
                     />
                   </div>
                 </div>
-                
+
               </div>
               <div className="col-md-7 col-12">
                 <div className="one-team-content-section slight-lift">
@@ -231,29 +231,6 @@ class OneTeamPage extends React.Component {
                     teamID={team.id}
                   />
                 </div>
-                <div style={{textAlign:'center',marginTop:15}}>
-                  <button
-                    className="btn round-me contact-admin-btn-new raise"
-                    onClick={() => {
-                      this.setState({ contactModalOpen: true });
-                    }}
-                    style={{padding:"9px 10%"}}
-                  >
-                    Contact Admin
-                  </button>
-                  {this.props.user && this.inTeam(team.id) && (
-                    <button
-                      className="btn round-me leave-team-btn raise"
-                      onClick={() => {
-                        this.setState({ teamModalOpen: true });
-                      }}
-                      style={{padding:"9px 8%"}}
-                    >
-                      Leave Team
-                    </button>
-                  )}
-                </div>
-                
               </div>
             </div>
           </div>
