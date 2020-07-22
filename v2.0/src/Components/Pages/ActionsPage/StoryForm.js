@@ -6,6 +6,8 @@ import Toast from "../Notification/Toast";
 import $ from "jquery";
 import ajaxSubmit from "jquery-form";
 
+import URLS from "./../../../api/urls";
+
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
 /********************************************************************/
@@ -48,24 +50,32 @@ class StoryForm extends React.Component {
   }
 
   listenToFormSubmission() {
-    var _form = $("#stories-form"); 
+    const idToken = localStorage.getItem("idToken");
+    const header = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${idToken}`,
+    };
+    if (!idToken) delete header.Authorization;
+    var _form = $("#stories-form");
     _form.on("submit", (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
       $(_form).ajaxSubmit({
-        headers:{
-          "Access-Control-Allow-Origin": '*'
-        },
+        url: `${URLS.ROOT}/v3/testimonials.add`,
+        credentials:"include",
+        headers: header,
         beforeSend: function () {
           console.log("I AM ABOUT TO SEND BRO");
         },
         success: function (data) {
           console.log("I am the data:>>>", data);
         },
+        fail: function (e) {
+          console.log("This is the error I got", e);
+        },
       });
       return false;
     });
- 
   }
   categories() {
     const cat = this.props.tagCollections;
@@ -331,7 +341,7 @@ class StoryForm extends React.Component {
               required
             />
           </div>
-          {/* <div className="row">
+          <div className="row">
             <div
               className="col-md-12 "
               style={{
@@ -345,14 +355,11 @@ class StoryForm extends React.Component {
                 ref="picFile"
                 type="file"
                 name="image"
-                onChange={event => {
-                  this.setState({ picFile: event.target.files[0] });
-                }}
                 style={{ paddingTop: 4 }}
                 className="form-control"
               />
             </div>
-          </div> */}
+          </div>
           <div className="row">
             <div className="col-md-12">
               <div className="field-label make-me-dark">
