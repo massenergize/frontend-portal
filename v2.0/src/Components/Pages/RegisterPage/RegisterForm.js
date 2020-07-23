@@ -5,7 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { postJson, apiCall, rawCall } from "../../../api/functions";
+import { postJson, apiCall } from "../../../api/functions";
 import URLS from "../../../api/urls";
 import {
   facebookProvider,
@@ -697,7 +697,7 @@ class RegisterFormBase extends React.Component {
   fetchMassToken = async (fireToken, email) => {
     this.setRegProtocol();
     const body = { idToken: fireToken };
-    rawCall("auth/verify", body)
+    apiCall("auth/verify", body)
       .then((massToken) => {
         const idToken = massToken.data.idToken;
         localStorage.setItem("idToken", idToken.toString());
@@ -712,7 +712,7 @@ class RegisterFormBase extends React.Component {
 
   fetchAndLogin = async (email) => {
     try {
-      const json = await rawCall("auth/whoami");
+      const json = await apiCall("auth/whoami");
 
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);

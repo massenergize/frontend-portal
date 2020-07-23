@@ -67,8 +67,7 @@ class ProfilePage extends React.Component {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
 
-    var token = localStorage.getItem("idToken");
-    if (!token && this.props.user) {
+    if (!this.props.user) {
       console.log("Background logout!");
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
