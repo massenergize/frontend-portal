@@ -137,6 +137,7 @@ class OneServicePage extends React.Component {
                       }}
                       rel="noopener noreferrer"
                       style={{ color: "#f56d39", cursor: "pointer" }}
+                      href={vendor.website}
                     >
                       <i className="fa fa-globe fa-m-right"></i>{" "}
                       {vendor.website.length >33 ? vendor.website.substr(0,33)+"...": vendor.website}
