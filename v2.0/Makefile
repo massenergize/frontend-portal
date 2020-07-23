@@ -30,7 +30,7 @@ run-dev:
 .PHONY: run-dev
 
 run-dev-sandbox:
-	python deployment/prepare_to_deploy.py dev $(local)
+	python deployment/prepare_to_deploy.py dev-sandbox $(local)
 	npm start
 .PHONY: run-dev-sandbox
 
@@ -39,7 +39,12 @@ run-prod:
 	npm start
 .PHONY: run-prod
 
+run-local:
+	python deployment/prepare_to_deploy.py dev local=1
+	npm start
+.PHONY: run-prod
+
 run-prod-sandbox:
-	python deployment/prepare_to_deploy.py prod  $(local)
+	python deployment/prepare_to_deploy.py prod-sandbox  $(local)
 	npm start
 .PHONY: run-prod-sandbox
