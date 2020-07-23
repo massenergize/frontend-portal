@@ -13,7 +13,8 @@ class HomePage extends React.Component {
   render() {
     if (!this.props.pageData) {
       return <ErrorPage
-        errorMessage="Could not load this Community"
+        errorMessage="Unable to load this Community"
+        invalidCommunity
       />
     }
     const comGoals = this.props.pageData ? this.props.pageData.goal : null;
@@ -91,7 +92,7 @@ class HomePage extends React.Component {
         {this.props.pageData.show_featured_stats ? (
           <Graphs graphs={graphs} size={120} goals={comGoals} />
         ) : null}
-
+ 
         {this.props.pageData.show_featured_events ? (
           <Events events={events} />
         ) : null}

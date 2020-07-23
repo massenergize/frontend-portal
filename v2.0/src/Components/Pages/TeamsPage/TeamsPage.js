@@ -90,11 +90,12 @@ class TeamsPage extends React.Component {
 
               <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-9">
-                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
+                  <input onChange={event => this.handleSearch(event)} type="text" style={{borderRadius:0}} placeholder="Search for a team..." className="teams-search round-only-left-side" />
                 </div>
-                <div className="col-3">
+                <div className="col-3" >
                   <button
-                    className="btn round-me start-team-btn raise"
+                  style={{width:'100%',borderRadius:0}}
+                    className="btn start-team-btn raise round-only-right-side"
                     onClick={() => {
                       window.open(this.props.links.contactus, "_blank");
                     }}
@@ -133,7 +134,7 @@ class TeamsPage extends React.Component {
       return (
         <>
           <p>Click on a team below to join it!</p>
-          <hr></hr>
+          {/* <hr></hr> */}
           {teamsStats.length > 0 ?
             teamsStats.map(teamStats => this.renderTeam(teamStats))
             :
@@ -177,7 +178,7 @@ class TeamsPage extends React.Component {
         <div>
           <h3 className="teams-subheader">My Teams</h3>
           {myTeamsContent}
-          <hr></hr>
+          {/* <hr></hr> */}
           <h3 className="teams-subheader">Other Teams</h3>
           {otherTeamsContent}
         </div >
