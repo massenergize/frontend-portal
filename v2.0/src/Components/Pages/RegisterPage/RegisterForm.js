@@ -697,7 +697,6 @@ class RegisterFormBase extends React.Component {
   fetchMassToken = async (fireToken, email) => {
     this.setRegProtocol();
     const body = { idToken: fireToken };
-    //rawCall("auth/verify", body)
     apiCall("auth/verify", body)
       .then((massToken) => {
         const idToken = massToken.data.idToken;
@@ -713,7 +712,6 @@ class RegisterFormBase extends React.Component {
 
   fetchAndLogin = async (email) => {
     try {
-      //const json = await rawCall("auth/whoami");
       const json = await apiCall("auth/whoami");
 
       if (json.success && json.data) {

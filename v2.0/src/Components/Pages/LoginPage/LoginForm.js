@@ -7,7 +7,7 @@ import {
   facebookProvider,
   googleProvider,
 } from "../../../config/firebaseConfig";
-import { getJson, apiCall, rawCall, apiCallNoToken } from "../../../api/functions";
+import { getJson, apiCall } from "../../../api/functions";
 import URLS from "../../../api/urls";
 import {
   reduxLogin,
@@ -223,8 +223,7 @@ class LoginFormBase extends React.Component {
 
   fetchMassToken = async (fireToken, email) => {
     const body = { idToken: fireToken };
-    rawCall("auth/verify", body)
-    // apiCall("auth/verify", body)
+    apiCall("auth/verify", body)
       .then((massToken) => {
         const idToken = massToken.data.idToken;
         localStorage.setItem("idToken", idToken.toString());
@@ -242,8 +241,7 @@ class LoginFormBase extends React.Component {
     try {
       this.props.tryingToLogin(true);
       //const json2 = await getJson(`${URLS.USER}/e/${email}`);
-      const json = await rawCall("auth/whoami");
-      // const json = await apiCall("auth/whoami");
+      const json = await apiCall("auth/whoami");
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);
         const todo = await getJson(
