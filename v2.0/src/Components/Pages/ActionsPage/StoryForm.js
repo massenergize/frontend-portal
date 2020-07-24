@@ -1,7 +1,6 @@
 import React from "react";
-import { apiCall, apiCallWithMedia } from "../../../api/functions";
+import { apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
-// import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
 
 
@@ -125,7 +124,7 @@ class StoryForm extends React.Component {
     this.setState({ anonymous: val });
   }
   render() {
-    const cols = this.props.tagCollections;
+
     if (!this.props.actions || this.props.actions.length === 0)
       return (
         <div className="text-center">
@@ -204,7 +203,6 @@ class StoryForm extends React.Component {
                     placeholder="Who helped you? "
                     className="form-control"
                     type="text"
-                    name="vendor"
                     value={this.state.vendor}
                     onChange={this.onChange}
                     autoFocus={true}
@@ -395,23 +393,11 @@ class StoryForm extends React.Component {
   handleImageChange(e) {
     e.preventDefault();
 
-    // let reader = new FileReader();
     let file = e.target.files[0];
     this.setState({
       [e.target.name]: file,
       error: null,
-      // imagePreviewUrl: reader.result
     })
-    // reader.onloadend = async () => {
-    //   console.log(targetName)
-    //   this.setState({
-    //     targetName: file,
-    //     error: null,
-    //     imagePreviewUrl: reader.result
-    //   });
-    // }
-
-    // reader.readAsDataURL(file)
   }
 
   toggleSpinner(val) {

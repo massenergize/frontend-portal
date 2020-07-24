@@ -1,7 +1,6 @@
 import URLS from "./urls";
 import qs from "qs";
 import { IS_SANDBOX } from "../config/config";
-import { data } from "jquery";
 
 
 export const getJson = async url => {
