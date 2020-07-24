@@ -178,7 +178,6 @@ export async function apiCallWithMedia(
 
   try {
     const json = await response.json();
-    console.log("THIS IS THE END: ", json);
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     } else if (!json.success) {
