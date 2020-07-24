@@ -32,6 +32,7 @@
     "react-redux-firebase": "^3.0.7",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
+    "react-share": "^4.2.1",
     "react-to-print": "^2.5.1",
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
@@ -54,6 +55,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "immutable": "^4.0.0-rc.12",
     "style-loader": "^0.23.1"
   }
 }

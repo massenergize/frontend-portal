@@ -13,10 +13,14 @@ class TeamInfoBars extends React.Component {
     const members = teamStats.members;
 
     if (members !== 0) {
-      actionsPerMember = actions / members;
-      actionsPerMember = (actionsPerMember % 1 !== 0) ?
-        Number(actionsPerMember.toFixed(1)) : Number(actionsPerMember.toFixed(0));
-      carbonSavedPerMember = Number((carbonSaved / members).toFixed(0));
+      if (actions !== 0) {
+        actionsPerMember = actions / members;
+        actionsPerMember = (actionsPerMember % 1 !== 0) ?
+          Number(actionsPerMember.toFixed(1)) : Number(actionsPerMember.toFixed(0));
+      }
+      if (carbonSaved !== 0) {
+        carbonSavedPerMember = Number((carbonSaved / members).toFixed(0));
+      }
     }
 
     return (
