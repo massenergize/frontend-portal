@@ -3,6 +3,7 @@ import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
 
+
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
 /********************************************************************/
@@ -43,38 +44,9 @@ class StoryForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this)
   }
 
-  listenToFormSubmission() {
-    const idToken = localStorage.getItem("idToken");
-    const header = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${idToken}`,
-    };
-    if (!idToken) delete header.Authorization;
-    var _form = $("#stories-form");
-    _form.on("submit", (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-       apiCallWithMedia("testimonials.add", _form)
-      $(_form).ajaxSubmit({
-        url: `${URLS.ROOT}/v3/testimonials.add`,
-        credentials:"include",
-        headers: header,
-        beforeSend: function () {
-          console.log("I AM ABOUT TO SEND BRO");
-        },
-        success: function (data) {
-          console.log("I am the data:>>>", data);
-        },
-        fail: function (e) {
-          console.log("This is the error I got", e);
-        },
-      });
-      return false;
-    });
-  }
   categories() {
     const cat = this.props.tagCollections;
     if (cat) {
@@ -126,7 +98,8 @@ class StoryForm extends React.Component {
     document.getElementById("picFile").click();
   }
   render() {
-    console.log(this.state.picFile);
+
+    const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
       return (
         <div className="text-center">
@@ -280,8 +253,6 @@ class StoryForm extends React.Component {
                   : "No image has been selected"}
               </p>
               <input
-                id="picFile"
-                ref="picFile"
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
@@ -369,13 +340,23 @@ class StoryForm extends React.Component {
   handleImageChange(e) {
     e.preventDefault();
 
+    // let reader = new FileReader();
     let file = e.target.files[0];
-    console.log(e.target.name);
     this.setState({
       [e.target.name]: file,
-      picFile: file,
       error: null,
-    });
+      // imagePreviewUrl: reader.result
+    })
+    // reader.onloadend = async () => {
+    //   console.log(targetName)
+    //   this.setState({
+    //     targetName: file,
+    //     error: null,
+    //     imagePreviewUrl: reader.result
+    //   });
+    // }
+
+    // reader.readAsDataURL(file)
   }
 
   toggleSpinner(val) {
@@ -387,6 +368,9 @@ class StoryForm extends React.Component {
     //  this.refs.category_select.value = "--";
     //}
     //this.refs.picFile.value = "";
+    if(this.refs.category_select){
+      this.refs.category_select.value = "--";
+    }
   }
   renderOptions(choices) {
     return Object.keys(choices).map((key) => {
@@ -429,7 +413,7 @@ class StoryForm extends React.Component {
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
-      console.log(body);
+
       apiCallWithMedia(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
           this.setState({

@@ -1,6 +1,7 @@
 import URLS from "./urls";
 import qs from "qs";
 import { IS_SANDBOX } from "../config/config";
+import { data } from "jquery";
 
 
 export const getJson = async url => {
@@ -191,26 +192,19 @@ export async function apiCallWithMedia(
   dataToSend = {},
   relocationPage = null
 ) {
-  var params = {};
 
   if (IS_SANDBOX) {
     dataToSend = { is_dev: true, ...dataToSend };
   }
 
   const formData = new FormData();
-  Object.keys(dataToSend).forEach(i => {
-    formData.append(i, dataToSend[i]);
-  });
-  params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: formData
-  };
+  Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
 
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
+  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
+    credentials: 'include',
+    method: 'POST',
+    body: formData
+  });
 
   try {
     const json = await response.json();
