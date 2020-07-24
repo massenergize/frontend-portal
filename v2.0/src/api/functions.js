@@ -69,38 +69,8 @@ export async function authCall(token, relocationPage = null) {
     return { success: false, error };
   }
 }
-export async function apiCallNoToken(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-  //Differentiate between dev deployment and real deployment
 
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
 
-  var params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: qs.stringify(dataToSend)
-  };
-
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
 
 //THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(
@@ -109,7 +79,6 @@ export async function apiCall(
   relocationPage = null
 ) {
   var params = {};
-  var idToken = localStorage.getItem("idToken");
 
   if (IS_SANDBOX) {
     dataToSend = { is_dev: true, ...dataToSend };
@@ -120,12 +89,10 @@ export async function apiCall(
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${idToken}`
     },
     body: qs.stringify(dataToSend)
   };
 
-  if (!idToken) delete params.headers.Authorization;
 
   const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
 
@@ -135,9 +102,6 @@ export async function apiCall(
       window.location.href = relocationPage;
     } else if (!json.success) {
       if (json.error === "Signature has expired") {
-        localStorage.removeItem("idToken");
-        // window.alert("Session Expired.  Please reload and sign in again.")
-        console.log(destinationUrl, json);
         window.location.href = window.location;
       } else {
         console.log(destinationUrl, json.error);
@@ -155,39 +119,26 @@ export async function apiCallWithMedia(
   dataToSend = {},
   relocationPage = null
 ) {
-  var params = {};
-  var idToken = localStorage.getItem("idToken");
 
   if (IS_SANDBOX) {
     dataToSend = { is_dev: true, ...dataToSend };
   }
 
   const formData = new FormData();
-  Object.keys(dataToSend).forEach(i => {
-    formData.append(i, dataToSend[i]);
-  });
-  params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${idToken}`
-    },
+  Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
+
+  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
+    credentials: 'include',
+    method: 'POST',
     body: formData
-  };
-
-  if (!idToken) delete params.headers.Authorization;
-
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
+  });
 
   try {
     const json = await response.json();
-    console.log("THIS IS THE END: ", json);
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     } else if (!json.success) {
       if (json.error === "Signature has expired") {
-        localStorage.removeItem("idToken");
         // window.alert("Session Expired.  Please reload and sign in again.")
         console.log(destinationUrl, json);
         window.location.href = window.location;
@@ -214,48 +165,8 @@ export const deleteJson = async url => {
     return null;
   }
 };
-//THIS FUNCTION IS USED IF YOU WANT TO SKIP "v3" ROUTE LINE
 
-export async function rawCall(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-  const idToken = localStorage.getItem("idToken");
-  var params = {};
-  if (idToken) {
-    params = {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${idToken}`
-      },
-      body: qs.stringify(dataToSend)
-    };
-  } else {
-    params = {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: qs.stringify(dataToSend)
-    };
-  }
 
-  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error: error.toString() };
-  }
-}
 /**
  * Takes out the section that matches with the name given
  * @param {JSONObject | JSONArray} json : the json object of either the page data or the json array of the sections
