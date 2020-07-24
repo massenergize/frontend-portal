@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCallWithMedia } from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
 
@@ -46,6 +46,72 @@ class StoryForm extends React.Component {
     this.handleImageChange = this.handleImageChange.bind(this);
   }
 
+  listenToFormSubmission() {
+    const idToken = localStorage.getItem("idToken");
+    const header = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${idToken}`,
+    };
+    if (!idToken) delete header.Authorization;
+    var _form = $("#stories-form");
+    _form.on("submit", (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+       apiCallWithMedia("testimonials.add", _form)
+      $(_form).ajaxSubmit({
+        url: `${URLS.ROOT}/v3/testimonials.add`,
+        credentials:"include",
+        headers: header,
+        beforeSend: function () {
+          console.log("I AM ABOUT TO SEND BRO");
+        },
+        success: function (data) {
+          console.log("I am the data:>>>", data);
+        },
+        fail: function (e) {
+          console.log("This is the error I got", e);
+        },
+      });
+      return false;
+    });
+  }
+  categories() {
+    const cat = this.props.tagCollections;
+    if (cat) {
+      return cat.filter((item) => item.name === "Category")[0];
+    }
+    return null;
+  }
+  ejectCategories() {
+    if (this.categories()) {
+      return this.categories().tags.map((cat) => <option>{cat.name}</option>);
+    }
+  }
+
+  ejectSelectedTags() {
+    return this.state.selected_tags.map((item, key) => {
+      return (
+        <small
+          onClick={() => {
+            this.removeTag(item.id);
+          }}
+          key={key.toString()}
+          className="sm-tag-hover"
+          style={{
+            cursor: "pointer",
+            border: "solid 1px #f5f4f4",
+            color: "#888",
+            borderRadius: 55,
+            margin: 5,
+            padding: "5px 40px",
+          }}
+        >
+          {" "}
+          {item.name} <i style={{ marginLeft: 5 }} className="fa fa-close " />
+        </small>
+      );
+    });
+  }
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;
