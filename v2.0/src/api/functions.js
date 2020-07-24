@@ -162,14 +162,11 @@ export async function apiCallWithMedia(
   }
 
   const formData = new FormData();
-  Object.keys(dataToSend).forEach(i => {
-    formData.append(i, dataToSend[i]);
-  });
+  Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
   params = {
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
       Authorization: `Bearer ${idToken}`
     },
     body: formData
