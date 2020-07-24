@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall } from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 // import defaultUser from "./../../Shared/default-user.png";
 import Toast from "../Notification/Toast";
@@ -60,6 +60,7 @@ class StoryForm extends React.Component {
     _form.on("submit", (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
+       apiCallWithMedia("testimonials.add", _form)
       $(_form).ajaxSubmit({
         url: `${URLS.ROOT}/v3/testimonials.add`,
         credentials:"include",
