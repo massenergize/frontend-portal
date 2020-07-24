@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall, apiCallWithMedia } from "../../../api/functions";
+import { apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
 
@@ -340,23 +340,11 @@ class StoryForm extends React.Component {
   handleImageChange(e) {
     e.preventDefault();
 
-    // let reader = new FileReader();
     let file = e.target.files[0];
     this.setState({
       [e.target.name]: file,
       error: null,
-      // imagePreviewUrl: reader.result
     })
-    // reader.onloadend = async () => {
-    //   console.log(targetName)
-    //   this.setState({
-    //     targetName: file,
-    //     error: null,
-    //     imagePreviewUrl: reader.result
-    //   });
-    // }
-
-    // reader.readAsDataURL(file)
   }
 
   toggleSpinner(val) {
