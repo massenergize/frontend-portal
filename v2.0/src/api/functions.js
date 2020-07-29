@@ -16,6 +16,78 @@ export const getJson = async url => {
     return null;
   }
 };
+export async function apiCallNoToken(
+  destinationUrl,
+  dataToSend = {},
+  relocationPage = null
+) {
+  //Differentiate between dev deployment and real deployment
+
+  if (IS_SANDBOX) {
+    dataToSend = { is_dev: true, ...dataToSend };
+  }
+
+  var params = {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: qs.stringify(dataToSend)
+  };
+
+  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
+
+  try {
+    const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+export async function rawCall(
+  destinationUrl,
+  dataToSend = {},
+  relocationPage = null
+) {
+  const idToken = localStorage.getItem("idToken");
+  var params = {};
+  if (idToken) {
+    params = {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${idToken}`
+      },
+      body: qs.stringify(dataToSend)
+    };
+  } else {
+    params = {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: qs.stringify(dataToSend)
+    };
+  }
+
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
+
+  try {
+    const json = await response.json();
+    if (relocationPage && json && json.success) {
+      window.location.href = relocationPage;
+    }
+    return json;
+  } catch (error) {
+    return { success: false, error: error.toString() };
+  }
+}
 
 //** Posts a body to a url and then returns the json of the response */
 export const postJson = async (url, body) => {
