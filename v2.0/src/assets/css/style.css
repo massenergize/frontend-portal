@@ -9504,23 +9504,21 @@ button.as-link:hover {
 }
 
 .team-card {
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
-    -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 3px 6px 0 rgba(0,0,0,.12);
+    -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0  3px 6px 0 rgba(0,0,0,.12);
     padding: 20px;
     margin-bottom: 20px;
     height: auto;
-    /* border: 3px solid #f3f3f3; */
     cursor:pointer;
     border-radius: 12px;
-    /* padding: 10px; */
     display: flex;
     align-items: center;
 }
 
 .team-card:hover {
-  -webkit-box-shadow:0 4px 0px 0 rgba(0,0,0,-0.84),0 4px 0px 0 rgba(0,0,0,.12);
-  box-shadow:0 4px 0px 0 rgba(0,0,0,-.84),0 1px 13px 0 rgba(0,0,0,.12);
-  transition: .2s ease-in-out;
+  -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.19);
+  box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.19);
+  transition:.2s ease-in-out;
 }
 
 .team-card-title {
