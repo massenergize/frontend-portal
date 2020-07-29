@@ -151,7 +151,7 @@ export function createCircleGraphData(goalObj, which) {
         rest = goalObj.target_carbon_footprint_reduction - value;
       }
       return {
-        labels: ["Carbon Reducation", ""],
+        labels: ["Carbon Reduction", ""],
         datasets: [
           {
             data: [value, rest],
@@ -161,5 +161,10 @@ export function createCircleGraphData(goalObj, which) {
         ],
       };
     }
+    default:
+      return {
+        labels: [],
+        datasets: []
+      }
   }
 }
