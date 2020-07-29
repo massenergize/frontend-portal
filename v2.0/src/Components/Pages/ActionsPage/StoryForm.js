@@ -3,7 +3,6 @@ import { apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
 
-
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
 /********************************************************************/
@@ -44,7 +43,7 @@ class StoryForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this)
+    this.handleImageChange = this.handleImageChange.bind(this);
   }
 
   handlePreferredName(event) {
@@ -56,9 +55,12 @@ class StoryForm extends React.Component {
   closeToast() {
     this.setState({ notificationState: null });
   }
-
+  chooseFile(e) {
+    e.preventDefault();
+    document.getElementById("picFile").click();
+  }
   render() {
-
+    console.log(this.state.picFile);
     if (!this.props.actions || this.props.actions.length === 0)
       return (
         <div className="text-center">
@@ -159,17 +161,17 @@ class StoryForm extends React.Component {
               displayed?
             </p>
 
-                <input
-                  onChange={(event) => this.handlePreferredName(event)}
-                  type="text"
-                  maxLength="15"
-                  className="form-control"
-                  placeholder="Write the name you prefer ( max - 15 Char )"
-                  defaultValue={this.props.user.preferred_name}
-                  required
-                  name="preferred_name"
-                />
-            </div>
+            <input
+              onChange={(event) => this.handlePreferredName(event)}
+              type="text"
+              maxLength="15"
+              className="form-control"
+              placeholder="Write the name you prefer ( max - 15 Char )"
+              defaultValue={this.props.user.preferred_name}
+              required
+              name="preferred_name"
+            />
+          </div>
 
           <div className="field-label make-me-dark">
             <p>Story Title*</p>
@@ -188,17 +190,38 @@ class StoryForm extends React.Component {
               style={{
                 padding: 10,
                 border: "solid 1px #f5f3f3",
-                borderRadius: 10
+                borderRadius: 10,
               }}
             >
-              <p style={{ margin: 15 }}>Upload an image</p>
+              <p style={{ margin: 15 }}>
+                You can add an image to your testimonial (optional)
+              </p>
+              <button
+                onClick={(e) => {
+                  this.chooseFile(e);
+                }}
+                className="thm-btn bg-cl-1 round-me testimonials-choose-img-btn-tweaks"
+              >
+                Choose An Image
+              </button>
+              <p
+                className={this.state.picFile ? "testimonials-image-desc" : ""}
+                style={{ fontSize: "medium" }}
+              >
+                <i style={{ marginRight: 5 }} className="fa fa-image" />
+                {this.state.picFile
+                  ? `"${this.state.picFile.name}" selected`
+                  : "No image has been selected"}
+              </p>
               <input
+                id="picFile"
                 ref="picFile"
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
                 style={{ paddingTop: 4 }}
                 className="form-control"
+                style={{ display: "none" }}
               />
             </div>
           </div>
@@ -281,12 +304,12 @@ class StoryForm extends React.Component {
     e.preventDefault();
 
     let file = e.target.files[0];
-    console.log(e.target.name)
+    console.log(e.target.name);
     this.setState({
       [e.target.name]: file,
       picFile: file,
       error: null,
-    })
+    });
   }
 
   toggleSpinner(val) {
@@ -340,7 +363,7 @@ class StoryForm extends React.Component {
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
-      console.log(body)
+      console.log(body);
       apiCallWithMedia(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
           this.setState({

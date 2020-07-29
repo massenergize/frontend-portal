@@ -9,6 +9,15 @@
   line-height: 17px
 }
 
+.testimonials-image-desc{
+  color: #8dc63f;
+  font-weight: bold;
+}
+.testimonials-choose-img-btn-tweaks{
+  padding:8px 21px !important;
+  display:inline-block;
+}
+
 .slight-lift{
   box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
   -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 1px 4px 0 rgba(0,0,0,.12);
