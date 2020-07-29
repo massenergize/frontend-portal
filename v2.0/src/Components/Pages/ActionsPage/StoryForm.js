@@ -35,8 +35,9 @@ class StoryForm extends React.Component {
       captchaConfirmed: false,
       message: message,
       picFile: null,
-      selected_tags: [],
-      anonymous: false,
+      //selected_tags: [],
+      //anonymous: false,
+      preferred_name: "",
       notificationState: null,
       spinner: false,
     };
@@ -46,83 +47,16 @@ class StoryForm extends React.Component {
     this.handleImageChange = this.handleImageChange.bind(this)
   }
 
-  categories() {
-    const cat = this.props.tagCollections;
-    if (cat) {
-      return cat.filter((item) => item.name === "Category")[0];
-    }
-    return null;
-  }
-  ejectCategories() {
-    if (this.categories()) {
-      return this.categories().tags.map((cat) => <option>{cat.name}</option>);
-    }
-  }
-
-  ejectSelectedTags() {
-    return this.state.selected_tags.map((item, key) => {
-      return (
-        <small
-          onClick={() => {
-            this.removeTag(item.id);
-          }}
-          key={key.toString()}
-          className="sm-tag-hover"
-          style={{
-            cursor: "pointer",
-            border: "solid 1px #f5f4f4",
-            color: "#888",
-            borderRadius: 55,
-            margin: 5,
-            padding: "5px 40px",
-          }}
-        >
-          {" "}
-          {item.name} <i style={{ marginLeft: 5 }} className="fa fa-close " />
-        </small>
-      );
-    });
-  }
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;
-    console.log(string);
     this.setState({ preferredName: string });
   }
-  removeTag(id) {
-    const old = this.state.selected_tags;
-    const newOne = old.filter((item) => item.id !== id);
-    this.setState({ selected_tags: newOne });
-  }
 
-  handleTagChoice(event) {
-    const cats = this.categories().tags;
-    const old = this.state.selected_tags;
-    if (cats) {
-      let found = cats.filter((item) => item.name === event.target.value)[0];
-      if (!old.includes(found)) {
-        this.setState({ selected_tags: [...old, found] });
-      }
-    }
-  }
   closeToast() {
     this.setState({ notificationState: null });
   }
-  check(type) {
-    //if true then make me anonymous
-    if (type) {
-      this.setState({ anonymous: true });
-      document.getElementById("real_name").checked = false;
-      document.getElementById("ano").checked = true;
-    } else {
-      this.setState({ anonymous: false });
-      document.getElementById("ano").checked = false;
-      document.getElementById("real_name").checked = true;
-    }
-  }
-  toggleAnonymous(val) {
-    this.setState({ anonymous: val });
-  }
+
   render() {
 
     if (!this.props.actions || this.props.actions.length === 0)
@@ -133,6 +67,9 @@ class StoryForm extends React.Component {
       );
     if (this.state.vid !== "other" && this.state.vendor !== "")
       this.setState({ vendor: "" });
+    if (this.state.preferred_name === "")
+      this.setState({ preferred_name: this.props.user.preferred_name });
+
     return (
       <div
         className="review-form mob-story-form-tweak"
@@ -215,76 +152,25 @@ class StoryForm extends React.Component {
             </>
           )}
 
-          {/* {cols ? (
-            <>
-              <p style={{ marginBottom: 4 }} className="make-me-dark">
-                {" "}
-                Choose all the categories this testimonial belongs to.{" "}
-              </p>
-              {this.ejectSelectedTags()}
-              <div className="combo-box-wrapper" style={{ marginTop: 15 }}>
-                <select
-                  ref="category_select"
-                  className="w-100 select-undefault"
-                  onChange={(event) => {
-                    this.handleTagChoice(event);
-                  }}
-                >
-                  <option>--</option>
-                  {this.ejectCategories()}
-                </select>
-                <br />
-              </div>
-            </>
-          ) : (
-            <br />
-          )} */}
-
           <div className="make-me-dark">
             <p>
               Your name and email will be known to the{" "}
               <b>Community Organizer</b>, but how would you like it to be
               displayed?
             </p>
-            <div
-              onClick={() => {
-                this.toggleAnonymous(true);
-              }}
-              className="cursor"
-            >
-              <input
-                name="anonymous"
-                type="checkbox"
-                checked={this.state.anonymous ? true : false}
-                style={{ display: "inline" }}
-              />{" "}
-              <small>Anonymous</small> <br />
-            </div>
-            <div
-              onClick={() => {
-                this.toggleAnonymous(false);
-              }}
-              className="cursor"
-            >
-              <input
-                type="checkbox"
-                checked={!this.state.anonymous ? true : false}
-                style={{ display: "inline" }}
-              />
-              <small> Preferred Name</small>
-              {!this.state.anonymous ? (
+
                 <input
                   onChange={(event) => this.handlePreferredName(event)}
                   type="text"
                   maxLength="15"
                   className="form-control"
                   placeholder="Write the name you prefer ( max - 15 Char )"
+                  defaultValue={this.props.user.preferred_name}
                   required
                   name="preferred_name"
                 />
-              ) : null}
             </div>
-          </div>
+
           <div className="field-label make-me-dark">
             <p>Story Title*</p>
             <input
@@ -307,6 +193,7 @@ class StoryForm extends React.Component {
             >
               <p style={{ margin: 15 }}>Upload an image</p>
               <input
+                ref="picFile"
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
@@ -394,8 +281,10 @@ class StoryForm extends React.Component {
     e.preventDefault();
 
     let file = e.target.files[0];
+    console.log(e.target.name)
     this.setState({
       [e.target.name]: file,
+      picFile: file,
       error: null,
     })
   }
@@ -405,9 +294,10 @@ class StoryForm extends React.Component {
   }
 
   cleanUp() {
-    if(this.refs.category_select){
-      this.refs.category_select.value = "--";
-    }
+    //if(this.refs.category_select){
+    //  this.refs.category_select.value = "--";
+    //}
+    //this.refs.picFile.value = "";
   }
   renderOptions(choices) {
     return Object.keys(choices).map((key) => {
@@ -439,9 +329,9 @@ class StoryForm extends React.Component {
       body: this.state.body,
       title: this.state.title,
       community_id: this.props.community.id,
-      image: this.state.image,
-      tags: this.state.selected_tags ? this.state.selected_tags : null,
-      anonymous: this.state.anonymous,
+      image: this.state.picFile ? this.state.picFile : null, //defaultUser,
+      //tags: this.state.selected_tags ? this.state.selected_tags : null,
+      //anonymous: this.state.anonymous,
       preferred_name: this.state.preferredName,
       other_vendor: this.state.vendor ? this.state.vendor : null,
     };
@@ -455,7 +345,7 @@ class StoryForm extends React.Component {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,
-            selected_tags: [],
+            //selected_tags: [],
             notificationState: "Good",
             notificationMessage:
               "Sent successfully! Your community organizer will review it and post it soon.",
@@ -471,7 +361,7 @@ class StoryForm extends React.Component {
         } else {
           this.setState({
             ...INITIAL_STATE,
-            selected_tags: [],
+            //selected_tags: [],
             notificationState: "Bad",
             notificationMessage:
               "There was an error submitting your testimonial",
@@ -496,7 +386,7 @@ const mapStoreToProps = (store) => {
     actions: store.page.actions,
     vendors: store.page.serviceProviders,
     community: store.page.community,
-    tagCollections: store.page.tagCols,
+    //tagCollections: store.page.tagCols
   };
 };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
