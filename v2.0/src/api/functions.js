@@ -143,7 +143,6 @@ export async function authCall(token, relocationPage = null) {
 }
 
 
-
 //THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(
   destinationUrl,
@@ -237,6 +236,8 @@ export const deleteJson = async url => {
     return null;
   }
 };
+
+
 
 
 /**

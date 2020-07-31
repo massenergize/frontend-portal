@@ -390,9 +390,11 @@ class StoryForm extends React.Component {
       body: this.state.body,
       title: this.state.title,
       community_id: this.props.community.id,
-      image: this.state.picFile ? this.state.picFile : null, //defaultUser,
       //tags: this.state.selected_tags ? this.state.selected_tags : null,
       //anonymous: this.state.anonymous,
+      image: this.state.image,
+      tags: this.state.selected_tags ? this.state.selected_tags : null,
+      anonymous: this.state.anonymous,
       preferred_name: this.state.preferredName,
       other_vendor: this.state.vendor ? this.state.vendor : null,
     };
