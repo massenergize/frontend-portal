@@ -189,11 +189,6 @@ class TeamsPage extends React.Component {
     const teamObj = teamStats.team;
     const teamLogo = teamObj.logo;
 
-    //to be replaced by a team tagline, inherently limited to some amount of characters
-    const teamDescription = teamObj.description.length > 70 ?
-      teamObj.description.substring(0, 70) + "..."
-      : teamObj.description;
-
     return (
       <div className="team-card" key={teamObj.id}>
         <Link to={`${this.props.links.teams + "/" + teamObj.id} `} style={{ width: '100%' }}>
@@ -201,7 +196,7 @@ class TeamsPage extends React.Component {
             <div className="col-sm-3 team-card-column">
               <div className="team-card-content">
                 <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
-                <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamDescription}</p>
+                <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamObj.tagline}</p>
               </div>
             </div>
             <div className="col-sm-9">

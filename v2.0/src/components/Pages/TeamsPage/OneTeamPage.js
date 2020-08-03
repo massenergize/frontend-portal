@@ -136,9 +136,7 @@ class OneTeamPage extends React.Component {
             <div className="row">
               <div className="team-card-column">
                 <p className="team-card-content" style={{ textAlign: 'center', margin: '5px auto' }}>
-                  {team.description.length > 70 ?
-                    team.description.substring(0, 70) + "..."
-                    : team.description}
+                  {team.tagline}
                 </p>
               </div>
             </div>
