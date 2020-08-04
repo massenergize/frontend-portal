@@ -19,8 +19,8 @@ class OneTeamPage extends React.Component {
     this.state = {
       team: null,
       loading: true,
-      teamModalOpen: false,
-      contactModalOpen: false,
+      joinLeaveModalOpen: false,
+      contactEditModalOpen: false,
     };
   }
 
@@ -45,17 +45,18 @@ class OneTeamPage extends React.Component {
   }
 
   render() {
-    const { team, loading } = this.state;
+    const { team, loading, error,
+      joinLeaveModalOpen, contactEditModalOpen } = this.state;
 
     if (loading || !this.props.teamsPage) {
       return <LoadingCircle />;
     }
-    if (!team || this.state.error) {
+    if (!team || error) {
       return (
         <ErrorPage
           errorMessage="Unable to load this Team"
           errorDescription={
-            this.state.error ? this.state.error : "Unknown cause"
+            error ? error : "Unknown cause"
           }
         />
       );
@@ -65,9 +66,6 @@ class OneTeamPage extends React.Component {
       (otherTeam) => otherTeam.team.id === team.id
     )[0];
     const teamLogo = team.logo;
-    const teamTagline = team.description.length > 70 ?
-      team.description.substring(0, 70) + "..."
-      : team.description;
 
     const buttonOrInTeam = (
       <>
@@ -75,7 +73,7 @@ class OneTeamPage extends React.Component {
           <button
             className="btn round-me join-team-btn raise"
             onClick={() => {
-              this.setState({ teamModalOpen: true });
+              this.setState({ joinLeaveModalOpen: true });
             }}
           >
             Join Team
@@ -95,26 +93,30 @@ class OneTeamPage extends React.Component {
         <Helmet>
           <meta property="og:title" content={team.name} />
           <meta property="og:image" content={team.image && team.image.url} />
-          <meta property="og:description" content={teamTagline} />
+          <meta property="og:description" content={team.tagline} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
 
-        {this.state.contactModalOpen && (
-          <ContactAdminModal team={team} onClose={this.onContactModalClose} />
+        {/* TODO: implement an edit modal */}
+        {contactEditModalOpen && (
+          this.teamAdmin(team.id) ?
+            <></>
+            :
+            <ContactAdminModal team={team} onClose={this.onContactEditModalClose} />
         )}
 
-        {this.state.teamModalOpen &&
+        {joinLeaveModalOpen &&
           (this.inTeam(team.id) ? (
             <LeaveTeamModal
               team={team}
               onLeave={this.onTeamJoinOrLeave}
-              onClose={this.onTeamModalClose}
+              onClose={this.onJoinLeaveModalClose}
             />
           ) : (
               <JoinTeamModal
                 team={team}
                 onJoin={this.onTeamJoinOrLeave}
-                onClose={this.onTeamModalClose}
+                onClose={this.onJoinLeaveModalClose}
               />
             ))}
 
@@ -210,9 +212,6 @@ class OneTeamPage extends React.Component {
                     <h5 style={{ margin: 0 }}>
                       <b>Members</b>
                     </h5>
-                    <p style={{ fontSize: "11px", textAlign: "center" }}>
-                      You may have to scroll to see all members
-                    </p>
                     <TeamMembersList
                       key={this.state.remountForcer}
                       teamID={team.id}
@@ -243,18 +242,18 @@ class OneTeamPage extends React.Component {
                 <button
                   className="btn round-me contact-admin-btn-new raise"
                   onClick={() => {
-                    this.setState({ contactModalOpen: true });
+                    this.setState({ contactEditModalOpen: true });
                   }}
                 >
-                  Contact Admin
-              </button>
+                  {this.props.user && this.teamAdmin(team.id) ? "Edit Team" : "Contact Admin"}
+                </button>
               </div>
-              {this.props.user && this.inTeam(team.id) &&
+              {this.props.user && this.inTeam(team.id) && !this.teamAdmin(team.id) &&
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button
                     className="btn round-me leave-team-btn raise"
                     onClick={() => {
-                      this.setState({ teamModalOpen: true });
+                      this.setState({ joinLeaveModalOpen: true });
                     }}
                   >
                     Leave Team
@@ -263,13 +262,18 @@ class OneTeamPage extends React.Component {
               }
             </div>
             <div style={{ display: 'block' }}>
-              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={teamTagline} url={window.location.href} />
+              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={team.tagline} url={window.location.href} />
             </div>
           </div>
           <br />
         </div>
       </>
     );
+  }
+
+  teamAdmin = (team_id) => {
+    //TODO: implement
+    //how? could be done using the preferred names, but that is encapsulated by TeamMembersList...
   }
 
   inTeam = (team_id) => {
@@ -284,15 +288,15 @@ class OneTeamPage extends React.Component {
   };
 
   onTeamJoinOrLeave = () => {
-    this.setState({ teamModalOpen: false, remountForcer: Math.random() });
+    this.setState({ joinLeaveModalOpen: false, remountForcer: Math.random() });
   };
 
-  onTeamModalClose = () => {
-    this.setState({ teamModalOpen: false });
+  onJoinLeaveModalClose = () => {
+    this.setState({ joinLeaveModalOpen: false });
   };
 
-  onContactModalClose = () => {
-    this.setState({ contactModalOpen: false });
+  onContactEditModalClose = () => {
+    this.setState({ contactEditModalOpen: false });
   };
 }
 

@@ -4,7 +4,7 @@ import PageTitle from "../../Shared/PageTitle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 
 class TeamsPage extends React.Component {
@@ -12,7 +12,9 @@ class TeamsPage extends React.Component {
     super(props);
     this.state = {
       searchedTeams: [],
-      searching: false
+      searching: false,
+      createTeamModalOpen: false,
+      redirectID: null
     };
   }
 
@@ -39,6 +41,7 @@ class TeamsPage extends React.Component {
 
   render() {
     const teamsStats = this.props.teamsPage;
+    const { createTeamModalOpen, redirectID } = this.state;
     if (teamsStats === null) {
       return (
         <div className="boxed_wrapper">
@@ -48,6 +51,12 @@ class TeamsPage extends React.Component {
     }
     return (
       <>
+
+        {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
+
+        {/* TODO: implement a create modal */}
+        {createTeamModalOpen && <></>}
+
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
@@ -102,7 +111,7 @@ class TeamsPage extends React.Component {
                     style={{ width: "100%", borderRadius: 0 }}
                     className="btn start-team-btn raise round-only-right-side"
                     onClick={() => {
-                      window.open(this.props.links.contactus, "_blank");
+                      this.setState({ createTeamModalOpen: true });
                     }}
                   >
                     Start Team
@@ -261,6 +270,14 @@ class TeamsPage extends React.Component {
       }).length > 0
     );
   };
+
+  onTeamCreate = (teamID) => {
+    this.setState({ createTeamModalOpen: false, redirectID: teamID });
+  };
+
+  onCreateTeamModalClose = () => {
+    this.setState({ createTeamModalOpen: false });
+  }
 }
 
 const mapStoreToProps = (store) => {
