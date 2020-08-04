@@ -98,7 +98,6 @@ class OneTeamPage extends React.Component {
           <meta property="og:url" content={window.location.href} />
         </Helmet>
 
-        {/* TODO: implement an edit modal */}
         {contactEditModalOpen && (
           this.teamAdmin(team.id) ?
             <EditTeamModal team={team} onClose={this.onContactEditModalClose} onTeamEdit={this.onTeamEdit} />
