@@ -550,9 +550,7 @@ class ProfilePage extends React.Component {
                 <h6>{team.name}*</h6>
               </>
             }
-            {team.tagline}
-              </p>
-            }
+            <p>{team.tagline}</p>
           </td>
         </tr>
       );

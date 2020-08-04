@@ -12,8 +12,7 @@ class TeamsPage extends React.Component {
     super(props);
     this.state = {
       searchedTeams: [],
-      searching: false,
-      joiningTeamID: null,
+      searching: false
     };
   }
 
@@ -121,11 +120,11 @@ class TeamsPage extends React.Component {
                   : this.renderTeams(teamsStats)}
               </>
             ) : (
-              <p>
-                There are no teams in this community yet. You can start one by
-                clicking the start team button above!
-              </p>
-            )}
+                <p>
+                  There are no teams in this community yet. You can start one by
+                  clicking the start team button above!
+                </p>
+              )}
           </div>
           <br />
         </div>
@@ -142,8 +141,8 @@ class TeamsPage extends React.Component {
           {teamsStats.length > 0 ? (
             teamsStats.map((teamStats) => this.renderTeam(teamStats))
           ) : (
-            <p>None of the teams match your search.</p>
-          )}
+              <p>None of the teams match your search.</p>
+            )}
         </>
       );
     } else {
@@ -240,10 +239,10 @@ class TeamsPage extends React.Component {
                     </div>
                   </>
                 ) : (
-                  <div className="team-card-column">
-                    <TeamInfoBars teamStats={teamStats} />
-                  </div>
-                )}
+                    <div className="team-card-column">
+                      <TeamInfoBars teamStats={teamStats} />
+                    </div>
+                  )}
               </div>
             </div>
           </div>
