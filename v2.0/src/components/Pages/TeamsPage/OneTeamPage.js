@@ -13,6 +13,7 @@ import EditTeamModal from "./EditTeamModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -229,6 +230,7 @@ class OneTeamPage extends React.Component {
                     key={this.state.remountForcer}
                     teamID={team.id}
                   />
+                  <p style={{ textAlign: 'center' }}>Complete <Link to={this.props.links.actions}>more actions</Link>!</p>
                 </div>
               </div>
             </div>
