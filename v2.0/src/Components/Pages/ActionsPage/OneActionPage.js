@@ -23,6 +23,8 @@ import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import ShareButtons from "../../Shared/ShareButtons";
+import { Helmet } from "react-helmet";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -93,11 +95,16 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
     return (
       <>
+        <Helmet>
+          <meta property="og:title" content={action.title} />
+          <meta property="og:image" content={action.image && action.image.url} />
+          <meta property="og:description" content={action.featured_summary} />
+          <meta property="og:url" content={window.location.href} />
+        </Helmet>
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              // { name: `Action ${action.id}` },
               { name: action ? action.title : "..." }
             ]}
           />
@@ -145,6 +152,8 @@ class OneActionPage extends React.Component {
                   )}
               </div>
             </div>
+            <br />
+            <ShareButtons label="Share this action!" pageTitle={action.title} pageDescription={action.featured_summary} url={window.location.href} />
           </section>
         </div>
       </>
@@ -806,7 +815,7 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
         {Object.keys(stories).map((key) => {
-          var creatorName = "Anonymous";
+          var creatorName = "Unknown user";
           const story = stories[key];
           if (!story.anononymous) {
             creatorName = story.preferred_name
