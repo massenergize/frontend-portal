@@ -4,6 +4,7 @@ import PageTitle from "../../Shared/PageTitle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
+import CreateTeamModal from "./CreateTeamModal";
 import { Link, Redirect } from "react-router-dom";
 
 
@@ -54,8 +55,7 @@ class TeamsPage extends React.Component {
 
         {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
 
-        {/* TODO: implement a create modal */}
-        {createTeamModalOpen && <></>}
+        {createTeamModalOpen && <CreateTeamModal onTeamCreate={this.onTeamCreate} onClose={this.onCreateTeamModalClose} />}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />

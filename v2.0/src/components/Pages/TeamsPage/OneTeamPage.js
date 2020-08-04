@@ -9,6 +9,7 @@ import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinTeamModal from "./JoinTeamModal";
 import LeaveTeamModal from "./LeaveTeamModal";
+import EditTeamModal from "./EditTeamModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
@@ -100,7 +101,7 @@ class OneTeamPage extends React.Component {
         {/* TODO: implement an edit modal */}
         {contactEditModalOpen && (
           this.teamAdmin(team.id) ?
-            <></>
+            <EditTeamModal team={team} onClose={this.onContactEditModalClose} onTeamEdit={this.onTeamEdit} />
             :
             <ContactAdminModal team={team} onClose={this.onContactEditModalClose} />
         )}
@@ -294,6 +295,10 @@ class OneTeamPage extends React.Component {
   onJoinLeaveModalClose = () => {
     this.setState({ joinLeaveModalOpen: false });
   };
+
+  onTeamEdit = () => {
+    this.setState({ contactEditModalOpen: false, remountForcer: Math.random() });
+  }
 
   onContactEditModalClose = () => {
     this.setState({ contactEditModalOpen: false });
