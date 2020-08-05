@@ -9642,6 +9642,15 @@ button.as-link:hover {
   transform: translate(-50%, -50%);
 }
 
+.team-modal textarea {
+  resize: none;
+}
+
+.team-modal label {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
 .error-p {
   color: darkred;
   font-size: 16px;

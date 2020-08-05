@@ -55,7 +55,7 @@ class TeamsPage extends React.Component {
 
         {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
 
-        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate} onClose={this.onTeamInfoModalClose} />}
+        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate} onClose={this.onCreateTeamModalClose} />}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
@@ -71,30 +71,6 @@ class TeamsPage extends React.Component {
                 Groups collaborating: schools, congregations, neighborhoods,
                 sports teams, and more. Get creative!
               </p>
-
-              {/* This is a version that includes a "compare teams" button*/}
-              {/* <div className="row no-gutters" style={{ marginBottom: "10px" }}>
-                <div className="col-12 col-md-8" style={{ paddingRight: '8px', paddingBottom: '10px' }}>
-                  <input onChange={event => this.handleSearch(event)} type="text" placeholder="Search for a team..." className="teams-search" />
-                </div>
-                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
-                  <button
-                    className="btn round-me start-team-btn raise"
-                    onClick={() => {
-                      window.open(this.props.links.contactus, "_blank");
-                    }}
-                  >
-                    Start Team
-                    </button>
-                </div>
-                <div className="col-6 col-md-2" style={{ paddingBottom: '10px' }}>
-                  <Link to={`${this.props.links.teams + "/compare"}`} style={{ height: "100%" }}>
-                    <button className="btn round-me comp-teams-btn raise">
-                      Compare Teams
-                      </button>
-                  </Link>
-                </div>
-              </div> */}
 
               <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-9">
@@ -275,7 +251,7 @@ class TeamsPage extends React.Component {
     this.setState({ createTeamModalOpen: false, redirectID: teamID });
   };
 
-  onTeamInfoModalClose = () => {
+  onCreateTeamModalClose = () => {
     this.setState({ createTeamModalOpen: false });
   }
 }

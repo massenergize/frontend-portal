@@ -20,10 +20,10 @@ class ContactAdminModal extends React.Component {
         }>
           <div>
             <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{ marginBottom: "10px" }} />
-            <textarea id="contact-textarea" name="msg" className="form-control" rows={7} placeholder="Message..." required>
+            <textarea id="contact-textarea" name="msg" className="form-control" rows={5} placeholder="Message..." required>
             </textarea>
             <button
-              style={{ marginTop: '10px', marginBottom: '0px',padding:'10px 40px' }}
+              style={{ marginTop: '10px', marginBottom: '0px', padding: '10px 40px' }}
               type="submit"
               className="btn btn-success round-me contact-admin-btn-new raise"
             >
@@ -55,6 +55,8 @@ class ContactAdminModal extends React.Component {
     );
   }
 
+  //TODO: remove the spinner code; annoying to re-implement for everything when I'll just end up
+  //making a new form component after this
   sendMessage = () => {
     var spinner = document.getElementById("sender-spinner");
     var msg = document.getElementById("contact-textarea").value;

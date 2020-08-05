@@ -47,7 +47,7 @@ class OneTeamPage extends React.Component {
   }
 
   render() {
-    const { team, loading, error,
+    const { team, loading, error, remountForcer,
       joinLeaveModalOpen, contactEditModalOpen } = this.state;
 
     if (loading || !this.props.teamsPage) {
@@ -205,7 +205,11 @@ class OneTeamPage extends React.Component {
                     <h5>
                       <b>Description</b>
                     </h5>
-                    <p>{team.description}</p>
+                    <div style={{ maxHeight: '300px', overflowY: 'auto' }} className="show-scrollbar">
+                      <div className="boxed_wrapper">
+                        <p>{team.description}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row" style={{ margin: 0 }}>
@@ -214,7 +218,7 @@ class OneTeamPage extends React.Component {
                       <b>Members</b>
                     </h5>
                     <TeamMembersList
-                      key={this.state.remountForcer}
+                      key={remountForcer}
                       teamID={team.id}
                     />
                   </div>
@@ -227,7 +231,7 @@ class OneTeamPage extends React.Component {
                     <b>Actions Completed</b>
                   </h5>
                   <TeamActionsGraph
-                    key={this.state.remountForcer}
+                    key={remountForcer}
                     teamID={team.id}
                   />
                   <p style={{ textAlign: 'center' }}>Complete <Link to={this.props.links.actions}>more actions</Link>!</p>
@@ -276,6 +280,9 @@ class OneTeamPage extends React.Component {
   teamAdmin = (team_id) => {
     //TODO: implement
     //how? could be done using the preferred names, but that is encapsulated by TeamMembersList...
+    //seems like I ought to fetch info, preferredNames, and the graph HERE, and pass them to components
+    //refreshing data becomes eaiser, then; no remount forcing
+    return true;
   }
 
   inTeam = (team_id) => {
