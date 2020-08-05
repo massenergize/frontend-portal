@@ -13,12 +13,13 @@ class TeamInfoModal extends React.Component {
 
   render() {
 
-    //TODO: from the teams.stats, need to get a list of viable parent teams for this team
-    const parentTeamOptions = [];
+    const { team, onClose, teamsPage } = this.props;
+
+    //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
+    const parentTeamOptions = teamsPage.map(teamStats => teamStats.team)
+      .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     //TODO: need to add input for assigning other admins (append-only?)
-
-    const { team, onClose } = this.props;
 
     let modalContent;
     if (this.props.user) {
@@ -42,32 +43,37 @@ class TeamInfoModal extends React.Component {
           else this.createTeam();
         }}>
 
-        <label for="name"><u>Name</u></label>
+        <label htmlFor="name"><u>Name</u></label>
         <input id="name" type="text" name="name" className="form-control"
           value={team && team.name} maxLength={100} reqiured />
 
-        <label for="tagline"><u>Tagline</u></label>
+        <label htmlFor="tagline"><u>Tagline</u></label>
         <input id="tagline" name="tagline" className="form-control"
           value={team && team.tagline} maxLength={100} required />
 
-        <label for="description"><u>Description</u></label>
+        <label htmlFor="description"><u>Description</u></label>
         <textarea id="description" name="description" className="form-control" rows={3}
           value={team && team.description} maxLength={10000} required />
 
-        <label for="parent-team"><u>Parent Team</u></label>
-        <select name="parent-team" id="parent-team" form="team-info">
+        <label htmlFor="parent-team"><u>Parent Team</u> &nbsp;</label>
+        <select name="parent-team" id="parent-team" form="team-info" defaultValue={
+          (!team || !team.parent) ? "" : team.parent.id
+        }>
+          <option value="">None</option>
           {parentTeamOptions.map(team => <option value={team.id}>{team.name}</option>)}
         </select>
 
-        <label for="logo"><u>Logo</u></label>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {team && team.logo &&
-            <div style={{ display: 'block' }}>
-              <small>Current</small>
-              <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
-            </div>
-          }
-          <input style={{ display: 'inline-block' }} id="logo" accept="image/*" type="file" name="logo" className="form-control" />
+        <div style={{ display: 'block' }}>
+          <label htmlFor="logo"><u>Logo</u></label>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {team && team.logo &&
+              <div style={{ display: 'block' }}>
+                <small>Current:</small>
+                <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
+              </div>
+            }
+            <input style={{ display: 'inline-block' }} id="logo" accept="image/*" type="file" name="logo" className="form-control" />
+          </div>
         </div>
 
         {submitButton}
@@ -84,9 +90,10 @@ class TeamInfoModal extends React.Component {
           <div className="team-modal">
             <h4 onClick={() => { onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
             <h4 style={{ paddingRight: '60px' }}>{team ? <span>Edit <b>{team.name}</b></span> : "Create Team"}</h4>
-            <br />
-            <div className="boxed_wrapper">
-              {modalContent}
+            <div style={{ overflowY: 'auto', maxHeight: '90%'}}>
+              <div className="boxed_wrapper">
+                {modalContent}
+              </div>
             </div>
           </div>
         </div>
@@ -106,6 +113,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
+    teamsPage: store.page.teamsPage,
   };
 };
 
