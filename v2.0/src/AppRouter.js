@@ -77,7 +77,7 @@ class AppRouter extends Component {
   componentDidMount() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
-
+    console.log(subdomain)
     this.props.reduxLoadLinks({
       home: `/${subdomain}`,
       actions: `/${subdomain}/actions`,

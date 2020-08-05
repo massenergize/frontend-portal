@@ -1,6 +1,5 @@
 import React from "react";
-import URLS from "../../../api/urls";
-import { postJson, apiCall, deleteJson } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -269,9 +268,9 @@ class OneActionPage extends React.Component {
   }
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
-    deleteJson(
-      `${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`
-    ).then((json) => {
+    if(status !== 'TODO' || status !== 'DONE') return;
+
+    apiCall('users.actions.remove', { is: actionRel.id}).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
@@ -934,14 +933,10 @@ class OneActionPage extends React.Component {
   };
   moveToDone = (actionRel) => {
     const body = {
-      status: "DONE",
-      action: actionRel.action.id,
-      real_estate_unit: actionRel.real_estate_unit.id,
+      action_id: actionRel.action.id,
+      household_id: actionRel.real_estate_unit.id,
     };
-    postJson(
-      URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id,
-      body
-    )
+    apiCall( 'users.actions.completed.add', body )
       .then((json) => {
         if (json.success) {
           this.setState({ showTestimonialLink: true });
@@ -964,12 +959,14 @@ class OneActionPage extends React.Component {
     if (actionRel) this.moveToDone(actionRel);
   }
   addToCart = (aid, hid, status) => {
+    if(status !== 'TODO' || status !== 'DONE') return;
+
+    const route = status === "TODO" ? 'users.actions.todo.add' : 'users.actions.completed.add'
     const body = {
-      action: aid,
-      status: status,
-      real_estate_unit: hid,
+      action_id: aid,
+      household_id: hid,
     };
-    postJson(URLS.USER + "/" + this.props.user.id + "/actions", body)
+    apiCall(route, body)
       .then((json) => {
         if (json.success) {
           //set the state here
@@ -1006,9 +1003,10 @@ class OneActionPage extends React.Component {
     })[0];
 
     const body = {
+      data_id: data.id,
       value: data.value + number > 0 ? data.value + number : 0,
     };
-    postJson(URLS.DATA + "/" + data.id, body).then((json) => {
+    apiCall('data.update', body).then((json) => {
       console.log(json);
       if (json.success) {
         data = {
@@ -1032,9 +1030,11 @@ class OneActionPage extends React.Component {
       return;
     }
     const body = {
+      data_id: data.id,
       value: data.value + number > 0 ? data.value + number : 0,
     };
-    postJson(URLS.DATA + "/" + data.id, body).then((json) => {
+
+    apiCall('data.update', body).then((json) => {
       console.log(json);
       if (json.success) {
         data = {

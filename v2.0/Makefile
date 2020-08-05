@@ -40,7 +40,7 @@ run-prod:
 .PHONY: run-prod
 
 run-local:
-	python deployment/prepare_to_deploy.py dev local=1
+	python deployment/prepare_to_deploy.py dev 1
 	npm start
 .PHONY: run-prod
 

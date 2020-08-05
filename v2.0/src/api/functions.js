@@ -1,6 +1,6 @@
 import URLS from "./urls";
 import qs from "qs";
-import { IS_SANDBOX } from "../config/config";
+import { IS_SANDBOX, IS_PROD } from "../config/config";
 
 
 export const getJson = async url => {
@@ -16,6 +16,8 @@ export const getJson = async url => {
     return null;
   }
 };
+
+
 export async function apiCallNoToken(
   destinationUrl,
   dataToSend = {},
@@ -23,9 +25,8 @@ export async function apiCallNoToken(
 ) {
   //Differentiate between dev deployment and real deployment
 
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
+  
+  dataToSend = { is_dev: !IS_PROD, is_sandbox: IS_SANDBOX, ...dataToSend };
 
   var params = {
     credentials: "include",
@@ -111,37 +112,6 @@ export const postJson = async (url, body) => {
   }
 };
 
-/**
- *
- * @param {object} destinationUrl
- * @param {object} dataToSend
- * @param {string} relocationPage
- * This function handles sending data to the backend.  It takes advantage of
- * being a SimpleRequest hence no preflight checks will be done saving some
- * band-with and being faster in general while avoiding CORS issues.
- */
-export async function authCall(token, relocationPage = null) {
-  //Differentiate between dev deployment and real deployment
-  var params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const response = await fetch(`${URLS.ROOT}/auth/whoami`, params);
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-
 
 //THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(
@@ -149,51 +119,8 @@ export async function apiCall(
   dataToSend = {},
   relocationPage = null
 ) {
-  var params = {};
 
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
-
-  params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: qs.stringify(dataToSend)
-  };
-
-
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    } else if (!json.success) {
-      if (json.error === "Signature has expired") {
-        window.location.href = window.location;
-      } else {
-        console.log(destinationUrl, json.error);
-      }
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-
-// ----------------------------------
-export async function apiCallWithMedia(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
+  dataToSend = { is_prod: IS_PROD, is_sandbox: IS_SANDBOX, ...dataToSend };
 
   const formData = new FormData();
   Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
@@ -204,14 +131,13 @@ export async function apiCallWithMedia(
     body: formData
   });
 
+
   try {
     const json = await response.json();
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     } else if (!json.success) {
-      if (json.error === "Signature has expired") {
-        // window.alert("Session Expired.  Please reload and sign in again.")
-        console.log(destinationUrl, json);
+      if (json.error === "session_expired") {
         window.location.href = window.location;
       } else {
         console.log(destinationUrl, json.error);
@@ -222,6 +148,7 @@ export async function apiCallWithMedia(
     return { success: false, error };
   }
 }
+
 
 export const deleteJson = async url => {
   try {

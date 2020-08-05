@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCallWithMedia } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
 
@@ -99,7 +99,7 @@ class StoryForm extends React.Component {
   }
   render() {
 
-    const cols = this.props.tagCollections;
+    // const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
       return (
         <div className="text-center">
@@ -256,9 +256,8 @@ class StoryForm extends React.Component {
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
-                style={{ paddingTop: 4 }}
+                style={{ paddingTop: 4, display: "none"  }}
                 className="form-control"
-                style={{ display: "none" }}
               />
             </div>
           </div>
@@ -404,7 +403,7 @@ class StoryForm extends React.Component {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
 
-      apiCallWithMedia(`testimonials.add`, body).then((json) => {
+      apiCall(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,

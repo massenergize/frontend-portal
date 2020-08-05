@@ -697,22 +697,20 @@ class RegisterFormBase extends React.Component {
   fetchMassToken = async (fireToken, email) => {
     this.setRegProtocol();
     const body = { idToken: fireToken };
-    apiCall("auth/verify", body)
+    apiCall("auth.login", body)
       .then((massToken) => {
-        const idToken = massToken.data.idToken;
-        localStorage.setItem("idToken", idToken.toString());
         this.fetchAndLogin(email).then((success) => {
-          if (success) console.log("yay");
+          if (success) console.log("login successful");
         });
       })
       .catch((err) => {
-        console.log("Error MASSTOKEN: ", err);
+        console.log("login error: ", err);
       });
   };
 
   fetchAndLogin = async (email) => {
     try {
-      const json = await apiCall("auth/whoami");
+      const json = await apiCall("auth.whoami");
 
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);

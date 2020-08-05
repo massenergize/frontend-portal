@@ -7,8 +7,7 @@ import {
   facebookProvider,
   googleProvider,
 } from "../../../config/firebaseConfig";
-import { getJson, apiCall } from "../../../api/functions";
-import URLS from "../../../api/urls";
+import { apiCall } from "../../../api/functions";
 import {
   reduxLogin,
   reduxLoadDone,
@@ -223,10 +222,8 @@ class LoginFormBase extends React.Component {
 
   fetchMassToken = async (fireToken, email) => {
     const body = { idToken: fireToken };
-    apiCall("auth/verify", body)
+    apiCall("auth.login", body)
       .then((massToken) => {
-        const idToken = massToken.data.idToken;
-        localStorage.setItem("idToken", idToken.toString());
         this.fetchAndLogin(email).then((success) => {
           if (success) console.log("yay");
         });
@@ -237,25 +234,22 @@ class LoginFormBase extends React.Component {
         window.location.reload();
       });
   };
+
   fetchAndLogin = async (email) => {
     try {
       this.props.tryingToLogin(true);
       //const json2 = await getJson(`${URLS.USER}/e/${email}`);
-      const json = await apiCall("auth/whoami");
+      const json = await apiCall("auth.whoami");
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);
-        const todo = await getJson(
-          `${URLS.USER}/e/${email}/actions?status=TODO`
-        );
+        const todo = await apiCall("users.actions.todo.list", { email });
         this.props.reduxLoadTodo(todo.data);
-        const done = await getJson(
-          `${URLS.USER}/e/${email}/actions?status=DONE`
-        );
+        const done = await apiCall("users.actions.completed.list", { email });
         this.props.reduxLoadDone(done.data);
         this.props.tryingToLogin(false);
-
         return true;
       }
+
       console.log("fetch and login failed");
       this.props.tryingToLogin(false);
       return false;
