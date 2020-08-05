@@ -4,7 +4,7 @@ import PageTitle from "../../Shared/PageTitle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
-import CreateTeamModal from "./CreateTeamModal";
+import TeamInfoModal from "./TeamInfoModal";
 import { Link, Redirect } from "react-router-dom";
 
 
@@ -55,7 +55,7 @@ class TeamsPage extends React.Component {
 
         {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
 
-        {createTeamModalOpen && <CreateTeamModal onTeamCreate={this.onTeamCreate} onClose={this.onCreateTeamModalClose} />}
+        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate} onClose={this.onTeamInfoModalClose} />}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
@@ -275,7 +275,7 @@ class TeamsPage extends React.Component {
     this.setState({ createTeamModalOpen: false, redirectID: teamID });
   };
 
-  onCreateTeamModalClose = () => {
+  onTeamInfoModalClose = () => {
     this.setState({ createTeamModalOpen: false });
   }
 }

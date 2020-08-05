@@ -9630,14 +9630,15 @@ button.as-link:hover {
 .team-modal{
   height: auto;
   width: auto;
+  min-width: 250px;
   background: white;
   padding: 25px;
   border-radius: 10px;
   margin: 0 auto;
-  z-index: 101;
+  z-index: 102;
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: 55%;
   transform: translate(-50%, -50%);
 }
 
