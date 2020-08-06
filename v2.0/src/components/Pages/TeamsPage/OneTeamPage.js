@@ -21,6 +21,7 @@ class OneTeamPage extends React.Component {
     this.state = {
       team: null,
       loading: true,
+      isAdmin: false,
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
     };
@@ -48,7 +49,7 @@ class OneTeamPage extends React.Component {
 
   render() {
     const { team, loading, error, remountForcer,
-      joinLeaveModalOpen, contactEditModalOpen } = this.state;
+      joinLeaveModalOpen, contactEditModalOpen, isAdmin } = this.state;
 
     if (loading || !this.props.teamsPage) {
       return <LoadingCircle />;
@@ -100,7 +101,7 @@ class OneTeamPage extends React.Component {
         </Helmet>
 
         {contactEditModalOpen && (
-          this.teamAdmin(team.id) ?
+          isAdmin ?
             <TeamInfoModal team={team} onClose={this.onContactEditModalClose} onComplete={this.onTeamEdit} />
             :
             <ContactAdminModal team={team} onClose={this.onContactEditModalClose} />
@@ -218,6 +219,7 @@ class OneTeamPage extends React.Component {
                       <b>Members</b>
                     </h5>
                     <TeamMembersList
+                      onMembersLoad={this.onMembersLoad}
                       key={remountForcer}
                       teamID={team.id}
                     />
@@ -251,10 +253,10 @@ class OneTeamPage extends React.Component {
                     this.setState({ contactEditModalOpen: true });
                   }}
                 >
-                  {this.props.user && this.teamAdmin(team.id) ? "Edit Team" : "Contact Admin"}
+                  {this.props.user && isAdmin ? "Edit Team" : "Contact Admin"}
                 </button>
               </div>
-              {this.props.user && this.inTeam(team.id) && !this.teamAdmin(team.id) &&
+              {this.props.user && this.inTeam(team.id) && !isAdmin &&
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button
                     className="btn round-me leave-team-btn raise"
@@ -277,12 +279,17 @@ class OneTeamPage extends React.Component {
     );
   }
 
-  teamAdmin = (team_id) => {
-    //TODO: implement
-    //how? could be done using the preferred names, but that is encapsulated by TeamMembersList...
-    //seems like I ought to fetch info, preferredNames, and the graph HERE, and pass them to components
-    //refreshing data becomes eaiser, then; no remount forcing
-    return true;
+  //TODO: won't work now... assumes that the team members include UserProfile IDs with them
+  onMembersLoad = (members) => {
+
+    this.setState({ isAdmin: true }); //TODO: remove when done testing
+
+    const { user } = this.props;
+    const myTeamMember = members.filter(member => member.user_id === user.id);
+    if (myTeamMember.length === 0) return;
+    if (myTeamMember[0].is_admin) {
+      this.setState({ isAdmin: true });
+    }
   }
 
   inTeam = (team_id) => {

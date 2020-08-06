@@ -11,15 +11,14 @@ class TeamInfoModal extends React.Component {
   render() {
 
     const { team, onClose, teamsPage } = this.props;
+    const teams = teamsPage.map(teamStats => teamStats.team);
 
-    //TODO: disallow a team that itself has sub-teams from setting a parent...right?
+    //disallow a team that itself has sub-teams from setting a parent
+    const isParentTeam = teams.map(_team => _team.parent && _team.parent.id === team.id)
+      .includes(true);
 
     //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const parentTeamOptions = teamsPage.map(teamStats => teamStats.team)
-      .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
-
-    //TODO: need a solution for adding OTHER admins (append-only?)
-    //also, make sure that the person creating the team becomes an admin...
+    const parentTeamOptions = teams.filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     let modalContent;
     if (this.props.user) {
@@ -36,7 +35,7 @@ class TeamInfoModal extends React.Component {
           Create
         </button>;
 
-      modalContent = <form id="team-team-info"
+      modalContent = <form id="team-info"
         onSubmit={(e) => {
           e.preventDefault();
           this.callAPI();
@@ -44,26 +43,39 @@ class TeamInfoModal extends React.Component {
 
         <label htmlFor="team-name"><u>Name</u></label>
         <input id="team-name" type="text" name="team-name" className="form-control"
-          value={team && team.name} maxLength={100} reqiured />
+          defaultValue={team && team.name} maxLength={100} reqiured />
 
         <label htmlFor="team-tagline"><u>Tagline</u></label>
         <input id="team-tagline" name="team-tagline" className="form-control"
-          value={team && team.tagline} maxLength={100} required />
+          defaultValue={team && team.tagline} maxLength={100} required />
 
         <label htmlFor="team-description"><u>Description</u></label>
         <textarea id="team-description" name="team-description" className="form-control" rows={3}
-          value={team && team.description} maxLength={10000} required />
+          defaultValue={team && team.description} maxLength={10000} required />
 
-        <label htmlFor="team-parent-team"><u>Parent Team</u> &nbsp;</label>
-        <select name="team-parent-team" id="team-parent-team" form="team-info" defaultValue={
-          (team && team.parent) ? team.parent.id : ""
-        }>
-          <option value="">NONE</option>
-          {parentTeamOptions.map(team => <option value={team.id}>{team.name}</option>)}
-        </select>
+        {!team &&
+          <>
+            <label htmlFor="team-admin_emails"><u>Admin Emails</u> <br />
+              <small>A comma-separated list of emails corresponding with the MassEnergize users you wish to make admins of this team. You will automatically be made an admin.</small>
+            </label>
+            <input id="team-admin_emails" name="team-admin_emails" className="form-control" required />
+          </>
+        }
+
+        {!isParentTeam &&
+          <>
+            <label htmlFor="team-parent_id"><u>Parent Team</u> &nbsp;</label>
+            <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
+              (team && team.parent) ? team.parent.id : ""
+            }>
+              <option value="">NONE</option>
+              {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
+            </select>
+          </>
+        }
 
         <div style={{ display: 'block' }}>
-          <label htmlFor="team-logo"><u>Logo</u></label>
+          <label htmlFor="team-image"><u>Logo</u></label>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {team && team.logo &&
               <div style={{ display: 'block' }}>
@@ -71,7 +83,7 @@ class TeamInfoModal extends React.Component {
                 <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
               </div>
             }
-            <input style={{ display: 'inline-block' }} id="team-logo" accept="image/*" type="file" name="team-logo" className="form-control" />
+            <input style={{ display: 'inline-block' }} id="team-image" accept="image/*" type="file" name="team-image" className="form-control" />
           </div>
         </div>
 
@@ -87,8 +99,12 @@ class TeamInfoModal extends React.Component {
       <>
         <div style={{ width: '100%', height: "100%" }}>
           <div className="team-modal">
-            <h4 onClick={() => { onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
-            <h4 style={{ paddingRight: '60px' }}>{team ? <span>Edit <b>{team.name}</b></span> : "Create Team"}</h4>
+            <h4 onClick={() => { onClose() }} className=" modal-close-x round-me">
+              <span className="fa fa-close"></span>
+            </h4>
+            <h4 style={{ paddingRight: '60px' }}>
+              {team ? <span>Edit <b>{team.name}</b></span> : "Create Team"}
+            </h4>
             <div style={{ overflowY: 'auto', maxHeight: '90%' }}>
               <div className="boxed_wrapper">
                 {modalContent}
@@ -102,25 +118,22 @@ class TeamInfoModal extends React.Component {
     );
   }
 
-  getChangedData = (team, data) => {
-    const ret = {};
-    Object.keys(data).forEach(field => {
-      if (data[field] !== team[field]) {
-        ret[field] = data[field];
-      }
-    });
-    return ret;
-  }
-
-  //TODO: I have a bit of work to do making the data object valid for the create/update calls
-  //look at the API code
   getData = () => {
-    const { team } = this.props;
-
+    const { team, communityData, user } = this.props;
     const data = {};
-    ['name', 'tagline', 'description', 'parent-team', 'logo']
-      .forEach(field => data[field] = document.getElementById(`team-${field}`).value);
-    if (team) data = this.getChangedData(data, team);
+    ['name', 'tagline', 'description', 'admin_emails', 'parent_id', 'image']
+      .forEach(field => {
+        const input = document.getElementById(`team-${field}`);
+        if (input) data[field] = input.value
+      });
+    if (team) data['id'] = team.id;
+    else {
+      data['community_id'] = communityData.community.id;
+      data['admin_emails'] = data['admin_emails'] + `, ${user.email}`
+    }
+
+    //TODO: remove when done testing
+    console.log(data);
 
     return data;
   }
@@ -129,6 +142,7 @@ class TeamInfoModal extends React.Component {
     const { team, onComplete, reduxLoadTeamsPage } = this.props;
 
     const data = this.getData();
+
     const url = team ? "teams.update" : "teams.create";
 
     //TODO: what to do on error?
@@ -142,7 +156,6 @@ class TeamInfoModal extends React.Component {
     } catch (err) {
     }
   }
-
 }
 
 const mapStoreToProps = (store) => {
@@ -150,6 +163,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     links: store.links,
     teamsPage: store.page.teamsPage,
+    communityData: store.page.homePage,
   };
 };
 const mapDispatchToProps = {

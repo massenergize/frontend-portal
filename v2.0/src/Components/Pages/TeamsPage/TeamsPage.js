@@ -122,7 +122,6 @@ class TeamsPage extends React.Component {
       return (
         <>
           <p>Click on a team below to join it!</p>
-          {/* <hr></hr> */}
           {teamsStats.length > 0 ? (
             teamsStats.map((teamStats) => this.renderTeam(teamStats))
           ) : (
@@ -180,7 +179,6 @@ class TeamsPage extends React.Component {
         <div>
           <h3 className="teams-subheader">My Teams</h3>
           {myTeamsContent}
-          {/* <hr></hr> */}
           <h3 className="teams-subheader">Other Teams</h3>
           {otherTeamsContent}
         </div>

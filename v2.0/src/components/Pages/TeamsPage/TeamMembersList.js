@@ -12,10 +12,13 @@ class TeamMembersList extends React.Component {
   }
 
   async fetch(id) {
+    const { onMembersLoad } = this.props;
+
     try {
       const json = await apiCall("teams.members.preferredNames", { team_id: id });
       if (json.success) {
         this.setState({ membersResponse: json.data });
+        onMembersLoad(json.data);
       } else {
         this.setState({ error: json.error });
       }
