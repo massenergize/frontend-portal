@@ -2,24 +2,24 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 
 class TeamInfoModal extends React.Component {
 
-  // things added by Brad that would need a bunch more work to the front-end: multiple photos, videos
-  // how many nested parent-sub teams can there be???
-  //    if only one layer, need to stop teams that are parents from assigning themselves a parent
-  //    if more than one layer, things will become a nightmare otherwise
+  //TODO: things added by Brad that would need a bunch more work: multiple photos, videos
 
   render() {
 
     const { team, onClose, teamsPage } = this.props;
 
+    //TODO: disallow a team that itself has sub-teams from setting a parent...right?
+
     //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const parentTeamOptions = teamsPage.map(teamStats => teamStats.team)
       .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
-    //TODO: need to add input for assigning other admins (append-only?)
+    //TODO: need a solution for adding OTHER admins (append-only?)
+    //also, make sure that the person creating the team becomes an admin...
 
     let modalContent;
     if (this.props.user) {
@@ -36,35 +36,34 @@ class TeamInfoModal extends React.Component {
           Create
         </button>;
 
-      modalContent = <form id="team-info"
+      modalContent = <form id="team-team-info"
         onSubmit={(e) => {
           e.preventDefault();
-          if (team) this.updateTeam();
-          else this.createTeam();
+          this.callAPI();
         }}>
 
-        <label htmlFor="name"><u>Name</u></label>
-        <input id="name" type="text" name="name" className="form-control"
+        <label htmlFor="team-name"><u>Name</u></label>
+        <input id="team-name" type="text" name="team-name" className="form-control"
           value={team && team.name} maxLength={100} reqiured />
 
-        <label htmlFor="tagline"><u>Tagline</u></label>
-        <input id="tagline" name="tagline" className="form-control"
+        <label htmlFor="team-tagline"><u>Tagline</u></label>
+        <input id="team-tagline" name="team-tagline" className="form-control"
           value={team && team.tagline} maxLength={100} required />
 
-        <label htmlFor="description"><u>Description</u></label>
-        <textarea id="description" name="description" className="form-control" rows={3}
+        <label htmlFor="team-description"><u>Description</u></label>
+        <textarea id="team-description" name="team-description" className="form-control" rows={3}
           value={team && team.description} maxLength={10000} required />
 
-        <label htmlFor="parent-team"><u>Parent Team</u> &nbsp;</label>
-        <select name="parent-team" id="parent-team" form="team-info" defaultValue={
-          (!team || !team.parent) ? "" : team.parent.id
+        <label htmlFor="team-parent-team"><u>Parent Team</u> &nbsp;</label>
+        <select name="team-parent-team" id="team-parent-team" form="team-info" defaultValue={
+          (team && team.parent) ? team.parent.id : ""
         }>
-          <option value="">None</option>
+          <option value="">NONE</option>
           {parentTeamOptions.map(team => <option value={team.id}>{team.name}</option>)}
         </select>
 
         <div style={{ display: 'block' }}>
-          <label htmlFor="logo"><u>Logo</u></label>
+          <label htmlFor="team-logo"><u>Logo</u></label>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {team && team.logo &&
               <div style={{ display: 'block' }}>
@@ -72,7 +71,7 @@ class TeamInfoModal extends React.Component {
                 <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
               </div>
             }
-            <input style={{ display: 'inline-block' }} id="logo" accept="image/*" type="file" name="logo" className="form-control" />
+            <input style={{ display: 'inline-block' }} id="team-logo" accept="image/*" type="file" name="team-logo" className="form-control" />
           </div>
         </div>
 
@@ -90,7 +89,7 @@ class TeamInfoModal extends React.Component {
           <div className="team-modal">
             <h4 onClick={() => { onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
             <h4 style={{ paddingRight: '60px' }}>{team ? <span>Edit <b>{team.name}</b></span> : "Create Team"}</h4>
-            <div style={{ overflowY: 'auto', maxHeight: '90%'}}>
+            <div style={{ overflowY: 'auto', maxHeight: '90%' }}>
               <div className="boxed_wrapper">
                 {modalContent}
               </div>
@@ -103,9 +102,46 @@ class TeamInfoModal extends React.Component {
     );
   }
 
-  //TODO: implement functions for accessing fields and doing API calls for both create and edit
-  //make sure that they call onComplete callback and passes it the team ID
-  //for updateTeam(), check which of the values have changed and only include new ones in API call
+  getChangedData = (team, data) => {
+    const ret = {};
+    Object.keys(data).forEach(field => {
+      if (data[field] !== team[field]) {
+        ret[field] = data[field];
+      }
+    });
+    return ret;
+  }
+
+  //TODO: I have a bit of work to do making the data object valid for the create/update calls
+  //look at the API code
+  getData = () => {
+    const { team } = this.props;
+
+    const data = {};
+    ['name', 'tagline', 'description', 'parent-team', 'logo']
+      .forEach(field => data[field] = document.getElementById(`team-${field}`).value);
+    if (team) data = this.getChangedData(data, team);
+
+    return data;
+  }
+
+  callAPI = async () => {
+    const { team, onComplete, reduxLoadTeamsPage } = this.props;
+
+    const data = this.getData();
+    const url = team ? "teams.update" : "teams.create";
+
+    //TODO: what to do on error?
+    try {
+      const json = await apiCall(url, data);
+      if (json.success) {
+        reduxLoadTeamsPage(); //TODO: make sure this does what I think it does
+        onComplete(team.id);
+      } else {
+      }
+    } catch (err) {
+    }
+  }
 
 }
 
@@ -116,5 +152,8 @@ const mapStoreToProps = (store) => {
     teamsPage: store.page.teamsPage,
   };
 };
+const mapDispatchToProps = {
+  reduxLoadTeamsPage
+};
 
-export default connect(mapStoreToProps, null)(TeamInfoModal);
+export default connect(mapStoreToProps, mapDispatchToProps)(TeamInfoModal);
