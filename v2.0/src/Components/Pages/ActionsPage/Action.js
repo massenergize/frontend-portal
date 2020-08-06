@@ -8,8 +8,7 @@ import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
-import URLS from "../../../api/urls";
-import { deleteJson } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -38,18 +37,18 @@ class Action extends React.Component {
 
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
-    deleteJson(
-      `${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`
-    ).then((json) => {
-      if (json.success) {
-        if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
-        if (status === "DONE") {
-          this.props.done.filter((item) => item.id !== actionRel.id);
-          this.props.reduxRemoveFromDone(actionRel);
-          //this.props.reduxLoadDone(remainder);
+    apiCall("user.actions.remove", { user_action_id: actionRel.id }).then(
+      (json) => {
+        if (json.success) {
+          if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
+          if (status === "DONE") {
+            this.props.done.filter((item) => item.id !== actionRel.id);
+            this.props.reduxRemoveFromDone(actionRel);
+            //this.props.reduxLoadDone(remainder);
+          }
         }
       }
-    });
+    );
   };
 
   actionIsInTodo() {
@@ -148,7 +147,10 @@ class Action extends React.Component {
               ? "thm-btn style-4 selected cool-font action-btns"
               : "thm-btn style-4 cool-font action-btns"
           }
-          onClick={() => { this.openForm("DONE"); this.props.toggleShowTodoMsg() }}
+          onClick={() => {
+            this.openForm("DONE");
+            this.props.toggleShowTodoMsg();
+          }}
         >
           {" "}
           Done It{" "}
@@ -164,10 +166,11 @@ class Action extends React.Component {
       return (
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
           <div className="single-shop-item m-action-item">
-            <Link to={this.props.links.actions + "/" + this.props.action.id} style={{ color: '#999999', width: '100%' }}>
-              <div
-                className="img-box"
-              >
+            <Link
+              to={this.props.links.actions + "/" + this.props.action.id}
+              style={{ color: "#999999", width: "100%" }}
+            >
+              <div className="img-box">
                 {" "}
                 {/* plug in the image here */}
                 <img
@@ -182,7 +185,9 @@ class Action extends React.Component {
                     <div className="content">
                       {/* link is thisurl/id (links to the OneActionPage) */}
                       <Link
-                        to={this.props.links.actions + "/" + this.props.action.id}
+                        to={
+                          this.props.links.actions + "/" + this.props.action.id
+                        }
                       >
                         <i className="fa fa-link" aria-hidden="true"></i>
                       </Link>
@@ -191,17 +196,11 @@ class Action extends React.Component {
                 </figcaption>
               </div>
               <div className="content-box">
-                <div
-                  className="inner-box"
-                >
-                  <h4 className="cool-font">
-                    {this.props.action.title}
-                  </h4>
+                <div className="inner-box">
+                  <h4 className="cool-font">{this.props.action.title}</h4>
                 </div>
                 {/* Impact and cost tags*/}
-                <div
-                  className="price-box2"
-                >
+                <div className="price-box2">
                   <div className="clearfix">
                     <div className="float_left">
                       <Tooltip
@@ -216,7 +215,7 @@ class Action extends React.Component {
                     </div>
                     <div className="float_right">
                       Cost
-                    <span>
+                      <span>
                         {" "}
                         {this.renderCost(this.getTag("cost"), "cost")}{" "}
                       </span>
@@ -231,14 +230,12 @@ class Action extends React.Component {
                 <div className="col-sm-4 col-md-4 col-lg-4 col-4">
                   <div className="col-centered">
                     <Link
-                      to={
-                        this.props.links.actions + "/" + this.props.action.id
-                      }
+                      to={this.props.links.actions + "/" + this.props.action.id}
                       className="thm-btn style-4 action-btns cool-font"
                     >
                       {" "}
-                        More Info
-                      </Link>
+                      More Info
+                    </Link>
                   </div>
                 </div>
                 <div className="col-md-4 col-sm-4 col-lg-4 col-4">
@@ -247,11 +244,11 @@ class Action extends React.Component {
                       <Tooltip text="Sign in to make a TODO list">
                         <p className="has-tooltip thm-btn style-4 action-btns disabled">
                           To Do
-                          </p>
+                        </p>
                       </Tooltip>
                     ) : (
-                        this.checkTodoAndReturn()
-                      )}
+                      this.checkTodoAndReturn()
+                    )}
                   </div>
                 </div>
                 <div className="col-md-4 col-sm-4 col-lg-4 col-4">
@@ -260,11 +257,11 @@ class Action extends React.Component {
                       <Tooltip text="Sign in to mark actions as completed">
                         <p className="has-tooltip thm-btn style-4 action-btns disabled">
                           Done It
-                          </p>
+                        </p>
                       </Tooltip>
                     ) : (
-                        this.checkDoneAndReturn()
-                      )}
+                      this.checkDoneAndReturn()
+                    )}
                   </div>
                 </div>
                 <div className="col-12">
@@ -282,8 +279,8 @@ class Action extends React.Component {
                               style={{ margin: "auto" }}
                             >
                               {" "}
-                                Cancel
-                              </button>
+                              Cancel
+                            </button>
                             <StoryForm
                               aid={this.props.action.id}
                               noMessage={true}
@@ -296,29 +293,32 @@ class Action extends React.Component {
                             ></StoryForm>
                           </>
                         ) : (
-                            <>
-                              {this.state.message ? (
-                                <p>{this.state.message}</p>
-                              ) : (
-                                  <p>
-                                    Nice job! How was your experience with this
-                                  action? Tell us about it in a{" "}
-                                    <Link to={this.props.links
+                          <>
+                            {this.state.message ? (
+                              <p>{this.state.message}</p>
+                            ) : (
+                              <p>
+                                Nice job! How was your experience with this
+                                action? Tell us about it in a{" "}
+                                <Link
+                                  to={
+                                    this.props.links
                                       ? this.props.links.testimonials
-                                      : "#"}>
-                                      <button
-                                        className="as-link"
-                                        style={{ display: "inline-block" }}
-
-                                      >
-                                        testimonial
+                                      : "#"
+                                  }
+                                >
+                                  <button
+                                    className="as-link"
+                                    style={{ display: "inline-block" }}
+                                  >
+                                    testimonial
                                   </button>
-                                    </Link>
-                                  .
-                                  </p>
-                                )}
-                            </>
-                          )}
+                                </Link>
+                                .
+                              </p>
+                            )}
+                          </>
+                        )}
                       </>
                     ) : null}
                     <ChooseHHForm
@@ -332,15 +332,13 @@ class Action extends React.Component {
                       inCart={(aid, hid, cart) =>
                         this.props.inCart(aid, hid, cart)
                       }
-                      moveToDone={(aid, hid) =>
-                        this.props.moveToDone(aid, hid)
-                      }
+                      moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
                       closeForm={this.closeForm}
                     />
                     {this.props.showTodoMsg === this.props.action.id ? (
                       <p>
-                        Nicely done! You have now added this action to your
-                        todo list.
+                        Nicely done! You have now added this action to your todo
+                        list.
                       </p>
                     ) : null}
                   </div>
@@ -348,7 +346,7 @@ class Action extends React.Component {
               </div>
             </div>
           </div>
-        </div >
+        </div>
       );
     } else {
       return null;

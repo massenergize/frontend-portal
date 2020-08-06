@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import URLS from "../../../api/urls";
-import { apiCall, postJson } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -694,9 +693,10 @@ class ProfilePage extends React.Component {
     })[0];
 
     const body = {
+      data_id: data.id,
       value: data.value + number > 0 ? data.value + number : 0,
     };
-    postJson(URLS.DATA + "/" + data.id, body).then((json) => {
+    apiCall('data.update', body).then((json) => {
       if (json.success) {
         data = {
           ...data,

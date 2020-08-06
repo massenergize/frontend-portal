@@ -1,11 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-//import Tooltip from '../Shared/Tooltip'
 import { connect } from 'react-redux'
 import { reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction } from '../../../redux/actions/pageActions'
-//import URLS from '../../api/urls'
-//import { postJson, deleteJson } from '../../api/functions'
 import RSVPForm from '../EventsPage/RSVPForm';
 
 /**

@@ -238,7 +238,6 @@ class LoginFormBase extends React.Component {
   fetchAndLogin = async (email) => {
     try {
       this.props.tryingToLogin(true);
-      //const json2 = await getJson(`${URLS.USER}/e/${email}`);
       const json = await apiCall("auth.whoami");
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);

@@ -5,8 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { postJson, apiCall } from "../../../api/functions";
-import URLS from "../../../api/urls";
+import { apiCall } from "../../../api/functions";
 import {
   facebookProvider,
   googleProvider,
@@ -555,7 +554,7 @@ class RegisterFormBase extends React.Component {
     if (!value) {
       this.setState({ captchaConfirmed: false });
     }
-    postJson(URLS.VERIFY, { captchaString: value }).then((response) => {
+    apiCall('auth.verifyCaptcha', { captchaString: value }).then((response) => {
       console.log(response);
       if (response && response.data && response.data.success)
         this.setState({ captchaConfirmed: true });
