@@ -184,13 +184,13 @@ class Action extends React.Component {
                   <div className="box">
                     <div className="content">
                       {/* link is thisurl/id (links to the OneActionPage) */}
-                      <Link
+                      <div
                         to={
                           this.props.links.actions + "/" + this.props.action.id
                         }
                       >
                         <i className="fa fa-link" aria-hidden="true"></i>
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </figcaption>

@@ -38,7 +38,7 @@ class IconBox extends React.Component {
 		return (
 			<div className="service-item center hover-service-item" style={{background:'white'}}>
 				{this.isValidUrl(this.props.link) ? 
-					<a href={`${this.props.link}`} style={{ width: '100%', height: '100%' }} target={"_blank"}>
+					<a href={`${this.props.link}`} style={{ width: '100%', height: '100%' }} target={"_blank"} rel="noopener noreferrer">
 					{this.renderBoxStuff()}
 					</a>
 				:

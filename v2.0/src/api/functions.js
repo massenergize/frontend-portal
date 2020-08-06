@@ -1,21 +1,27 @@
 import URLS from "./urls";
 import { IS_SANDBOX, IS_PROD } from "../config/config";
+import store from '../redux/store';
 
 
-//THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
+/**
+ * Handles making a POST request to the backend as a form submission
+ * It also adds meta data for the BE to get context on the request coming in.
+ * 
+ * @param { String } destinationUrl 
+ * @param { String } dataToSend 
+ * @param { String } relocationPage 
+ */
 export async function apiCall(
   destinationUrl,
   dataToSend = {},
   relocationPage = null
 ) {
 
-  const { subdomain } = this.props.match.params;
-  
   // add some meta data for context in backend
   dataToSend = { 
     __is_prod: IS_PROD,
     __is_sandbox: IS_SANDBOX,
-    __community: subdomain,
+    __community: _getCurrentCommunityContext(),
     ...dataToSend 
   };
 
@@ -44,6 +50,16 @@ export async function apiCall(
   } catch (error) {
     return { success: false, error };
   }
+}
+
+/**
+ * Gets the current community domain we are on
+ */
+function _getCurrentCommunityContext(){
+    const { page } = store.getState() || {}
+    const { community } = page || {}
+    const { subdomain } = community || {}
+    return subdomain
 }
 
 

@@ -363,7 +363,7 @@ class StoryForm extends React.Component {
     return Object.keys(choices).map((key) => {
       var choice = choices[key];
       return (
-        <option value={choice.id}>
+        <option value={choice.id} key={key}>
           {" "}
           {choice.title ? choice.title : choice.name}{" "}
         </option>
