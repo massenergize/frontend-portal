@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@sentry/react": "^5.19.0",
+    "@sentry/react": "^5.20.1",
     "apexcharts": "^3.20.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
@@ -35,6 +35,7 @@
     "react-redux-firebase": "^3.6.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
+    "react-share": "^4.2.1",
     "react-to-print": "^2.9.0",
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
