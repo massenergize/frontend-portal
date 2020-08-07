@@ -4,7 +4,7 @@ import './assets/css/style.css'
 import AppRouter from './AppRouter'
 import { connect } from 'react-redux'
 import { reduxLoadCommunities } from './redux/actions/pageActions'
-import { apiCallNoToken } from './api/functions'
+import { apiCall } from './api/functions'
 import CommunitySelectPage from './components/Pages/CommunitySelectPage';
 import { reduxLogout } from './redux/actions/userActions'
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
 		}
 	}
 	componentDidMount() {
-		apiCallNoToken("communities.list").then(json => {
+		apiCall("communities.list").then(json => {
 			if (json.success) {
 				this.props.reduxLoadCommunities(json.data);
 			}
