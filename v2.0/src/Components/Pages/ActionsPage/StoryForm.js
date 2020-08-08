@@ -194,7 +194,7 @@ class StoryForm extends React.Component {
               }}
             >
               <p style={{ margin: 15 }}>
-                You can add an image to your testimonial (optional)
+                You can add an image to your testimonial.  It should be your own picture, or one you are sure is not copyrighted material.
               </p>
               <button
                 onClick={(e) => {
@@ -219,9 +219,8 @@ class StoryForm extends React.Component {
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
-                style={{ paddingTop: 4 }}
                 className="form-control"
-                style={{ display: "none" }}
+                style={{ paddingTop: 4 , display: "none" }}
               />
             </div>
           </div>
