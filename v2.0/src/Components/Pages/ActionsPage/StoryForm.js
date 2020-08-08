@@ -142,7 +142,7 @@ class StoryForm extends React.Component {
                     placeholder="Who helped you? "
                     className="form-control"
                     type="text"
-                    value={this.state.vendor}
+                    //value={this.state.vendor}
                     onChange={this.onChange}
                     autoFocus={true}
                     required
