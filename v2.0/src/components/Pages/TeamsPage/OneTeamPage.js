@@ -279,10 +279,7 @@ class OneTeamPage extends React.Component {
     );
   }
 
-  //TODO: won't work now... assumes that the team members include UserProfile IDs with them
   onMembersLoad = (members) => {
-
-    this.setState({ isAdmin: true }); //TODO: remove when done testing
 
     const { user } = this.props;
     const myTeamMember = members.filter(member => member.user_id === user.id);

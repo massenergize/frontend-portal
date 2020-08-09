@@ -14,7 +14,7 @@ class TeamInfoModal extends React.Component {
     const teams = teamsPage.map(teamStats => teamStats.team);
 
     //disallow a team that itself has sub-teams from setting a parent
-    const isParentTeam = teams.map(_team => _team.parent && _team.parent.id === team.id)
+    const isParentTeam = team && teams.map(_team => _team.parent && _team.parent.id === team.id)
       .includes(true);
 
     //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
@@ -55,10 +55,10 @@ class TeamInfoModal extends React.Component {
 
         {!team &&
           <>
-            <label htmlFor="team-admin_emails"><u>Admin Emails</u> <br />
+            <label htmlFor="team-admin_emails"><u>Additional Admin Emails</u> <br />
               <small>A comma-separated list of emails corresponding with the MassEnergize users you wish to make admins of this team. You will automatically be made an admin.</small>
             </label>
-            <input id="team-admin_emails" name="team-admin_emails" className="form-control" required />
+            <input id="team-admin_emails" name="team-admin_emails" className="form-control" />
           </>
         }
 
@@ -139,7 +139,7 @@ class TeamInfoModal extends React.Component {
   }
 
   callAPI = async () => {
-    const { team, onComplete, reduxLoadTeamsPage } = this.props;
+    const { team, onComplete } = this.props;
 
     const data = this.getData();
 
@@ -149,7 +149,7 @@ class TeamInfoModal extends React.Component {
     try {
       const json = await apiCall(url, data);
       if (json.success) {
-        reduxLoadTeamsPage(); //TODO: make sure this does what I think it does
+        //TODO: implement reduxAddTeam
         onComplete(team.id);
       } else {
       }

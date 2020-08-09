@@ -31,8 +31,6 @@ class ContactAdminModal extends React.Component {
                 </button>
 
             <br />
-
-            <span id="sender-spinner" style={{ display: 'none' }} className="text text-success">sending <i className="fa fa-spinner fa-spin" /></span>
           </div>
         </form>);
     } else {
@@ -55,10 +53,7 @@ class ContactAdminModal extends React.Component {
     );
   }
 
-  //TODO: remove the spinner code; annoying to re-implement for everything when I'll just end up
-  //making a new form component after this
   sendMessage = () => {
-    var spinner = document.getElementById("sender-spinner");
     var msg = document.getElementById("contact-textarea").value;
     var title = document.getElementById("contact-title").value;
 
@@ -69,13 +64,10 @@ class ContactAdminModal extends React.Component {
     };
 
     if (msg !== "" && title !== "") {
-      spinner.style.display = "block";
       apiCall(`teams.contactAdmin`, body)
         .then((json) => {
           document.getElementById("contact-textarea").value = "";
           document.getElementById("contact-title").value = "";
-          spinner.style.display = "none";
-
           this.props.onClose();
         });
     }
