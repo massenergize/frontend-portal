@@ -82,7 +82,7 @@ class TeamsPage extends React.Component {
                     className="teams-search round-only-left-side"
                   />
                 </div>
-                <div className="col-3">
+                <div className="col-3" style={{ paddingRight: '10px' }}>
                   <button
                     style={{ width: "100%", borderRadius: 0 }}
                     className="btn start-team-btn raise round-only-right-side"

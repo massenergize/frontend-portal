@@ -1,24 +1,18 @@
 import React from "react";
-import { apiCall } from "../../../api/functions";
+import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 
 class TeamInfoModal extends React.Component {
 
-  //TODO: things added by Brad that would need a bunch more work: multiple photos, videos
-
   render() {
 
     const { team, onClose, teamsPage } = this.props;
-    const teams = teamsPage.map(teamStats => teamStats.team);
-
-    //disallow a team that itself has sub-teams from setting a parent
-    const isParentTeam = team && teams.map(_team => _team.parent && _team.parent.id === team.id)
-      .includes(true);
 
     //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const parentTeamOptions = teams.filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
+    const parentTeamOptions = teamsPage.map(teamStats => teamStats.team)
+      .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     let modalContent;
     if (this.props.user) {
@@ -59,11 +53,7 @@ class TeamInfoModal extends React.Component {
               <small>A comma-separated list of emails corresponding with the MassEnergize users you wish to make admins of this team. You will automatically be made an admin.</small>
             </label>
             <input id="team-admin_emails" name="team-admin_emails" className="form-control" />
-          </>
-        }
 
-        {!isParentTeam &&
-          <>
             <label htmlFor="team-parent_id"><u>Parent Team</u> &nbsp;</label>
             <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
               (team && team.parent) ? team.parent.id : ""
@@ -71,11 +61,11 @@ class TeamInfoModal extends React.Component {
               <option value="">NONE</option>
               {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
             </select>
+            {/* TODO: open/closed team checkbox*/}
           </>
         }
-
         <div style={{ display: 'block' }}>
-          <label htmlFor="team-image"><u>Logo</u></label>
+          <label htmlFor="team-logo"><u>Logo</u></label>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {team && team.logo &&
               <div style={{ display: 'block' }}>
@@ -83,7 +73,7 @@ class TeamInfoModal extends React.Component {
                 <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
               </div>
             }
-            <input style={{ display: 'inline-block' }} id="team-image" accept="image/*" type="file" name="team-image" className="form-control" />
+            <input style={{ display: 'inline-block' }} id="team-logo" accept="image/*" type="file" name="team-logo" className="form-control" />
           </div>
         </div>
 
@@ -118,18 +108,46 @@ class TeamInfoModal extends React.Component {
     );
   }
 
+  getValue = (field) => {
+    const input = document.getElementById(`team-${field}`);
+    if (!input) return null;
+    if (field === 'logo') {
+      return input.files[0];
+    }
+    return input.value;
+  }
+
+  isChanged = (field, value, team) => {
+    if (['name', 'tagline', 'description'].includes(field))
+      return value !== team[field];
+    if (field === 'parent_id')
+      return team.parent && team.parent.id === value;
+    if (field === 'logo' && value) //if any image is uploaded, it's new
+      return true;
+  }
+
   getData = () => {
     const { team, communityData, user } = this.props;
     const data = {};
-    ['name', 'tagline', 'description', 'admin_emails', 'parent_id', 'image']
-      .forEach(field => {
-        const input = document.getElementById(`team-${field}`);
-        if (input) data[field] = input.value
-      });
-    if (team) data['id'] = team.id;
-    else {
+    if (team) {
+      ['name', 'tagline', 'description', 'parent_id', 'logo']
+        .forEach(field => {
+          const value = this.getValue(field);
+          if (value && this.isChanged(field, value, team))
+            data[field] = value;
+        });
+      data['id'] = team.id;
+    } else {
+      ['name', 'tagline', 'description', 'admin_emails', 'parent_id', 'logo']
+        .forEach(field => {
+          const value = this.getValue(field);
+          if (value)
+            data[field] = value;
+        });
       data['community_id'] = communityData.community.id;
-      data['admin_emails'] = data['admin_emails'] + `, ${user.email}`
+      const adminEmails = data['admin_emails'];
+      if (adminEmails) data['admin_emails'] = adminEmails + `, ${user.email}`;
+      else data['admin_emails'] = user.email;
     }
 
     //TODO: remove when done testing
@@ -139,7 +157,7 @@ class TeamInfoModal extends React.Component {
   }
 
   callAPI = async () => {
-    const { team, onComplete } = this.props;
+    const { team, onComplete, communityData, reduxLoadTeamsPage } = this.props;
 
     const data = this.getData();
 
@@ -147,10 +165,17 @@ class TeamInfoModal extends React.Component {
 
     //TODO: what to do on error?
     try {
-      const json = await apiCall(url, data);
-      if (json.success) {
-        //TODO: implement reduxAddTeam
-        onComplete(team.id);
+      let teamResponse;
+      if (data.logo)
+        teamResponse = await apiCallWithMedia(url, data);
+      else
+        teamResponse = await apiCall(url, data);
+      if (teamResponse.success) {
+        const teamsStatsResponse = await apiCall("teams.stats", { community_id: communityData.community.id });
+        if (teamsStatsResponse.success) {
+          reduxLoadTeamsPage(teamsStatsResponse.data);
+          onComplete(team.id);
+        }
       } else {
       }
     } catch (err) {
