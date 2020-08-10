@@ -55,7 +55,8 @@ class TeamsPage extends React.Component {
 
         {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
 
-        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate} onClose={this.onCreateTeamModalClose} />}
+        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate}
+          onClose={this.onCreateTeamModalClose} />}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />

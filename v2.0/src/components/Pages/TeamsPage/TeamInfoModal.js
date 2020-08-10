@@ -174,8 +174,9 @@ class TeamInfoModal extends React.Component {
         const teamsStatsResponse = await apiCall("teams.stats", { community_id: communityData.community.id });
         if (teamsStatsResponse.success) {
           reduxLoadTeamsPage(teamsStatsResponse.data);
-          onComplete(team.id);
         }
+        const teamID = team ? team.id : teamResponse.data.id;
+        onComplete(teamID);
       } else {
       }
     } catch (err) {
