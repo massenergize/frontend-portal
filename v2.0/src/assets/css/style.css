@@ -9628,9 +9628,9 @@ button.as-link:hover {
 }
 
 .team-modal{
-  height: 90%;
+  height: auto;
   max-height: 450px;
-  width: 90%;
+  width: auto;
   max-width: 600px;
   background: white;
   padding: 20px;
