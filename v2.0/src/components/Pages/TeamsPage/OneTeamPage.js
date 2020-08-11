@@ -47,7 +47,18 @@ class OneTeamPage extends React.Component {
     this.fetch(id);
   }
 
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
+    if (id !== prevProps.match.params.id) {
+      this.setState({ loading: true })
+      this.fetch(id);
+    }
+  }
+
   render() {
+
+    const teamsStats = this.props.teamsPage;
+
     const { team, loading, error, remountForcer,
       joinLeaveModalOpen, contactEditModalOpen, isAdmin } = this.state;
 
@@ -65,7 +76,9 @@ class OneTeamPage extends React.Component {
       );
     }
 
-    const teamStats = this.props.teamsPage.filter(
+    const subTeams = teamsStats.map(teamStats => teamStats.team).filter(_team => _team.parent && _team.parent.id === team.id);
+
+    const teamStats = teamsStats.filter(
       (otherTeam) => otherTeam.team.id === team.id
     )[0];
     const teamLogo = team.logo;
@@ -90,6 +103,10 @@ class OneTeamPage extends React.Component {
           )}
       </>
     );
+
+
+    const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${this.props.links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
+      {team.name}</>;
 
     return (
       <>
@@ -148,7 +165,7 @@ class OneTeamPage extends React.Component {
                       style={{ textAlign: "center" }}
                       className="cool-font team-card-content"
                     >
-                      {team.name}
+                      {teamTitle}
                     </h2>
                   </div>
                   <div
@@ -165,7 +182,7 @@ class OneTeamPage extends React.Component {
                         style={{ textAlign: "left" }}
                         className="cool-font team-card-content"
                       >
-                        {team.name}
+                        {teamTitle}
                       </h2>
                     </div>
                     <div
@@ -206,7 +223,7 @@ class OneTeamPage extends React.Component {
                     <h5>
                       <b>Description</b>
                     </h5>
-                    <div style={{ maxHeight: '300px', overflowY: 'auto' }} className="show-scrollbar">
+                    <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
                       <div className="boxed_wrapper">
                         <p>{team.description}</p>
                       </div>
@@ -225,19 +242,43 @@ class OneTeamPage extends React.Component {
                     />
                   </div>
                 </div>
-
+                {subTeams.length > 0 &&
+                  <div className="row" style={{ margin: 0 }}>
+                    <div className="one-team-content-section slight-lift">
+                      <h5 style={{ margin: 0 }}>
+                        <b>Sub-teams</b>
+                      </h5>
+                      <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
+                        <div className="boxed_wrapper">
+                          <div className="team-members-list">
+                            <ul>
+                              {subTeams.map(subTeam =>
+                                <li key={subTeam.id}>
+                                  <Link to={`${this.props.links.teams}/${subTeam.id}`}><b>{subTeam.name}</b></Link>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div >
+                    </div>
+                  </div>
+                }
               </div>
               <div className="col-md-7 col-12">
-                <div className="one-team-content-section slight-lift">
-                  <h5>
-                    <b>Actions Completed</b>
-                  </h5>
-                  <TeamActionsGraph
-                    key={remountForcer}
-                    teamID={team.id}
-                  />
-                  <p style={{ textAlign: 'center' }}>Complete <Link to={this.props.links.actions}>more actions</Link>!</p>
+                <div className="row" style={{ margin: 0 }}>
+                  <div className="one-team-content-section slight-lift">
+                    <h5>
+                      <b>Actions Completed</b>
+                    </h5>
+                    <TeamActionsGraph
+                      key={remountForcer}
+                      teamID={team.id}
+                    />
+                    <p style={{ textAlign: 'center' }}>Complete <Link to={this.props.links.actions}>more actions</Link>!</p>
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
