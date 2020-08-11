@@ -34,7 +34,7 @@ class JoinTeamModal extends React.Component {
         }>
           {preferredName ?
             <p>
-              You will join this team with the preferred name <i>{preferredName}</i>
+              You will join this team with the preferred name <i>{preferredName}</i>. {team.parent && <span>This team is a sub-team of <b>{team.parent.name}</b>, so your stats will also contribute to the parent team.</span>}
             </p>
             :
             <>

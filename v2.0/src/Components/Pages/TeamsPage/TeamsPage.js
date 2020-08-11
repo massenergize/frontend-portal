@@ -41,22 +41,11 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const teamsStats = this.props.teamsPage;
 
-    const twoLevelTeamsStats = [];
+    const { createTeamModalOpen, redirectID, searching, searchedTeams } = this.state;
 
-    //create a list of parent teams whose team fields contain all of their child teams
-    teamsStats.forEach(thisTeamStats => {
-      if (!thisTeamStats.team.parent) {
-        const teamStatsWithChildren = thisTeamStats;
-        teamStatsWithChildren['team']['children'] = teamsStats
-          .filter(otherTeamStats => otherTeamStats.team.parent &&
-            otherTeamStats.team.parent.id === thisTeamStats.team.id)
-        twoLevelTeamsStats.push(teamStatsWithChildren);
-      }
-    });
+    const teamsStats = searching ? searchedTeams : this.props.teamsPage;
 
-    const { createTeamModalOpen, redirectID } = this.state;
     if (teamsStats === null) {
       return (
         <div className="boxed_wrapper">
@@ -64,6 +53,22 @@ class TeamsPage extends React.Component {
         </div>
       );
     }
+
+    const twoLevelTeamsStats = [];
+
+    //create a list of parent teams whose team fields contain all of their child teams
+    teamsStats.forEach(thisTeamStats => {
+      if (!thisTeamStats.team.parent) {
+        const teamStatsWithChildren = thisTeamStats;
+        teamStatsWithChildren['children'] = teamsStats
+          .filter(otherTeamStats => otherTeamStats.team.parent &&
+            otherTeamStats.team.parent.id === thisTeamStats.team.id)
+        twoLevelTeamsStats.push(teamStatsWithChildren);
+      }
+    });
+
+    console.log(twoLevelTeamsStats);
+
     return (
       <>
 
@@ -113,11 +118,9 @@ class TeamsPage extends React.Component {
 
             <br />
 
-            {teamsStats.length > 0 ? (
+            {twoLevelTeamsStats.length > 0 ? (
               <>
-                {this.state.searching
-                  ? this.renderTeams(this.state.searchedTeams)
-                  : this.renderTeams(teamsStats)}
+                {this.renderTeams(twoLevelTeamsStats)}
               </>
             ) : (
                 <p>
@@ -206,47 +209,60 @@ class TeamsPage extends React.Component {
     const teamLogo = teamObj.logo;
 
     return (
-      <div className="team-card" key={teamObj.id}>
-        <Link
-          to={`${this.props.links.teams + "/" + teamObj.id} `}
-          style={{ width: "100%" }}
-        >
-          <div
-            className="row no-gutter flex"
-            style={{ width: "100%", height: "100%" }}
+      <>
+        <div className="team-card" key={teamObj.id}>
+          <Link
+            to={`${this.props.links.teams + "/" + teamObj.id} `}
+            style={{ width: "100%" }}
           >
-            <div className="col-sm-3 team-card-column">
-              <div className="team-card-content">
-                <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
-                <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamObj.tagline}</p>
+            <div
+              className="row no-gutter flex"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <div className="col-sm-3 team-card-column">
+                <div className="team-card-content">
+                  <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
+                  <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamObj.tagline}</p>
+                </div>
+              </div>
+              <div className="col-sm-9">
+                <div className="row" style={{ margin: "0 auto" }}>
+                  {teamLogo ? (
+                    <>
+                      <div className="col-8 team-card-column">
+                        <TeamInfoBars teamStats={teamStats} />
+                      </div>
+                      <div className="col-4 team-card-column">
+                        <img
+                          className="team-card-img"
+                          src={teamLogo.url}
+                          alt=""
+                        />
+                      </div>
+                    </>
+                  ) : (
+                      <div className="team-card-column">
+                        <TeamInfoBars teamStats={teamStats} />
+                      </div>
+                    )}
+                </div>
               </div>
             </div>
-            <div className="col-sm-9">
-              <div className="row" style={{ margin: "0 auto" }}>
-                {teamLogo ? (
-                  <>
-                    <div className="col-8 team-card-column">
-                      <TeamInfoBars teamStats={teamStats} />
-                    </div>
-                    <div className="col-4 team-card-column">
-                      <img
-                        className="team-card-img"
-                        src={teamLogo.url}
-                        alt=""
-                      />
-                    </div>
-                  </>
-                ) : (
-                    <div className="team-card-column">
-                      <TeamInfoBars teamStats={teamStats} />
-                    </div>
-                  )}
-              </div>
+          </Link>
+        </div>
+        {
+          teamStats.children && teamStats.children.length > 0 &&
+          <>
+            <div style={{ paddingLeft: '45px' }}>
+              {
+                teamStats.children.map(child => this.renderTeam(child))
+              }
             </div>
-          </div>
-        </Link>
-      </div>
+          </>
+        }
+      </>
     );
+
   }
 
   inTeam = (team_id) => {

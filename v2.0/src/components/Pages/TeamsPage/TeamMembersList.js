@@ -53,7 +53,7 @@ class TeamMembersList extends React.Component {
     return (
       <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
         <div className="boxed_wrapper">
-          <div className="team-members-list">
+          <div className="team-ul">
             <ul>
               {admins.map(admin =>
                 <li key={admin.id}>

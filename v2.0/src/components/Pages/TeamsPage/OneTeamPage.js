@@ -250,7 +250,7 @@ class OneTeamPage extends React.Component {
                       </h5>
                       <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
                         <div className="boxed_wrapper">
-                          <div className="team-members-list">
+                          <div className="team-ul">
                             <ul>
                               {subTeams.map(subTeam =>
                                 <li key={subTeam.id}>
