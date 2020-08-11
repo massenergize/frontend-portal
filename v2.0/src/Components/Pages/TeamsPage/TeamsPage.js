@@ -42,6 +42,20 @@ class TeamsPage extends React.Component {
 
   render() {
     const teamsStats = this.props.teamsPage;
+
+    const twoLevelTeamsStats = [];
+
+    //create a list of parent teams whose team fields contain all of their child teams
+    teamsStats.forEach(thisTeamStats => {
+      if (!thisTeamStats.team.parent) {
+        const teamStatsWithChildren = thisTeamStats;
+        teamStatsWithChildren['team']['children'] = teamsStats
+          .filter(otherTeamStats => otherTeamStats.team.parent &&
+            otherTeamStats.team.parent.id === thisTeamStats.team.id)
+        twoLevelTeamsStats.push(teamStatsWithChildren);
+      }
+    });
+
     const { createTeamModalOpen, redirectID } = this.state;
     if (teamsStats === null) {
       return (

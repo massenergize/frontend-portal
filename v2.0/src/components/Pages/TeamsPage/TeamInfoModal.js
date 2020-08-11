@@ -47,6 +47,14 @@ class TeamInfoModal extends React.Component {
         <textarea id="team-description" name="team-description" className="form-control" rows={3}
           defaultValue={team && team.description} maxLength={10000} required />
 
+        <label htmlFor="team-parent_id"><u>Parent Team</u> &nbsp;</label>
+        <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
+          (team && team.parent) ? team.parent.id : ""
+        }>
+          <option value="">NONE</option>
+          {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
+        </select>
+
         {!team &&
           <>
             <label htmlFor="team-admin_emails"><u>Additional Admin Emails</u> <br />
@@ -54,13 +62,6 @@ class TeamInfoModal extends React.Component {
             </label>
             <input id="team-admin_emails" name="team-admin_emails" className="form-control" />
 
-            <label htmlFor="team-parent_id"><u>Parent Team</u> &nbsp;</label>
-            <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
-              (team && team.parent) ? team.parent.id : ""
-            }>
-              <option value="">NONE</option>
-              {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
-            </select>
             {/* TODO: open/closed team checkbox*/}
           </>
         }
@@ -121,7 +122,7 @@ class TeamInfoModal extends React.Component {
     if (['name', 'tagline', 'description'].includes(field))
       return value !== team[field];
     if (field === 'parent_id')
-      return team.parent && team.parent.id === value;
+      return (!team.parent && value) || (team.parent.id !== value);
     if (field === 'logo' && value) //if any image is uploaded, it's new
       return true;
   }
