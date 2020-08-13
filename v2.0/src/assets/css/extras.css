@@ -9,6 +9,16 @@
   line-height: 17px
 }
 
+.collapse-team-btn {
+  color: black;
+  background: lightgrey; 
+  border-width: 0px !important;
+  padding: 6px 25px; 
+  margin: 0 8px;
+  font-size: 16px;
+  line-height: 17px
+}
+
 .testimonials-image-desc{
   color: #8dc63f;
   font-weight: bold;
@@ -79,6 +89,11 @@
 .start-team-btn:hover{
   color: white;
     background:#517325; 
+    transition: .15s ease-in-out;
+  }
+.collapse-team-btn:hover{
+  color: black;
+    background: darkgrey; 
     transition: .15s ease-in-out;
   }
 .comp-teams-btn:hover{

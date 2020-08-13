@@ -5,6 +5,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamInfoBars from "./TeamInfoBars";
 import TeamInfoModal from "./TeamInfoModal";
+import { processTeamsStats, inTeam } from './utils.js';
 import { Link, Redirect } from "react-router-dom";
 
 
@@ -12,13 +13,14 @@ class TeamsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchedTeams: [],
       searching: false,
       createTeamModalOpen: false,
-      redirectID: null
+      redirectID: null,
+      teamsData: processTeamsStats(this.props.teamsPage)
     };
   }
 
+  //TODO: totally outdated. needs to look into to child teams, and update teamsInfo
   handleSearch(event) {
     const query = event.target.value.trim();
     if (query === "" || this.props.teamsPage.length === 0) {
@@ -40,13 +42,16 @@ class TeamsPage extends React.Component {
     });
   }
 
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.teamsPage !== this.props.teamsPage) {
+      this.setState({ teamsData: processTeamsStats(this.props.teamsPage) });
+    }
+  }
+
   render() {
 
-    const { createTeamModalOpen, redirectID, searching, searchedTeams } = this.state;
-
-    const teamsStats = searching ? searchedTeams : this.props.teamsPage;
-
-    if (teamsStats === null) {
+    if (this.props.teamsPage === null) {
       return (
         <div className="boxed_wrapper">
           <LoadingCircle />
@@ -54,20 +59,8 @@ class TeamsPage extends React.Component {
       );
     }
 
-    const twoLevelTeamsStats = [];
-
-    //create a list of parent teams whose team fields contain all of their child teams
-    teamsStats.forEach(thisTeamStats => {
-      if (!thisTeamStats.team.parent) {
-        const teamStatsWithChildren = thisTeamStats;
-        teamStatsWithChildren['children'] = teamsStats
-          .filter(otherTeamStats => otherTeamStats.team.parent &&
-            otherTeamStats.team.parent.id === thisTeamStats.team.id)
-        twoLevelTeamsStats.push(teamStatsWithChildren);
-      }
-    });
-
-    console.log(twoLevelTeamsStats);
+    const { createTeamModalOpen, redirectID,
+      teamsData } = this.state;
 
     return (
       <>
@@ -118,9 +111,9 @@ class TeamsPage extends React.Component {
 
             <br />
 
-            {twoLevelTeamsStats.length > 0 ? (
+            {teamsData.length > 0 ? (
               <>
-                {this.renderTeams(twoLevelTeamsStats)}
+                {this.renderTeams(teamsData)}
               </>
             ) : (
                 <p>
@@ -135,33 +128,41 @@ class TeamsPage extends React.Component {
     );
   }
 
-  renderTeams(teamsStats) {
-    if (!this.props.user) {
+  renderTeams(teamsInfo) {
+
+    //TODO: do away with "my teams" and "other teams"? add a link to user profile if someone wants to see exactly which teams they are a part of?
+    //TODO: this needs to use the searching flag to render things? if searching, forget my/other teams
+
+    const { user } = this.props;
+
+
+    if (!user) {
       return (
         <>
           <p>Click on a team below to join it!</p>
-          {teamsStats.length > 0 ? (
-            teamsStats.map((teamStats) => this.renderTeam(teamStats))
+          {teamsInfo.length > 0 ? (
+            teamsInfo.map((teamStats) => this.renderTeam(teamStats))
           ) : (
               <p>None of the teams match your search.</p>
             )}
         </>
       );
     } else {
-      const [myTeams, otherTeams] = teamsStats.reduce(
-        ([pass, fail], team) => {
-          return this.inTeam(team.team.id)
-            ? [[...pass, team], fail]
-            : [pass, [...fail, team]];
+
+
+      const [myTeams, otherTeams] = teamsInfo.reduce(
+        ([pass, fail], teamStats) => {
+          return inTeam(user, teamStats)
+            ? [[...pass, teamStats], fail]
+            : [pass, [...fail, teamStats]];
         },
         [[], []]
       );
-      const userInNoTeams = !this.props.teamsPage
-        .map((teamStats) => this.inTeam(teamStats.team.id))
-        .includes(true);
-      const userInAllTeams = !this.props.teamsPage
-        .map((teamStats) => this.inTeam(teamStats.team.id))
-        .includes(false);
+
+      const userInTeams = teamsInfo.map((teamStats) => inTeam(user, teamStats));
+
+      const userInNoTeams = !userInTeams.includes(true);
+      const userInAllTeams = !userInTeams.includes(false);
 
       let myTeamsContent;
       let otherTeamsContent;
@@ -250,31 +251,31 @@ class TeamsPage extends React.Component {
             </div>
           </Link>
         </div>
-        {
-          teamStats.children && teamStats.children.length > 0 &&
-          <>
-            <div style={{ paddingLeft: '45px' }}>
-              {
-                teamStats.children.map(child => this.renderTeam(child))
-              }
-            </div>
-          </>
+        {teamStats.children && teamStats.children.length > 0 &&
+          <button
+            className="btn round-me collapse-team-btn raise"
+            style={{ position: "relative", float: "right", top: '-35px', right: '20px' }}
+            onClick={() => {
+              const { teamsData } = this.state;
+              const thisTeamIndex = teamsData.findIndex
+                (teamData => teamData.team.id === teamStats.team.id);
+              teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex].collapsed;
+              this.setState({ teamsData: teamsData });
+            }}
+          >
+            {teamStats.collapsed ? <span>See Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
+          </button>
+        }
+        {teamStats.children && teamStats.children.length > 0 && !teamStats.collapsed &&
+          < div style={{ paddingLeft: '45px' }}>
+            {
+              teamStats.children.map(child => this.renderTeam(child))
+            }
+          </div>
         }
       </>
     );
-
   }
-
-  inTeam = (team_id) => {
-    if (!this.props.user) {
-      return false;
-    }
-    return (
-      this.props.user.teams.filter((team) => {
-        return team.id === team_id;
-      }).length > 0
-    );
-  };
 
   onTeamCreate = (teamID) => {
     this.setState({ createTeamModalOpen: false, redirectID: teamID });

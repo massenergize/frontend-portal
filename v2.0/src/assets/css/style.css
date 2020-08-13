@@ -9511,7 +9511,7 @@ button.as-link:hover {
     height: auto;
     cursor:pointer;
     border-radius: 12px;
-    display: flex;
+    display: block;
     align-items: center;
 }
 
