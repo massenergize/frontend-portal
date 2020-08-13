@@ -34,7 +34,8 @@ class OneTeamPage extends React.Component {
       if (json.success) {
         const team = json.data;
         const teamData = processTeamsStats(this.props.teamsPage)
-          .find((teamStats) => teamStats.team.id === team.id) || this.props.teamsPage.find(teamStats => teamStats.team.id === team.id);
+          .find((teamData) => teamData.team.id === team.id) ||
+          this.props.teamsPage.find(teamStats => teamStats.team.id === team.id);
         this.setState({
           team: team,
           teamData: teamData
@@ -244,7 +245,7 @@ class OneTeamPage extends React.Component {
                     />
                   </div>
                 </div>
-                {teamData.children && teamData.children.length > 0 &&
+                {teamData.subTeams && teamData.subTeams.length > 0 &&
                   <div className="row" style={{ margin: 0 }}>
                     <div className="one-team-content-section slight-lift">
                       <h5 style={{ margin: 0 }}>
@@ -254,7 +255,7 @@ class OneTeamPage extends React.Component {
                         <div className="boxed_wrapper">
                           <div className="team-ul">
                             <ul>
-                              {teamData.children.map(subTeamStats =>
+                              {teamData.subTeams.map(subTeamStats =>
                                 <li key={subTeamStats.team.id}>
                                   <Link to={`${this.props.links.teams}/${subTeamStats.team.id}`}><b>{subTeamStats.team.name}</b></Link>
                                 </li>

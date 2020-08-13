@@ -1,18 +1,16 @@
-//create a list of parent teamStats whose children field contain all of their child teams
-//and also contain a "collapsed" flag for the all teams page
 export function processTeamsStats(teamsStats) {
   const teamsData = [];
   teamsStats.forEach(thisTeamStats => {
     if (!thisTeamStats.team.parent) {
-      const teamStatsWithChildren = thisTeamStats;
-      teamStatsWithChildren['children'] = teamsStats
+      const teamStatsWithSubTeams = thisTeamStats;
+      teamStatsWithSubTeams['subTeams'] = teamsStats
         .filter(otherTeamStats => otherTeamStats.team.parent &&
           otherTeamStats.team.parent.id === thisTeamStats.team.id)
-      teamStatsWithChildren['collapsed'] = true;
-      teamsData.push(teamStatsWithChildren);
+      teamStatsWithSubTeams['collapsed'] = true;
+      teamsData.push(teamStatsWithSubTeams);
     }
   });
-  return teamsData
+  return teamsData;
 }
 
 export function inThisTeam(user, teamData) {
@@ -21,15 +19,15 @@ export function inThisTeam(user, teamData) {
   ).length > 0;
 }
 
-function inChildTeam(user, teamData) {
-  if (!teamData.children) return false;
+function inSubTeam(user, teamData) {
+  if (!teamData.subTeams) return false;
   return user.teams.filter((team) =>
-    teamData.children.map(childStats => childStats.team.id).includes(team.id)
+    teamData.subTeams.map(subTeamData => subTeamData.team.id).includes(team.id)
   ).length > 0;
 }
 
 export function inTeam(user, teamData) {
   if (!user || !teamData) return false;
-  return inThisTeam(user, teamData) || inChildTeam(user, teamData);
+  return inThisTeam(user, teamData) || inSubTeam(user, teamData);
 };
 

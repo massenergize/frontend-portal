@@ -20,7 +20,6 @@ class TeamsPage extends React.Component {
     };
   }
 
-  //TODO: totally outdated. needs to look into to child teams, and update teamsInfo
   handleSearch(event) {
     const query = event.target.value.trim();
     if (query === "" || this.props.teamsPage.length === 0) {
@@ -28,16 +27,37 @@ class TeamsPage extends React.Component {
       return;
     }
 
-    let allTeamStats = this.props.teamsPage;
-    let searchedTeamStats = [];
-    for (var i = 0; i < allTeamStats.length; i++) {
-      const teamStats = allTeamStats[i];
-      if (teamStats.team.name.toLowerCase().includes(query.toLowerCase())) {
-        searchedTeamStats.push(teamStats);
+    const match = (team) => team.name.toLowerCase().includes(query.toLowerCase());
+
+    const { teamsData } = this.state;
+
+    let searchedTeamsData = [];
+    for (var i = 0; i < teamsData.length; i++) {
+      const subTeams = teamsData[i].subTeams;
+      const newTeamData = { ...teamsData[i] };
+      newTeamData.subTeams = [];
+
+      //find matching sub teams
+      if (subTeams) subTeams.forEach(subTeam => {
+        if (match(subTeam.team)) {
+          newTeamData.subTeams.push(subTeam);
+        }
+      });
+
+      //if any subteams matched, include parent in results and un-collapse it
+      if (newTeamData.subTeams.length > 0) {
+        newTeamData.collapsed = false;
+        searchedTeamsData.push(newTeamData);
+        continue;
+      }
+
+      //now check if the parent team itself matches
+      if (match(newTeamData.team)) {
+        searchedTeamsData.push(newTeamData);
       }
     }
     this.setState({
-      searchedTeams: searchedTeamStats,
+      searchedTeamsData: searchedTeamsData,
       searching: true,
     });
   }
@@ -59,8 +79,8 @@ class TeamsPage extends React.Component {
       );
     }
 
-    const { createTeamModalOpen, redirectID,
-      teamsData } = this.state;
+    const { createTeamModalOpen, redirectID, teamsData } = this.state;
+    console.log("render", teamsData);
 
     return (
       <>
@@ -113,7 +133,7 @@ class TeamsPage extends React.Component {
 
             {teamsData.length > 0 ? (
               <>
-                {this.renderTeams(teamsData)}
+                {this.renderTeams()}
               </>
             ) : (
                 <p>
@@ -128,86 +148,85 @@ class TeamsPage extends React.Component {
     );
   }
 
-  renderTeams(teamsInfo) {
+  renderTeams() {
 
-    //TODO: do away with "my teams" and "other teams"? add a link to user profile if someone wants to see exactly which teams they are a part of?
-    //TODO: this needs to use the searching flag to render things? if searching, forget my/other teams
-
+    const { searching, teamsData, searchedTeamsData } = this.state;
     const { user } = this.props;
 
+    if (searching) {
 
-    if (!user) {
-      return (
-        <>
-          <p>Click on a team below to join it!</p>
-          {teamsInfo.length > 0 ? (
-            teamsInfo.map((teamStats) => this.renderTeam(teamStats))
-          ) : (
-              <p>None of the teams match your search.</p>
-            )}
-        </>
-      );
-    } else {
+      return <>
+        {searchedTeamsData.length > 0 ?
+          searchedTeamsData.map((teamData) => this.renderTeam(teamData))
+          :
+          <p>No teams match your search.</p>
+        }
+      </>;
 
-
-      const [myTeams, otherTeams] = teamsInfo.reduce(
-        ([pass, fail], teamStats) => {
-          return inTeam(user, teamStats)
-            ? [[...pass, teamStats], fail]
-            : [pass, [...fail, teamStats]];
-        },
-        [[], []]
-      );
-
-      const userInTeams = teamsInfo.map((teamStats) => inTeam(user, teamStats));
-
-      const userInNoTeams = !userInTeams.includes(true);
-      const userInAllTeams = !userInTeams.includes(false);
-
-      let myTeamsContent;
-      let otherTeamsContent;
-
-      if (userInNoTeams) {
-        myTeamsContent = (
-          <p>
-            You have not joined any teams. Explore the teams in this community
-            below.
-          </p>
-        );
-      } else if (myTeams.length > 0) {
-        myTeamsContent = (
-          <div>{myTeams.map((teamStats) => this.renderTeam(teamStats))}</div>
+    }
+    else {
+      if (!user) {
+        return (
+          <>
+            <p>Click on a team below to join it!</p>
+            {teamsData.map((teamData) => this.renderTeam(teamData))}
+          </>
         );
       } else {
-        myTeamsContent = <p>None of your teams match the search.</p>;
-      }
-
-      if (userInAllTeams) {
-        otherTeamsContent = (
-          <p>You are a member of every team in this community!</p>
+        const [myTeams, otherTeams] = teamsData.reduce(
+          ([pass, fail], teamData) => {
+            return inTeam(user, teamData)
+              ? [[...pass, teamData], fail]
+              : [pass, [...fail, teamData]];
+          },
+          [[], []]
         );
-      } else if (otherTeams.length > 0) {
-        otherTeamsContent = (
-          <div>{otherTeams.map((teamStats) => this.renderTeam(teamStats))}</div>
-        );
-      } else {
-        otherTeamsContent = <p>None of the other teams match the search.</p>;
-      }
 
-      return (
-        <div>
-          <h3 className="teams-subheader">My Teams</h3>
-          {myTeamsContent}
-          <h3 className="teams-subheader">Other Teams</h3>
-          {otherTeamsContent}
-        </div>
-      );
+        const userInTeams = teamsData.map((teamData) => inTeam(user, teamData));
+
+        const userInNoTeams = !userInTeams.includes(true);
+        const userInAllTeams = !userInTeams.includes(false);
+
+        let myTeamsContent;
+        let otherTeamsContent;
+
+        if (userInNoTeams) {
+          myTeamsContent = (
+            <p>
+              You have not joined any teams. Explore the teams in this community
+              below.
+            </p>
+          );
+        } else {
+          myTeamsContent = (
+            <div>{myTeams.map((teamData) => this.renderTeam(teamData))}</div>
+          );
+        }
+
+        if (userInAllTeams) {
+          otherTeamsContent = (
+            <p>You are a member of every team in this community!</p>
+          );
+        } else {
+          otherTeamsContent = (
+            <div>{otherTeams.map((teamData) => this.renderTeam(teamData))}</div>
+          );
+        }
+
+        return (
+          <div>
+            <h3 className="teams-subheader">My Teams</h3>
+            {myTeamsContent}
+            <h3 className="teams-subheader">Other Teams</h3>
+            {otherTeamsContent}
+          </div>
+        );
+      }
     }
   }
 
-  renderTeam(teamStats) {
-    const teamObj = teamStats.team;
-    const teamLogo = teamObj.logo;
+  renderTeam(teamData) {
+    const teamObj = teamData.team;
 
     return (
       <>
@@ -228,22 +247,22 @@ class TeamsPage extends React.Component {
               </div>
               <div className="col-sm-9">
                 <div className="row" style={{ margin: "0 auto" }}>
-                  {teamLogo ? (
+                  {teamObj.logo ? (
                     <>
                       <div className="col-8 team-card-column">
-                        <TeamInfoBars teamStats={teamStats} />
+                        <TeamInfoBars teamStats={teamData} />
                       </div>
                       <div className="col-4 team-card-column">
                         <img
                           className="team-card-img"
-                          src={teamLogo.url}
+                          src={teamObj.logo.url}
                           alt=""
                         />
                       </div>
                     </>
                   ) : (
                       <div className="team-card-column">
-                        <TeamInfoBars teamStats={teamStats} />
+                        <TeamInfoBars teamStats={teamData} />
                       </div>
                     )}
                 </div>
@@ -251,27 +270,29 @@ class TeamsPage extends React.Component {
             </div>
           </Link>
         </div>
-        {teamStats.children && teamStats.children.length > 0 &&
-          <button
-            className="btn round-me collapse-team-btn raise"
-            style={{ position: "relative", float: "right", top: '-35px', right: '20px' }}
-            onClick={() => {
-              const { teamsData } = this.state;
-              const thisTeamIndex = teamsData.findIndex
-                (teamData => teamData.team.id === teamStats.team.id);
-              teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex].collapsed;
-              this.setState({ teamsData: teamsData });
-            }}
-          >
-            {teamStats.collapsed ? <span>See Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
-          </button>
-        }
-        {teamStats.children && teamStats.children.length > 0 && !teamStats.collapsed &&
-          < div style={{ paddingLeft: '45px' }}>
-            {
-              teamStats.children.map(child => this.renderTeam(child))
+        {teamData.subTeams && teamData.subTeams.length > 0 &&
+          <>
+            <button
+              className="btn round-me collapse-team-btn raise"
+              style={{ position: "relative", float: "right", top: '-35px', right: '20px' }}
+              onClick={() => {
+                const { teamsData } = this.state;
+                const thisTeamIndex = teamsData.findIndex
+                  (_teamData => _teamData.team.id === teamData.team.id);
+                teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex].collapsed;
+                this.setState({ teamsData: teamsData });
+              }}
+            >
+              {teamData.collapsed ? <span>See Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
+            </button>
+            {!teamData.collapsed &&
+              <div style={{ paddingLeft: '45px' }}>
+                {
+                  teamData.subTeams.map(subTeam => this.renderTeam(subTeam))
+                }
+              </div>
             }
-          </div>
+          </>
         }
       </>
     );
