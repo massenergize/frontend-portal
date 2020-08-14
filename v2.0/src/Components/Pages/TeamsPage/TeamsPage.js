@@ -86,7 +86,6 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
     const { communityData, links } = this.props;
-    console.log("render", teamsData);
 
     return (
       <>
@@ -288,7 +287,7 @@ class TeamsPage extends React.Component {
                 this.setState({ teamsData: teamsData });
               }}
             >
-              {teamData.collapsed ? <span>See Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
+              {teamData.collapsed ? <span>Expand Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
             </button>
             {!teamData.collapsed &&
               <div style={{ paddingLeft: '10%', paddingTop: '10px' }}>

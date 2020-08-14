@@ -163,9 +163,6 @@ class TeamInfoModal extends React.Component {
       else data['admin_emails'] = user.email;
     }
 
-    //TODO: remove when done testing
-    console.log(data);
-
     return data;
   }
 
