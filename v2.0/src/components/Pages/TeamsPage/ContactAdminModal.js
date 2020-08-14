@@ -7,10 +7,10 @@ class ContactAdminModal extends React.Component {
 
   render() {
 
-    const team = this.props.team;
+    const { team, user, links, onClose } = this.props;
 
     let modalContent;
-    if (this.props.user) {
+    if (user) {
 
       modalContent = (
         <form onSubmit={(e) => {
@@ -34,14 +34,14 @@ class ContactAdminModal extends React.Component {
           </div>
         </form>);
     } else {
-      modalContent = <p>You must <Link to={this.props.links.signin}>sign in or create an account</Link> to contact this team's admin</p>;
+      modalContent = <p>You must <Link to={links.signin}>sign in or create an account</Link> to contact this team's admin</p>;
     }
 
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
           <div className="team-modal">
-            <h4 onClick={() => { this.props.onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
+            <h4 onClick={() => { onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
             <h4 style={{ paddingRight: '60px' }}>Contact admin of <b>{team.name}</b></h4>
             <br />
             {modalContent}
@@ -53,25 +53,30 @@ class ContactAdminModal extends React.Component {
     );
   }
 
-  sendMessage = () => {
-    var msg = document.getElementById("contact-textarea").value;
-    var title = document.getElementById("contact-title").value;
+  sendMessage = async () => {
+    const msg = document.getElementById("contact-textarea").value;
+    const title = document.getElementById("contact-title").value;
 
-    const body = {
-      team_id: this.props.team.id,
-      title: title,
-      message: msg,
-    };
+    const { team, onClose } = this.props;
 
     if (msg !== "" && title !== "") {
-      apiCall(`teams.contactAdmin`, body)
-        .then((json) => {
-          document.getElementById("contact-textarea").value = "";
-          document.getElementById("contact-title").value = "";
-          this.props.onClose();
-        });
+      const body = {
+        team_id: team.id,
+        title: title,
+        message: msg,
+      };
+      try {
+        const json = await apiCall(`teams.contactAdmin`, body);
+        if (json.success) {
+          onClose();
+        } else {
+          //TODO: set error state
+        }
+      } catch (err) {
+        //TODO: set error state
+      }
     }
-  };
+  }
 }
 
 const mapStoreToProps = (store) => {

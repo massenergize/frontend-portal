@@ -1,11 +1,7 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
-import {
-  reduxJoinTeam, reduxLogin
-} from "../../../redux/actions/userActions";
-import {
-  reduxAddTeamMember
-} from "../../../redux/actions/pageActions";
+import { reduxJoinTeam } from "../../../redux/actions/userActions";
+import { reduxAddTeamMember } from "../../../redux/actions/pageActions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -13,54 +9,36 @@ class JoinTeamModal extends React.Component {
 
   render() {
 
-    const team = this.props.team;
+    const { team, user, links, onClose } = this.props;
 
     let modalContent;
-    if (this.props.user) {
-
-      const preferredName = this.props.user.preferred_name;
+    if (user) {
 
       modalContent = (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          if (preferredName) {
-            this.joinTeam(team);
-          } else {
-            const input = document.getElementById('preferred-name').value;
-            this.updatePreferredName(input);
-            this.joinTeam(team);
-          }
-        }
-        }>
-          {preferredName ?
-            <p>
-              You will join this team with the preferred name <i>{preferredName}</i>. {team.parent && <span>This team is a sub-team of <b>{team.parent.name}</b>, so your stats will also contribute to the parent team.</span>}
-            </p>
-            :
-            <>
-              <p>You must enter a preferred name to join the team.</p>
-              <input className="form-control" type="text" name="preferred-name" id="preferred-name" placeholder="Preferred name..." required />
-            </>
-          }
+        <>
+          <p>
+            You will join this team with the display name <i>{user.preferred_name}</i>. {team.parent && <span>This team is a sub-team of <b>{team.parent.name}</b>, and your stats will also contribute to the parent team!</span>}
+          </p>
           <button
             style={{ marginTop: '10px', marginBottom: '0px' }}
+            onClick={() => this.joinTeam()}
             type="submit"
             className="btn btn-success round-me join-team-btn raise"
           >
             Join Team
          </button>
-        </form>
+        </>
       );
     } else {
-      modalContent = <p>You must <Link to={this.props.links.signin}>sign in or create an account</Link> to join this team</p>;
+      modalContent = <p>You must <Link to={links.signin}>sign in or create an account</Link> to join this team</p>;
     }
 
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
           <div className="team-modal">
-            <h4 onClick={() => { this.props.onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
-            <h4 style={{ paddingRight: '60px' }}>Join <b>{this.props.team.name}</b></h4>
+            <h4 onClick={() => onClose()} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
+            <h4 style={{ paddingRight: '60px' }}>Join <b>{team.name}</b></h4>
             <br />
             {modalContent}
           </div>
@@ -71,50 +49,36 @@ class JoinTeamModal extends React.Component {
     );
   }
 
-  updatePreferredName = preferredName => {
-    const body = {
-      id: this.props.user.id,
-      preferred_name: preferredName
-    }
-    apiCall("users.update", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxLogin(preferredName);
-        }
-      }).catch(error => {
-        console.log(error);
-      });
-  }
+  joinTeam = async () => {
+    const { team, user, todo, done,
+      reduxJoinTeam, reduxAddTeamMember,
+      onJoin } = this.props;
 
-  joinTeam = team => {
     const body = {
-      user_id: this.props.user.id,
+      user_id: user.id,
       team_id: team.id
     };
-    apiCall("teams.join", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxJoinTeam(team);
-          this.props.reduxAddTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done ? this.props.done.length : 0,
-              actions_todo: this.props.todo ? this.props.todo.length : 0,
-            },
-          });
-          this.props.onJoin(team);
-        }
-        this.props.onClose();
-      })
-      .catch((error) => {
-        console.log(error);
-        this.props.onClose();
-      });
+    try {
+      const json = await apiCall("teams.join", body)
+      if (json.success) {
+        reduxJoinTeam(team);
+        reduxAddTeamMember({
+          team: team,
+          member: {
+            households: user.households.length,
+            actions: todo && done ? todo.length + done.length : 0,
+            actions_completed: done ? done.length : 0,
+            actions_todo: todo ? todo.length : 0,
+          },
+        });
+        onJoin(team);
+      } else {
+        //TODO: set error state
+      }
+    }
+    catch (err) {
+      //TODO: set error state
+    };
   };
 }
 
@@ -129,7 +93,7 @@ const mapStoreToProps = (store) => {
 
 const mapDispatchToProps = {
   reduxJoinTeam,
-  reduxAddTeamMember,
-  reduxLogin
+  reduxAddTeamMember
 };
+
 export default connect(mapStoreToProps, mapDispatchToProps)(JoinTeamModal);

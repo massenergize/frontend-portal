@@ -8,26 +8,29 @@ class TeamInfoModal extends React.Component {
 
   render() {
 
-    const { team, onClose, teamsPage } = this.props;
+    const { team, onClose, teamsStats, user } = this.props;
 
     //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const parentTeamOptions = teamsPage.map(teamStats => teamStats.team)
+    const parentTeamOptions = teamsStats.map(teamStats => teamStats.team)
       .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     let modalContent;
-    if (this.props.user) {
+    if (user) {
 
-      const buttonStyle = { marginTop: '10px', marginBottom: '0px', padding: '10px 40px' };
+      const buttonStyle = { marginTop: '10px', marginBottom: '0px', padding: '10px 40px', maxHeight: '50px' };
 
       const submitButton = team ?
         <button style={buttonStyle} type="submit"
           className="btn btn-success round-me contact-admin-btn-new raise">
           Update
         </button> :
-        <button style={buttonStyle} type="submit"
-          className="btn btn-success round-me join-team-btn raise">
-          Create
-        </button>;
+        <><br />
+          <small >Your team will need approval from a Community Admin before displaying. You will recieve an email when this happens.</small><br />
+          <button style={buttonStyle} type="submit"
+            className="btn btn-success round-me join-team-btn raise">
+            Create
+        </button>
+        </>;
 
       modalContent = <form id="team-info"
         onSubmit={(e) => {
@@ -35,19 +38,27 @@ class TeamInfoModal extends React.Component {
           this.callAPI();
         }}>
 
-        <label htmlFor="team-name"><u>Name</u></label>
+        <label htmlFor="team-name"><u>Name</u>* <br />
+          <small>What your team will be known by.</small>
+        </label>
         <input id="team-name" type="text" name="team-name" className="form-control"
           defaultValue={team && team.name} maxLength={100} reqiured />
 
-        <label htmlFor="team-tagline"><u>Tagline</u></label>
-        <input id="team-tagline" name="team-tagline" className="form-control"
+        <label htmlFor="team-tagline"><u>Tagline</u>* <br />
+          <small>A catchy slogan for your team.</small>
+        </label>
+        <input id="team-tagline" type="text" name="team-tagline" className="form-control"
           defaultValue={team && team.tagline} maxLength={100} required />
 
-        <label htmlFor="team-description"><u>Description</u></label>
+        <label htmlFor="team-description"><u>Description</u>* <br />
+          <small>Describe your team. Who are you and what brings you together?</small>
+        </label>
         <textarea id="team-description" name="team-description" className="form-control" rows={3}
           defaultValue={team && team.description} maxLength={10000} required />
 
-        <label htmlFor="team-parent_id"><u>Parent Team</u> &nbsp;</label>
+        <label htmlFor="team-parent_id"><u>Parent Team</u>  <br />
+          <small>When there are multiple higher-level groups within a community, you can choose to create sub-teams associated with parent teams; sub-teams' stats contribute to their parents'.</small>
+        </label>
         <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
           (team && team.parent) ? team.parent.id : ""
         }>
@@ -62,16 +73,17 @@ class TeamInfoModal extends React.Component {
             </label>
             <input id="team-admin_emails" name="team-admin_emails" className="form-control" />
 
-            {/* TODO: open/closed team checkbox*/}
           </>
         }
         <div style={{ display: 'block' }}>
-          <label htmlFor="team-logo"><u>Logo</u></label>
+          <label htmlFor="team-logo"><u>Logo</u> <br />
+            <small>You can select a logo to be displayed alongside your team on the community portal.</small>
+          </label>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {team && team.logo &&
               <div style={{ display: 'block' }}>
                 <small>Current:</small>
-                <img src={team.logo.url} style={{ maxWidth: '100px', maxHeight: '50px' }} />
+                <img src={team.logo.url} alt="" style={{ maxWidth: '100px', maxHeight: '50px' }} />
               </div>
             }
             <input style={{ display: 'inline-block' }} id="team-logo" accept="image/*" type="file" name="team-logo" className="form-control" />
@@ -89,7 +101,7 @@ class TeamInfoModal extends React.Component {
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
-          <div className="team-modal" style={{height: "90%"}}>
+          <div className="team-modal" style={{ height: "90%" }}>
             <h4 onClick={() => { onClose() }} className=" modal-close-x round-me">
               <span className="fa fa-close"></span>
             </h4>
@@ -164,23 +176,27 @@ class TeamInfoModal extends React.Component {
 
     const url = team ? "teams.update" : "teams.create";
 
-    //TODO: what to do on error?
     try {
       let teamResponse;
-      if (data.logo)
+      if (data.logo) {
         teamResponse = await apiCallWithMedia(url, data);
-      else
+      } else {
         teamResponse = await apiCall(url, data);
+      }
       if (teamResponse.success) {
+        const teamID = team ? team.id : teamResponse.data.id;
+        onComplete(teamID);
+
         const teamsStatsResponse = await apiCall("teams.stats", { community_id: communityData.community.id });
         if (teamsStatsResponse.success) {
           reduxLoadTeamsPage(teamsStatsResponse.data);
         }
-        const teamID = team ? team.id : teamResponse.data.id;
-        onComplete(teamID);
+
       } else {
+        //TODO: set error state
       }
     } catch (err) {
+      //TODO: set error state
     }
   }
 }
@@ -189,7 +205,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsPage: store.page.teamsPage,
+    teamsStats: store.page.teamsPage,
     communityData: store.page.homePage,
   };
 };

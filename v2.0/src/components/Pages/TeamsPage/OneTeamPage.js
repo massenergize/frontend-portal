@@ -33,9 +33,10 @@ class OneTeamPage extends React.Component {
       const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
-        const teamData = processTeamsStats(this.props.teamsPage)
+        //TODO: some way to clean this up? lots of computation potentially thrown away
+        const teamData = processTeamsStats(this.props.teamsStats)
           .find((teamData) => teamData.team.id === team.id) ||
-          this.props.teamsPage.find(teamStats => teamStats.team.id === team.id);
+          this.props.teamsStats.find(teamStats => teamStats.team.id === team.id);
         this.setState({
           team: team,
           teamData: teamData
@@ -66,7 +67,7 @@ class OneTeamPage extends React.Component {
   render() {
     const { team, loading, error } = this.state;
 
-    if (loading || !this.props.teamsPage) {
+    if (loading || !this.props.teamsStats) {
       return <LoadingCircle />;
     }
     if (!team || error) {
@@ -81,7 +82,7 @@ class OneTeamPage extends React.Component {
     }
     const { remountForcer,
       joinLeaveModalOpen, contactEditModalOpen, isAdmin, teamData } = this.state;
-    const { user } = this.props;
+    const { user, links } = this.props;
 
     const isInTeam = inTeam(user, teamData);
     const isInThisTeam = inThisTeam(user, teamData);
@@ -108,7 +109,7 @@ class OneTeamPage extends React.Component {
       </>
     );
 
-    const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${this.props.links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
+    const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
       {team.name}</>;
 
     return (
@@ -145,7 +146,7 @@ class OneTeamPage extends React.Component {
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
-              { link: this.props.links.teams, name: "Teams" },
+              { link: links.teams, name: "Teams" },
               { name: team.name },
             ]}
           />
@@ -257,7 +258,7 @@ class OneTeamPage extends React.Component {
                             <ul>
                               {teamData.subTeams.map(subTeamStats =>
                                 <li key={subTeamStats.team.id}>
-                                  <Link to={`${this.props.links.teams}/${subTeamStats.team.id}`}><b>{subTeamStats.team.name}</b></Link>
+                                  <Link to={`${links.teams}/${subTeamStats.team.id}`}><b>{subTeamStats.team.name}</b></Link>
                                 </li>
                               )}
                             </ul>
@@ -278,7 +279,7 @@ class OneTeamPage extends React.Component {
                       key={remountForcer}
                       teamID={team.id}
                     />
-                    <p style={{ textAlign: 'center' }}>Complete <Link to={this.props.links.actions}>more actions</Link>!</p>
+                    <p style={{ textAlign: 'center' }}>Complete <Link to={links.actions}>more actions</Link>!</p>
                   </div>
                 </div>
 
@@ -355,7 +356,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsPage: store.page.teamsPage,
+    teamsStats: store.page.teamsPage,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);

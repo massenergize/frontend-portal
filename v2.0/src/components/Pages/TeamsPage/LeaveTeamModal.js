@@ -1,30 +1,25 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
-import {
-  reduxLeaveTeam,
-} from "../../../redux/actions/userActions";
-import {
-  reduxRemoveTeamMember
-} from "../../../redux/actions/pageActions";
+import { reduxLeaveTeam } from "../../../redux/actions/userActions";
+import { reduxRemoveTeamMember } from "../../../redux/actions/pageActions";
 import { connect } from "react-redux";
 
 class LeaveTeamModal extends React.Component {
 
   render() {
 
-    const team = this.props.team;
+    const { team, onClose } = this.props;
 
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
           <div className="team-modal">
-            <h4 onClick={() => { this.props.onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
-            <h5 style={{ paddingRight: '60px' }}>Are you sure you want to leave <b>{this.props.team.name}</b>?</h5>
+            <h4 onClick={() => onClose()} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
+            <h5 style={{ paddingRight: '60px' }}>Are you sure you want to leave <b>{team.name}</b>?</h5>
             <button
               style={{ marginTop: '10px', marginBottom: '0px' }}
-
               className="btn btn-success round-me leave-team-btn raise"
-              onClick={() => this.leaveTeam(team)}
+              onClick={() => this.leaveTeam()}
             >
               Leave Team
             </button>
@@ -36,38 +31,37 @@ class LeaveTeamModal extends React.Component {
     );
   }
 
-  leaveTeam = (team) => {
+  leaveTeam = async () => {
+    const { team, user, todo, done,
+      reduxLeaveTeam, reduxRemoveTeamMember,
+      onLeave } = this.props;
+
     const body = {
-      user_id: this.props.user.id,
+      user_id: user.id,
       team_id: team.id,
     };
-    apiCall(`teams.leave`, body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxLeaveTeam(team);
-          this.props.reduxRemoveTeamMember({
-            team: team,
-            member: {
-              households: this.props.user.households.length,
-              actions:
-                this.props.todo && this.props.done
-                  ? this.props.todo.length + this.props.done.length
-                  : 0,
-              actions_completed: this.props.done ? this.props.done.length : 0,
-              actions_todo: this.props.todo ? this.props.todo.length : 0,
-            },
-          });
-          this.props.onLeave(team);
-        }
-        this.props.onClose();
-      })
-      .catch((error) => {
-        console.log(error);
-        this.props.onClose();
-      });
+    try {
+      const json = await apiCall(`teams.leave`, body)
+      if (json.success) {
+        reduxLeaveTeam(team);
+        reduxRemoveTeamMember({
+          team: team,
+          member: {
+            households: user.households.length,
+            actions: todo && done ? todo.length + done.length : 0,
+            actions_completed: done ? done.length : 0,
+            actions_todo: todo ? todo.length : 0,
+          },
+        });
+        onLeave(team);
+      }
+      else {
+        //TODO: set error state
+      }
+    } catch (err) {
+      //TODO: set error state
+    };
   };
-
-
 }
 
 const mapStoreToProps = (store) => {

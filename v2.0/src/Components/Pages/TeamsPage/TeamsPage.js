@@ -12,17 +12,18 @@ import { Link, Redirect } from "react-router-dom";
 class TeamsPage extends React.Component {
   constructor(props) {
     super(props);
+    const { teamsStats } = this.props;
     this.state = {
       searching: false,
       createTeamModalOpen: false,
       redirectID: null,
-      teamsData: processTeamsStats(this.props.teamsPage)
+      teamsData: processTeamsStats(teamsStats)
     };
   }
 
   handleSearch(event) {
     const query = event.target.value.trim();
-    if (query === "" || this.props.teamsPage.length === 0) {
+    if (query === "" || this.props.teamsStats.length === 0) {
       this.setState({ searching: false });
       return;
     }
@@ -64,14 +65,16 @@ class TeamsPage extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.teamsPage !== this.props.teamsPage) {
-      this.setState({ teamsData: processTeamsStats(this.props.teamsPage) });
+    if (prevProps.teamsStats !== this.props.teamsStats) {
+      this.setState({ teamsData: processTeamsStats(this.props.teamsStats) });
     }
   }
 
   render() {
 
-    if (this.props.teamsPage === null) {
+    const { teamsStats } = this.props;
+
+    if (teamsStats === null) {
       return (
         <div className="boxed_wrapper">
           <LoadingCircle />
@@ -80,12 +83,13 @@ class TeamsPage extends React.Component {
     }
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
+    const { communityData, links } = this.props;
     console.log("render", teamsData);
 
     return (
       <>
 
-        {redirectID && <Redirect to={`${this.props.links.teams + "/" + redirectID} `} />}
+        {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
 
         {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate}
           onClose={this.onCreateTeamModalClose} />}
@@ -97,7 +101,7 @@ class TeamsPage extends React.Component {
             style={{ margin: "auto" }}
           >
             <PageTitle style={{ margin: "0 30px" }}>
-              Teams in {this.props.communityData.community.name}
+              Teams in {communityData.community.name}
             </PageTitle>
             <center>
               <p>
@@ -273,8 +277,7 @@ class TeamsPage extends React.Component {
         {teamData.subTeams && teamData.subTeams.length > 0 &&
           <>
             <button
-              className="btn round-me collapse-team-btn raise"
-              style={{ position: "relative", float: "right", top: '-35px', right: '20px' }}
+              className="btn round-me collapse-team-btn bottom-right raise"
               onClick={() => {
                 const { teamsData } = this.state;
                 const thisTeamIndex = teamsData.findIndex
@@ -286,10 +289,8 @@ class TeamsPage extends React.Component {
               {teamData.collapsed ? <span>See Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
             </button>
             {!teamData.collapsed &&
-              <div style={{ paddingLeft: '45px' }}>
-                {
-                  teamData.subTeams.map(subTeam => this.renderTeam(subTeam))
-                }
+              <div style={{ paddingLeft: '10%', paddingTop: '10px' }}>
+                {teamData.subTeams.map(subTeam => this.renderTeam(subTeam))}
               </div>
             }
           </>
@@ -310,7 +311,7 @@ class TeamsPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    teamsPage: store.page.teamsPage,
+    teamsStats: store.page.teamsPage,
     links: store.links,
     communityData: store.page.homePage,
   };

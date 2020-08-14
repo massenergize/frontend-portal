@@ -16,7 +16,14 @@
   padding: 6px 25px; 
   margin: 0 8px;
   font-size: 16px;
-  line-height: 17px
+  line-height: 17px;
+}
+
+.collapse-team-btn.bottom-right {
+  position: relative;
+  float: right;
+  top: -35px;
+  right: 20px;
 }
 
 .testimonials-image-desc{
