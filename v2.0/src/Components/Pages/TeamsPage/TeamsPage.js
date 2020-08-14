@@ -22,15 +22,17 @@ class TeamsPage extends React.Component {
   }
 
   handleSearch(event) {
+
+    const { teamsData } = this.state;
+
     const query = event.target.value.trim();
-    if (query === "" || this.props.teamsStats.length === 0) {
+    if (query === "" || teamsData.length === 0) {
       this.setState({ searching: false });
       return;
     }
 
     const match = (team) => team.name.toLowerCase().includes(query.toLowerCase());
 
-    const { teamsData } = this.state;
 
     let searchedTeamsData = [];
     for (var i = 0; i < teamsData.length; i++) {

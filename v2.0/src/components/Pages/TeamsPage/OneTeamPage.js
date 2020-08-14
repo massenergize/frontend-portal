@@ -112,6 +112,8 @@ class OneTeamPage extends React.Component {
     const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
       {team.name}</>;
 
+    const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
+
     return (
       <>
         <Helmet>
@@ -236,8 +238,9 @@ class OneTeamPage extends React.Component {
                 </div>
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section slight-lift">
-                    <h5 style={{ margin: 0 }}>
+                    <h5 style={{ marginBottom: '15px' }}>
                       <b>Members</b>
+                      {subTeams && <><br /><small>Contains members of sub-teams</small></>}
                     </h5>
                     <TeamMembersList
                       onMembersLoad={this.onMembersLoad}
@@ -246,7 +249,7 @@ class OneTeamPage extends React.Component {
                     />
                   </div>
                 </div>
-                {teamData.subTeams && teamData.subTeams.length > 0 &&
+                {subTeams &&
                   <div className="row" style={{ margin: 0 }}>
                     <div className="one-team-content-section slight-lift">
                       <h5 style={{ margin: 0 }}>
@@ -270,15 +273,17 @@ class OneTeamPage extends React.Component {
                 }
               </div>
               <div className="col-md-7 col-12">
-                <div className="row" style={{ margin: 0 }}>
+                <div className="row" style={{ marginBotton: '15px' }}>
                   <div className="one-team-content-section slight-lift">
                     <h5>
                       <b>Actions Completed</b>
+                      {subTeams && <><br /><small>Contains actions of sub-teams</small></>}
                     </h5>
                     <TeamActionsGraph
                       key={remountForcer}
                       teamID={team.id}
                     />
+
                     <p style={{ textAlign: 'center' }}>Complete <Link to={links.actions}>more actions</Link>!</p>
                   </div>
                 </div>

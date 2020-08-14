@@ -9616,6 +9616,14 @@ button.as-link:hover {
   margin: 0px;
 }
 
+.one-team-content-section small{
+  width: 100%;
+  text-align: center;
+  font-size: small;
+  color: darkgrey;
+  margin-bottom: 5px;
+}
+
 .team-ul ul {
   color: #999;
   font-size : 18px;
