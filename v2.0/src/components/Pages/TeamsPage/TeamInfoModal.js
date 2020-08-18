@@ -3,6 +3,8 @@ import { apiCall, apiCallWithMedia } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
+import { reduxJoinTeam } from "../../../redux/actions/userActions";
+
 
 class TeamInfoModal extends React.Component {
 
@@ -10,9 +12,12 @@ class TeamInfoModal extends React.Component {
 
     const { team, onClose, teamsStats, user } = this.props;
 
-    //can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const parentTeamOptions = teamsStats.map(teamStats => teamStats.team)
-      .filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
+    //if other teams have us as a parent, can't set a parent ourselves
+    //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
+    const teams = teamsStats.map(teamStats => teamStats.team);
+    const parentTeamOptions = (!team || teams.filter(_team =>
+      _team.parent && team.parent.id === team.id).length === 0)
+      && teams.filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     let modalContent;
     if (user) {
@@ -56,15 +61,20 @@ class TeamInfoModal extends React.Component {
         <textarea id="team-description" name="team-description" className="form-control" rows={3}
           defaultValue={team && team.description} maxLength={10000} required />
 
-        <label htmlFor="team-parent_id"><u>Parent Team</u>  <br />
-          <small>When there are multiple higher-level groups within a community, you can choose to create sub-teams associated with parent teams; sub-teams' stats contribute to their parents'.</small>
-        </label>
-        <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
-          (team && team.parent) ? team.parent.id : ""
-        }>
-          <option value="">NONE</option>
-          {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>)}
-        </select>
+        {parentTeamOptions &&
+          <>
+            <label htmlFor="team-parent_id"><u>Parent Team</u>  <br />
+              <small>When there are multiple higher-level groups within a community, you can choose to create sub-teams associated with parent teams; sub-teams' stats contribute to their parents'.</small>
+            </label>
+            <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
+              (team && team.parent) ? team.parent.id : ""
+            }>
+              <option value="">NONE</option>
+              {parentTeamOptions.map(team => <option key={team.id} value={team.id}>{team.name}</option>
+              )}
+            </select>
+          </>
+        }
 
         {!team &&
           <>
@@ -167,7 +177,7 @@ class TeamInfoModal extends React.Component {
   }
 
   callAPI = async () => {
-    const { team, onComplete, communityData, reduxLoadTeamsPage } = this.props;
+    const { team, onComplete, communityData, reduxLoadTeamsPage, reduxJoinTeam } = this.props;
 
     const data = this.getData();
 
@@ -181,6 +191,7 @@ class TeamInfoModal extends React.Component {
         teamResponse = await apiCall(url, data);
       }
       if (teamResponse.success) {
+        if (team) reduxJoinTeam(team)
         const teamID = team ? team.id : teamResponse.data.id;
         onComplete(teamID);
 
@@ -207,7 +218,8 @@ const mapStoreToProps = (store) => {
   };
 };
 const mapDispatchToProps = {
-  reduxLoadTeamsPage
+  reduxLoadTeamsPage,
+  reduxJoinTeam
 };
 
 export default connect(mapStoreToProps, mapDispatchToProps)(TeamInfoModal);
