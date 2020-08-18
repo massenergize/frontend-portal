@@ -23,6 +23,10 @@ import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import ShareButtons from "../../Shared/ShareButtons";
+import { Helmet } from "react-helmet";
+import { getHTMLContent, factory } from "../HTML/HTMLShop";
+import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -41,27 +45,21 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
       showTodoMsg: false,
-      loading: true
+      loading: true, 
+      // about_html:null, 
+      // deep_dive_html:null,
+      // steps_to_take_html:null 
+
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener("resize", this.chooseFontSize);
 
     const { id } = this.props.match.params;
     this.fetch(id);
   }
-
-  //componentDidUpdate() {
-  //  if (
-  //    !this.loading &&
-  //    (!this.state.action || this.props.match.params !== this.state.action.id)
-  //  ) {
-  //    const { id } = this.props.match.params;
-  //    this.fetch(id);
-  //  }
-  // }
 
   async fetch(id) {
     try {
@@ -93,11 +91,16 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
     return (
       <>
+        <Helmet>
+          <meta property="og:title" content={action.title} />
+          <meta property="og:image" content={action.image && action.image.url} />
+          <meta property="og:description" content={action.featured_summary} />
+          <meta property="og:url" content={window.location.href} />
+        </Helmet>
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              // { name: `Action ${action.id}` },
               { name: action ? action.title : "..." }
             ]}
           />
@@ -145,6 +148,8 @@ class OneActionPage extends React.Component {
                   )}
               </div>
             </div>
+            <br />
+            <ShareButtons label="Share this action!" pageTitle={action.title} pageDescription={action.featured_summary} url={window.location.href} />
           </section>
         </div>
       </>
@@ -627,7 +632,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.about }}
+                    dangerouslySetInnerHTML={{ __html:getHTMLContent( action.about) }}
                   ></p>
                 </div>
               </div>
@@ -645,7 +650,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.steps_to_take }}
+                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.steps_to_take) }}
                   ></p>
                 </div>
               </div>
@@ -663,7 +668,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.deep_dive }}
+                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.deep_dive) }}
                   ></p>
                   {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
                 </div>
@@ -806,7 +811,7 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
         {Object.keys(stories).map((key) => {
-          var creatorName = "Anonymous";
+          var creatorName = "Unknown user";
           const story = stories[key];
           if (!story.anononymous) {
             creatorName = story.preferred_name

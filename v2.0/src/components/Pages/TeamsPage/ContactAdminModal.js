@@ -23,7 +23,7 @@ class ContactAdminModal extends React.Component {
             <textarea id="contact-textarea" name="msg" className="form-control" rows={7} placeholder="Message..." required>
             </textarea>
             <button
-              style={{ marginTop: '10px', marginBottom: '0px' }}
+              style={{ marginTop: '10px', marginBottom: '0px',padding:'10px 40px' }}
               type="submit"
               className="btn btn-success round-me contact-admin-btn-new raise"
             >
