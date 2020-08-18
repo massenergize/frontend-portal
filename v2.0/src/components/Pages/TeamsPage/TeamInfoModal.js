@@ -191,15 +191,13 @@ class TeamInfoModal extends React.Component {
         teamResponse = await apiCall(url, data);
       }
       if (teamResponse.success) {
-        if (team) reduxJoinTeam(team)
-        const teamID = team ? team.id : teamResponse.data.id;
-        onComplete(teamID);
-
+        const newTeam = teamResponse.data;
+        reduxJoinTeam(newTeam);
         const teamsStatsResponse = await apiCall("teams.stats", { community_id: communityData.community.id });
         if (teamsStatsResponse.success) {
           reduxLoadTeamsPage(teamsStatsResponse.data);
         }
-
+        onComplete(newTeam.id);
       } else {
         //TODO: set error state
       }
