@@ -98,7 +98,7 @@ class TeamsPage extends React.Component {
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
-            className="col-12 col-sm-11 col-md-10 col-lg-9 col-xl-8"
+            className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
             style={{ margin: "auto" }}
           >
             <PageTitle style={{ margin: "0 30px" }}>

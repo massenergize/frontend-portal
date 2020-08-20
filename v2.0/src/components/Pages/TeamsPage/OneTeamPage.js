@@ -152,7 +152,7 @@ class OneTeamPage extends React.Component {
             ]}
           />
           <div
-            className="col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6"
+            className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
           >
             <div className="team-card-column" style={{ margin: "0 auto" }}>
@@ -218,7 +218,7 @@ class OneTeamPage extends React.Component {
           <br />
 
           <div
-            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10"
+            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8"
             style={{ margin: "auto" }}
           >
             <div className="row">
