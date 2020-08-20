@@ -4,7 +4,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import TeamInfoBars from "./TeamInfoBars";
+import TeamStatsBarss from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinTeamModal from "./JoinTeamModal";
@@ -12,7 +12,7 @@ import LeaveTeamModal from "./LeaveTeamModal";
 import TeamInfoModal from "./TeamInfoModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
-import { processTeamsStats, inTeam, inThisTeam } from './utils.js';
+import { getTeamData, inTeam, inThisTeam } from './utils.js';
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
@@ -33,10 +33,9 @@ class OneTeamPage extends React.Component {
       const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
-        //TODO: some way to clean this up? lots of computation potentially thrown away
-        const teamData = processTeamsStats(this.props.teamsStats)
-          .find((teamData) => teamData.team.id === team.id) ||
-          this.props.teamsStats.find(teamStats => teamStats.team.id === team.id);
+        const { teamsStats } = this.props;
+        const teamStats = teamsStats.find(teamStats => teamStats.team.id === team.id);
+        const teamData = getTeamData(teamsStats, teamStats);
         this.setState({
           team: team,
           teamData: teamData
@@ -211,7 +210,7 @@ class OneTeamPage extends React.Component {
 
             <div className="row">
               <div className="team-card-column">
-                <TeamInfoBars teamStats={teamData} />
+                <TeamStatsBarss teamStats={teamData} />
               </div>
             </div>
           </div>
@@ -303,7 +302,7 @@ class OneTeamPage extends React.Component {
                     this.setState({ contactEditModalOpen: true });
                   }}
                 >
-                  {this.props.user && isAdmin ? "Edit Team" : "Contact Admin"}
+                  {user && isAdmin ? "Edit Team" : "Contact Admin"}
                 </button>
               </div>
               {isInThisTeam && !isAdmin &&

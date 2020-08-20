@@ -1,26 +1,34 @@
-export function processTeamsStats(teamsStats) {
+export function getTeamData(teamsStats, thisTeamStats) {
+  const teamData = thisTeamStats;
+  if (!thisTeamStats.team.parent) {
+    teamData['subTeams'] = teamsStats
+      .filter(otherTeamStats => otherTeamStats.team.parent &&
+        otherTeamStats.team.parent.id === thisTeamStats.team.id)
+  }
+  return teamData;
+}
+
+export function getTeamsData(teamsStats) {
   const teamsData = [];
   teamsStats.forEach(thisTeamStats => {
     if (!thisTeamStats.team.parent) {
-      const teamStatsWithSubTeams = thisTeamStats;
-      teamStatsWithSubTeams['subTeams'] = teamsStats
-        .filter(otherTeamStats => otherTeamStats.team.parent &&
-          otherTeamStats.team.parent.id === thisTeamStats.team.id)
-      teamStatsWithSubTeams['collapsed'] = true;
-      teamsData.push(teamStatsWithSubTeams);
+      const teamData = getTeamData(teamsStats, thisTeamStats);
+      teamData['collapsed'] = true;
+      teamsData.push(teamData);
     }
   });
   return teamsData;
 }
 
 export function inThisTeam(user, teamData) {
+  if (!user) return false;
   return user.teams.filter((team) =>
     team.id === teamData.team.id
   ).length > 0;
 }
 
-function inSubTeam(user, teamData) {
-  if (!teamData.subTeams) return false;
+export function inSubTeam(user, teamData) {
+  if (!user || !teamData.subTeams) return false;
   return user.teams.filter((team) =>
     teamData.subTeams.map(subTeamData => subTeamData.team.id).includes(team.id)
   ).length > 0;

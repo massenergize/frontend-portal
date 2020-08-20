@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import PageTitle from "../../Shared/PageTitle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import TeamInfoBars from "./TeamInfoBars";
+import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
-import { processTeamsStats, inTeam } from './utils.js';
+import { getTeamsData, inTeam } from './utils.js';
 import { Link, Redirect } from "react-router-dom";
 
 
@@ -17,7 +17,7 @@ class TeamsPage extends React.Component {
       searching: false,
       createTeamModalOpen: false,
       redirectID: null,
-      teamsData: processTeamsStats(teamsStats)
+      teamsData: getTeamsData(teamsStats)
     };
   }
 
@@ -68,7 +68,7 @@ class TeamsPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.teamsStats !== this.props.teamsStats) {
-      this.setState({ teamsData: processTeamsStats(this.props.teamsStats) });
+      this.setState({ teamsData: getTeamsData(this.props.teamsStats) });
     }
   }
 
@@ -255,7 +255,7 @@ class TeamsPage extends React.Component {
                   {teamObj.logo ? (
                     <>
                       <div className="col-8 team-card-column">
-                        <TeamInfoBars teamStats={teamData} />
+                        <TeamStatsBars teamStats={teamData} />
                       </div>
                       <div className="col-4 team-card-column">
                         <img
@@ -267,7 +267,7 @@ class TeamsPage extends React.Component {
                     </>
                   ) : (
                       <div className="team-card-column">
-                        <TeamInfoBars teamStats={teamData} />
+                        <TeamStatsBars teamStats={teamData} />
                       </div>
                     )}
                 </div>

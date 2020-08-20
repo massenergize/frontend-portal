@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Tooltip from "../../Shared/Tooltip";
 import Table from "react-bootstrap/Table";
 import { apiCall } from "../../../api/functions";
-import teams_pop from "./teams_pop.jpg";
+// import teams_pop from "./teams_pop.jpg";
 import {
   reduxJoinTeam,
   reduxLeaveTeam,
@@ -242,11 +242,11 @@ class CompareTeamsPage extends React.Component {
           >
             {/* <PageTitle>Teams in this Community</PageTitle> */}
             <center>
-              <img
+              {/* <img
                 src={teams_pop}
                 alt=""
                 style={{ width: 409, margin: 15, marginLeft: "-8%" }}
-              />
+              /> */}
               <br />
               <p style={{ color: "black" }}>
                 A team is a group in a community that wants to work together. It

@@ -69,7 +69,7 @@ class JoinTeamModal extends React.Component {
             actions: todo && done ? todo.length + done.length : 0,
             actions_completed: done ? done.length : 0,
             actions_todo: todo ? todo.length : 0,
-          },
+          }
         });
         onJoin(team);
       } else {
