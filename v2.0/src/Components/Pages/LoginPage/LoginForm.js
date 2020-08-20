@@ -7,7 +7,7 @@ import {
   facebookProvider,
   googleProvider,
 } from "../../../config/firebaseConfig";
-import { getJson, apiCall, rawCall, apiCallNoToken } from "../../../api/functions";
+import { getJson, rawCall} from "../../../api/functions";
 import URLS from "../../../api/urls";
 import {
   reduxLogin,
