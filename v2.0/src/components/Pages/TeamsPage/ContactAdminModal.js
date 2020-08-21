@@ -69,10 +69,11 @@ class ContactAdminModal extends React.Component {
     const msg = document.getElementById("contact-textarea").value;
     const title = document.getElementById("contact-title").value;
 
-    const { team, onClose } = this.props;
+    const { team, onClose, user } = this.props;
 
     if (msg !== "" && title !== "") {
       const body = {
+        user_id: user.id,
         team_id: team.id,
         title: title,
         message: msg,

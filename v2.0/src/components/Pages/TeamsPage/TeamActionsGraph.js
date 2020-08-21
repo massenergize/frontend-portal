@@ -23,7 +23,7 @@ class TeamActionsGraph extends React.Component {
         this.setState({ error: json.error });
       }
     } catch (err) {
-      this.setState({ error: err });
+      this.setState({ error: err.toString() });
     } finally {
       this.setState({ loading: false });
     }

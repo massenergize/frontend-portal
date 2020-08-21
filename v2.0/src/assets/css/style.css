@@ -9630,9 +9630,6 @@ button.as-link:hover {
   margin: 0px;
   padding-left: 30px;
   list-style-type: circle;
-  columns: 2;
-  -webkit-columns: 2;
-  -moz-columns: 2;
 }
 
 .team-modal{
