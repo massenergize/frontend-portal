@@ -28,11 +28,13 @@ class OneTeamPage extends React.Component {
   }
 
   async fetch(id) {
+    const { teamsStats } = this.props;
+    if (!teamsStats) return;
+
     try {
       const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
-        const { teamsStats } = this.props;
         const teamStats = teamsStats.find(teamStats => teamStats.team.id === team.id);
         const teamData = getTeamData(teamsStats, teamStats);
         this.setState({
