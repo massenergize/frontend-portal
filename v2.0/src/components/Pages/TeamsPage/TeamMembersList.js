@@ -1,5 +1,6 @@
 import React from 'react';
 import { apiCall } from "../../../api/functions";
+import loader from '../../../assets/images/other/loader.gif';
 
 class TeamMembersList extends React.Component {
 
@@ -38,7 +39,7 @@ class TeamMembersList extends React.Component {
     const { loading, membersResponse } = this.state;
 
     if (loading)
-      return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
+      return <img src={loader} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
     if (!membersResponse)
       return <p className="error-p">The members of this team could not be loaded.</p >;

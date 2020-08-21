@@ -5,6 +5,7 @@ import { reduxAddTeamMember, reduxRemoveTeamMember } from "../../../redux/action
 import { inThisTeam } from './utils.js';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import loader from '../../../assets/images/other/loader.gif';
 
 class JoinLeaveTeamModal extends React.Component {
 
@@ -12,39 +13,40 @@ class JoinLeaveTeamModal extends React.Component {
     super(props);
     const { team, user } = this.props;
     this.leaving = inThisTeam(user, team);
+    this.state = {
+      loading: false,
+      error: null
+    }
   }
 
   render() {
     const { team, user, links, onClose } = this.props;
+    const { loading, error } = this.state;
 
     let modalContent;
     if (user) {
-      modalContent = this.leaving ?
+      modalContent =
         <>
-          <p>
-            Are you sure you want to leave?
-          </p>
-          <button
-            style={{ marginTop: '10px', marginBottom: '0px' }}
-            className="btn btn-success round-me leave-team-btn raise"
-            onClick={() => this.joinLeaveTeam()}
-          >
-            Leave Team
-          </button>
+          {this.leaving ?
+            <p>
+              Are you sure you want to leave?
+            </p> :
+            <p>
+              You will join this team with the display name <i>{user.preferred_name}</i>. {team.parent && <span>This team is a sub-team of <b>{team.parent.name}</b>, and your stats will also contribute to the parent team!</span>}
+            </p>
+          }
+          <div className="team-modal-button-wrapper">
+            <button
+              className={`btn btn-success round-me
+            ${this.leaving ? "leave-team-btn" : "join-team-btn"} raise`}
+              onClick={() => this.joinLeaveTeam()}
+            >
+              {this.leaving ? "Leave Team" : "Join Team"}
+            </button>
+            {loading && <img src={loader} className="team-modal-loader team-modal-inline" />}
+            {error && <p className className="error-p team-modal-error-p team-modal-inline">{error}</p>}
+          </div>
         </>
-        :
-        <>
-          <p>
-            You will join this team with the display name <i>{user.preferred_name}</i>. {team.parent && <span>This team is a sub-team of <b>{team.parent.name}</b>, and your stats will also contribute to the parent team!</span>}
-          </p>
-          <button
-            style={{ marginTop: '10px', marginBottom: '0px' }}
-            onClick={() => this.joinLeaveTeam()}
-            className="btn btn-success round-me join-team-btn raise"
-          >
-            Join Team
-         </button>
-        </>;
     } else {
       modalContent = <p>You must <Link to={links.signin}>sign in or create an account</Link> to {this.leaving ? "leave" : "join"} this team</p>;
     }
@@ -76,6 +78,8 @@ class JoinLeaveTeamModal extends React.Component {
     };
 
     try {
+      this.setState({ loading: true });
+
       const json = await apiCall(endpoint, body);
       if (json.success) {
         reduxJoinLeaveTeam(team);
@@ -90,12 +94,13 @@ class JoinLeaveTeamModal extends React.Component {
         });
         onComplete(team);
       } else {
-        //TODO: set error state
+        this.setState({ error: json.error });
       }
+    } catch (err) {
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
     }
-    catch (err) {
-      //TODO: set error state
-    };
   };
 }
 

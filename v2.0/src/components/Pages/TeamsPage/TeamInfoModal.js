@@ -4,38 +4,32 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
+import loader from '../../../assets/images/other/loader.gif';
 
 
 class TeamInfoModal extends React.Component {
 
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      error: null
+    }
+  }
 
+  render() {
     const { team, onClose, teamsStats, user } = this.props;
+    const { loading, error } = this.state;
 
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const teams = teamsStats.map(teamStats => teamStats.team);
     const parentTeamOptions = (!team || teams.filter(_team =>
-      _team.parent && team.parent.id === team.id).length === 0)
+      _team.parent && _team.parent.id === team.id).length === 0)
       && teams.filter(_team => ((!team || _team.id !== team.id) && !_team.parent));
 
     let modalContent;
     if (user) {
-
-      const buttonStyle = { marginTop: '10px', marginBottom: '0px', padding: '10px 40px', maxHeight: '50px' };
-
-      const submitButton = team ?
-        <button style={buttonStyle} type="submit"
-          className="btn btn-success round-me contact-admin-btn-new raise">
-          Update
-        </button> :
-        <><br />
-          <small >Your team will need approval from a Community Admin before displaying. You will recieve an email when this happens.</small><br />
-          <button style={buttonStyle} type="submit"
-            className="btn btn-success round-me join-team-btn raise">
-            Create
-        </button>
-        </>;
 
       modalContent = <form id="team-info"
         onSubmit={(e) => {
@@ -82,9 +76,9 @@ class TeamInfoModal extends React.Component {
               <small>A comma-separated list of emails corresponding with the MassEnergize users you wish to make admins of this team. You will automatically be made an admin.</small>
             </label>
             <input id="team-admin_emails" name="team-admin_emails" className="form-control" />
-
           </>
         }
+
         <div style={{ display: 'block' }}>
           <label htmlFor="team-logo"><u>Logo</u> <br />
             <small>You can select a logo to be displayed alongside your team on the community portal.</small>
@@ -100,9 +94,21 @@ class TeamInfoModal extends React.Component {
           </div>
         </div>
 
-        {submitButton}
+        {!team &&
+          <><br />
+            <small><b>Your team will need approval from a Community Admin before displaying. You will recieve an email when this happens.</b></small>
+          </>}
 
-      </form>
+        <div className="team-modal-button-wrapper">
+          <button type="submit"
+            className={`btn btn-success round-me ${team ? "contact-admin-btn-new" : "join-team-btn"} raise`}>
+            {team ? "Update" : "Create"}
+          </button>
+          {loading && <img src={loader} className="team-modal-loader team-modal-inline" />}
+          {error && <p className className="error-p team-modal-error-p team-modal-inline">{error}</p>}
+        </div>
+
+      </form >
     } else {
       //the "edit team" button won't render if user isn't signed in, so can just mention creating a team
       modalContent = <p>You must <Link to={this.props.links.signin}>sign in or create an account</Link> to create a team.</p>;
@@ -178,12 +184,12 @@ class TeamInfoModal extends React.Component {
 
   callAPI = async () => {
     const { team, onComplete, communityData, reduxLoadTeamsPage, reduxJoinTeam } = this.props;
-
     const data = this.getData();
-
     const url = team ? "teams.update" : "teams.create";
 
     try {
+      this.setState({ loading: true });
+
       let teamResponse;
       if (data.logo) {
         teamResponse = await apiCallWithMedia(url, data);
@@ -192,17 +198,19 @@ class TeamInfoModal extends React.Component {
       }
       if (teamResponse.success) {
         const newTeam = teamResponse.data;
-        reduxJoinTeam(newTeam);
+        if (!team) reduxJoinTeam(newTeam);
         const teamsStatsResponse = await apiCall("teams.stats", { community_id: communityData.community.id });
         if (teamsStatsResponse.success) {
           reduxLoadTeamsPage(teamsStatsResponse.data);
         }
         onComplete(newTeam.id);
       } else {
-        //TODO: set error state
+        this.setState({ error: teamResponse.error });
       }
     } catch (err) {
-      //TODO: set error state
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
     }
   }
 }

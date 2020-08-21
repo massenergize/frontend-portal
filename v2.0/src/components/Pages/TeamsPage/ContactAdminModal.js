@@ -2,12 +2,21 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import loader from '../../../assets/images/other/loader.gif';
 
 class ContactAdminModal extends React.Component {
 
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      error: null
+    }
+  }
 
+  render() {
     const { team, user, links, onClose } = this.props;
+    const { loading, error } = this.state;
 
     let modalContent;
     if (user) {
@@ -22,15 +31,18 @@ class ContactAdminModal extends React.Component {
             <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{ marginBottom: "10px" }} />
             <textarea id="contact-textarea" name="msg" className="form-control" rows={5} placeholder="Message..." required>
             </textarea>
-            <button
-              style={{ marginTop: '10px', marginBottom: '0px', padding: '10px 40px' }}
-              type="submit"
-              className="btn btn-success round-me contact-admin-btn-new raise"
-            >
-              Send
-                </button>
-
-            <br />
+            <div className="team-modal-button-wrapper">
+              <button
+                style={{ marginTop: '10px', marginBottom: '0px', padding: '10px 40px' }}
+                type="submit"
+                className="btn btn-success round-me contact-admin-btn-new raise"
+              >
+                Send
+            </button>
+              {loading && <img src={loader} className="team-modal-loader team-modal-inline" />}
+              {error && <p className className="error-p team-modal-error-p team-modal-inline">{error}</p>}
+              <br />
+            </div>
           </div>
         </form>);
     } else {
@@ -66,14 +78,17 @@ class ContactAdminModal extends React.Component {
         message: msg,
       };
       try {
+        this.setState({ loading: true });
         const json = await apiCall(`teams.contactAdmin`, body);
         if (json.success) {
           onClose();
         } else {
-          //TODO: set error state
+          this.setState({ error: json.error });
         }
       } catch (err) {
-        //TODO: set error state
+        this.setState({ error: err });
+      } finally {
+        this.setState({ loading: false });
       }
     }
   }

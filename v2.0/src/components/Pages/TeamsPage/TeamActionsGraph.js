@@ -1,7 +1,8 @@
 import React from 'react';
 import { Bar } from "react-chartjs-2";
 import { apiCall } from "../../../api/functions";
-import { IS_PROD } from '../../../config/config'
+import { IS_PROD } from '../../../config/config';
+import loader from '../../../assets/images/other/loader.gif';
 
 class TeamActionsGraph extends React.Component {
 
@@ -43,7 +44,7 @@ class TeamActionsGraph extends React.Component {
     const { loading, graphResponse } = this.state;
 
     if (loading)
-      return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
+      return <img src={loader} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
     if (!graphResponse)
       return <p className="error-p">The actions data for this team could not be loaded.</p >;

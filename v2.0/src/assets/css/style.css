@@ -9669,3 +9669,23 @@ button.as-link:hover {
   font-size: 16px;
   font-style: italic;
 }
+
+.team-modal-error-p {
+  max-width: 70%;
+  padding-left: 20px;
+}
+
+.team-modal-inline {
+  display: inline-block;
+  margin: 0;
+}
+
+.team-modal-loader {
+  height: 60px;
+}
+
+.team-modal-button-wrapper {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
