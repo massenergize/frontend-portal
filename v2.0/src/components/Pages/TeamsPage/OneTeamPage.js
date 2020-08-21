@@ -7,8 +7,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamStatsBarss from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
-import JoinTeamModal from "./JoinTeamModal";
-import LeaveTeamModal from "./LeaveTeamModal";
+import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
 import TeamInfoModal from "./TeamInfoModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
@@ -84,7 +83,7 @@ class OneTeamPage extends React.Component {
     const { user, links } = this.props;
 
     const isInTeam = inTeam(user, teamData);
-    const isInThisTeam = inThisTeam(user, teamData);
+    const isInThisTeam = inThisTeam(user, teamData.team);
 
     const buttonOrInTeam = (
       <>
@@ -130,19 +129,12 @@ class OneTeamPage extends React.Component {
         )}
 
         {joinLeaveModalOpen &&
-          (isInThisTeam ? (
-            <LeaveTeamModal
-              team={team}
-              onLeave={this.onTeamJoinOrLeave}
-              onClose={this.onJoinLeaveModalClose}
-            />
-          ) : (
-              <JoinTeamModal
-                team={team}
-                onJoin={this.onTeamJoinOrLeave}
-                onClose={this.onJoinLeaveModalClose}
-              />
-            ))}
+          <JoinLeaveTeamModal
+            team={team}
+            onComplete={this.onTeamJoinOrLeave}
+            onClose={this.onJoinLeaveModalClose}
+          />
+        }
 
         <div className="boxed_wrapper">
           <BreadCrumbBar

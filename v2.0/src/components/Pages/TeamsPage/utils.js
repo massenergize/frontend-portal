@@ -20,10 +20,10 @@ export function getTeamsData(teamsStats) {
   return teamsData;
 }
 
-export function inThisTeam(user, teamData) {
-  if (!user) return false;
-  return user.teams.filter((team) =>
-    team.id === teamData.team.id
+export function inThisTeam(user, team) {
+  if (!user || !team) return false;
+  return user.teams.filter(_team =>
+    _team.id === team.id
   ).length > 0;
 }
 
@@ -36,6 +36,6 @@ export function inSubTeam(user, teamData) {
 
 export function inTeam(user, teamData) {
   if (!user || !teamData) return false;
-  return inThisTeam(user, teamData) || inSubTeam(user, teamData);
+  return inThisTeam(user, teamData.team) || inSubTeam(user, teamData);
 };
 

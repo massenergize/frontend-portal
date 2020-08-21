@@ -64,7 +64,7 @@ class TeamInfoModal extends React.Component {
         {parentTeamOptions &&
           <>
             <label htmlFor="team-parent_id"><u>Parent Team</u>  <br />
-              <small>When there are multiple higher-level groups within a community, you can choose to create sub-teams associated with parent teams; sub-teams' stats contribute to their parents'.</small>
+              <small>You can pick a parent team to which all of your members' actions will also automatically contribute.</small>
             </label>
             <select name="team-parent_id" id="team-parent_id" form="team-info" defaultValue={
               (team && team.parent) ? team.parent.id : ""
