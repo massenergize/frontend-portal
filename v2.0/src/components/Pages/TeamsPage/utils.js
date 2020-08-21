@@ -1,4 +1,6 @@
 export function getTeamData(teamsStats, thisTeamStats) {
+  if (!teamsStats || !thisTeamStats) return [];
+
   const teamData = thisTeamStats;
   if (!thisTeamStats.team.parent) {
     teamData['subTeams'] = teamsStats
@@ -9,6 +11,8 @@ export function getTeamData(teamsStats, thisTeamStats) {
 }
 
 export function getTeamsData(teamsStats) {
+  if (!teamsStats) return [];
+
   const teamsData = [];
   teamsStats.forEach(thisTeamStats => {
     if (!thisTeamStats.team.parent) {
@@ -22,13 +26,15 @@ export function getTeamsData(teamsStats) {
 
 export function inThisTeam(user, team) {
   if (!user || !team) return false;
+
   return user.teams.filter(_team =>
     _team.id === team.id
   ).length > 0;
 }
 
 export function inSubTeam(user, teamData) {
-  if (!user || !teamData.subTeams) return false;
+  if (!user || !teamData || !teamData.subTeams) return false;
+
   return user.teams.filter((team) =>
     teamData.subTeams.map(subTeamData => subTeamData.team.id).includes(team.id)
   ).length > 0;
