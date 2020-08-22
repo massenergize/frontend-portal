@@ -24,8 +24,8 @@ import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
-import { getHTMLContent, factory } from "../HTML/HTMLShop";
-import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
+import { getHTMLContent } from "../HTML/HTMLShop";
+// import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed

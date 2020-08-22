@@ -171,7 +171,7 @@ class Cart extends React.Component {
 
 	removeFromCart = (actionRel) => {
     const status = actionRel.status;
-		apiCall("user.actions.remove", { user_action_id: actionRel.id }).then(json => {
+		apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(json => {
 			if (json.success) {
 				if (status === 'TODO')
 					this.props.reduxRemoveFromTodo(actionRel);
