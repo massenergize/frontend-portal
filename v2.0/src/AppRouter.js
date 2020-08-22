@@ -105,7 +105,11 @@ class AppRouter extends Component {
       apiCall("menus.list", body),
     ])
       .then((res) => {
-        const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
+        const [
+          communityInfoResponse,
+          homePageResponse,
+          mainMenuResponse
+        ] = res;
         this.setState({ community: communityInfoResponse.data });
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
@@ -171,29 +175,32 @@ class AppRouter extends Component {
     });
   }
 
-  async getUser(email) {
-    if (!email) return false;
+  async getUser() {
     await this.setStateAsync({ triedLogin: true });
+    const { data } = await apiCall("auth.whoami")
+    if(data){
+      const user = data;
+      // set the user in the redux state
+      this.props.reduxLogin(user);
 
-    const [
-      userInfoResponse,
-      userActionsTodoResponse,
-      userActionsCompletedResponse,
-    ] = await Promise.all([
-      apiCall("users.info", { email }),
-      apiCall("users.actions.todo.list", { email }),
-      apiCall("users.actions.completed.list", { email }),
-    ]);
+      // we know that the user is already signed in so proceed
+      const [
+        userActionsTodoResponse,
+        userActionsCompletedResponse,
+      ] = await Promise.all([
+        apiCall("users.actions.todo.list", { email: user.email }),
+        apiCall("users.actions.completed.list", {  email: user.email  }),
+      ]);
 
-    if (userInfoResponse && userInfoResponse.success && userInfoResponse.data) {
-      this.props.reduxLogin(userInfoResponse.data);
-      this.props.reduxLoadTodo(userActionsTodoResponse.data);
-      this.props.reduxLoadDone(userActionsCompletedResponse.data);
-      return true;
-    } else {
-      console.log(`no user with this email: ${email}`);
-      return false;
-    }
+      if (userActionsTodoResponse && userActionsCompletedResponse) {
+        this.props.reduxLoadTodo(userActionsTodoResponse.data);
+        this.props.reduxLoadDone(userActionsCompletedResponse.data);
+        return true;
+      } else {
+        console.log(`no user with this email: ${user.email}`);
+        return false;
+      }
+    }  
   }
 
   modifiedMenu(menu) {
@@ -248,22 +255,16 @@ class AppRouter extends Component {
       return <LoadingCircle />;
     }
 
-    if (
-      !this.state.triedLogin &&
-      this.props.auth &&
-      this.props.auth.uid &&
-      !this.props.user
-    ) {
-      this.getUser(this.props.auth.email).then((success) => {
-        this.setState({
-          triedLogin: true,
-        });
+    if (!this.state.triedLogin && !this.props.user) {
+      this.getUser().then((success) => {
+        console.log(`User Logged in: ${success}`)
       });
     }
 
-    if (this.props.auth.uid && !this.state.triedLogin) {
+    if (this.props.user && !this.state.triedLogin) {
       return <LoadingCircle />;
     }
+
     const { links } = this.props;
     var finalMenu = [];
     if (this.props.menu) {

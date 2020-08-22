@@ -66,8 +66,12 @@ class RegisterFormBase extends React.Component {
 
   render() {
  
-    if (!this.props.auth || !this.props.user || !this.props.policies)
+    if (!this.props.auth || !this.props.user || !this.props.policies){
+      console.log(123)
       return <LoadingCircle />;
+
+    }
+    
 
     var page;
     if (this.props.auth.isEmpty) {
