@@ -29,6 +29,16 @@ run-dev:
 	npm start
 .PHONY: run-dev
 
+dev-local:
+	python deployment/prepare_to_deploy.py dev  1
+	npm start
+.PHONY: dev-local
+
+dev-prod:
+	python deployment/prepare_to_deploy.py prod 1
+	npm start
+.PHONY: dev-prod
+
 run-dev-sandbox:
 	python deployment/prepare_to_deploy.py dev-sandbox $(local)
 	npm start

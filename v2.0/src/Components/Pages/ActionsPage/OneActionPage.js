@@ -24,6 +24,8 @@ import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
+import { getHTMLContent, factory } from "../HTML/HTMLShop";
+import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -42,27 +44,21 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
       showTodoMsg: false,
-      loading: true
+      loading: true, 
+      // about_html:null, 
+      // deep_dive_html:null,
+      // steps_to_take_html:null 
+
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener("resize", this.chooseFontSize);
 
     const { id } = this.props.match.params;
     this.fetch(id);
   }
-
-  //componentDidUpdate() {
-  //  if (
-  //    !this.loading &&
-  //    (!this.state.action || this.props.match.params !== this.state.action.id)
-  //  ) {
-  //    const { id } = this.props.match.params;
-  //    this.fetch(id);
-  //  }
-  // }
 
   async fetch(id) {
     try {
@@ -635,7 +631,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.about }}
+                    dangerouslySetInnerHTML={{ __html:getHTMLContent( action.about) }}
                   ></p>
                 </div>
               </div>
@@ -653,7 +649,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.steps_to_take }}
+                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.steps_to_take) }}
                   ></p>
                 </div>
               </div>
@@ -671,7 +667,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: action.deep_dive }}
+                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.deep_dive) }}
                   ></p>
                   {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
                 </div>

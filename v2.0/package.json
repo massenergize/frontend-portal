@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apexcharts": "^3.14.0",
+    "@sentry/react": "^5.20.1",
+    "apexcharts": "^3.20.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "code": "^5.2.4",
@@ -32,7 +33,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "react-share": "^4.2.1",
-    "react-to-print": "^2.5.1",
+    "react-to-print": "^2.9.0",
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
