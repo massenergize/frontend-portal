@@ -4,8 +4,7 @@ import Tooltip from './Tooltip'
 import { connect } from 'react-redux'
 import { reduxLoadDone, reduxMoveToDone, reduxRemoveFromTodo, reduxRemoveFromDone } from '../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction, reduxTeamRemoveAction } from '../../redux/actions/pageActions'
-import URLS from '../../api/urls'
-import { postJson, apiCall, deleteJson } from '../../api/functions'
+import { apiCall } from '../../api/functions'
 
 /** 
  * Cart component
@@ -148,25 +147,7 @@ class Cart extends React.Component {
 		});
 	}
 
-	/**
-	 * Cart Functions
-	 */
-	// moveToDone = (actionRel) => {
-	// 	const body = {
-	// 		status: "DONE",
-	// 		action: actionRel.action.id,
-	// 		real_estate_unit: actionRel.real_estate_unit.id,
-	// 	}
-	// 	postJson(URLS.USER + "/" + this.props.user.id + "/action/" + actionRel.id, body).then(json => {
-	// 		console.log(json);
-	// 		if (json.success) {
-	// 			this.props.reduxMoveToDone(json.data);
-	// 			this.addToImpact(actionRel.action);
-	// 		}
-	// 	}).catch(err => {
-	// 		console.log(err)
-	// 	})
-	// }
+
 
 	moveToDone = (actionRel) => {
 		const body = {
@@ -190,7 +171,7 @@ class Cart extends React.Component {
 
 	removeFromCart = (actionRel) => {
     const status = actionRel.status;
-		deleteJson(`${URLS.USER}/${this.props.user.id}/action/${actionRel.id}`).then(json => {
+		apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(json => {
 			if (json.success) {
 				if (status === 'TODO')
 					this.props.reduxRemoveFromTodo(actionRel);
@@ -234,9 +215,10 @@ class Cart extends React.Component {
 
 
 		const body = {
+			data_id: data.id,
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
-		postJson(URLS.DATA + '/' + data.id, body).then(json => {
+		apiCall('data.update', body).then(json => {
 			console.log(json);
 			if (json.success) {
 				data = {
@@ -261,9 +243,10 @@ class Cart extends React.Component {
 			return;
 		}
 		const body = {
+			data_id: data.id,
 			"value": data.value + number > 0 ? data.value + number : 0
 		}
-		postJson(URLS.DATA + '/' + data.id, body).then(json => {
+		apiCall('data.update', body).then(json => {
 			console.log(json);
 			if (json.success) {
 				data = {

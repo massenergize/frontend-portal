@@ -348,13 +348,13 @@ class NavBarBurger extends React.Component {
   }
   renderLogin() {
     const { links } = this.props;
-    const { auth, user } = this.props;
+    const { user } = this.props;
     const style = {
       borderTop: "5px solid #8dc63f",
       borderRadius: "0",
       padding: "0",
     };
-    if (auth.uid && user.info) {
+    if (user.info) {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
           ref={ref}
@@ -395,7 +395,6 @@ class NavBarBurger extends React.Component {
               onClick={() => {
                 this.props.firebase.auth().signOut();
                 this.props.reduxLogout();
-                localStorage.removeItem("idToken");
               }}
             >
               <SignOutLink>Sign Out</SignOutLink>

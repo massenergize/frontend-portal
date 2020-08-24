@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ErrorPage from "./../Errors/ErrorPage"
 import LoadingCircle from '../../Shared/LoadingCircle'
-import URLS from '../../../api/urls';
-import { apiCall, postJson } from '../../../api/functions'
+import { apiCall } from '../../../api/functions'
 import { reduxAddToDone, reduxAddToTodo, reduxMoveToDone } from '../../../redux/actions/userActions'
 import { reduxChangeData, reduxTeamAddAction } from '../../../redux/actions/pageActions'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar';
@@ -228,9 +227,10 @@ class ActionsPage extends React.Component {
 		})[0];
 
 		const body = {
-			"value": data.value + number > 0 ? data.value + number : 0
+			data_id: data.id,
+			value: data.value + number > 0 ? data.value + number : 0
 		}
-		postJson(URLS.DATA + '/' + data.id, body).then(json => {
+		apiCall('data.update', body).then(json => {
 			if (json.success) {
 				data = {
 					...data,
@@ -251,10 +251,12 @@ class ActionsPage extends React.Component {
 		if (!data) {
 			return;
 		}
+		console.log(tagid, number, this.props.communityData)
 		const body = {
-			"value": data.value + number > 0 ? data.value + number : 0
+			data_id: data.id,
+			value: data.value + number > 0 ? data.value + number : 0
 		}
-		postJson(URLS.DATA + '/' + data.id, body).then(json => {
+		apiCall('data.update', body).then(json => {
 			if (json.success) {
 				data = {
 					...data,

@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { reduxLogin } from '../../../redux/actions/userActions'
-import URLS from '../../../api/urls'
-import { postJson } from '../../../api/functions'
+import { apiCall } from '../../../api/functions'
 
 
 /********************************************************************/
@@ -64,12 +63,13 @@ class EditingProfileForm extends React.Component {
 			this.deleteAccount();
 		} else {
 			const body = {
-				"full_name": this.state.full_name,
-				"preferred_name": this.state.preferred_name,
+				user_id: this.props.user.id,
+				full_name: this.state.full_name,
+				preferred_name: this.state.preferred_name,
 			}
-			var postURL = URLS.USER + "/" + this.props.user.id;
+
 			/** Collects the form data and sends it to the backend */
-			postJson(postURL, body).then(json => {
+			apiCall('users.update', body).then(json => {
 				console.log(json);
 				if (json.success && json.data) {
 					this.props.reduxLogin(json.data);

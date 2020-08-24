@@ -14,7 +14,7 @@ export default class Tooltip extends React.Component {
 		);
 		return (
 			<div>
-				<OverlayTrigger trigger="hover" placement={this.props.dir} overlay={popover}>
+				<OverlayTrigger trigger="hover focus"  placement={this.props.dir} overlay={popover}>
 					{this.props.children}
 				</OverlayTrigger>
 			</div>

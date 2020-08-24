@@ -49,6 +49,11 @@ run-prod:
 	npm start
 .PHONY: run-prod
 
+run-local:
+	python deployment/prepare_to_deploy.py dev 1
+	npm start
+.PHONY: run-prod
+
 run-prod-sandbox:
 	python deployment/prepare_to_deploy.py prod-sandbox  $(local)
 	npm start

@@ -5,8 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { postJson, apiCall } from "../../../api/functions";
-import URLS from "../../../api/urls";
+import { apiCall } from "../../../api/functions";
 import {
   facebookProvider,
   googleProvider,
@@ -66,9 +65,11 @@ class RegisterFormBase extends React.Component {
   }
 
   render() {
- 
-    if (!this.props.auth || !this.props.user || !this.props.policies)
+    
+    if (!this.props.auth || !this.props.user ){
       return <LoadingCircle />;
+    }
+    const policies = this.props.policies || []
 
     var page;
     if (this.props.auth.isEmpty) {
@@ -76,12 +77,13 @@ class RegisterFormBase extends React.Component {
     } else {
       page = 2;
     }
-    const TOS = this.props.policies.filter(
+    const [ TOS ] = policies.filter(
       (x) => x.name === "Terms of Service"
-    )[0];
-    const PP = this.props.policies.filter(
+    ) || "";
+
+    const [ PP ] = policies.filter(
       (x) => x.name === "Privacy Policy"
-    )[0];
+    ) || "";
 
     
     if (
@@ -288,9 +290,9 @@ class RegisterFormBase extends React.Component {
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
-    if (!this.getRegProtocol()) {
-      return <LoadingCircle />;
-    }
+    // if (!this.getRegProtocol()) {
+    //   return <LoadingCircle />;
+    // }
     return (
       <div
         className="styled-form register-form"
@@ -555,7 +557,7 @@ class RegisterFormBase extends React.Component {
     if (!value) {
       this.setState({ captchaConfirmed: false });
     }
-    postJson(URLS.VERIFY, { captchaString: value }).then((response) => {
+    apiCall('auth.verifyCaptcha', { captchaString: value }).then((response) => {
       console.log(response);
       if (response && response.data && response.data.success)
         this.setState({ captchaConfirmed: true });
@@ -697,24 +699,20 @@ class RegisterFormBase extends React.Component {
   fetchMassToken = async (fireToken, email) => {
     this.setRegProtocol();
     const body = { idToken: fireToken };
-    //rawCall("auth/verify", body)
-    apiCall("auth/verify", body)
+    apiCall("auth.login", body)
       .then((massToken) => {
-        const idToken = massToken.data.idToken;
-        localStorage.setItem("idToken", idToken.toString());
         this.fetchAndLogin(email).then((success) => {
-          if (success) console.log("yay");
+          if (success) console.log("login successful");
         });
       })
       .catch((err) => {
-        console.log("Error MASSTOKEN: ", err);
+        console.log("login error: ", err);
       });
   };
 
   fetchAndLogin = async (email) => {
     try {
-      //const json = await rawCall("auth/whoami");
-      const json = await apiCall("auth/whoami");
+      const json = await apiCall("auth.whoami");
 
       if (json.success && json.data) {
         this.props.reduxLogin(json.data);

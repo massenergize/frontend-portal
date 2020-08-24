@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import 'firebase/auth'
+import 'firebase/auth';
 import { IS_PROD } from './config'
 
 let firebaseConfig = {}

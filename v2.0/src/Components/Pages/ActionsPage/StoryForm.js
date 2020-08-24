@@ -1,7 +1,8 @@
 import React from "react";
-import { apiCallWithMedia } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import Toast from "../Notification/Toast";
+
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -43,9 +44,46 @@ class StoryForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this)
   }
 
+  categories() {
+    const cat = this.props.tagCollections;
+    if (cat) {
+      return cat.filter((item) => item.name === "Category")[0];
+    }
+    return null;
+  }
+  ejectCategories() {
+    if (this.categories()) {
+      return this.categories().tags.map((cat) => <option>{cat.name}</option>);
+    }
+  }
+
+  ejectSelectedTags() {
+    return this.state.selected_tags.map((item, key) => {
+      return (
+        <small
+          onClick={() => {
+            this.removeTag(item.id);
+          }}
+          key={key.toString()}
+          className="sm-tag-hover"
+          style={{
+            cursor: "pointer",
+            border: "solid 1px #f5f4f4",
+            color: "#888",
+            borderRadius: 55,
+            margin: 5,
+            padding: "5px 40px",
+          }}
+        >
+          {" "}
+          {item.name} <i style={{ marginLeft: 5 }} className="fa fa-close " />
+        </small>
+      );
+    });
+  }
   handlePreferredName(event) {
     const val = event.target.value;
     var string = val.trim() !== "" ? val.trim() : null;
@@ -60,7 +98,8 @@ class StoryForm extends React.Component {
     document.getElementById("picFile").click();
   }
   render() {
-    console.log(this.state.picFile);
+
+    // const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
       return (
         <div className="text-center">
@@ -214,8 +253,6 @@ class StoryForm extends React.Component {
                   : "No image has been selected"}
               </p>
               <input
-                id="picFile"
-                ref="picFile"
                 type="file"
                 name="image"
                 onChange={this.handleImageChange}
@@ -303,12 +340,10 @@ class StoryForm extends React.Component {
     e.preventDefault();
 
     let file = e.target.files[0];
-    console.log(e.target.name);
     this.setState({
       [e.target.name]: file,
-      picFile: file,
       error: null,
-    });
+    })
   }
 
   toggleSpinner(val) {
@@ -320,12 +355,15 @@ class StoryForm extends React.Component {
     //  this.refs.category_select.value = "--";
     //}
     //this.refs.picFile.value = "";
+    if(this.refs.category_select){
+      this.refs.category_select.value = "--";
+    }
   }
   renderOptions(choices) {
     return Object.keys(choices).map((key) => {
       var choice = choices[key];
       return (
-        <option value={choice.id}>
+        <option value={choice.id} key={key}>
           {" "}
           {choice.title ? choice.title : choice.name}{" "}
         </option>
@@ -351,9 +389,11 @@ class StoryForm extends React.Component {
       body: this.state.body,
       title: this.state.title,
       community_id: this.props.community.id,
-      image: this.state.picFile ? this.state.picFile : null, //defaultUser,
       //tags: this.state.selected_tags ? this.state.selected_tags : null,
       //anonymous: this.state.anonymous,
+      image: this.state.image,
+      tags: this.state.selected_tags ? this.state.selected_tags : null,
+      anonymous: this.state.anonymous,
       preferred_name: this.state.preferredName,
       other_vendor: this.state.vendor ? this.state.vendor : null,
     };
@@ -362,8 +402,8 @@ class StoryForm extends React.Component {
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({ error: "Sorry, your story is too long" });
     } else {
-      console.log(body);
-      apiCallWithMedia(`testimonials.add`, body).then((json) => {
+
+      apiCall(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
           this.setState({
             ...INITIAL_STATE,

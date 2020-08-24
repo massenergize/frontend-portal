@@ -101,8 +101,7 @@ def generate_config(target, is_local, is_deploy):
 
   if success:
     return (f'Running ON {"PROD" if new_config.get("IS_PROD") else "DEV" }, \
-      Sandbox={new_config.get("IS_SANDBOX")}, \
-        Local={new_config.get("IS_LOCAL") }', True)
+      Local={new_config.get("IS_LOCAL") }', True)
   return ('Updating Config Failed!', False)
 
 

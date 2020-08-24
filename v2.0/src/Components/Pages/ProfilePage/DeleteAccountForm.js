@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { reduxLogin, reduxLogout } from '../../../redux/actions/userActions'
-import URLS from '../../../api/urls'
-import { deleteJson } from '../../../api/functions'
+import { apiCall } from '../../../api/functions'
 import { compose } from 'recompose'
 import { withFirebase } from 'react-redux-firebase'
 import { facebookProvider, googleProvider } from '../../../config/firebaseConfig';
@@ -77,8 +76,7 @@ class DeleteAccountFormBase extends React.Component {
             );
             this.props.firebase.auth().currentUser.reauthenticateWithCredential(cred).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
-                    deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
-                        /* console.log(json) */
+                    apiCall('users.delete', { user_id: this.props.user.id }).then(json => {
                         this.props.firebase.auth().signOut();
                         this.props.reduxLogout();
                     })
@@ -88,8 +86,7 @@ class DeleteAccountFormBase extends React.Component {
             //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
             this.props.firebase.auth().signInWithPopup(googleProvider).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
-                    deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
-                        console.log(json)
+                    apiCall('users.delete', { user_id: this.props.user.id }).then(json => {
                         this.props.firebase.auth().signOut();
                         this.props.reduxLogout();
                     })
@@ -102,8 +99,7 @@ class DeleteAccountFormBase extends React.Component {
             //this.setState({ error: 'Sorry, deleting profiles that use facebook sign in is not yet supported' });
             this.props.firebase.auth().signInWithPopup(facebookProvider).then(() => {
                 this.props.firebase.auth().currentUser.delete().then(() => {
-                    deleteJson(`${URLS.USER}/${this.props.user.id}`).then(json => {
-                        console.log(json)
+                    apiCall('users.delete', { user_id: this.props.user.id }).then(json => {
                         this.props.firebase.auth().signOut();
                         this.props.reduxLogout();
                     })
