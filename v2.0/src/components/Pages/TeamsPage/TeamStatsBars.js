@@ -1,6 +1,6 @@
 import React from "react";
 
-class TeamInfoBars extends React.Component {
+class TeamStatsBars extends React.Component {
 
   render() {
 
@@ -45,4 +45,4 @@ class TeamInfoBars extends React.Component {
   }
 }
 
-export default TeamInfoBars;
+export default TeamStatsBars;

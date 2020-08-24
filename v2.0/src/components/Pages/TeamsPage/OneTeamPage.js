@@ -4,14 +4,16 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import TeamInfoBars from "./TeamInfoBars";
+import TeamStatsBarss from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
-import JoinTeamModal from "./JoinTeamModal";
-import LeaveTeamModal from "./LeaveTeamModal";
+import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
+import TeamInfoModal from "./TeamInfoModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
+import { getTeamData, inTeam, inThisTeam } from './utils.js';
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -19,21 +21,31 @@ class OneTeamPage extends React.Component {
     this.state = {
       team: null,
       loading: true,
-      teamModalOpen: false,
-      contactModalOpen: false,
+      isAdmin: false,
+      joinLeaveModalOpen: false,
+      contactEditModalOpen: false
     };
   }
 
   async fetch(id) {
+    const { teamsStats } = this.props;
+    if (!teamsStats) return;
+
     try {
       const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
-        this.setState({ team: json.data });
+        const team = json.data;
+        const teamStats = teamsStats.find(teamStats => teamStats.team.id === team.id);
+        const teamData = getTeamData(teamsStats, teamStats);
+        this.setState({
+          team: team,
+          teamData: teamData
+        });
       } else {
         this.setState({ error: json.error });
       }
     } catch (err) {
-      this.setState({ error: err });
+      this.setState({ error: err.toString() });
     } finally {
       this.setState({ loading: false });
     }
@@ -44,38 +56,44 @@ class OneTeamPage extends React.Component {
     this.fetch(id);
   }
 
-  render() {
-    const { team, loading } = this.state;
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
+    if (id !== prevProps.match.params.id) {
+      this.setState({ loading: true })
+      this.fetch(id);
+    }
+  }
 
-    if (loading || !this.props.teamsPage) {
+  render() {
+    const { team, loading, error } = this.state;
+
+    if (loading || !this.props.teamsStats) {
       return <LoadingCircle />;
     }
-    if (!team || this.state.error) {
+    if (!team || error) {
       return (
         <ErrorPage
           errorMessage="Unable to load this Team"
           errorDescription={
-            this.state.error ? this.state.error : "Unknown cause"
+            error ? error : "Unknown cause"
           }
         />
       );
     }
+    const { remountForcer,
+      joinLeaveModalOpen, contactEditModalOpen, isAdmin, teamData } = this.state;
+    const { user, links } = this.props;
 
-    const teamStats = this.props.teamsPage.filter(
-      (otherTeam) => otherTeam.team.id === team.id
-    )[0];
-    const teamLogo = team.logo;
-    const teamTagline = team.description.length > 70 ?
-      team.description.substring(0, 70) + "..."
-      : team.description;
+    const isInTeam = inTeam(user, teamData);
+    const isInThisTeam = inThisTeam(user, teamData.team);
 
     const buttonOrInTeam = (
       <>
-        {!this.inTeam(team.id) ? (
+        {!isInTeam ? (
           <button
             className="btn round-me join-team-btn raise"
             onClick={() => {
-              this.setState({ teamModalOpen: true });
+              this.setState({ joinLeaveModalOpen: true });
             }}
           >
             Join Team
@@ -83,59 +101,61 @@ class OneTeamPage extends React.Component {
         ) : (
             <div className="team-card-content">
               <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
-                &#10003; in this team
-            </p>
+                &#10003; in this team {!isInThisTeam && "via a sub-team"}
+              </p>
             </div>
-          )}
+          )
+        }
       </>
     );
+
+    const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
+      {team.name}</>;
+
+    const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
 
     return (
       <>
         <Helmet>
           <meta property="og:title" content={team.name} />
           <meta property="og:image" content={team.image && team.image.url} />
-          <meta property="og:description" content={teamTagline} />
+          <meta property="og:description" content={team.tagline} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
 
-        {this.state.contactModalOpen && (
-          <ContactAdminModal team={team} onClose={this.onContactModalClose} />
+        {contactEditModalOpen && (
+          isAdmin ?
+            <TeamInfoModal team={team} onClose={this.onContactEditModalClose} onComplete={this.onTeamEdit} />
+            :
+            <ContactAdminModal team={team} onClose={this.onContactEditModalClose} />
         )}
 
-        {this.state.teamModalOpen &&
-          (this.inTeam(team.id) ? (
-            <LeaveTeamModal
-              team={team}
-              onLeave={this.onTeamJoinOrLeave}
-              onClose={this.onTeamModalClose}
-            />
-          ) : (
-              <JoinTeamModal
-                team={team}
-                onJoin={this.onTeamJoinOrLeave}
-                onClose={this.onTeamModalClose}
-              />
-            ))}
+        {joinLeaveModalOpen &&
+          <JoinLeaveTeamModal
+            team={team}
+            onComplete={this.onTeamJoinOrLeave}
+            onClose={this.onJoinLeaveModalClose}
+          />
+        }
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
-              { link: this.props.links.teams, name: "Teams" },
+              { link: links.teams, name: "Teams" },
               { name: team.name },
             ]}
           />
           <div
-            className="col-12 col-sm-10 col-md-7 col-lg-6 col-xl-6"
+            className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
           >
             <div className="team-card-column" style={{ margin: "0 auto" }}>
-              {teamLogo ? (
+              {team.logo ? (
                 <>
                   <div className="team-card-column col-3">
                     <img
                       className="one-team-image team-card-content"
-                      src={teamLogo.url}
+                      src={team.logo.url}
                       alt=""
                     />
                   </div>
@@ -144,7 +164,7 @@ class OneTeamPage extends React.Component {
                       style={{ textAlign: "center" }}
                       className="cool-font team-card-content"
                     >
-                      {team.name}
+                      {teamTitle}
                     </h2>
                   </div>
                   <div
@@ -161,7 +181,7 @@ class OneTeamPage extends React.Component {
                         style={{ textAlign: "left" }}
                         className="cool-font team-card-content"
                       >
-                        {team.name}
+                        {teamTitle}
                       </h2>
                     </div>
                     <div
@@ -177,14 +197,14 @@ class OneTeamPage extends React.Component {
             <div className="row">
               <div className="team-card-column">
                 <p className="team-card-content" style={{ textAlign: 'center', margin: '5px auto' }}>
-                  {teamTagline}
+                  {team.tagline}
                 </p>
               </div>
             </div>
 
             <div className="row">
               <div className="team-card-column">
-                <TeamInfoBars teamStats={teamStats} />
+                <TeamStatsBarss teamStats={teamData} />
               </div>
             </div>
           </div>
@@ -192,7 +212,7 @@ class OneTeamPage extends React.Component {
           <br />
 
           <div
-            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-10"
+            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8"
             style={{ margin: "auto" }}
           >
             <div className="row">
@@ -202,35 +222,65 @@ class OneTeamPage extends React.Component {
                     <h5>
                       <b>Description</b>
                     </h5>
-                    <p>{team.description}</p>
+                    <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
+                      <div className="boxed_wrapper">
+                        <p>{team.description}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section slight-lift">
-                    <h5 style={{ margin: 0 }}>
+                    <h5 style={{ marginBottom: '15px' }}>
                       <b>Members</b>
+                      {subTeams && <><br /><small>Contains members of sub-teams</small></>}
                     </h5>
-                    <p style={{ fontSize: "11px", textAlign: "center" }}>
-                      You may have to scroll to see all members
-                    </p>
                     <TeamMembersList
-                      key={this.state.remountForcer}
+                      onMembersLoad={this.onMembersLoad}
+                      key={remountForcer}
                       teamID={team.id}
                     />
                   </div>
                 </div>
-
+                {subTeams &&
+                  <div className="row" style={{ margin: 0 }}>
+                    <div className="one-team-content-section slight-lift">
+                      <h5 style={{ margin: 0 }}>
+                        <b>Sub-teams</b>
+                      </h5>
+                      <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
+                        <div className="boxed_wrapper">
+                          <div className="team-ul">
+                            <ul>
+                              {teamData.subTeams.map(subTeamStats =>
+                                <li key={subTeamStats.team.id}>
+                                  <Link to={`${links.teams}/${subTeamStats.team.id}`}><b>{subTeamStats.team.name}</b></Link>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div >
+                    </div>
+                  </div>
+                }
               </div>
               <div className="col-md-7 col-12">
-                <div className="one-team-content-section slight-lift">
-                  <h5>
-                    <b>Actions Completed</b>
-                  </h5>
-                  <TeamActionsGraph
-                    key={this.state.remountForcer}
-                    teamID={team.id}
-                  />
+                <div className="row" style={{ marginBotton: '15px' }}>
+                  <div className="one-team-content-section slight-lift">
+                    <h5>
+                      <b>Actions Completed</b>
+                      {subTeams && <><br /><small>Contains actions of sub-teams</small></>}
+                    </h5>
+                    <TeamActionsGraph
+                      key={remountForcer}
+                      teamID={team.id}
+                    />
+
+                    <p style={{ textAlign: 'center' }}>Complete <Link to={links.actions}>more actions</Link>!</p>
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -243,18 +293,18 @@ class OneTeamPage extends React.Component {
                 <button
                   className="btn round-me contact-admin-btn-new raise"
                   onClick={() => {
-                    this.setState({ contactModalOpen: true });
+                    this.setState({ contactEditModalOpen: true });
                   }}
                 >
-                  Contact Admin
-              </button>
+                  {user && isAdmin ? "Edit Team" : "Contact Admin"}
+                </button>
               </div>
-              {this.props.user && this.inTeam(team.id) &&
+              {isInThisTeam && !isAdmin &&
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button
                     className="btn round-me leave-team-btn raise"
                     onClick={() => {
-                      this.setState({ teamModalOpen: true });
+                      this.setState({ joinLeaveModalOpen: true });
                     }}
                   >
                     Leave Team
@@ -263,7 +313,7 @@ class OneTeamPage extends React.Component {
               }
             </div>
             <div style={{ display: 'block' }}>
-              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={teamTagline} url={window.location.href} />
+              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={team.tagline} url={window.location.href} />
             </div>
           </div>
           <br />
@@ -272,27 +322,31 @@ class OneTeamPage extends React.Component {
     );
   }
 
-  inTeam = (team_id) => {
-    if (!this.props.user) {
-      return false;
+  onMembersLoad = (members) => {
+    const { user } = this.props;
+    const myTeamMember = members.filter(member => member.user_id === user.id);
+    if (myTeamMember.length === 0) return;
+    if (myTeamMember[0].is_admin) {
+      this.setState({ isAdmin: true });
     }
-    return (
-      this.props.user.teams.filter((team) => {
-        return team.id === team_id;
-      }).length > 0
-    );
-  };
+  }
 
   onTeamJoinOrLeave = () => {
-    this.setState({ teamModalOpen: false, remountForcer: Math.random() });
+    this.setState({ joinLeaveModalOpen: false, remountForcer: Math.random() });
   };
 
-  onTeamModalClose = () => {
-    this.setState({ teamModalOpen: false });
+  onJoinLeaveModalClose = () => {
+    this.setState({ joinLeaveModalOpen: false });
   };
 
-  onContactModalClose = () => {
-    this.setState({ contactModalOpen: false });
+  onTeamEdit = (teamID) => {
+    this.setState({ contactEditModalOpen: false, loading: true });
+    this.fetch(teamID);
+    this.setState({ remountForcer: Math.random() });
+  }
+
+  onContactEditModalClose = () => {
+    this.setState({ contactEditModalOpen: false });
   };
 }
 
@@ -300,7 +354,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsPage: store.page.teamsPage,
+    teamsStats: store.page.teamsPage,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);

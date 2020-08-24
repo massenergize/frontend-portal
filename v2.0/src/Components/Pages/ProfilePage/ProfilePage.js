@@ -548,13 +548,7 @@ class ProfilePage extends React.Component {
                 <h6>{team.name}*</h6>
               </>
             }
-            {team.description &&
-              <p style={{ fontSize: '12px', margin: 0 }}>
-                {team.description.length > 70 ?
-                  team.description.substring(0, 70) + "..."
-                  : team.description}
-              </p>
-            }
+            <p>{team.tagline}</p>
           </td>
         </tr>
       );
