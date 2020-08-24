@@ -25,6 +25,8 @@ import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import ErrorPage from "./components/Pages/Errors/ErrorPage"
 
@@ -72,6 +74,8 @@ class AppRouter extends Component {
       triedLogin: false,
       community: null,
     };
+
+    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(this);
   }
 
   componentDidMount() {
@@ -149,7 +153,6 @@ class AppRouter extends Component {
           testimonialsResponse,
           vendorsResponse,
         ] = res;
-
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
         this.props.reduxLoadTeamsPage(teamResponse.data);
         this.props.reduxLoadDonatePage(donatePageResponse.data);
@@ -177,9 +180,19 @@ class AppRouter extends Component {
 
   async getUser() {
     await this.setStateAsync({ triedLogin: true });
-    const { data } = await apiCall("auth.whoami")
+    let { data } = await apiCall("auth.whoami");
+    let user = null;
     if(data){
-      const user = data;
+      user = data;
+    }else{
+      if(this.props.auth){
+        const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+        const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
+        user = newLoggedInUserResponse.data
+      }
+    }
+
+    if(user){
       // set the user in the redux state
       this.props.reduxLogin(user);
 
@@ -200,7 +213,7 @@ class AppRouter extends Component {
         console.log(`no user with this email: ${user.email}`);
         return false;
       }
-    }  
+    } 
   }
 
   modifiedMenu(menu) {
@@ -244,6 +257,18 @@ class AppRouter extends Component {
     ) {
       window.localStorage.setItem("last_visited", realRoute);
     }
+  }
+
+  userHasAnIncompleteRegistration(){
+    return (
+      this.state.triedLogin && // we tried to check who this user is
+      !this.props.user && // we didnt find a profile
+      this.props.auth.uid // but we found a firebase userID.  This means they did not finish creating their profile
+    ) ||
+    (
+      this.props.auth.uid && // firebase userID is created
+      !this.props.auth.emailVerified // but user did not verify their email yet
+    )
   }
 
 
@@ -312,9 +337,8 @@ class AppRouter extends Component {
         ) : (
           <LoadingCircle />
         )}
-        {/**if theres a half finsished account the only place a user can go is the register page */
-        (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
-        (this.props.auth.uid && !this.props.auth.emailVerified) ? (
+        {/**if theres a half finished account the only place a user can go is the register page */
+        this.userHasAnIncompleteRegistration() ? (
           <Switch>
             <Route component={RegisterPage} />
           </Switch>

@@ -65,13 +65,11 @@ class RegisterFormBase extends React.Component {
   }
 
   render() {
- 
-    if (!this.props.auth || !this.props.user || !this.props.policies){
-      console.log(123)
-      return <LoadingCircle />;
-
-    }
     
+    if (!this.props.auth || !this.props.user ){
+      return <LoadingCircle />;
+    }
+    const policies = this.props.policies || []
 
     var page;
     if (this.props.auth.isEmpty) {
@@ -79,12 +77,13 @@ class RegisterFormBase extends React.Component {
     } else {
       page = 2;
     }
-    const TOS = this.props.policies.filter(
+    const [ TOS ] = policies.filter(
       (x) => x.name === "Terms of Service"
-    )[0];
-    const PP = this.props.policies.filter(
+    ) || "";
+
+    const [ PP ] = policies.filter(
       (x) => x.name === "Privacy Policy"
-    )[0];
+    ) || "";
 
     
     if (
@@ -291,9 +290,9 @@ class RegisterFormBase extends React.Component {
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
-    if (!this.getRegProtocol()) {
-      return <LoadingCircle />;
-    }
+    // if (!this.getRegProtocol()) {
+    //   return <LoadingCircle />;
+    // }
     return (
       <div
         className="styled-form register-form"
