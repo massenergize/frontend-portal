@@ -286,14 +286,14 @@ class StoriesPage extends React.Component {
                         This testimonial is about
                       </small>
                       <br />
-                      <a
-                        href={`${this.props.links.actions}/${story.action.id}`}
+                      <Link
+                        to={`${this.props.links.actions}/${story.action.id}`}
                         className="testi-anchor"
                       >
                         {story.action.title > 70
                           ? story.action.title.substring(0, 70) + "..."
                           : story.action.title}
-                      </a>
+                      </Link>
                     </div>
                   ) : null}
                   {this.renderMoreBtn(
