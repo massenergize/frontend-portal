@@ -1,5 +1,5 @@
 import React from "react";
-import { apiCall, apiCallWithMedia } from "../../../api/functions";
+import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
@@ -190,12 +190,7 @@ class TeamInfoModal extends React.Component {
     try {
       this.setState({ loading: true });
 
-      let teamResponse;
-      if (data.logo) {
-        teamResponse = await apiCallWithMedia(url, data);
-      } else {
-        teamResponse = await apiCall(url, data);
-      }
+      let teamResponse = await apiCall(url, data);
       if (teamResponse.success) {
         const newTeam = teamResponse.data;
         if (!team) reduxJoinTeam(newTeam);

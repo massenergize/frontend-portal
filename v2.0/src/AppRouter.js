@@ -185,9 +185,12 @@ class AppRouter extends Component {
       user = data;
     }else{
       if(this.props.auth){
-        const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-        const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
-        user = newLoggedInUserResponse.data
+        const currentUser = await firebase.auth().currentUser
+        if (currentUser) {
+          const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+          const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
+          user = newLoggedInUserResponse.data
+        }
       }
     }
 
