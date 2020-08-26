@@ -57,7 +57,6 @@ class DeleteAccountFormBase extends React.Component {
             [event.target.name]: event.target.value,
             error: null
         });
-        console.log(this.state.unittype)
     };
 
     onSubmit = (event) => {

@@ -113,9 +113,7 @@ class StoriesPage extends React.Component {
                     <Funnel
                       type="testimonial"
                       boxClick={this.handleBoxClick}
-                      search={() => {
-                        console.log("No Search");
-                      }}
+                      search={() => {}}
                       foundNumber={0}
                     />
                   </div>

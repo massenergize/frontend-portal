@@ -224,9 +224,7 @@ class LoginFormBase extends React.Component {
     const body = { idToken: fireToken };
     apiCall("auth.login", body)
       .then((massToken) => {
-        this.fetchAndLogin(email).then((success) => {
-          if (success) console.log("yay");
-        });
+        this.fetchAndLogin(email);
       })
       .catch((err) => {
         window.localStorage.setItem("reg_protocol", "show");

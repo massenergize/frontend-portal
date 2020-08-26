@@ -67,7 +67,6 @@ class ProfilePage extends React.Component {
     }
 
     if (!this.props.user) {
-      console.log("Background logout!");
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
     }
@@ -718,7 +717,6 @@ class ProfilePage extends React.Component {
 
       apiCall("communities.leave", body)
         .then((json) => {
-          //console.log(json);
           if (json.success) {
             this.props.reduxLeaveCommunity(community);
           }
