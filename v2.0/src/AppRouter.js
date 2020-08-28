@@ -131,7 +131,6 @@ class AppRouter extends Component {
       apiCall("graphs.communities.impact", body),
       apiCall("donate_page_settings.info", body),
       apiCall("events.list", body),
-      apiCall("users.events.list", body),
       apiCall("policies.list", body),
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
@@ -146,7 +145,6 @@ class AppRouter extends Component {
           communityStatsResponse,
           donatePageResponse,
           eventsResponse,
-          eventsRsvpListResponse,
           policiesResponse,
           teamResponse,
           tagCollectionsResponse,
@@ -161,7 +159,6 @@ class AppRouter extends Component {
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
-        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
         this.props.reduxLoadTagCols(tagCollectionsResponse.data);
         this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
         this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
@@ -185,7 +182,8 @@ class AppRouter extends Component {
     if(data){
       user = data;
     }else{
-      if(this.props.auth){
+
+      if(this.props.auth && firebase.auth().currentUser){
         const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
         const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
         user = newLoggedInUserResponse.data
@@ -200,14 +198,18 @@ class AppRouter extends Component {
       const [
         userActionsTodoResponse,
         userActionsCompletedResponse,
+        eventsRsvpListResponse,
       ] = await Promise.all([
         apiCall("users.actions.todo.list", { email: user.email }),
         apiCall("users.actions.completed.list", {  email: user.email  }),
+        apiCall("users.events.list", {  email: user.email  }),
+
       ]);
 
       if (userActionsTodoResponse && userActionsCompletedResponse) {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
         this.props.reduxLoadDone(userActionsCompletedResponse.data);
+        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
         return true;
       } else {
         console.log(`no user with this email: ${user.email}`);
