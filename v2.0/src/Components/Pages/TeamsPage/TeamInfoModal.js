@@ -117,7 +117,7 @@ class TeamInfoModal extends React.Component {
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
-          <div className="team-modal" style={{ height: "90%" }}>
+          <div className="team-modal" style={team && { height: "90%" }}>
             <h4 onClick={() => { onClose() }} className=" modal-close-x round-me">
               <span className="fa fa-close"></span>
             </h4>
