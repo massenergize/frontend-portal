@@ -43,6 +43,7 @@ class ProfilePage extends React.Component {
     this.state = {
       loaded: false,
       addedHouse: false,
+      addedDefaultHouse: false,
 
       selectedHousehold: null,
       editingHH: null,
@@ -61,6 +62,7 @@ class ProfilePage extends React.Component {
     // disable the registration protocol to prevent the form from ever showing again, until enabled
     localStorage.removeItem("reg_protocol");
   }
+
   render() {
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
@@ -88,11 +90,12 @@ class ProfilePage extends React.Component {
           return com.id === this.props.community.id;
         }).length === 0
       ) {
+        console.log(myCommunities)
         this.addDefaultCommunity();
       }
     }
     const { user } = this.props;
-
+    console.log(this.props.done)
     return (
       <>
         <div className="boxed_wrapper" onClick={this.clearError}>
@@ -745,15 +748,18 @@ class ProfilePage extends React.Component {
       });
     }
   };
+
+
   addDefaultCommunity = () => {
     const body = {
       user_id: this.props.user.id,
       community_id: this.props.community.id,
     };
 
-    /** Collects the form data and sends it to the backend */
-    apiCall("communities.join", body)
+    if(!this.state.addedDefaultHouse){
+      apiCall("communities.join", body)
       .then((json) => {
+        console.log(json)
         if (json.success) {
           this.props.reduxLoadUserCommunities(json.data.communities);
         }
@@ -761,6 +767,11 @@ class ProfilePage extends React.Component {
       .catch((error) => {
         console.log(error);
       });
+
+      this.setState({ addedDefaultHouse: true})
+    }
+    /** Collects the form data and sends it to the backend */
+
   };
 
   addDefaultHousehold = (user, community) => {
