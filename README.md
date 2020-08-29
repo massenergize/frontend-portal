@@ -2,7 +2,7 @@
 
 <img src="v2.0/src/logo.png" width="300"/>
 
-This repository contains the frontend code for [MassEnergize's community portal](community.massenergize.org). It's build with [React](https://reactjs.org/), [Redux](https://redux.js.org/), and [Bootstrap](https://getbootstrap.com/).
+This repository contains the frontend code for [MassEnergize's community portal](https://community.massenergize.org). It's build with [React](https://reactjs.org/), [Redux](https://redux.js.org/), and [Bootstrap](https://getbootstrap.com/).
 
 ## Maintainers
 
