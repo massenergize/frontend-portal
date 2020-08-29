@@ -1,5 +1,6 @@
 import React from 'react';
 import { apiCall } from "../../../api/functions";
+import loader from '../../../assets/images/other/loader.gif';
 
 class TeamMembersList extends React.Component {
 
@@ -12,15 +13,18 @@ class TeamMembersList extends React.Component {
   }
 
   async fetch(id) {
+    const { onMembersLoad } = this.props;
+
     try {
       const json = await apiCall("teams.members.preferredNames", { team_id: id });
       if (json.success) {
         this.setState({ membersResponse: json.data });
+        onMembersLoad(json.data);
       } else {
         this.setState({ error: json.error });
       }
     } catch (err) {
-      this.setState({ error: err });
+      this.setState({ error: err.toString() });
     } finally {
       this.setState({ loading: false });
     }
@@ -35,7 +39,7 @@ class TeamMembersList extends React.Component {
     const { loading, membersResponse } = this.state;
 
     if (loading)
-      return <img src={require('../../../assets/images/other/loader.gif')} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
+      return <img src={loader} alt="Loading..." style={{ display: 'block', margin: 'auto', width: "150px", height: "150px" }} />
 
     if (!membersResponse)
       return <p className="error-p">The members of this team could not be loaded.</p >;
@@ -50,7 +54,7 @@ class TeamMembersList extends React.Component {
     return (
       <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
         <div className="boxed_wrapper">
-          <div className="team-members-list">
+          <div className="team-ul">
             <ul>
               {admins.map(admin =>
                 <li key={admin.id}>

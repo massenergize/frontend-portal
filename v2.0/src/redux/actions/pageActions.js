@@ -229,40 +229,52 @@ export const reduxChangeRSVP = (RSVP) => dispatch => {
 		payload: RSVP
 	})
 }
-export const reduxAddTeamMember = (teamAndMember) => dispatch => {
+export const reduxAddTeamMember = (teamAndMember) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: ADD_TEAM_MEMBER,
-		payload: teamAndMember
+    payload: teamAndMember,
+    user: user
 	})
 }
-export const reduxRemoveTeamMember = (teamAndMember) => dispatch => {
+export const reduxRemoveTeamMember = (teamAndMember) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: REMOVE_TEAM_MEMBER,
-		payload: teamAndMember
+		payload: teamAndMember,
+    user: user
 	})
 }
-export const reduxTeamAddAction = (team) => dispatch => {
+export const reduxTeamAddAction = (team) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: TEAM_ADD_ACTION,
-		payload: team
+		payload: team,
+    user: user
 	})
 }
-export const reduxTeamRemoveAction = (team) => dispatch => {
+export const reduxTeamRemoveAction = (team) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: TEAM_REMOVE_ACTION,
-		payload: team
+		payload: team,
+    user: user
 	})
 }
-export const reduxTeamAddHouse = (team) => dispatch => {
+export const reduxTeamAddHouse = (team) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: TEAM_ADD_HOUSEHOLD,
-		payload: team
+		payload: team,
+    user: user
 	})
 }
-export const reduxTeamRemoveHouse = (team) => dispatch => {
+export const reduxTeamRemoveHouse = (team) => (dispatch, getState) => {
+  const user = getState().user.info;
 	return dispatch({
 		type: TEAM_REMOVE_HOUSEHOLD,
-		payload: team
+		payload: team,
+    user: user
 	})
 }
 export const reduxChangeData = (data) => dispatch => {
