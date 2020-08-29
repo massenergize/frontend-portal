@@ -2,11 +2,27 @@
   color: white;
   background: #8dc63f; 
   border-width: 0px !important;
-  padding: 6px 25px; 
   margin: 0 8px;
   height: 100%;
   font-size: 16px;
   line-height: 17px
+}
+
+.collapse-team-btn {
+  color: black;
+  background: lightgrey; 
+  border-width: 0px !important;
+  padding: 6px 25px; 
+  margin: 0 8px;
+  font-size: 16px;
+  line-height: 17px;
+}
+
+.collapse-team-btn.bottom-right {
+  position: relative;
+  float: right;
+  top: -35px;
+  right: 20px;
 }
 
 .testimonials-image-desc{
@@ -42,6 +58,7 @@
 }
 
 .join-team-btn {
+  height: 40px;
   color: white;
   background:#8dc63f; 
   border-width: 0px !important;
@@ -51,6 +68,7 @@
 }
 
 .leave-team-btn {
+  height: 40px;
   color: white;
     background: darkgray; 
     border-width: 0px !important;
@@ -59,6 +77,7 @@
 }
 
 .contact-admin-btn-new {
+  height: 40px;
   color: white;
     background: #f67b61; 
     border-width: 0px !important;
@@ -79,6 +98,11 @@
 .start-team-btn:hover{
   color: white;
     background:#517325; 
+    transition: .15s ease-in-out;
+  }
+.collapse-team-btn:hover{
+  color: black;
+    background: darkgrey; 
     transition: .15s ease-in-out;
   }
 .comp-teams-btn:hover{
@@ -987,7 +1011,7 @@
   height:100%;
   background:black; 
   opacity:.6;
-  z-index:100;
+  z-index:101;
 }
 
 

@@ -44,7 +44,7 @@ class OneActionPage extends React.Component {
       question: null,
       action: null,
       showTodoMsg: false,
-      loading: true, 
+      loading: true,
       // about_html:null, 
       // deep_dive_html:null,
       // steps_to_take_html:null 
@@ -69,7 +69,7 @@ class OneActionPage extends React.Component {
         this.setState({ error: json.error });
       }
     } catch (err) {
-      this.setState({ error: err });
+      this.setState({ error: err.toString() });
     } finally {
       this.setState({ loading: false });
     }
@@ -631,7 +631,7 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html:getHTMLContent( action.about) }}
+                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.about) }}
                   ></p>
                 </div>
               </div>

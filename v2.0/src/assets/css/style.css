@@ -9504,20 +9504,20 @@ button.as-link:hover {
 }
 
 .team-card {
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 3px 6px 0 rgba(0,0,0,.12);
-    -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0  3px 6px 0 rgba(0,0,0,.12);
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0 4px 8px 0 rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 0px 0px 0 rgba(0,0,0,55.16), 0  4px 8px 0 rgba(0,0,0,.2);
     padding: 20px;
     margin-bottom: 20px;
     height: auto;
     cursor:pointer;
     border-radius: 12px;
-    display: flex;
+    display: block;
     align-items: center;
 }
 
 .team-card:hover {
-  -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.19);
-  box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.19);
+  -webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.3);
+  box-shadow:0 2px 5px 0 rgba(0,0,0,.24),0 5px 10px 0 rgba(0,0,0,.3);
   transition:.2s ease-in-out;
 }
 
@@ -9616,33 +9616,73 @@ button.as-link:hover {
   margin: 0px;
 }
 
-.team-members-list ul {
+.one-team-content-section small{
+  width: 100%;
+  text-align: center;
+  font-size: small;
+  color: darkgrey;
+  margin-bottom: 5px;
+}
+
+.team-ul ul {
   color: #999;
   font-size : 18px;
   margin: 0px;
-  padding-left: 20px;
+  padding-left: 30px;
   list-style-type: circle;
-  columns: 2;
-  -webkit-columns: 2;
-  -moz-columns: 2;
 }
 
 .team-modal{
   height: auto;
+  max-height: 450px;
   width: auto;
+  max-width: 600px;
   background: white;
-  padding: 25px;
+  padding: 20px;
   border-radius: 10px;
   margin: 0 auto;
-  z-index: 101;
+  z-index: 102;
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: 60%;
   transform: translate(-50%, -50%);
+}
+
+.team-modal textarea {
+  resize: none;
+}
+
+.team-modal label {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.team-modal small {
+  line-height: 1.1;
 }
 
 .error-p {
   color: darkred;
   font-size: 16px;
   font-style: italic;
+}
+
+.team-modal-error-p {
+  max-width: 70%;
+  padding-left: 20px;
+}
+
+.team-modal-inline {
+  display: inline-block;
+  margin: 0;
+}
+
+.team-modal-loader {
+  height: 60px;
+}
+
+.team-modal-button-wrapper {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
 }
