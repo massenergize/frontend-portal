@@ -191,6 +191,7 @@ class TeamInfoModal extends React.Component {
       this.setState({ loading: true });
 
       let teamResponse = await apiCall(url, data);
+   
       if (teamResponse.success) {
         const newTeam = teamResponse.data;
         if (!team) reduxJoinTeam(newTeam);
