@@ -30,7 +30,6 @@ class EventsPage extends React.Component {
 	}
 
 	render() {
-		console.log("I am the events", this.props)
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<>
@@ -304,7 +303,6 @@ class EventsPage extends React.Component {
 	}
 
 	renderCategoryFilter = () => {
-		console.log(this.props.tagCols)
 		if (!this.state.events_search_toggled) return <div></div>;
 		else {
 			return (

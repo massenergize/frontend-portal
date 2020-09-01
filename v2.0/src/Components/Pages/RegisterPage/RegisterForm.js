@@ -540,25 +540,21 @@ class RegisterFormBase extends React.Component {
   };
 
   sendVerificationEmail = () => {
-    console.log(window.location.origin + window.location.pathname);
     var str = window.location.href;
     var n = str.lastIndexOf("/");
     var redirect = str.substring(0, n) + "/signin";
     var actionCodeSettings = {
       url: redirect,
     };
-    console.log(actionCodeSettings);
     this.props.firebase
       .auth()
-      .currentUser.sendEmailVerification(actionCodeSettings)
-      .then(() => console.log("email sent"));
+      .currentUser.sendEmailVerification(actionCodeSettings);
   };
   onReCaptchaChange = (value) => {
     if (!value) {
       this.setState({ captchaConfirmed: false });
     }
     apiCall('auth.verifyCaptcha', { captchaString: value }).then((response) => {
-      console.log(response);
       if (response && response.data && response.data.success)
         this.setState({ captchaConfirmed: true });
     });
@@ -701,9 +697,7 @@ class RegisterFormBase extends React.Component {
     const body = { idToken: fireToken };
     apiCall("auth.login", body)
       .then((massToken) => {
-        this.fetchAndLogin(email).then((success) => {
-          if (success) console.log("login successful");
-        });
+        this.fetchAndLogin(email);
       })
       .catch((err) => {
         console.log("login error: ", err);

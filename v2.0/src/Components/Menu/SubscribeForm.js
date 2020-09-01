@@ -67,7 +67,6 @@ class SubscribeForm extends React.Component {
             "community": this.props.community? this.props.community.id : null,
         }
         apiCall('subscribers.add', body).then(json => {
-            console.log(json);
             if (json.success) {
                 this.setState({ ...INITIAL_STATE, message: `Success! ${this.state.email} is now subscribed to our Community's Newsletter` });
             } else {

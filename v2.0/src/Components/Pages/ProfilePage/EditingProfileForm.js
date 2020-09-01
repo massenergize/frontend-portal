@@ -54,7 +54,6 @@ class EditingProfileForm extends React.Component {
 			[event.target.name]: event.target.value,
 			error: null
 		});
-		console.log(this.state.unittype)
 	};
 
 	onSubmit = (event) => {
@@ -70,7 +69,6 @@ class EditingProfileForm extends React.Component {
 
 			/** Collects the form data and sends it to the backend */
 			apiCall('users.update', body).then(json => {
-				console.log(json);
 				if (json.success && json.data) {
 					this.props.reduxLogin(json.data);
 					this.props.closeForm();

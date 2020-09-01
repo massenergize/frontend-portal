@@ -59,7 +59,6 @@ class ChangeEmailFormBase extends React.Component {
       [event.target.name]: event.target.value,
       error: null,
     });
-    console.log(this.state.unittype);
   };
 
   onSubmit = (event) => {
@@ -79,14 +78,10 @@ class ChangeEmailFormBase extends React.Component {
           .then(() => {
             this.props.firebase
               .auth()
-              .currentUser.sendEmailVerification()
-              .then(() => console.log("email sent"));
-
+              .currentUser.sendEmailVerification();
             apiCall('users.update', {
               user_id: this.props.user.id,
               email: this.state.email,
-            }).then((response) => {
-              console.log(response);
             });
             
             this.props.closeForm(
