@@ -145,7 +145,7 @@ class OneTeamPage extends React.Component {
               { name: team.name },
             ]}
           />
-          {!team.is_published && <center><p className="error-p">Team awaiting approval from Community Admin. Only team admins can access this page, via its direct URL or the teams listed on your profile page.</p></center>}
+          {!team.is_published && <center><p className="error-p" style={{ margin: '15px' }}>Team awaiting approval from Community Admin. Only team admins can access this page, via its direct URL or the teams listed on your profile page.</p></center>}
           <div
             className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
@@ -267,7 +267,7 @@ class OneTeamPage extends React.Component {
                 }
               </div>
               <div className="col-md-7 col-12">
-                <div className="row" style={{ marginBotton: '15px' }}>
+                <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section slight-lift">
                     <h5>
                       <b>Actions Completed</b>
