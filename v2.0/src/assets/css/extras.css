@@ -7,6 +7,57 @@
   font-size: 16px;
   line-height: 17px
 }
+.put-me-inline{
+  display:inline-block;
+}
+.me-paragaph{
+  margin: 8px 0px;
+  /* color:#adabab; */
+  color: #94979a;
+}
+.me-undefault-btn,
+.me-undefault-btn:active,
+.me-undefault-btn:focus {
+  display: inline-block;
+  outline: 0;
+  padding: 10px 20px;
+  background: white;
+  border-color: white;
+  border-style: solid;
+  color: black ;
+  
+}
+.me-universal-btn {
+  box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
+    0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 55px;
+  cursor: pointer;
+}
+.me-btn-green:hover {
+  /* border:0px; */
+  background: #8dc343;
+  border-color:#8dc343;
+  color:white;
+  transition: 0.25s ease-in-out;
+}
+.me-btn-union:active, .me-btn-union:focus{
+  background: #8dc343;
+  border-color:#8dc343;
+  color:white;
+}
+.me-btn-union{
+  background:#8dc343;
+  color:white; 
+  border-color:#8dc343;
+}
+
+.me-btn-accent:hover{
+  background: #f57b34;
+  border-color:#f57b34;
+  color:white;
+  transition: 0.25s ease-in-out;
+}
 
 .collapse-team-btn {
   color: black;
@@ -1101,4 +1152,13 @@
 .z-depth-5{
   -webkit-box-shadow:0 27px 24px 0 rgba(0,0,0,.2),0 40px 77px 0 rgba(0,0,0,.22);
   box-shadow:0 27px 24px 0 rgba(0,0,0,.2),0 40px 77px 0 rgba(0,0,0,.22)}
-  
+  .z-depth-float {
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
+      0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  }
+  .z-depth-float-half {
+    box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%),
+      0 2px 10px 0 rgba(0, 0, 0, 0.05);
+  }

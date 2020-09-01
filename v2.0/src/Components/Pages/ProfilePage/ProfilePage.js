@@ -36,6 +36,7 @@ import DeleteAccountForm from "./DeleteAccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import Dropdown from "react-bootstrap/Dropdown";
+import MEButton from "../Widgets/MEButton";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -90,12 +91,12 @@ class ProfilePage extends React.Component {
           return com.id === this.props.community.id;
         }).length === 0
       ) {
-        console.log(myCommunities)
+        console.log(myCommunities);
         this.addDefaultCommunity();
       }
     }
     const { user } = this.props;
-    console.log(this.props.done)
+    console.log(this.props.done);
     return (
       <>
         <div className="boxed_wrapper" onClick={this.clearError}>
@@ -105,19 +106,14 @@ class ProfilePage extends React.Component {
               <>
                 <PrintCart />
                 <center>
-                  <button
-                    className="thm-btn text-center print-cancel-style"
-                    style={{
-                      background: "crimson",
-                      color: "white",
-                      marginBottom: 20,
-                      padding: "10px 84px !important",
-                    }}
+                  <MEButton
+                    variation="accent"
+                    style={{ marginTop: 10, marginBottom: 30, width: 170 }}
                     onClick={() => this.setState({ printing: false })}
                   >
                     {" "}
                     Cancel
-                  </button>
+                  </MEButton>
                 </center>
               </>
             ) : (
@@ -227,18 +223,22 @@ class ProfilePage extends React.Component {
                   <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
-                        <th> Your Teams <small>(* outside this community)</small> </th>
+                        <th>
+                          {" "}
+                          Your Teams <small>
+                            (* outside this community)
+                          </small>{" "}
+                        </th>
                       </tr>
                       {this.renderTeams(user.teams)}
                       <tr>
-                        <td  align="center">
-                          <Link
-                            className="thm-btn btn-finishing"
-                            to={this.props.links.teams}
+                        <td align="center">
+                          <MEButton
+                            href={this.props.links.teams}
                             style={{ margin: "5px" }}
                           >
                             View all Teams
-                          </Link>
+                          </MEButton>
                         </td>
                       </tr>
                     </tbody>
@@ -254,7 +254,7 @@ class ProfilePage extends React.Component {
                       {this.renderHouseholds(user.households)}
                       {!this.state.editingHH ? (
                         <tr>
-                          <td colSpan={3}>
+                          <td colSpan={3} style={{ textAlign: "center" }}>
                             {this.state.addingHH ? (
                               <>
                                 <AddingHouseholdForm
@@ -264,26 +264,17 @@ class ProfilePage extends React.Component {
                                     this.setState({ addingHH: false })
                                   }
                                 />
-                                <button
-                                  className=""
+                                <MEButton
+                                  variation="accent"
                                   onClick={() =>
                                     this.setState({ addingHH: false })
                                   }
-                                  style={{
-                                    color: "white",
-                                    width: "99%",
-                                    padding: 13,
-                                    borderRadius: 6,
-                                    background: "indianred",
-                                    borderColor: "indianred",
-                                  }}
                                 >
                                   Cancel
-                                </button>
+                                </MEButton>
                               </>
                             ) : (
-                              <button
-                                className="thm-btn btn-finishing"
+                              <MEButton
                                 onClick={() =>
                                   this.setState({
                                     addingHH: true,
@@ -292,7 +283,7 @@ class ProfilePage extends React.Component {
                                 }
                               >
                                 If you have another household, let us know
-                              </button>
+                              </MEButton>
                             )}
                           </td>
                         </tr>
@@ -321,15 +312,14 @@ class ProfilePage extends React.Component {
                             />
                           </td>
                         ) : (
-                          <td colSpan={2}>
-                            <button
-                              className="thm-btn btn-finishing"
+                          <td colSpan={2} style={{ textAlign: "center" }}>
+                            <MEButton
                               onClick={() =>
                                 this.setState({ joiningCom: true })
                               }
                             >
                               Join another Community
-                            </button>
+                            </MEButton>
                           </td>
                         )}
                       </tr>
@@ -380,14 +370,21 @@ class ProfilePage extends React.Component {
                     />
                   ) : null}
                   <center>
-                    <button
+                    <MEButton
+                      onClick={() => this.setState({ printing: true })}
+                      variation="normal"
+                      style={{ fontSize: 15 }}
+                    >
+                      Summary Of Your Actions
+                    </MEButton>
+                    {/* <button
                       className="text-center summary-finish raise"
                       style={{ marginBottom: 30 }}
                       onClick={() => this.setState({ printing: true })}
                     >
                       {" "}
                       Summary Of Your Actions
-                    </button>
+                    </button> */}
                   </center>
                 </div>
               </div>
@@ -535,8 +532,11 @@ class ProfilePage extends React.Component {
   renderTeams(teams) {
     if (!teams) return null;
 
-    const currentCommunityTeamIDs = this.props.teamsPage && this.props.teamsPage.map(teamStats => teamStats.team.id);
-    const inThisCommunity = (team) => ( currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id)) ;
+    const currentCommunityTeamIDs =
+      this.props.teamsPage &&
+      this.props.teamsPage.map((teamStats) => teamStats.team.id);
+    const inThisCommunity = (team) =>
+      currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 
     return Object.keys(teams).map((key) => {
       const team = teams[key];
@@ -544,13 +544,15 @@ class ProfilePage extends React.Component {
       return (
         <tr key={key}>
           <td>
-            {inThisCommunity(team) ?
-              <Link to={`${this.props.links.teams + "/" + team.id} `}><h6>{team.name}</h6></Link>
-              :
+            {inThisCommunity(team) ? (
+              <Link to={`${this.props.links.teams + "/" + team.id} `}>
+                <h6>{team.name}</h6>
+              </Link>
+            ) : (
               <>
                 <h6>{team.name}*</h6>
               </>
-            }
+            )}
             <p>{team.tagline}</p>
           </td>
         </tr>
@@ -693,7 +695,7 @@ class ProfilePage extends React.Component {
       data_id: data.id,
       value: data.value + number > 0 ? data.value + number : 0,
     };
-    apiCall('data.update', body).then((json) => {
+    apiCall("data.update", body).then((json) => {
       if (json.success) {
         data = {
           ...data,
@@ -749,29 +751,27 @@ class ProfilePage extends React.Component {
     }
   };
 
-
   addDefaultCommunity = () => {
     const body = {
       user_id: this.props.user.id,
       community_id: this.props.community.id,
     };
 
-    if(!this.state.addedDefaultHouse){
+    if (!this.state.addedDefaultHouse) {
       apiCall("communities.join", body)
-      .then((json) => {
-        console.log(json)
-        if (json.success) {
-          this.props.reduxLoadUserCommunities(json.data.communities);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((json) => {
+          console.log(json);
+          if (json.success) {
+            this.props.reduxLoadUserCommunities(json.data.communities);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-      this.setState({ addedDefaultHouse: true})
+      this.setState({ addedDefaultHouse: true });
     }
     /** Collects the form data and sends it to the backend */
-
   };
 
   addDefaultHousehold = (user, community) => {
