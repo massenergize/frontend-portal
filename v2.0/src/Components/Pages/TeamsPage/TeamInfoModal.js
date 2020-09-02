@@ -35,7 +35,8 @@ class TeamInfoModal extends React.Component {
         onSubmit={(e) => {
           e.preventDefault();
           this.callAPI();
-        }}>
+        }}
+        style={{ height: '350px' }}>
 
         <label htmlFor="team-name"><u>Name</u>* <br />
           <small>What your team will be known by.</small>
@@ -117,7 +118,7 @@ class TeamInfoModal extends React.Component {
     return (
       <>
         <div style={{ width: '100%', height: "100%" }}>
-          <div className="team-modal" style={{ height: "90%" }}>
+          <div className="team-modal">
             <h4 onClick={() => { onClose() }} className=" modal-close-x round-me">
               <span className="fa fa-close"></span>
             </h4>
@@ -190,8 +191,8 @@ class TeamInfoModal extends React.Component {
     try {
       this.setState({ loading: true });
 
-      let teamResponse = await apiCall(url, data);
-   
+      const teamResponse = await apiCall(url, data);
+
       if (teamResponse.success) {
         const newTeam = teamResponse.data;
         if (!team) reduxJoinTeam(newTeam);
