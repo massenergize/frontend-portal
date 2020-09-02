@@ -33,7 +33,7 @@ class LoginPage extends React.Component {
 						<div className="container">
 							<div className="row">
 								{/* <!--Form Column--> */}
-								<div className="form-column column col-md-6 col-12 offset-md-3">
+								<div className="form-column column col-md-8 col-12 offset-md-2">
 									<LoginForm tryingToLogin={(status) => this.setState({ tryingToLogin: status })} />
 								</div>
 							</div>

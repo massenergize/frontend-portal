@@ -45,7 +45,6 @@ class MEButton extends Component {
   getClasses() {
     var classes;
     var { className, variation } = this.props;
-    className = className ? className : "";
     classes = `me-undefault-btn me-universal-btn me-btn-green ${className}`;
     if (!variation || variation.toLowerCase === NORMAL) return classes;
     if (variation.toLowerCase() === ACCENT) {
@@ -53,7 +52,7 @@ class MEButton extends Component {
       return classes;
     }
     if (variation.toLowerCase() === UNION) {
-      classes = `me-undefault-btn me-universal-btn me-btn-union me-btn-accent ${className}`;
+      classes = `me-undefault-btn me-universal-btn me-btn-union ${className}`;
       return classes;
     }
 
@@ -61,13 +60,15 @@ class MEButton extends Component {
   }
 
   ejectComponent() {
-    const { style, href, to } = this.props;
+    const { style, href, to, disabled, type } = this.props;
     const classes = this.getClasses();
     const styles = style ? { ...style } : null;
     if (!href && !to) {
       return (
         <div className="put-me-inline">
           <button
+            type={type}
+            disabled={disabled}
             className={classes}
             style={styles}
             onClick={(e) => this.handleOnClick(e)}
@@ -81,6 +82,7 @@ class MEButton extends Component {
     return (
       <div className="put-me-inline">
         <Link
+          disabled={disabled}
           className={classes}
           style={styles}
           to={href || to}
@@ -96,5 +98,13 @@ class MEButton extends Component {
     return <div className="put-me-inline">{this.ejectComponent()}</div>;
   }
 }
+
+MEButton.defaultProps = {
+  type: "submit",
+  style: {},
+  className: "",
+  variation: NORMAL,
+  disabled: false,
+};
 
 export default MEButton;

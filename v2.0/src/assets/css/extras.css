@@ -10,6 +10,39 @@
 .put-me-inline{
   display:inline-block;
 }
+
+.me-universal-btn[disabled], .me-universal-btn[disabled]:hover{
+  background:gray; 
+  color:white;
+  border-color:gray;
+}
+.me-google-btn{
+  /* border-width:0px; */
+  background:#db3236 !important; 
+  border-color: #db3236 !important;
+  color:white !important;
+}
+.me-google-btn:hover{
+  background:white !important; 
+  color:#db3236 !important;
+  
+  border-color:#db3236 !important;
+  border-top-color: #3cba54 !important;
+  border-bottom-color: #f4c20d !important;
+  border-right-color:#4885ed !important;
+  transition:.2s ease-in-out;
+}
+.me-facebook-btn{
+  /* border-width:0px; */
+  background:#4885ed !important; 
+  border-color: #4885ed !important;
+  color:white !important;
+}
+.me-facebook-btn:hover{
+  background:white !important; 
+  color:#4885ed !important;
+  transition:.2s ease-in-out;
+}
 .me-paragaph{
   margin: 8px 0px;
   /* color:#adabab; */
@@ -33,6 +66,9 @@
     0 2px 10px 0 rgba(0, 0, 0, 0.1);
   border-radius: 55px;
   cursor: pointer;
+  margin:6px;
+  /* background-position:center;
+  transition: background 0.5s; */
 }
 .me-btn-green:hover {
   /* border:0px; */
@@ -50,6 +86,15 @@
   background:#8dc343;
   color:white; 
   border-color:#8dc343;
+  border-width:0px !important;
+}
+.me-btn-union:hover{
+  background: #f57b34;
+  border-color:#f57b34;
+  color:white;
+  transition: 0.25s ease-in-out;
+  -webkit-box-shadow:0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+  box-shadow:0 8px 17px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)
 }
 
 .me-btn-accent:hover{
@@ -701,7 +746,7 @@
 
 .energize-link{
   text-decoration: none;
-  color:#97b36b ;
+  color:#8dc343 ;
 }
 .energize-link:hover{
   color:#dd4b39; 

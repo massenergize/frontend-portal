@@ -1,0 +1,17 @@
+
+
+
+.me-anime-fade-in-up{
+  animation-delay: 1s;
+  animation: me-fade-in-up 1s forwards;
+}
+@keyframes me-fade-in-up{
+  from{
+    transform: translateY(150px);
+    opacity:0
+  }
+  to{
+    transform: translateY(0px);
+    opacity:1;
+  }
+}

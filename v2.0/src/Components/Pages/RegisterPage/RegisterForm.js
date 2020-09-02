@@ -19,6 +19,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Tooltip from "../../Shared/Tooltip";
+import MEButton from "../Widgets/MEButton";
 
 /* Modal config */
 const INITIAL_STATE = {
@@ -65,11 +66,10 @@ class RegisterFormBase extends React.Component {
   }
 
   render() {
-    
-    if (!this.props.auth || !this.props.user ){
+    if (!this.props.auth || !this.props.user) {
       return <LoadingCircle />;
     }
-    const policies = this.props.policies || []
+    const policies = this.props.policies || [];
 
     var page;
     if (this.props.auth.isEmpty) {
@@ -77,15 +77,10 @@ class RegisterFormBase extends React.Component {
     } else {
       page = 2;
     }
-    const [ TOS ] = policies.filter(
-      (x) => x.name === "Terms of Service"
-    ) || "";
+    const [TOS] = policies.filter((x) => x.name === "Terms of Service") || "";
 
-    const [ PP ] = policies.filter(
-      (x) => x.name === "Privacy Policy"
-    ) || "";
+    const [PP] = policies.filter((x) => x.name === "Privacy Policy") || "";
 
-    
     if (
       this.props.user.info &&
       this.props.user.todo &&
@@ -93,10 +88,7 @@ class RegisterFormBase extends React.Component {
       this.props.auth.emailVerified &&
       this.props.user.accepts_terms_and_conditions
     ) {
-     
-      return (
-        <Redirect to={this.props.links.profile} />
-      );
+      return <Redirect to={this.props.links.profile} />;
     }
 
     return (
@@ -173,7 +165,10 @@ class RegisterFormBase extends React.Component {
         className="styled-form register-form"
         style={{ height: window.screen.height - 60, marginTop: 15 }}
       >
-        <div className="z-depth-1" style={{ padding: 46, borderRadius: 12 }}>
+        <div
+          className="z-depth-float me-anime-fade-in-up"
+          style={{ padding: 46, borderRadius: 12 }}
+        >
           <div className="section-title style-2">
             <h3>Register With Email and Password</h3>
           </div>
@@ -221,29 +216,29 @@ class RegisterFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                <button
-                  type="submit"
-                  disabled={this.isInvalid()}
-                  className="thm-btn round-me raise"
-                >
+                <MEButton type="submit" disabled={this.isInvalid()}>
                   Create Profile
-                </button>
+                </MEButton>
+                <small style={{margin:"0px 15px"}}><b>OR USE</b></small> 
+                <MEButton onClick={this.signInWithGoogle} className="me-google-btn">Google</MEButton>
+                <MEButton onClick={this.signInWithFacebook} className="me-facebook-btn">Facebook</MEButton>
               </div>
             </div>
           </form>
-          <div
+        
+          {/* <div
             style={{
               width: "100%",
               height: "0px",
               borderBottom: "solid 1px black",
               marginBottom: "15px",
             }}
-          ></div>
-          <div className="section-title style-2" style={{ marginBottom: 9 }}>
+          ></div> */}
+          {/* <div className="section-title style-2" style={{ marginBottom: 9 }}>
             <h3>Register with</h3>
           </div>
           <div className="form-group social-links-three padd-top-5">
-            {/* <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button> */}
+            <button onClick={this.signInWithFacebook} id="facebook" className="img-circle facebook"><span className="fa fa-facebook-f"> Register with Facebook</span></button>
             <button
               style={{
                 borderRadius: 5,
@@ -264,11 +259,11 @@ class RegisterFormBase extends React.Component {
             >
               <span className="fa fa-google"></span>oogle
             </button>
-          </div>
+          </div> */}
           <p>
-            Already have a profile?{" "}
-            <Link className="energize-link" to={this.props.links.signin}>
-              Sign In
+           
+            <Link className="energize-link" style={{textDecoration:"underline"}} to={this.props.links.signin}>
+              I have an account already
             </Link>
           </p>{" "}
         </div>
@@ -557,7 +552,7 @@ class RegisterFormBase extends React.Component {
     if (!value) {
       this.setState({ captchaConfirmed: false });
     }
-    apiCall('auth.verifyCaptcha', { captchaString: value }).then((response) => {
+    apiCall("auth.verifyCaptcha", { captchaString: value }).then((response) => {
       console.log(response);
       if (response && response.data && response.data.success)
         this.setState({ captchaConfirmed: true });
@@ -667,7 +662,7 @@ class RegisterFormBase extends React.Component {
         this.props.firebase
           .auth()
           .signInWithPopup(googleProvider)
-          .then((auth) => { 
+          .then((auth) => {
             this.fetchMassToken(auth.user._lat, auth.user.email);
           })
           .catch((err) => {
@@ -711,8 +706,7 @@ class RegisterFormBase extends React.Component {
       });
   };
 
-
-  inflatePageWithUserData = async (json, email) =>{
+  inflatePageWithUserData = async (json, email) => {
     if (json.success && json.data) {
       console.log("EL USER", json.data);
       this.props.reduxLogin(json.data);
@@ -721,60 +715,59 @@ class RegisterFormBase extends React.Component {
       const done = await apiCall("users.actions.completed.list", { email });
       this.props.reduxLoadDone(done.data);
       return true;
-    } 
+    }
     return false;
-  }
+  };
 
-/**
- * WHY LOGIN RENDER PAGE 2 DOES NOT SHOW ANYMORE & "REG_PROTOCOL" should NEVER be removed
- * ------------------------------------------------
- * The authentication flow on ME is programmed to first check if a user exists in our firebase service, 
- * then go ahead to retrieve information about a user, based on the token that firebase will 
- * return if a user exists
- * With this design, there are a few flaws that come up, 
- * ..............
- * Firebase will always return a token ID, whether the user exists in our firebase service 
- * or not. 
- * In other words, if the user is not in our firebase service, google creates an account for them 
- * THERE AND THEN! 
- * With this, we are only able to deteremine that a user really does not exist in our system only 
- * when we hit the ME backend with the firebase-generated token for more information and our system returns or 
- * does not return anything
- * 
- * While this process is happening from the back, on the client side, 
- * the component logic is to quickly show a "complete profile form" if a user's information 
- * is not quickly passed into the redux store....( at the point of click , user information is aways null|undefined) 
- * 
- * Because of these two things, is why a user is always taken to the "complete profile page" 
- * for a brief moment before they are taken to the profile page. 
- * When they are taken to the profile page, it just means user information from the ME backend 
- * has just been returned and saved in the redux store. 
- * 
- * And if nothing is returned from the ME backend, then it actually means they dont exist in our DB 
- * and really have to complete the form, so they stay on the page.
- * 
- * To avoid this temporary blink and to give users the idea that authentication is in sync 
- * and all in one place -- the reg_protocol value in the local storage was introduced 
- * 
- * Now, the "complete profile page" form ONLY shows if "reg_protocol" value exists in the 
- * user's local storage. 
- * If the reg_protocol value isnt set, a loading spinner will always show instead 
- * 
- * Now with this reg_protocol implementation, when a user tries to sign in and firebase returns its token 
- * and we are trying to fetch user info from the ME backend, they will see a loading 
- * spinner instead, becase "reg_protocol" would not be available in the local storage(ie. js just obeying rules.. LOL!) 
- * 
- * Now, all that needs to be done to get the "complete profile page" to actually show during registration 
- * is to set the reg_protocol value in localStorage from the registration.... 
- * 
- * This should be enough to deter anyone from deleting or commenting out reg protocol stuff anymore 
- * LOOOOOOL!!!!
- * 
- * 
- * 
- * 
- */
- 
+  /**
+   * WHY LOGIN RENDER PAGE 2 DOES NOT SHOW ANYMORE & "REG_PROTOCOL" should NEVER be removed
+   * ------------------------------------------------
+   * The authentication flow on ME is programmed to first check if a user exists in our firebase service,
+   * then go ahead to retrieve information about a user, based on the token that firebase will
+   * return if a user exists
+   * With this design, there are a few flaws that come up,
+   * ..............
+   * Firebase will always return a token ID, whether the user exists in our firebase service
+   * or not.
+   * In other words, if the user is not in our firebase service, google creates an account for them
+   * THERE AND THEN!
+   * With this, we are only able to deteremine that a user really does not exist in our system only
+   * when we hit the ME backend with the firebase-generated token for more information and our system returns or
+   * does not return anything
+   *
+   * While this process is happening from the back, on the client side,
+   * the component logic is to quickly show a "complete profile form" if a user's information
+   * is not quickly passed into the redux store....( at the point of click , user information is aways null|undefined)
+   *
+   * Because of these two things, is why a user is always taken to the "complete profile page"
+   * for a brief moment before they are taken to the profile page.
+   * When they are taken to the profile page, it just means user information from the ME backend
+   * has just been returned and saved in the redux store.
+   *
+   * And if nothing is returned from the ME backend, then it actually means they dont exist in our DB
+   * and really have to complete the form, so they stay on the page.
+   *
+   * To avoid this temporary blink and to give users the idea that authentication is in sync
+   * and all in one place -- the reg_protocol value in the local storage was introduced
+   *
+   * Now, the "complete profile page" form ONLY shows if "reg_protocol" value exists in the
+   * user's local storage.
+   * If the reg_protocol value isnt set, a loading spinner will always show instead
+   *
+   * Now with this reg_protocol implementation, when a user tries to sign in and firebase returns its token
+   * and we are trying to fetch user info from the ME backend, they will see a loading
+   * spinner instead, becase "reg_protocol" would not be available in the local storage(ie. js just obeying rules.. LOL!)
+   *
+   * Now, all that needs to be done to get the "complete profile page" to actually show during registration
+   * is to set the reg_protocol value in localStorage from the registration....
+   *
+   * This should be enough to deter anyone from deleting or commenting out reg protocol stuff anymore
+   * LOOOOOOL!!!!
+   *
+   *
+   *
+   *
+   */
 }
 
 //makes the register form have firebase and router so it can route the user if the login is successful
