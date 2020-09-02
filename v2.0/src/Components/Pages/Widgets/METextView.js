@@ -5,9 +5,9 @@ const IMAGE = "image";
 const H1 = "h1";
 const H2 = "h2";
 const H3 = "h3";
-const h4 = "h4";
-const h5 = "h5";
-const h6 = "h6";
+const H4 = "h4";
+const H5 = "h5";
+const H6 = "h6";
 const PARA = "p";
 const SMALL = "small";
 /**
@@ -35,14 +35,10 @@ class METextView extends Component {
 
   ejectIcon() {
     const { icon, iconSize, iconColor } = this.props;
-    const size = iconSize ? iconSize : "small";
-    const color = iconColor ? iconColor : "gray";
-    const iconStyles = {color:color, fontSize:size}
+    const iconStyles = { color: iconColor, fontSize: iconSize };
     if (icon) {
       return (
-        <span style={{ marginRight: 5 }}>
-         <i className={icon} styles={iconStyles} />
-        </span>
+        <span style={{ marginRight: 5 }} className={icon} styles={iconStyles} />
       );
     }
   }
@@ -80,9 +76,9 @@ class METextView extends Component {
     );
   }
 
-  handleOnClick(e){
-    const {onClick } = this.props; 
-    if(!onClick) return; 
+  handleOnClick(e) {
+    const { onClick } = this.props;
+    if (!onClick) return;
     onClick(e);
   }
   createHeader(styles, classes) {
@@ -113,38 +109,48 @@ class METextView extends Component {
       console.log("You did not specify the type of METext you needed....!!!");
       return;
     }
-    const classes = `me-paragraph ${className ? className : ""}`;
-    const styles = style ? { ...style } : null;
+    const classes = `me-paragraph ${className}`;
     switch (type.toLowerCase()) {
       case PARA:
-        return this.createParagraph(styles, classes);
+        return this.createParagraph(style, classes);
       case SMALL || H6 || H5:
-        return this.createSmallText(styles, classes);
+        return this.createSmallText(style, classes);
       case H1 || H2 || H3 || H4:
-        return this.createHeader(styles, classes);
-      
+        return this.createHeader(style, classes);
+
       default:
-        return this.createParagraph(styles, classes);
+        return this.createParagraph(style, classes);
     }
 
-    // who even specifies h-tags anymore LMAO!!!!!! 
+    // who even specifies h-tags anymore LMAO!!!!!!
   }
 
   render() {
-    const {containerStyle} = this.props;
-    const styles = containerStyle ? { ...containerStyle } : null;
-    return <div style={styles}>{this.ejectComponent()}</div>;
+    const { containerStyle } = this.props;
+    return <div className="put-me-inline" style={containerStyle}>{this.ejectComponent()}</div>;
   }
 }
 METextView.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
-  containerStyle:PropTypes.object,
-  icon: PropTypes.object,
+  containerStyle: PropTypes.object,
+  icon: PropTypes.string,
   imageSource: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   iconSize: PropTypes.string,
   type: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  iconColor: PropTypes.string
+  iconColor: PropTypes.string,
+};
+
+METextView.defaultProps = {
+  className: "",
+  style: {},
+  containerStyle: {},
+  icon: "",
+  imageSource: "",
+  iconSize: "small",
+  type: PARA,
+  iconColor: "gray",
+  mediaType: null,
 };
 export default METextView;

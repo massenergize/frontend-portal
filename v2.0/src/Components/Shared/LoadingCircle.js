@@ -10,11 +10,12 @@ class LoadingCircle extends React.Component {
     };
     return (
       <div className="d-flex height-100vh justify-content-center align-items-center">
-        <img
+        {/* <img
           src={require("../../assets/images/other/loader.gif")}
           alt="Loading..."
           style={style}
-        />
+        /> */}
+        <div className="me-circle-loader"></div>
       </div>
     );
   }

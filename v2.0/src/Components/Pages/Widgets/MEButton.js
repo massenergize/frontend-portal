@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
  * the button with
  * @props @type {String}  className | A text of all extra classes
  * @props @type {Object} style | Normal css styles. Written just the way it is done
+ * @props @type {Object} iconStyle | Normal css styles. Written just the way it is done
  * @props @type {String} icon  | Font awesome class
- * @props @type {String} iconSize | size of the icon you passed ( Eg. sm, lg, 10x, 6x 2x)
+ * @props @type {String} iconSize | size of the icon you passed ( 10px, 40px etc)
  * @props @type {String} iconColor
  * @props @type {func} onClick  | What should happen when the button is clicked?
  * @props @type {String} href
@@ -30,16 +31,15 @@ class MEButton extends Component {
     clickEvent(e);
   };
   ejectIcon() {
-    const { icon, iconSize, iconColor } = this.props;
-    const size = iconSize ? iconSize : "small";
-    const color = iconColor ? iconColor : "black";
-    const iconStyles = { color: color, fontSize: size };
+    const { icon, iconSize, iconColor, iconStyle } = this.props;
+    const iconStyles = {
+      marginRight: 5,
+      color: iconColor,
+      fontSize: iconSize,
+      ...iconStyle,
+    };
     if (icon) {
-      return (
-        <span style={{ marginRight: 5 }}>
-          <i icon={icon} styles={iconStyles} />
-        </span>
-      );
+      return <span className={icon} styles={iconStyles} />;
     }
   }
   getClasses() {
@@ -105,6 +105,9 @@ MEButton.defaultProps = {
   className: "",
   variation: NORMAL,
   disabled: false,
+  iconStyle: {},
+  iconSize: "small",
+  iconColor: "#282828",
 };
 
 export default MEButton;

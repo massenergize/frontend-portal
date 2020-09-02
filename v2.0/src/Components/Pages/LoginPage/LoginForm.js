@@ -90,7 +90,7 @@ class LoginFormBase extends React.Component {
                   onClick={this.signInWithGoogle}
                   id="google"
                   type="button"
-                  className="img-circle google round-me raise me-google-btn"
+                  className="img-circle  round-me raise me-google-btn"
                 >
                   <span className="fa fa-google"></span>
                 </button>
@@ -98,7 +98,7 @@ class LoginFormBase extends React.Component {
                   onClick={this.signInWithFacebook}
                   id="facebook"
                   type="button"
-                  className="img-circle google round-me raise me-facebook-btn"
+                  className="img-circle  round-me raise me-facebook-btn"
                 >
                   <span className="fa fa-facebook"></span>
                 </button>

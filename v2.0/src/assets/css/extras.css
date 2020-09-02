@@ -1,3 +1,158 @@
+.me-modal-wrapper {
+  padding: 20px;
+}
+
+.circle-loader{
+  padding:10px; 
+  height:70px; 
+  width:70px; 
+  background:white;
+  border-radius:100%;
+  border:dotted 10px black;
+  border-top-color:#8dc343;
+  border-right-color:#f57b34;
+  border-bottom-color:#f57b34;
+  border-left-color:#8dc343;
+  animation: g-spin-circle .7s  infinite ;
+}
+
+.me-modal-sm {
+  padding: 20px 25rem !important;
+}
+.me-modal-md {
+  padding: 20px 17rem !important;
+}
+
+.me-close:hover {
+  border-color: #f15f5f !important;
+  background: #f15f5f !important;
+  color: white !important;
+  transition: 0.2s linear;
+}
+.me-modal-content {
+  position: fixed;
+  transform: translate(0%, 4rem);
+  width: 100%;
+  padding: 30px;
+  z-index: 600;
+}
+.me-modal-fade-down {
+  animation: me-fade-down 0.4s forwards;
+  -webkit-animation: me-fade-down 0.4s forwards;
+}
+@keyframes me-fade-down {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+    /* transform: translateY(-100px); */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    /* transform: translateY(0px); */
+  }
+}
+.me-overlay {
+  background: black;
+  opacity: 0.5;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 500;
+  cursor: pointer;
+}
+.move-up-and-vanish {
+  transform: translateY(-100px);
+  opacity: 0;
+  z-index: -1;
+  height: 0px;
+  transition: 0.3s linear;
+}
+
+.move-down-and-appear {
+  transform: translateY(0px);
+  opacity: 1;
+  height: auto;
+  transition: 0.3s linear;
+}
+.me-badge {
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  border-radius: 55px;
+  color: gray;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bolder;
+  background: white;
+}
+.me-section-wrapper-header {
+  /* border-radius:6px; */
+  position: relative;
+  padding: 15px 20px;
+  min-width: 20rem;
+  cursor: pointer;
+  z-index: 20;
+}
+.me-card {
+  padding: 20px;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: block;
+}
+.me-card-hover {
+  cursor: pointer;
+}
+.me-card-hover:hover {
+  box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
+    0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  background: #ecffe2;
+  transition: 0.3s linear;
+}
+.me-section-wrapper-header:hover {
+  background: #5b940e;
+  color: white;
+  transition: 0.2s linear;
+}
+
+.me-section-wrapper-body {
+  /* position: absolute; */
+  padding: 15px;
+  border: dashed 2px #ececec;
+  border-top-width: 0px;
+  width: 100%;
+  min-height: 30px;
+}
+
+.section-green {
+  background: #8dc343;
+  color: white;
+  cursor: pointer;
+}
+.me-table {
+  border-collapse: collapse;
+}
+.me-table-top-banner {
+  background: #0ac131;
+  color: white;
+}
+.me-table-header {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: solid 0px green;
+  min-width: 10vh;
+}
+.me-table-header-hoverable:hover {
+  box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
+    0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  background: white;
+  color: gray;
+  transition: 0.2s linear;
+}
+
 .start-team-btn {
   color: white;
   background: #8dc63f; 
@@ -15,6 +170,20 @@
   background:gray; 
   color:white;
   border-color:gray;
+}
+
+.me-circle-loader{
+  padding:10px; 
+  height:70px; 
+  width:70px; 
+  background:white;
+  border-radius:100%;
+  border:dotted 10px black;
+  border-top-color:#8dc343;
+  border-right-color:#f57b34;
+  border-bottom-color:#f57b34;
+  border-left-color:#8dc343;
+  animation: g-spin-circle .7s  infinite ;
 }
 .me-google-btn{
   /* border-width:0px; */
@@ -38,6 +207,13 @@
   border-color: #4885ed !important;
   color:white !important;
 }
+
+.me-delete-btn:hover{
+  background:red !important; 
+  border-color:red !important;
+  color:white !important; 
+  transition:.2s linear;
+}
 .me-facebook-btn:hover{
   background:white !important; 
   color:#4885ed !important;
@@ -46,7 +222,7 @@
 .me-paragaph{
   margin: 8px 0px;
   /* color:#adabab; */
-  color: #94979a;
+  color: #282828;
 }
 .me-undefault-btn,
 .me-undefault-btn:active,
@@ -461,6 +637,12 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and ( max-width: 767px){
+  .me-modal-sm {
+    padding: 13px !important;
+  }
+  .me-modal-md {
+    padding: 13px !important;
+  }
   .home-page-graph-tweak{
     margin:10px !important;
   }

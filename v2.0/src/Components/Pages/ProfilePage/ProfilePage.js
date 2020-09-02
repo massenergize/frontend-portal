@@ -37,6 +37,9 @@ import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import Dropdown from "react-bootstrap/Dropdown";
 import MEButton from "../Widgets/MEButton";
+import MESectionWrapper from "../Widgets/MESectionWrapper";
+import MECard from "../Widgets/MECard";
+import METextView from "../Widgets/METextView";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -220,7 +223,18 @@ class ProfilePage extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <table className="profile-table" style={{ width: "100%" }}>
+                  <MESectionWrapper headerText="Your Teams ( * Outside This Community )">
+                    {this.renderTeams(user.teams)}
+                    <div style={{ width: "100%", textAlign: "center" }}>
+                      <MEButton
+                        href={this.props.links.teams}
+                        style={{ margin: "5px" }}
+                      >
+                        View all Teams
+                      </MEButton>
+                    </div>
+                  </MESectionWrapper>
+                  {/* <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
                         <th>
@@ -242,9 +256,12 @@ class ProfilePage extends React.Component {
                         </td>
                       </tr>
                     </tbody>
-                  </table>
+                  </table> */}
                   <br />
-                  <table className="profile-table" style={{ width: "100%" }}>
+                  <MESectionWrapper headerText="Your Households">
+                    {this.renderHouseholds(user.households)}
+                  </MESectionWrapper>
+                  {/* <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
                         <th> Your Households </th>
@@ -289,7 +306,7 @@ class ProfilePage extends React.Component {
                         </tr>
                       ) : null}
                     </tbody>
-                  </table>
+                  </table> */}
                   {this.state.deletingHHError ? (
                     <p className="text-danger"> {this.state.deletingHHError}</p>
                   ) : null}
@@ -373,7 +390,7 @@ class ProfilePage extends React.Component {
                     <MEButton
                       onClick={() => this.setState({ printing: true })}
                       variation="normal"
-                      style={{ fontSize: 15 }}
+                      style={{ fontSize: 14 }}
                     >
                       Summary Of Your Actions
                     </MEButton>
@@ -542,20 +559,42 @@ class ProfilePage extends React.Component {
       const team = teams[key];
 
       return (
-        <tr key={key}>
-          <td>
+        // <tr key={key}>
+        //   <td>
+        //     {inThisCommunity(team) ? (
+        //       <Link to={`${this.props.links.teams + "/" + team.id} `}>
+        //         <h6>{team.name}</h6>
+        //       </Link>
+        //     ) : (
+        //       <>
+        //         <h6>{team.name}*</h6>
+        //       </>
+        //     )}
+        //     <p>{team.tagline}</p>
+        //   </td>
+        // </tr>
+        <div key={key}>
+          <MECard
+            to={`${this.props.links.teams + "/" + team.id} `}
+            style={{
+              color: "black",
+              textTransform: "capitalize",
+              borderRadius: 10,
+            }}
+          >
             {inThisCommunity(team) ? (
-              <Link to={`${this.props.links.teams + "/" + team.id} `}>
-                <h6>{team.name}</h6>
-              </Link>
+              // <h6>{team.name}</h6>
+              <METextView type="small" icon="fa fa-users" mediaType="icon">
+                {team.name}
+              </METextView>
             ) : (
-              <>
-                <h6>{team.name}*</h6>
-              </>
+              <METextView type="small" icon="fa fa-users" mediaType="icon">
+                {team.name}
+              </METextView>
             )}
-            <p>{team.tagline}</p>
-          </td>
-        </tr>
+            {team.tagline && <p>{team.tagline}</p>}
+          </MECard>
+        </div>
       );
     });
   }
@@ -596,8 +635,41 @@ class ProfilePage extends React.Component {
         );
       } else {
         return (
-          <tr key={key}>
-            <td>
+          <div key={key} style={{ position: "relative" }}>
+            <MECard style={{ borderRadius: 10 }}>
+              <METextView
+                type="small"
+                style={{ display: "inline-block" }}
+                icon="fa fa-home"
+                mediaType="icon"
+              >
+                {" "}
+                {house.name} &nbsp;
+              </METextView>
+              <div
+                className="put-me-inline pull-right"
+                style={{ position: "absolute", right: 20, bottom: "10%" }}
+              >
+                <MEButton
+                  onClick={() =>
+                    this.setState({ editingHH: house.id, addingHH: false })
+                  }
+                  icon="fa fa-edit"
+                  iconStyle={{ margin: 0 }}
+                  iconSize="large"
+                  style={{ padding: "4px 10px", marginRight: 8 }}
+                />
+                <MEButton
+                  onClick={() => this.deleteHousehold(house)}
+                  className="me-delete-btn"
+                  icon="fa fa-trash"
+                  iconStyle={{ margin: 0 }}
+                  iconSize="large"
+                  style={{ padding: "4px 10px" }}
+                />
+              </div>
+            </MECard>
+            {/* <td>
               {house.name} &nbsp;
               <Tooltip
                 title={house.name}
@@ -636,8 +708,8 @@ class ProfilePage extends React.Component {
                   onClick={() => this.deleteHousehold(house)}
                 ></i>{" "}
               </button>
-            </td>
-          </tr>
+            </td> */}
+          </div>
         );
       }
     });
