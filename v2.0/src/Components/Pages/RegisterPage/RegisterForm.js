@@ -219,13 +219,24 @@ class RegisterFormBase extends React.Component {
                 <MEButton type="submit" disabled={this.isInvalid()}>
                   Create Profile
                 </MEButton>
-                <small style={{margin:"0px 15px"}}><b>OR USE</b></small> 
-                <MEButton onClick={this.signInWithGoogle} className="me-google-btn">Google</MEButton>
-                <MEButton onClick={this.signInWithFacebook} className="me-facebook-btn">Facebook</MEButton>
+                <small style={{ margin: "0px 15px" }}>
+                  <b>OR USE</b>
+                </small>
+                <MEButton
+                  onClick={this.signInWithGoogle}
+                  className="me-google-btn"
+                >
+                  Google
+                </MEButton>
+                <MEButton
+                  onClick={this.signInWithFacebook}
+                  className="me-facebook-btn"
+                >
+                  Facebook
+                </MEButton>
               </div>
             </div>
           </form>
-        
           {/* <div
             style={{
               width: "100%",
@@ -261,8 +272,11 @@ class RegisterFormBase extends React.Component {
             </button>
           </div> */}
           <p>
-           
-            <Link className="energize-link" style={{textDecoration:"underline"}} to={this.props.links.signin}>
+            <Link
+              className="energize-link"
+              style={{ textDecoration: "underline" }}
+              to={this.props.links.signin}
+            >
               I have an account already
             </Link>
           </p>{" "}
@@ -509,23 +523,27 @@ class RegisterFormBase extends React.Component {
             {this.state.error && (
               <p style={{ color: "red" }}> {this.state.error} </p>
             )}
+            <br />
             <div className="clearfix">
               <div className="form-group pull-left">
                 {this.props.auth.emailVerified ? (
-                  <button type="submit" className="thm-btn">
-                    Finish Creating Profile
-                  </button>
-                ) : null}
-                <Tooltip text="Cancelling in the middle of registration will delete your profile">
-                  <button
-                    onClick={this.deleteFirebaseAccount}
-                    style={{ marginTop: 10 }}
-                    className="raise round-me thm-btn red"
+                  <MEButton
+                    style={{ marginRight: 8, padding: "11px 40px" }}
+                    type="submit"
                   >
-                    {" "}
-                    Cancel{" "}
-                  </button>
-                </Tooltip>
+                    Finish Creating Profile
+                  </MEButton>
+                ) : null}
+                {/* <Tooltip text="Cancelling in the middle of registration will delete your profile"> */}
+                <MEButton
+                  variation="accent"
+                  onClick={this.deleteFirebaseAccount}
+                  style={{ marginLeft: 10 }}
+                >
+                  {" "}
+                  Cancel{" "}
+                </MEButton>
+                {/* </Tooltip> */}
               </div>
             </div>
           </form>
@@ -549,7 +567,7 @@ class RegisterFormBase extends React.Component {
     if (!value) {
       this.setState({ captchaConfirmed: false });
     }
-    apiCall('auth.verifyCaptcha', { captchaString: value }).then((response) => {
+    apiCall("auth.verifyCaptcha", { captchaString: value }).then((response) => {
       if (response && response.data && response.data.success)
         this.setState({ captchaConfirmed: true });
     });

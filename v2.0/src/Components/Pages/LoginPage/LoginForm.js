@@ -235,7 +235,6 @@ class LoginFormBase extends React.Component {
 
   inflatePageWithUserData = async (json, email) => {
     if (json.success && json.data) {
-      console.log("EL USER", json.data);
       this.props.reduxLogin(json.data);
       const todo = await apiCall("users.actions.todo.list", { email });
       this.props.reduxLoadTodo(todo.data);

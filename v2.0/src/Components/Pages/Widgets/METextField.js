@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
  * @props style
  * @props onChange | @function
  * @props history  | true or false ( whether or not input field should show history of text)
- * 
+ * @props readonly
  * 
  */
 
@@ -43,6 +43,7 @@ class METextField extends Component {
       isRequired,
       id,
       history,
+      readonly
     } = this.props;
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
@@ -59,6 +60,7 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
+          readonly = {readonly}
         />
       );
     } else if (inputType === "textarea") {
@@ -74,6 +76,7 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
+          readonly = {readonly}
         />
       );
     }
@@ -100,6 +103,7 @@ METextField.propTypes = {
   onChange: PropTypes.func,
   id: PropTypes.string,
   history: PropTypes.bool,
+  readonly: PropTypes.bool,
 };
 
 METextField.defaultProps = {
@@ -113,7 +117,8 @@ METextField.defaultProps = {
   id:"",
   history:true, 
   type:"text", 
-  placeholder:"Enter text here..."
+  placeholder:"Enter text here...",
+  readonly:false,
 
 }
 

@@ -511,9 +511,10 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
+          <Dropdown onSelect={() => null} style={{ display: "inline-block" }} >
             <Dropdown.Toggle
-              style={{ color: "#aaa", background: "white", border: "white" }}
+              style={{ padding:"9px 16px" }}
+              className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
             ></Dropdown.Toggle>
             <Dropdown.Menu
               style={{
@@ -521,9 +522,11 @@ class ProfilePage extends React.Component {
                 borderRadius: "0",
                 padding: "0",
               }}
+              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
             >
               <Dropdown.Item
                 onClick={() => this.setState({ editingProfileForm: "edit" })}
+                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
               >
                 Edit Profile
               </Dropdown.Item>
@@ -535,6 +538,7 @@ class ProfilePage extends React.Component {
                     onClick={() =>
                       this.setState({ editingProfileForm: "password" })
                     }
+                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
                   >
                     Change Password
                   </Dropdown.Item>
@@ -542,6 +546,7 @@ class ProfilePage extends React.Component {
                     onClick={() =>
                       this.setState({ editingProfileForm: "email" })
                     }
+                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
                   >
                     Change Email
                   </Dropdown.Item>
@@ -549,6 +554,7 @@ class ProfilePage extends React.Component {
               ) : null}
               <Dropdown.Item
                 onClick={() => this.setState({ editingProfileForm: "delete" })}
+                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
               >
                 Delete Profile
               </Dropdown.Item>

@@ -112,7 +112,8 @@ License: http://codecanyon.net/licenses
 	text-decoration: none;
 	font-size: 16px;
 	font-weight: 600;
-	color: #888;
+	/* color: #888; */
+	color: #282828;
 	outline: 0;
 	line-height: 1.42857143;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
