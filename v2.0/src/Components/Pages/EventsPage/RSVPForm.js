@@ -72,7 +72,6 @@ class RSVPForm extends React.Component {
 
   addRSVP = (status) => {
     apiCall("events.rsvp", { event_id: this.props.eventid }).then((json) => {
-      console.log(json);
       if (json.success && json.data) {
         this.props.reduxAddRSVP(json.data);
       }
@@ -86,7 +85,6 @@ class RSVPForm extends React.Component {
       rsvp_id: this.props.rsvp.id,
     };
     apiCall("events.rsvp.update", body).then((json) => {
-      console.log(json);
       if (json.success && json.data) {
         this.props.reduxChangeRSVP(json.data);
       }

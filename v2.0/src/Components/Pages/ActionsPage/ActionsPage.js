@@ -251,7 +251,6 @@ class ActionsPage extends React.Component {
 		if (!data) {
 			return;
 		}
-		console.log(tagid, number, this.props.communityData)
 		const body = {
 			data_id: data.id,
 			value: data.value + number > 0 ? data.value + number : 0

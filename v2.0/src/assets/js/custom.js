@@ -877,5 +877,4 @@ jQuery(window).scroll(function () {
 		factCounter();
 	})(jQuery);
 });
-console.log("FUUUUUUCKKKKKK");
 })(window.jQuery);

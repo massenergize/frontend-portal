@@ -1003,7 +1003,6 @@ class OneActionPage extends React.Component {
       value: data.value + number > 0 ? data.value + number : 0,
     };
     apiCall('data.update', body).then((json) => {
-      console.log(json);
       if (json.success) {
         data = {
           ...data,
@@ -1016,7 +1015,6 @@ class OneActionPage extends React.Component {
   changeData(tagid, number) {
     var data = this.props.communityData.filter((data) => {
       if (data.tag) {
-        console.log(data.tag);
         return data.tag === tagid;
       }
       return false;
@@ -1031,7 +1029,6 @@ class OneActionPage extends React.Component {
     };
 
     apiCall('data.update', body).then((json) => {
-      console.log(json);
       if (json.success) {
         data = {
           ...data,

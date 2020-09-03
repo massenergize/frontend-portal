@@ -4,7 +4,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import TeamStatsBarss from "./TeamStatsBars";
+import TeamStatsBars from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
@@ -145,6 +145,7 @@ class OneTeamPage extends React.Component {
               { name: team.name },
             ]}
           />
+          {!team.is_published && <center><p className="error-p" style={{ margin: '15px' }}>Team awaiting approval from Community Admin. Only team admins can access this page, via its direct URL or the teams listed on your profile page.</p></center>}
           <div
             className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
@@ -204,7 +205,7 @@ class OneTeamPage extends React.Component {
 
             <div className="row">
               <div className="team-card-column">
-                <TeamStatsBarss teamStats={teamData} />
+                <TeamStatsBars teamStats={team.is_published && teamData} />
               </div>
             </div>
           </div>
@@ -266,7 +267,7 @@ class OneTeamPage extends React.Component {
                 }
               </div>
               <div className="col-md-7 col-12">
-                <div className="row" style={{ marginBotton: '15px' }}>
+                <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section slight-lift">
                     <h5>
                       <b>Actions Completed</b>
@@ -312,9 +313,11 @@ class OneTeamPage extends React.Component {
                 </div>
               }
             </div>
-            <div style={{ display: 'block' }}>
-              <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={team.tagline} url={window.location.href} />
-            </div>
+            {team.is_published &&
+              <div style={{ display: 'block' }}>
+                <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={team.tagline} url={window.location.href} />
+              </div>
+            }
           </div>
           <br />
         </div>

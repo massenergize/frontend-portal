@@ -71,20 +71,17 @@ class JoiningCommunityForm extends React.Component {
         community_id: this.state.value,
       };
 
-      /** Collects the form data and sends it to the backend */
-      apiCall("communities.join", body)
-        .then((json) => {
-          console.log(json);
-          if (json.success) {
-            this.props.reduxLoadUserCommunities(json.data.communities);
-            this.props.closeForm();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+			/** Collects the form data and sends it to the backend */
+			apiCall('communities.join', body).then(json => {
+				if (json.success) {
+					this.props.reduxLoadUserCommunities(json.data.communities);
+					this.props.closeForm();
+				}
+			}).catch(error => {
+				console.log(error);
+			})
+		}
+	}
 }
 
 const mapStoreToProps = (store) => {
