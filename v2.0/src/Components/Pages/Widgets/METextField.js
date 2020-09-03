@@ -52,7 +52,7 @@ class METextField extends Component {
           id={id}
           className={`${defaultClasses} only-left-border ${className}`}
           name={name}
-          type={type ? type : "text"}
+          type={type}
           placeholder={placeholder}
           value={defaultValue}
           style={styles}
@@ -93,7 +93,6 @@ METextField.propTypes = {
   value: PropTypes.string,
   inputType: PropTypes.string.isRequired,
   className: PropTypes.string,
-  value: PropTypes.string,
   isRequired: PropTypes.bool,
   rows: PropTypes.string,
   defaultValue: PropTypes.string,
@@ -102,5 +101,20 @@ METextField.propTypes = {
   id: PropTypes.string,
   history: PropTypes.bool,
 };
+
+METextField.defaultProps = {
+  name:Math.round(Math.floor(Math.random()*1000)).toString(), 
+  inputType:"input", 
+  className:"", 
+  isRequired:false, 
+  rows:"5", 
+  defaultValue:"", 
+  style:{}, 
+  id:"",
+  history:true, 
+  type:"text", 
+  placeholder:"Enter text here..."
+
+}
 
 export default METextField;

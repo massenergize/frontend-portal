@@ -49,7 +49,7 @@ export default class MESectionWrapper extends Component {
     const { collapsed } = this.state;
     const { style, className, headerText } = this.props;
     return (
-      <div>
+      <div className="me-anime-show-up">
         <div
           style={style}
           className={`me-section-wrapper-header section-green z-depth-1 ${className}`}

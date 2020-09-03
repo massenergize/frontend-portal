@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "./../css/Gallamsey.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import GText from "./GText";
+import METextView from "./METextView";
 /**
  * DATA CONTENT MUST BE AN ARRAY OF ONLY TEXT, ONLY TEXT!
  * @props data | Array of text content to display
+ * @props dataValues | Array of values that will be returned "onItemSelected"
  * @props onItemSelected : a function that gives you the currently selected item
  * @props placeholder
  *
@@ -15,9 +13,13 @@ class MEDropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: null,
+      activeItem: this.props.value,
       drop: false,
       placeholder: this.props.placeholder,
+      dataValues: this.props.dataValues
+        ? this.props.dataValues
+        : this.props.data,
+      data: this.props.data,
     };
     this.toggleDrop = this.toggleDrop.bind(this);
   }
@@ -25,7 +27,7 @@ class MEDropdown extends Component {
     const { drop } = this.state;
     if (drop) {
       return (
-        <div className="g-dropdown" style={{ minHeight: 50 }}>
+        <div className="me-dropdown me-anime-show-up" style={{ minHeight: 50 }}>
           {this.ejectChildren()}
         </div>
       );
@@ -36,39 +38,57 @@ class MEDropdown extends Component {
     this.setState({ drop: !drop });
   };
 
-  onItemClick = (item) => {
+  onItemClick = (item, index) => {
     const { onItemSelected } = this.props;
+    const { dataValues } = this.state;
     this.setState({ activeItem: item });
     this.toggleDrop();
     if (onItemSelected) {
-      onItemSelected(item);
+      const value = dataValues[index];
+      onItemSelected(value);
     }
   };
 
   ejectChildren = () => {
-    const { data } = this.props;
+    const { data, dataValues } = this.state;
     if (!data) return;
+    if (data.length !== dataValues.length) {
+      console.log("Warning: Your data list does not match your value list!!!!");
+    }
     return data.map((item, index) => {
-      const activeClass =
-        item === this.state.activeItem ? "g-drop-item-active" : "";
+      // const relatedValue = dataValues[index];
+      var activeClass = "",
+        childActiveClass = "";
+      if (item === this.state.activeItem) {
+        activeClass = "me-drop-item-active";
+        childActiveClass = "me-drop-p";
+      }
       return (
-        <div key={index}>
-          <GText
+        <div
+          key={index}
+          className={`me-drop-item  ${activeClass}`}
+          onClick={() => {
+            this.onItemClick(item, index);
+          }}
+        >
+          <METextView
+            className={childActiveClass}
             type="p"
-            style={{ padding: 15, cursor: "pointer", display:"block" }}
-            className={`g-drop-item ${activeClass}`}
-            onClick={() => {
-              this.onItemClick(item);
+            style={{
+              padding: 15,
+              cursor: "pointer",
+              display: "block",
+              margin: 0,
             }}
           >
             {item}
-          </GText>
+          </METextView>
         </div>
       );
     });
   };
   activateGhostCurtain = () => {
-    const {drop} = this.state;
+    const { drop } = this.state;
     if (drop)
       return (
         <div
@@ -79,14 +99,14 @@ class MEDropdown extends Component {
   };
 
   render() {
-    const { activeItem, placeholder } = this.state;
+    const { activeItem, placeholder, dataValues, data } = this.state;
     const defaultText = placeholder ? placeholder : "Select Item";
     return (
       <div>
         {this.activateGhostCurtain()}
         <div style={{ position: "relative" }}>
           <div
-            className="g-select-head"
+            className="me-select-head"
             style={{ position: "relative" }}
             onClick={(e) => this.toggleDrop(e)}
           >
@@ -94,7 +114,7 @@ class MEDropdown extends Component {
               {activeItem ? activeItem : defaultText}
             </p>
             <div className="float-right put-me-inline">
-              <FontAwesomeIcon icon={faArrowDown} />
+              <span className="fa fa-arrow-down" />
             </div>
           </div>
           {this.dropItems()}
@@ -108,5 +128,11 @@ MEDropdown.propTypes = {
   data: PropTypes.array,
   onItemSelected: PropTypes.func,
   placeholder: PropTypes.string,
+};
+MEDropdown.defaultProps = {
+  data: [],
+  dataValues: [],
+  placeholder: "Select Item",
+  value: null,
 };
 export default MEDropdown;

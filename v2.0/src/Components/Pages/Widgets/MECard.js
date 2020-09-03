@@ -19,7 +19,7 @@ export default class MECard extends Component {
       return (
         <>
           <Link
-            style={style}
+            style={{color:"black", textTransform:"capitalize",...style}}
             to={to || href}
             className={`${classes} ${hoverable}`}
           >

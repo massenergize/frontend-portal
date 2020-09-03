@@ -67,6 +67,16 @@ class ProfilePage extends React.Component {
     localStorage.removeItem("reg_protocol");
   }
 
+  showJoiningForm() {
+    if (!this.state.joiningCom) {
+      return <small></small>;
+    }
+    return (
+      <JoiningCommunityForm
+        closeForm={() => this.setState({ joiningCom: false })}
+      />
+    );
+  }
   render() {
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
@@ -225,15 +235,21 @@ class ProfilePage extends React.Component {
                   </section>
                   <MESectionWrapper headerText="Your Teams ( * Outside This Community )">
                     {this.renderTeams(user.teams)}
-                    <div style={{ width: "100%", textAlign: "center" }}>
-                      <MEButton
-                        href={this.props.links.teams}
-                        style={{ margin: "5px" }}
-                      >
-                        View all Teams
-                      </MEButton>
-                    </div>
                   </MESectionWrapper>
+                  <div
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: 10,
+                    }}
+                  >
+                    <MEButton
+                      href={this.props.links.teams}
+                      style={{ margin: "5px" }}
+                    >
+                      View all Teams
+                    </MEButton>
+                  </div>
                   {/* <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
@@ -261,6 +277,45 @@ class ProfilePage extends React.Component {
                   <MESectionWrapper headerText="Your Households">
                     {this.renderHouseholds(user.households)}
                   </MESectionWrapper>
+                  <div
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: 10,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {!this.state.editingHH && !this.state.addingHH && (
+                      <MEButton
+                        onClick={() =>
+                          this.setState({
+                            addingHH: true,
+                            editingHH: null,
+                          })
+                        }
+                      >
+                        If you have another household, let us know
+                      </MEButton>
+                    )}
+                  </div>
+                  {!this.state.editingHH && this.state.addingHH && (
+                    <MECard className="me-anime-open-in">
+                      <AddingHouseholdForm
+                        user={this.props.user}
+                        addHousehold={this.addHousehold}
+                        closeForm={() => this.setState({ addingHH: false })}
+                      />
+                      <MEButton
+                        variation="accent"
+                        className="cancel-btn-position-fix"
+                        onClick={() =>
+                          this.setState({ addingHH: false, editingHH: null })
+                        }
+                      >
+                        Cancel
+                      </MEButton>
+                    </MECard>
+                  )}
                   {/* <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
@@ -311,7 +366,27 @@ class ProfilePage extends React.Component {
                     <p className="text-danger"> {this.state.deletingHHError}</p>
                   ) : null}
                   <br />
+                  <MESectionWrapper headerText="Your Communities">
+                    {this.renderCommunities(user.communities)}
+                    {this.showJoiningForm()}
+                  </MESectionWrapper>
+                  {!this.state.joiningCom && (
+                    <div
+                      style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      <MEButton
+                        onClick={() => this.setState({ joiningCom: true })}
+                      >
+                        Join another Community
+                      </MEButton>
+                    </div>
+                  )}
 
+                  {/* 
                   <table className="profile-table" style={{ width: "100%" }}>
                     <tbody>
                       <tr>
@@ -341,7 +416,7 @@ class ProfilePage extends React.Component {
                         )}
                       </tr>
                     </tbody>
-                  </table>
+                  </table> */}
                   {this.state.leaveComError ? (
                     <p className="text-danger"> {this.state.leaveComError}</p>
                   ) : null}
@@ -356,6 +431,7 @@ class ProfilePage extends React.Component {
                     paddingRight: "0px",
                     marginRight: "0px",
                     marginTop: 90,
+                    height: "fit-content",
                   }}
                 >
                   {/* <h3 className="col-12 text-right">
@@ -527,8 +603,39 @@ class ProfilePage extends React.Component {
     return Object.keys(communities).map((key) => {
       const community = communities[key];
       return (
-        <tr key={key}>
-          <td>
+        <div key={key}>
+          <MECard style={{ borderRadius: 10 }}>
+            <METextView
+              type="small"
+              style={{ display: "inline-block" }}
+              icon="fa fa-globe"
+              mediaType="icon"
+            >
+              {" "}
+              {community.name} &nbsp;
+            </METextView>
+            <div
+              className="put-me-inline pull-right"
+              style={{ position: "absolute", right: 20, bottom: "2rem" }}
+            >
+              <MEButton
+                to={`/${community.subdomain}`}
+                icon="fa fa-eye"
+                iconStyle={{ margin: 0 }}
+                iconSize="large"
+                style={{ padding: "4px 10px" }}
+              />
+              <MEButton
+                onClick={() => this.leaveCommunity(community)}
+                className="me-delete-btn"
+                icon="fa fa-trash"
+                iconStyle={{ margin: 0 }}
+                iconSize="large"
+                style={{ padding: "4px 10px" }}
+              />
+            </div>
+          </MECard>
+          {/* <td>
             {" "}
             <a href={`/${community.subdomain}`}> {community.name} </a>
           </td>
@@ -541,8 +648,8 @@ class ProfilePage extends React.Component {
               {" "}
               <i className="fa fa-trash"></i>
             </button>{" "}
-          </td>
-        </tr>
+          </td> */}
+        </div>
       );
     });
   }
@@ -577,8 +684,6 @@ class ProfilePage extends React.Component {
           <MECard
             to={`${this.props.links.teams + "/" + team.id} `}
             style={{
-              color: "black",
-              textTransform: "capitalize",
               borderRadius: 10,
             }}
           >
@@ -603,8 +708,8 @@ class ProfilePage extends React.Component {
       const house = households[key];
       if (this.state.editingHH === house.id) {
         return (
-          <tr key={key}>
-            <td colSpan={3}>
+          <div key={key}>
+            <MECard className="me-anime-open-in">
               <AddingHouseholdForm
                 householdID={house.id}
                 name={house.name}
@@ -614,24 +719,17 @@ class ProfilePage extends React.Component {
                 editHousehold={this.editHousehold}
                 closeForm={() => this.setState({ editingHH: null })}
               />
-              <button
-                className=""
+              <MEButton
+                variation="accent"
+                className="cancel-btn-position-fix"
                 onClick={() =>
                   this.setState({ addingHH: false, editingHH: null })
                 }
-                style={{
-                  color: "white",
-                  width: "99%",
-                  padding: 13,
-                  borderRadius: 6,
-                  background: "indianred",
-                  borderColor: "indianred",
-                }}
               >
                 Cancel
-              </button>
-            </td>
-          </tr>
+              </MEButton>
+            </MECard>
+          </div>
         );
       } else {
         return (
