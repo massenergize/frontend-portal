@@ -77,6 +77,30 @@ class ProfilePage extends React.Component {
       />
     );
   }
+  showCommunitiesSection() {
+    const { user } = this.props;
+    return (
+      <div>
+        <MESectionWrapper headerText="Your Communities">
+          {this.renderCommunities(user.communities)}
+        </MESectionWrapper>
+        {this.showJoiningForm()}
+        {!this.state.joiningCom && (
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              marginTop: 10,
+            }}
+          >
+            <MEButton onClick={() => this.setState({ joiningCom: true })}>
+              Join another Community
+            </MEButton>
+          </div>
+        )}
+      </div>
+    );
+  }
   render() {
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
@@ -112,7 +136,11 @@ class ProfilePage extends React.Component {
     console.log(this.props.done);
     return (
       <>
-        <div className="boxed_wrapper" onClick={this.clearError}>
+        <div
+          className="boxed_wrapper"
+          onClick={this.clearError}
+          style={{ minHeight: 1950 }}
+        >
           <BreadCrumbBar links={[{ name: "Profile" }]} />
           <div className="container">
             {this.state.printing ? (
@@ -366,25 +394,9 @@ class ProfilePage extends React.Component {
                     <p className="text-danger"> {this.state.deletingHHError}</p>
                   ) : null}
                   <br />
-                  <MESectionWrapper headerText="Your Communities">
-                    {this.renderCommunities(user.communities)}
-                    {this.showJoiningForm()}
-                  </MESectionWrapper>
-                  {!this.state.joiningCom && (
-                    <div
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        marginTop: 10,
-                      }}
-                    >
-                      <MEButton
-                        onClick={() => this.setState({ joiningCom: true })}
-                      >
-                        Join another Community
-                      </MEButton>
-                    </div>
-                  )}
+
+                  {/* --------------- Dont display communities part when a user is editing -------- */}
+                  {!this.state.editingHH && this.showCommunitiesSection()}
 
                   {/* 
                   <table className="profile-table" style={{ width: "100%" }}>
@@ -596,14 +608,14 @@ class ProfilePage extends React.Component {
   renderCommunities(communities) {
     if (!communities)
       return (
-        <tr>
-          <td colSpan={2}>You haven't joined any communities yet</td>
-        </tr>
+        <div style={{ textAlign: "center" }}>
+          <METextView>You haven't joined any communities yet</METextView>
+        </div>
       );
     return Object.keys(communities).map((key) => {
       const community = communities[key];
       return (
-        <div key={key}>
+        <div key={key} style={{ position: "relative" }}>
           <MECard style={{ borderRadius: 10 }}>
             <METextView
               type="small"
@@ -616,7 +628,7 @@ class ProfilePage extends React.Component {
             </METextView>
             <div
               className="put-me-inline pull-right"
-              style={{ position: "absolute", right: 20, bottom: "2rem" }}
+              style={{ position: "absolute", right: 20, bottom: "1vh" }}
             >
               <MEButton
                 to={`/${community.subdomain}`}
@@ -635,20 +647,6 @@ class ProfilePage extends React.Component {
               />
             </div>
           </MECard>
-          {/* <td>
-            {" "}
-            <a href={`/${community.subdomain}`}> {community.name} </a>
-          </td>
-          <td>
-            {" "}
-            <button
-              className="remove-btn"
-              onClick={() => this.leaveCommunity(community)}
-            >
-              {" "}
-              <i className="fa fa-trash"></i>
-            </button>{" "}
-          </td> */}
         </div>
       );
     });
@@ -666,20 +664,6 @@ class ProfilePage extends React.Component {
       const team = teams[key];
 
       return (
-        // <tr key={key}>
-        //   <td>
-        //     {inThisCommunity(team) ? (
-        //       <Link to={`${this.props.links.teams + "/" + team.id} `}>
-        //         <h6>{team.name}</h6>
-        //       </Link>
-        //     ) : (
-        //       <>
-        //         <h6>{team.name}*</h6>
-        //       </>
-        //     )}
-        //     <p>{team.tagline}</p>
-        //   </td>
-        // </tr>
         <div key={key}>
           <MECard
             to={`${this.props.links.teams + "/" + team.id} `}

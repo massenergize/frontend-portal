@@ -15,7 +15,8 @@
 }
 .cancel-btn-position-fix{
   position: absolute;
-  right: 40px;
+  /* right: 40px; */
+  right: 7px;
   bottom: 45px;
 }
 .me-dropdown {
@@ -54,6 +55,8 @@
 .me-select-head p{
   color:green;
 }
+
+
 .me-select-head:hover {
   background: #f57b34;
   border-color:  #f57b34;
@@ -274,6 +277,9 @@
   border-color: gray;
 }
 
+.me-universal-btn:hover .me-btn-icon{
+  color:white !important;
+}
 .me-circle-loader {
   padding: 10px;
   height: 70px;
@@ -736,6 +742,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .i-need-my-space{
+    display:block !important;
+    width:100%;
+  }
   .me-modal-sm {
     padding: 13px !important;
   }

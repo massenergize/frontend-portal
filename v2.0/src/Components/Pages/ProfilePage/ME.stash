@@ -49,3 +49,22 @@
             <option value="WV">West Virginia</option>
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
+
+
+
+
+            <option value="--">--</option>
+          {Object.keys(this.props.communities).map((key) => {
+            const community = this.props.communities[key];
+            if (
+              this.props.user.communities.filter((com) => {
+                return com.id === community.id;
+              }).length === 0
+            )
+              return (
+                <option key={key} value={community.id}>
+                  {community.name}
+                </option>
+              );
+            return null;
+          })}

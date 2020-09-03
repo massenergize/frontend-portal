@@ -69,7 +69,7 @@ class AddingHouseholdForm extends React.Component {
             <b>Type</b>
           </METextView>
           <div
-            className="put-me-inline"
+            className="put-me-inline i-need-my-space"
             style={{ width: "24%", marginLeft: 10 }}
           >
             <input
@@ -90,7 +90,7 @@ class AddingHouseholdForm extends React.Component {
             </label>
           </div>
           <div
-            className=" put-me-inline"
+            className=" put-me-inline i-need-my-space"
             style={{ width: "20%", marginLeft: 5 }}
           >
             <input

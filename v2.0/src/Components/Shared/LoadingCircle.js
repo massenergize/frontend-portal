@@ -5,9 +5,11 @@ import React from "react";
  */
 class LoadingCircle extends React.Component {
   render() {
-    let style = {
-      width: "10em",
-    };
+    const { width, height } = this.props;
+    var style = {};
+    if (width && height) {
+      style = { width, height };
+    }
     return (
       <div className="d-flex height-100vh justify-content-center align-items-center">
         {/* <img
@@ -15,7 +17,7 @@ class LoadingCircle extends React.Component {
           alt="Loading..."
           style={style}
         /> */}
-        <div className="me-circle-loader"></div>
+        <div className="me-circle-loader" style={style}></div>
       </div>
     );
   }
