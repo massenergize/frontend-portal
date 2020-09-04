@@ -39,7 +39,7 @@ class ContactAdminModal extends React.Component {
               >
                 Send
             </button>
-              {loading && <img src={loader} className="team-modal-loader team-modal-inline" />}
+              {loading && <img src={loader} alt="" className="team-modal-loader team-modal-inline" />}
               {error && <p className className="error-p team-modal-error-p team-modal-inline">{error}</p>}
               <br />
             </div>

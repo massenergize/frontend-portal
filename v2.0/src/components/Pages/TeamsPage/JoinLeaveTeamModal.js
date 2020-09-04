@@ -43,7 +43,7 @@ class JoinLeaveTeamModal extends React.Component {
             >
               {this.leaving ? "Leave Team" : "Join Team"}
             </button>
-            {loading && <img src={loader} className="team-modal-loader team-modal-inline" />}
+            {loading && <img src={loader} alt="" className="team-modal-loader team-modal-inline" />}
             {error && <p className className="error-p team-modal-error-p team-modal-inline">{error}</p>}
           </div>
         </>
