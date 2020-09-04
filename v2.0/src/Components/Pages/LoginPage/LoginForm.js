@@ -3,6 +3,7 @@ import { withFirebase } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import MEButton from "./../Widgets/MEButton";
 import {
   facebookProvider,
   googleProvider,
@@ -40,11 +41,11 @@ class LoginFormBase extends React.Component {
     const { email, password, error } = this.state;
     return (
       <div
-        className="styled-form login-form mob-login-white-cleaner"
-        style={{ height: window.screen.height, marginTop: 100 }}
+        className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"
+        style={{ height: window.screen.height, marginTop: 40 }}
       >
         <div
-          className="z-depth-1 mob-login-card-fix"
+          className="z-depth-float mob-login-card-fix"
           style={{ padding: 55, borderRadius: 12 }}
         >
           <div className="section-title style-2 mob-sweet-b-10">
@@ -78,13 +79,9 @@ class LoginFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                <button
-                  type="submit"
-                  disabled={this.isInvalid()}
-                  className="thm-btn round-me raise"
-                >
-                  Sign in
-                </button>
+                <MEButton type="submit" disabled={this.isInvalid()}>
+                  Sign In
+                </MEButton>
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
@@ -93,7 +90,7 @@ class LoginFormBase extends React.Component {
                   onClick={this.signInWithGoogle}
                   id="google"
                   type="button"
-                  className="img-circle google round-me raise"
+                  className="img-circle  round-me raise me-google-btn"
                 >
                   <span className="fa fa-google"></span>
                 </button>
@@ -101,8 +98,7 @@ class LoginFormBase extends React.Component {
                   onClick={this.signInWithFacebook}
                   id="facebook"
                   type="button"
-                  className="img-circle google round-me raise"
-                  style={{ background: "#398add" }}
+                  className="img-circle  round-me raise me-facebook-btn"
                 >
                   <span className="fa fa-facebook"></span>
                 </button>
@@ -223,8 +219,12 @@ class LoginFormBase extends React.Component {
   fetchMassToken = async (fireToken, email) => {
     const body = { idToken: fireToken };
     apiCall("auth.login", body)
-      .then((massToken) => {
-        this.fetchAndLogin(email);
+      .then((userData) => {
+        console.log("LE TOKEN", userData);
+        this.inflatePageWithUserData(userData, email);
+        // this.fetchAndLogin(email).then((success) => {
+        //   if (success) console.log("yay");
+        // });
       })
       .catch((err) => {
         window.localStorage.setItem("reg_protocol", "show");
@@ -233,29 +233,46 @@ class LoginFormBase extends React.Component {
       });
   };
 
-  fetchAndLogin = async (email) => {
-    try {
-      this.props.tryingToLogin(true);
-      const json = await apiCall("auth.whoami");
-      if (json.success && json.data) {
-        this.props.reduxLogin(json.data);
-        const todo = await apiCall("users.actions.todo.list", { email });
-        this.props.reduxLoadTodo(todo.data);
-        const done = await apiCall("users.actions.completed.list", { email });
-        this.props.reduxLoadDone(done.data);
-        this.props.tryingToLogin(false);
-        return true;
-      }
-
-      console.log("fetch and login failed");
+  inflatePageWithUserData = async (json, email) => {
+    if (json.success && json.data) {
+      this.props.reduxLogin(json.data);
+      const todo = await apiCall("users.actions.todo.list", { email });
+      this.props.reduxLoadTodo(todo.data);
+      const done = await apiCall("users.actions.completed.list", { email });
+      this.props.reduxLoadDone(done.data);
       this.props.tryingToLogin(false);
-      return false;
-    } catch (err) {
-      console.log(err);
-      this.props.tryingToLogin(false);
-      return false;
+      return true;
     }
+    console.log("fetch and login failed");
+    this.props.tryingToLogin(false);
+    return false;
   };
+
+  //AUTH LOGIN NOW RETURNS USER DATA ALREADY, THERE IS NO NEED FOR /whoami
+  //   fetchAndLogin = async (email) => {
+  //     try {
+  //       this.props.tryingToLogin(true);
+  //       const json = await apiCall("auth.whoami");
+  //       if (json.success && json.data) {
+  //         console.log("EL USER", json.data);
+  //         this.props.reduxLogin(json.data);
+  //         const todo = await apiCall("users.actions.todo.list", { email });
+  //         this.props.reduxLoadTodo(todo.data);
+  //         const done = await apiCall("users.actions.completed.list", { email });
+  //         this.props.reduxLoadDone(done.data);
+  //         this.props.tryingToLogin(false);
+  //         return true;
+  //       }
+
+  //       console.log("fetch and login failed");
+  //       this.props.tryingToLogin(false);
+  //       return false;
+  //     } catch (err) {
+  //       console.log(err);
+  //       this.props.tryingToLogin(false);
+  //       return false;
+  //     }
+  //   };
 }
 
 //composes the login form by using higher order components to make it have routing and firebase capabilities

@@ -1,6 +1,13 @@
 import * as moment from "moment";
 import React from "react";
 
+export function getPropsArrayFromJsonArray(array, property){
+  if(!array || !property) return [];
+  const toGo = []; 
+  array.forEach(item => toGo.push(item[property])); 
+  return toGo;
+}
+
 function sameYear(date1, date2) {
   return date1.getFullYear() === date2.getFullYear();
 }

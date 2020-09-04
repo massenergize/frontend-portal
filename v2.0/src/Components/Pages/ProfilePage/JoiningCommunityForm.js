@@ -1,51 +1,75 @@
-import React from 'react';
-import { apiCall } from '../../../api/functions'
-import { connect } from 'react-redux'
-import { reduxLoadUserCommunities } from '../../../redux/actions/userActions'
+import React from "react";
+import { apiCall } from "../../../api/functions";
+import { connect } from "react-redux";
+import { reduxLoadUserCommunities } from "../../../redux/actions/userActions";
+import MEButton from "../Widgets/MEButton";
+import MECard from "../Widgets/MECard";
+import METextView from "../Widgets/METextView";
+import { getPropsArrayFromJsonArray } from "../../Utils";
+import MEDropdown from "../Widgets/MEDropdown";
 
 class JoiningCommunityForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			value: '--'
-		};
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "--",
+    };
 
-		this.onChange = this.onChange.bind(this);
-	}
+    this.onChange = this.onChange.bind(this);
+  }
 
-	render() {
-		return (
-			<>
-				<h6 style={{ display: 'inline-block' }}> Community </h6>
-				&nbsp;
-                <select value={this.state.value}className='form-control' onChange={this.onChange}>
-					<option value='--'>--</option>
-					{Object.keys(this.props.communities).map(key => {
-						const community = this.props.communities[key];
-						if (this.props.user.communities.filter(com => { return com.id === community.id }).length === 0)
-							return <option key={key} value={community.id}>{community.name}</option>
-						return null;
-					})}
-				</select>
-				<button className='thm-btn' style={{ width: '99%',padding:8 }} onClick={this.onSubmit}>Join</button>
-				<button className="" style={{ color:'white',width: '99%',padding:13,borderRadius:6,background:'indianred',borderColor:'indianred' }} onClick={this.props.closeForm}>Cancel</button>
-			</>
-		);
-	}
+  getAllCommunities() {
+    const userComms = this.props.user.communities;
+    const commArr = [];
+    if (!this.props.communities) return { names: [], ids: [] };
+    Object.keys(this.props.communities).map((key) => {
+      const com = this.props.communities[key];
+      if (userComms) {
+        var alreadInCommunity = userComms.filter(
+          (community) => community.id === com.id
+        );
+        if (alreadInCommunity.length !== 0) return; // dont show the communities a user is already a part of
+      }
+      commArr.push(com);
+    });
+    var commNames = getPropsArrayFromJsonArray(commArr, "name");
+    var ids = getPropsArrayFromJsonArray(commArr, "id");
+    return { names: commNames, ids };
+  }
+  render() {
+    const { names, ids } = this.getAllCommunities();
+    return (
+      <MECard className="me-anime-open-in">
+        <METextView> Community </METextView>
+        &nbsp;
+        <MEDropdown
+          data={names}
+          dataValues={ids}
+          value={names[ids.indexOf(this.state.value)]}
+          onItemSelected={this.onChange}
+        ></MEDropdown>
+        <br />
+        <MEButton onClick={this.onSubmit}>Join</MEButton>
+        <MEButton variation="accent" onClick={this.props.closeForm}>
+          Cancel
+        </MEButton>
+      </MECard>
+    );
+  }
 
-	//updates the state when form elements are changed
-	onChange(event) {
-		this.setState({
-			value: event.target.value,
-		});
-	};
+  //updates the state when form elements are changed
+  onChange(item) {
+    this.setState({
+      value: item,
+    });
+  }
 
-	onSubmit = () => {
-		if (this.state.value !== '--') {
-			const body = {
-				user_id: this.props.user.id,
-				community_id: this.state.value
-			}
+  onSubmit = () => {
+    if (this.state.value !== "--") {
+      const body = {
+        user_id: this.props.user.id,
+        community_id: this.state.value,
+      };
 
 			/** Collects the form data and sends it to the backend */
 			apiCall('communities.join', body).then(json => {
@@ -60,15 +84,15 @@ class JoiningCommunityForm extends React.Component {
 	}
 }
 
-
-const mapStoreToProps = store => {
-	return {
-		communities: store.page.communities,
-		user: store.user.info
-	}
-}
-const mapDispatchToProps = { reduxLoadUserCommunities }
+const mapStoreToProps = (store) => {
+  return {
+    communities: store.page.communities,
+    user: store.user.info,
+  };
+};
+const mapDispatchToProps = { reduxLoadUserCommunities };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
-export default connect(mapStoreToProps, mapDispatchToProps)(JoiningCommunityForm);
-
-
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(JoiningCommunityForm);
