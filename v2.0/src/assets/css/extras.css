@@ -1,6 +1,62 @@
+
+.me-check-container:hover .me-check-square {
+  background:#f57b34;
+  transition:.3s ease-in-out;
+}
+
+.me-check-container{
+  color:#5a5959;
+}
+
+.me-check-container:hover{
+  color:#f57b34;
+  transition:.3s ease-in-out;
+}
+.me-round-sharp{
+  border-radius:55px !important;
+}
+.me-check-square-active{
+  background:#8dc343 !important;
+  transition:4s ease-in-out;
+}
+
+.me-floating-check-active{
+  animation: do-open-in .4s forwards;
+}
+.me-open-in{
+  animation-delay: .4s;
+  animation:do-show-in .6s forwards;
+}
+
 .me-modal-wrapper {
   padding: 20px;
 }
+.me-check-square{
+  display:inline-block; 
+  height:24px; 
+  width:24px; 
+  background:#e6e3e3;
+  margin-right:6px;
+  vertical-align:center;
+  margin-bottom: -6px;
+  border-radius:3px
+}
+.me-floating-check{
+  display:inline-block; 
+  width:10px; 
+  height:10px; 
+  background:white; 
+  position: absolute;
+  bottom:8px; 
+  left:7px;
+  border-radius:2px;
+  
+}
+.small-form-spacing{
+  margin-top:10px; 
+  margin-bottom:20px;
+}
+
 .reset-margin {
   margin: 0;
 }

@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "./../css/Gallamsey.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import GText from "./GText";
-import GTextField from "./GTextField";
-import { textIsEmpty } from "../utils/useful";
+import METextView from "./METextView";
+import METextField from "./METextField";
+
 /**
  * DATA CONTENT MUST BE AN ARRAY OF ONLY TEXT, ONLY TEXT!
  * @props data | Array of text content to display
@@ -17,7 +14,7 @@ import { textIsEmpty } from "../utils/useful";
  * @props persistOnSelect = true OR false | Determines whether or not input should be field with currently selected item
  *
  */
-class MEAutocomplete extends Component {
+class MEAutoComplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +66,7 @@ class MEAutocomplete extends Component {
         item === this.state.activeItem ? "g-drop-item-active" : "";
       return (
         <div key={index}>
-          <GText
+          <METextView
             type="p"
             style={{ padding: 15, cursor: "pointer", display: "block" }}
             className={`g-drop-item ${activeClass}`}
@@ -78,7 +75,7 @@ class MEAutocomplete extends Component {
             }}
           >
             {item}
-          </GText>
+          </METextView>
         </div>
       );
     });
@@ -129,7 +126,7 @@ class MEAutocomplete extends Component {
       <div>
         {this.activateGhostCurtain()}
         <div style={{ position: "relative" }}>
-          <GTextField
+          <METextField
             id={this.props.id}
             defaultValue={text ? text : ""}
             inputType="input"
@@ -150,7 +147,7 @@ class MEAutocomplete extends Component {
   }
 }
 
-MEAutocomplete.propTypes = {
+MEAutoComplete.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string),
   onItemSelected: PropTypes.func,
   onChange: PropTypes.func,
@@ -160,4 +157,4 @@ MEAutocomplete.propTypes = {
   id: PropTypes.string,
   persistOnSelect: PropTypes.bool,
 };
-export default MEAutocomplete;
+export default MEAutoComplete;

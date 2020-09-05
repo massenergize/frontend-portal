@@ -95,7 +95,12 @@ class MEButton extends Component {
     );
   }
   render() {
-    return <div className="put-me-inline">{this.ejectComponent()}</div>;
+    const { containerStyle } = this.props;
+    return (
+      <div className="put-me-inline" style={containerStyle}>
+        {this.ejectComponent()}
+      </div>
+    );
   }
 }
 
@@ -108,6 +113,7 @@ MEButton.defaultProps = {
   iconStyle: {},
   iconSize: "small",
   iconColor: "#282828",
+  containerStyle: {},
 };
 
 export default MEButton;
