@@ -8,12 +8,21 @@
   color:#5a5959;
 }
 
+.me-text-color-app{
+  color:#8dc343;
+}
 .me-check-container:hover{
   color:#f57b34;
   transition:.3s ease-in-out;
 }
 .me-round-sharp{
   border-radius:55px !important;
+}
+.me-uploader-container {
+  padding: 35px;
+  width: 100%;
+  border: dashed 2px gainsboro;
+  min-height: 30vh;
 }
 .me-check-square-active{
   background:#8dc343 !important;

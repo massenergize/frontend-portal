@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import MEButton from "./MEButton";
 import MECard from "./MECard";
 
-
 class MEUploader extends Component {
   constructor(props) {
     super(props);
@@ -36,15 +35,14 @@ class MEUploader extends Component {
               <center>
                 <span
                   className="fa fa-image"
-                  style={{ width: 100, height: 100 }}
+                  style={{ fontSize: "4rem" }}
                 ></span>
               </center>
             </MECard>
-            <p style={{ margin: 15, color: "#d2cfcf" }}>{file.name}</p>
-            <MEButton
-              className="g-uploader-btn-class"
-              onClick={(e) => this.searchForImage(e)}
-            >
+            <p className="me-text-color-app" style={{ margin: 15 }}>
+              {file.name}
+            </p>
+            <MEButton onClick={(e) => this.searchForImage(e)}>
               Change Image
             </MEButton>
           </center>
@@ -54,16 +52,11 @@ class MEUploader extends Component {
 
     return (
       <center>
-        <span className="fa fa-upload" size="6x" color="#d2cfcf" />
+        <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
         <p style={{ margin: 15, color: "#d2cfcf" }}>
           Choose an image from you device
         </p>
-        <MEButton
-          className="g-uploader-btn-class"
-          onClick={(e) => this.searchForImage(e)}
-        >
-          Choose
-        </MEButton>
+        <MEButton onClick={(e) => this.searchForImage(e)}>Choose</MEButton>
       </center>
     );
   }
@@ -71,7 +64,7 @@ class MEUploader extends Component {
     const { style, className } = this.props;
     return (
       <div style={{ position: "relative", ...style }} className={className}>
-        <div className="g-uploader-container">{this.switchStates()}</div>
+        <div className="me-uploader-container">{this.switchStates()}</div>
         <input
           type="file"
           onChange={(e) => {
