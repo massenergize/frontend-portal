@@ -110,10 +110,6 @@ class ContactPageForm extends Component {
         history: false,
       },
       {
-        type:"file", 
-        name:"file", 
-      },
-      {
         type: "input",
         name: "title",
         placeholder: "Your Title *",

@@ -1,3 +1,84 @@
+.snackbar-main-container{
+  width:100%; 
+  position:absolute; 
+  bottom:20px; 
+  padding:10px 10%;
+
+}
+.snackbar-main-container p {
+  color:white;
+  font-weight:bolder;
+}
+.snackbar-success {
+  background:linear-gradient(to right , #8dc343, rgb(30 189 145));
+  
+}
+.snackbar-accent {
+  background: linear-gradient(to right , #ea5b08, #ffc107);
+  
+} 
+.snackbar-union {
+  background: linear-gradient(to right , #6dbd00, #b54510);
+  
+}
+.snackbar-plain p{
+  color:#282828;
+}
+
+.me-show-from-bottom{
+  animation-delay:.2s;
+  animation:from-bottom-scale .2s forwards;
+}
+
+.me-anchor-link-new{
+  /* color:#0d5813; */
+  color:#583d0d;
+}
+
+.me-anchor-link-new:hover{
+  color:#ea5b08;
+}
+.me-testimonial-about{
+  display:flex;
+  border:dashed 0px #d6d6d6; 
+  /* border-top-width:2px;  */
+  border-bottom-width:2px; 
+  padding:15px; 
+  /* color:#615c5c; */
+  color:white;
+  background:linear-gradient(to right , #ea5b08, #ffc107);
+}
+.me-testimonial-content-box{
+  /* padding:15px;  */
+  position:absolute; 
+  bottom:0px; 
+  width:100%; 
+  margin-top:-10px; 
+  min-height: 30vh;
+  z-index:50;
+  background:white;
+}
+
+.me-testimonial-img{
+  width:100%; 
+  height:56vh; 
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.testimonial-link-holder{
+  border:dashed 2px #f1e4e4;
+  padding:5px 10px;
+  border-radius:5px;
+}
+
+
+
+
+
+
+
+
 
 .me-check-container:hover .me-check-square {
   background:#f57b34;
@@ -830,6 +911,15 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .snackbar-main-container{
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    padding: 10px 2%;
+  }
+  .mob-snackbar-text{
+    font-size:.8rem !important;
+  }
   .i-need-my-space {
     display: block !important;
     width: 100%;

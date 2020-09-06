@@ -9,7 +9,12 @@ import PageTitle from "../../Shared/PageTitle";
 import Funnel from "./../EventsPage/Funnel";
 import leafy from "./leafy.png";
 import StoryModal from "./StoryModal";
-import * as moment from 'moment';
+import * as moment from "moment";
+import METestimonialCard from "./METestimonialCard";
+import MECard from "../Widgets/MECard";
+import MEButton from "../Widgets/MEButton";
+import MEModal from "../Widgets/MEModal";
+import MELink from "../Widgets/MELink";
 
 class StoriesPage extends React.Component {
   constructor(props) {
@@ -25,9 +30,11 @@ class StoriesPage extends React.Component {
         title: null,
         desc: null,
         ano: null,
-        user: null
-      }
+        user: null,
+      },
+      testimonialModal: false,
     };
+    this.toggleTestimonialModal = this.toggleTestimonialModal.bind(this);
   }
   findCommon() {
     //everytime there is a change in "check_values",
@@ -59,7 +66,7 @@ class StoriesPage extends React.Component {
     tagID = Number(tagID);
     const arr = this.state.check_values ? this.state.check_values : [];
     if (arr.includes(tagID)) {
-      var filtered = arr.filter(item => item !== tagID);
+      var filtered = arr.filter((item) => item !== tagID);
       this.setState({ check_values: filtered.length === 0 ? null : filtered });
     } else {
       this.setState({ check_values: [tagID, ...arr] });
@@ -79,12 +86,52 @@ class StoriesPage extends React.Component {
       );
     }
   }
+  toggleTestimonialModal() {
+    this.setState({ testimonialModal: !this.state.testimonialModal });
+  }
+  renderAddTestmonialBtn() {
+    if (this.props.user) {
+      return (
+        <MEButton
+          mediaType="icon"
+          icon="fa fa-plus"
+          style={{ fontSize: 15 }}
+          onClick={this.scrollToForm}
+        >
+          Add My Testimonial
+        </MEButton>
+      );
+    }
+    return (
+      <MELink hef={this.props.links.signin}>Sign In to submit a story</MELink>
+    );
+  }
+
+  renderTestimonialForm() {
+    if (this.props.user) {
+      return (
+        <StoryForm
+          uid={this.props.user.id}
+          close={this.toggleTestimonialModal}
+        />
+      );
+    }
+  }
+  scrollToForm() {
+    document.getElementById("testimonial-area").scrollIntoView({
+      behavior: "smooth",
+      alignToTop: true,
+      block: "start",
+    });
+  }
   render() {
     if (!this.props.pageData)
-      return <ErrorPage
-        errorMessage="Data unavailable"
-        errorDescription="Unable to load Testimonials data"
-      />;
+      return (
+        <ErrorPage
+          errorMessage="Data unavailable"
+          errorDescription="Unable to load Testimonials data"
+        />
+      );
 
     const stories =
       this.findCommon().length > 0 ? this.findCommon() : this.props.stories;
@@ -94,6 +141,7 @@ class StoriesPage extends React.Component {
 
     return (
       <>
+        {/* <MEModal ><h1>Semeeee</h1></MEModal> */}
         {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
@@ -101,12 +149,13 @@ class StoriesPage extends React.Component {
             <div className="container">
               <div className="row masonary-layout">
                 <div className="col-md-3 phone-vanish">
-                  <div
-                    className="event-filter raise mob-login-white-cleaner"
+                  <MECard
+                    className=" mob-login-white-cleaner z-depth-1"
                     style={{
+                      marginBottom: 10,
                       marginTop: 48,
                       padding: "45px 28px",
-                      borderRadius: 15
+                      borderRadius: 15,
                     }}
                   >
                     <h4>Filter by...</h4>
@@ -116,34 +165,36 @@ class StoriesPage extends React.Component {
                       search={() => {}}
                       foundNumber={0}
                     />
-                  </div>
+                  </MECard>
+                  {this.renderAddTestmonialBtn()}
                 </div>
-                <div className="col-md-8 col-lg-8 col-sm-12 ">
+                <div className="col-md-9 col-lg-9 col-sm-12 ">
                   <PageTitle>Testimonials</PageTitle>
                   <div
                     className="row"
                     style={{
                       // maxHeight: 700,
                       // overflowY: "scroll",
-                      paddingBottom: 50
+                      paddingBottom: 50,
                     }}
                   >
                     {this.renderStories(stories)}
                   </div>
+                  <div id="testimonial-area" style={{ height: 100 }}></div>
+                  <div>{this.renderTestimonialForm()}</div>
                 </div>
               </div>
               <div
                 className="col-12 mob-zero-padding"
                 style={{ marginTop: 80 }}
               >
-                {this.props.user ? (
-                  <StoryForm uid={this.props.user.id} />
-                ) : (
+                {!this.props.user ? (
                   <p className="text-center">
-                    <Link to={this.props.links.signin}>Sign in</Link> to submit
-                    a story
+                    <MELink to={this.props.links.signin}>
+                      Sign In to submit a story
+                    </MELink>
                   </p>
-                )}
+                ) : null}
               </div>
             </div>
           </section>
@@ -179,14 +230,14 @@ class StoriesPage extends React.Component {
       );
     }
   }
-  renderMoreBtn(body, id, title, imageObj, ano, user,date) {
+  renderMoreBtn(body, id, title, imageObj, ano, user, date) {
     var content = {
       image: imageObj,
       title: title,
       desc: body,
       ano: ano,
-      user: user, 
-      date:date
+      user: user,
+      date: date,
     };
     if (body.length > 100 && !this.state.expanded) {
       return (
@@ -201,14 +252,14 @@ class StoriesPage extends React.Component {
       );
     }
   }
-  showMoreForCard(body, id, title, imageObj, ano, user,date) {
+  showMoreForCard(body, id, title, imageObj, ano, user, date) {
     var content = {
       image: imageObj,
       title: title,
       desc: body,
       ano: ano,
       user: user,
-      date: date
+      date: date,
     };
     if (body.length > 100 && !this.state.expanded) {
       this.setState({ expanded: id, modal_content: content });
@@ -227,14 +278,14 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-    return stories.map(story => {
+    return stories.slice(0, 6).map((story, index) => {
       const format = "MMM, Do YYYY";
       const date = moment(story.created_at).format(format);
-      var creatorName = "Anonymous"; 
-      if(!story.anonymous){
-        creatorName = story.preferred_name ? story.preferred_name :creatorName;// This is to cover for all testimonials that were created before the anonymous feature
-        if(story.preferred_name){
-          // Remember to remove this block when some deletes the "from {community}" from the backend....
+      var creatorName = "Anonymous";
+      if (!story.anonymous) {
+        creatorName = story.preferred_name ? story.preferred_name : creatorName; // This is to cover for all testimonials that were created before the anonymous feature
+        if (story.preferred_name) {
+          // Remember to remove this block when sam deletes the "from {community}" from the backend....
           creatorName = creatorName.split("from")[0];
         }
       }
@@ -245,11 +296,12 @@ class StoriesPage extends React.Component {
             ? story.body.substring(0, 80) + "..."
             : story.body;
       }
-      var cn = "col-md-5 col-lg-5 col-sm-5 col-xs-12 mob-testy-card-fix";
+      var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12 mob-testy-card-fix";
 
       return (
-        <div className={cn} style={{ marginRight: 40,marginBottom:25 }}>
-          <div className="">
+        <div key={index} className={cn} style={{ marginBottom: 25 }}>
+          <METestimonialCard {...story} />
+          {/* <div className="">
             <div className="testi-card">
               <div>
                 {this.renderImage(story.file)}
@@ -262,21 +314,33 @@ class StoriesPage extends React.Component {
                       story.title,
                       story.file,
                       story.anonymous,
-                      story.preferred_name, 
+                      story.preferred_name,
                       story.created_at
                     );
                   }}
                 >
-                  <p style={{ marginBottom: 6,textTransform:"capitalize" }} className="make-me-dark">
+                  <p
+                    style={{ marginBottom: 6, textTransform: "capitalize" }}
+                    className="make-me-dark"
+                  >
                     <b>
                       {story.title.length > 30
                         ? story.title.substring(0, 25) + "..."
                         : story.title}
                     </b>
                   </p>
-                  <small className="story-name" style={{fontSize:'69%'}}>{creatorName}</small>
-                  <small className="m-label round-me"  style={{fontSize:'69%'}}>{date}</small>
-                  <p style={{fontSize:"medium"}} className="make-me-dark">{body}</p>
+                  <small className="story-name" style={{ fontSize: "69%" }}>
+                    {creatorName}
+                  </small>
+                  <small
+                    className="m-label round-me"
+                    style={{ fontSize: "69%" }}
+                  >
+                    {date}
+                  </small>
+                  <p style={{ fontSize: "medium" }} className="make-me-dark">
+                    {body}
+                  </p>
 
                   {story.action ? (
                     <div>
@@ -300,24 +364,24 @@ class StoriesPage extends React.Component {
                     story.title,
                     story.file,
                     story.anonymous,
-                    story.preferred_name, 
+                    story.preferred_name,
                     story.created_at
                   )}
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       );
     });
   }
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     pageData: store.page.homePage,
     stories: store.page.testimonials,
     user: store.user.info,
-    links: store.links
+    links: store.links,
   };
 };
 export default connect(mapStoreToProps, null)(StoriesPage);

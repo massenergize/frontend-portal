@@ -154,8 +154,9 @@ export default class FormGenerator extends Component {
   }
   createAndEjectForm() {
     const { fields } = this.props;
-    if (!fields || fields.length === 0) return <small>Ogbemi!</small>;
+    if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
+      if(!formItem || formItem ==={}) return <i></i>
       switch (formItem.type.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
@@ -183,8 +184,9 @@ export default class FormGenerator extends Component {
   }
 
   render() {
-    const { animate, className, style, title } = this.props;
+    var { animate, className, style, title, elevate } = this.props;
     const animationClass = animate ? "me-open-in" : "";
+    style= elevate ? style : {boxShadow:"0 0 black", style}
     return (
       <div>
         <MECard className={`${animationClass} ${className}`} style={style}>
@@ -218,6 +220,7 @@ FormGenerator.propTypes = {
   className: "",
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
+  elevate:PropTypes.bool
 };
 
 FormGenerator.defaultProps = {
@@ -227,4 +230,5 @@ FormGenerator.defaultProps = {
   className: "",
   actionText: "Submit",
   title: "",
+  elevate:true,
 };
