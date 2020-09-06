@@ -217,7 +217,7 @@ FormGenerator.propTypes = {
   style: PropTypes.object,
   animate: PropTypes.bool,
   actionText: PropTypes.string,
-  className: "",
+  className: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   elevate:PropTypes.bool

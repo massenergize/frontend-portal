@@ -3,8 +3,14 @@ import photo from "./me_energy_default.png";
 import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
+import * as moment from "moment";
+import { getRandomIntegerInRange } from "../../Utils";
 
 export default class METestimonialCard extends Component {
+  constructor(props) {
+    super(props);
+    this.handleReadMore = this.handleReadMore.bind(this);
+  }
   getPhoto() {
     const { file } = this.props;
     if (file) return file;
@@ -15,8 +21,14 @@ export default class METestimonialCard extends Component {
     if (body.length > 90) {
       return (
         <>
-         { body.slice(0,90)+"..."}
-          <MELink href="#" style={{ marginLeft: 6 }}>
+          {body.slice(0, 90) + "..."}
+          <MELink
+            href="#"
+            style={{ marginLeft: 6 }}
+            onClick={(e) => {
+              this.handleReadMore(e);
+            }}
+          >
             {" "}
             Read more
           </MELink>
@@ -26,28 +38,49 @@ export default class METestimonialCard extends Component {
     return body;
   }
   componentDidMount() {
-    document.addEventListener("error", (e)=>{
-      if(e.target.tagName.toLowerCase() !== "img") return ; 
-      e.target.src = photo;
-      e.target.alt = "The real img is missing this is a default image";
-    },true);
+    document.addEventListener(
+      "error",
+      (e) => {
+        if (e.target.tagName.toLowerCase() !== "img") return;
+        e.target.src = photo;
+        e.target.alt = "The real img is missing, this is a default image";
+      },
+      true
+    );
   }
-  
+
+  handleReadMore(e) {
+    e.preventDefault();
+    const { id, file, date, user, title, body } = this.props;
+    const params = {
+      id,
+      content: {
+        image: file,
+        title: title,
+        desc: body,
+        user: user.preferred_name,
+        date: date,
+      },
+    };
+    this.props.readMore(params);
+  }
+  getFormatedTime(created_at) {
+    const format = "MMM, Do YYYY";
+    const date = moment(created_at).format(format);
+    return date;
+  }
+  getAnimationClass() {
+    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
+    const index = getRandomIntegerInRange(3);
+    return classes[index];
+  }
   render() {
-    const {
-      className,
-      action,
-      prefered_name,
-      title,
-      body,
-      name,
-      created_at,
-    } = this.props;
+    const { className, action, prefered_name, links, created_at } = this.props;
     return (
       <div>
         <MECard
           style={{ padding: 0, position: "relative" }}
-          className={className}
+          className={`${this.getAnimationClass()} ${className}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">
@@ -62,7 +95,7 @@ export default class METestimonialCard extends Component {
                 <b>
                   {" "}
                   <span className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {created_at}
+                  {this.getFormatedTime(created_at)}
                 </b>
               </small>
             </div>
@@ -78,8 +111,14 @@ export default class METestimonialCard extends Component {
                 <METextView type="small" style={{ color: "#282828" }}>
                   Related Action
                 </METextView>
-                <MELink href="#" style={{ fontSize: 14 }}>
-                  The frog is playing piano, and the lizard is playing guitar
+                <br />
+                <MELink
+                  to={`${links.actions}/${action.id}`}
+                  style={{ fontSize: 14 }}
+                >
+                  {action.title > 70
+                    ? action.title.substring(0, 70) + "..."
+                    : action.title}
                 </MELink>
               </div>
             </div>
@@ -96,4 +135,5 @@ METestimonialCard.defaultProps = {
   prefered_name: "Anonymous",
   action: {},
   created_at: "1st January 2020",
+  links: {},
 };

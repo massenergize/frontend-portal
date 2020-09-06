@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { getRandomIntegerInRange } from "../../Utils";
 
 /**
  * @props name | normal  input property name @REQUIRED
@@ -107,14 +108,14 @@ METextField.propTypes = {
 };
 
 METextField.defaultProps = {
-  name:Math.round(Math.floor(Math.random()*1000)).toString(), 
+  name:getRandomIntegerInRange(100).toString(), 
   inputType:"input", 
   className:"", 
   isRequired:false, 
   rows:"5", 
   defaultValue:"", 
   style:{}, 
-  id:"",
+  id:"me-def--d"+getRandomIntegerInRange(100).toString(),
   history:true, 
   type:"text", 
   placeholder:"Enter text here...",

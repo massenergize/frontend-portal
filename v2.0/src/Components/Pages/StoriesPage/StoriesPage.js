@@ -15,6 +15,7 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
+import { getRandomIntegerInRange } from "../../Utils";
 
 class StoriesPage extends React.Component {
   constructor(props) {
@@ -34,7 +35,8 @@ class StoriesPage extends React.Component {
       },
       testimonialModal: false,
     };
-    this.toggleTestimonialModal = this.toggleTestimonialModal.bind(this);
+
+    this.readMore = this.readMore.bind(this);
   }
   findCommon() {
     //everytime there is a change in "check_values",
@@ -79,16 +81,13 @@ class StoriesPage extends React.Component {
   renderModal() {
     if (this.state.expanded) {
       return (
-        <StoryModal
-          content={this.state.modal_content}
-          close={this.closeModal}
-        />
+        <MEModal closeModal={this.closeModal}>
+          <StoryModal content={this.state.modal_content} />
+        </MEModal>
       );
     }
   }
-  toggleTestimonialModal() {
-    this.setState({ testimonialModal: !this.state.testimonialModal });
-  }
+
   renderAddTestmonialBtn() {
     if (this.props.user) {
       return (
@@ -107,14 +106,12 @@ class StoriesPage extends React.Component {
     );
   }
 
+  readMore(params) {
+    this.setState({ expanded: params.id, modal_content: params.content });
+  }
   renderTestimonialForm() {
     if (this.props.user) {
-      return (
-        <StoryForm
-          uid={this.props.user.id}
-          close={this.toggleTestimonialModal}
-        />
-      );
+      return <StoryForm uid={this.props.user.id} />;
     }
   }
   scrollToForm() {
@@ -150,7 +147,7 @@ class StoriesPage extends React.Component {
               <div className="row masonary-layout">
                 <div className="col-md-3 phone-vanish">
                   <MECard
-                    className=" mob-login-white-cleaner z-depth-1"
+                    className=" mob-login-white-cleaner z-depth-float"
                     style={{
                       marginBottom: 10,
                       marginTop: 48,
@@ -206,65 +203,65 @@ class StoriesPage extends React.Component {
   closeModal() {
     this.setState({ expanded: null });
   }
-  renderImage(img) {
-    if (img && !this.state.expanded) {
-      return (
-        <div>
-          <center>
-            <img className="testi-img" src={img.url} alt="IMG" />
-          </center>
-        </div>
-      );
-    } else if (!img && !this.state.expanded) {
-      return (
-        <div>
-          <center>
-            <img
-              className="testi-img"
-              src={leafy}
-              style={{ objectFit: "contain" }}
-              alt="IMG"
-            />
-          </center>
-        </div>
-      );
-    }
-  }
-  renderMoreBtn(body, id, title, imageObj, ano, user, date) {
-    var content = {
-      image: imageObj,
-      title: title,
-      desc: body,
-      ano: ano,
-      user: user,
-      date: date,
-    };
-    if (body.length > 100 && !this.state.expanded) {
-      return (
-        <button
-          className="testi-more"
-          onClick={() => {
-            this.setState({ expanded: id, modal_content: content });
-          }}
-        >
-          More...
-        </button>
-      );
-    }
-  }
-  showMoreForCard(body, id, title, imageObj, ano, user, date) {
-    var content = {
-      image: imageObj,
-      title: title,
-      desc: body,
-      ano: ano,
-      user: user,
-      date: date,
-    };
-    if (body.length > 100 && !this.state.expanded) {
-      this.setState({ expanded: id, modal_content: content });
-    }
-  }
+  // renderImage(img) {
+  //   if (img && !this.state.expanded) {
+  //     return (
+  //       <div>
+  //         <center>
+  //           <img className="testi-img" src={img.url} alt="IMG" />
+  //         </center>
+  //       </div>
+  //     );
+  //   } else if (!img && !this.state.expanded) {
+  //     return (
+  //       <div>
+  //         <center>
+  //           <img
+  //             className="testi-img"
+  //             src={leafy}
+  //             style={{ objectFit: "contain" }}
+  //             alt="IMG"
+  //           />
+  //         </center>
+  //       </div>
+  //     );
+  //   }
+  // }
+  // renderMoreBtn(body, id, title, imageObj, ano, user, date) {
+  //   var content = {
+  //     image: imageObj,
+  //     title: title,
+  //     desc: body,
+  //     ano: ano,
+  //     user: user,
+  //     date: date,
+  //   };
+  //   if (body.length > 100 && !this.state.expanded) {
+  //     return (
+  //       <button
+  //         className="testi-more"
+  //         onClick={() => {
+  //           this.setState({ expanded: id, modal_content: content });
+  //         }}
+  //       >
+  //         More...
+  //       </button>
+  //     );
+  //   }
+  // }
+  // showMoreForCard(body, id, title, imageObj, ano, user, date) {
+  //   var content = {
+  //     image: imageObj,
+  //     title: title,
+  //     desc: body,
+  //     ano: ano,
+  //     user: user,
+  //     date: date,
+  //   };
+  //   if (body.length > 100 && !this.state.expanded) {
+  //     this.setState({ expanded: id, modal_content: content });
+  //   }
+  // }
 
   renderStories(stories) {
     if (stories.length === 0) {
@@ -279,28 +276,32 @@ class StoriesPage extends React.Component {
       );
     }
     return stories.slice(0, 6).map((story, index) => {
-      const format = "MMM, Do YYYY";
-      const date = moment(story.created_at).format(format);
-      var creatorName = "Anonymous";
-      if (!story.anonymous) {
-        creatorName = story.preferred_name ? story.preferred_name : creatorName; // This is to cover for all testimonials that were created before the anonymous feature
-        if (story.preferred_name) {
-          // Remember to remove this block when sam deletes the "from {community}" from the backend....
-          creatorName = creatorName.split("from")[0];
-        }
-      }
-      var body = "";
-      if (story.body.length > 0) {
-        body =
-          story.body.length > 80
-            ? story.body.substring(0, 80) + "..."
-            : story.body;
-      }
+      // const format = "MMM, Do YYYY";
+      // const date = moment(story.created_at).format(format);
+      // var creatorName = "Anonymous";
+      // if (!story.anonymous) {
+      //   creatorName = story.preferred_name ? story.preferred_name : creatorName; // This is to cover for all testimonials that were created before the anonymous feature
+      //   if (story.preferred_name) {
+      //     // Remember to remove this block when sam deletes the "from {community}" from the backend....
+      //     creatorName = creatorName.split("from")[0];
+      //   }
+      // }
+      // var body = "";
+      // if (story.body.length > 0) {
+      //   body =
+      //     story.body.length > 80
+      //       ? story.body.substring(0, 80) + "..."
+      //       : story.body;
+      // }
       var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12 mob-testy-card-fix";
 
       return (
         <div key={index} className={cn} style={{ marginBottom: 25 }}>
-          <METestimonialCard {...story} />
+          <METestimonialCard
+            {...story}
+            links={this.props.links}
+            readMore={this.readMore}
+          />
           {/* <div className="">
             <div className="testi-card">
               <div>

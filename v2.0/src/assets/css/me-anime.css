@@ -1,4 +1,26 @@
 
+.me-open-in-slowest{
+  opacity: 0;
+  animation:do-show-in .4s ease-in 1s forwards;
+}
+.me-open-in-slower{
+  opacity: 0;
+  animation:do-show-in .4s ease-in .8s forwards;
+}
+.me-open-in{
+  animation:do-show-in .4s ease-in .4s forwards;
+}
+@keyframes do-show-in{
+  from{
+    opacity:0;
+    transform:scale(.7)
+  }
+  to{
+    opacity:1;
+    transform:scale(1)
+  }
+}
+
 @keyframes from-bottom-scale {
   from{
     opacity: 0;

@@ -1,6 +1,9 @@
 import * as moment from "moment";
 import React from "react";
 
+export const getRandomIntegerInRange = (range) =>{
+  return Math.floor(Math.random() * Math.floor(range));
+}
 export function getPropsArrayFromJsonArray(array, property){
   if(!array || !property) return [];
   const toGo = []; 

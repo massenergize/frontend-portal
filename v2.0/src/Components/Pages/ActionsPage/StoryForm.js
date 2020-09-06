@@ -182,7 +182,8 @@ class StoryForm extends React.Component {
     return (
       // <MEModal className="z-depth-3" closeModal={this.props.close}>
       <MEFormGenerator
-        style={{ background: "white" }}
+        style={{ background: "white", borderRadius:10 }}
+        className="z-depth-1"
         fields={this.getNeededFormFields()}
         title={this.state.message}
       />

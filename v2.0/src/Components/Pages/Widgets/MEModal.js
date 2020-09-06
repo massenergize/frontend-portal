@@ -36,6 +36,7 @@ export default class MEModal extends Component {
         <div className="me-overlay" onClick={closeModal}></div>
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()}`}
+          
         >
           <center>
             <MEButton
@@ -51,7 +52,7 @@ export default class MEModal extends Component {
             </MEButton>
           </center>
           <MECard
-            className={`z-depth-2 ${className}`}
+            className={`z-depth-5 ${className}`}
             style={{ ...defaults, ...style }}
           >
             {this.props.children}
