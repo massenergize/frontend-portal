@@ -15,11 +15,14 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
-import { getRandomIntegerInRange } from "../../Utils";
+import { getRandomIntegerInRange, moveToPage } from "../../Utils";
+import Paginator from "../Widgets/Paginator";
 
+const PER_PAGE = 6;
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
+    const stories = props.stories ? props.stories : [];
     this.closeModal = this.closeModal.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.state = {
@@ -34,9 +37,18 @@ class StoriesPage extends React.Component {
         user: null,
       },
       testimonialModal: false,
+      stories: [],
+      pageContent: {
+        currentPage: 1,
+        itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
+        pageCount: 0,
+      },
+      perPage: PER_PAGE,
     };
 
     this.readMore = this.readMore.bind(this);
+    this.renderStories = this.renderStories.bind(this);
+    this.goToPage = this.goToPage.bind(this);
   }
   findCommon() {
     //everytime there is a change in "check_values",
@@ -121,6 +133,45 @@ class StoriesPage extends React.Component {
       block: "start",
     });
   }
+
+  goToPage(pageNumber) {
+    const { stories } = this.props;
+    const { perPage } = this.state;
+    const nextPageContent = moveToPage(stories, pageNumber, perPage);
+    console.log("GEU RIGHT HERE BRO", nextPageContent);
+    this.setState({
+      stories: nextPageContent.data,
+      pageContent: {
+        currentPage: nextPageContent.currentPage,
+        itemsLeft: nextPageContent.itemsLeft,
+        pageCount: nextPageContent.pageCount,
+      },
+    });
+  }
+  renderPaginator() {
+    const { pageContent } = this.state;
+    return (
+      <Paginator
+        nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
+        prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
+        showNext={pageContent.itemsLeft !== 0}
+        showPrev={pageContent.currentPage > 1}
+      />
+    );
+  }
+  getContentToDisplay() {
+    const { stories } = this.props;
+    const stateStories = this.state.stories;
+    if(this.findCommon().length > 0){
+      return this.findCommon(0)
+    }
+    if(stateStories.length === 0){
+      if(!stories) return;
+      return stories.slice(0,this.state.perPage);
+    }
+
+    return stateStories;
+  }
   render() {
     if (!this.props.pageData)
       return (
@@ -130,8 +181,7 @@ class StoriesPage extends React.Component {
         />
       );
 
-    const stories =
-      this.findCommon().length > 0 ? this.findCommon() : this.props.stories;
+    const stories = this.getContentToDisplay();
     if (stories == null) return <LoadingCircle />;
 
     //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
@@ -172,10 +222,12 @@ class StoriesPage extends React.Component {
                     style={{
                       // maxHeight: 700,
                       // overflowY: "scroll",
+                      position: "relative",
                       paddingBottom: 50,
                     }}
                   >
                     {this.renderStories(stories)}
+                    {this.renderPaginator()}
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                   <div>{this.renderTestimonialForm()}</div>
@@ -275,7 +327,7 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-    return stories.slice(0, 6).map((story, index) => {
+    return stories.map((story, index) => {
       // const format = "MMM, Do YYYY";
       // const date = moment(story.created_at).format(format);
       // var creatorName = "Anonymous";

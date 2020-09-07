@@ -75,7 +75,8 @@ export default class METestimonialCard extends Component {
     return classes[index];
   }
   render() {
-    const { className, action, prefered_name, links, created_at } = this.props;
+    var { className, action, prefered_name, links, created_at } = this.props;
+    action = action ? action :{}
     return (
       <div>
         <MECard

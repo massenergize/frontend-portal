@@ -15,7 +15,7 @@ import { getRandomIntegerInRange } from "../../Utils";
  * @props onChange | @function
  * @props history  | true or false ( whether or not input field should show history of text)
  * @props readonly
- * 
+ *
  */
 
 class METextField extends Component {
@@ -24,7 +24,7 @@ class METextField extends Component {
 
     this.state = {};
   }
- 
+
   handleOnChange = (e) => {
     const { onChange } = this.props;
     if (!onChange) return;
@@ -44,14 +44,15 @@ class METextField extends Component {
       isRequired,
       id,
       history,
-      readonly
+      readonly,
     } = this.props;
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
+    const ID = id ? { id: id } : {};
     if (inputType === "input") {
       return (
         <input
-          id={id}
+          {...ID}
           className={`${defaultClasses} only-left-border ${className}`}
           name={name}
           type={type}
@@ -61,13 +62,13 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
-          readonly = {readonly}
+          readonly={readonly}
         />
       );
     } else if (inputType === "textarea") {
       return (
         <textarea
-          id={id}
+          {...ID}
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
@@ -77,7 +78,7 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
-          readonly = {readonly}
+          readonly={readonly}
         />
       );
     }
@@ -108,19 +109,18 @@ METextField.propTypes = {
 };
 
 METextField.defaultProps = {
-  name:getRandomIntegerInRange(100).toString(), 
-  inputType:"input", 
-  className:"", 
-  isRequired:false, 
-  rows:"5", 
-  defaultValue:"", 
-  style:{}, 
-  id:"me-def--d"+getRandomIntegerInRange(100).toString(),
-  history:true, 
-  type:"text", 
-  placeholder:"Enter text here...",
-  readonly:false,
-
-}
+  name: getRandomIntegerInRange(100).toString(),
+  inputType: "input",
+  className: "",
+  isRequired: false,
+  rows: "5",
+  defaultValue: "",
+  style: {},
+  // id: "me-def--d" + getRandomIntegerInRange(100).toString(),
+  history: true,
+  type: "text",
+  placeholder: "Enter text here...",
+  readonly: false,
+};
 
 export default METextField;

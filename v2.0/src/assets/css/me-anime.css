@@ -8,6 +8,7 @@
   animation:do-show-in .4s ease-in .8s forwards;
 }
 .me-open-in{
+  opacity:0;
   animation:do-show-in .4s ease-in .4s forwards;
 }
 @keyframes do-show-in{

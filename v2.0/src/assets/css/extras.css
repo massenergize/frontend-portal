@@ -1206,13 +1206,12 @@
   background: white;
 }
 .testi-modal-pic {
-  height: 130px;
+  height: 70px;
   z-index: 0;
   object-fit: cover;
-
   display: inline-block;
   border: solid 2px #beda9f;
-  width: 130px;
+  width: 70px;
   border-radius: 100%;
   padding: 0px;
   position: absolute;
