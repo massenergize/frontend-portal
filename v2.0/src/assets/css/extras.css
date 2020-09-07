@@ -350,9 +350,10 @@
 }
 .me-section-wrapper-header {
   /* border-radius:6px; */
+  background:white;
   position: relative;
   padding: 15px 20px;
-  min-width: 20rem;
+  min-width: 13rem;
   cursor: pointer;
   z-index: 20;
 }
@@ -386,6 +387,7 @@
   border-top-width: 0px;
   width: 100%;
   min-height: 30px;
+  background:white;
 }
 
 .section-green {

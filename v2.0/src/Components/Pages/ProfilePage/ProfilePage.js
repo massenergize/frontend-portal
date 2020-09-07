@@ -449,7 +449,8 @@ class ProfilePage extends React.Component {
                                         <SignOutButton style={{ display: 'inline-block' }} />
                                     </h3>
                                     <br /> */}
-                  {this.props.todo ? (
+                  {/* ---- REMOVE THIS WHEN YOU ARE DONE ----- */}
+                  {true ? (
                     <Cart
                       title="To Do List"
                       actionRels={this.props.todo}
@@ -511,9 +512,9 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          <Dropdown onSelect={() => null} style={{ display: "inline-block" }} >
+          <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
             <Dropdown.Toggle
-              style={{ padding:"9px 16px" }}
+              style={{ padding: "9px 16px" }}
               className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
             ></Dropdown.Toggle>
             <Dropdown.Menu
@@ -624,7 +625,7 @@ class ProfilePage extends React.Component {
           <MECard style={{ borderRadius: 10 }}>
             <METextView
               type="small"
-              style={{ display: "inline-block" }}
+              style={{ display: "inline-block", color: "black" }}
               icon="fa fa-globe"
               mediaType="icon"
             >
@@ -640,7 +641,7 @@ class ProfilePage extends React.Component {
                 icon="fa fa-eye"
                 iconStyle={{ margin: 0 }}
                 iconSize="large"
-                style={{ padding: "4px 10px" }}
+                style={{ padding: "4px 8px" }}
               />
               <MEButton
                 onClick={() => this.leaveCommunity(community)}
@@ -678,15 +679,32 @@ class ProfilePage extends React.Component {
           >
             {inThisCommunity(team) ? (
               // <h6>{team.name}</h6>
-              <METextView type="small" icon="fa fa-users" mediaType="icon">
+              <METextView
+                type="small"
+                style={{ color: "black" }}
+                icon="fa fa-users"
+                mediaType="icon"
+              >
                 {team.name}
               </METextView>
             ) : (
-              <METextView type="small" icon="fa fa-users" mediaType="icon">
+              <METextView
+                type="small"
+                style={{ color: "black" }}
+                icon="fa fa-users"
+                mediaType="icon"
+              >
                 {team.name}
               </METextView>
             )}
-            {team.tagline && <p>{team.tagline}</p>}
+            {team.tagline && (
+              <METextView
+                containerStyle={{ display: "block" }}
+                style={{ color: "black" }}
+              >
+                {team.tagline}
+              </METextView>
+            )}
           </MECard>
         </div>
       );
@@ -726,7 +744,7 @@ class ProfilePage extends React.Component {
             <MECard style={{ borderRadius: 10 }}>
               <METextView
                 type="small"
-                style={{ display: "inline-block" }}
+                style={{ display: "inline-block", color: "black" }}
                 icon="fa fa-home"
                 mediaType="icon"
               >
@@ -744,7 +762,7 @@ class ProfilePage extends React.Component {
                   icon="fa fa-edit"
                   iconStyle={{ margin: 0 }}
                   iconSize="large"
-                  style={{ padding: "4px 10px", marginRight: 8 }}
+                  style={{ padding: "4px 8px", marginRight: 8 }}
                 />
                 <MEButton
                   onClick={() => this.deleteHousehold(house)}

@@ -13,7 +13,7 @@ export default class METestimonialCard extends Component {
   }
   getPhoto() {
     const { file } = this.props;
-    if (file) return file;
+    if (file && file.url) return file.url;
     return photo;
   }
   getBody() {
