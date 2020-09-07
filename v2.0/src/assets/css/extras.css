@@ -5,6 +5,13 @@
   padding:10px 10%;
 
 }
+.filter-check-text-font{
+  font-size:14px;
+  margin-bottom:2px;
+}
+.override-container-width{
+  max-width: 1100px !important;
+}
 .put-me-in-the-middle{
   position: absolute;
   /* margin-left: 40%; */
@@ -134,7 +141,7 @@
   display:inline-block; 
   height:24px; 
   width:24px; 
-  background:#e6e3e3;
+  background:#f7f5f5;
   margin-right:6px;
   vertical-align:center;
   margin-bottom: -6px;
@@ -314,6 +321,9 @@
     /* transform: translateY(0px); */
   }
 }
+.me-actions-gradient-belt{
+  background:linear-gradient(to right, green red) !important;
+}
 .me-overlay {
   background: black;
   opacity: 0.5;
@@ -324,7 +334,7 @@
   cursor: pointer;
 }
 .move-up-and-vanish {
-  transform: translateY(-100px);
+  transform: translateY(-80px);
   opacity: 0;
   z-index: -1;
   height: 0px;

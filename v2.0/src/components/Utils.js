@@ -6,7 +6,14 @@ import React from "react";
  * @param {*} pageNumber
  * @param {*} perPage
  */
-
+const getPageCount = (dataLength, perPage) => {
+  // when the page number is determined by just rounding of a the division of datalength and perpage 
+  // it does not take into account a page that only has a number of items less than half of the "perpage" number 
+  // hence this "ROBUST" algorithm.. LMAAAAAOOOOOOOOOOO!!!
+  const div = dataLength / perPage;
+  if (dataLength % perPage > 0) return (div + 1).toFixed();
+  return div.toFixed();
+};
 export const moveToPage = (data, pageNumber, perPage) => {
   data = data ? data : [];
   perPage = Number(perPage);
@@ -24,7 +31,7 @@ export const moveToPage = (data, pageNumber, perPage) => {
     data: dataToSend,
     currentPage: pageNumber,
     itemsLeft: data.length - taken,
-    pageCount: Math.round(data.length / perPage),
+    pageCount: getPageCount(data.length, perPage),
   };
 };
 

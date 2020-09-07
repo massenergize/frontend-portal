@@ -51,10 +51,7 @@ class StoriesPage extends React.Component {
     this.goToPage = this.goToPage.bind(this);
   }
   findCommon() {
-    //everytime there is a change in "check_values",
-    //loop through all the events again, and render events
-    //with the tag IDs  in "check_values"
-    //then pass it on to "renderEvents(...)"
+
     const stories = this.props.stories;
     const values = this.state.check_values ? this.state.check_values : [];
     const common = [];
@@ -72,7 +69,7 @@ class StoriesPage extends React.Component {
           }
         }
       }
-    }
+    } 
     return common;
   }
 
@@ -86,8 +83,8 @@ class StoriesPage extends React.Component {
       this.setState({ check_values: [tagID, ...arr] });
     }
   }
-  handleBoxClick(event) {
-    var id = event.target.value;
+  handleBoxClick(id) {
+    // var id = event.target.value;
     this.addMeToSelected(id);
   }
   renderModal() {
@@ -166,10 +163,10 @@ class StoriesPage extends React.Component {
   getContentToDisplay() {
     const { stories } = this.props;
     const stateStories = this.state.stories;
-    if(this.findCommon().length > 0){
+    if(this.findCommon().length > 0){ // filtered content if a user is using the filter. If not
       return this.findCommon(0)
     }
-    if(stateStories.length === 0){
+    if(stateStories.length === 0){ 
       if(!stories) return;
       return stories.slice(0,this.state.perPage);
     }
@@ -197,15 +194,15 @@ class StoriesPage extends React.Component {
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
-            <div className="container">
+            <div className="container override-container-width">
               <div className="row masonary-layout">
                 <div className="col-md-3 phone-vanish">
                   <MECard
-                    className=" mob-login-white-cleaner z-depth-float"
+                    className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
                     style={{
                       marginBottom: 10,
                       marginTop: 48,
-                      padding: "45px 28px",
+                      padding: "45px 14px",
                       borderRadius: 15,
                     }}
                   >

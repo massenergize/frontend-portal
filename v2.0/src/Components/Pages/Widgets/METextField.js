@@ -35,6 +35,7 @@ class METextField extends Component {
     const {
       type,
       defaultValue,
+      value,
       placeholder,
       name,
       rows,
@@ -57,7 +58,7 @@ class METextField extends Component {
           name={name}
           type={type}
           placeholder={placeholder}
-          value={defaultValue}
+          value={defaultValue || value }
           style={styles}
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}

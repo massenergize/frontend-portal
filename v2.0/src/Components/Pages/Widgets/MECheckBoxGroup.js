@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 /**
  * @props {Array} data
+ * @props {Array} dataValues
+ * @props {func} onItemSelected
  * @props {Object} style
  * @props {string} className
  * @props {string} name
@@ -16,11 +18,16 @@ export default class MECheckBoxGroup extends Component {
     super(props);
     this.state = {
       selected: this.props.value,
+      dataValues: this.props.dataValues
+        ? this.props.dataValues
+        : this.props.data,
+      data: this.props.data,
     };
   }
   handleOnClick(child) {
-    const { onItemSelected } = this.props;
-    const { selected } = this.state;
+    const { onItemSelected, data } = this.props;
+    const { selected, dataValues } = this.state;
+    child = dataValues[data.indexOf(child)];
     var allItems;
     if (!selected || !selected.includes(child)) {
       allItems = [...selected, child];
@@ -31,12 +38,13 @@ export default class MECheckBoxGroup extends Component {
     }
 
     if (!onItemSelected) return;
-    onItemSelected(allItems);
+    onItemSelected(allItems, child);
   }
 
   checked(child) {
-    const { selected } = this.state;
-    if (selected && selected.includes(child)) return true;
+    const { selected, dataValues, data } = this.state;
+    const value = dataValues[data.indexOf(child)];
+    if (selected && selected.includes(value)) return true;
     return false;
   }
   ejectChildren() {
@@ -53,7 +61,7 @@ export default class MECheckBoxGroup extends Component {
       return (
         <div
           key={key}
-          className={`put-me-inline me-check-container ${className}`}
+          className={`me-check-container ${className}`}
           onClick={() => this.handleOnClick(child)}
           style={{
             position: "relative",
@@ -80,11 +88,14 @@ MECheckBoxGroup.propTypes = {
   containerClassName: PropTypes.string,
   containerStyle: PropTypes.object,
   data: PropTypes.array.isRequired,
+  dataValues: PropTypes.array,
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
+  onItemSelected: PropTypes.func.isRequired,
 };
 MECheckBoxGroup.defaultProps = {
   data: [],
+  dataValues: [],
   style: {},
   className: "",
   value: "Radio Text Here ",
