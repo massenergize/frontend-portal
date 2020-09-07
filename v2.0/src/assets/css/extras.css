@@ -5,6 +5,15 @@
   padding:10px 10%;
 
 }
+.put-me-in-the-middle{
+  position: absolute;
+  /* margin-left: 40%; */
+  /* top: 67px; */
+  left: 50%;
+  top: 25px;
+  transform: translateX(-50%);
+
+}
 .snackbar-main-container p {
   color:white;
   font-weight:bolder;

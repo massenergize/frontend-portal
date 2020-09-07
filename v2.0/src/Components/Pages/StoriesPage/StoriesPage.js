@@ -138,7 +138,6 @@ class StoriesPage extends React.Component {
     const { stories } = this.props;
     const { perPage } = this.state;
     const nextPageContent = moveToPage(stories, pageNumber, perPage);
-    console.log("GEU RIGHT HERE BRO", nextPageContent);
     this.setState({
       stories: nextPageContent.data,
       pageContent: {
@@ -149,12 +148,17 @@ class StoriesPage extends React.Component {
     });
   }
   renderPaginator() {
-    const { pageContent } = this.state;
+    const { pageContent,check_values  } = this.state;
+    var { stories } = this.props;
+    stories = stories ? stories : [];
+    if(check_values && check_values.length > 0 ) return <i></i> // dont want to show paginator when user is in search mode 
     return (
       <Paginator
+        currentPage = {pageContent.currentPage}
+        pageCount = {pageContent.pageCount}
         nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
         prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
-        showNext={pageContent.itemsLeft !== 0}
+        showNext={pageContent.itemsLeft !== 0 && stories.length > PER_PAGE}
         showPrev={pageContent.currentPage > 1}
       />
     );
@@ -217,6 +221,7 @@ class StoriesPage extends React.Component {
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
                   <PageTitle>Testimonials</PageTitle>
+                  {this.renderPaginator()}
                   <div
                     className="row"
                     style={{

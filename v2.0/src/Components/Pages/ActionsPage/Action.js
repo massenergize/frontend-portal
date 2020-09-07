@@ -177,6 +177,7 @@ class Action extends React.Component {
                   src={
                     this.props.action.image ? this.props.action.image.url : null
                   }
+                  style={{width:"100%"}}
                   alt=""
                 />
                 {/* animated section on top of the image */}
