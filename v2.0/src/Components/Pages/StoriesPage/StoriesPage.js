@@ -51,7 +51,6 @@ class StoriesPage extends React.Component {
     this.goToPage = this.goToPage.bind(this);
   }
   findCommon() {
-
     const stories = this.props.stories;
     const values = this.state.check_values ? this.state.check_values : [];
     const common = [];
@@ -69,7 +68,7 @@ class StoriesPage extends React.Component {
           }
         }
       }
-    } 
+    }
     return common;
   }
 
@@ -145,14 +144,14 @@ class StoriesPage extends React.Component {
     });
   }
   renderPaginator() {
-    const { pageContent,check_values  } = this.state;
+    const { pageContent, check_values } = this.state;
     var { stories } = this.props;
     stories = stories ? stories : [];
-    if(check_values && check_values.length > 0 ) return <i></i> // dont want to show paginator when user is in search mode 
+    if (check_values && check_values.length > 0) return <i></i>; // dont want to show paginator when user is in search mode
     return (
       <Paginator
-        currentPage = {pageContent.currentPage}
-        pageCount = {pageContent.pageCount}
+        currentPage={pageContent.currentPage}
+        pageCount={pageContent.pageCount}
         nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
         prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
         showNext={pageContent.itemsLeft !== 0 && stories.length > PER_PAGE}
@@ -163,12 +162,13 @@ class StoriesPage extends React.Component {
   getContentToDisplay() {
     const { stories } = this.props;
     const stateStories = this.state.stories;
-    if(this.findCommon().length > 0){ // filtered content if a user is using the filter. If not
-      return this.findCommon(0)
+    if (this.findCommon().length > 0) {
+      // filtered content if a user is using the filter. If not
+      return this.findCommon(0);
     }
-    if(stateStories.length === 0){ 
-      if(!stories) return;
-      return stories.slice(0,this.state.perPage);
+    if (stateStories.length === 0) {
+      if (!stories) return;
+      return stories.slice(0, this.state.perPage);
     }
 
     return stateStories;
@@ -218,6 +218,14 @@ class StoriesPage extends React.Component {
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
                   <PageTitle>Testimonials</PageTitle>
+                  {this.state.pageContent.pageCount > 0 ? (
+                    <center>
+                      <small>
+                        When you switch pages, images take a moment to reflect,
+                        please bear with us...
+                      </small>
+                    </center>
+                  ) : null}
                   {this.renderPaginator()}
                   <div
                     className="row"

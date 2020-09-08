@@ -11,6 +11,9 @@ export default class METestimonialCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
+    this.state = {
+      img: null,
+    };
   }
   getPhoto() {
     const { image } = this.props;
@@ -74,32 +77,8 @@ export default class METestimonialCard extends Component {
     return classes[index];
   }
 
-  lazyLoadImage(id, imageSource) {
-    const loaderRef = "event-img-loader-" + id;
-    const loader = document.getElementById(loaderRef);
-    const imageRef = "event-img-" + id;
-    const image = document.getElementById(imageRef);
-    if (!imageSource || !imageSource.url) {
-      image.src = photo;
-      return;
-    }
-    const tempImg = new Image();
-    tempImg.src = imageSource.url;
-    tempImg.addEventListener("load",(e) => {
-      console.log("I  HAVE FINISHED LOADING BRO", e);
-      // loader.style.display = "none";
-      image.src = tempImg.src;
-    });
-  }
-
-  componentWillMount(){
-    const { image , id } = this.props;
-    // this.lazyLoadImage(id, image);
-  }
   render() {
     var { className, location, dateString, id, image } = this.props;
-    
-   const  imageRef = "event-img-" + id;
     return (
       <div>
         <MECard
@@ -108,19 +87,10 @@ export default class METestimonialCard extends Component {
           className={`${this.getAnimationClass()} ${className}`}
         >
           <img
-            id={imageRef}
             src={this.getPhoto()}
             className="me-testimonial-img"
-            style={{ opacity: 0 }}
           />
-
           <div className="me-testimonial-content-box">
-            <LoadingCircle
-              height={50}
-              width={50}
-              id={"event-img-loader-" + id}
-              style={{ transform: "translate(300%, -160%)" }}
-            />
             <div className="me-testimonial-about">
               <small>
                 <b>

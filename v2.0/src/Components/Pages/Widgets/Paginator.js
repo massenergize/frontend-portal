@@ -61,7 +61,7 @@ export default class Paginator extends Component {
               className="put-me-in-the-middle"
               style={{ color: "#8dc343", textShadow:"0px 1px 3px #d2baba",  }}
             >
-              Page {currentPage} / { pageCount}
+              Page {currentPage} / { pageCount}<br/> 
             </METextView>
           )}
 

@@ -87,7 +87,6 @@ class ActionsPage extends React.Component {
   }
 
   goToPage(pageNumber) {
-    
     const { actions } = this.props;
     const { perPage } = this.state;
     const nextPageContent = moveToPage(actions, pageNumber, perPage);
@@ -220,6 +219,14 @@ class ActionsPage extends React.Component {
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <PageTitle>Actions</PageTitle>
+                  {this.state.pageContent.pageCount > 0 ? (
+                    <center>
+                      <small>
+                        When you switch pages, images take a moment to reflect,
+                        please bear with us...
+                      </small>
+                    </center>
+                  ) : null}
                   {this.renderPaginator()}
                   <div
                     className="row"

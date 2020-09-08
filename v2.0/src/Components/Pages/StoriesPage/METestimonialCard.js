@@ -37,6 +37,8 @@ export default class METestimonialCard extends Component {
     }
     return body;
   }
+
+  
   componentDidMount() {
     document.addEventListener(
       "error",

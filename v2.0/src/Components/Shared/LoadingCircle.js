@@ -6,7 +6,7 @@ import React from "react";
 class LoadingCircle extends React.Component {
   render() {
     var { width, height, id, style } = this.props;
-    console.log("I AM THE ID", id);
+  
 
     if (width && height) {
       style = { width, height, ...style };
