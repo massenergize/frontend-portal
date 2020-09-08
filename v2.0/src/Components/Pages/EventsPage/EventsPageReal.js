@@ -12,6 +12,7 @@ import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
+import NewEventsCard from './NewEventsCard';
 
 /**
  * Renders the event page
@@ -149,7 +150,7 @@ class EventsPage extends React.Component {
                 <div className="row">
                   <div
                     className="col-lg-3 col-md-3 col-12"
-                    style={{ paddingTop: 35 }}
+                  
                   >
                     {this.renderSideBar()}
                   </div>
@@ -159,7 +160,9 @@ class EventsPage extends React.Component {
                       className="mob-event-cards-fix outer-box sec-padd event-style2"
                       style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
                     >
+                      <div className="row">
                       {this.renderEvents(found)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -200,25 +203,8 @@ class EventsPage extends React.Component {
         );
         const location = event.location;
         return (
-          <div style={{display:"relative"}}>
-          <MECard style={{ padding: 0, width: "100%", display: "table" }}>
-            <img className="me-event-card-img" src={notFound} />
-            <div className="me-event-content-div">
-              <METextView>{event.featured_summary}</METextView>
-              <div className="me-event-date-info">
-                <METextView type="small">
-                  {" "}
-                  {dateString}
-                  {location ? (
-                    <span>
-                      <i className="fa fa-map-marker" />
-                      {locationFormatJSX(location)}
-                    </span>
-                  ) : null}
-                </METextView>
-              </div>
-            </div>
-          </MECard>
+          <div key={event.id.toString()} className="col-md-6 col-lg-6">
+            <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>
           </div>
           // <Link
           //   key={event.id.toString()}

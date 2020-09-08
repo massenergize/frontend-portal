@@ -5,13 +5,18 @@ import React from "react";
  */
 class LoadingCircle extends React.Component {
   render() {
-    const { width, height } = this.props;
-    var style = {};
+    var { width, height, id, style } = this.props;
+    console.log("I AM THE ID", id);
+
     if (width && height) {
-      style = { width, height };
+      style = { width, height, ...style };
     }
     return (
-      <div className="d-flex height-100vh justify-content-center align-items-center">
+      <div
+        id={id}
+        className="d-flex height-100vh justify-content-center align-items-center"
+        style={style}
+      >
         {/* <img
           src={require("../../assets/images/other/loader.gif")}
           alt="Loading..."
@@ -22,4 +27,7 @@ class LoadingCircle extends React.Component {
     );
   }
 }
+LoadingCircle.defaultProps = {
+  style: {},
+};
 export default LoadingCircle;
