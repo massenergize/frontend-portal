@@ -203,7 +203,7 @@ class EventsPage extends React.Component {
         );
         const location = event.location;
         return (
-          <div key={event.id.toString()} className="col-md-6 col-lg-6">
+          <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
             <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>
           </div>
           // <Link

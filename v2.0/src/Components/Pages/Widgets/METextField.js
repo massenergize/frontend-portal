@@ -79,7 +79,7 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
-          readonly={readonly}
+          readOnly={readonly}
         />
       );
     }

@@ -25,6 +25,7 @@ import CustomTooltip from "../Widgets/CustomTooltip";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
+import MEButton from "../Widgets/MEButton";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -45,10 +46,9 @@ class OneActionPage extends React.Component {
       action: null,
       showTodoMsg: false,
       loading: true,
-      // about_html:null, 
+      // about_html:null,
       // deep_dive_html:null,
-      // steps_to_take_html:null 
-
+      // steps_to_take_html:null
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -82,17 +82,24 @@ class OneActionPage extends React.Component {
     }
 
     if (!action || this.state.error) {
-      return <ErrorPage
-        errorMessage="Unable to load this Action"
-        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
-      />;
+      return (
+        <ErrorPage
+          errorMessage="Unable to load this Action"
+          errorDescription={
+            this.state.error ? this.state.error : "Unknown cause"
+          }
+        />
+      );
     }
     this.chooseFontSize();
     return (
       <>
         <Helmet>
           <meta property="og:title" content={action.title} />
-          <meta property="og:image" content={action.image && action.image.url} />
+          <meta
+            property="og:image"
+            content={action.image && action.image.url}
+          />
           <meta property="og:description" content={action.featured_summary} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
@@ -100,7 +107,7 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: action ? action.title : "..." }
+              { name: action ? action.title : "..." },
             ]}
           />
 
@@ -135,20 +142,25 @@ class OneActionPage extends React.Component {
                     />
                   </div>
                 ) : (
-                    <div
-                      className="col-md-4"
-                      style={{ paddingRight: "0px", marginRight: "0px" }}
-                    >
-                      <p>
-                        <Link to={this.props.links.signin}> Sign In </Link> to add
+                  <div
+                    className="col-md-4"
+                    style={{ paddingRight: "0px", marginRight: "0px" }}
+                  >
+                    <p>
+                      <Link to={this.props.links.signin}> Sign In </Link> to add
                       actions to your todo list or to mark them as complete
                     </p>
-                    </div>
-                  )}
+                  </div>
+                )}
               </div>
             </div>
             <br />
-            <ShareButtons label="Share this action!" pageTitle={action.title} pageDescription={action.featured_summary} url={window.location.href} />
+            <ShareButtons
+              label="Share this action!"
+              pageTitle={action.title}
+              pageDescription={action.featured_summary}
+              url={window.location.href}
+            />
           </section>
         </div>
       </>
@@ -264,9 +276,9 @@ class OneActionPage extends React.Component {
   }
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
-    if(status !== 'TODO' || status !== 'DONE') return;
+    if (status !== "TODO" || status !== "DONE") return;
 
-    apiCall('users.actions.remove', { is: actionRel.id}).then((json) => {
+    apiCall("users.actions.remove", { is: actionRel.id }).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
@@ -286,7 +298,7 @@ class OneActionPage extends React.Component {
     if (this.checkDone()) {
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me ">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-float ">
             To Do
           </p>
         </CustomTooltip>
@@ -298,7 +310,7 @@ class OneActionPage extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me"
             onClick={() => {
-              this.setState({ showTodoMsg: false })
+              this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
@@ -308,16 +320,20 @@ class OneActionPage extends React.Component {
       );
     } else {
       return (
-        <button
-          className={
-            this.state.status === "TODO"
-              ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
-              : "thm-btn style-4 action-btns cool-font mob-font line-me"
-          }
+        <MEButton
+          style={{ padding: "7px 14px", fontSize: 14 }}
+          variation="accent"
+          mediaType="icon"
+          icon="fa fa-edit"
+          // className={
+          //   this.state.status === "TODO"
+          //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
+          //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
+          // }
           onClick={() => this.openForm("TODO")}
         >
           To Do
-        </button>
+        </MEButton>
       );
     }
   }
@@ -331,10 +347,9 @@ class OneActionPage extends React.Component {
   checkDoneAndReturn() {
     if (this.checkDone()) {
       return (
-
         <CustomTooltip text="Thanks for adding, click again to remove.">
           <p
-            className="thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
             onClick={() => {
               this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
@@ -346,12 +361,15 @@ class OneActionPage extends React.Component {
       );
     } else {
       return (
-        <button
-          className={
-            this.state.status === "DONE"
-              ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
-              : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
-          }
+        <MEButton
+          style={{ padding: "7px 14px", fontSize: 14 }}
+          mediaType="icon"
+          icon="fa fa-check"
+          // className={
+          //   this.state.status === "DONE"
+          //     ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
+          //     : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
+          // }
           onClick={() => {
             this.openForm("DONE");
             this.setState({ showTodoMsg: false });
@@ -359,7 +377,7 @@ class OneActionPage extends React.Component {
         >
           {" "}
           Done It
-        </button>
+        </MEButton>
       );
     }
   }
@@ -384,8 +402,8 @@ class OneActionPage extends React.Component {
     const action_available = action.is_deleted
       ? false
       : community
-        ? community.id === action.community.id
-        : true;
+      ? community.id === action.community.id
+      : true;
 
     return (
       <div>
@@ -427,7 +445,7 @@ class OneActionPage extends React.Component {
                     className="clearfix"
                     style={{
                       position: "relative",
-                      marginLeft: "40px",
+                      // marginLeft: "40px",
                       marginTop: 10,
                     }}
                   >
@@ -439,21 +457,21 @@ class OneActionPage extends React.Component {
                         <CustomTooltip text="Sign in to make a TODO list">
                           <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
                             To Do
-                        </p>
+                          </p>
                         </CustomTooltip>
                       ) : (
-                          this.checkTodoAndReturn()
-                        )}
-                    &nbsp;
-                    {!this.props.user ? (
+                        this.checkTodoAndReturn()
+                      )}
+                      &nbsp;
+                      {!this.props.user ? (
                         <CustomTooltip text="Sign in to mark actions as completed">
                           <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
                             Done It
-                        </p>
+                          </p>
                         </CustomTooltip>
                       ) : (
-                          this.checkDoneAndReturn()
-                        )}
+                        this.checkDoneAndReturn()
+                      )}
                     </div>
                     {this.state.status ? (
                       <div style={{ paddingTop: "20px" }}>
@@ -477,7 +495,10 @@ class OneActionPage extends React.Component {
                     ) : null}
                     {this.state.showTestimonialLink ? (
                       <div>
-                        <p style={{ marginTop: 30, fontSize: 15 }} className="phone-vanish">
+                        <p
+                          style={{ marginTop: 30, fontSize: 15 }}
+                          className="phone-vanish"
+                        >
                           Nice job! How was your experience with this action?
                           Tell us about it in a{" "}
                           <a
@@ -492,7 +513,10 @@ class OneActionPage extends React.Component {
                           </a>
                           .
                         </p>
-                        <p className="pc-vanish" style={{ marginTop: 30, fontSize: 15 }}>
+                        <p
+                          className="pc-vanish"
+                          style={{ marginTop: 30, fontSize: 15 }}
+                        >
                           Nice job! How was your experience with this action?
                           Tell us about it in a Tell us about it in a{" "}
                           <a
@@ -507,11 +531,11 @@ class OneActionPage extends React.Component {
                     ) : null}
                   </div>
                 ) : (
-                    <div className="cool-font">
-                      This action is not available. It was from a different
-                      community or was deleted.
-                    </div>
-                  )
+                  <div className="cool-font">
+                    This action is not available. It was from a different
+                    community or was deleted.
+                  </div>
+                )
               }
               {this.state.showTodoMsg ? (
                 <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
@@ -526,7 +550,7 @@ class OneActionPage extends React.Component {
                   src={action.image ? action.image.url : null}
                   alt=""
                   data-imagezoom="true"
-                  className="img-responsive raise"
+                  className="img-responsive z-depth-float me-anime-open-in"
                   style={{ marginTop: "20px", borderRadius: 9 }}
                 />
               </div>
@@ -631,7 +655,9 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.about) }}
+                    dangerouslySetInnerHTML={{
+                      __html: getHTMLContent(action.about),
+                    }}
                   ></p>
                 </div>
               </div>
@@ -649,7 +675,9 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.steps_to_take) }}
+                    dangerouslySetInnerHTML={{
+                      __html: getHTMLContent(action.steps_to_take),
+                    }}
                   ></p>
                 </div>
               </div>
@@ -667,7 +695,9 @@ class OneActionPage extends React.Component {
                 <div className="desc-content-box">
                   <p
                     className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: getHTMLContent(action.deep_dive) }}
+                    dangerouslySetInnerHTML={{
+                      __html: getHTMLContent(action.deep_dive),
+                    }}
                   ></p>
                   {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
                 </div>
@@ -702,21 +732,21 @@ class OneActionPage extends React.Component {
                       Send Question
                     </button>
                   ) : (
-                      <a
-                        href={"/" + login_link + "/signin"}
-                        style={{
-                          marginTop: 10,
-                          padding: "14px 41px",
-                          background: "gray",
-                          border: "gray",
-                          color: "white",
-                          textDecoration: "none",
-                        }}
-                        className="btn btn-success round-me pull-right"
-                      >
-                        Sign In To Send
-                      </a>
-                    )}
+                    <a
+                      href={"/" + login_link + "/signin"}
+                      style={{
+                        marginTop: 10,
+                        padding: "14px 41px",
+                        background: "gray",
+                        border: "gray",
+                        color: "white",
+                        textDecoration: "none",
+                      }}
+                      className="btn btn-success round-me pull-right"
+                    >
+                      Sign In To Send
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -754,11 +784,11 @@ class OneActionPage extends React.Component {
                   />
                 </div>
               ) : (
-                  <p className="make-me-dark">
-                    <Link to={this.props.links.signin}> Sign In </Link> to submit
+                <p className="make-me-dark">
+                  <Link to={this.props.links.signin}> Sign In </Link> to submit
                   your own story about taking this Action
-                  </p>
-                )}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -840,17 +870,17 @@ class OneActionPage extends React.Component {
                       <small className="story-name">{creatorName}</small>
                       <small className="m-label round-me">{date}</small>
                       {this.state.expanded &&
-                        this.state.expanded === story.id ? (
-                          <button
-                            className="as-link"
-                            style={{ float: "right" }}
-                            onClick={() => {
-                              this.setState({ expanded: null });
-                            }}
-                          >
-                            close
-                          </button>
-                        ) : null}
+                      this.state.expanded === story.id ? (
+                        <button
+                          className="as-link"
+                          style={{ float: "right" }}
+                          onClick={() => {
+                            this.setState({ expanded: null });
+                          }}
+                        >
+                          close
+                        </button>
+                      ) : null}
                     </h6>
 
                     <p>
@@ -858,17 +888,17 @@ class OneActionPage extends React.Component {
                         ? story.body
                         : story.body.substring(0, this.state.limit)}
                       {this.state.limit < story.body.length &&
-                        this.state.expanded !== story.id ? (
-                          <button
-                            className="as-link"
-                            style={{ float: "right" }}
-                            onClick={() => {
-                              this.setState({ expanded: story.id });
-                            }}
-                          >
-                            more...
-                          </button>
-                        ) : null}
+                      this.state.expanded !== story.id ? (
+                        <button
+                          className="as-link"
+                          style={{ float: "right" }}
+                          onClick={() => {
+                            this.setState({ expanded: story.id });
+                          }}
+                        >
+                          more...
+                        </button>
+                      ) : null}
                     </p>
                   </div>
                   {story.vendor ? (
@@ -887,7 +917,7 @@ class OneActionPage extends React.Component {
               </div>
             );
           } else {
-            return <div key={key}/>;
+            return <div key={key} />;
           }
         })}
       </>
@@ -932,7 +962,7 @@ class OneActionPage extends React.Component {
       action_id: actionRel.action.id,
       household_id: actionRel.real_estate_unit.id,
     };
-    apiCall( 'users.actions.completed.add', body )
+    apiCall("users.actions.completed.add", body)
       .then((json) => {
         if (json.success) {
           this.setState({ showTestimonialLink: true });
@@ -955,9 +985,12 @@ class OneActionPage extends React.Component {
     if (actionRel) this.moveToDone(actionRel);
   }
   addToCart = (aid, hid, status) => {
-    if(status !== 'TODO' || status !== 'DONE') return;
+    if (status !== "TODO" || status !== "DONE") return;
 
-    const route = status === "TODO" ? 'users.actions.todo.add' : 'users.actions.completed.add'
+    const route =
+      status === "TODO"
+        ? "users.actions.todo.add"
+        : "users.actions.completed.add";
     const body = {
       action_id: aid,
       household_id: hid,
@@ -1002,7 +1035,7 @@ class OneActionPage extends React.Component {
       data_id: data.id,
       value: data.value + number > 0 ? data.value + number : 0,
     };
-    apiCall('data.update', body).then((json) => {
+    apiCall("data.update", body).then((json) => {
       if (json.success) {
         data = {
           ...data,
@@ -1028,7 +1061,7 @@ class OneActionPage extends React.Component {
       value: data.value + number > 0 ? data.value + number : 0,
     };
 
-    apiCall('data.update', body).then((json) => {
+    apiCall("data.update", body).then((json) => {
       if (json.success) {
         data = {
           ...data,

@@ -110,7 +110,9 @@ class StoriesPage extends React.Component {
       );
     }
     return (
-      <MELink hef={this.props.links.signin}>Sign In to submit a story</MELink>
+      <center>
+        <MELink to={this.props.links.signin}>Sign In to submit a story</MELink>
+      </center>
     );
   }
 
@@ -247,13 +249,15 @@ class StoriesPage extends React.Component {
                 className="col-12 mob-zero-padding"
                 style={{ marginTop: 80 }}
               >
-                {!this.props.user ? (
-                  <p className="text-center">
-                    <MELink to={this.props.links.signin}>
-                      Sign In to submit a story
-                    </MELink>
-                  </p>
-                ) : null}
+                <center>
+                  {!this.props.user ? (
+                    <p className="text-center">
+                      <MELink to={this.props.links.signin}>
+                        Sign In to submit a story
+                      </MELink>
+                    </p>
+                  ) : null}
+                </center>
               </div>
             </div>
           </section>
