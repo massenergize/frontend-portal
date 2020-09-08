@@ -1,4 +1,18 @@
 
+.me-anime-move-from-left{
+  opacity: 0;
+  animation:move-from-left-to-scale .4s ease-in .5s forwards;
+}
+@keyframes move-from-left-to-scale{
+  from{
+    opacity:0; 
+    transform:translate(-100px) scale(0.8)
+  }
+  to{
+    opacity:1; 
+    transform:translateX(0px) scale(1)
+  }
+}
 .me-open-in-slowest{
   opacity: 0;
   animation:do-show-in .4s ease-in 1s forwards;

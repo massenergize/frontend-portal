@@ -2,11 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { Link } from "react-router-dom";
-import ErrorPage from "./../Errors/ErrorPage"
+import ErrorPage from "./../Errors/ErrorPage";
 import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";
 import LoadingCircle from "../../Shared/LoadingCircle";
-  
+import MECard from "../Widgets/MECard";
+import METextView from "../Widgets/METextView";
+
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -14,24 +16,24 @@ class ServicesPage extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       check_values: null,
-      mirror_services: []
+      mirror_services: [],
     };
   }
   addMeToSelected(tagID) {
     tagID = Number(tagID);
     const arr = this.state.check_values ? this.state.check_values : [];
     if (arr.includes(tagID)) {
-      var filtered = arr.filter(item => item !== tagID);
+      var filtered = arr.filter((item) => item !== tagID);
       this.setState({ check_values: filtered.length === 0 ? null : filtered });
     } else {
       this.setState({ check_values: [tagID, ...arr] });
     }
   }
-  handleBoxClick(event) {
-    var id = event.target.value;
+  handleBoxClick(id) {
+    // var id = event.target.value;
     this.addMeToSelected(id);
   }
-  handleSearch = event => {
+  handleSearch = (event) => {
     const value = event.target.value;
     const services = this.props.serviceProviders;
     const common = [];
@@ -48,10 +50,6 @@ class ServicesPage extends React.Component {
     }
   };
   findCommon() {
-    //everytime there is a change in "check_values",
-    //loop through all the events again, and render events
-    //with the tag IDs  in "check_values"
-    //then pass it on to "renderEvents(...)"
     const services = this.props.serviceProviders;
     const values = this.state.check_values ? this.state.check_values : [];
     const common = [];
@@ -72,18 +70,19 @@ class ServicesPage extends React.Component {
     return common;
   }
   render() {
-
     var { serviceProviders } = this.props;
 
     if (!serviceProviders) {
-      return <LoadingCircle/>
+      return <LoadingCircle />;
     }
 
     if (!this.props.homePageData) {
-      return <ErrorPage
-        errorMessage="Data unavailable"
-        errorDescription="Unable to load Service Provider data"
-      />;
+      return (
+        <ErrorPage
+          errorMessage="Data unavailable"
+          errorDescription="Unable to load Service Provider data"
+        />
+      );
     }
 
     if (serviceProviders.length === 0) {
@@ -101,17 +100,21 @@ class ServicesPage extends React.Component {
       this.state.mirror_services.length > 0
         ? this.state.mirror_services
         : this.findCommon();
- 
+
     return (
       <>
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Service Providers" }]} />
-          <div className="container">
+          <div className="container override-container-width">
             <div className="row">
               <div className="phone-vanish col-md-3 mob-vendor-white-cleaner">
                 <div
-                  className="event-filter raise"
-                  style={{ marginTop: 90, padding: "45px 27px", borderRadius: 15 }}
+                  className=" z-depth-float me-anime-open-in"
+                  style={{
+                    marginTop: 90,
+                    padding: "45px 13px",
+                    borderRadius: 15,
+                  }}
                 >
                   <h4>Filter by...</h4>
                   <Funnel
@@ -131,8 +134,8 @@ class ServicesPage extends React.Component {
                 </div>
 
                 <div
-                  className="row pt-3 pb-3"
-                  // style={{ maxHeight: 700, overflowY: "scroll" }}
+                // className="row pt-3 pb-3"
+                // style={{ maxHeight: 700, overflowY: "scroll" }}
                 >
                   {this.renderVendors(vendors)}
                 </div>
@@ -159,83 +162,80 @@ class ServicesPage extends React.Component {
     // 	)
     // }
 
-    return vendors.map(vendor => {
+    return vendors.map((vendor) => {
       return (
-        <div className="col-12 col-md-4 col-lg-4" key={vendor.vendor}>
-          <div
-            className="card  spacing "
-            style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}
-          >
-            <div
-              className="card-body pref-height vendor-hover"
-              style={{
-                padding: 0,
-                borderTopRightRadius: 12,
-                borderTopLeftRadius: 12
-              }}
-            >
-              <div className="col-12 text-center" style={{ padding: 0 }}>
-                <Link to={`${this.props.links.services}/${vendor.id}`}>
-                  <img
-                    className="w-100"
-                    style={{
-                      minHeight: 200,
-                      maxHeight: 200,
-                      objectFit: "contain",
-                      borderTopRightRadius: 12,
-                      borderTopLeftRadius: 12
-                    }}
-                    src={vendor.logo ? vendor.logo.url : notFound}
-                    alt={vendor.name}
-                  />
-                </Link>
-                <Link to={`${this.props.links.services}/${vendor.id}`}>
-                  <h4 className="pt-3" style={{ fontSize: 14 }}>
-                    {vendor.name}
-                  </h4>
-                </Link>
-                {/* <p className="action-tags">
-                                    {vendor.categories.map((category) => {
-                                        return (<span key={category}>{category}</span>)  
-                                    })}
-                                </p> */}
-              </div>
-              {/* <div className="col-12 mt-3 text-center">
-								<span><b>Services</b></span>
-								<ul className="normal">
-									{vendor.services.map((action) => {
-										return <li key={vendor.name + "-" + action.id}>{action.name}</li>;
-									})}
-								</ul>
-							</div> */}
-              {/* {vendor.address ?
-								<div onClick={() => { window.location = `${this.props.links.services}/${vendor.id}` }} className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner" style={{ marginBottom: -16, marginTop: 10 }}>
-									<span className="fa fa-map-pin" style={{ marginRight: 4 }}></span> {vendor.address.city}, {vendor.address.state}
-								</div> : null}
+        <MECard className="me-vendor-card me-anime-move-from-left" to={`${this.props.links.services}/${vendor.id}`}>
+          <img
+           className="me-vendor-img"
+            src={vendor.logo ? vendor.logo.url : notFound}
+            alt={vendor.name}
+          />
+          <METextView style={{color:"black", textTransform:"capitalize"}}> {vendor.name}</METextView>
+        </MECard>
+        // <div className="col-12 col-md-12 col-sm-12  col-lg-12" key={vendor.vendor}>
+        //   <div
 
-							{vendor.key_contact != null ? (
-								<div className="w-100 p-2 text-center">
-									{vendor.user_info ?
-										<>
-											<a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
-											<a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
-										</> : null}
-								</div>
-							)
-								: null} */}
-            </div>
-          </div>
-        </div>
+        //   >
+        //     <div
+        //       // className="card-body pref-height vendor-hover"
+        //       style={{
+        //         padding: 0,
+        //         borderTopRightRadius: 12,
+        //         borderTopLeftRadius: 12,
+        //       }}
+        //     >
+        //       <div className="col-12 text-center" style={{ padding: 0 }}>
+        //         <Link to={`${this.props.links.services}/${vendor.id}`}>
+
+        //         </Link>
+        //         <Link to={`${this.props.links.services}/${vendor.id}`}>
+        //           <h4 className="pt-3" style={{ fontSize: 14 }}>
+        //             {vendor.name}
+        //           </h4>
+        //         </Link>
+
+        //         <p className="action-tags">
+        //                             {vendor.categories.map((category) => {
+        //                                 return (<span key={category}>{category}</span>)
+        //                             })}
+        //                         </p>
+        //       </div>
+        //       <div className="col-12 mt-3 text-center">
+        // 				<span><b>Services</b></span>
+        // 				<ul className="normal">
+        // 					{vendor.services.map((action) => {
+        // 						return <li key={vendor.name + "-" + action.id}>{action.name}</li>;
+        // 					})}
+        // 				</ul>
+        // 			</div>
+        //       {vendor.address ?
+        // 				<div onClick={() => { window.location = `${this.props.links.services}/${vendor.id}` }} className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner" style={{ marginBottom: -16, marginTop: 10 }}>
+        // 					<span className="fa fa-map-pin" style={{ marginRight: 4 }}></span> {vendor.address.city}, {vendor.address.state}
+        // 				</div> : null}
+
+        // 			{vendor.key_contact != null ? (
+        // 				<div className="w-100 p-2 text-center">
+        // 					{vendor.user_info ?
+        // 						<>
+        // 							<a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
+        // 							<a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
+        // 						</> : null}
+        // 				</div>
+        // 			)
+        // 				: null}
+        //     </div>
+        //   </div>
+        // </div>
       );
     });
   }
 }
-const mapStoreToProps = store => {
+const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
     pageData: store.page.ServicesPage,
     serviceProviders: store.page.serviceProviders,
-    links: store.links
+    links: store.links,
   };
 };
 export default connect(mapStoreToProps, null)(ServicesPage);

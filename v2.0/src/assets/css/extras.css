@@ -271,6 +271,22 @@
   box-shadow: none !important;
 }
 
+.me-vendor-card{
+  padding:20px 70px !important; 
+  border-radius: 0px;
+  border:solid 0px #8ec344; 
+  border-left-width: 10px;
+  margin-bottom: 20px !important;
+}
+.me-vendor-img{
+  width:40%; 
+  min-height:200px;
+  object-fit: contain;
+  display:inline-block; 
+  margin-right:40px;
+
+
+}
 .circle-loader {
   padding: 10px;
   height: 70px;
