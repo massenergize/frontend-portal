@@ -45,7 +45,22 @@
   animation-delay:.2s;
   animation:from-bottom-scale .2s forwards;
 }
+.me-event-date-info{
+  /* position:absolute; 
+  bottom:0px; 
+  right:10px; */
+}
+.me-event-card-img{
+  display:table-cell; 
+  height:220px;
 
+}
+
+.me-event-content-div{
+  height:100%; 
+  display:table-cell;
+  vertical-align: middle;
+}
 .me-anchor-link-new{
   /* color:#0d5813; */
   color:#583d0d;
