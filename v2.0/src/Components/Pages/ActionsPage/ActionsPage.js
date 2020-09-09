@@ -90,7 +90,6 @@ class ActionsPage extends React.Component {
     const { actions } = this.props;
     const { perPage } = this.state;
     const nextPageContent = moveToPage(actions, pageNumber, perPage);
-    console.log("NEXT PAGE", nextPageContent);
     this.setState({
       actions: nextPageContent.data,
       pageContent: {

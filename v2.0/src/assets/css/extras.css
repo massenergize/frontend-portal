@@ -975,7 +975,13 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  
+  .page-text-phone-mode{
+    font-size:14px !important;
+  }
+  .me-btn-phone-mode{
+    font-size:13px !important; 
+    padding:10px 13px !important;
+  }
   .snackbar-main-container{
     width: 100%;
     position: absolute;

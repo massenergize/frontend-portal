@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
+import MEButton from "./Widgets/MEButton";
+import { getRandomIntegerInRange } from "../Utils";
 
 class CommunitySelectPage extends React.Component {
   constructor(props) {
@@ -42,6 +44,13 @@ class CommunitySelectPage extends React.Component {
       );
     }
   }
+
+  getAnimationClass() {
+    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
+    const index = getRandomIntegerInRange(3);
+    return classes[index];
+  
+  }
   render() {
     const communities =
       this.state.mirror_communities.length === 0
@@ -69,7 +78,7 @@ class CommunitySelectPage extends React.Component {
                 }}
                 src={logo}
               />
-              <h1 className="text-center raise-my-text">
+              <h1 className="text-center raise-my-text me-anime-open-in">
                 {" "}
                 <span style={{ color: "#ed5a14" }}>Welcome to </span>our{" "}
                 <span style={{ color: "green" }}>Community Portal</span>{" "}
@@ -98,8 +107,9 @@ class CommunitySelectPage extends React.Component {
                         fontSize: 15,
                       }}
                     >
+                      
                       {" "}
-                      <a className="com-domain-link" href={`/${com.subdomain}`}>
+                      <a className={`com-domain-link ${this.getAnimationClass()}` }href={`/${com.subdomain}`}>
                         {com.name}
                       </a>
                     </li>
@@ -118,12 +128,13 @@ class CommunitySelectPage extends React.Component {
                 Or go to our main site
               </h3>
               <p className="text-center">
-                <a
+              
+                <MEButton
                   href="https://massenergize.org"
-                  className="mass-domain-link "
+                  variation="accent"
                 >
                   MassEnergize
-                </a>{" "}
+                </MEButton>{" "}
               </p>
             </div>
           </div>

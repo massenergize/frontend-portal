@@ -17,6 +17,7 @@ class ContactPageForm extends Component {
 
     this.state = {
       content: {},
+      formNotification: null,
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -69,11 +70,16 @@ class ContactPageForm extends Component {
   //     });
   // };
 
-  onSubmit(e, content) {
+  onSubmit(e, content, resetForm) {
     e.preventDefault();
-    console.log("LE CONTENT", content);
     if (!content.body || !content.name) {
-      alert("Please provide your name and message");
+      this.setState({
+        formNotification: {
+          icon: "fa fa-times",
+          type: "bad",
+          text: "Please provide a name & message...",
+        },
+      });
       return;
     }
     let data = {
@@ -82,11 +88,20 @@ class ContactPageForm extends Component {
       ...content,
     };
 
+    const _this = this;
     apiCall("admins.messages.add", data)
       .then((res) => {
-        console.log(
-          "Thanks for contacting the community administrator. You should receive a response within a few days."
-        );
+        if (res.success && res.data) {
+          _this.setState({
+            formNotification: {
+              icon: "fa fa-check",
+              type: "good",
+              text:
+                "Thanks for contacting the community administrator. You should receive a response within a few days.",
+            },
+          });
+          resetForm();
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -101,6 +116,7 @@ class ContactPageForm extends Component {
         placeholder: "Your Name *",
         required: true,
         history: false,
+        value: "",
       },
       {
         type: "input",
@@ -108,6 +124,7 @@ class ContactPageForm extends Component {
         placeholder: "Your Email *",
         required: true,
         history: false,
+        value: "",
       },
       {
         type: "input",
@@ -115,6 +132,7 @@ class ContactPageForm extends Component {
         placeholder: "Your Title *",
         required: true,
         history: false,
+        value: "",
       },
       {
         type: "textarea",
@@ -122,6 +140,7 @@ class ContactPageForm extends Component {
         placeholder: "Your Message *",
         required: true,
         history: false,
+        value: "",
       },
     ];
   }
@@ -136,6 +155,7 @@ class ContactPageForm extends Component {
             title="Contact Community Organizer Here"
             actionText="Send Message"
             fields={this.neededFields()}
+            info={this.state.formNotification}
           />
         </div>
       </div>

@@ -197,7 +197,7 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="row masonary-layout">
+              <div className="row masonary-layout" style={{marginLeft:0}}>
                 <div className="col-md-3 phone-vanish">
                   <MECard
                     className=" mob-login-white-cleaner z-depth-float me-anime-open-in"

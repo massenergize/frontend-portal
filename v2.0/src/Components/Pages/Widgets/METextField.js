@@ -73,7 +73,7 @@ class METextField extends Component {
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
-          value={defaultValue}
+          value={defaultValue || value }
           rows={rows ? rows : "10"}
           style={styles}
           required={isRequired ? isRequired : false}

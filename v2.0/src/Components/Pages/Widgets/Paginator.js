@@ -58,7 +58,7 @@ export default class Paginator extends Component {
         <div style={{ display: "flex", padding: "0px 35px" }}>
           {pageCount !==0  && (
             <METextView
-              className="put-me-in-the-middle"
+              className="put-me-in-the-middle page-text-phone-mode"
               style={{ color: "#8dc343", textShadow:"0px 1px 3px #d2baba",  }}
             >
               Page {currentPage} / { pageCount}<br/> 

@@ -136,7 +136,6 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Specify vendor if  not on the list (optional) ",
         placeholder: "Name of vendor...",
-        value:""
       },
       {
         type: "input",
@@ -145,7 +144,6 @@ class StoryForm extends React.Component {
         label:
           "Your name and email will be known to the Community Organizer but how would you like it to be displayed?",
         placeholder: "Name...",
-        value:""
       },
       {
         type: "input",
@@ -153,8 +151,6 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Story Title *",
         placeholder: "Add a title... *",
-        required:true,
-        value:""
       },
       {
         type: "file",
@@ -169,7 +165,6 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Your Story * ( limit: 9000 Char's)",
         placeholder: "Your story...*",
-        value:""
       },
     ];
   }
@@ -454,7 +449,7 @@ class StoryForm extends React.Component {
       );
     });
   }
-  onSubmit(event, data, resetForm) {
+  onSubmit(event, data) {
     event.preventDefault();
     this.setState({
       formNotification: {
@@ -463,36 +458,78 @@ class StoryForm extends React.Component {
         text: "We are sending now...",
       },
     });
+    console.log("I AM THE DATA", data);
+
+    // this.toggleSpinner(true);
+    /** Collects the form data and sends it to the backend */
     const body = { ...data, rank: 0 };
+    // const body = {
+    //   user_email: this.props.user.email,
+    //   vendor_id:
+    //     this.state.vid !== "--" && this.state.vid !== "other"
+    //       ? this.state.vid
+    //       : null,
+    //   action_id: this.props.aid
+    //     ? this.props.aid
+    //     : this.state.aid === "--"
+    //     ? null
+    //     : this.state.aid,
+    //   rank: 0,
+    //   body: this.state.body,
+    //   title: this.state.title,
+    //   community_id: this.props.community.id,
+    //   //tags: this.state.selected_tags ? this.state.selected_tags : null,
+    //   //anonymous: this.state.anonymous,
+    //   image: this.state.image,
+    //   tags: this.state.selected_tags ? this.state.selected_tags : null,
+    //   anonymous: this.state.anonymous,
+    //   preferred_name: this.state.preferredName,
+    //   other_vendor: this.state.vendor ? this.state.vendor : null,
+    // };
+    // if (!this.props.aid && (!this.state.aid || this.state.aid === '--')) {
+    // 	this.setState({ error: "Please choose which action you are writing a testimonial about" })
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({
         formNotification: {
           icon: "fa fa-times",
-          type: "bad",
+          type: "good",
           text: "Sorry, you story is a bit too long..",
         },
       });
-     
     } else {
       apiCall(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
-          this.setState({
-            formNotification: {
-              icon: "fa fa-check",
-              type: "good",
-              text:
-                "Nicely done! Your story will be reviewed and publish as soon as possible. Stay tuned!",
-            },
-          });
-          resetForm();
+          // this.setState({
+          //   ...INITIAL_STATE,
+          //   //selected_tags: [],
+          //   notificationState: "Good",
+          //   notificationMessage:
+          //     "Sent successfully! Your community organizer will review it and post it soon.",
+          //   message:
+          //     "Thank you for submitting your story! Your community organizer will review it and post it soon.",
+          // });
+          // this.cleanUp();
+          // this.toggleSpinner(false);
+          // if (this.props.closeForm)
+          //   this.props.closeForm(
+          //     "Thank you for submitting your testimonial. Your community organizer will review it and post it soon."
+          //   );
         } else {
-          this.setState({
-            formNotification: {
-              icon: "fa fa-times",
-              type: "bad",
-              text: "Something happened, we could not send your story!",
-            },
-          });
+          // this.setState({
+          //   ...INITIAL_STATE,
+          //   //selected_tags: [],
+          //   notificationState: "Bad",
+          //   notificationMessage:
+          //     "There was an error submitting your testimonial",
+          //   error: "There was an error submitting your testimonial",
+          // });
+          // this.cleanUp();
+          // this.toggleSpinner(false);
+          // if (this.props.closeForm)
+          //   this.props.closeForm(
+          //     "There was an error submitting your testimonial. We are sorry."
+          //   );
+          // this.toggleSpinner(false);
         }
       });
     }

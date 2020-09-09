@@ -160,7 +160,7 @@ class OneServicePage extends React.Component {
                   )} */}
                 </MESectionWrapper>
               </div>
-              <div className="col-md-7 col-12 mt-3">
+              <div className="col-md-6 col-lg-6 col-12 mt-3" style={{marginLeft:25, marginRight:25}}>
                 <h1 className="pt-3 mobile-title">{vendor.name}</h1>
                 <p
                   className="cool-font make-me-dark"
@@ -283,7 +283,7 @@ class OneServicePage extends React.Component {
                       this.state.expanded === story.id ? (
                         <button
                           className="as-link"
-                          style={{ float: "right" }}
+                          style={{ float: "right", marginLeft:10 }}
                           onClick={() => {
                             this.setState({ expanded: null });
                           }}

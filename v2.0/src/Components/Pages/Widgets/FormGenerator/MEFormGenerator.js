@@ -17,6 +17,8 @@ const AUTOCOMPLETE = "autocomplete";
 const RADIOGROUP = "radio-group";
 const CHECKBOXES = "checkbox-group";
 const FILE = "file";
+export const BAD = "bad";
+export const GOOD = "good";
 
 /**
  * This Component accepts a formField Item and accepts
@@ -35,6 +37,7 @@ export default class FormGenerator extends Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.setDefaultValues = this.setDefaultValues.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
   labelOrNot(formObject) {
     if (!formObject.hasLabel) return <span></span>;
@@ -156,7 +159,7 @@ export default class FormGenerator extends Component {
     const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
-      if(!formItem || formItem ==={}) return <i></i>
+      if (!formItem || formItem === {}) return <i></i>;
       switch (formItem.type.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
@@ -179,14 +182,64 @@ export default class FormGenerator extends Component {
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
-    onSubmit(e, this.state.formData);
+    onSubmit(e, this.state.formData, this.resetForm);
     return;
+  }
+
+  resetForm() {
+    const { fields } = this.props;
+    var defaults = {};
+    fields.forEach((formItem) => {
+      if (formItem.type === INPUT || formItem.type === TEXTAREA) {
+        defaults = {
+          ...defaults,
+          [formItem.name]: "",
+        };
+      } else {
+        defaults = {
+          ...defaults,
+          [formItem.name]: formItem.value,
+        };
+      }
+    });
+    this.setState({ formData: defaults });
+    console.log("I AHVE REST THE FORM");
+  }
+
+  displayInformation() {
+    const { info } = this.props;
+    if (!info) return null;
+    if (info.type === BAD) {
+      return (
+        <METextView
+          mediaType="icon"
+          className="page-text-phone-mode"
+          icon={info.icon}
+          style={{ color: "red", fontSize: "medium" }}
+        >
+          {info.text}
+        </METextView>
+      );
+    }
+
+    if (info.type === GOOD) {
+      return (
+        <METextView
+          mediaType="icon"
+          className="page-text-phone-mode"
+          icon={info.icon}
+          style={{ color: "green" }}
+        >
+          {info.text}
+        </METextView>
+      );
+    }
   }
 
   render() {
     var { animate, className, style, title, elevate } = this.props;
     const animationClass = animate ? "me-open-in" : "";
-    style= elevate ? style : {boxShadow:"0 0 black", style}
+    style = elevate ? style : { boxShadow: "0 0 black", style };
     return (
       <div>
         <MECard className={`${animationClass} ${className}`} style={style}>
@@ -200,8 +253,15 @@ export default class FormGenerator extends Component {
             {this.createAndEjectForm()}
 
             <br />
+            <div>{this.displayInformation()}</div>
             <div style={{ display: "flex" }}>
-              <MEButton containerStyle={{ marginLeft: "auto" }}>
+              <MEButton
+                containerStyle={{
+                  marginLeft: "auto",
+                  padding: "10px 12px",
+                  fontSize: 13,
+                }}
+              >
                 {this.props.actionText}
               </MEButton>
             </div>
@@ -220,7 +280,8 @@ FormGenerator.propTypes = {
   className: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
-  elevate:PropTypes.bool
+  elevate: PropTypes.bool,
+  info: PropTypes.object,
 };
 
 FormGenerator.defaultProps = {
@@ -230,5 +291,6 @@ FormGenerator.defaultProps = {
   className: "",
   actionText: "Submit",
   title: "",
-  elevate:true,
+  elevate: true,
+  info: {},
 };

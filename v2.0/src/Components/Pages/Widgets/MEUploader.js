@@ -84,7 +84,7 @@ MEUploader.propTypes = {
 };
 MEUploader.defaultProps = {
   style: {},
-  className: {},
+  className: "",
   name: "some_name",
 };
 export default MEUploader;
