@@ -985,7 +985,7 @@ class OneActionPage extends React.Component {
     if (actionRel) this.moveToDone(actionRel);
   }
   addToCart = (aid, hid, status) => {
-    if (status !== "TODO" || status !== "DONE") return;
+    if(status !== 'TODO' && status !== 'DONE') return;
 
     const route =
       status === "TODO"
