@@ -9,6 +9,8 @@ import {
   reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
 import { apiCall } from "../../../api/functions";
+import MEButton from "../Widgets/MEButton";
+import { getRandomIntegerInRange } from "../../Utils";
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -104,16 +106,15 @@ class Action extends React.Component {
       );
     } else {
       return (
-        <button
-          className={
-            this.state.status === "TODO"
-              ? "thm-btn style-4 selected cool-font action-btns"
-              : "thm-btn style-4 cool-font action-btns"
-          }
+        <MEButton
+        variation = "accent"
+          mediaType="icon"
+          icon="fa fa-edit"
           onClick={() => this.openForm("TODO")}
+          style={{ padding: "8px 14px", fontSize: 13 }}
         >
           To Do
-        </button>
+        </MEButton>
       );
     }
   }
@@ -141,12 +142,10 @@ class Action extends React.Component {
       );
     } else {
       return (
-        <button
-          className={
-            this.state.status === "DONE"
-              ? "thm-btn style-4 selected cool-font action-btns"
-              : "thm-btn style-4 cool-font action-btns"
-          }
+        <MEButton
+          mediaType="icon"
+          icon="fa fa-check"
+          style={{ padding: "8px 14px", fontSize: 13 }}
           onClick={() => {
             this.openForm("DONE");
             this.props.toggleShowTodoMsg();
@@ -154,9 +153,14 @@ class Action extends React.Component {
         >
           {" "}
           Done It{" "}
-        </button>
+        </MEButton>
       );
     }
+  }
+  getAnimationClass() {
+    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
+    const index = getRandomIntegerInRange(3); 
+    return classes[index];
   }
   render() {
     if (!this.props.HHFormOpen && this.state.status)
@@ -165,7 +169,7 @@ class Action extends React.Component {
       //checks if the action should render or not
       return (
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
-          <div className="single-shop-item m-action-item">
+          <div className={`single-shop-item m-action-item z-depth-float ${this.getAnimationClass()}`}>
             <Link
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{ color: "#999999", width: "100%" }}
@@ -177,6 +181,7 @@ class Action extends React.Component {
                   src={
                     this.props.action.image ? this.props.action.image.url : null
                   }
+                  style={{ width: "100%" }}
                   alt=""
                 />
                 {/* animated section on top of the image */}
@@ -196,8 +201,19 @@ class Action extends React.Component {
                 </figcaption>
               </div>
               <div className="content-box">
-                <div className="inner-box">
-                  <h4 className="cool-font">{this.props.action.title}</h4>
+                <div
+                  className="inner-box "
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgb(88 152 0), rgb(255, 122, 9))",
+                  }}
+                >
+                  <h4
+                    className="cool-font"
+                    style={{ fontSize: "1.1rem", color: "white" }}
+                  >
+                    {this.props.action.title}
+                  </h4>
                 </div>
                 {/* Impact and cost tags*/}
                 <div className="price-box2">
@@ -229,13 +245,13 @@ class Action extends React.Component {
               <div className="row no-gutter d-flex align-items-center">
                 <div className="col-sm-4 col-md-4 col-lg-4 col-4">
                   <div className="col-centered">
-                    <Link
+                    <MEButton
                       to={this.props.links.actions + "/" + this.props.action.id}
-                      className="thm-btn style-4 action-btns cool-font"
+                      style={{ padding: "8px 14px", fontSize: 13 }}
                     >
                       {" "}
                       More Info
-                    </Link>
+                    </MEButton>
                   </div>
                 </div>
                 <div className="col-md-4 col-sm-4 col-lg-4 col-4">

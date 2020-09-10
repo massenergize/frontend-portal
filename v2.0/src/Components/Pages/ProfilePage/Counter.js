@@ -13,7 +13,7 @@ class Counter extends React.Component {
 
   render() {
     return (
-      <div className="item count-cardy z-depth-float mob-profile-card-fix">
+      <div className="item count-cardy z-depth-float mob-profile-card-fix me-anime-open-in">
         <br className="phone-vanish" />
         <br className="phone-vanish" />
         <div className="icon mob-icon-fix">

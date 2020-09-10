@@ -99,7 +99,7 @@ class MEDropdown extends Component {
   };
 
   render() {
-    const { activeItem, placeholder, dataValues, data } = this.state;
+    const { activeItem, placeholder } = this.state;
     const defaultText = placeholder ? placeholder : "Select Item";
     return (
       <div>

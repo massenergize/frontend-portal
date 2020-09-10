@@ -45,14 +45,14 @@ class MEButton extends Component {
   getClasses() {
     var classes;
     var { className, variation } = this.props;
-    classes = `me-undefault-btn me-universal-btn me-btn-green ${className}`;
+    classes = `me-undefault-btn me-universal-btn me-btn-green ${className} me-btn-phone-mode`;
     if (!variation || variation.toLowerCase === NORMAL) return classes;
     if (variation.toLowerCase() === ACCENT) {
-      classes = `me-undefault-btn me-universal-btn me-btn-accent ${className}`;
+      classes = `me-undefault-btn me-universal-btn me-btn-accent ${className} me-btn-phone-mode`;
       return classes;
     }
     if (variation.toLowerCase() === UNION) {
-      classes = `me-undefault-btn me-universal-btn me-btn-union ${className}`;
+      classes = `me-undefault-btn me-universal-btn me-btn-union ${className} me-btn-phone-mode`;
       return classes;
     }
 
@@ -95,7 +95,12 @@ class MEButton extends Component {
     );
   }
   render() {
-    return <div className="put-me-inline">{this.ejectComponent()}</div>;
+    const { containerStyle } = this.props;
+    return (
+      <div className="put-me-inline" style={containerStyle}>
+        {this.ejectComponent()}
+      </div>
+    );
   }
 }
 
@@ -108,6 +113,7 @@ MEButton.defaultProps = {
   iconStyle: {},
   iconSize: "small",
   iconColor: "#282828",
+  containerStyle: {},
 };
 
 export default MEButton;

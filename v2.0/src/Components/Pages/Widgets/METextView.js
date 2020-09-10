@@ -95,8 +95,8 @@ class METextView extends Component {
   createParagraph(styles, classes) {
     return (
       <p
-        style={styles}
         className={classes}
+        style={styles}
         onClick={(e) => this.handleOnClick(e)}
       >
         {this.ejectMedia()} {this.props.children}

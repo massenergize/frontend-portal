@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import leafy from "./leafy.png";
+import defaultPhoto from "./me_energy_default.png";
 import * as moment from "moment";
 class StoryModal extends Component {
   constructor(props) {
@@ -21,56 +22,38 @@ class StoryModal extends Component {
 
     return (
       <div>
-        <div
-          className="modal-box z-depth-2 mob-modal-card"
-          style={{ height: 630, top: "19%" }}
-        >
-          <h4
-            className=" modal-close-x mob-modal-close-x round-me"
-            onClick={() => {
-              this.props.close();
-            }}
+        <center>
+          <h5
+            style={{ marginBottom: 8, textTransform: "capitalize" }}
+            className="mob-modal-tittle"
           >
-            <span className="fa fa-close"></span>
-          </h4>
-          <center>
-            <h5
-              style={{ marginBottom: 8, textTransform: "capitalize" }}
-              className="mob-modal-tittle"
+            {this.props.content.title}
+          </h5>
+          <small className="story-name">{userName}</small>
+          <small className="m-label round-me mob-line-break">{date}</small>
+          <div style={{ marginTop: -20, position:"relative" }}>
+            {!this.props.content.image ? (
+              <img
+                className="testi-green-monster mob-modal-pic-tweak z-depth-float "
+                src={defaultPhoto}
+                alt="IMG"
+              />
+            ) : (
+              <img
+                className="testi-modal-pic  mob-modal-pic-tweak z-depth-float"
+                src={this.props.content.image.url}
+                alt="IMG"
+              />
+            )}
+            <div
+            // style={{ marginTop: 30, maxHeight: 610, overflowY: "scroll" }}
             >
-              {this.props.content.title}
-            </h5>
-            <small className="story-name">{userName}</small>
-            <small className="m-label round-me mob-line-break">{date}</small>
-            <div style={{ marginTop: -20 }}>
-              {!this.props.content.image ? (
-                <img
-                  className="testi-green-monster mob-modal-pic-tweak z-depth-1 "
-                  src={leafy}
-                  alt="IMG"
-                />
-              ) : (
-                <img
-                  className="testi-modal-pic  mob-modal-pic-tweak z-depth-1"
-                  src={this.props.content.image.url}
-                  alt="IMG"
-                />
-              )}
-              <div
-                // style={{ marginTop: 30, maxHeight: 610, overflowY: "scroll" }}
-              >
-                <p className="mob-modal-p make-me-dark">{this.props.content.desc}</p>
-              </div>
+              <p className="mob-modal-p make-me-dark">
+                {this.props.content.desc}
+              </p>
             </div>
-          </center>
-        </div>
-        <div
-          id="contact-textarea"
-          onClick={() => {
-            this.props.close();
-          }}
-          className="desc-modal-container"
-        ></div>
+          </div>
+        </center>
       </div>
     );
   }

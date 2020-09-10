@@ -13,7 +13,7 @@ class SideBar extends React.Component {
 		const found = this.props.foundNumber;
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
-			<div className=" event-filter mob-vendor-white-cleaner wrapper shop-sidebar mb-5 raise" style={{padding:36,borderRadius:15}}>
+			<div className=" mob-vendor-white-cleaner wrapper shop-sidebar mb-5 z-depth-float" style={{padding:36,borderRadius:15}}>
 				<br />
 				<h4>Filter by...</h4> 
 				<input onChange={(event) => { this.props.search(event) }} type="text" placeholder="Search..." className="filter-search-input" />

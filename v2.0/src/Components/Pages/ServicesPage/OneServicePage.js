@@ -5,6 +5,10 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { Link } from "react-router-dom";
 import StoryForm from "../ActionsPage/StoryForm";
 import notFound from "./green-mat.jpg";
+import MESectionWrapper from "../Widgets/MESectionWrapper";
+import MECard from "../Widgets/MECard";
+import MELink from "../Widgets/MELink";
+import METextView from "../Widgets/METextView";
 class OneServicePage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +32,7 @@ class OneServicePage extends React.Component {
             links={[
               { name: "Service Providers", link: this.props.links.services },
               // { name: `Service Provider ${vendor.id}` },
-              {name:vendor ? vendor.name :"..."}
+              { name: vendor ? vendor.name : "..." },
             ]}
           />
           <div className="container">
@@ -43,19 +47,19 @@ class OneServicePage extends React.Component {
     const prefix = "http://";
     var webbie = string ? string : null;
     if (webbie) {
-      var temp,first_letter;
-      if(webbie.includes("://")){
-        //it means its already an absolute url 
-        return webbie ;
+      var temp, first_letter;
+      if (webbie.includes("://")) {
+        //it means its already an absolute url
+        return webbie;
       }
-      first_letter = webbie[0]; 
-      if(first_letter ==="/"){
+      first_letter = webbie[0];
+      if (first_letter === "/") {
         //Now check if website starts with "/"(admin put a relative path of some website)
-        //remove the beginning slash 
-        temp = webbie.substr(1,webbie.length -1)
-        return prefix+temp;
+        //remove the beginning slash
+        temp = webbie.substr(1, webbie.length - 1);
+        return prefix + temp;
       }
-      //if its just a raw link, just add the prefix 
+      //if its just a raw link, just add the prefix
 
       return prefix + webbie;
     }
@@ -75,19 +79,17 @@ class OneServicePage extends React.Component {
     //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
     //     : "Not Provided";
 
-
-  
     return (
       <div className="col-12" key={vendor.vendor}>
         <div
           className="card rounded-0 spacing"
-          style={{ borderColor: "#f9f7f7" }}
+          style={{ borderColor: "white" }}
         >
           <div className="card-body mob-zero-padding">
             <div className="row">
               <div className="col-md-5 col-12 text-center">
                 <img
-                  className="w-100 raise"
+                  className="w-100 z-depth-float me-anime-open-in"
                   style={{
                     marginBottom: 6,
                     borderRadius: 12,
@@ -108,18 +110,18 @@ class OneServicePage extends React.Component {
                     {vendor.location.city}, {vendor.location.state}
                   </div>
                 ) : null}
-                <div className="ash-paper z-depth-1">
-                  
-                  
+
+                <MESectionWrapper headerText="Contact Information">
                   <a
                     style={{ marginBottom: "6px", color: "black" }}
                     href={`tel:${phone}`}
                   >
                     <b>
-                      <i className="fa fa-envelope fa-m-right"></i>{" "}
+                      <i className="fa fa-phone fa-m-right"></i>{" "}
                     </b>{" "}
                     {phone}
-                  </a><br/>
+                  </a>
+                  <br />
                   <a
                     style={{ marginBottom: "6px", color: "black" }}
                     href={`mailto:${email}`}
@@ -128,19 +130,25 @@ class OneServicePage extends React.Component {
                       <i className="fa fa-envelope fa-m-right"></i>{" "}
                     </b>{" "}
                     {email}
-                  </a><br/>
+                  </a>
+                  <br />
 
                   {vendor.website ? (
                     <a
                       onClick={() => {
-                        window.open(this.changeToAbsoluteURL(vendor.website), "_blank");
+                        window.open(
+                          this.changeToAbsoluteURL(vendor.website),
+                          "_blank"
+                        );
                       }}
                       rel="noopener noreferrer"
                       style={{ color: "#f56d39", cursor: "pointer" }}
                       href={vendor.website}
                     >
                       <i className="fa fa-globe fa-m-right"></i>{" "}
-                      {vendor.website.length >33 ? vendor.website.substr(0,33)+"...": vendor.website}
+                      {vendor.website.length > 33
+                        ? vendor.website.substr(0, 33) + "..."
+                        : vendor.website}
                     </a>
                   ) : null}
                   {/* {vendor.key_contact.email && vendor.key_contact.name ? (
@@ -150,9 +158,9 @@ class OneServicePage extends React.Component {
                   ) : (
                     <small style={{ color: "gray" }}>{key_contact}</small>
                   )} */}
-                </div>
+                </MESectionWrapper>
               </div>
-              <div className="col-md-7 col-12 mt-3">
+              <div className="col-md-6 col-lg-6 col-12 mt-3" style={{marginLeft:25, marginRight:25}}>
                 <h1 className="pt-3 mobile-title">{vendor.name}</h1>
                 <p
                   className="cool-font make-me-dark"
@@ -209,7 +217,7 @@ class OneServicePage extends React.Component {
             ) : null}
             <br />
             {this.storyCheck(stories, vendor)}
-            <StoryForm vid={vendor.id} />
+            {/* <StoryForm vid={vendor.id} /> */}
           </div>
         </div>
       </div>
@@ -219,11 +227,11 @@ class OneServicePage extends React.Component {
     if (stories.length > 0) {
       return (
         <div>
-          <div className="text-center">
+          <div className="text-center z-depth-float me-anime-open-in">
             <h4
               style={{
-                background: "rgb(249, 251, 249)",
-                color: "#383838",
+                background: "linear-gradient(45deg, #ff9030, #28a745)",
+                color: "white",
                 padding: 26,
               }}
             >
@@ -252,67 +260,70 @@ class OneServicePage extends React.Component {
           const story = stories[key];
           const date = new Date(story.created_at);
           return (
-            <div className="single-review-box" key={key} style={{ padding: 0 }}>
-              <div className="img-holder">
+            // className="single-review-box"
+            <div key={key} style={{ padding: 0 }}>
+              <MECard className="me-anime-open-in">
+                {/* <div className="img-holder">
                 <img src="" alt="" />
-              </div>
-              <div className="text-holder" style={{ padding: 40 }}>
-                {story.user && (
-                  <div className="top">
-                    <div className="name pull-left">
-                      <h4>
-                        {story.user.full_name} – {date.toLocaleDateString()}:
-                      </h4>
+              </div> */}
+                <div className="text-holder" style={{ padding: 40 }}>
+                  {story.user && (
+                    <div className="top">
+                      <div className="name pull-left">
+                        <h4>
+                          {story.user.full_name} – {date.toLocaleDateString()}:
+                        </h4>
+                      </div>
                     </div>
-                  </div>
-                )}
-
-                <div className="text">
-                  <h6>
-                    {story.title}
-                    {this.state.expanded && this.state.expanded === story.id ? (
-                      <button
-                        className="as-link"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          this.setState({ expanded: null });
-                        }}
-                      >
-                        close
-                      </button>
-                    ) : null}
-                  </h6>
-                  <p>
-                    {this.state.expanded && this.state.expanded === story.id
-                      ? story.body
-                      : story.body.substring(0, this.state.limit)}
-                    {this.state.limit < story.body.length &&
-                    this.state.expanded !== story.id ? (
-                      <button
-                        className="as-link"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          this.setState({ expanded: story.id });
-                        }}
-                      >
-                        ...more
-                      </button>
-                    ) : null}
-                  </p>
-                </div>
-                {story.action ? (
+                  )}
                   <div className="text">
+                    <METextView style={{ color: "black", marginLeft:15, marginRight:7 }}>
+                      {story.title}
+                      {this.state.expanded &&
+                      this.state.expanded === story.id ? (
+                        <button
+                          className="as-link"
+                          style={{ float: "right", marginLeft:10 }}
+                          onClick={() => {
+                            this.setState({ expanded: null });
+                          }}
+                        >
+                          close
+                        </button>
+                      ) : null}
+                    </METextView>
                     <p>
-                      Linked Action:{" "}
-                      <Link
-                        to={`${this.props.links.actions}/${story.action.id}`}
-                      >
-                        {story.action.title}
-                      </Link>
+                      {this.state.expanded && this.state.expanded === story.id
+                        ? story.body
+                        : story.body.substring(0, this.state.limit)}
+                      {this.state.limit < story.body.length &&
+                      this.state.expanded !== story.id ? (
+                        <button
+                          className="as-link"
+                          style={{ float: "right" }}
+                          onClick={() => {
+                            this.setState({ expanded: story.id });
+                          }}
+                        >
+                          ...more
+                        </button>
+                      ) : null}
                     </p>
                   </div>
-                ) : null}
-              </div>
+                  {story.action ? (
+                    <div className="text">
+                      <p>
+                        Linked Action:{" "}
+                        <MELink
+                          to={`${this.props.links.actions}/${story.action.id}`}
+                        >
+                          {story.action.title}
+                        </MELink>
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              </MECard>
             </div>
           );
         })}

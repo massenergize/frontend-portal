@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import MECard from "./MECard";
-import GButton from "./GButton";
+import MEButton from "./MEButton";
 import PropTypes from "prop-types";
-import {} from "@fortawesome/free-solid-svg-icons";
 const SMALL = "sm";
 const MEDIUM = "md";
 const LARGE = "lg";
 
 /**
  * A modal wrapper, that just envelopers any container you pass in as a child
- * The children are elevated with a dark overlay, and are fit on to an ME card 
+ * The children are elevated with a dark overlay, and are fit on to an ME card
  * @props {string} size : "sm" | "md" | "lg"
- * @props {func} closeModal | a toggle fxn from the parent modal to hide 
+ * @props {func} closeModal | a toggle fxn from the parent modal to hide
  * @props {string} className
- * 
- * 
+ *
+ *
  */
 export default class MEModal extends Component {
   constructor(props) {
@@ -31,24 +30,29 @@ export default class MEModal extends Component {
   }
   render() {
     const { closeModal, style, className } = this.props;
-    const defaults = { background: "white", marginTop: -4 };
+    const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     return (
       <div>
         <div className="me-overlay" onClick={closeModal}></div>
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()}`}
+          
         >
           <center>
-            <GButton
+            <MEButton
               onClick={closeModal}
               className="me-close"
-              style={{ marginBottom: -70, fontWeight: "bold" }}
+              style={{
+                marginBottom: -70,
+                fontWeight: "bold",
+                padding: "10px 17px",
+              }}
             >
-              Close
-            </GButton>
+              <span className="fa fa-close" style={{ fontSize: 15 }}></span>
+            </MEButton>
           </center>
           <MECard
-            className={`z-depth-2 ${className}`}
+            className={`z-depth-5 ${className}`}
             style={{ ...defaults, ...style }}
           >
             {this.props.children}

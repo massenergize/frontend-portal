@@ -51,8 +51,8 @@ export default class MESectionWrapper extends Component {
     return (
       <div className="me-anime-show-up">
         <div
-          style={style}
           className={`me-section-wrapper-header section-green z-depth-1 ${className}`}
+          style={style}
           onClick={() => this.setState({ collapsed: !collapsed })}
         >
           {this.showBadge()}

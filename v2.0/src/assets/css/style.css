@@ -1959,7 +1959,7 @@ ul.dropdown li:hover a {
 .service .service-item {
     width: 100%;
     margin-bottom: 20px;
-    border: 1px solid #ffd2cc;
+    /* border: 1px solid #ffd2cc; */
     border-radius: 3px;
     padding: 20px 5px 5px;
     position: relative;
