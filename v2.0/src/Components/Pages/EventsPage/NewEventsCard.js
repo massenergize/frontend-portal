@@ -23,7 +23,7 @@ export default class METestimonialCard extends Component {
   getBody() {
     var body = this.props.featured_summary;
     const id = this.props.id;
-    if (body.length > 180) {
+    if (body && body.length > 180) {
       return (
         <>
           {body.slice(0, 180) + "..."}
