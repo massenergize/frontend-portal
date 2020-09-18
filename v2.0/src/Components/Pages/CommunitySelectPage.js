@@ -4,6 +4,7 @@ import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
 import { getRandomIntegerInRange } from "../Utils";
+import { Link } from "react-router-dom";
 
 class CommunitySelectPage extends React.Component {
   constructor(props) {
@@ -128,11 +129,11 @@ class CommunitySelectPage extends React.Component {
                 Or go to our main site
               </h3>
               <p className="text-center">
-              
                 <MEButton
                 className="me-anime-open-in"
                   href="https://massenergize.org"
                   variation="accent"
+                  target="_blank"
                 >
                   MassEnergize
                 </MEButton>{" "}

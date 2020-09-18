@@ -60,7 +60,8 @@ class MEButton extends Component {
   }
 
   ejectComponent() {
-    const { style, href, to, disabled, type } = this.props;
+    const { style, href, to, disabled, type, target } = this.props;
+    var newTab = target ? { target } : {};
     const classes = this.getClasses();
     const styles = style ? { ...style } : null;
     if (!href && !to) {
@@ -81,16 +82,17 @@ class MEButton extends Component {
     }
     return (
       <div className="put-me-inline">
-        <Link
+        <a
           disabled={disabled}
           className={classes}
           style={styles}
-          to={href || to}
+          {...newTab}
+          href={href || to}
           onClick={(e) => this.handleOnClick(e)}
         >
           {this.ejectIcon()}
           {this.props.children}
-        </Link>
+        </a>
       </div>
     );
   }
@@ -114,6 +116,7 @@ MEButton.defaultProps = {
   iconSize: "small",
   iconColor: "#282828",
   containerStyle: {},
+  target: {},
 };
 
 export default MEButton;

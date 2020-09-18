@@ -5,7 +5,6 @@ import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
 import { getRandomIntegerInRange, locationFormatJSX } from "../../Utils";
-import LoadingCircle from "../../Shared/LoadingCircle";
 
 export default class METestimonialCard extends Component {
   constructor(props) {
@@ -22,8 +21,9 @@ export default class METestimonialCard extends Component {
   }
   getBody() {
     var body = this.props.featured_summary;
+    var limit = this.props.body_limit;
     const id = this.props.id;
-    if (body && body.length > 180) {
+    if (body && body.length > limit) {
       return (
         <>
           {body.slice(0, 180) + "..."}
@@ -77,8 +77,13 @@ export default class METestimonialCard extends Component {
     return classes[index];
   }
 
+  getEventTitle() {
+    const { name } = this.props;
+    if (name.length > 48) return name + "...";
+    return name;
+  }
   render() {
-    var { className, location, dateString, id, image } = this.props;
+    var { className, location, dateString, id } = this.props;
     return (
       <div>
         <MECard
@@ -86,25 +91,16 @@ export default class METestimonialCard extends Component {
           style={{ padding: 0, position: "relative" }}
           className={`${this.getAnimationClass()} ${className}`}
         >
-          <img
-            src={this.getPhoto()}
-            className="me-testimonial-img"
-          />
+          <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">
             <div className="me-testimonial-about">
               <small>
                 <b>
-                  <span className="fa fa-clock-o" style={{ marginRight: 5 }} />
+                  {this.getEventTitle()} <br />
+                  <i className="fa fa-clock-o" style={{ marginRight: 5 }} />
                   {dateString}
                 </b>
               </small>
-              {/* <small style={{ marginLeft: "auto" }}>
-                <b>
-                  {" "}
-                  <span className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {this.getFormatedTime(created_at)}
-                </b>
-              </small> */}
             </div>
             <div style={{ padding: 15 }}>
               <METextView
@@ -143,4 +139,6 @@ METestimonialCard.defaultProps = {
   action: {},
   created_at: "1st January 2020",
   links: {},
+  name: "New Event",
+  body_limit: 150,
 };
