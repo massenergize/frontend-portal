@@ -13,6 +13,7 @@ import {createCircleGraphData} from "./../../Utils";
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
   shortenWords(word) {
+    console.log(" I AM THE WORD", word);
     //shorten all two-worded strings except "home energy"
     let stringArr = word.split(" ");
     if (word.toLowerCase() === "home energy") return word;
@@ -113,7 +114,7 @@ class ImpactPage extends React.Component {
 
     completed.forEach((el) => {
       if (el) {
-        graph2Categories.push(el.name);
+        graph2Categories.push(this.shortenWords(el.name));
         graph2Series[0].data.push(el.value);
         graph2Series[1].data.push(el.reported_value);
         phoneImpact.labels.push(this.shortenWords(el.name));
