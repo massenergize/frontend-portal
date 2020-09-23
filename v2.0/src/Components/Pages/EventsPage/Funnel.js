@@ -43,7 +43,7 @@ class EventFilter extends Component {
   getCollectionSetAccordingToPage (){
     const { type, tagCols } = this.props; 
     if(!type) return []; 
-    if(type === "testimonial" || "service" || "event") return this.props.collection; //this.props.collection only brings the category collection
+    if(type === "testimonial" || type==="service" || type==="event") return this.props.collection; //this.props.collection only brings the category collection
     if(!tagCols) return [];
     return tagCols;
   }
