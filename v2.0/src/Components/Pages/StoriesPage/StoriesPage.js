@@ -53,14 +53,18 @@ class StoriesPage extends React.Component {
   findCommon() {
     const stories = this.props.stories;
     const values = this.state.check_values ? this.state.check_values : [];
+
+    if (values.length == 0)
+      return null;
+
     const common = [];
     if (stories) {
       for (let i = 0; i < stories.length; i++) {
         const story = stories[i];
         const ev = stories[i].action;
         if (ev) {
-          for (let i = 0; i < ev.tags.length; i++) {
-            const tag = ev.tags[i];
+          for (let j = 0; j < ev.tags.length; j++) {
+            const tag = ev.tags[j];
             //only push events if they arent there already
             if (values.includes(tag.id) && !common.includes(story)) {
               common.push(story);
@@ -164,10 +168,13 @@ class StoriesPage extends React.Component {
   getContentToDisplay() {
     const { stories } = this.props;
     const stateStories = this.state.stories;
-    if (this.findCommon().length > 0) {
+    const common = this.findCommon();
+
+    if (common) return common;
+    //if (this.findCommon().length > 0) {
       // filtered content if a user is using the filter. If not
-      return this.findCommon(0);
-    }
+    //  return this.findCommon(0);
+    //}
     if (stateStories.length === 0) {
       if (!stories) return;
       return stories.slice(0, this.state.perPage);
@@ -330,13 +337,20 @@ class StoriesPage extends React.Component {
   // }
 
   renderStories(stories) {
+    if (!stories) {
+      return (
+        <p>
+          There aren't any not any testimonials yet. If you have a story to tell, let
+            us know in the form below.
+        </p>
+      );
+    }
     if (stories.length === 0) {
       return (
         <div className="col-12 text-center">
           <p className="cool-font">
             {" "}
-            There are not any testimonials yet. If you have a story to tell, let
-            us know in the form below
+            There are not any testimonials in the selected categories.
           </p>
         </div>
       );

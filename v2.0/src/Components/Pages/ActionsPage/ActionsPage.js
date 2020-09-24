@@ -129,7 +129,7 @@ class ActionsPage extends React.Component {
     //if (common && common.length > 0) return common;
     if (common) return common;
     if (actions.length === 0) {
-      if (!propActions) return;
+      if (!propActions) return null;
       return propActions.slice(0, this.state.perPage);
     }
     return actions;
@@ -282,7 +282,7 @@ class ActionsPage extends React.Component {
     if (actions.length === 0) {
       return (
         <p>
-          There aren't any actions meeting the filter criteria.
+          There aren't any actions in the selected categories.
         </p>
       );
     }
