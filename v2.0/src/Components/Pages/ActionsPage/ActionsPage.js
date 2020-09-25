@@ -78,8 +78,9 @@ class ActionsPage extends React.Component {
     if (actions) {
       for (let i = 0; i < actions.length; i++) {
         const action = actions[i];
-        for (let j=0; j< action.tags.length; j++) {
-          const tag = action.tags[j];
+        const actionTags = (action && action.tags) || []
+        for (let j=0; j< actionTags.length; j++) {
+          const tag = actionTags[j];
           if (tag) {
             if (values.includes(tag.id) && !common.includes(action)) {
               common.push(action);
@@ -126,10 +127,9 @@ class ActionsPage extends React.Component {
     const propActions = this.props.actions;
     const common = this.findCommon();
     if (mirror_actions.length > 0) return mirror_actions;
-    //if (common && common.length > 0) return common;
     if (common) return common;
     if (actions.length === 0) {
-      if (!propActions) return null;
+      if (!propActions || propActions.length === 0) return null;
       return propActions.slice(0, this.state.perPage);
     }
     return actions;

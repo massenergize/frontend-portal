@@ -171,12 +171,8 @@ class StoriesPage extends React.Component {
     const common = this.findCommon();
 
     if (common) return common;
-    //if (this.findCommon().length > 0) {
-      // filtered content if a user is using the filter. If not
-    //  return this.findCommon(0);
-    //}
     if (stateStories.length === 0) {
-      if (!stories) return;
+      if (!stories || stories.length === 0) return null;
       return stories.slice(0, this.state.perPage);
     }
 
@@ -192,7 +188,6 @@ class StoriesPage extends React.Component {
       );
 
     const stories = this.getContentToDisplay();
-    if (stories == null) return <LoadingCircle />;
 
     //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
 
