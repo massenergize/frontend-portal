@@ -79,7 +79,7 @@ class Footer extends React.Component {
 								<u>Mingle Li</u>
 							&nbsp;&nbsp;
 								<u>Frimpong Opoku-Agyemang</u>
-              &nbsp;&nbsp;
+              				&nbsp;&nbsp;
 								<u>Josh Katofsky</u>
 							<br />
 								<u>{BUILD_VERSION_TEXT}</u>

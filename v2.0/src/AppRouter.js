@@ -105,7 +105,7 @@ class AppRouter extends Component {
     Promise.all([
       apiCall("communities.info", body),
       apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body),
+      apiCall("menus.list", body), //should add all communities to the menus.list
     ])
       .then((res) => {
         const [
@@ -303,7 +303,7 @@ class AppRouter extends Component {
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const communitiesLink = 
       {
-        name: "All Communities",
+        name: "Return to All Communities",
         link: "http://" + window.location.host,
         special: true,
       }
