@@ -47,7 +47,7 @@ class Events extends React.Component {
         );
 
         const location = event.location;
-        const img = event.image.url ? event.image.url : defaultImg;
+        const img = event.image && event.image.url ? event.image.url : defaultImg;
     
         return (
           <div key={event.id.toString()} className="col-md-6 col-lg-4 col-sm-6 col-xs-12">

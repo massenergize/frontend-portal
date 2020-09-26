@@ -19,7 +19,7 @@ export default class METestimonialCard extends Component {
   getBody() {
     const { body } = this.props;
     if (body.length > 90) {
-      return (
+        return (
         <>
           {body.slice(0, 90) + "..."}
           <MELink
@@ -77,7 +77,7 @@ export default class METestimonialCard extends Component {
     return classes[index];
   }
   render() {
-    var { className, action, prefered_name, links, created_at } = this.props;
+    var { className, action, preferred_name, links, created_at, title } = this.props;
     action = action ? action :{}
     return (
       <div>
@@ -91,7 +91,7 @@ export default class METestimonialCard extends Component {
               <small>
                 <b>
                   <span className="fa fa-user" style={{ marginRight: 5 }} />
-                  By {prefered_name}
+                  By {preferred_name}
                 </b>
               </small>
               <small style={{ marginLeft: "auto" }}>
@@ -102,7 +102,13 @@ export default class METestimonialCard extends Component {
                 </b>
               </small>
             </div>
-            <div style={{ padding: 15 }}>
+            <div style={{ padding: 12 }}>
+              <METextView 
+                className="me-testimonial-content"
+                style={{ fontSize: 18, color: "#282828" }}
+              >
+                {title}
+              </METextView>
               <METextView
                 className="me-testimonial-content"
                 style={{ fontSize: 15, color: "#282828" }}
