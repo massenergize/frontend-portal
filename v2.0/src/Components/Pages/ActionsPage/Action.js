@@ -11,6 +11,7 @@ import {
 import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
+import CustomTooltip from "../Widgets/CustomTooltip";
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -83,18 +84,18 @@ class Action extends React.Component {
   checkTodoAndReturn() {
     if (this.checkDone()) {
       return (
-        <Tooltip text="Cant use this feature, you have already done the action.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it">
+        <CustomTooltip text="Cant use this feature, you have already done the action.">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-float">
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     }
     if (this.checkTodo()) {
       return (
-        <Tooltip text="Thank you for adding this. Click again to remove.">
+        <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
             onClick={() => {
               this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
@@ -102,12 +103,12 @@ class Action extends React.Component {
           >
             To Do
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
         <MEButton
-        variation = "accent"
+          variation="accent"
           mediaType="icon"
           icon="fa fa-edit"
           onClick={() => this.openForm("TODO")}
@@ -128,9 +129,12 @@ class Action extends React.Component {
   checkDoneAndReturn() {
     if (this.checkDone()) {
       return (
-        <Tooltip text="Thanks for adding, click again to remove.">
+        <CustomTooltip
+          text="Thanks for adding, click again to remove."
+          style={{ marginLeft: "-70%" }}
+        >
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
             onClick={() => {
               this.setState({ message: null });
               this.removeFromCart(this.actionIsDone());
@@ -138,7 +142,7 @@ class Action extends React.Component {
           >
             Done It
           </p>
-        </Tooltip>
+        </CustomTooltip>
       );
     } else {
       return (
@@ -159,7 +163,7 @@ class Action extends React.Component {
   }
   getAnimationClass() {
     const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
-    const index = getRandomIntegerInRange(3); 
+    const index = getRandomIntegerInRange(3);
     return classes[index];
   }
   render() {
@@ -169,7 +173,9 @@ class Action extends React.Component {
       //checks if the action should render or not
       return (
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
-          <div className={`single-shop-item m-action-item z-depth-float ${this.getAnimationClass()}`}>
+          <div
+            className={`single-shop-item m-action-item z-depth-float ${this.getAnimationClass()}`}
+          >
             <Link
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{ color: "#999999", width: "100%" }}
@@ -313,7 +319,13 @@ class Action extends React.Component {
                             {this.state.message ? (
                               <p>{this.state.message}</p>
                             ) : (
-                              <p>
+                              <p
+                                style={{
+                                  padding: "3px 16px",
+                                  fontSize: "medium",
+                                }}
+                                className="me-anime-open-in"
+                              >
                                 Nice job! How was your experience with this
                                 action? Tell us about it in a{" "}
                                 <Link
@@ -352,7 +364,7 @@ class Action extends React.Component {
                       closeForm={this.closeForm}
                     />
                     {this.props.showTodoMsg === this.props.action.id ? (
-                      <p>
+                      <p style={{ padding: "3px 16px", fontSize: "medium" }} className="me-anime-open-in">
                         Nicely done! You have now added this action to your todo
                         list.
                       </p>

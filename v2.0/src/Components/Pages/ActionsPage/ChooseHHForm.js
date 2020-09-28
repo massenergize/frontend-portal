@@ -1,4 +1,8 @@
 import React from "react";
+import { getPropsArrayFromJsonArray } from "../../Utils";
+import MEButton from "../Widgets/MEButton";
+import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
+import MERadio from "../Widgets/MERadio";
 
 /********************************************************************/
 /**                        RSVP FORM                               **/
@@ -38,25 +42,28 @@ class ChooseHHForm extends React.Component {
             ) : null}
             <form onSubmit={this.handleSubmit}>
               {this.renderRadios(this.props.user.households)}
-              <div>
-                <button
-                  style={{padding:'2px 11px',marginRight: 7}}
-                  className="thm-btn style-4 round-me"
+              <div style={{ paddingBottom: 20, paddingTop:10 }}>
+                <MEButton
+                  style={{
+                    padding: "2px 11px",
+                    marginRight: 7,
+                    fontSize: "small",
+                  }}
                   type="submit"
                   disabled={
                     this.state.error ? true : !this.state.choice ? true : false
                   }
                 >
                   Submit
-                </button>
-                <button
-                style={{padding:'2px 11px'}}
-                  className="thm-btn style-4 red round-me"
+                </MEButton>
+                <MEButton
+                  style={{ padding: "2px 11px", fontSize: "small" }}
                   onClick={this.props.closeForm}
+                  variation="accent"
                 >
                   {" "}
                   Cancel{" "}
-                </button>
+                </MEButton>
               </div>
             </form>
           </div>
@@ -105,38 +112,28 @@ class ChooseHHForm extends React.Component {
   };
   renderRadios(households) {
     if (!households) return <div />;
-
-    return households
-      .filter(
-        (household) =>
-          (this.props.status === "DONE" &&
-            !this.props.inCart(this.props.aid, household.id, "DONE")) ||
-          (this.props.status === "TODO" &&
-            !this.props.inCart(this.props.aid, household.id))
-      )
-      .map((household) => (
-        <div key={household.id} style={{ display: "inline-block" }}>
-          <input
-            id={"" + household.name + household.id}
-            type="checkbox"
-            value={household.id}
-            name="hhchoice"
-            onChange={this.onChange}
-            checked={
-              this.state.choice
-                ? this.state.choice.includes(household.id)
-                : false
-            }
-            style={{ display: "inline-block" }}
-          />
-          &nbsp;
-          <label htmlFor={"" + household.name + household.id}>
-            {" "}
-            {household.name}{" "}
-          </label>
-          &nbsp;&nbsp;&nbsp;
-        </div>
-      ));
+    const filteredHH = households.filter(
+      (household) =>
+        (this.props.status === "DONE" &&
+          !this.props.inCart(this.props.aid, household.id, "DONE")) ||
+        (this.props.status === "TODO" &&
+          !this.props.inCart(this.props.aid, household.id))
+    );
+    const names = getPropsArrayFromJsonArray(filteredHH, "name");
+    const values = getPropsArrayFromJsonArray(filteredHH, "id");
+    var stateChoices = this.state.choice;
+    return (
+      <MECheckBoxGroup
+        style={{ display: "inline" }}
+        fineTuneSquare={{ left: 7, bottom: 6 }}
+        data={names}
+        dataValues={values}
+        value={stateChoices ? stateChoices : []}
+        name="hhchoice"
+        onItemSelected={this.onChange}
+      />
+    );
+  
   }
 
   addIn(householdID) {
@@ -150,12 +147,12 @@ class ChooseHHForm extends React.Component {
     }
   }
   //updates the state when form elements are changed
-  onChange(event) {
-    var content = this.state.choice;
-    var init = [Number(event.target.value)];
+  onChange(all) {
+    // var content = this.state.choice;
+    // var init = [Number(value)];
     this.setState({
       error: null,
-      choice: content ? this.addIn(event.target.value) : init,
+      choice: all,
     });
   }
 
