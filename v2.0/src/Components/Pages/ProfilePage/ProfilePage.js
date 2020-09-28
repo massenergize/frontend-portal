@@ -102,6 +102,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
+
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -127,12 +128,10 @@ class ProfilePage extends React.Component {
           return com.id === this.props.community.id;
         }).length === 0
       ) {
-        console.log(myCommunities);
         this.addDefaultCommunity();
       }
     }
     const { user } = this.props;
-    console.log(this.props.done);
     return (
       <>
         <div
@@ -277,29 +276,7 @@ class ProfilePage extends React.Component {
                       View all Teams
                     </MEButton>
                   </div>
-                  {/* <table className="profile-table" style={{ width: "100%" }}>
-                    <tbody>
-                      <tr>
-                        <th>
-                          {" "}
-                          Your Teams <small>
-                            (* outside this community)
-                          </small>{" "}
-                        </th>
-                      </tr>
-                      {this.renderTeams(user.teams)}
-                      <tr>
-                        <td align="center">
-                          <MEButton
-                            href={this.props.links.teams}
-                            style={{ margin: "5px" }}
-                          >
-                            View all Teams
-                          </MEButton>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> */}
+                  
                   <br />
                   <MESectionWrapper headerText="Your Households">
                     {this.renderHouseholds(user.households)}

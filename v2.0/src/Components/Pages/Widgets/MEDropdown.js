@@ -128,6 +128,7 @@ MEDropdown.propTypes = {
   data: PropTypes.array,
   onItemSelected: PropTypes.func,
   placeholder: PropTypes.string,
+  dataValues:PropTypes.array
 };
 MEDropdown.defaultProps = {
   data: [],

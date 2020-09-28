@@ -77,8 +77,8 @@ class Cart extends React.Component {
       var actionRel = actionRelations[key];
       var action = actionRel.action;
       return (
-        <div>
-          <div key={key}>
+        <div key={key.toString()}>
+          <div >
             <MECard style={{ borderRadius: 10, padding: 10 }}>
               <MELink to={`${this.props.links.actions}/${action.id}`}>
                 {action.title}
@@ -106,57 +106,6 @@ class Cart extends React.Component {
               </div>
             </MECard>
           </div>
-          {/* <td>
-            <Tooltip title="Household" text={actionRel.real_estate_unit.name}>
-              <div className="column-box">
-                <span
-                  className="has-tooltip fa fa-home"
-                  style={{ textAlign: "center", fontSize: "18px" }}
-                ></span>
-              </div>
-            </Tooltip>
-          </td>
-          <td className="prod-column">
-            <div className="column-box">
-              <Link to={`${this.props.links.actions}/${action.id}`}>
-                <h4 className="prod-title padd-top-20">{action.title}</h4>
-              </Link>
-            </div>
-          </td>
-          <td className="prod-column">
-            {actionRel.status.toLowerCase() === "todo" ? (
-              <div>
-                <Tooltip text="Move to Done">
-                  <button
-                    onClick={() => this.moveToDone(actionRel)}
-                    className="done-btn has-tooltip"
-                  >
-                    {" "}
-                    <i className="fa fa-check"></i>{" "}
-                  </button>
-                </Tooltip>
-                <Tooltip text="Remove from Todo">
-                  <button
-                    className="remove-btn has-tooltip"
-                    onClick={() => this.removeFromCart(actionRel)}
-                  >
-                    {" "}
-                    <i className="fa fa-trash"></i>{" "}
-                  </button>
-                </Tooltip>
-              </div>
-            ) : (
-              <Tooltip text="Oops. This action was added to done by mistake. Remove from our community's impact">
-                <button
-                  className="remove-btn has-tooltip"
-                  onClick={() => this.removeFromCart(actionRel)}
-                >
-                  {" "}
-                  <i className="fa fa-undo"></i>{" "}
-                </button>
-              </Tooltip>
-            )}
-          </td> */}
         </div>
       );
     });
