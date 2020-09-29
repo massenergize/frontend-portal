@@ -624,7 +624,8 @@
 }
 .collapse-team-btn {
   color: black;
-  background: lightgrey;
+  /* background: lightgrey; */
+  background:#e2e2e2;
   border-width: 0px !important;
   padding: 6px 25px;
   margin: 0 8px;
