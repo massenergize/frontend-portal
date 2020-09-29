@@ -142,7 +142,8 @@ class StoryForm extends React.Component {
         label:
           "Your name and email will be known to the Community Organizer but how would you like it to be displayed?",
         placeholder: "Name...",
-        value:""
+        value:"",
+        required: true,
       },
       {
         type: "input",
@@ -166,7 +167,8 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Your Story * ( limit: 9000 Char's)",
         placeholder: "Your story...*",
-        value:""
+        value:"",
+        required:true
       },
     ];
   }
@@ -218,6 +220,9 @@ class StoryForm extends React.Component {
   }
   onSubmit(event, data, resetForm) {
     event.preventDefault();
+    if(!data || data.isNotComplete) {
+      return;
+    };
     this.setState({
       formNotification: {
         icon: "fa fa-spinner fa-spin",
@@ -243,7 +248,7 @@ class StoryForm extends React.Component {
               icon: "fa fa-check",
               type: "good",
               text:
-                "Nicely done! Your story will be reviewed and publish as soon as possible. Stay tuned!",
+                "Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
             },
           });
           resetForm();

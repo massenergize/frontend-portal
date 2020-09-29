@@ -22,10 +22,10 @@ export const GOOD = "good";
 
 /**
  * This Component accepts a formField Item and accepts
- * @props {Array[formFieldItem]} fields
- * @props {Object} style
- * @props {string} className
- * @props {string} actionText
+ * @prop {Array[formFieldItem]} fields
+ * @prop {Object} style
+ * @prop {string} className
+ * @prop {string} actionText
  * @returns HTML Form event && form Content (e, content)
  *
  */
@@ -179,9 +179,56 @@ export default class FormGenerator extends Component {
     });
   }
 
+  setError(message) {
+    const error = {
+      icon: "fa fa-times",
+      type: BAD,
+      text: message,
+    };
+    this.setState({ notification: error });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { info } = this.props;
+    const prevInfo = prevProps.info;
+    if(prevInfo && info && prevInfo.text !== info.text){
+      this.setState({ notification: info });
+    }
+
+  }
+  fieldIsEmpty(field) {
+    const { formData } = this.state;
+    const value = formData[field.name];
+    if (!value || value.length < 1) return true;
+    return false;
+  }
+  requiredFieldIsEmpty() {
+    const { fields } = this.props;
+    if (!fields) return false;
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
+      const required = field.required;
+      const name = field.name;
+      if (required) {
+        // set notification in state  and return right away, dont continue
+        if (this.fieldIsEmpty(field)) {
+          this.setError(`${name} is required please provide information`);
+          return true;
+        }
+      }
+    }
+    // no required fields are empty
+    return false;
+  }
+
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
+    if (this.requiredFieldIsEmpty()) {
+      // if any required field is empty
+      onSubmit(e, { isNotComplete: true });
+      return;
+    }
     onSubmit(e, this.state.formData, this.resetForm);
     return;
   }
@@ -203,11 +250,12 @@ export default class FormGenerator extends Component {
       }
     });
     this.setState({ formData: defaults });
-    console.log("I AHVE REST THE FORM");
   }
 
   displayInformation() {
-    const { info } = this.props;
+    var { info } = this.props;
+    const internalInfo = this.state.notification;
+    var info = internalInfo || info; // internal info takes priority
     if (!info) return null;
     if (info.type === BAD) {
       return (

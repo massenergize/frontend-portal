@@ -9,16 +9,17 @@ const LARGE = "lg";
 /**
  * A modal wrapper, that just envelopers any container you pass in as a child
  * The children are elevated with a dark overlay, and are fit on to an ME card
- * @props {string} size : "sm" | "md" | "lg"
- * @props {func} closeModal | a toggle fxn from the parent modal to hide
- * @props {string} className
+ * @prop {string} size : "sm" | "md" | "lg"
+ * @prop {func} closeModal | a toggle fxn from the parent modal to hide
+ * @prop {string} className
+ * @prop {object} style
+ * @prop {object} contentStyle
  *
  *
  */
 export default class MEModal extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
@@ -29,14 +30,14 @@ export default class MEModal extends Component {
     if (size.toLowerCase() === LARGE) return "";
   }
   render() {
-    const { closeModal, style, className } = this.props;
+    const { closeModal, style, className, contentStyle } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     return (
       <div>
         <div className="me-overlay" onClick={closeModal}></div>
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()}`}
-          
+          style={contentStyle}
         >
           <center>
             <MEButton
@@ -68,10 +69,12 @@ MEModal.propType = {
   classNames: PropTypes.string,
   size: PropTypes.string,
   closeModal: PropTypes.func,
+  contentStyle: PropTypes.object,
 };
 
 MEModal.defaultProps = {
   style: {},
+  contentStyle: {},
   classNames: "",
   size: "md",
 };
