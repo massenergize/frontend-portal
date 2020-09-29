@@ -179,7 +179,7 @@ class AddingHouseholdForm extends React.Component {
       this.state.state +
       ", " +
       this.state.zip;
-    const body = {
+    const body = { 
       name: this.state.name,
       unit_type: this.state.unittype,
       location: location,

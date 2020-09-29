@@ -48,16 +48,12 @@ class ProfilePage extends React.Component {
       loaded: false,
       addedHouse: false,
       addedDefaultHouse: false,
-
       selectedHousehold: null,
       editingHH: null,
-
       joiningCom: false,
       addingHH: false,
       editingProfileForm: null,
-
       printing: false,
-
       message: "",
     };
   }
@@ -751,46 +747,6 @@ class ProfilePage extends React.Component {
                 />
               </div>
             </MECard>
-            {/* <td>
-              {house.name} &nbsp;
-              <Tooltip
-                title={house.name}
-                text={
-                  house.location
-                    ? "Location: " +
-                      house.location +
-                      ", Type: " +
-                      house.unit_type
-                    : "No location for this household, Type: " + house.unit_type
-                }
-                dir="right"
-              >
-                <span
-                  className="fa fa-info-circle"
-                  style={{ color: "#428a36" }}
-                ></span>
-              </Tooltip>
-            </td>
-            <td>
-              <button className="edit-btn">
-                {" "}
-                <i
-                  className="fa fa-edit"
-                  onClick={() =>
-                    this.setState({ editingHH: house.id, addingHH: false })
-                  }
-                ></i>{" "}
-              </button>
-            </td>
-            <td>
-              <button className="remove-btn">
-                {" "}
-                <i
-                  className="fa fa-trash"
-                  onClick={() => this.deleteHousehold(house)}
-                ></i>{" "}
-              </button>
-            </td> */}
           </div>
         );
       }
