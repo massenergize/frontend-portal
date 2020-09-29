@@ -611,6 +611,7 @@ class ProfilePage extends React.Component {
             >
               <MEButton
                 to={`/${community.subdomain}`}
+                target="_blank"
                 icon="fa fa-eye"
                 iconStyle={{ margin: 0 }}
                 iconSize="large"

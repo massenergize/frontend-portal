@@ -228,12 +228,13 @@ class RegisterFormBase extends React.Component {
                 >
                   Google
                 </MEButton>
-                <MEButton
+                {/* ---------------- fACEBOOK WILL BE RE-ENABLED LATER -------------- */}
+                {/* <MEButton
                   onClick={this.signInWithFacebook}
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton>
+                </MEButton> */}
               </div>
             </div>
           </form>

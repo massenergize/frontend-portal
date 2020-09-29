@@ -263,11 +263,11 @@ class Action extends React.Component {
                 <div className="col-md-4 col-sm-4 col-lg-4 col-4">
                   <div className="col-centered">
                     {!this.props.user ? (
-                      <Tooltip text="Sign in to make a TODO list">
+                      <CustomTooltip text="Sign in to make a TODO list" style={{marginTop:-34, left:-20}}>
                         <p className="has-tooltip thm-btn style-4 action-btns disabled">
                           To Do
                         </p>
-                      </Tooltip>
+                      </CustomTooltip>
                     ) : (
                       this.checkTodoAndReturn()
                     )}
@@ -276,11 +276,11 @@ class Action extends React.Component {
                 <div className="col-md-4 col-sm-4 col-lg-4 col-4">
                   <div className="col-centered">
                     {!this.props.user ? (
-                      <Tooltip text="Sign in to mark actions as completed">
+                      <CustomTooltip text="Sign in to mark actions as completed" style={{ left:-65}}>
                         <p className="has-tooltip thm-btn style-4 action-btns disabled">
                           Done It
                         </p>
-                      </Tooltip>
+                      </CustomTooltip>
                     ) : (
                       this.checkDoneAndReturn()
                     )}

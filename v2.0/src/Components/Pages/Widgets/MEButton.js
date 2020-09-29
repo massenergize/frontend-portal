@@ -61,7 +61,7 @@ class MEButton extends Component {
 
   ejectComponent() {
     const { style, href, to, disabled, type, target } = this.props;
-    var newTab = target ? { target } : {};
+    var newTab = target ? { target  } : {};
     const classes = this.getClasses();
     const styles = style ? { ...style } : null;
     if (!href && !to) {
@@ -116,7 +116,7 @@ MEButton.defaultProps = {
   iconSize: "small",
   iconColor: "#282828",
   containerStyle: {},
-  target: {},
+  target: null,
 };
 
 export default MEButton;

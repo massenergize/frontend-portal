@@ -100,7 +100,6 @@ MECheckBoxGroup.defaultProps = {
   dataValues: [],
   style: {},
   className: "",
-  value: "Radio Text Here ",
   name: "some-name",
   containerStyle: {},
   containerClassName: "",
