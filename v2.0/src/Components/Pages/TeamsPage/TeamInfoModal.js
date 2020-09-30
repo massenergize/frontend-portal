@@ -6,7 +6,10 @@ import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
 import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
-import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
+import MEFormGenerator, {
+  BAD,
+  GOOD,
+} from "../Widgets/FormGenerator/MEFormGenerator";
 
 class TeamInfoModal extends React.Component {
   constructor(props) {
@@ -14,15 +17,39 @@ class TeamInfoModal extends React.Component {
     this.state = {
       loading: false,
       error: null,
+      notification: null,
     };
+
+    this.submitForm = this.submitForm.bind(this);
   }
 
   getNeededFields() {
+    const parentOptions = this.getParentTeamOptions();
+    const parentFields = parentOptions
+      ? [
+          {
+            type: "section-creator",
+            title: "Parent Team",
+            text:
+              "You can pick a parent team to which all of your members' actions will also automatically contribute",
+          },
+          {
+            required: true,
+            name: "parent_id",
+            type: "dropdown",
+            placeholder:
+              "Describe your team. Who are you and brings you together?...",
+            value: "NONE",
+            defaultKey: "NONE",
+            data: [],
+          },
+        ]
+      : [];
     return [
       {
         hasLabel: true,
         required: true,
-        name: "team-name",
+        name: "name",
         type: "input",
         label: "Name*",
         placeholder: "What your team will be known by...",
@@ -31,7 +58,7 @@ class TeamInfoModal extends React.Component {
       {
         hasLabel: true,
         required: true,
-        name: "team-tagline",
+        name: "tagline",
         type: "input",
         label: "Tagline*",
         placeholder: "A catchy slogan for you team...",
@@ -40,7 +67,7 @@ class TeamInfoModal extends React.Component {
       {
         hasLabel: true,
         required: true,
-        name: "team-description",
+        name: "description",
         type: "textarea",
         label: "Description*",
         placeholder:
@@ -49,26 +76,24 @@ class TeamInfoModal extends React.Component {
       },
       {
         hasLabel: true,
-        name: "team-logo",
+        name: "logo",
         type: "file",
         label: "Select a logo for your team",
       },
-      {
-        type: "section-creator",
-        title: "Parent Team",
-        text:
-          "You can pick a parent team to which all of your members' actions will also automatically contribute",
-      },
-      {
-        required:true,
-        name: "team-parent_id",
-        type:"dropdown",
-        placeholder:"Describe your team. Who are you and brings you together?...",
-        value:"NONE",
-        defaultKey:"NONE",
-        data:[]
-      },
+      ...parentFields,
     ];
+  }
+
+  getParentTeamOptions() {
+    const { team, teamsStats } = this.props;
+    const teams = teamsStats.map((teamStats) => teamStats.team);
+    const parentTeamOptions =
+      (!team ||
+        teams.filter((_team) => _team.parent && _team.parent.id === team.id)
+          .length === 0) &&
+      teams.filter((_team) => (!team || _team.id !== team.id) && !_team.parent);
+
+    return parentTeamOptions;
   }
 
   render() {
@@ -78,22 +103,29 @@ class TeamInfoModal extends React.Component {
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const teams = teamsStats.map((teamStats) => teamStats.team);
-    const parentTeamOptions =
-      (!team ||
-        teams.filter((_team) => _team.parent && _team.parent.id === team.id)
-          .length === 0) &&
-      teams.filter((_team) => (!team || _team.id !== team.id) && !_team.parent);
+    const parentTeamOptions = this.getParentTeamOptions();
+    // (!team ||
+    //   teams.filter((_team) => _team.parent && _team.parent.id === team.id)
+    //     .length === 0) &&
+    // teams.filter((_team) => (!team || _team.id !== team.id) && !_team.parent);
 
     let modalContent, form;
     if (user) {
       form = (
         <MEFormGenerator
-          style={{ maxHeight: "58vh", overflowY: "scroll", paddingTop:0, marginTop:0 }}
+          style={{
+            maxHeight: "58vh",
+            overflowY: "scroll",
+            paddingTop: 0,
+            marginTop: 0,
+          }}
           fields={this.getNeededFields()}
           elevate={false}
           animate={false}
-          actionText="Create"
-        ></MEFormGenerator>
+          actionText={team ? "Update" : "Create"}
+          onSubmit={this.submitForm}
+          info={this.state.notification}
+        />
       );
       modalContent = (
         <form
@@ -270,8 +302,8 @@ class TeamInfoModal extends React.Component {
       modalContent = (
         <p>
           You must{" "}
-          <Link to={this.props.links.signin}>sign in or create an account</Link>{" "}
-          to create a team.
+          <Link to={this.props.links.signin}>Sign In or Create An Account</Link>{" "}
+          to start a team.
         </p>
       );
     }
@@ -282,7 +314,7 @@ class TeamInfoModal extends React.Component {
           closeModal={() => onClose()}
           contentStyle={{ width: "100%", padding: 0 }}
         >
-          <h4 style={{ paddingRight: "60px", marginBottom:0 }}>
+          <h4 style={{ paddingRight: "60px", marginBottom: 0 }}>
             {team ? (
               <span>
                 Edit <b>{team.name}</b>
@@ -330,6 +362,7 @@ class TeamInfoModal extends React.Component {
       );
       data["id"] = team.id;
     } else {
+      // this is all you need, remember to look here....
       [
         "name",
         "tagline",
@@ -350,7 +383,17 @@ class TeamInfoModal extends React.Component {
     return data;
   };
 
-  callAPI = async () => {
+  submitForm(e, data, resetForm) {
+    e.preventDefault();
+    if (!data || data.isNotComplete) return;
+    this.setState({
+      icon: "fa fa-spinner fa-spin",
+      type: GOOD,
+      text: "Starting to initialize team...",
+    });
+    this.callAPI(data, resetForm);
+  }
+  callAPI = async (data, resetForm) => {
     const {
       team,
       onComplete,
@@ -358,15 +401,21 @@ class TeamInfoModal extends React.Component {
       reduxLoadTeamsPage,
       reduxJoinTeam,
     } = this.props;
-    const data = this.getData();
+    // const data = this.getData();
     const url = team ? "teams.update" : "teams.create";
 
     try {
-      this.setState({ loading: true });
+      // this.setState({ loading: true });
 
       const teamResponse = await apiCall(url, data);
 
       if (teamResponse.success) {
+        this.setState({
+          icon: "fa fa-check",
+          type: GOOD,
+          text: "Team has been initialized, and pending approval",
+        });
+        resetForm();
         const newTeam = teamResponse.data;
         if (!team) reduxJoinTeam(newTeam);
         const teamsStatsResponse = await apiCall("teams.stats", {
@@ -380,11 +429,20 @@ class TeamInfoModal extends React.Component {
         this.setState({ error: teamResponse.error });
       }
     } catch (err) {
-      this.setState({ error: err.toString() });
+      // this.setState({ error: err.toString() });
+      this.setError(err.toString());
     } finally {
       this.setState({ loading: false });
     }
   };
+
+  setError(message) {
+    this.setState({
+      icon: "fa fa-times",
+      type: BAD,
+      text: message,
+    });
+  }
 }
 
 const mapStoreToProps = (store) => {

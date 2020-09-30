@@ -82,17 +82,17 @@ class MEButton extends Component {
     }
     return (
       <div className="put-me-inline">
-        <a
+        <Link
           disabled={disabled}
           className={classes}
           style={styles}
           {...newTab}
-          href={href || to}
+          to={href || to}
           onClick={(e) => this.handleOnClick(e)}
         >
           {this.ejectIcon()}
           {this.props.children}
-        </a>
+        </Link>
       </div>
     );
   }
