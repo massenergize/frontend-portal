@@ -16,6 +16,7 @@ const DROPDOWN = "dropdown";
 const AUTOCOMPLETE = "autocomplete";
 const RADIOGROUP = "radio-group";
 const CHECKBOXES = "checkbox-group";
+const SECTION = "section-creator";
 const FILE = "file";
 export const BAD = "bad";
 export const GOOD = "good";
@@ -23,9 +24,11 @@ export const GOOD = "good";
 /**
  * This Component accepts a formField Item and accepts
  * @prop {Array[formFieldItem]} fields
- * @prop {Object} style
+ * @prop {object} style
  * @prop {string} className
  * @prop {string} actionText
+ * @prop {bool} elevate | should the form be elevated or not?
+ * @prop {bool} animate | should the form be animated or not?
  * @returns HTML Form event && form Content (e, content)
  *
  */
@@ -133,6 +136,18 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
+  getSectionCreator(formObject, key) {
+    if (!formObject) return;
+    const { title, text } = formObject;
+    const titleDisplay = <h5 className="form-title-section">{title}</h5>;
+    return (
+      <div key = {key.toString()}>
+        {titleDisplay}
+        <p style={{fontSize:"medium"}}>{text}</p>
+      </div>
+    );
+  }
   componentDidMount() {
     const { fields } = this.props;
     if (!fields) return;
@@ -175,6 +190,8 @@ export default class FormGenerator extends Component {
           return this.getCheckBoxes(formItem, index);
         case FILE:
           return this.getFileUploader(formItem, index);
+        case SECTION:
+          return this.getSectionCreator(formItem, index);
       }
     });
   }
@@ -191,10 +208,9 @@ export default class FormGenerator extends Component {
   componentDidUpdate(prevProps) {
     const { info } = this.props;
     const prevInfo = prevProps.info;
-    if(prevInfo && info && prevInfo.text !== info.text){
+    if (prevInfo && info && prevInfo.text !== info.text) {
       this.setState({ notification: info });
     }
-
   }
   fieldIsEmpty(field) {
     const { formData } = this.state;
@@ -285,9 +301,9 @@ export default class FormGenerator extends Component {
   }
 
   render() {
-    var { animate, className, style, title, elevate } = this.props;
+    var { animate, className, style, title, elevate} = this.props;
     const animationClass = animate ? "me-open-in" : "";
-    style = elevate ? style : { boxShadow: "0 0 black", style };
+    style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
       <div>
         <MECard className={`${animationClass} ${className}`} style={style}>
@@ -330,6 +346,7 @@ FormGenerator.propTypes = {
   title: PropTypes.string,
   elevate: PropTypes.bool,
   info: PropTypes.object,
+  contentStyle:PropTypes.object,
 };
 
 FormGenerator.defaultProps = {

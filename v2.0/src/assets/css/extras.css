@@ -5,6 +5,14 @@
   padding:10px 10%;
 
 }
+
+.form-title-section{
+  background: #f7f7f7;
+  color: black;
+  padding: 11px 15px;
+  font-size: medium;
+  font-weight: bold;
+}
 .filter-check-text-font{
   font-size:14px;
   margin-bottom:2px;
@@ -367,6 +375,7 @@
 .me-actions-gradient-belt{
   background:linear-gradient(to right, green red) !important;
 }
+
 .me-overlay {
   background: black;
   opacity: 0.65;

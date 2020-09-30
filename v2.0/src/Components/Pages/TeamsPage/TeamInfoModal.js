@@ -6,6 +6,7 @@ import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
 import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
+import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 
 class TeamInfoModal extends React.Component {
   constructor(props) {
@@ -14,6 +15,60 @@ class TeamInfoModal extends React.Component {
       loading: false,
       error: null,
     };
+  }
+
+  getNeededFields() {
+    return [
+      {
+        hasLabel: true,
+        required: true,
+        name: "team-name",
+        type: "input",
+        label: "Name*",
+        placeholder: "What your team will be known by...",
+        value: "",
+      },
+      {
+        hasLabel: true,
+        required: true,
+        name: "team-tagline",
+        type: "input",
+        label: "Tagline*",
+        placeholder: "A catchy slogan for you team...",
+        value: "",
+      },
+      {
+        hasLabel: true,
+        required: true,
+        name: "team-description",
+        type: "textarea",
+        label: "Description*",
+        placeholder:
+          "Describe your team. Who are you and what brings you together?...",
+        value: "",
+      },
+      {
+        hasLabel: true,
+        name: "team-logo",
+        type: "file",
+        label: "Select a logo for your team",
+      },
+      {
+        type: "section-creator",
+        title: "Parent Team",
+        text:
+          "You can pick a parent team to which all of your members' actions will also automatically contribute",
+      },
+      {
+        required:true,
+        name: "team-parent_id",
+        type:"dropdown",
+        placeholder:"Describe your team. Who are you and brings you together?...",
+        value:"NONE",
+        defaultKey:"NONE",
+        data:[]
+      },
+    ];
   }
 
   render() {
@@ -29,8 +84,17 @@ class TeamInfoModal extends React.Component {
           .length === 0) &&
       teams.filter((_team) => (!team || _team.id !== team.id) && !_team.parent);
 
-    let modalContent;
+    let modalContent, form;
     if (user) {
+      form = (
+        <MEFormGenerator
+          style={{ maxHeight: "58vh", overflowY: "scroll", paddingTop:0, marginTop:0 }}
+          fields={this.getNeededFields()}
+          elevate={false}
+          animate={false}
+          actionText="Create"
+        ></MEFormGenerator>
+      );
       modalContent = (
         <form
           id="team-info"
@@ -214,8 +278,11 @@ class TeamInfoModal extends React.Component {
 
     return (
       <>
-        <MEModal closeModal={() => onClose()} contentStyle={{ width: "100%" }}>
-          <h4 style={{ paddingRight: "60px" }}>
+        <MEModal
+          closeModal={() => onClose()}
+          contentStyle={{ width: "100%", padding: 0 }}
+        >
+          <h4 style={{ paddingRight: "60px", marginBottom:0 }}>
             {team ? (
               <span>
                 Edit <b>{team.name}</b>
@@ -225,7 +292,7 @@ class TeamInfoModal extends React.Component {
             )}
           </h4>
           <div style={{ overflowY: "auto", maxHeight: "90%" }}>
-            <div className="boxed_wrapper">{modalContent}</div>
+            <div>{form}</div>
           </div>
         </MEModal>
       </>

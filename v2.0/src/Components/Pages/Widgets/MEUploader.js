@@ -54,7 +54,7 @@ class MEUploader extends Component {
       <center>
         <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
         <p style={{ margin: 15, color: "#d2cfcf" }}>
-          Choose an image from you device
+          Choose an image from your device
         </p>
         <MEButton onClick={(e) => this.searchForImage(e)}>Choose</MEButton>
       </center>

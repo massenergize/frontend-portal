@@ -84,7 +84,7 @@ class TeamsPage extends React.Component {
           <LoadingCircle />
         </div>
       );
-    }
+    } 
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
     const { communityData, links } = this.props;
@@ -101,7 +101,7 @@ class TeamsPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
-            style={{ margin: "auto" }}
+            style={{ margin: "auto", minHeight:'100vh' }}
           >
             <PageTitle style={{ margin: "0 30px" }}>
               Teams in {communityData.community.name}
