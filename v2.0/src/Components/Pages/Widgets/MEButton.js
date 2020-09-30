@@ -1,23 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-/**
- * A component that has the fundamental design of all buttons for the Gall... platform.
- * Replace the className prop type with a string of all the classes you would like to modify
- * the button with
- * @props @type {String}  className | A text of all extra classes
- * @props @type {Object} style | Normal css styles. Written just the way it is done
- * @props @type {Object} iconStyle | Normal css styles. Written just the way it is done
- * @props @type {String} icon  | Font awesome class
- * @props @type {String} iconSize | size of the icon you passed ( 10px, 40px etc)
- * @props @type {String} iconColor
- * @props @type {func} onClick  | What should happen when the button is clicked?
- * @props @type {String} href
- * @props @type {String} iconPosition | Should the icon be on the left/right side of text?
- * @props @type {String} variation | Used to indicate the preferred btn types (design-wise) options :( "normal","accent", "union")
- */
+
 const ACCENT = "accent";
 const UNION = "union";
 const NORMAL = "normal";
+/**
+ * A component that has the fundamental design of all buttons for the ME... platform.
+ * Replace the className prop type with a string of all the classes you would like to modify
+ * the button with
+ * @prop {String}  className | A text of all extra classes
+ * @prop  {Object} style | Normal css styles. Written just the way it is done
+ * @prop {Object} iconStyle | Normal css styles. Written just the way it is done
+ * @prop  {String} icon  | Font awesome class
+ * @prop  {String} iconSize | size of the icon you passed ( 10px, 40px etc)
+ * @prop  {String} iconColor
+ * @prop  {func} onClick  | What should happen when the button is clicked?
+ * @prop  {String} href
+ * @prop  {String} iconPosition | Should the icon be on the left/right side of text?
+ * @prop  {String} variation | Used to indicate the preferred btn types (design-wise) options :( "normal","accent", "union")
+ */
 class MEButton extends Component {
   constructor(props) {
     super(props);

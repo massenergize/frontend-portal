@@ -73,7 +73,7 @@ class TeamInfoModal extends React.Component {
         name: "admin_emails",
         type: "chips",
         label: "Add team admins here with their emails",
-        placeholder: "Add an admin email and press enter....",
+        placeholder: "Add an admin email and click add...",
         // value: "",
       },
       {
@@ -86,12 +86,12 @@ class TeamInfoModal extends React.Component {
           "Describe your team. Who are you and what brings you together?...",
         value: "",
       },
-      {
-        hasLabel: true,
-        name: "logo",
-        type: "file",
-        label: "Select a logo for your team",
-      },
+      // {
+      //   hasLabel: true,
+      //   name: "logo",
+      //   type: "file",
+      //   label: "Select a logo for your team",
+      // },
       ...parentFields,
     ];
   }

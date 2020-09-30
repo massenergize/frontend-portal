@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import METextField from "./METextField";
 import MEChipWrap from "./MEChipWrap";
+import MEButton from "./MEButton";
 /**
  * @prop {object} style
  * @prop {object} chipStyle
@@ -17,49 +18,66 @@ export default class MEChipMaker extends Component {
       text: "",
     };
     this.onChange = this.onChange.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-  }
-  componentDidMount() {
-    // this.enterKeyIsPressed();
+    this.removeItemOnClick = this.removeItemOnClick.bind(this);
   }
 
-  enterKeyIsPressed() {
-    const textBox = document.getElementById("chip-text-box");
-    console.log(textBox);
-    textBox.on("keydown", function (e) {
-      if (e.keyCode === 13 || e.keyCode === "13")
-        console.log("I have done something");
-    });
-  }
   onChange(e) {
     const text = e.target.value;
-    // if(this.enterKeyIsPressed(e)) return;
     this.setState({ text });
   }
-  onKeyPress(e) {
-    e.preventDefault();
-    var code = e.keyCode ? e.keyCode : e.which;
-    if (code == 13) {
-      //Enter keycode
-      alert("enter press");
+  collectTextAndAdd() {
+    const { text, items } = this.state;
+    const box = document.getElementById("chip-text-box");
+    const val = box.value;
+    if (text && !items.includes(text)) {
+      this.setState({ items: [...items, text], text: "" });
     }
   }
+  removeItemOnClick(item) {
+    console.log("I have been called");
+    const { items } = this.state;
+    const filtered = items.filter((itm) => itm !== item);
+    this.setState({ items: filtered });
+  }
+
   render() {
-    const { className, style, name, chipStyle, chipClassName } = this.props;
+    const {
+      className,
+      style,
+      name,
+      chipStyle,
+      chipClassName,
+      placeholder,
+    } = this.props;
     const { items, text } = this.state;
-    console.log(this.state.text);
+
     return (
       <div>
-        <MEChipWrap data={items} className={chipClassName} style={chipStyle}>
+        <MEChipWrap
+          removeItem={this.removeItemOnClick}
+          data={items}
+          className={chipClassName}
+          style={chipStyle}
+        >
           <METextField
             id="chip-text-box"
             style={style}
             className={className}
             onChange={this.onChange}
-            onKeyPress={this.onKeyPress}
             value={text}
+            placeholder={placeholder}
             name={name}
+            history ={false}
           />
+
+          <div style={{ width: "100%", display: "flex" }}>
+            <MEButton
+              style={{ padding: "8px 20px" , fontSize:"small"}}
+              onClick={() => this.collectTextAndAdd()}
+            >
+              Add
+            </MEButton>
+          </div>
         </MEChipWrap>
       </div>
     );
@@ -73,6 +91,7 @@ MEChipMaker.propTypes = {
   chipClassName: PropTypes.string,
   name: PropTypes.string,
   onItemsChange: PropTypes.func,
+  placeholder: PropTypes.string,
 };
 MEChipMaker.defaultProps = {
   style: {},
