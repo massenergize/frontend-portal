@@ -5715,6 +5715,7 @@ span.has-tooltip {
     color: #999;
     line-height: 26px;
     margin-bottom: 14px;
+    list-style: none;
 }
 
 .about-column li span {
@@ -5731,6 +5732,7 @@ span.has-tooltip {
 .main-footer .link-column li {
     position: relative;
     margin-bottom: 10px;
+    list-style: none;
 }
 
 .main-footer .link-column li a {

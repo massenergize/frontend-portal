@@ -105,7 +105,7 @@ class AppRouter extends Component {
     Promise.all([
       apiCall("communities.info", body),
       apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body),
+      apiCall("menus.list", body), //should add all communities to the menus.list
     ])
       .then((res) => {
         const [
@@ -301,16 +301,15 @@ class AppRouter extends Component {
       finalMenu = [...navMenus, contactUsItem];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const homeChil = [
-      { name: "current-home", link: "/" },
+    const communitiesLink = 
       {
-        name: "All Communities",
+        name: "All MassEnergize Community Sites",
         link: "http://" + window.location.host,
         special: true,
-      },
-    ];
-    const droppyHome = { name: "Home", children: homeChil };
-    finalMenu = [droppyHome, ...finalMenu];
+      }
+    ;
+    const droppyHome = [ {name: "Home", link: "/",} ];
+    finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
     const communityInfo = this.state.community || {};
@@ -318,6 +317,7 @@ class AppRouter extends Component {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
+      allCommunities: communitiesLink,
     };
     return (
       <div className="boxed-wrapper">
