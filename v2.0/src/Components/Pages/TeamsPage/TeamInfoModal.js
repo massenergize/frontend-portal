@@ -45,6 +45,9 @@ class TeamInfoModal extends React.Component {
           },
         ]
       : [];
+
+
+
     return [
       {
         hasLabel: true,
@@ -63,6 +66,15 @@ class TeamInfoModal extends React.Component {
         label: "Tagline*",
         placeholder: "A catchy slogan for you team...",
         value: "",
+      },
+      {
+        hasLabel: true,
+        required: true,
+        name: "admin_emails",
+        type: "chips",
+        label: "Add team admins here with their emails",
+        placeholder: "Add an admin email and press enter....",
+        // value: "",
       },
       {
         hasLabel: true,
@@ -299,7 +311,7 @@ class TeamInfoModal extends React.Component {
       );
     } else {
       //the "edit team" button won't render if user isn't signed in, so can just mention creating a team
-      modalContent = (
+      form = (
         <p>
           You must{" "}
           <Link to={this.props.links.signin}>Sign In or Create An Account</Link>{" "}

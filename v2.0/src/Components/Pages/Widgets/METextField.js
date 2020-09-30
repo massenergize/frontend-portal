@@ -31,6 +31,13 @@ class METextField extends Component {
     onChange(e);
   };
 
+  handleOnKeyPress(e){
+    const { onKeyPress } = this.props; 
+    if(!onKeyPress) return; 
+    onKeyPress(e);
+    return;
+  }
+
   ejectComponent = () => {
     const {
       type,
@@ -53,7 +60,8 @@ class METextField extends Component {
     if (inputType === "input") {
       return (
         <input
-          {...ID}
+          id={id}
+      
           className={`${defaultClasses} only-left-border ${className}`}
           name={name}
           type={type}
@@ -63,13 +71,15 @@ class METextField extends Component {
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
+          onKeyPress = {this.onKeyPress}
           readOnly={readonly}
         />
       );
     } else if (inputType === "textarea") {
       return (
         <textarea
-          {...ID}
+          id={id}
+         
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
@@ -122,6 +132,7 @@ METextField.defaultProps = {
   type: "text",
   placeholder: "Enter text here...",
   readonly: false,
+  id:""
 };
 
 export default METextField;

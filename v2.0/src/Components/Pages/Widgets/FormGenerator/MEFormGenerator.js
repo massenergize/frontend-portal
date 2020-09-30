@@ -9,6 +9,7 @@ import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
 import MECheckBoxes from "../MECheckBoxGroup";
 import MEUploader from "../MEUploader";
+import MEChipMaker from "../MEChipMaker";
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -17,6 +18,7 @@ const AUTOCOMPLETE = "autocomplete";
 const RADIOGROUP = "radio-group";
 const CHECKBOXES = "checkbox-group";
 const SECTION = "section-creator";
+const CHIPS = "chips";
 const FILE = "file";
 export const BAD = "bad";
 export const GOOD = "good";
@@ -142,9 +144,19 @@ export default class FormGenerator extends Component {
     const { title, text } = formObject;
     const titleDisplay = <h5 className="form-title-section">{title}</h5>;
     return (
-      <div key = {key.toString()}>
+      <div key={key.toString()}>
         {titleDisplay}
-        <p style={{fontSize:"medium"}}>{text}</p>
+        <p style={{ fontSize: "medium" }}>{text}</p>
+      </div>
+    );
+  }
+
+  getChipMaker(formObject, key) {
+    if (!formObject) return;
+    return (
+      <div key={key} className="small-form-spacing">
+        {this.labelOrNot(formObject)}
+        <MEChipMaker {...formObject} />
       </div>
     );
   }
@@ -192,6 +204,8 @@ export default class FormGenerator extends Component {
           return this.getFileUploader(formItem, index);
         case SECTION:
           return this.getSectionCreator(formItem, index);
+        case CHIPS:
+          return this.getChipMaker(formItem, index);
       }
     });
   }
@@ -301,7 +315,7 @@ export default class FormGenerator extends Component {
   }
 
   render() {
-    var { animate, className, style, title, elevate} = this.props;
+    var { animate, className, style, title, elevate } = this.props;
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
@@ -346,7 +360,7 @@ FormGenerator.propTypes = {
   title: PropTypes.string,
   elevate: PropTypes.bool,
   info: PropTypes.object,
-  contentStyle:PropTypes.object,
+  contentStyle: PropTypes.object,
 };
 
 FormGenerator.defaultProps = {
