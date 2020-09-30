@@ -303,7 +303,7 @@ class AppRouter extends Component {
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const communitiesLink = 
       {
-        name: "Return to All Communities",
+        name: "All MassEnergize Community Sites",
         link: "http://" + window.location.host,
         special: true,
       }

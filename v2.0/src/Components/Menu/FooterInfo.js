@@ -36,7 +36,7 @@ class FooterInfo extends React.Component {
 							<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
 						}
 					</ul>
-					<div> <a href={this.props.info.allCommunities.link}>{this.props.info.allCommunities.name} </a></div>
+					<div> <a className="energize-link" href={this.props.info.allCommunities.link}>{this.props.info.allCommunities.name} </a></div>
 				</div>
 			</div>
 		);
