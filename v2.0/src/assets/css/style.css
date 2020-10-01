@@ -9606,7 +9606,7 @@ button.as-link:hover {
 
 .team-card:hover {
   background:#f8fff4;
-  transition: 0.2s ease-in-out;
+  transition: 0.2 forwards;
 }
 
 .team-card-title {
@@ -9638,11 +9638,12 @@ button.as-link:hover {
 }
 
 .info-section {
-  border-radius: 20px;
+  border-radius: 4px;
 }
 
 .info-section.members {
-  background: #f6986130;
+  /* background: #f6986130; */
+  background: #fafbf8;
 }
 
 .info-section.members p {
@@ -9651,7 +9652,8 @@ button.as-link:hover {
 }
 
 .info-section.data {
-  background: #8dc63f30;
+  /* background: #8dc63f30; */
+  background: #f2ffe0;
 }
 
 .info-section.data p {

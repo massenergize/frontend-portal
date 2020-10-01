@@ -48,7 +48,7 @@ class TeamStatsBars extends React.Component {
         <div className="info-section members">
           {membersJSX}
         </div>
-        <div className="info-section data">
+        <div className="info-section data" style={{background:"#fce6c0"}}>
           {actionsJSX}
         </div>
         <div className="info-section data">

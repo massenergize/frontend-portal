@@ -10,6 +10,7 @@ import MEFormGenerator, {
   BAD,
   GOOD,
 } from "../Widgets/FormGenerator/MEFormGenerator";
+import { getPropsArrayFromJsonArray } from "../../Utils";
 
 class TeamInfoModal extends React.Component {
   constructor(props) {
@@ -25,6 +26,8 @@ class TeamInfoModal extends React.Component {
 
   getNeededFields() {
     const parentOptions = this.getParentTeamOptions();
+    const pTeamNames = getPropsArrayFromJsonArray(parentOptions, "name");
+    const pTeamIds = getPropsArrayFromJsonArray(parentOptions, "id");
     const parentFields = parentOptions
       ? [
           {
@@ -37,16 +40,15 @@ class TeamInfoModal extends React.Component {
             required: true,
             name: "parent_id",
             type: "dropdown",
+            data: pTeamNames,
+            dataValues: pTeamIds,
             placeholder:
-              "Describe your team. Who are you and brings you together?...",
+              "Describe your team. Who are you, and brings you together?...",
             value: "NONE",
             defaultKey: "NONE",
-            data: [],
           },
         ]
       : [];
-
-
 
     return [
       {
@@ -69,11 +71,12 @@ class TeamInfoModal extends React.Component {
       },
       {
         hasLabel: true,
-        required: true,
         name: "admin_emails",
         type: "chips",
         label: "Add team admins here with their emails",
-        placeholder: "Add an admin email and click add...",
+        placeholder: "Enter an admin email and click <Add>...",
+        asArray: false,
+        separationKey: ",",
         // value: "",
       },
       {
@@ -86,12 +89,12 @@ class TeamInfoModal extends React.Component {
           "Describe your team. Who are you and what brings you together?...",
         value: "",
       },
-      // {
-      //   hasLabel: true,
-      //   name: "logo",
-      //   type: "file",
-      //   label: "Select a logo for your team",
-      // },
+      {
+        hasLabel: true,
+        name: "logo",
+        type: "file",
+        label: "Select a logo for your team",
+      },
       ...parentFields,
     ];
   }
@@ -415,17 +418,17 @@ class TeamInfoModal extends React.Component {
     } = this.props;
     // const data = this.getData();
     const url = team ? "teams.update" : "teams.create";
-
+    data = { ...data, community_id: communityData.community.id };
     try {
       // this.setState({ loading: true });
-
       const teamResponse = await apiCall(url, data);
-
       if (teamResponse.success) {
         this.setState({
-          icon: "fa fa-check",
-          type: GOOD,
-          text: "Team has been initialized, and pending approval",
+          notification: {
+            icon: "fa fa-check",
+            type: GOOD,
+            text: "Team has been initialized, it is now pending approval.",
+          },
         });
         resetForm();
         const newTeam = teamResponse.data;
@@ -434,11 +437,12 @@ class TeamInfoModal extends React.Component {
           community_id: communityData.community.id,
         });
         if (teamsStatsResponse.success) {
+          console.log("This is my stats response", teamsStatsResponse);
           reduxLoadTeamsPage(teamsStatsResponse.data);
         }
         onComplete(newTeam.id);
       } else {
-        this.setState({ error: teamResponse.error });
+        this.setError(teamResponse.error);
       }
     } catch (err) {
       // this.setState({ error: err.toString() });
@@ -450,9 +454,7 @@ class TeamInfoModal extends React.Component {
 
   setError(message) {
     this.setState({
-      icon: "fa fa-times",
-      type: BAD,
-      text: message,
+      notification: { icon: "fa fa-times", type: BAD, text: message },
     });
   }
 }

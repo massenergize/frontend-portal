@@ -1,5 +1,20 @@
 import * as moment from "moment";
 import React from "react";
+
+export const getTextArrayAsString = (array, separationKey) => {
+  if (!array || !separationKey) return "";
+  let text = "";
+  array.forEach((item) => {
+    if (text === "") {
+      text = item;
+    } else {
+      text = text + separationKey + item;
+    }
+  });
+
+  return text;
+};
+
 /**
  *
  * @param {*} data
@@ -7,8 +22,8 @@ import React from "react";
  * @param {*} perPage
  */
 const getPageCount = (dataLength, perPage) => {
-  // when the page number is determined by just rounding of a the division of datalength and perpage 
-  // it does not take into account a page that only has a number of items less than half of the "perpage" number 
+  // when the page number is determined by just rounding of a the division of datalength and perpage
+  // it does not take into account a page that only has a number of items less than half of the "perpage" number
   // hence this "ROBUST" algorithm.. LMAAAAAOOOOOOOOOOO!!!
   const div = dataLength / perPage;
   if (dataLength % perPage > 0) return (div + 1).toFixed();

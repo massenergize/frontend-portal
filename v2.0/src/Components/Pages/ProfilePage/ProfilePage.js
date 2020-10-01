@@ -450,19 +450,11 @@ class ProfilePage extends React.Component {
                   <center>
                     <MEButton
                       onClick={() => this.setState({ printing: true })}
-                      variation="normal"
+                      variation="union"
                       style={{ fontSize: 14 }}
                     >
                       Summary Of Your Actions
                     </MEButton>
-                    {/* <button
-                      className="text-center summary-finish raise"
-                      style={{ marginBottom: 30 }}
-                      onClick={() => this.setState({ printing: true })}
-                    >
-                      {" "}
-                      Summary Of Your Actions
-                    </button> */}
                   </center>
                 </div>
               </div>

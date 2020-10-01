@@ -156,7 +156,12 @@ export default class FormGenerator extends Component {
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
-        <MEChipMaker {...formObject} />
+        <MEChipMaker
+          {...formObject}
+          onItemChange={(items) => {
+            this.handleFields(formObject.name, items);
+          }}
+        />
       </div>
     );
   }

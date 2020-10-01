@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import METextField from "./METextField";
 import MEChipWrap from "./MEChipWrap";
 import MEButton from "./MEButton";
+import { getTextArrayAsString } from "../../Utils";
 /**
  * @prop {object} style
  * @prop {object} chipStyle
  * @prop {string} className
  * @prop {string} name
- * @prop {func} onItemsChange
+ * @prop {func} onItemChange
+ * @prop {bool} asArray | Used to specify whether content should be returned in an array or joined into one string
+ * @prop {string} separationKey | Should be specified if asArray is set to false
  */
 export default class MEChipMaker extends Component {
   constructor(props) {
@@ -25,19 +28,43 @@ export default class MEChipMaker extends Component {
     const text = e.target.value;
     this.setState({ text });
   }
-  collectTextAndAdd() {
+  collectTextAndAdd(e) {
+    e.preventDefault();
     const { text, items } = this.state;
-    const box = document.getElementById("chip-text-box");
-    const val = box.value;
+    const { onItemChange, separationKey, asArray } = this.props;
+    let newContent = items;
     if (text && !items.includes(text)) {
-      this.setState({ items: [...items, text], text: "" });
+      newContent = [...items, text];
+      this.setState({ items: newContent, text: "" });
     }
+    this.forwardChangedItems(newContent);
+    // if (!onItemChange) return;
+    // if (!asArray) {
+    //   const asText = getTextArrayAsString(newContent, separationKey);
+    //   onItemChange(asText);
+    //   return;
+    // }
+    // onItemChange(newContent);
+    return;
+  }
+
+  forwardChangedItems(items) {
+    const { onItemChange, separationKey, asArray } = this.props;
+    if (!onItemChange) return;
+    if (!asArray) {
+      const asText = getTextArrayAsString(items, separationKey);
+      onItemChange(asText);
+      return;
+    }
+    onItemChange(items);
+    return;
   }
   removeItemOnClick(item) {
-    console.log("I have been called");
     const { items } = this.state;
+    const { onItemChange } = this.props;
     const filtered = items.filter((itm) => itm !== item);
     this.setState({ items: filtered });
+    this.forwardChangedItems(filtered);
   }
 
   render() {
@@ -67,13 +94,12 @@ export default class MEChipMaker extends Component {
             value={text}
             placeholder={placeholder}
             name={name}
-            history ={false}
+            history={false}
           />
-
           <div style={{ width: "100%", display: "flex" }}>
             <MEButton
-              style={{ padding: "8px 20px" , fontSize:"small"}}
-              onClick={() => this.collectTextAndAdd()}
+              style={{ padding: "8px 20px", fontSize: "small" }}
+              onClick={(e) => this.collectTextAndAdd(e)}
             >
               Add
             </MEButton>
@@ -90,8 +116,10 @@ MEChipMaker.propTypes = {
   className: PropTypes.string,
   chipClassName: PropTypes.string,
   name: PropTypes.string,
-  onItemsChange: PropTypes.func,
+  onItemChange: PropTypes.func,
   placeholder: PropTypes.string,
+  asArray: PropTypes.bool,
+  separationKey: PropTypes.string,
 };
 MEChipMaker.defaultProps = {
   style: {},
@@ -99,4 +127,6 @@ MEChipMaker.defaultProps = {
   className: "",
   chipClassName: "",
   name: "le_chip_maker",
+  asArray: true,
+  separationKey: ",",
 };
