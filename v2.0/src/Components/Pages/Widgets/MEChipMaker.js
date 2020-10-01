@@ -17,7 +17,7 @@ export default class MEChipMaker extends Component {
   constructor(props) {
     super();
     this.state = {
-      items: [],
+      items: this.getDefaultValue(props),
       text: "",
     };
     this.onChange = this.onChange.bind(this);
@@ -31,20 +31,12 @@ export default class MEChipMaker extends Component {
   collectTextAndAdd(e) {
     e.preventDefault();
     const { text, items } = this.state;
-    const { onItemChange, separationKey, asArray } = this.props;
     let newContent = items;
     if (text && !items.includes(text)) {
       newContent = [...items, text];
       this.setState({ items: newContent, text: "" });
     }
     this.forwardChangedItems(newContent);
-    // if (!onItemChange) return;
-    // if (!asArray) {
-    //   const asText = getTextArrayAsString(newContent, separationKey);
-    //   onItemChange(asText);
-    //   return;
-    // }
-    // onItemChange(newContent);
     return;
   }
 
@@ -65,6 +57,15 @@ export default class MEChipMaker extends Component {
     const filtered = items.filter((itm) => itm !== item);
     this.setState({ items: filtered });
     this.forwardChangedItems(filtered);
+  }
+
+  getDefaultValue(props) {
+    const { asArray, value, separationKey } = props;
+    if (!value || value.length < 1) return [];
+    if (asArray) {
+      return value;
+    }
+    return value.split(separationKey);
   }
 
   render() {
@@ -120,6 +121,7 @@ MEChipMaker.propTypes = {
   placeholder: PropTypes.string,
   asArray: PropTypes.bool,
   separationKey: PropTypes.string,
+  value : PropTypes.array || PropTypes.string
 };
 MEChipMaker.defaultProps = {
   style: {},
@@ -129,4 +131,5 @@ MEChipMaker.defaultProps = {
   name: "le_chip_maker",
   asArray: true,
   separationKey: ",",
+  value:[]
 };

@@ -25,6 +25,7 @@ class TeamInfoModal extends React.Component {
   }
 
   getNeededFields() {
+    const {team} = this.props;
     const parentOptions = this.getParentTeamOptions();
     const pTeamNames = getPropsArrayFromJsonArray(parentOptions, "name");
     const pTeamIds = getPropsArrayFromJsonArray(parentOptions, "id");
@@ -44,7 +45,7 @@ class TeamInfoModal extends React.Component {
             dataValues: pTeamIds,
             placeholder:
               "Describe your team. Who are you, and brings you together?...",
-            value: "NONE",
+            value: team ? team.parent.name : "NONE",
             defaultKey: "NONE",
           },
         ]
@@ -58,7 +59,8 @@ class TeamInfoModal extends React.Component {
         type: "input",
         label: "Name*",
         placeholder: "What your team will be known by...",
-        value: "",
+        value: team && team.name ,
+
       },
       {
         hasLabel: true,
@@ -67,7 +69,7 @@ class TeamInfoModal extends React.Component {
         type: "input",
         label: "Tagline*",
         placeholder: "A catchy slogan for you team...",
-        value: "",
+        value: team && team.tagline,
       },
       {
         hasLabel: true,
@@ -75,9 +77,10 @@ class TeamInfoModal extends React.Component {
         type: "chips",
         label: "Add team admins here with their emails",
         placeholder: "Enter an admin email and click <Add>...",
-        asArray: false,
+        asArray: true,
         separationKey: ",",
-        // value: "",
+        // value: team && team.admin_emails,
+        value:["kelewele","mrfimpong@gmail.com", "sexy"],
       },
       {
         hasLabel: true,
@@ -87,7 +90,7 @@ class TeamInfoModal extends React.Component {
         label: "Description*",
         placeholder:
           "Describe your team. Who are you and what brings you together?...",
-        value: "",
+        value: team && team.description,
       },
       {
         hasLabel: true,
@@ -114,7 +117,7 @@ class TeamInfoModal extends React.Component {
   render() {
     const { team, onClose, teamsStats, user } = this.props;
     const { loading, error } = this.state;
-
+console.log("JE SUIS TAM", team);
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const teams = teamsStats.map((teamStats) => teamStats.team);
@@ -406,6 +409,9 @@ class TeamInfoModal extends React.Component {
       type: GOOD,
       text: "Starting to initialize team...",
     });
+
+console.log("EDIT DATA",data);
+    return;
     this.callAPI(data, resetForm);
   }
   callAPI = async (data, resetForm) => {
