@@ -12,7 +12,7 @@ This repository is managed by
 * [Satrajit Ghosh](https://satra.cogitatum.org/)
 * [Brad Hubbard-Nelson](http://www.hubbardnelson.org/)
 
-## Contruibtors
+## Contributors
 
 The following individuals have made signifigant contributions to this repository, as [MassCEC interns](https://www.masscec.com/clean-energy-internship-program) or through other means
 
