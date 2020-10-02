@@ -154,16 +154,17 @@ class ServicesPage extends React.Component {
           ? this.props.serviceProviders
           : vendors;
     }
-    // if (!vendors || vendors.length === 0) {
-    // 	return (
-    // 		<div className="boxed_wrapper" >
-    // 			<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Looks like your community hasn't partnered with any vendors yet.  Try again later :( </h2>
-    // 		</div>
-    // 	)
-    // }
+    if (!vendors || vendors.length === 0) { 
+    	return (
+    		<div className="boxed_wrapper" >
+    			<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Looks like your community hasn't partnered with any vendors yet.  Try again later :( </h2>
+    		</div>
+    	)
+    }
 
-    return vendors.map((vendor) => {
+    return vendors.map((vendor,index) => {
       return (
+        <div key={index.toString()}>
         <MECard className="me-vendor-card me-anime-move-from-left" to={`${this.props.links.services}/${vendor.id}`}>
           <img
            className="me-vendor-img"
@@ -172,60 +173,8 @@ class ServicesPage extends React.Component {
           />
           <METextView style={{color:"black", textTransform:"capitalize"}}> {vendor.name}</METextView>
         </MECard>
-        // <div className="col-12 col-md-12 col-sm-12  col-lg-12" key={vendor.vendor}>
-        //   <div
-
-        //   >
-        //     <div
-        //       // className="card-body pref-height vendor-hover"
-        //       style={{
-        //         padding: 0,
-        //         borderTopRightRadius: 12,
-        //         borderTopLeftRadius: 12,
-        //       }}
-        //     >
-        //       <div className="col-12 text-center" style={{ padding: 0 }}>
-        //         <Link to={`${this.props.links.services}/${vendor.id}`}>
-
-        //         </Link>
-        //         <Link to={`${this.props.links.services}/${vendor.id}`}>
-        //           <h4 className="pt-3" style={{ fontSize: 14 }}>
-        //             {vendor.name}
-        //           </h4>
-        //         </Link>
-
-        //         <p className="action-tags">
-        //                             {vendor.categories.map((category) => {
-        //                                 return (<span key={category}>{category}</span>)
-        //                             })}
-        //                         </p>
-        //       </div>
-        //       <div className="col-12 mt-3 text-center">
-        // 				<span><b>Services</b></span>
-        // 				<ul className="normal">
-        // 					{vendor.services.map((action) => {
-        // 						return <li key={vendor.name + "-" + action.id}>{action.name}</li>;
-        // 					})}
-        // 				</ul>
-        // 			</div>
-        //       {vendor.address ?
-        // 				<div onClick={() => { window.location = `${this.props.links.services}/${vendor.id}` }} className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner" style={{ marginBottom: -16, marginTop: 10 }}>
-        // 					<span className="fa fa-map-pin" style={{ marginRight: 4 }}></span> {vendor.address.city}, {vendor.address.state}
-        // 				</div> : null}
-
-        // 			{vendor.key_contact != null ? (
-        // 				<div className="w-100 p-2 text-center">
-        // 					{vendor.user_info ?
-        // 						<>
-        // 							<a href={"//" + vendor.key_contact.user_info.website} target="_blank" rel="noopener noreferrer" className="font-normal mr-3"><span className="fa fa-link fa-2x"></span></a>
-        // 							<a href={"mail://" + vendor.key_contact.email} className="font-normal ml-3"><span className="fa fa-envelope fa-2x"></span></a>
-        // 						</> : null}
-        // 				</div>
-        // 			)
-        // 				: null}
-        //     </div>
-        //   </div>
-        // </div>
+        </div>
+       
       );
     });
   }

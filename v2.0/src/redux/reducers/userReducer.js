@@ -129,8 +129,8 @@ export default function (state = initialState, action) {
           ...state.info,
           households: state.info.households.filter(element => element.id !== action.payload.id)
         },
-        todo: state.todo.filter(a => a.real_estate_unit.id !== action.payload.id),
-        done: state.done.filter(a => a.real_estate_unit.id !== action.payload.id)
+        todo:state.todo? state.todo.filter(a => a.real_estate_unit.id !== action.payload.id):[],
+        done:state.done? state.done.filter(a => a.real_estate_unit.id !== action.payload.id):[]
       }
     /**************************/
     case LOAD_USER_COMMUNITIES:

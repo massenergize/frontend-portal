@@ -7,7 +7,9 @@ import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
 import { getTeamsData, inTeam } from './utils.js';
 import { Link, Redirect } from "react-router-dom";
-
+import { getRandomIntegerInRange } from "../../Utils";
+import MEButton from "./../Widgets/MEButton"
+import METextField from "../Widgets/METextField";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -82,7 +84,7 @@ class TeamsPage extends React.Component {
           <LoadingCircle />
         </div>
       );
-    }
+    } 
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
     const { communityData, links } = this.props;
@@ -99,7 +101,7 @@ class TeamsPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
-            style={{ margin: "auto" }}
+            style={{ margin: "auto", minHeight:'100vh' }}
           >
             <PageTitle style={{ margin: "0 30px" }}>
               Teams in {communityData.community.name}
@@ -112,24 +114,24 @@ class TeamsPage extends React.Component {
 
               <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-9">
-                  <input
+                  <METextField
                     onChange={(event) => this.handleSearch(event)}
                     type="text"
-                    style={{ borderRadius: 0 }}
+                    // style={{ borderRadius: 7, borderColor:"#eceaea" }}
                     placeholder="Search for a team..."
-                    className="teams-search round-only-left-side"
+                    className="teams-search"
                   />
                 </div>
-                <div className="col-3" style={{ paddingRight: '10px' }}>
-                  <button
-                    style={{ width: "100%", borderRadius: 0 }}
-                    className="btn start-team-btn raise round-only-right-side"
+                <div className="col-3" style={{ paddingRight: '10px', maxWidth:"20%" }}>
+                  <MEButton
+                    style={{ width: "100%", margin:0 }}
+                    // className=" round-only-right-side"
                     onClick={() => {
                       this.setState({ createTeamModalOpen: true });
                     }}
                   >
                     Start Team
-                  </button>
+                  </MEButton>
                 </div>
               </div>
             </center>
@@ -173,7 +175,7 @@ class TeamsPage extends React.Component {
       if (!user) {
         return (
           <>
-            <p>Click on a team below to join it!</p>
+            <p>Click on a team below to join</p>
             {teamsData.map((teamData) => this.renderTeam(teamData))}
           </>
         );
@@ -230,12 +232,17 @@ class TeamsPage extends React.Component {
     }
   }
 
+  getAnimationClasses(){
+    const index = getRandomIntegerInRange(3); 
+    const animArr = ["me-anime-move-from-left-fastest", "me-anime-move-from-left-fast", "me-anime-move-from-left-normal"]; 
+    return animArr[index]
+  }
   renderTeam(teamData) {
     const teamObj = teamData.team;
 
-    return (
-      <>
-        <div className="team-card" key={teamObj.id}>
+    return ( 
+      <div key={teamObj.id}>
+        <div className={`team-card ${this.getAnimationClasses()}`} >
           <Link
             to={`${this.props.links.teams + "/" + teamObj.id} `}
             style={{ width: "100%" }}
@@ -278,7 +285,7 @@ class TeamsPage extends React.Component {
         {teamData.subTeams && teamData.subTeams.length > 0 &&
           <>
             <button
-              className="btn round-me collapse-team-btn bottom-right raise"
+              className="btn round-me collapse-team-btn bottom-right z-depth-float"
               onClick={() => {
                 const { teamsData } = this.state;
                 const thisTeamIndex = teamsData.findIndex
@@ -290,13 +297,13 @@ class TeamsPage extends React.Component {
               {teamData.collapsed ? <span>Expand Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
             </button>
             {!teamData.collapsed &&
-              <div style={{ paddingLeft: '10%', paddingTop: '10px' }}>
+              <div className="me-sub-teams-box" >
                 {teamData.subTeams.map(subTeam => this.renderTeam(subTeam))}
               </div>
             }
           </>
         }
-      </>
+      </div>
     );
   }
 

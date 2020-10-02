@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 /**
- * @props {ArrayOf(Strings)} data
- * @props {Object} style
- * @props {string} className
- * @props {string} name
- * @props {Object} containerStyle
- * @props {String} containerClassName
+ * @prop {ArrayOf(Strings)} data | Array of text values to display near the radio button
+ * @prop {ArrayOf(Strings)} data | values to be returned when radio is selected (optional)
+ * if "dataValues" is not set, the string content of the selected radio button itself will be returned on select
+ * @prop {Object} style
+ * @prop {func} onItemSelected | trigger that returns the value of the selected radio button
+ * @prop {string} className
+ * @prop {string} name
+ * @prop {Object} containerStyle
+ * @prop {String} containerClassName
+ * 
  *
  */
 export default class MERadio extends Component {
@@ -18,10 +22,11 @@ export default class MERadio extends Component {
     };
   }
   handleOnClick(child) {
-    const { onItemSelected } = this.props;
+    var { onItemSelected, dataValues, data } = this.props;
+    dataValues = dataValues ? dataValues : data;
     this.setState({ selected: child });
     if (!onItemSelected) return;
-    onItemSelected(child);
+    onItemSelected(dataValues[data.indexOf(child)]);
   }
 
   ejectChildren() {
@@ -64,11 +69,14 @@ MERadio.propTypes = {
   containerClassName: PropTypes.string,
   containerStyle: PropTypes.object,
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dataValues: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
+  onItemSelected: PropTypes.func.isRequired,
 };
 MERadio.defaultProps = {
   data: [],
+  dataValues:[],
   style: {},
   className: "",
   value: "Radio Text Here ",

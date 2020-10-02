@@ -7,6 +7,7 @@ import { reduxLoadCommunities } from './redux/actions/pageActions'
 import { apiCall } from './api/functions'
 import CommunitySelectPage from './components/Pages/CommunitySelectPage';
 import { reduxLogout } from './redux/actions/userActions'
+// import firebase from "./config/firebaseConfig";
 class App extends Component {
 	constructor(props) {
 		super(props);

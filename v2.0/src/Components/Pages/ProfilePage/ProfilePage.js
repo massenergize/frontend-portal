@@ -48,16 +48,12 @@ class ProfilePage extends React.Component {
       loaded: false,
       addedHouse: false,
       addedDefaultHouse: false,
-
       selectedHousehold: null,
       editingHH: null,
-
       joiningCom: false,
       addingHH: false,
       editingProfileForm: null,
-
       printing: false,
-
       message: "",
     };
   }
@@ -102,6 +98,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
+
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -127,12 +124,10 @@ class ProfilePage extends React.Component {
           return com.id === this.props.community.id;
         }).length === 0
       ) {
-        console.log(myCommunities);
         this.addDefaultCommunity();
       }
     }
     const { user } = this.props;
-    console.log(this.props.done);
     return (
       <>
         <div
@@ -277,29 +272,7 @@ class ProfilePage extends React.Component {
                       View all Teams
                     </MEButton>
                   </div>
-                  {/* <table className="profile-table" style={{ width: "100%" }}>
-                    <tbody>
-                      <tr>
-                        <th>
-                          {" "}
-                          Your Teams <small>
-                            (* outside this community)
-                          </small>{" "}
-                        </th>
-                      </tr>
-                      {this.renderTeams(user.teams)}
-                      <tr>
-                        <td align="center">
-                          <MEButton
-                            href={this.props.links.teams}
-                            style={{ margin: "5px" }}
-                          >
-                            View all Teams
-                          </MEButton>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> */}
+                  
                   <br />
                   <MESectionWrapper headerText="Your Households">
                     {this.renderHouseholds(user.households)}
@@ -477,19 +450,11 @@ class ProfilePage extends React.Component {
                   <center>
                     <MEButton
                       onClick={() => this.setState({ printing: true })}
-                      variation="normal"
+                      variation="union"
                       style={{ fontSize: 14 }}
                     >
                       Summary Of Your Actions
                     </MEButton>
-                    {/* <button
-                      className="text-center summary-finish raise"
-                      style={{ marginBottom: 30 }}
-                      onClick={() => this.setState({ printing: true })}
-                    >
-                      {" "}
-                      Summary Of Your Actions
-                    </button> */}
                   </center>
                 </div>
               </div>
@@ -638,6 +603,7 @@ class ProfilePage extends React.Component {
             >
               <MEButton
                 to={`/${community.subdomain}`}
+                target="_blank"
                 icon="fa fa-eye"
                 iconStyle={{ margin: 0 }}
                 iconSize="large"
@@ -774,46 +740,6 @@ class ProfilePage extends React.Component {
                 />
               </div>
             </MECard>
-            {/* <td>
-              {house.name} &nbsp;
-              <Tooltip
-                title={house.name}
-                text={
-                  house.location
-                    ? "Location: " +
-                      house.location +
-                      ", Type: " +
-                      house.unit_type
-                    : "No location for this household, Type: " + house.unit_type
-                }
-                dir="right"
-              >
-                <span
-                  className="fa fa-info-circle"
-                  style={{ color: "#428a36" }}
-                ></span>
-              </Tooltip>
-            </td>
-            <td>
-              <button className="edit-btn">
-                {" "}
-                <i
-                  className="fa fa-edit"
-                  onClick={() =>
-                    this.setState({ editingHH: house.id, addingHH: false })
-                  }
-                ></i>{" "}
-              </button>
-            </td>
-            <td>
-              <button className="remove-btn">
-                {" "}
-                <i
-                  className="fa fa-trash"
-                  onClick={() => this.deleteHousehold(house)}
-                ></i>{" "}
-              </button>
-            </td> */}
           </div>
         );
       }

@@ -296,6 +296,7 @@ class OneActionPage extends React.Component {
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
 
     if (this.checkDone()) {
+      // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
           <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-float ">
@@ -304,7 +305,8 @@ class OneActionPage extends React.Component {
         </CustomTooltip>
       );
     }
-    if (exists) {
+    if (exists) { 
+      // show this button if the action has already been added to the todo list
       return (
         <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
@@ -319,6 +321,7 @@ class OneActionPage extends React.Component {
         </CustomTooltip>
       );
     } else {
+      // show white clickable ME button if the action has not been touched and ready to be added to TODO list
       return (
         <MEButton
           style={{ padding: "7px 14px", fontSize: 14 }}

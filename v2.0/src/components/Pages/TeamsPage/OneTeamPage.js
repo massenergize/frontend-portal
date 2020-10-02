@@ -11,9 +11,11 @@ import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
 import TeamInfoModal from "./TeamInfoModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
-import { getTeamData, inTeam, inThisTeam } from './utils.js';
+import { getTeamData, inTeam, inThisTeam } from "./utils.js";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import MEButton from "../Widgets/MEButton";
+import MESectionWrapper from "../Widgets/MESectionWrapper";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class OneTeamPage extends React.Component {
       loading: true,
       isAdmin: false,
       joinLeaveModalOpen: false,
-      contactEditModalOpen: false
+      contactEditModalOpen: false,
     };
   }
 
@@ -35,11 +37,13 @@ class OneTeamPage extends React.Component {
       const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
-        const teamStats = teamsStats.find(teamStats => teamStats.team.id === team.id);
+        const teamStats = teamsStats.find(
+          (teamStats) => teamStats.team.id === team.id
+        );
         const teamData = getTeamData(teamsStats, teamStats);
         this.setState({
           team: team,
-          teamData: teamData
+          teamData: teamData,
         });
       } else {
         this.setState({ error: json.error });
@@ -59,7 +63,7 @@ class OneTeamPage extends React.Component {
   componentDidUpdate(prevProps) {
     const { id } = this.props.match.params;
     if (id !== prevProps.match.params.id) {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       this.fetch(id);
     }
   }
@@ -74,14 +78,17 @@ class OneTeamPage extends React.Component {
       return (
         <ErrorPage
           errorMessage="Unable to load this Team"
-          errorDescription={
-            error ? error : "Unknown cause"
-          }
+          errorDescription={error ? error : "Unknown cause"}
         />
       );
     }
-    const { remountForcer,
-      joinLeaveModalOpen, contactEditModalOpen, isAdmin, teamData } = this.state;
+    const {
+      remountForcer,
+      joinLeaveModalOpen,
+      contactEditModalOpen,
+      isAdmin,
+      teamData,
+    } = this.state;
     const { user, links } = this.props;
 
     const isInTeam = inTeam(user, teamData);
@@ -90,27 +97,37 @@ class OneTeamPage extends React.Component {
     const buttonOrInTeam = (
       <>
         {!isInTeam ? (
-          <button
-            className="btn round-me join-team-btn raise"
+          <MEButton
             onClick={() => {
               this.setState({ joinLeaveModalOpen: true });
             }}
           >
             Join Team
-          </button>
+          </MEButton>
         ) : (
-            <div className="team-card-content">
-              <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
-                &#10003; in this team {!isInThisTeam && "via a sub-team"}
-              </p>
-            </div>
-          )
-        }
+          <div className="team-card-content">
+            <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
+              &#10003; in this team {!isInThisTeam && "via a sub-team"}
+            </p>
+          </div>
+        )}
       </>
     );
 
-    const teamTitle = <>{team.parent && <span style={{ fontSize: '16px' }}><Link to={`${links.teams}/${team.parent.id}`}>{team.parent.name}</Link>&nbsp;/<br /></span>}
-      {team.name}</>;
+    const teamTitle = (
+      <>
+        {team.parent && (
+          <span style={{ fontSize: "16px" }}>
+            <Link to={`${links.teams}/${team.parent.id}`}>
+              {team.parent.name}
+            </Link>
+            &nbsp;/
+            <br />
+          </span>
+        )}
+        {team.name}
+      </>
+    );
 
     const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
 
@@ -123,29 +140,41 @@ class OneTeamPage extends React.Component {
           <meta property="og:url" content={window.location.href} />
         </Helmet>
 
-        {contactEditModalOpen && (
-          isAdmin ?
-            <TeamInfoModal team={team} onClose={this.onContactEditModalClose} onComplete={this.onTeamEdit} />
-            :
-            <ContactAdminModal team={team} onClose={this.onContactEditModalClose} />
-        )}
+        {contactEditModalOpen &&
+          (isAdmin ? (
+            <TeamInfoModal
+              team={team}
+              onClose={this.onContactEditModalClose}
+              onComplete={this.onTeamEdit}
+            />
+          ) : (
+            <ContactAdminModal
+              team={team}
+              onClose={this.onContactEditModalClose}
+            />
+          ))}
 
-        {joinLeaveModalOpen &&
+        {joinLeaveModalOpen && (
           <JoinLeaveTeamModal
             team={team}
             onComplete={this.onTeamJoinOrLeave}
             onClose={this.onJoinLeaveModalClose}
           />
-        }
+        )}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
-            links={[
-              { link: links.teams, name: "Teams" },
-              { name: team.name },
-            ]}
+            links={[{ link: links.teams, name: "Teams" }, { name: team.name }]}
           />
-          {!team.is_published && <center><p className="error-p" style={{ margin: '15px' }}>Team awaiting approval from Community Admin. Only team admins can access this page, via its direct URL or the teams listed on your profile page.</p></center>}
+          {!team.is_published && (
+            <center>
+              <p className="error-p" style={{ margin: "15px" }}>
+                Team awaiting approval from Community Admin. Only team admins
+                can access this page, via its direct URL or the teams listed on
+                your profile page.
+              </p>
+            </center>
+          )}
           <div
             className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
@@ -162,7 +191,10 @@ class OneTeamPage extends React.Component {
                   </div>
                   <div className="team-card-column col-6">
                     <h2
-                      style={{ textAlign: "center" }}
+                      style={{
+                        textAlign: "center",
+                        textTransform: "capitalize",
+                      }}
                       className="cool-font team-card-content"
                     >
                       {teamTitle}
@@ -176,28 +208,31 @@ class OneTeamPage extends React.Component {
                   </div>
                 </>
               ) : (
-                  <>
-                    <div className="team-card-column col-9">
-                      <h2
-                        style={{ textAlign: "left" }}
-                        className="cool-font team-card-content"
-                      >
-                        {teamTitle}
-                      </h2>
-                    </div>
-                    <div
-                      className="team-card-column col-3"
-                      style={{ padding: 0 }}
+                <>
+                  <div className="team-card-column col-9">
+                    <h2
+                      style={{ textAlign: "left", textTransform: "capitalize" }}
+                      className="cool-font team-card-content"
                     >
-                      {buttonOrInTeam}
-                    </div>
-                  </>
-                )}
+                      {teamTitle}
+                    </h2>
+                  </div>
+                  <div
+                    className="team-card-column col-3"
+                    style={{ padding: 0 }}
+                  >
+                    {buttonOrInTeam}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="row">
               <div className="team-card-column">
-                <p className="team-card-content" style={{ textAlign: 'center', margin: '5px auto' }}>
+                <p
+                  className="team-card-content"
+                  style={{ textAlign: "center", margin: "5px auto" }}
+                >
                   {team.tagline}
                 </p>
               </div>
@@ -219,7 +254,13 @@ class OneTeamPage extends React.Component {
             <div className="row">
               <div className="col-md-5 col-12">
                 <div className="row" style={{ margin: 0 }}>
-                  <div className="one-team-content-section slight-lift">
+                  <MESectionWrapper
+                    headerText="About Us"
+                    motherStyle={{ width: "100%" }}
+                  >
+                    {team.description}
+                  </MESectionWrapper>
+                  {/* <div className="one-team-content-section slight-lift">
                     <h5>
                       <b>Description</b>
                     </h5>
@@ -228,10 +269,26 @@ class OneTeamPage extends React.Component {
                         <p>{team.description}</p>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="row" style={{ margin: 0 }}>
-                  <div className="one-team-content-section slight-lift">
+                <div className="row" style={{ margin: 0, marginTop: 10 }}>
+                  <MESectionWrapper
+                    headerText="Members"
+                    motherStyle={{ width: "100%" }}
+                  >
+                    {subTeams && (
+                      <>
+                        <small>Contains members of sub-teams</small>
+                      </>
+                    )}
+
+                    <TeamMembersList
+                      onMembersLoad={this.onMembersLoad}
+                      key={remountForcer}
+                      teamID={team.id}
+                    />
+                  </MESectionWrapper>
+                  {/* <div className="one-team-content-section slight-lift">
                     <h5 style={{ marginBottom: '15px' }}>
                       <b>Members</b>
                       {subTeams && <><br /><small>Contains members of sub-teams</small></>}
@@ -241,47 +298,108 @@ class OneTeamPage extends React.Component {
                       key={remountForcer}
                       teamID={team.id}
                     />
-                  </div>
+                  </div> */}
                 </div>
-                {subTeams &&
-                  <div className="row" style={{ margin: 0 }}>
-                    <div className="one-team-content-section slight-lift">
-                      <h5 style={{ margin: 0 }}>
-                        <b>Sub-teams</b>
-                      </h5>
-                      <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
+                {subTeams && (
+                  <div className="row" style={{ margin: 0, marginTop: 10 }}>
+                    <MESectionWrapper
+                      headerText="Sub-Teams"
+                      motherStyle={{ width: "100%" }}
+                    >
+                      <div
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
+                        className="show-scrollbar"
+                      >
                         <div className="boxed_wrapper">
                           <div className="team-ul">
                             <ul>
-                              {teamData.subTeams.map(subTeamStats =>
+                              {teamData.subTeams.map((subTeamStats) => (
                                 <li key={subTeamStats.team.id}>
-                                  <Link to={`${links.teams}/${subTeamStats.team.id}`}><b>{subTeamStats.team.name}</b></Link>
+                                  <Link
+                                    to={`${links.teams}/${subTeamStats.team.id}`}
+                                  >
+                                    <b>{subTeamStats.team.name}</b>
+                                  </Link>
                                 </li>
-                              )}
+                              ))}
                             </ul>
                           </div>
                         </div>
-                      </div >
-                    </div>
+                      </div>
+                    </MESectionWrapper>
+                    {/* <div className="one-team-content-section slight-lift">
+                      <h5 style={{ margin: 0 }}>
+                        <b>Sub-teams</b>
+                      </h5>
+                      <div
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
+                        className="show-scrollbar"
+                      >
+                        <div className="boxed_wrapper">
+                          <div className="team-ul">
+                            <ul>
+                              {teamData.subTeams.map((subTeamStats) => (
+                                <li key={subTeamStats.team.id}>
+                                  <Link
+                                    to={`${links.teams}/${subTeamStats.team.id}`}
+                                  >
+                                    <b>{subTeamStats.team.name}</b>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div> */}
                   </div>
-                }
+                )}
               </div>
               <div className="col-md-7 col-12">
                 <div className="row" style={{ margin: 0 }}>
-                  <div className="one-team-content-section slight-lift">
+                  <div className="one-team-content-section z-depth-float-half me-anime-open-in">
                     <h5>
                       <b>Actions Completed</b>
-                      {subTeams && <><br /><small>Contains actions of sub-teams</small></>}
+                      <br />
+                      {subTeams && (
+                        <>
+                          <small>Contains actions of sub-teams</small>
+                        </>
+                      )}
                     </h5>
-                    <TeamActionsGraph
-                      key={remountForcer}
-                      teamID={team.id}
-                    />
+                    <TeamActionsGraph key={remountForcer} teamID={team.id} />
 
-                    <p style={{ textAlign: 'center' }}>Complete <Link to={links.actions}>more actions</Link>!</p>
+                    <p style={{ textAlign: "center" }}>
+                      Complete <Link to={links.actions}>more actions</Link>!
+                    </p>
                   </div>
-                </div>
+                  <center style={{ width: "100%" }}>
+                    <MEButton
+                      style={{ padding: "8px 21px" }}
+                      // className="btn round-me contact-admin-btn-new raise"
+                      onClick={() => {
+                        this.setState({ contactEditModalOpen: true });
+                      }}
+                    >
+                      {user && isAdmin ? "Edit Team" : "Contact Admin"}
+                    </MEButton>
 
+                    {isInThisTeam && !isAdmin && (
+                      <MEButton
+                        style={{ padding: "8px 21px" }}
+                        mediaType="icon"
+                        icon="fa fa-times"
+                        variation="accent"
+                        // className="btn round-me leave-team-btn raise"
+                        onClick={() => {
+                          this.setState({ joinLeaveModalOpen: true });
+                        }}
+                      >
+                        Leave Team
+                      </MEButton>
+                    )}
+                  </center>
+                </div>
               </div>
             </div>
           </div>
@@ -289,35 +407,42 @@ class OneTeamPage extends React.Component {
           <br />
 
           <div className="row justify-content-center">
-            <div style={{ paddingRight: '30px' }}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button
-                  className="btn round-me contact-admin-btn-new raise"
+            {/* <div style={{ paddingRight: "30px" }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <MEButton
+                  // className="btn round-me contact-admin-btn-new raise"
                   onClick={() => {
                     this.setState({ contactEditModalOpen: true });
                   }}
                 >
                   {user && isAdmin ? "Edit Team" : "Contact Admin"}
-                </button>
+                </MEButton>
               </div>
-              {isInThisTeam && !isAdmin &&
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <button
-                    className="btn round-me leave-team-btn raise"
+              {isInThisTeam && !isAdmin && (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <MEButton
+                    mediaType="icon"
+                    icon="fa fa-times"
+                    // className="btn round-me leave-team-btn raise"
                     onClick={() => {
                       this.setState({ joinLeaveModalOpen: true });
                     }}
                   >
                     Leave Team
-                  </button>
+                  </MEButton>
                 </div>
-              }
-            </div>
-            {team.is_published &&
-              <div style={{ display: 'block' }}>
-                <ShareButtons label="Share this team!" pageTitle={team.name} pageDescription={team.tagline} url={window.location.href} />
+              )}
+            </div> */}
+            {team.is_published && (
+              <div style={{ display: "block" }}>
+                <ShareButtons
+                  label="Share this team!"
+                  pageTitle={team.name}
+                  pageDescription={team.tagline}
+                  url={window.location.href}
+                />
               </div>
-            }
+            )}
           </div>
           <br />
         </div>
@@ -327,12 +452,12 @@ class OneTeamPage extends React.Component {
 
   onMembersLoad = (members) => {
     const { user } = this.props;
-    const myTeamMember = members.filter(member => member.user_id === user.id);
+    const myTeamMember = members.filter((member) => member.user_id === user.id);
     if (myTeamMember.length === 0) return;
     if (myTeamMember[0].is_admin) {
       this.setState({ isAdmin: true });
     }
-  }
+  };
 
   onTeamJoinOrLeave = () => {
     this.setState({ joinLeaveModalOpen: false, remountForcer: Math.random() });
@@ -346,7 +471,7 @@ class OneTeamPage extends React.Component {
     this.setState({ contactEditModalOpen: false, loading: true });
     this.fetch(teamID);
     this.setState({ remountForcer: Math.random() });
-  }
+  };
 
   onContactEditModalClose = () => {
     this.setState({ contactEditModalOpen: false });

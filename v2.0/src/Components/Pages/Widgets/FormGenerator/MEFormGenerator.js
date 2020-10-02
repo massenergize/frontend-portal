@@ -9,6 +9,7 @@ import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
 import MECheckBoxes from "../MECheckBoxGroup";
 import MEUploader from "../MEUploader";
+import MEChipMaker from "../MEChipMaker";
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -16,16 +17,21 @@ const DROPDOWN = "dropdown";
 const AUTOCOMPLETE = "autocomplete";
 const RADIOGROUP = "radio-group";
 const CHECKBOXES = "checkbox-group";
+const SECTION = "section-creator";
+const CHIPS = "chips";
 const FILE = "file";
 export const BAD = "bad";
 export const GOOD = "good";
 
 /**
  * This Component accepts a formField Item and accepts
- * @props {Array[formFieldItem]} fields
- * @props {Object} style
- * @props {string} className
- * @props {string} actionText
+ * @prop {Array[formFieldItem]} fields
+ * @prop {object} style
+ * @prop {string} className
+ * @prop {string} actionText
+ * @prop {bool} elevate | should the form be elevated or not?
+ * @prop {bool} animate | should the form be animated or not?
+ * @prop {object} info | any notification you would like to display below the form {icon, type ("good|bad"), text}
  * @returns HTML Form event && form Content (e, content)
  *
  */
@@ -133,10 +139,45 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
+  getSectionCreator(formObject, key) {
+    if (!formObject) return;
+    const { title, text } = formObject;
+    const titleDisplay = <h5 className="form-title-section">{title}</h5>;
+    return (
+      <div key={key.toString()}>
+        {titleDisplay}
+        <p style={{ fontSize: "medium" }}>{text}</p>
+      </div>
+    );
+  }
+
+  getChipMaker(formObject, key) {
+    if (!formObject) return;
+    return (
+      <div key={key.toString()} className="small-form-spacing">
+        {this.labelOrNot(formObject)}
+        <MEChipMaker
+          {...formObject}
+          onItemChange={(items) => {
+            this.handleFields(formObject.name, items);
+          }}
+        />
+      </div>
+    );
+  }
   componentDidMount() {
     const { fields } = this.props;
     if (!fields) return;
     this.setDefaultValues();
+  }
+  getDropDownDefault(formItem) {
+    //the real value of a dropdown should be take from its dataValues array if it exists
+    const value = formItem.value || formItem.defaultValue;
+    if (formItem.dataValues && formItem.dataValues.length > 0) {
+      return formItem.dataValues[formItem.data.indexOf(value)];
+    }
+    return value;
   }
 
   setDefaultValues() {
@@ -144,10 +185,17 @@ export default class FormGenerator extends Component {
     var defaults = {};
     fields.forEach((formItem) => {
       if (formItem.value || formItem.defaultValue) {
-        defaults = {
-          ...defaults,
-          [formItem.name]: formItem.value || formItem.defaultValue,
-        };
+        if (formItem.type === DROPDOWN) {
+          defaults = {
+            ...defaults,
+            [formItem.name]: this.getDropDownDefault(formItem),
+          };
+        } else {
+          defaults = {
+            ...defaults,
+            [formItem.name]: formItem.value || formItem.defaultValue,
+          };
+        }
       }
     });
     if (defaults === {}) return;
@@ -175,13 +223,63 @@ export default class FormGenerator extends Component {
           return this.getCheckBoxes(formItem, index);
         case FILE:
           return this.getFileUploader(formItem, index);
+        case SECTION:
+          return this.getSectionCreator(formItem, index);
+        case CHIPS:
+          return this.getChipMaker(formItem, index);
       }
     });
+  }
+
+  setError(message) {
+    const error = {
+      icon: "fa fa-times",
+      type: BAD,
+      text: message,
+    };
+    this.setState({ notification: error });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { info } = this.props;
+    const prevInfo = prevProps.info;
+    if (prevInfo && info && prevInfo.text !== info.text) {
+      this.setState({ notification: info });
+    }
+  }
+  fieldIsEmpty(field) {
+    const { formData } = this.state;
+    const value = formData[field.name];
+    if (!value || value.length < 1) return true;
+    return false;
+  }
+  requiredFieldIsEmpty() {
+    const { fields } = this.props;
+    if (!fields) return false;
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
+      const required = field.required;
+      const name = field.name;
+      if (required) {
+        // set notification in state  and return right away, dont continue
+        if (this.fieldIsEmpty(field)) {
+          this.setError(`${name} is required please provide information`);
+          return true;
+        }
+      }
+    }
+    // no required fields are empty
+    return false;
   }
 
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
+    if (this.requiredFieldIsEmpty()) {
+      // if any required field is empty
+      onSubmit(e, { isNotComplete: true });
+      return;
+    }
     onSubmit(e, this.state.formData, this.resetForm);
     return;
   }
@@ -203,11 +301,12 @@ export default class FormGenerator extends Component {
       }
     });
     this.setState({ formData: defaults });
-    console.log("I AHVE REST THE FORM");
   }
 
   displayInformation() {
-    const { info } = this.props;
+    var { info } = this.props;
+    const internalInfo = this.state.notification;
+    var info = internalInfo || info; // internal info takes priority
     if (!info) return null;
     if (info.type === BAD) {
       return (
@@ -239,7 +338,7 @@ export default class FormGenerator extends Component {
   render() {
     var { animate, className, style, title, elevate } = this.props;
     const animationClass = animate ? "me-open-in" : "";
-    style = elevate ? style : { boxShadow: "0 0 black", style };
+    style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
       <div>
         <MECard className={`${animationClass} ${className}`} style={style}>
@@ -282,6 +381,7 @@ FormGenerator.propTypes = {
   title: PropTypes.string,
   elevate: PropTypes.bool,
   info: PropTypes.object,
+  contentStyle: PropTypes.object,
 };
 
 FormGenerator.defaultProps = {
