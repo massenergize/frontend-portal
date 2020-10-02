@@ -13,6 +13,11 @@
 .me-social {
   margin: 9px;
   border-radius: 55px;
+  outline:0;
+}
+
+.me-social:focus{
+  outline: 0 !important;
 }
 .image-chooser-default {
   border-radius: 10px;

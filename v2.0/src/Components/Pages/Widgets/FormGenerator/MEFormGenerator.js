@@ -31,6 +31,7 @@ export const GOOD = "good";
  * @prop {string} actionText
  * @prop {bool} elevate | should the form be elevated or not?
  * @prop {bool} animate | should the form be animated or not?
+ * @prop {object} info | any notification you would like to display below the form {icon, type ("good|bad"), text}
  * @returns HTML Form event && form Content (e, content)
  *
  */
