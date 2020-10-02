@@ -40,7 +40,7 @@ class MEButton extends Component {
       ...iconStyle,
     };
     if (icon) {
-      return <span className={`${icon} me-btn-icon`} style={iconStyles} />;
+      return <span className={`fa ${icon} me-btn-icon`} style={iconStyles} />;
     }
   }
   getClasses() {

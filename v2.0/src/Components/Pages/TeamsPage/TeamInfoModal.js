@@ -25,7 +25,7 @@ class TeamInfoModal extends React.Component {
   }
 
   getNeededFields() {
-    const {team} = this.props;
+    const { team, user } = this.props;
     const parentOptions = this.getParentTeamOptions();
     const pTeamNames = getPropsArrayFromJsonArray(parentOptions, "name");
     const pTeamIds = getPropsArrayFromJsonArray(parentOptions, "id");
@@ -59,8 +59,7 @@ class TeamInfoModal extends React.Component {
         type: "input",
         label: "Name*",
         placeholder: "What your team will be known by...",
-        value: team && team.name ,
-
+        value: team && team.name,
       },
       {
         hasLabel: true,
@@ -71,7 +70,7 @@ class TeamInfoModal extends React.Component {
         placeholder: "A catchy slogan for you team...",
         value: team && team.tagline,
       },
-      {
+      !team && {
         hasLabel: true,
         name: "admin_emails",
         type: "chips",
@@ -79,8 +78,7 @@ class TeamInfoModal extends React.Component {
         placeholder: "Enter an admin email and click <Add>...",
         asArray: true,
         separationKey: ",",
-        // value: team && team.admin_emails,
-        value:["kelewele","mrfimpong@gmail.com", "sexy"],
+        value: [user && user.email],
       },
       {
         hasLabel: true,
@@ -97,6 +95,7 @@ class TeamInfoModal extends React.Component {
         name: "logo",
         type: "file",
         label: "Select a logo for your team",
+        defaultValue: team && team.logo && team.logo.url,
       },
       ...parentFields,
     ];
@@ -116,18 +115,14 @@ class TeamInfoModal extends React.Component {
 
   render() {
     const { team, onClose, teamsStats, user } = this.props;
-    const { loading, error } = this.state;
-console.log("JE SUIS TAM", team);
+    const { loading, error, notification } = this.state;
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const teams = teamsStats.map((teamStats) => teamStats.team);
     const parentTeamOptions = this.getParentTeamOptions();
-    // (!team ||
-    //   teams.filter((_team) => _team.parent && _team.parent.id === team.id)
-    //     .length === 0) &&
-    // teams.filter((_team) => (!team || _team.id !== team.id) && !_team.parent);
+  
 
-    let modalContent, form;
+    let form;
     if (user) {
       form = (
         <MEFormGenerator
@@ -142,178 +137,8 @@ console.log("JE SUIS TAM", team);
           animate={false}
           actionText={team ? "Update" : "Create"}
           onSubmit={this.submitForm}
-          info={this.state.notification}
+          info={notification}
         />
-      );
-      modalContent = (
-        <form
-          id="team-info"
-          onSubmit={(e) => {
-            e.preventDefault();
-            this.callAPI();
-          }}
-          style={{ height: "350px" }}
-        >
-          <label htmlFor="team-name">
-            <u>Name</u>* <br />
-            <small>What your team will be known by.</small>
-          </label>
-          <input
-            id="team-name"
-            type="text"
-            name="team-name"
-            className="form-control"
-            defaultValue={team && team.name}
-            maxLength={100}
-            reqiured
-          />
-
-          <label htmlFor="team-tagline">
-            <u>Tagline</u>* <br />
-            <small>A catchy slogan for your team.</small>
-          </label>
-          <input
-            id="team-tagline"
-            type="text"
-            name="team-tagline"
-            className="form-control"
-            defaultValue={team && team.tagline}
-            maxLength={100}
-            required
-          />
-
-          <label htmlFor="team-description">
-            <u>Description</u>* <br />
-            <small>
-              Describe your team. Who are you and what brings you together?
-            </small>
-          </label>
-          <textarea
-            id="team-description"
-            name="team-description"
-            className="form-control"
-            rows={3}
-            defaultValue={team && team.description}
-            maxLength={10000}
-            required
-          />
-
-          {parentTeamOptions && (
-            <>
-              <label htmlFor="team-parent_id">
-                <u>Parent Team</u> <br />
-                <small>
-                  You can pick a parent team to which all of your members'
-                  actions will also automatically contribute.
-                </small>
-              </label>
-              <select
-                name="team-parent_id"
-                id="team-parent_id"
-                form="team-info"
-                defaultValue={team && team.parent ? team.parent.id : ""}
-              >
-                <option value="">NONE</option>
-                {parentTeamOptions.map((team) => (
-                  <option key={team.id} value={team.id}>
-                    {team.name}
-                  </option>
-                ))}
-              </select>
-            </>
-          )}
-
-          {!team && (
-            <>
-              <label htmlFor="team-admin_emails">
-                <u>Additional Admin Emails</u> <br />
-                <small>
-                  A comma-separated list of emails corresponding with the
-                  MassEnergize users you wish to make admins of this team. You
-                  will automatically be made an admin.
-                </small>
-              </label>
-              <input
-                id="team-admin_emails"
-                name="team-admin_emails"
-                className="form-control"
-              />
-            </>
-          )}
-
-          <div style={{ display: "block" }}>
-            <label htmlFor="team-logo">
-              <u>Logo</u> <br />
-              <small>
-                You can select a logo to be displayed alongside your team on the
-                community portal.
-              </small>
-            </label>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {team && team.logo && (
-                <div style={{ display: "block" }}>
-                  <small>Current:</small>
-                  <img
-                    src={team.logo.url}
-                    alt=""
-                    style={{ maxWidth: "100px", maxHeight: "50px" }}
-                  />
-                </div>
-              )}
-              <input
-                style={{ display: "inline-block" }}
-                id="team-logo"
-                accept="image/*"
-                type="file"
-                name="team-logo"
-                className="form-control"
-              />
-            </div>
-          </div>
-
-          {!team && (
-            <>
-              <br />
-              <small>
-                <b>
-                  Your team will need approval from a Community Admin before
-                  displaying. You will recieve an email when this happens.
-                </b>
-              </small>
-            </>
-          )}
-
-          <div className="team-modal-button-wrapper">
-            <button
-              type="submit"
-              className={`btn btn-success round-me ${
-                team ? "contact-admin-btn-new" : "join-team-btn"
-              } raise`}
-            >
-              {team ? "Update" : "Create"}
-            </button>
-            {loading && (
-              <img
-                src={loader}
-                className="team-modal-loader team-modal-inline"
-              />
-            )}
-            {error && (
-              <p
-                className
-                className="error-p team-modal-error-p team-modal-inline"
-              >
-                {error}
-              </p>
-            )}
-          </div>
-        </form>
       );
     } else {
       //the "edit team" button won't render if user isn't signed in, so can just mention creating a team
@@ -402,16 +227,16 @@ console.log("JE SUIS TAM", team);
   };
 
   submitForm(e, data, resetForm) {
+    const {team} = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) return;
     this.setState({
-      icon: "fa fa-spinner fa-spin",
-      type: GOOD,
-      text: "Starting to initialize team...",
+      notification: {
+        icon: "fa fa-spinner fa-spin",
+        type: GOOD,
+        text: team ? "Updating..." : "Starting to initialize team...",
+      },
     });
-
-console.log("EDIT DATA",data);
-    return;
     this.callAPI(data, resetForm);
   }
   callAPI = async (data, resetForm) => {
@@ -422,8 +247,13 @@ console.log("EDIT DATA",data);
       reduxLoadTeamsPage,
       reduxJoinTeam,
     } = this.props;
-    // const data = this.getData();
-    const url = team ? "teams.update" : "teams.create";
+    var url;
+    if (team) {
+      url = "teams.update";
+      data = { ...data, id: team.id };
+    } else {
+      url = "teams.create";
+    }
     data = { ...data, community_id: communityData.community.id };
     try {
       // this.setState({ loading: true });
@@ -443,7 +273,6 @@ console.log("EDIT DATA",data);
           community_id: communityData.community.id,
         });
         if (teamsStatsResponse.success) {
-          console.log("This is my stats response", teamsStatsResponse);
           reduxLoadTeamsPage(teamsStatsResponse.data);
         }
         onComplete(newTeam.id);

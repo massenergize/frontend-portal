@@ -9715,7 +9715,8 @@ button.as-link:hover {
 }
 
 .team-ul ul {
-  color: #999;
+  /* color: #999; */
+  color:#282828;
   font-size: 18px;
   margin: 0px;
   padding-left: 30px;

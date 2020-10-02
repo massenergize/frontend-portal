@@ -154,7 +154,7 @@ export default class FormGenerator extends Component {
   getChipMaker(formObject, key) {
     if (!formObject) return;
     return (
-      <div key={key} className="small-form-spacing">
+      <div key={key.toString()} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEChipMaker
           {...formObject}
@@ -170,16 +170,31 @@ export default class FormGenerator extends Component {
     if (!fields) return;
     this.setDefaultValues();
   }
+  getDropDownDefault(formItem) {
+    //the real value of a dropdown should be take from its dataValues array if it exists
+    const value = formItem.value || formItem.defaultValue;
+    if (formItem.dataValues && formItem.dataValues.length > 0) {
+      return formItem.dataValues[formItem.data.indexOf(value)];
+    }
+    return value;
+  }
 
   setDefaultValues() {
     const { fields } = this.props;
     var defaults = {};
     fields.forEach((formItem) => {
       if (formItem.value || formItem.defaultValue) {
-        defaults = {
-          ...defaults,
-          [formItem.name]: formItem.value || formItem.defaultValue,
-        };
+        if (formItem.type === DROPDOWN) {
+          defaults = {
+            ...defaults,
+            [formItem.name]: this.getDropDownDefault(formItem),
+          };
+        } else {
+          defaults = {
+            ...defaults,
+            [formItem.name]: formItem.value || formItem.defaultValue,
+          };
+        }
       }
     });
     if (defaults === {}) return;
