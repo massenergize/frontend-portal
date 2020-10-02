@@ -226,18 +226,29 @@ class AppRouter extends Component {
       );
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced],
+        children: [{ link: "/impact", name: "Our Impact" }, { name: "All MassEnergize Community Sites",
+          link: "http://" + window.location.host,
+          special: true}
+        , ...abtSliced]
       };
+      if(menu[4]) {
+        newAbout.children = [...newAbout.children, menu.pop()]
+      }
       menu[3] = newAbout;
     }
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
+      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams")
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
       menu[1] = newAction;
     }
+    const actionsIndex = menu.findIndex((item) => item.name == "Actions");
+    const menuPostActions = menu.splice(actionsIndex+1);
+    menu = [...menu.splice(0,actionsIndex+1), {link: "/teams", name: "Teams"},...menuPostActions];
+    console.log(menu)
     return menu;
   }
 
