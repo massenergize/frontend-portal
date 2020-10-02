@@ -71,12 +71,10 @@ class SubscribeForm extends React.Component {
                 this.setState({ ...INITIAL_STATE, message: `Success! ${this.state.email} is now subscribed to our Community's Newsletter` });
             } else {
                 var known = false;
-                json.errors.forEach(error => {
-                    if (error.includes("duplicate")) {
-                        this.setState({ ...INITIAL_STATE, message: `${this.state.email} is already subscribed to our Community's Newsletter` });
-                        known = true;
-                    }
-                })
+                if (json.error.includes("duplicate")) {
+                    this.setState({ ...INITIAL_STATE, message: `${this.state.email} is already subscribed to our Community's Newsletter` });
+                    known = true;
+                }
                 if (!known)
                     this.setState({ ...INITIAL_STATE, message: 'unknown error while subscribing' });
             }

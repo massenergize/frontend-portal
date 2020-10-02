@@ -71,14 +71,20 @@ class ActionsPage extends React.Component {
   findCommon() {
     const actions = this.props.actions;
     const values = this.state.check_values ? this.state.check_values : [];
+    if (values.length == 0)
+      return null;
+
     const common = [];
     if (actions) {
       for (let i = 0; i < actions.length; i++) {
         const action = actions[i];
-        const tag = action.tags[i];
-        if (tag) {
-          if (values.includes(tag.id) && !common.includes(action)) {
-            common.push(action);
+        const actionTags = (action && action.tags) || []
+        for (let j=0; j< actionTags.length; j++) {
+          const tag = actionTags[j];
+          if (tag) {
+            if (values.includes(tag.id) && !common.includes(action)) {
+              common.push(action);
+            }         
           }
         }
       }
@@ -121,9 +127,9 @@ class ActionsPage extends React.Component {
     const propActions = this.props.actions;
     const common = this.findCommon();
     if (mirror_actions.length > 0) return mirror_actions;
-    if (common && common.length > 0) return common;
+    if (common) return common;
     if (actions.length === 0) {
-      if (!propActions) return;
+      if (!propActions || propActions.length === 0) return null;
       return propActions.slice(0, this.state.perPage);
     }
     return actions;
@@ -265,11 +271,18 @@ class ActionsPage extends React.Component {
   };
   // renders all the actions
   renderActions(actions) {
-    if (!actions || actions.length === 0) {
+    if (!actions) {
       return (
         <p>
           There aren't any actions available in this community yet, come back
           later.
+        </p>
+      );
+    }
+    if (actions.length === 0) {
+      return (
+        <p>
+          There aren't any actions in the selected categories.
         </p>
       );
     }

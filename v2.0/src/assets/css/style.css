@@ -5655,12 +5655,13 @@ span.has-tooltip {
 }
 
 .about-column li {
-  position: relative;
-  padding-left: 30px;
-  font-size: 15px;
-  color: #999;
-  line-height: 26px;
-  margin-bottom: 14px;
+    position: relative;
+    padding-left: 30px;
+    font-size: 15px;
+    color: #999;
+    line-height: 26px;
+    margin-bottom: 14px;
+    list-style: none;
 }
 
 .about-column li span {
@@ -5674,8 +5675,9 @@ span.has-tooltip {
 /*============ link-column =================*/
 
 .main-footer .link-column li {
-  position: relative;
-  margin-bottom: 10px;
+    position: relative;
+    margin-bottom: 10px;
+    list-style: none;
 }
 
 .main-footer .link-column li a {
