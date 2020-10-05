@@ -38,14 +38,14 @@ class TeamInfoModal extends React.Component {
               "You can pick a parent team to which all of your members' actions will also automatically contribute",
           },
           {
-            required: true,
+            required: false,
             name: "parent_id",
             type: "dropdown",
             data: pTeamNames,
             dataValues: pTeamIds,
             placeholder:
               "Describe your team. Who are you, and brings you together?...",
-            value: team ? team.parent.name : "NONE",
+            value: team && team.parent ? team.parent.name : "NONE",
             defaultKey: "NONE",
           },
         ]
@@ -215,6 +215,7 @@ class TeamInfoModal extends React.Component {
         "logo",
       ].forEach((field) => {
         const value = this.getValue(field);
+
         if (value) data[field] = value;
       });
       data["community_id"] = communityData.community.id;
