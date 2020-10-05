@@ -133,7 +133,7 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Specify vendor if  not on the list (optional) ",
         placeholder: "Name of vendor...",
-        value:""
+        value: "",
       },
       {
         type: "input",
@@ -142,7 +142,7 @@ class StoryForm extends React.Component {
         label:
           "Your name and email will be known to the Community Organizer but how would you like it to be displayed?",
         placeholder: "Name...",
-        value:"",
+        value: "",
         required: true,
       },
       {
@@ -151,8 +151,8 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Story Title *",
         placeholder: "Add a title... *",
-        required:true,
-        value:""
+        required: true,
+        value: "",
       },
       {
         type: "file",
@@ -167,8 +167,8 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Your Story * ( limit: 9000 Char's)",
         placeholder: "Your story...*",
-        value:"",
-        required:true
+        value: "",
+        required: true,
       },
     ];
   }
@@ -219,10 +219,11 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(event, data, resetForm) {
+    const { community } = this.props;
     event.preventDefault();
-    if(!data || data.isNotComplete) {
+    if (!data || data.isNotComplete) {
       return;
-    };
+    }
     this.setState({
       formNotification: {
         icon: "fa fa-spinner fa-spin",
@@ -230,7 +231,8 @@ class StoryForm extends React.Component {
         text: "We are sending now...",
       },
     });
-    const body = { ...data, rank: 0 };
+    const communityID = community ? { community_id: community.id } : {};
+    const body = { ...data, rank: 0, ...communityID };
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({
         formNotification: {
@@ -239,7 +241,6 @@ class StoryForm extends React.Component {
           text: "Sorry, you story is a bit too long..",
         },
       });
-     
     } else {
       apiCall(`testimonials.add`, body).then((json) => {
         if (json && json.success) {
