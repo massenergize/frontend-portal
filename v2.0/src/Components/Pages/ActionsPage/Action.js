@@ -12,6 +12,8 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import MEModal from "../Widgets/MEModal";
+import ActionModal from "./ActionModal";
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -81,6 +83,17 @@ class Action extends React.Component {
     return exists;
   }
 
+  renderModal() {
+    console.log("hello")
+    if (this.state.expanded) {
+      return (
+        <MEModal closeModal={this.closeModal}>
+          <ActionModal content={this.state.modal_content} />
+        </MEModal>
+      );
+    }
+  }
+
   checkTodoAndReturn() {
     if (this.checkDone()) {
       return (
@@ -92,6 +105,7 @@ class Action extends React.Component {
       );
     }
     if (this.checkTodo()) {
+      this.renderModal()
       return (
         <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
@@ -161,11 +175,48 @@ class Action extends React.Component {
       );
     }
   }
+  checkDoneModalAndReturn() {
+    if (this.checkDone()) {
+      return (
+        <CustomTooltip
+          text="Thanks for adding, click again to remove."
+          style={{ marginLeft: "-70%" }}
+        >
+          <p
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
+            onClick={() => {
+              this.setState({ message: null });
+              this.removeFromCart(this.actionIsDone());
+            }}
+          >
+            Testing It!
+          </p>
+        </CustomTooltip>
+      );
+    } else {
+      return (
+        <MEButton
+          mediaType="icon"
+          icon="fa fa-check"
+          style={{ padding: "8px 14px", fontSize: 13 }}
+          onClick={() => {
+            this.openForm("DONE");
+            this.props.toggleShowTodoMsg();
+            this.renderModal();
+          }}
+        >
+          {" "}
+          Testing It{" "}
+        </MEButton>
+      );
+    }
+  }
   getAnimationClass() {
     const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
     const index = getRandomIntegerInRange(3);
     return classes[index];
   }
+  
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
@@ -283,6 +334,19 @@ class Action extends React.Component {
                       </CustomTooltip>
                     ) : (
                       this.checkDoneAndReturn()
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-4 col-sm-4 col-lg-4 col-4">
+                  <div className="col-centered">
+                    {!this.props.user ? (
+                      <CustomTooltip text="Sign in to mark actions as completed" style={{ left:-65}}>
+                        <p className="has-tooltip thm-btn style-4 action-btns disabled">
+                          Testing It
+                        </p>
+                      </CustomTooltip>
+                    ) : (
+                      this.checkDoneModalAndReturn()
                     )}
                   </div>
                 </div>
