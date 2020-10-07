@@ -993,6 +993,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+
+  .mob-modal-correction{
+    margin-top:-13vh;
+  }
   .page-text-phone-mode {
     font-size: 14px !important;
   }

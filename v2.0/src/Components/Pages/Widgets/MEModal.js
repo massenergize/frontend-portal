@@ -14,6 +14,7 @@ const LARGE = "lg";
  * @prop {string} className
  * @prop {object} style
  * @prop {object} contentStyle
+ * @prop {string} containerClassName
  *
  *
  */
@@ -30,13 +31,13 @@ export default class MEModal extends Component {
     if (size.toLowerCase() === LARGE) return "";
   }
   render() {
-    const { closeModal, style, className, contentStyle } = this.props;
+    const { closeModal, style, className, contentStyle, containerClassName } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     return (
       <div>
         <div className="me-overlay" onClick={closeModal}></div>
         <div
-          className={`me-modal-content me-modal-fade-down ${this.getSize()}`}
+          className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
         >
           <center>
@@ -70,11 +71,13 @@ MEModal.propType = {
   size: PropTypes.string,
   closeModal: PropTypes.func,
   contentStyle: PropTypes.object,
+  containerClassName:PropTypes.string,
 };
 
 MEModal.defaultProps = {
   style: {},
   contentStyle: {},
   classNames: "",
-  size: "md",
+  size: "sm",
+  containerClassName:"",
 };

@@ -68,7 +68,7 @@ class ContactAdminModal extends React.Component {
 
     return (
       <>
-        <MEModal contentStyle={{ width: "100%" }} closeModal={() => onClose()}>
+        <MEModal containerClassName="mob-modal-correction"  className="mod-modal-correction" contentStyle={{ width: "100%"}} closeModal={() => onClose()}>
           <h4>
             Contact admin of <b>{team && team.name}</b>
           </h4>
