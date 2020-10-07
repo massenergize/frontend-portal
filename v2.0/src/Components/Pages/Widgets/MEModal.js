@@ -28,7 +28,7 @@ export default class MEModal extends Component {
     const { size } = this.props;
     if (size.toLowerCase() === SMALL) return "me-modal-sm";
     if (size.toLowerCase() === MEDIUM) return "me-modal-md";
-    if (size.toLowerCase() === LARGE) return "";
+    if (size.toLowerCase() === LARGE) return ""; //no large?
   }
   render() {
     const { closeModal, style, className, contentStyle, containerClassName } = this.props;

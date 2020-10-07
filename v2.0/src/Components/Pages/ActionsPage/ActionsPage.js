@@ -39,6 +39,14 @@ class ActionsPage extends React.Component {
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
+      modal_content: { //tbd
+        image: null,
+        title: null,
+        desc: null,
+        ano: null,
+        user: null,
+      },
+      actionModal: false, //tbd
       mirror_actions: [],
       showTodoMsg: false,
       actions: [],
