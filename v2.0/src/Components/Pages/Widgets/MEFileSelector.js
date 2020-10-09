@@ -14,7 +14,7 @@ import MEModal from "./MEModal";
  * @prop {Number} ratioWidth aspect Ratio width
  * @prop {Number} ratioHeight asepct ration height
  * @prop {Number} maxWidth maximum width of the crop frame
- * @prop {Number} maximumHeight of the crop frame
+ * @prop {Number} maxHeight of the crop frame
  * @prop {Object} previewStyle | normal css style for the preview image tag
  * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal 
  * should show | default = true
@@ -246,7 +246,23 @@ class MEFileSelector extends Component {
   }
   switchStates() {
     const { file, croppedImageUrl, showPrev } = this.state;
-    const { previewStyle } = this.props;
+    const { previewStyle, defaultValue,name } = this.props;
+
+    if (!file && defaultValue) {
+      return (
+        <center>
+          <img
+            src={defaultValue}
+            alt={`${name} image`}
+          onClick={(e) => this.searchForImage(e)}
+            className="image-chooser-default z-depth-float"
+          />
+          <br />
+          <MEButton onClick={(e) => this.searchForImage(e)}>Change</MEButton>
+        </center>
+      );
+    }
+
     if (file) {
       return (
         <div>
