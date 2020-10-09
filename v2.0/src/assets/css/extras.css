@@ -906,7 +906,12 @@
   margin-left: 30px;
   margin: 10px;
 }
-
+/* me-file-chooser-position-correction */
+.me-f-c-pos-correction{
+  top:40vh !important; 
+  left:-260px !important; 
+  width:160% !important;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
@@ -995,6 +1000,11 @@
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
 
+  .me-f-c-pos-correction{
+    top:90vh !important; 
+    left:-20px !important; 
+    width:110% !important;
+  }
   .mob-modal-correction{
     margin-top:-13vh;
   }

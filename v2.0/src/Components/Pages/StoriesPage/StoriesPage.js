@@ -222,7 +222,6 @@ class StoriesPage extends React.Component {
                   {this.renderAddTestmonialBtn()}
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
-                  <MEFileSelector />
                   <PageTitle>Testimonials</PageTitle>
                   {this.state.pageContent.pageCount > 0 ? (
                     <center>

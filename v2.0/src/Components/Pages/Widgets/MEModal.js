@@ -15,6 +15,7 @@ const LARGE = "lg";
  * @prop {object} style
  * @prop {object} contentStyle
  * @prop {string} containerClassName
+ * @prop {Boolean} showOverlay | Specifies whether or not a translucent overlay should appear behing the modal
  *
  *
  */
@@ -31,15 +32,27 @@ export default class MEModal extends Component {
     if (size.toLowerCase() === LARGE) return "";
   }
   render() {
-    const { closeModal, style, className, contentStyle, containerClassName } = this.props;
+    const {
+      closeModal,
+      style,
+      className,
+      contentStyle,
+      containerClassName,
+      showOverlay,
+    } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
+    const overlayStyle = showOverlay ? {} : { display: "none" };
     return (
       <div>
-        <div className="me-overlay" onClick={closeModal}></div>
+        <div
+          className="me-overlay"
+          style={overlayStyle}
+          onClick={closeModal}
+        ></div>
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
-        > 
+        >
           <center>
             <MEButton
               onClick={closeModal}
@@ -71,7 +84,8 @@ MEModal.propType = {
   size: PropTypes.string,
   closeModal: PropTypes.func,
   contentStyle: PropTypes.object,
-  containerClassName:PropTypes.string,
+  containerClassName: PropTypes.string,
+  showOverlay: PropTypes.bool,
 };
 
 MEModal.defaultProps = {
@@ -79,5 +93,6 @@ MEModal.defaultProps = {
   contentStyle: {},
   classNames: "",
   size: "sm",
-  containerClassName:"",
+  containerClassName: "",
+  showOverlay: true,
 };

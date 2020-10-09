@@ -16,6 +16,9 @@ import MEModal from "./MEModal";
  * @prop {Number} maxWidth maximum width of the crop frame
  * @prop {Number} maximumHeight of the crop frame
  * @prop {Object} previewStyle | normal css style for the preview image tag
+ * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal 
+ * should show | default = true
+ * @prop {String} modalContainerClassName Just classnames that should be attached on to the cropping modal
  */
 class MEFileSelector extends Component {
   constructor(props) {
@@ -195,14 +198,16 @@ class MEFileSelector extends Component {
   }
   renderCroppingModal() {
     const { modal, src, crop } = this.state;
-    const { maxHeight, maxWidth, extSrc } = this.props;
+    const { maxHeight, maxWidth, extSrc, modalContainerClassName , showOverlay} = this.props;
     var source = src || extSrc;
     if (modal) {
       return (
         <MEModal
           closeModal={this.toggleCropperModal}
           style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-          contentStyle={{ left:0 }}
+          contentStyle={{top:"20vh", width:"100%",left:0}}
+          containerClassName = {modalContainerClassName}
+          showOverlay = {showOverlay}
         >
           <center>
             <MEButton
@@ -321,6 +326,8 @@ MEFileSelector.propTypes = {
   maxHeight: PropTypes.number,
   maxWidth: PropTypes.number,
   previewStyle: PropTypes.object,
+  modalContainerClassName:PropTypes.string,
+  showOverlay: PropTypes.bool,
 };
 MEFileSelector.defaultProps = {
   style: {},
@@ -331,5 +338,7 @@ MEFileSelector.defaultProps = {
   maxHeight: 300,
   maxWidth: 300,
   previewStyle: {},
+  modalContainerClassName:"",
+  showOverlay:true,
 };
 export default MEFileSelector;
