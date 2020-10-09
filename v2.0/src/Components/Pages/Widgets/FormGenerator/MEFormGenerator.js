@@ -337,7 +337,6 @@ export default class FormGenerator extends Component {
   }
 
   render() {
-    console.log(this.state);
     var { animate, className, style, title, elevate } = this.props;
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
