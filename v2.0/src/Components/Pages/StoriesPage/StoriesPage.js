@@ -17,6 +17,7 @@ import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
 import { getRandomIntegerInRange, moveToPage } from "../../Utils";
 import Paginator from "../Widgets/Paginator";
+import MEFileSelector from "../Widgets/MEFileSelector";
 
 const PER_PAGE = 6;
 class StoriesPage extends React.Component {
@@ -221,6 +222,7 @@ class StoriesPage extends React.Component {
                   {this.renderAddTestmonialBtn()}
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
+                  <MEFileSelector />
                   <PageTitle>Testimonials</PageTitle>
                   {this.state.pageContent.pageCount > 0 ? (
                     <center>

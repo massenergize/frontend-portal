@@ -197,7 +197,7 @@ class StoryForm extends React.Component {
   }
   count = (words) => {
     // return words.split(' ').length //word count
-    return words.length; //char count
+    return words.length; //char count 
   };
   //updates the state when form elements are changed
   onChange(event) {

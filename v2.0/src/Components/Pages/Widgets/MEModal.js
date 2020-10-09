@@ -39,7 +39,7 @@ export default class MEModal extends Component {
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
-        >
+        > 
           <center>
             <MEButton
               onClick={closeModal}

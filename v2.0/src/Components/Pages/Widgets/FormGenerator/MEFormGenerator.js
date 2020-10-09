@@ -8,7 +8,8 @@ import MEDropdown from "../MEDropdown";
 import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
 import MECheckBoxes from "../MECheckBoxGroup";
-import MEUploader from "../MEUploader";
+// import MEUploader from "../MEUploader";
+import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
 
 const INPUT = "input";
@@ -347,7 +348,7 @@ export default class FormGenerator extends Component {
             style={{ color: "black", fontSize: 18, textAlign: "center" }}
           >
             {title}
-          </METextView>
+          </METextView> 
           <form onSubmit={this.onSubmit}>
             {this.createAndEjectForm()}
 

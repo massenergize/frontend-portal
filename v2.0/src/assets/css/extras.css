@@ -391,6 +391,7 @@
   z-index: 500;
   cursor: pointer;
   top: 0;
+  left:0;
 }
 .move-up-and-vanish {
   transform: translateY(-80px);
