@@ -25,7 +25,9 @@ class IconBoxTable extends React.Component {
     return boxes;
   };
   renderBoxes(boxes) {
-    boxes = this.actionFirst(boxes);
+    // for now we won't want to do this because of issue:
+    // https://github.com/massenergize/frontend-admin/issues/226
+    // boxes = this.actionFirst(boxes);
     if (!boxes) {
       return <div>No Icon Boxes to Display</div>;
     }
