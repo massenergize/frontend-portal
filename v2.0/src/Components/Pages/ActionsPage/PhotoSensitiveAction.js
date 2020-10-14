@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "../../Shared/Tooltip";
+// import Tooltip from "../../Shared/Tooltip";
 import ChooseHHForm from "./ChooseHHForm";
 import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
-import CustomTooltip from "../Widgets/CustomTooltip";
+import Tooltip from "../Widgets/CustomTooltip";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
@@ -84,11 +84,26 @@ class PhotoSensitiveAction extends React.Component {
   }
 
   checkTodoAndReturn() {
+    if (!this.props.user) {
+      return (
+        <Tooltip text="Sign in to make a TODO list">
+          <p
+            className="has-tooltip thm-btn style-4 action-btns disabled"
+            style={{ marginLeft: 10 }}
+          >
+            ToDo
+          </p>
+        </Tooltip>
+      );
+    }
     if (this.checkDone()) {
       return (
         <Tooltip text="Cant use this feature, you have already done the action.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it">
-            To Do
+          <p
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1"
+            style={{ marginLeft: 10 }}
+          >
+            ToDo
           </p>
         </Tooltip>
       );
@@ -97,26 +112,24 @@ class PhotoSensitiveAction extends React.Component {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            style={{ padding: "8px 20px", fontSize: "small", marginLeft: 10 }}
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1"
             onClick={() => {
               this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
             }}
           >
-            To Do
+            ToDo
           </p>
         </Tooltip>
       );
     } else {
       return (
         <MEButton
-          variation="accent"
-          mediaType="icon"
-          icon="fa fa-edit"
           onClick={() => this.openForm("TODO")}
-          style={{ padding: "8px 14px", fontSize: 13 }}
+          style={{ padding: "8px 20px", fontSize: 13 }}
         >
-          To Do
+          ToDo
         </MEButton>
       );
     }
@@ -129,33 +142,44 @@ class PhotoSensitiveAction extends React.Component {
     return exists;
   }
   checkDoneAndReturn() {
+    if (!this.props.user) {
+      return (
+        <Tooltip text="Sign in to mark actions as completed">
+          <p
+            className="has-tooltip thm-btn style-4 action-btns disabled"
+            style={{ marginLeft: 10 }}
+          >
+            Done
+          </p>
+        </Tooltip>
+      );
+    }
     if (this.checkDone()) {
       return (
         <Tooltip text="Thanks for adding, click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1"
             onClick={() => {
               this.setState({ message: null });
               this.removeFromCart(this.actionIsDone());
             }}
+            style={{ marginLeft: 10 }}
           >
-            Done It
+            Done
           </p>
         </Tooltip>
       );
     } else {
       return (
         <MEButton
-          mediaType="icon"
-          icon="fa fa-check"
-          style={{ padding: "8px 14px", fontSize: 13 }}
+          style={{ padding: "8px 20px", fontSize: 13 }}
           onClick={() => {
             this.openForm("DONE");
             this.props.toggleShowTodoMsg();
           }}
         >
           {" "}
-          Done It{" "}
+          Done
         </MEButton>
       );
     }
@@ -171,33 +195,24 @@ class PhotoSensitiveAction extends React.Component {
     if (this.shouldRender()) {
       //checks if the action should render or not
       return (
-        <div className={`col-lg-6 col-md-12 col-sm-12 col-12  ${this.getAnimationClass()}`}>
+        <div
+          className={`col-lg-6 col-md-12 col-sm-12 col-12  ${this.getAnimationClass()}`}
+        >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
-            <CustomTooltip text="Add this if done">
-              <MEButton
-                mediaType="icon"
-                icon=" fa fa-check-square-o"
-                style={{ padding: "8px 12px", fontSize: "small" }}
-              >
+            {/* <CustomTooltip text="Add this if done">
+              <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
                 Done
-                {/* <span className="fa fa-check-square-o" /> */}
               </MEButton>
-            </CustomTooltip>
+            </CustomTooltip> */}
+            {this.checkDoneAndReturn()}
             <br />
-            <MEButton
-              mediaType="icon"
-              icon=" fa fa-edit"
-              style={{ padding: "8px 12px", fontSize: "small" }}
-            >
-              {/* <span className="fa fa-edit" /> */} ToDo
-            </MEButton>
+            {this.checkTodoAndReturn()}
+            {/* <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
+              ToDo
+            </MEButton> */}
             <br />
-            <MEButton
-              mediaType="icon"
-              icon=" fa fa-eye"
-              style={{ padding: "8px 12px", fontSize: "small" }}
-            >
-              {/* <span className="fa fa-eye" />  */} More
+            <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
+              More
             </MEButton>
             <br />
           </div>
@@ -234,13 +249,15 @@ class PhotoSensitiveAction extends React.Component {
                 </figcaption>
               </div>
               <METextView
+                containerStyle={{ display: "block" }}
                 style={{
                   padding: "10px 10px",
                   color: "black",
                   fontSize: "medium",
+                  textAlign: "center",
                 }}
               >
-                This is my title, what is your title?
+                {this.props.action.title}
               </METextView>
             </Link>
             {/* <div className="content-box">

@@ -7847,15 +7847,17 @@ span.has-tooltip {
   text-align: center;
 } */
 
-.action-img-correction{
-  width:100% !important; 
-  height:100%;
+.action-img-correction {
+  width: 100% !important;
+  height: 100%;
 }
 .action-background-card {
   /* height: 360px; */
-  height: 220px;
+  height: 233px;
   width: 70%;
 }
+
+
 .new-action-btns-div {
   position: absolute;
   height: 200px;
