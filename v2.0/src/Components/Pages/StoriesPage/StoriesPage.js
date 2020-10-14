@@ -93,7 +93,7 @@ class StoriesPage extends React.Component {
   renderModal() {
     if (this.state.expanded) {
       return (
-        <MEModal closeModal={this.closeModal}>
+        <MEModal closeModal={this.closeModal} contentStyle={{minWidth:"100%"}}>
           <StoryModal content={this.state.modal_content} />
         </MEModal>
       );
