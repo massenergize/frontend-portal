@@ -13,6 +13,7 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
+import photo from "./try.png";
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -170,25 +171,38 @@ class PhotoSensitiveAction extends React.Component {
     if (this.shouldRender()) {
       //checks if the action should render or not
       return (
-        <div className="col-lg-6 col-md-12 col-sm-12 col-12">
-          <div className="new-action-btns-div z-depth-float-half">
+        <div className={`col-lg-6 col-md-12 col-sm-12 col-12  ${this.getAnimationClass()}`}>
+          <div className="new-action-btns-div me-anime-move-from-left-normal">
             <CustomTooltip text="Add this if done">
-            <MEButton style={{ padding: "8px 12px" }}>
-              <span className="fa fa-check-square-o" />
-            </MEButton>
+              <MEButton
+                mediaType="icon"
+                icon=" fa fa-check-square-o"
+                style={{ padding: "8px 12px", fontSize: "small" }}
+              >
+                Done
+                {/* <span className="fa fa-check-square-o" /> */}
+              </MEButton>
             </CustomTooltip>
             <br />
-            <MEButton style={{ padding: "8px 12px" }}>
-              <span className="fa fa-edit" />
+            <MEButton
+              mediaType="icon"
+              icon=" fa fa-edit"
+              style={{ padding: "8px 12px", fontSize: "small" }}
+            >
+              {/* <span className="fa fa-edit" /> */} ToDo
             </MEButton>
             <br />
-            <MEButton style={{ padding: "8px 12px" }}>
-              <span className="fa fa-eye" />
+            <MEButton
+              mediaType="icon"
+              icon=" fa fa-eye"
+              style={{ padding: "8px 12px", fontSize: "small" }}
+            >
+              {/* <span className="fa fa-eye" />  */} More
             </MEButton>
             <br />
           </div>
           <div
-            className={`single-shop-item m-action-item z-depth-float action-background-card ${this.getAnimationClass()}`}
+            className={`single-shop-item m-action-item z-depth-float action-background-card`}
           >
             <Link
               to={this.props.links.actions + "/" + this.props.action.id}
@@ -196,6 +210,8 @@ class PhotoSensitiveAction extends React.Component {
             >
               <div className="img-box">
                 <img
+                  className="action-img-correction"
+                  // src={photo}
                   src={
                     this.props.action.image ? this.props.action.image.url : null
                   }
@@ -217,7 +233,13 @@ class PhotoSensitiveAction extends React.Component {
                   </div>
                 </figcaption>
               </div>
-              <METextView style={{ padding: "15px 20px", color: "black" }}>
+              <METextView
+                style={{
+                  padding: "10px 10px",
+                  color: "black",
+                  fontSize: "medium",
+                }}
+              >
                 This is my title, what is your title?
               </METextView>
             </Link>
