@@ -40,7 +40,7 @@ class ChooseHHForm extends React.Component {
             {this.state.error ? (
               <p className="text-danger"> {this.state.error} </p>
             ) : null}
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} style={{ paddingBottom: 10 }}>
               {this.renderRadios(this.props.user.households)}
               <div style={{ paddingBottom: 20, paddingTop:10 }}>
                 <MEButton

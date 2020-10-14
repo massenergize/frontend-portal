@@ -15,7 +15,7 @@ import {
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import SideBar from "../../Menu/SideBar";
-import Action from "./Action";
+import Action from "./PhotoSensitiveAction";
 import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
 import Funnel from "../EventsPage/Funnel";
