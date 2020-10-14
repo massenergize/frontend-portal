@@ -787,6 +787,8 @@
   background: white;
   border: solid 1px white;
   border-radius: 5px;
+  z-index:2;
+  left:-90px;
 }
 .triangle {
   border: solid 15px red;

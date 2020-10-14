@@ -36,11 +36,11 @@ class ChooseHHForm extends React.Component {
             {this.state.error ? (
               <p className="text-danger"> {this.state.error} </p>
             ) : null}
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} style={{ paddingBottom: 10 }}>
               {this.renderRadios(this.props.user.households)}
               <div>
                 <button
-                  style={{padding:'2px 11px',marginRight: 7}}
+                  style={{ padding: "2px 11px", marginRight: 7 }}
                   className="thm-btn style-4 round-me"
                   type="submit"
                   disabled={
@@ -50,7 +50,7 @@ class ChooseHHForm extends React.Component {
                   Submit
                 </button>
                 <button
-                style={{padding:'2px 11px'}}
+                  style={{ padding: "2px 11px" }}
                   className="thm-btn style-4 red round-me"
                   onClick={this.props.closeForm}
                 >

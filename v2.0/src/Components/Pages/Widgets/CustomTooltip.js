@@ -14,12 +14,14 @@ class CustomTooltip extends Component {
     });
   }
   render() {
+    const {containerStyle, contentStyle} = this.props;
     return (
-      <div style={{ display: "inline-block" }} className="c-tooltip-container">
+      <div style={{ display: "inline-block", ...containerStyle }} className="c-tooltip-container" >
         <div
           className="c-tooltip-msg-container"
           style={{
             marginTop: -1 * (this.state.hoverableItemHeight+10),
+            ...contentStyle
           }}
         >
           <div className="c-tooltip-text-paper  z-depth-1">
@@ -35,3 +37,8 @@ class CustomTooltip extends Component {
 }
 
 export default CustomTooltip;
+
+CustomTooltip.defaultProps = {
+  containerStyle:{},
+  contentStyle:{}
+}

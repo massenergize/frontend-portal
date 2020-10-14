@@ -7853,7 +7853,7 @@ span.has-tooltip {
 }
 .action-background-card {
   /* height: 360px; */
-  height: 233px;
+  min-height: 233px;
   width: 70%;
 }
 
