@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 class CustomTooltip extends Component {
   constructor(props) {
-    super(props);
-
+    super();
     this.state = { hoverableItemHeight: 0 };
   }
 
@@ -20,11 +19,11 @@ class CustomTooltip extends Component {
         <div
           className="c-tooltip-msg-container"
           style={{
-            marginTop: -1 * (this.state.hoverableItemHeight+10),
+            marginTop: -1 * (this.state.hoverableItemHeight),
             ...contentStyle
           }}
         >
-          <div className="c-tooltip-text-paper  z-depth-1">
+          <div className="c-tooltip-text-paper  z-depth-float-half">
             <span style={{ fontSize: 12 }}>{this.props.text}</span>
           </div>
         </div>
@@ -35,7 +34,14 @@ class CustomTooltip extends Component {
     );
   }
 }
+ 
 
+CustomTooltip.propTypes ={
+  style: PropTypes.object
+}
+CustomTooltip.defaultProps = {
+  style:{}
+}
 export default CustomTooltip;
 
 CustomTooltip.defaultProps = {

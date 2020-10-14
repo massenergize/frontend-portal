@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 
 /**
  * MassEnergize toned-down version of an accordion
- * @props {string} className
- * @props {object} style
- * @props {boolean} collapsed @required
- * @props {boolean} badge
- * @props {string} badgeText
- * @props {string} headerText
- * @props {object} containerStyle
- * @props {string} containerClassName
+ * @prop {string} className
+ * @prop {object} style
+ * @prop {boolean} collapsed  | False by default
+ * @prop {boolean} badge
+ * @prop {string} badgeText
+ * @prop {string} headerText
+ * @prop {object} containerStyle
+ * @prop {string} containerClassName
  *
  */
 export default class MESectionWrapper extends Component {
@@ -47,9 +47,9 @@ export default class MESectionWrapper extends Component {
   }
   render() {
     const { collapsed } = this.state;
-    const { style, className, headerText } = this.props;
+    const { style, className, headerText, motherStyle } = this.props;
     return (
-      <div className="me-anime-show-up">
+      <div className="me-anime-show-up" style={motherStyle}>
         <div
           className={`me-section-wrapper-header section-green z-depth-1 ${className}`}
           style={style}
@@ -72,6 +72,7 @@ MESectionWrapper.propTypes = {
   headerText: PropTypes.string.isRequired,
   containerStyle: PropTypes.object,
   containerClassName: PropTypes.string,
+  motherStyle:PropTypes.object
 };
 
 MESectionWrapper.defaultProps = {
@@ -81,5 +82,6 @@ MESectionWrapper.defaultProps = {
   badge:false, 
   headerText: "You need to provide a header text",
   containerStyle:{}, 
-  containerClassName:""
+  containerClassName:"",
+  motherStyle:{}
 }

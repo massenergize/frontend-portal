@@ -74,6 +74,7 @@ class JoiningCommunityForm extends React.Component {
 			/** Collects the form data and sends it to the backend */
 			apiCall('communities.join', body).then(json => {
 				if (json.success) {
+          console.log("I want to see communities, after redux", JSON.stringify(json));
 					this.props.reduxLoadUserCommunities(json.data.communities);
 					this.props.closeForm();
 				}

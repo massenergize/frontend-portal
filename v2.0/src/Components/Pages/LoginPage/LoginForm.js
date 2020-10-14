@@ -94,14 +94,15 @@ class LoginFormBase extends React.Component {
                 >
                   <span className="fa fa-google"></span>
                 </button>
-                <button
+                {/* ----- FACEBOOK WILL BE RE-ENABLED LATER ------- */}
+                {/* <button
                   onClick={this.signInWithFacebook}
                   id="facebook"
                   type="button"
                   className="img-circle  round-me raise me-facebook-btn"
                 >
                   <span className="fa fa-facebook"></span>
-                </button>
+                </button> */}
               </div>
             </div>
           </form>

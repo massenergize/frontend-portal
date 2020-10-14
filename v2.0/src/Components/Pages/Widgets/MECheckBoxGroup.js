@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 /**
- * @props {Array} data
- * @props {Array} dataValues
- * @props {func} onItemSelected
- * @props {Object} style
- * @props {string} className
- * @props {string} name
- * @props {Object} containerStyle
- * @props {String} containerClassName
- * @value {Array} value
+ * @prop {Array} data
+ * @prop {Array} dataValues
+ * @prop {func} onItemSelected
+ * @prop {Object} style
+ * @prop {string} className
+ * @prop {string} name
+ * @prop {Object} containerStyle
+ * @prop {String} containerClassName
+ * @prop {Array} value
+ * @prop {object} fineTuneStyle | Normal css inline styles to fine-tune square dot inside checkbox when it misbehaves (rare)
  *
  */
 export default class MECheckBoxGroup extends Component {
@@ -48,7 +49,7 @@ export default class MECheckBoxGroup extends Component {
     return false;
   }
   ejectChildren() {
-    const { data, className, style } = this.props;
+    const { data, className, style, fineTuneSquare } = this.props;
     if (!data || data.length === 0) return <span></span>;
 
     return data.map((child, key) => {
@@ -70,7 +71,7 @@ export default class MECheckBoxGroup extends Component {
             ...style,
           }}
         >
-          <div className={`me-floating-check ${dotActive} `}></div>
+          <div className={`me-floating-check ${dotActive} `} style={fineTuneSquare}></div>
           <div className={`me-check-square ${squareActive}`}></div>
           <span>{child}</span>
         </div>
@@ -92,15 +93,16 @@ MECheckBoxGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
   onItemSelected: PropTypes.func.isRequired,
+  fineTuneSquare :PropTypes.object
 };
 MECheckBoxGroup.defaultProps = {
   data: [],
   dataValues: [],
   style: {},
   className: "",
-  value: "Radio Text Here ",
   name: "some-name",
   containerStyle: {},
   containerClassName: "",
   value: [],
+  fineTuneSquare:{}
 };

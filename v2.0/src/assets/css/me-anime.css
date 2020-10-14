@@ -1,4 +1,19 @@
 
+
+
+.me-anime-move-from-left-normal{
+  opacity: 0;
+  animation:move-from-left-to-scale .4s ease-in .4s forwards;
+}
+
+.me-anime-move-from-left-fast{
+  opacity: 0;
+  animation:move-from-left-to-scale .3s ease-in .3s forwards;
+}
+.me-anime-move-from-left-fastest{
+  opacity: 0;
+  animation:move-from-left-to-scale .2s ease-in .2s forwards;
+}
 .me-anime-move-from-left{
   opacity: 0;
   animation:move-from-left-to-scale .4s ease-in .5s forwards;

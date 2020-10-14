@@ -27,6 +27,22 @@ class MEUploader extends Component {
 
   switchStates() {
     const { file } = this.state;
+    const { defaultValue, name } = this.props;
+    if (!file && defaultValue) {
+      return (
+        <center>
+          <img
+            src={defaultValue}
+            alt={`${name} image`}
+          onClick={(e) => this.searchForImage(e)}
+            className="image-chooser-default z-depth-float"
+          />
+          <br />
+          <MEButton onClick={(e) => this.searchForImage(e)}>Change</MEButton>
+        </center>
+      );
+    }
+
     if (file) {
       return (
         <div>
@@ -54,7 +70,7 @@ class MEUploader extends Component {
       <center>
         <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
         <p style={{ margin: 15, color: "#d2cfcf" }}>
-          Choose an image from you device
+          Choose an image from your device
         </p>
         <MEButton onClick={(e) => this.searchForImage(e)}>Choose</MEButton>
       </center>
@@ -81,10 +97,12 @@ MEUploader.propTypes = {
   style: PropTypes.object,
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
 };
 MEUploader.defaultProps = {
   style: {},
   className: "",
   name: "some_name",
+  defaultValue: null,
 };
 export default MEUploader;

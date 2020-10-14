@@ -18,13 +18,13 @@ function ShareButtons(props) {
     {label && <h5 style={{ textAlign: 'center' }}>{label}</h5>}
 
     <div className="row justify-content-center">
-      <FacebookShareButton url={url} quote={text} hashtag="#MassEnergize">
+      <FacebookShareButton className="me-social z-depth-1" url={url} quote={text} hashtag="#MassEnergize">
         <FacebookIcon size={50} round />
       </FacebookShareButton>
-      <TwitterShareButton url={url} title={text} hashtags={["MassEnergize", "Sustainability", "CleanEnergy"]}>
+      <TwitterShareButton className="me-social z-depth-1" url={url} title={text} hashtags={["MassEnergize", "Sustainability", "CleanEnergy"]}>
         <TwitterIcon size={50} round />
       </TwitterShareButton>
-      <EmailShareButton url={url} subject={pageTitle} body={pageDescription}>
+      <EmailShareButton className="me-social z-depth-1" url={url} subject={pageTitle} body={pageDescription}>
         <EmailIcon size={50} round />
       </EmailShareButton>
     </div>

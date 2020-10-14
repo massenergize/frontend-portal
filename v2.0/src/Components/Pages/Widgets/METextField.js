@@ -31,6 +31,7 @@ class METextField extends Component {
     onChange(e);
   };
 
+
   ejectComponent = () => {
     const {
       type,
@@ -49,11 +50,11 @@ class METextField extends Component {
     } = this.props;
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
-    const ID = id ? { id: id } : {};
+    const ID = id ? id : getRandomIntegerInRange(9999999).toString();
     if (inputType === "input") {
       return (
         <input
-          {...ID}
+          id={ID}
           className={`${defaultClasses} only-left-border ${className}`}
           name={name}
           type={type}
@@ -69,7 +70,7 @@ class METextField extends Component {
     } else if (inputType === "textarea") {
       return (
         <textarea
-          {...ID}
+          id={ID}
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
@@ -108,7 +109,7 @@ METextField.propTypes = {
   history: PropTypes.bool,
   readonly: PropTypes.bool,
 };
-
+ 
 METextField.defaultProps = {
   name: getRandomIntegerInRange(100).toString(),
   inputType: "input",
@@ -122,6 +123,7 @@ METextField.defaultProps = {
   type: "text",
   placeholder: "Enter text here...",
   readonly: false,
+  id:""
 };
 
 export default METextField;
