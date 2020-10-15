@@ -23,6 +23,10 @@ import MECard from "../Widgets/MECard";
 import Paginator from "../Widgets/Paginator";
 import { moveToPage } from "../../Utils";
 
+import MEModal from "../Widgets/MEModal";
+import ActionModal from "./ActionModal";
+import StoryModal from "../StoriesPage/StoryModal";
+
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
  * @props none - fetch data from api instead of getting data passed to you from props
@@ -33,12 +37,15 @@ const PER_PAGE = 6;
 class ActionsPage extends React.Component {
   constructor(props) {
     super(props);
+    this.closeModal = this.closeModal.bind(this);
+    this.checkOpenModal = this.checkOpenModal.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       check_values: null,
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
+      expanded: null,
       modal_content: { //tbd
         image: null,
         title: null,
@@ -57,9 +64,11 @@ class ActionsPage extends React.Component {
       },
       perPage: PER_PAGE,
     };
+    // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.findCommon = this.findCommon.bind(this);
+
   }
 
   addMeToSelected(tagID) {
@@ -112,6 +121,25 @@ class ActionsPage extends React.Component {
         pageCount: nextPageContent.pageCount,
       },
     });
+  }
+
+  renderModal() {
+    if (this.state.expanded) {
+      return (
+        <MEModal closeModal={this.closeModal}>
+          <StoryModal content={this.state.modal_content} />
+          <p> useless content to see what this looks like</p> 
+        </MEModal>
+      );
+    }
+  }
+
+  checkOpenModal (params) {
+    this.setState({ expanded: params.id, modal_content: params.content });
+  }
+
+  closeModal() {
+    this.setState({ expanded: null });
   }
 
   renderPaginator() {
