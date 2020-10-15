@@ -179,13 +179,14 @@ class ServicesPage extends React.Component {
       return (
         <div
           key={index.toString()}
-          className={`col-lg-6 col-md-12 col-sm-12 col-12 `}
+          className={`col-lg-4 col-md-4 col-sm-12 col-12 `}
         >
           <div
             className={`single-shop-item m-action-item z-depth-float action-background-card`}
+            style={{width:"100%"}}
           >
             <Link
-              to={"#"}
+              to={`${this.props.links.services}/${vendor.id}`}
               style={{ color: "#999999", width: "100%", height: 210 }}
             >
               <div className="img-box">
@@ -200,7 +201,7 @@ class ServicesPage extends React.Component {
                 <figcaption className="overlay">
                   <div className="box">
                     <div className="content">
-                      <div to={"#"}>
+                      <div >
                         <i className="fa fa-link" aria-hidden="true"></i>
                       </div>
                     </div>
