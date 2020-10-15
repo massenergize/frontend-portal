@@ -83,17 +83,6 @@ class Action extends React.Component {
     return exists;
   }
 
-  renderModal() {
-    console.log("hello")
-    if (this.state.expanded) {
-      return (
-        <MEModal closeModal={this.closeModal}>
-          <ActionModal content={this.state.modal_content} />
-        </MEModal>
-      );
-    }
-  }
-
   checkTodoAndReturn() {
     if (this.checkDone()) {
       return (
@@ -105,7 +94,6 @@ class Action extends React.Component {
       );
     }
     if (this.checkTodo()) {
-      this.renderModal()
       return (
         <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
@@ -202,7 +190,6 @@ class Action extends React.Component {
           onClick={() => {
             this.openForm("DONE");
             this.props.toggleShowTodoMsg();
-            this.renderModal();
           }}
         >
           {" "}
