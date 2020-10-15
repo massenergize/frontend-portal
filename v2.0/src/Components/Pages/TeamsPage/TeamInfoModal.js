@@ -67,7 +67,7 @@ class TeamInfoModal extends React.Component {
         name: "tagline",
         type: "input",
         label: "Tagline*",
-        placeholder: "A catchy slogan for you team...",
+        placeholder: "A catchy slogan for your team...",
         value: team && team.tagline,
       },
       !team && {
