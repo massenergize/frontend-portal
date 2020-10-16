@@ -237,7 +237,7 @@ class PhotoSensitiveAction extends React.Component {
                   src={
                     this.props.action.image ? this.props.action.image.url : null
                   }
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", objectFit:"contain" }}
                   alt=""
                 />
 
