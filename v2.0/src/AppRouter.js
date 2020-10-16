@@ -224,12 +224,15 @@ class AppRouter extends Component {
       var abtSliced = oldAbout.children.filter(
         (item) => item.name.toLowerCase() !== "impact"
       );
+      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, { name: "All MassEnergize Community Sites",
+        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced, contactUsItem,
+        { name: "All MassEnergize Community Sites",
           link: "http://" + window.location.host,
-          special: true}
-        , ...abtSliced]
+          special: true }
+        ,]
       };
       if(menu[4]) {
         newAbout.children = [...newAbout.children, menu.pop()]
@@ -305,11 +308,10 @@ class AppRouter extends Component {
     const { links } = this.props;
     var finalMenu = [];
     if (this.props.menu) {
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
       const navMenus = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
       })[0].content;
-      finalMenu = [...navMenus, contactUsItem];
+      finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const communitiesLink = 
