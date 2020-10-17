@@ -130,7 +130,7 @@ class PhotoSensitiveAction extends React.Component {
             onClick={() => this.openForm("TODO")}
             style={{ padding: "8px 20px", fontSize: 13 }}
           >
-            ToDo
+            To Do
           </MEButton>
         </Tooltip>
       );
@@ -532,13 +532,15 @@ class PhotoSensitiveAction extends React.Component {
     this.setState({
       status: status,
     });
-    this.props.openHHForm(this.props.action.id);
+    this.props.openModal();
+    // this.props.openHHForm(this.props.action.id);
   };
   closeForm = () => {
     this.setState({
       status: null,
     });
-    this.props.closeHHForm();
+    this.props.closeModal();
+    // this.props.closeHHForm();
   };
   //checks the filters to see if the action should render or not
   shouldRender() {

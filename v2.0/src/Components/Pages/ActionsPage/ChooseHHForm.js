@@ -29,7 +29,7 @@ class ChooseHHForm extends React.Component {
     if (this.props.user && this.props.user.households.length === 1) {
       if (this.props.open) {
         this.handleSubmit(null);
-        return <div></div>;
+        return <div>Finished!</div>;
       }
     }
     this.checkHouseholds();

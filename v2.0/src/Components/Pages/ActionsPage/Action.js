@@ -85,13 +85,13 @@ class Action extends React.Component {
 
   checkTodoAndReturn() {
     if (this.checkDone()) {
-      return (
-        <CustomTooltip text="Cant use this feature, you have already done the action.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-float">
-            To Do
-          </p>
-        </CustomTooltip>
-      );
+        return (
+          <CustomTooltip text="Cant use this feature, you have already done the action.">
+            <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-float">
+              To Do
+            </p>
+          </CustomTooltip>
+        );
     }
     if (this.checkTodo()) {
       return (
@@ -159,41 +159,6 @@ class Action extends React.Component {
         >
           {" "}
           Done It{" "}
-        </MEButton>
-      );
-    }
-  }
-  checkDoneModalAndReturn() {
-    if (this.checkDone()) {
-      return (
-        <CustomTooltip
-          text="Thanks for adding, click again to remove."
-          style={{ marginLeft: "-70%" }}
-        >
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
-            onClick={() => {
-              this.setState({ message: null });
-              this.removeFromCart(this.actionIsDone());
-            }}
-          >
-            Testing It!
-          </p>
-        </CustomTooltip>
-      );
-    } else {
-      return (
-        <MEButton
-          mediaType="icon"
-          icon="fa fa-check"
-          style={{ padding: "8px 14px", fontSize: 13 }}
-          onClick={() => {
-            this.openForm("DONE");
-            this.props.toggleShowTodoMsg();
-          }}
-        >
-          {" "}
-          Testing It{" "}
         </MEButton>
       );
     }
