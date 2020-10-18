@@ -7848,16 +7848,24 @@ span.has-tooltip {
 } */
 
 .action-img-correction {
-  width: 100% !important;
-  height: 100%;
+  width: 70% !important;
+ height:160px; 
+ object-fit: contain;
+ border-radius: 10px;;
 }
 .action-background-card {
   /* height: 360px; */
-  min-height: 233px;
+  min-height: 202px;
   width: 70%;
 }
 
-
+.new-action-title-container{
+  background: rgb(249 249 249);
+    margin-top: 5px;
+    border-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 .new-action-btns-div {
   position: absolute;
   height: 200px;
@@ -7868,6 +7876,7 @@ span.has-tooltip {
   height: 80%;
   border-radius: 10px;
   z-index: 1;
+  margin-top:10px;
 }
 
 .single-shop-item .img-box {

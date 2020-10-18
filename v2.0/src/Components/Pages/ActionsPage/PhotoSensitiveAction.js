@@ -90,7 +90,7 @@ class PhotoSensitiveAction extends React.Component {
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1"
             style={{ marginLeft: 10 }}
-          > 
+          >
             To Do
           </p>
         </Tooltip>
@@ -101,7 +101,7 @@ class PhotoSensitiveAction extends React.Component {
         <Tooltip text="Cant use this feature, you have already done the action.">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1"
-            style={{ marginLeft: 10 }}
+            style={{ margin: 6, marginLeft: 10 }}
           >
             To Do
           </p>
@@ -112,7 +112,12 @@ class PhotoSensitiveAction extends React.Component {
       return (
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p
-            style={{ padding: "8px 20px", fontSize: "small", marginLeft: 10 }}
+            style={{
+              padding: "8px 20px",
+              fontSize: "small",
+              margin: 6,
+              marginLeft: 10,
+            }}
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1"
             onClick={() => {
               this.setState({ showTodoMsg: false });
@@ -149,7 +154,7 @@ class PhotoSensitiveAction extends React.Component {
         <Tooltip text="Sign in to mark actions as completed">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1"
-            style={{ marginLeft: 10 }}
+            style={{ margin: 6, marginLeft: 10 }}
           >
             Done
           </p>
@@ -165,7 +170,7 @@ class PhotoSensitiveAction extends React.Component {
               this.setState({ message: null });
               this.removeFromCart(this.actionIsDone());
             }}
-            style={{ marginLeft: 10 }}
+            style={{ margin: 6, marginLeft: 10 }}
           >
             Done
           </p>
@@ -173,7 +178,7 @@ class PhotoSensitiveAction extends React.Component {
       );
     } else {
       return (
-        <Tooltip text="Mark as Done, if you've done this">
+        // <Tooltip text="Mark as Done, if you've done this">
           <MEButton
             style={{ padding: "8px 20px", fontSize: 13 }}
             onClick={() => {
@@ -184,7 +189,7 @@ class PhotoSensitiveAction extends React.Component {
             {" "}
             Done
           </MEButton>
-        </Tooltip>
+        // </Tooltip>
       );
     }
   }
@@ -193,170 +198,323 @@ class PhotoSensitiveAction extends React.Component {
     const index = getRandomIntegerInRange(3);
     return classes[index];
   }
+
+  newRender() {
+    return (
+      <div
+        className={`col-lg-6 col-md-12 col-sm-12 col-12 ${this.getAnimationClass()}`}
+        style={{ padding: 10 }}
+      >
+        <div
+          style={{ minHeight: 160, borderRadius: 10 }}
+          className="z-depth-float"
+        >
+          <div className="new-action-btns-div me-anime-move-from-left-normal">
+            {this.checkDoneAndReturn()}
+            <br />
+            {this.checkTodoAndReturn()}
+            <br />
+            <MEButton
+              to={this.props.links.actions + "/" + this.props.action.id}
+              style={{ padding: "8px 24px", fontSize: "small"}}
+            >
+              Info
+            </MEButton>
+            <br />
+          </div>
+          <img
+            className="action-img-correction"
+            // src={photo}
+            src={this.props.action.image ? this.props.action.image.url : null}
+            // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
+            alt="action image"
+          />
+          <div className="new-action-title-container">
+            <METextView
+              style={{ padding: "6px 14px", marginBottom: 3, color: "black" }}
+            >
+              {this.props.action.title}
+            </METextView>
+            {this.showNotifications()}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  showNotifications() {
+    return (
+      <>
+        {this.props.showTestimonialLink && (
+          <div className="col-12">
+            <div className="col-centered">
+              <br></br>
+              {this.props.showTestimonialLink ? (
+                <>
+                  {this.state.showTestimonialForm ? (
+                    <>
+                      <button
+                        className="as-link"
+                        onClick={() =>
+                          this.setState({ showTestimonialForm: false })
+                        }
+                        style={{ margin: "auto" }}
+                      >
+                        {" "}
+                        Cancel
+                      </button>
+                      <StoryForm
+                        aid={this.props.action.id}
+                        noMessage={true}
+                        closeForm={(message) =>
+                          this.setState({
+                            message: message,
+                            showTestimonialForm: false,
+                          })
+                        }
+                      ></StoryForm>
+                    </>
+                  ) : (
+                    <>
+                      {this.state.message ? (
+                        <p>{this.state.message}</p>
+                      ) : (
+                        <p
+                          style={{
+                            color: "#165020",
+                            fontSize: "smaller",
+                            paddingBottom: 14,
+                            lineHeight: "1.3",
+                          }}
+                        >
+                          Nice job! How was your experience with this action?
+                          Tell us about it in a{" "}
+                          <Link
+                            to={
+                              this.props.links
+                                ? this.props.links.testimonials
+                                : "#"
+                            }
+                          >
+                            <button
+                              className="as-link"
+                              style={{ display: "inline-block" }}
+                            >
+                              testimonial
+                            </button>
+                          </Link>
+                          .
+                        </p>
+                      )}
+                    </>
+                  )}
+                </>
+              ) : null}
+              <ChooseHHForm
+                aid={this.props.action.id}
+                status={this.state.status}
+                open={this.props.HHFormOpen}
+                user={this.props.user}
+                addToCart={(aid, hid, status) =>
+                  this.props.addToCart(aid, hid, status)
+                }
+                inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
+                moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+                closeForm={this.closeForm}
+              />
+              {this.props.showTodoMsg === this.props.action.id ? (
+                <p
+                  style={{
+                    color: "#165020",
+                    fontSize: "smaller",
+                    paddingBottom: 14,
+                    lineHeight: "1.3",
+                  }}
+                >
+                  Nicely done! You have now added this action to your todo list.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
     if (this.shouldRender()) {
+      return this.newRender();
       //checks if the action should render or not
       return (
         <div
           className={`col-lg-6 col-md-12 col-sm-12 col-12  ${this.getAnimationClass()}`}
         >
-          <div className="new-action-btns-div me-anime-move-from-left-normal">
-            {/* <CustomTooltip text="Add this if done">
+          <div className="z-depth-float" style={{ borderRadius: 15 }}>
+            <div className="new-action-btns-div me-anime-move-from-left-normal">
+              {/* <CustomTooltip text="Add this if done">
               <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
                 Done
               </MEButton>
             </CustomTooltip> */}
-            {this.checkDoneAndReturn()}
-            <br />
-            {this.checkTodoAndReturn()}
-            {/* <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
+              {this.checkDoneAndReturn()}
+              <br />
+              {this.checkTodoAndReturn()}
+              {/* <MEButton style={{ padding: "8px 20px", fontSize: "small" }}>
               ToDo
             </MEButton> */}
-            <br />
-            <MEButton
-              to={this.props.links.actions + "/" + this.props.action.id}
-              style={{ padding: "8px 20px", fontSize: "small" }}
+              <br />
+              <MEButton
+                to={this.props.links.actions + "/" + this.props.action.id}
+                style={{ padding: "8px 20px", fontSize: "small" }}
+              >
+                More
+              </MEButton>
+              <br />
+            </div>
+            <div
+              className={`single-shop-item m-action-item action-background-card`}
             >
-              More
-            </MEButton>
-            <br />
-          </div>
-          <div
-            className={`single-shop-item m-action-item z-depth-float action-background-card`}
-          >
-            <Link
-              to={this.props.links.actions + "/" + this.props.action.id}
-              style={{ color: "#999999", width: "100%", height: 210 }}
-            >
-              <div className="img-box">
-                <img
-                  className="action-img-correction"
-                  // src={photo}
-                  src={
-                    this.props.action.image ? this.props.action.image.url : null
-                  }
-                  style={{ width: "100%", objectFit:"contain" }}
-                  alt=""
-                />
+              <Link
+                to={this.props.links.actions + "/" + this.props.action.id}
+                style={{ color: "#999999", width: "100%", height: 210 }}
+              >
+                <div className="img-box">
+                  <img
+                    className="action-img-correction"
+                    src={photo}
+                    // src={
+                    //   this.props.action.image
+                    //     ? this.props.action.image.url
+                    //     : null
+                    // }
+                    style={{ width: "100%", objectFit: "contain" }}
+                    alt=""
+                  />
 
-                <figcaption className="overlay">
-                  <div className="box">
-                    <div className="content">
-                      <div
-                        to={
-                          this.props.links.actions + "/" + this.props.action.id
-                        }
-                      >
-                        <i className="fa fa-link" aria-hidden="true"></i>
+                  <figcaption className="overlay">
+                    <div className="box">
+                      <div className="content">
+                        <div
+                          to={
+                            this.props.links.actions +
+                            "/" +
+                            this.props.action.id
+                          }
+                        >
+                          <i className="fa fa-link" aria-hidden="true"></i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </figcaption>
-              </div>
-              <METextView
-                containerStyle={{ display: "block" }}
-                style={{
-                  padding: "10px 10px",
-                  color: "black",
-                  fontSize: "medium",
-                  textAlign: "center",
-                }}
-              >
-                {this.props.action.title}
-              </METextView>
-            </Link>
-            <div className="col-12">
-              <div className="col-centered">
-                <br></br>
-                {this.props.showTestimonialLink ? (
-                  <>
-                    {this.state.showTestimonialForm ? (
+                  </figcaption>
+                </div>
+                {/* <METextView
+                  containerStyle={{ display: "block" }}
+                  style={{
+                    padding: "10px 10px",
+                    color: "black",
+                    fontSize: "medium",
+                    textAlign: "center",
+                  }}
+                >
+                  {this.props.action.title}
+                </METextView> */}
+              </Link>
+              {this.props.showTestimonialLink && (
+                <div className="col-12">
+                  <div className="col-centered">
+                    <br></br>
+                    {this.props.showTestimonialLink ? (
                       <>
-                        <button
-                          className="as-link"
-                          onClick={() =>
-                            this.setState({ showTestimonialForm: false })
-                          }
-                          style={{ margin: "auto" }}
-                        >
-                          {" "}
-                          Cancel
-                        </button>
-                        <StoryForm
-                          aid={this.props.action.id}
-                          noMessage={true}
-                          closeForm={(message) =>
-                            this.setState({
-                              message: message,
-                              showTestimonialForm: false,
-                            })
-                          }
-                        ></StoryForm>
-                      </>
-                    ) : (
-                      <>
-                        {this.state.message ? (
-                          <p>{this.state.message}</p>
-                        ) : (
-                          <p
-                            style={{
-                              color: "#165020",
-                              fontSize: "smaller",
-                              paddingBottom: 14,
-                              lineHeight: "1.3",
-                            }}
-                          >
-                            Nice job! How was your experience with this action?
-                            Tell us about it in a{" "}
-                            <Link
-                              to={
-                                this.props.links
-                                  ? this.props.links.testimonials
-                                  : "#"
+                        {this.state.showTestimonialForm ? (
+                          <>
+                            <button
+                              className="as-link"
+                              onClick={() =>
+                                this.setState({ showTestimonialForm: false })
                               }
+                              style={{ margin: "auto" }}
                             >
-                              <button
-                                className="as-link"
-                                style={{ display: "inline-block" }}
+                              {" "}
+                              Cancel
+                            </button>
+                            <StoryForm
+                              aid={this.props.action.id}
+                              noMessage={true}
+                              closeForm={(message) =>
+                                this.setState({
+                                  message: message,
+                                  showTestimonialForm: false,
+                                })
+                              }
+                            ></StoryForm>
+                          </>
+                        ) : (
+                          <>
+                            {this.state.message ? (
+                              <p>{this.state.message}</p>
+                            ) : (
+                              <p
+                                style={{
+                                  color: "#165020",
+                                  fontSize: "smaller",
+                                  paddingBottom: 14,
+                                  lineHeight: "1.3",
+                                }}
                               >
-                                testimonial
-                              </button>
-                            </Link>
-                            .
-                          </p>
+                                Nice job! How was your experience with this
+                                action? Tell us about it in a{" "}
+                                <Link
+                                  to={
+                                    this.props.links
+                                      ? this.props.links.testimonials
+                                      : "#"
+                                  }
+                                >
+                                  <button
+                                    className="as-link"
+                                    style={{ display: "inline-block" }}
+                                  >
+                                    testimonial
+                                  </button>
+                                </Link>
+                                .
+                              </p>
+                            )}
+                          </>
                         )}
                       </>
-                    )}
-                  </>
-                ) : null}
-                <ChooseHHForm
-                  aid={this.props.action.id}
-                  status={this.state.status}
-                  open={this.props.HHFormOpen}
-                  user={this.props.user}
-                  addToCart={(aid, hid, status) =>
-                    this.props.addToCart(aid, hid, status)
-                  }
-                  inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
-                  moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
-                  closeForm={this.closeForm}
-                />
-                {this.props.showTodoMsg === this.props.action.id ? (
-                  <p
-                    style={{
-                      color: "#165020",
-                      fontSize: "smaller",
-                      paddingBottom: 14,
-                      lineHeight: "1.3",
-                    }}
-                  >
-                    Nicely done! You have now added this action to your todo
-                    list.
-                  </p>
-                ) : null}
-              </div>
+                    ) : null}
+                    <ChooseHHForm
+                      aid={this.props.action.id}
+                      status={this.state.status}
+                      open={this.props.HHFormOpen}
+                      user={this.props.user}
+                      addToCart={(aid, hid, status) =>
+                        this.props.addToCart(aid, hid, status)
+                      }
+                      inCart={(aid, hid, cart) =>
+                        this.props.inCart(aid, hid, cart)
+                      }
+                      moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+                      closeForm={this.closeForm}
+                    />
+                    {this.props.showTodoMsg === this.props.action.id ? (
+                      <p
+                        style={{
+                          color: "#165020",
+                          fontSize: "smaller",
+                          paddingBottom: 14,
+                          lineHeight: "1.3",
+                        }}
+                      >
+                        Nicely done! You have now added this action to your todo
+                        list.
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              )}
             </div>
             {/* <div className="content-box">
                 <div
@@ -521,6 +679,17 @@ class PhotoSensitiveAction extends React.Component {
               
             </div> */}
           </div>
+          <METextView
+            containerStyle={{ display: "block" }}
+            style={{
+              padding: "10px 10px",
+              color: "black",
+              fontSize: "medium",
+              textAlign: "center",
+            }}
+          >
+            {this.props.action.title}
+          </METextView>
         </div>
       );
     } else {
