@@ -206,7 +206,7 @@ class PhotoSensitiveAction extends React.Component {
         style={{ padding: 10 }}
       >
         <div
-          style={{ minHeight: 160, borderRadius: 10 }}
+          style={{ minHeight: 160, borderRadius: 10, border:"solid 2px #8dc343" }}
           className="z-depth-float"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
