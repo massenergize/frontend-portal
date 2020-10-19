@@ -130,7 +130,8 @@ class ActionsPage extends React.Component {
     if (common) return common;
     if (actions.length === 0) {
       if (!propActions || propActions.length === 0) return null;
-      return propActions.slice(0, this.state.perPage);
+      // return propActions.slice(0, this.state.perPage);
+      return propActions;
     }
     return actions;
   }

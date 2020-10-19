@@ -76,7 +76,7 @@ export default class FormGenerator extends Component {
   // and therefore allows us to reset dropdowns in the form appropriately
   getDropDownValueForTwoWayBinding(formObject) {
     // dropdowns do not always return the text a user chooses from the list, they can return a value, from another set
-    // of defined values inside "dataValues". So this mech below, is to make sure we still get back the displayed text, even in such situations (remember to write a detailed doc later...)
+    // of defined values inside "dataValues". So this mech below, is to make sure we still get back the displayed text, even in such situations (TODO:remember to write a detailed doc later...)
     const passedValue = this.state.formData[formObject.name];
     const data =
       formObject.data && formObject.data.length > 0 ? formObject.data : [];

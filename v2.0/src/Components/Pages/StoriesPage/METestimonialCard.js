@@ -88,7 +88,7 @@ export default class METestimonialCard extends Component {
     return (
       <div>
         <MECard
-          style={{ padding: 0, position: "relative" }}
+          style={{ padding: 0, position: "relative", borderRadius:15 }}
           className={`${this.getAnimationClass()} ${className}`}
           onClick={this.handleReadMore}
         >

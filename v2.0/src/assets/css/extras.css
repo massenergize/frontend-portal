@@ -123,6 +123,7 @@
   min-height: 30vh;
   z-index: 50;
   background: white;
+  border-radius:10px;
 }
 
 .me-testimonial-img {

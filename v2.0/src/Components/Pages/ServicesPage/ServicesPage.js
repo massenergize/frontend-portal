@@ -179,6 +179,7 @@ class ServicesPage extends React.Component {
       return (
         <div key={index.toString()}>
           <MECard
+          style={{borderRadius:10}}
             className="me-vendor-card me-anime-move-from-left"
             to={`${this.props.links.services}/${vendor.id}`}
           >
