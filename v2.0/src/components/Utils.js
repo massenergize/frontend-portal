@@ -1,6 +1,12 @@
 import * as moment from "moment";
 import React from "react";
 
+
+export const getHumanFriendlyDate = (dateString)=>{
+  if(!dateString) return null; 
+  return moment(dateString).format("MMMM Do YYYY hh:mm a ");
+
+}
 export const getTextArrayAsString = (array, separationKey) => {
   if (!array || !separationKey) return "";
   let text = "";

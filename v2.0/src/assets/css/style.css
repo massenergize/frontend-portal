@@ -7849,7 +7849,7 @@ span.has-tooltip {
 
 .action-img-correction {
   width: 70% !important;
- height:160px; 
+ height:140px; 
  object-fit: contain;
  border-radius: 10px;;
 }
@@ -7876,7 +7876,7 @@ span.has-tooltip {
   height: 80%;
   border-radius: 10px;
   z-index: 1;
-  margin-top:10px;
+  margin-top:3px;
 }
 
 .single-shop-item .img-box {

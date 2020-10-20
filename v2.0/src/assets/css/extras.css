@@ -5,6 +5,17 @@
   padding: 10px 10%;
 }
 
+.extra-story-cards{
+  font-size:smaller; 
+  border-radius: 4px !important;
+  padding:10px 15px !important;
+}
+.ripped-border{
+  padding:10px 15px;
+  border:dashed 4px #c5e796;
+  background: white;
+
+}
 .me-social:hover {
   transform: scale(1.1);
   transition: 0.2s ease-in-out;

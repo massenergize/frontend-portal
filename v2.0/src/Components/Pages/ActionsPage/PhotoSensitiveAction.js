@@ -113,7 +113,7 @@ class PhotoSensitiveAction extends React.Component {
         <Tooltip text="Thank you for adding this. Click again to remove.">
           <p
             style={{
-              padding: "8px 20px",
+              padding: "5px 20px",
               fontSize: "small",
               margin: 6,
               marginLeft: 10,
@@ -133,7 +133,7 @@ class PhotoSensitiveAction extends React.Component {
         <Tooltip text="Add this to your TODO list">
           <MEButton
             onClick={() => this.openForm("TODO")}
-            style={{ padding: "8px 20px", fontSize: 13 }}
+            style={{ padding: "5px 20px", fontSize: 13 }}
           >
             ToDo
           </MEButton>
@@ -179,16 +179,16 @@ class PhotoSensitiveAction extends React.Component {
     } else {
       return (
         // <Tooltip text="Mark as Done, if you've done this">
-          <MEButton
-            style={{ padding: "8px 20px", fontSize: 13 }}
-            onClick={() => {
-              this.openForm("DONE");
-              this.props.toggleShowTodoMsg();
-            }}
-          >
-            {" "}
-            Done
-          </MEButton>
+        <MEButton
+          style={{ padding: "5px 20px", fontSize: 13 }}
+          onClick={() => {
+            this.openForm("DONE");
+            this.props.toggleShowTodoMsg();
+          }}
+        >
+          {" "}
+          Done
+        </MEButton>
         // </Tooltip>
       );
     }
@@ -206,7 +206,11 @@ class PhotoSensitiveAction extends React.Component {
         style={{ padding: 10 }}
       >
         <div
-          style={{ minHeight: 160, borderRadius: 10, border:"solid 2px #8dc343" }}
+          style={{
+            minHeight: 160,
+            borderRadius: 10,
+            border: "solid 2px #8dc343",
+          }}
           className="z-depth-float"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
@@ -216,7 +220,7 @@ class PhotoSensitiveAction extends React.Component {
             <br />
             <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
-              style={{ padding: "8px 24px", fontSize: "small"}}
+              style={{ padding: "5px 24px", fontSize: "small" }}
             >
               Info
             </MEButton>
@@ -231,7 +235,13 @@ class PhotoSensitiveAction extends React.Component {
           />
           <div className="new-action-title-container">
             <METextView
-              style={{ padding: "6px 14px", marginBottom: 3, color: "black" }}
+              containerStyle={{ display: "block", textAlign: "center" }}
+              style={{
+                padding: "6px 14px",
+                marginBottom: 3,
+                color: "black",
+                fontSize: 16,
+              }}
             >
               {this.props.action.title}
             </METextView>
