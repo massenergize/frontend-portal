@@ -276,9 +276,9 @@ class OneActionPage extends React.Component {
   }
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
-    if (status !== "TODO" || status !== "DONE") return;
+    if (status !== "TODO" && status !== "DONE") return;
 
-    apiCall("users.actions.remove", { is: actionRel.id }).then((json) => {
+    apiCall("users.actions.remove", { id: actionRel.id }).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
@@ -365,7 +365,7 @@ class OneActionPage extends React.Component {
         </CustomTooltip>
       );
     } else {
-      return (
+        return (
         <CustomTooltip text="Mark as Done, if you've done this">
           <MEButton
             style={{ padding: "7px 14px", fontSize: 14 }}
@@ -1034,6 +1034,7 @@ class OneActionPage extends React.Component {
   }
   changeDataByName(name, number) {
     if (!this.props.communityData) return null;
+    // Bug fix needed : this is an Object, not a List so filter doesn't work.
     var data = this.props.communityData.filter((data) => {
       return data.name === name;
     })[0];
