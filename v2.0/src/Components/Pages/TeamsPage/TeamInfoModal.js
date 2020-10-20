@@ -231,6 +231,10 @@ class TeamInfoModal extends React.Component {
     const {team} = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) return;
+
+    // stay in the same is_published state
+    data = { ...data, is_published: team.is_published };
+
     this.setState({
       notification: {
         icon: "fa fa-spinner fa-spin",
