@@ -47,24 +47,23 @@ class OneTestimonialPage extends React.Component {
     this.fetch(id);
   }
 
-
-getRandomIndexArr(range){
-  const arr = []; 
-  for (let i = 0; i < 3; i++) {
-    const index = getRandomIntegerInRange(range);
-    if(!arr.includes(index)) arr.push(index);
+  getRandomIndexArr(range) {
+    const arr = [];
+    for (let i = 0; i < 3; i++) {
+      const index = getRandomIntegerInRange(range);
+      if (!arr.includes(index)) arr.push(index);
+    }
+    return arr;
   }
-  return arr;
-}
-// just pick 3 other testimonials, but pick at random 
+  // just pick 3 other testimonials, but pick at random
   getSomeOtherTestimonials() {
     const { id } = this.props.match.params;
     const { stories } = this.props;
     if (!stories) return [];
-    const listWithoutCurrent = stories.filter((story) => story.id !== id); // dont include the current testimonial 
-    var list = this.getRandomIndexArr(listWithoutCurrent.length);  // generate 3 random numbers within the range of the number of testimonials
-    const randomlyPicked = list.map( index => listWithoutCurrent[index]); // Look through the testimonial list, and pick out the testimonials that have the same indexes of the randomly generated indexes
-   return randomlyPicked;
+    const listWithoutCurrent = stories.filter((story) => story.id !== id); // dont include the current testimonial
+    var list = this.getRandomIndexArr(listWithoutCurrent.length); // generate 3 random numbers within the range of the number of testimonials
+    const randomlyPicked = list.map((index) => listWithoutCurrent[index]); // Look through the testimonial list, and pick out the testimonials that have the same indexes of the randomly generated indexes
+    return randomlyPicked;
   }
 
   renderOtherTestimonials() {
@@ -73,7 +72,7 @@ getRandomIndexArr(range){
       const creatorName =
         story && story.preferred_name ? story.preferred_name : "...";
       return (
-        <div key={index.toString()} >
+        <div key={index.toString()}>
           <MECard
             href={`${this.props.links.testimonials}/${story.id}`}
             className="extra-story-cards me-anime-move-from-left-fast"
@@ -92,10 +91,13 @@ getRandomIndexArr(range){
     if (otherStories && otherStories.length > 0) {
       return (
         <div className="phone-vanish">
-          <METextView style={{ textDecoration: "underline", marginBottom:0 }}>
+          <MELink
+            to={this.props.links.testimonials}
+            style={{ textDecoration: "underline", marginBottom: 0 }}
+          >
             {" "}
             Read Other Testimonials
-          </METextView>
+          </MELink>
           {content}
         </div>
       );
@@ -220,7 +222,10 @@ getRandomIndexArr(range){
                     alt=""
                   />
                 </div>
-                <div className="ripped-border me-anime-show-up" style={{ margin: "10px 0px" }}>
+                <div
+                  className="ripped-border me-anime-show-up"
+                  style={{ margin: "10px 0px" }}
+                >
                   <METextView
                     mediaType="icon"
                     icon="fa fa-user"

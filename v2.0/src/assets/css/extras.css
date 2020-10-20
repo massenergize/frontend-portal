@@ -1605,8 +1605,9 @@
   box-shadow: 0 2px 0px 0 rgba(0, 0, 0, -0.84), 0 2px 10px 0 rgba(0, 0, 0, 0.12); */
 }
 .action-btns {
-  padding: 10px 20px !important;
+  padding: 8px 20px !important;
   border-radius: 100px !important;
+  margin:6px;
 }
 .new-sign-in {
   border-radius: 200px;

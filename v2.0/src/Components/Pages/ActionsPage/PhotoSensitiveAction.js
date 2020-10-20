@@ -154,7 +154,7 @@ class PhotoSensitiveAction extends React.Component {
         <Tooltip text="Sign in to mark actions as completed">
           <p
             className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1"
-            style={{ margin: 6, marginLeft: 10 }}
+            style={{  marginLeft: 10 }}
           >
             Done
           </p>
