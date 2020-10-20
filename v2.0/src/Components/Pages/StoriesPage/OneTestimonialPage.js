@@ -8,6 +8,7 @@ import notFound from "./me_energy_default.png";
 import {
   dateFormatString,
   getHumanFriendlyDate,
+  getRandomIntegerInRange,
   locationFormatJSX,
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
@@ -29,7 +30,6 @@ class OneTestimonialPage extends React.Component {
   async fetch(id) {
     try {
       const json = await apiCall("testimonials.info", { testimonial_id: id });
-      console.log("I HAVE ROFUND THE JSON", json);
       if (json.success) {
         this.setState({ story: json.data });
       } else {
@@ -47,6 +47,61 @@ class OneTestimonialPage extends React.Component {
     this.fetch(id);
   }
 
+
+getRandomIndexArr(range){
+  const arr = []; 
+  for (let i = 0; i < 3; i++) {
+    const index = getRandomIntegerInRange(range);
+    if(!arr.includes(index)) arr.push(index);
+  }
+  return arr;
+}
+// just pick 3 other testimonials, but pick at random 
+  getSomeOtherTestimonials() {
+    const { id } = this.props.match.params;
+    const { stories } = this.props;
+    if (!stories) return [];
+    const listWithoutCurrent = stories.filter((story) => story.id !== id); // dont include the current testimonial 
+    var list = this.getRandomIndexArr(listWithoutCurrent.length);  // generate 3 random numbers within the range of the number of testimonials
+    const randomlyPicked = list.map( index => listWithoutCurrent[index]); // Look through the testimonial list, and pick out the testimonials that have the same indexes of the randomly generated indexes
+   return randomlyPicked;
+  }
+
+  renderOtherTestimonials() {
+    const otherStories = this.getSomeOtherTestimonials();
+    const content = otherStories.map((story, index) => {
+      const creatorName =
+        story && story.preferred_name ? story.preferred_name : "...";
+      return (
+        <div key={index.toString()} >
+          <MECard
+            href={`${this.props.links.testimonials}/${story.id}`}
+            className="extra-story-cards me-anime-move-from-left-fast"
+          >
+            {story.title}
+            <br />
+            <small style={{ color: "#4a1e04" }}>
+              <b>
+                By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+              </b>
+            </small>
+          </MECard>
+        </div>
+      );
+    });
+    if (otherStories && otherStories.length > 0) {
+      return (
+        <div className="phone-vanish">
+          <METextView style={{ textDecoration: "underline", marginBottom:0 }}>
+            {" "}
+            Read Other Testimonials
+          </METextView>
+          {content}
+        </div>
+      );
+    }
+  }
+
   renderRelatedAction() {
     const action = this.state.story ? this.state.story.action : {};
     if (action) {
@@ -56,6 +111,7 @@ class OneTestimonialPage extends React.Component {
           <MECard
             style={{ borderRadius: 6, padding: 0 }}
             to={`${this.props.links.actions}/${action.id}`}
+            className="me-anime-move-from-left-normal"
           >
             <img
               src={action && action.image ? action.image.url : photo}
@@ -158,13 +214,13 @@ class OneTestimonialPage extends React.Component {
                       objectFit: "contain",
                       borderRadius: 10,
                     }}
-                    className="z-depth-1"
+                    className="z-depth-1 me-anime-open-in"
                     src={story && story.file ? story.file.url : notFound}
                     // src={photo}
                     alt=""
                   />
                 </div>
-                <div className="ripped-border" style={{ margin: "10px 0px" }}>
+                <div className="ripped-border me-anime-show-up" style={{ margin: "10px 0px" }}>
                   <METextView
                     mediaType="icon"
                     icon="fa fa-user"
@@ -195,41 +251,7 @@ class OneTestimonialPage extends React.Component {
                 <MELink to={this.props.links.testimonials}>
                   Add a testimonial
                 </MELink>
-                <div>
-                  <METextView>Read Other Testimonials</METextView>
-                  <MECard
-                    to={this.props.links.testimonials}
-                    className="extra-story-cards"
-                  >
-                    I am a little boy, I am like 5,5 I am a little boy, I am
-                    like 5,5
-                    <br />
-                    <small style={{ color: "#4a1e04" }}>
-                      <b>By Frimpong, 22nd March 1998</b>
-                    </small>
-                  </MECard>
-                  <MECard
-                    to={this.props.links.testimonials}
-                    className="extra-story-cards"
-                  >
-                    I am a little boy, I am like 5,5 I am a little boy, I am
-                    like 5,5
-                    <br />
-                    <small style={{ color: "#4a1e04" }}>
-                      <b>By Frimpong, 22nd March 1998</b>
-                    </small>
-                  </MECard>
-                  <MECard
-                    to={this.props.links.testimonials}
-                    className="extra-story-cards"
-                  >
-                    I am a little boy, I am like 5,5
-                    <br />
-                    <small style={{ color: "#4a1e04" }}>
-                      <b>By Frimpong, 22nd March 1998</b>
-                    </small>
-                  </MECard>
-                </div>
+                {this.renderOtherTestimonials()}
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
@@ -287,7 +309,7 @@ const mapStoreToProps = (store) => {
   return {
     auth: store.firebase.auth,
     user: store.user.info,
-    stories: store.page.events,
+    stories: store.page.testimonials,
     links: store.links,
   };
 };
