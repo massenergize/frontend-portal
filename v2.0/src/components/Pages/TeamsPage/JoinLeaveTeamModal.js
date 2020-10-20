@@ -95,7 +95,7 @@ class JoinLeaveTeamModal extends React.Component {
       <>
         <MEModal contentStyle={{ width: "100%" }} closeModal={() => onClose()}>
           <h4>
-            Contact admin of <b>{team && team.name}</b>
+            Join or leave the team <b>{team && team.name}</b>
           </h4>
           {modalContent}
         </MEModal>
