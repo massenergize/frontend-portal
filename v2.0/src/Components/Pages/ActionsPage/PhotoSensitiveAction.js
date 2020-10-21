@@ -259,7 +259,6 @@ class PhotoSensitiveAction extends React.Component {
       <>
         <div className="col-12">
           <div className="col-centered">
-            <br></br>
             {this.props.showTestimonialLink ? (
               <>
                 {this.state.showTestimonialForm ? (
