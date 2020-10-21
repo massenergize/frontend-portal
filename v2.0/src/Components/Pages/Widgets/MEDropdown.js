@@ -16,10 +16,10 @@ class MEDropdown extends Component {
       activeItem: this.props.value,
       drop: false,
       placeholder: this.props.placeholder,
-      dataValues: this.props.dataValues
-        ? this.props.dataValues
-        : this.props.data,
-      data: this.props.data,
+      // dataValues: this.props.dataValues
+      //   ? this.props.dataValues
+      //   : this.props.data,
+      // data: this.props.data,
     };
     this.toggleDrop = this.toggleDrop.bind(this);
   }
@@ -39,8 +39,9 @@ class MEDropdown extends Component {
   };
 
   onItemClick = (item, index) => {
-    const { onItemSelected } = this.props;
-    const { dataValues } = this.state;
+    const { onItemSelected, data } = this.props;
+    var { dataValues } = this.props;
+    dataValues = dataValues && dataValues.length > 0 ? dataValues : data;
     this.setState({ activeItem: item });
     this.toggleDrop();
     if (onItemSelected) {
@@ -49,12 +50,19 @@ class MEDropdown extends Component {
     }
   };
 
+  componentDidUpdate(prevProps) {
+    const value = prevProps.value;
+    if (value !== this.props.value) {
+      this.setState({ activeItem: this.props.value });
+    }
+  }
   ejectChildren = () => {
-    const { data, dataValues } = this.state;
+    var { data, dataValues } = this.props;
     if (!data) return;
     if (data.length !== dataValues.length) {
       console.log("Warning: Your data list does not match your value list!!!!");
     }
+  
     return data.map((item, index) => {
       // const relatedValue = dataValues[index];
       var activeClass = "",
@@ -128,7 +136,7 @@ MEDropdown.propTypes = {
   data: PropTypes.array,
   onItemSelected: PropTypes.func,
   placeholder: PropTypes.string,
-  dataValues:PropTypes.array
+  dataValues: PropTypes.array,
 };
 MEDropdown.defaultProps = {
   data: [],

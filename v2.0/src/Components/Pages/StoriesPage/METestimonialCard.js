@@ -77,6 +77,7 @@ export default class METestimonialCard extends Component {
   }
   render() {
     var {
+      id,
       className,
       action,
       preferred_name,
@@ -88,9 +89,10 @@ export default class METestimonialCard extends Component {
     return (
       <div>
         <MECard
-          style={{ padding: 0, position: "relative" }}
+          style={{ padding: 0, position: "relative", borderRadius:15 }}
           className={`${this.getAnimationClass()} ${className}`}
-          onClick={this.handleReadMore}
+          // onClick={this.handleReadMore}
+          to = {`${this.props.links.testimonials}/${id}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">

@@ -134,7 +134,7 @@ class ServicesPage extends React.Component {
                 </div>
 
                 <div
-                className="row pt-3 pb-3"
+                // className="row pt-3 pb-3"
                 // style={{ maxHeight: 700, overflowY: "scroll" }}
                 >
                   {this.renderVendors(vendors)}
@@ -177,61 +177,23 @@ class ServicesPage extends React.Component {
 
     return vendors.map((vendor, index) => {
       return (
-        <div
-          key={index.toString()}
-          className={`col-lg-4 col-md-4 col-sm-12 col-12 `}
-        >
-          <div
-            className={`single-shop-item m-action-item z-depth-float action-background-card`}
-            style={{width:"100%"}}
+        <div key={index.toString()}>
+          <MECard
+          style={{borderRadius:10}}
+            className="me-vendor-card me-anime-move-from-left"
+            to={`${this.props.links.services}/${vendor.id}`}
           >
-            <Link
-              to={`${this.props.links.services}/${vendor.id}`}
-              style={{ color: "#999999", width: "100%", height: 210 }}
-            >
-              <div className="img-box">
-                <img
-                  className="action-img-correction"
-                  // src={photo}
-                  src={vendor.logo ? vendor.logo.url : notFound}
-                  style={{ width: "100%", objectFit: "contain" }}
-                  alt=""
-                />
-
-                <figcaption className="overlay">
-                  <div className="box">
-                    <div className="content">
-                      <div >
-                        <i className="fa fa-link" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-                </figcaption>
-              </div>
-              <METextView
-                containerStyle={{ display: "block" }}
-                style={{
-                  padding: "10px 10px",
-                  color: "black",
-                  fontSize: "medium",
-                  textAlign: "center",
-                }}
-              >
-                {vendor.name}
-              </METextView>
-            </Link>
-          </div>
+            <img
+              className="me-vendor-img"
+              src={vendor.logo ? vendor.logo.url : notFound}
+              alt={vendor.name}
+            />
+            <METextView style={{ color: "black", textTransform: "capitalize" }}>
+              {" "}
+              {vendor.name}
+            </METextView>
+          </MECard>
         </div>
-        // <div key={index.toString()}>
-        // <MECard className="me-vendor-card me-anime-move-from-left" to={`${this.props.links.services}/${vendor.id}`}>
-        //   <img
-        //    className="me-vendor-img"
-        //     src={vendor.logo ? vendor.logo.url : notFound}
-        //     alt={vendor.name}
-        //   />
-        //   <METextView style={{color:"black", textTransform:"capitalize"}}> {vendor.name}</METextView>
-        // </MECard>
-        // </div>
       );
     });
   }

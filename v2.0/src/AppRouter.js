@@ -13,6 +13,7 @@ import AboutUsPage from "./components/Pages/AboutUsPage/AboutUsPage";
 import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
 import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
 import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
+import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
 import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
@@ -364,7 +365,8 @@ class AppRouter extends Component {
             <Route exact path={links.services} component={ServicesPage} />
             <Route path={`${links.services}/:id`} component={OneServicePage} />
             <Route path={`${links.actions}/:id`} component={OneActionPage} />
-            <Route path={links.testimonials} component={StoriesPage} />
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route  path={`${links.testimonials}/:id`} component={OneTestimonialPage} />
             <Route exact path={links.teams} component={TeamsPage} />
             <Route path={`${links.teams}/:id`} component={OneTeamPage} />
             <Route path={links.impact} component={ImpactPage} />
