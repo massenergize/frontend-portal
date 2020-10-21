@@ -221,7 +221,6 @@ class LoginFormBase extends React.Component {
     const body = { idToken: fireToken };
     apiCall("auth.login", body)
       .then((userData) => {
-        console.log("LE TOKEN", userData);
         this.inflatePageWithUserData(userData, email);
         // this.fetchAndLogin(email).then((success) => {
         //   if (success) console.log("yay");

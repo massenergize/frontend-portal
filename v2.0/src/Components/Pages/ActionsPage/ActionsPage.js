@@ -16,6 +16,7 @@ import {
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
+// import Action from "./Action";
 import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
 import Funnel from "../EventsPage/Funnel";
