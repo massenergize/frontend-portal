@@ -19,7 +19,7 @@ export default class METestimonialCard extends Component {
   getBody() {
     const { body } = this.props;
     if (body.length > 90) {
-        return (
+      return (
         <>
           {body.slice(0, 90) + "..."}
           <MELink
@@ -38,7 +38,6 @@ export default class METestimonialCard extends Component {
     return body;
   }
 
-  
   componentDidMount() {
     document.addEventListener(
       "error",
@@ -77,13 +76,23 @@ export default class METestimonialCard extends Component {
     return classes[index];
   }
   render() {
-    var { className, action, preferred_name, links, created_at, title } = this.props;
-    action = action ? action :{}
+    var {
+      id,
+      className,
+      action,
+      preferred_name,
+      links,
+      created_at,
+      title,
+    } = this.props;
+    action = action ? action : {};
     return (
       <div>
         <MECard
-          style={{ padding: 0, position: "relative" }}
+          style={{ padding: 0, position: "relative", borderRadius:15 }}
           className={`${this.getAnimationClass()} ${className}`}
+          // onClick={this.handleReadMore}
+          to = {`${this.props.links.testimonials}/${id}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">
@@ -103,7 +112,7 @@ export default class METestimonialCard extends Component {
               </small>
             </div>
             <div style={{ padding: 12 }}>
-              <METextView 
+              <METextView
                 className="me-testimonial-content"
                 style={{ fontSize: 18, color: "#282828" }}
               >

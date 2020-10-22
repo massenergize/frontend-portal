@@ -15,7 +15,8 @@ import {
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import SideBar from "../../Menu/SideBar";
-import Action from "./Action";
+import Action from "./PhotoSensitiveAction";
+// import Action from "./Action";
 import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
 import Funnel from "../EventsPage/Funnel";
@@ -130,7 +131,8 @@ class ActionsPage extends React.Component {
     if (common) return common;
     if (actions.length === 0) {
       if (!propActions || propActions.length === 0) return null;
-      return propActions.slice(0, this.state.perPage);
+      // return propActions.slice(0, this.state.perPage);
+      return propActions;
     }
     return actions;
   }
@@ -166,20 +168,12 @@ class ActionsPage extends React.Component {
                 {/* renders the sidebar */}
                 <div
                   className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo"
-                  style={{ paddingTop: 60 }}
+                 
                 >
-                  {/* <SideBar
-                    search={this.handleSearch}
-                    foundNumber={this.state.mirror_actions.length}
-                    tagCols={this.props.tagCols}
-                    onChange={this.handleChange} //runs when any category is selected or unselected
-                  ></SideBar> */}
-
                   <MECard
                     className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
                     style={{
                       marginBottom: 10,
-                      marginTop: 48,
                       padding: "45px 14px",
                       borderRadius: 15,
                     }}
@@ -224,22 +218,22 @@ class ActionsPage extends React.Component {
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <PageTitle>Actions</PageTitle>
-                  {this.state.pageContent.pageCount > 0 ? (
+                  {/* {this.state.pageContent.pageCount > 0 ? (
                     <center>
                       <small>
                         When you switch pages, images take a moment to reflect,
                         please bear with us...
                       </small>
                     </center>
-                  ) : null}
-                  {this.renderPaginator()}
+                  ) : null} */}
+                  {/* {this.renderPaginator()} */}
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 10 }}
                   >
                     {this.renderActions(actions)}
-                    {this.renderPaginator()}
+                    {/* {this.renderPaginator()} */}
                   </div>
                 </div>
               </div>

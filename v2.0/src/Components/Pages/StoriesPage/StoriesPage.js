@@ -94,7 +94,7 @@ class StoriesPage extends React.Component {
   renderModal() {
     if (this.state.expanded) {
       return (
-        <MEModal closeModal={this.closeModal}>
+        <MEModal closeModal={this.closeModal} contentStyle={{minWidth:"100%"}}>
           <StoryModal content={this.state.modal_content} />
         </MEModal>
       );
@@ -174,7 +174,8 @@ class StoriesPage extends React.Component {
     if (common) return common;
     if (stateStories.length === 0) {
       if (!stories || stories.length === 0) return null;
-      return stories.slice(0, this.state.perPage);
+      // return stories.slice(0, this.state.perPage);
+      return stories;
     }
 
     return stateStories;
@@ -231,7 +232,7 @@ class StoriesPage extends React.Component {
                       </small>
                     </center>
                   ) : null}
-                  {this.renderPaginator()}
+                  {/* {this.renderPaginator()} */}
                   <div
                     className="row"
                     style={{
@@ -242,7 +243,7 @@ class StoriesPage extends React.Component {
                     }}
                   >
                     {this.renderStories(stories)}
-                    {this.renderPaginator()}
+                    {/* {this.renderPaginator()} */}
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                   <div>{this.renderTestimonialForm()}</div>

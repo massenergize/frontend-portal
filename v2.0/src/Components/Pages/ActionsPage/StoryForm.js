@@ -116,6 +116,7 @@ class StoryForm extends React.Component {
         data: ["--", ...actionTitles],
         dataValues: ["--", ...actionIds],
         value: "--",
+        resetKey:"--"
       },
       {
         name: "vendor_id",
@@ -126,6 +127,7 @@ class StoryForm extends React.Component {
         data: ["--", ...vendorTitles],
         dataValues: ["--", ...vendorIds],
         value: "--",
+        resetKey:"--" 
       },
       {
         type: "input",

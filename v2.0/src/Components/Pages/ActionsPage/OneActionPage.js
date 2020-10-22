@@ -276,9 +276,9 @@ class OneActionPage extends React.Component {
   }
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
-    if (status !== "TODO" || status !== "DONE") return;
+    if (status !== "TODO" && status !== "DONE") return;
 
-    apiCall("users.actions.remove", { is: actionRel.id }).then((json) => {
+    apiCall("users.actions.remove", { id: actionRel.id }).then((json) => {
       if (json.success) {
         if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
         if (status === "DONE") {
@@ -299,7 +299,7 @@ class OneActionPage extends React.Component {
       // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-float ">
+          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-1 ">
             To Do
           </p>
         </CustomTooltip>
@@ -310,7 +310,7 @@ class OneActionPage extends React.Component {
       return (
         <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me"
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me z-depth-1"
             onClick={() => {
               this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
@@ -323,20 +323,22 @@ class OneActionPage extends React.Component {
     } else {
       // show white clickable ME button if the action has not been touched and ready to be added to TODO list
       return (
-        <MEButton
-          style={{ padding: "7px 14px", fontSize: 14 }}
-          variation="accent"
-          mediaType="icon"
-          icon="fa fa-edit"
-          // className={
-          //   this.state.status === "TODO"
-          //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
-          //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
-          // }
-          onClick={() => this.openForm("TODO")}
-        >
-          To Do
-        </MEButton>
+        <CustomTooltip text="Add this to your TODO list">
+          <MEButton
+            style={{ padding: "7px 14px", fontSize: 14 }}
+            variation="accent"
+            // mediaType="icon"
+            // icon="fa fa-edit"
+            // className={
+            //   this.state.status === "TODO"
+            //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
+            //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
+            // }
+            onClick={() => this.openForm("TODO")}
+          >
+            To Do
+          </MEButton>
+        </CustomTooltip>
       );
     }
   }
@@ -352,35 +354,37 @@ class OneActionPage extends React.Component {
       return (
         <CustomTooltip text="Thanks for adding, click again to remove.">
           <p
-            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-float"
+            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1"
             onClick={() => {
               this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
             }}
           >
-            Done It
+            Done 
           </p>
         </CustomTooltip>
       );
     } else {
-      return (
-        <MEButton
-          style={{ padding: "7px 14px", fontSize: 14 }}
-          mediaType="icon"
-          icon="fa fa-check"
-          // className={
-          //   this.state.status === "DONE"
-          //     ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
-          //     : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
-          // }
-          onClick={() => {
-            this.openForm("DONE");
-            this.setState({ showTodoMsg: false });
-          }}
-        >
-          {" "}
-          Done It
-        </MEButton>
+        return (
+        <CustomTooltip text="Mark as Done, if you've done this">
+          <MEButton
+            style={{ padding: "7px 14px", fontSize: 14 }}
+            // mediaType="icon"
+            // icon="fa fa-check"
+            // className={
+            //   this.state.status === "DONE"
+            //     ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
+            //     : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
+            // }
+            onClick={() => {
+              this.openForm("DONE");
+              this.setState({ showTodoMsg: false });
+            }}
+          >
+            {" "}
+            Done
+          </MEButton>
+        </CustomTooltip>
       );
     }
   }
@@ -458,8 +462,8 @@ class OneActionPage extends React.Component {
                     <div className="btn-envelope">
                       {!this.props.user ? (
                         <CustomTooltip text="Sign in to make a TODO list">
-                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font">
-                            To Do
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1">
+                            ToDo
                           </p>
                         </CustomTooltip>
                       ) : (
@@ -468,8 +472,8 @@ class OneActionPage extends React.Component {
                       &nbsp;
                       {!this.props.user ? (
                         <CustomTooltip text="Sign in to mark actions as completed">
-                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font">
-                            Done It
+                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1">
+                            Done
                           </p>
                         </CustomTooltip>
                       ) : (
@@ -988,7 +992,7 @@ class OneActionPage extends React.Component {
     if (actionRel) this.moveToDone(actionRel);
   }
   addToCart = (aid, hid, status) => {
-    if(status !== 'TODO' && status !== 'DONE') return;
+    if (status !== "TODO" && status !== "DONE") return;
 
     const route =
       status === "TODO"
@@ -1030,6 +1034,7 @@ class OneActionPage extends React.Component {
   }
   changeDataByName(name, number) {
     if (!this.props.communityData) return null;
+    // Bug fix needed : this is an Object, not a List so filter doesn't work.
     var data = this.props.communityData.filter((data) => {
       return data.name === name;
     })[0];

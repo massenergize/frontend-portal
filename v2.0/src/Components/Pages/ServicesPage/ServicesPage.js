@@ -154,27 +154,46 @@ class ServicesPage extends React.Component {
           ? this.props.serviceProviders
           : vendors;
     }
-    if (!vendors || vendors.length === 0) { 
-    	return (
-    		<div className="boxed_wrapper" >
-    			<h2 className='text-center' style={{ color: '#9e9e9e', margin: "190px 150px", padding: "30px", border: 'solid 2px #fdf9f9', borderRadius: 10 }}> Looks like your community hasn't partnered with any vendors yet.  Try again later :( </h2>
-    		</div>
-    	)
+    if (!vendors || vendors.length === 0) {
+      return (
+        <div className="boxed_wrapper">
+          <h2
+            className="text-center"
+            style={{
+              color: "#9e9e9e",
+              margin: "190px 150px",
+              padding: "30px",
+              border: "solid 2px #fdf9f9",
+              borderRadius: 10,
+            }}
+          >
+            {" "}
+            Looks like your community hasn't partnered with any vendors yet. Try
+            again later :({" "}
+          </h2>
+        </div>
+      );
     }
 
-    return vendors.map((vendor,index) => {
+    return vendors.map((vendor, index) => {
       return (
         <div key={index.toString()}>
-        <MECard className="me-vendor-card me-anime-move-from-left" to={`${this.props.links.services}/${vendor.id}`}>
-          <img
-           className="me-vendor-img"
-            src={vendor.logo ? vendor.logo.url : notFound}
-            alt={vendor.name}
-          />
-          <METextView style={{color:"black", textTransform:"capitalize"}}> {vendor.name}</METextView>
-        </MECard>
+          <MECard
+          style={{borderRadius:10}}
+            className="me-vendor-card me-anime-move-from-left"
+            to={`${this.props.links.services}/${vendor.id}`}
+          >
+            <img
+              className="me-vendor-img"
+              src={vendor.logo ? vendor.logo.url : notFound}
+              alt={vendor.name}
+            />
+            <METextView style={{ color: "black", textTransform: "capitalize" }}>
+              {" "}
+              {vendor.name}
+            </METextView>
+          </MECard>
         </div>
-       
       );
     });
   }

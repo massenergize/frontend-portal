@@ -42,6 +42,7 @@ export default class FormGenerator extends Component {
     super(props);
     this.state = {
       formData: {},
+      resetors: {},
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.setDefaultValues = this.setDefaultValues.bind(this);
@@ -73,12 +74,27 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  // this fxnality plays a big role in updating the content of the dropdown component from outside
+  // and therefore allows us to reset dropdowns in the form appropriately
+  getDropDownValueForTwoWayBinding(formObject) {
+    // dropdowns do not always return the text a user chooses from the list, they can return a value, from another set
+    // of defined values inside "dataValues". So this mech below, is to make sure we still get back the displayed text, even in such situations (TODO:remember to write a detailed doc later...)
+    const passedValue = this.state.formData[formObject.name];
+    const data =
+      formObject.data && formObject.data.length > 0 ? formObject.data : [];
+    const index =
+      formObject.dataValues && formObject.dataValues.length > 0
+        ? formObject.dataValues.indexOf(passedValue)
+        : data.indexOf(passedValue);
+    return data[index];
+  }
   getDropdown(formObject, key) {
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEDropdown
           {...formObject}
+          value={this.getDropDownValueForTwoWayBinding(formObject)}
           onItemSelected={(selected) =>
             this.handleFields(formObject.name, selected)
           }
@@ -144,13 +160,17 @@ export default class FormGenerator extends Component {
   }
 
   getFileUploader(formObject, key) {
+    const { resetors } = this.state;
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEUploader
           {...formObject}
-          onFileSelected={(file) => {
+          onFileSelected={(file, removeFxn) => {
             this.handleFileSelection(formObject, file);
+            this.setState({
+              resetors: { ...resetors, [formObject.name]: removeFxn },
+            });
           }}
         />
       </div>
@@ -313,8 +333,12 @@ export default class FormGenerator extends Component {
       } else {
         defaults = {
           ...defaults,
-          [formItem.name]: formItem.value,
+          [formItem.name]: formItem.resetKey,
         };
+        if (formItem.type === FILE) {
+          const reset = this.state.resetors[formItem.name];
+          if (reset) reset();
+        }
       }
     });
     this.setState({ formData: defaults });

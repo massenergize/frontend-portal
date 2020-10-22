@@ -88,7 +88,7 @@ export default class METestimonialCard extends Component {
       <div>
         <MECard
           to={`${this.props.links.events + "/" + id}`}
-          style={{ padding: 0, position: "relative" }}
+          style={{ padding: 0, position: "relative",borderRadius:15 }}
           className={`${this.getAnimationClass()} ${className}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" />
@@ -96,9 +96,10 @@ export default class METestimonialCard extends Component {
             <div className="me-testimonial-about">
               <small>
                 <b>
-                  {this.getEventTitle()} <br />
+                  {this.getEventTitle()}
+                  {/* <br />
                   <i className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {dateString}
+                  {dateString} */}
                 </b>
               </small>
             </div>
@@ -111,8 +112,13 @@ export default class METestimonialCard extends Component {
               </METextView>
 
               <div className="testimonial-link-holder z-depth-float-half">
-                <METextView type="small" style={{ color: "green" }}>
-                  Venue
+                <METextView
+                  mediaType="icon"
+                  icon="fa fa-clock-o"
+                  type="small"
+                  style={{ color: "green" }}
+                >
+                  {dateString}
                 </METextView>
                 <br />
                 <METextView

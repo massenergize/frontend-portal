@@ -10,7 +10,7 @@ class TeamStatsBars extends React.Component {
       membersJSX = actionsJSX = carbonJSX = (
         <p style={{ color: "darkgray" }}>
           {" "}
-          stats will display after team approval
+          stats will display after team approval 
         </p>
       );
     } else {

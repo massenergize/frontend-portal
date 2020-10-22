@@ -258,7 +258,7 @@ class OneTeamPage extends React.Component {
                     headerText="About Us"
                     motherStyle={{ width: "100%" }}
                   >
-                    {team.description}
+                    <div  dangerouslySetInnerHTML={{ __html: team.description }} />
                   </MESectionWrapper>
                   {/* <div className="one-team-content-section slight-lift">
                     <h5>

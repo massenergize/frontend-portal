@@ -5655,13 +5655,13 @@ span.has-tooltip {
 }
 
 .about-column li {
-    position: relative;
-    padding-left: 30px;
-    font-size: 15px;
-    color: #999;
-    line-height: 26px;
-    margin-bottom: 14px;
-    list-style: none;
+  position: relative;
+  padding-left: 30px;
+  font-size: 15px;
+  color: #999;
+  line-height: 26px;
+  margin-bottom: 14px;
+  list-style: none;
 }
 
 .about-column li span {
@@ -5675,9 +5675,9 @@ span.has-tooltip {
 /*============ link-column =================*/
 
 .main-footer .link-column li {
-    position: relative;
-    margin-bottom: 10px;
-    list-style: none;
+  position: relative;
+  margin-bottom: 10px;
+  list-style: none;
 }
 
 .main-footer .link-column li a {
@@ -7837,14 +7837,58 @@ span.has-tooltip {
   transition: 0.5s ease-in-out;
 }
 
-.single-shop-item .img-box {
+/* .single-shop-item .img-box {
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 175px;
-  transition: 0.5s ease;
+  transition: .5s ease;
   background: #f7f7f7;
   text-align: center;
+} */
+
+.action-img-correction {
+  width: 70% !important;
+ height:140px; 
+ object-fit: contain;
+ border-radius: 10px;;
+}
+.action-background-card {
+  /* height: 360px; */
+  min-height: 202px;
+  width: 70%;
+}
+
+.new-action-title-container{
+  background: rgb(249 249 249);
+    margin-top: 5px;
+    border-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.new-action-btns-div {
+  position: absolute;
+  height: 200px;
+  right: 0px;
+  top: 0px;
+  width: 29%;
+  padding: 10px;
+  height: 80%;
+  border-radius: 10px;
+  z-index: 1;
+  margin-top:3px;
+}
+
+.single-shop-item .img-box {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* height: 295px; */
+  height: 160px;
+  transition: 0.5s ease;
+  background: white;
+  text-align: center;
+  border-radius: 11px;
 }
 
 .single-shop-item:hover .img-box {
