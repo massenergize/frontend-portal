@@ -8,7 +8,8 @@ import MEDropdown from "../MEDropdown";
 import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
 import MECheckBoxes from "../MECheckBoxGroup";
-import MEUploader from "../MEUploader";
+// import MEUploader from "../MEUploader";
+import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
 
 const INPUT = "input";
@@ -35,6 +36,7 @@ export const GOOD = "good";
  * @returns HTML Form event && form Content (e, content)
  *
  */
+
 export default class FormGenerator extends Component {
   constructor(props) {
     super(props);
@@ -142,6 +144,21 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  handleFileSelection(formObject, file) {
+    if (!file) {
+      this.setState({ imageInfo: "" });
+      return this.handleFields(formObject.name, file);
+    }
+    if (file.originalSize.size > 999999) {
+      this.setState({
+        imageInfo: `Your image is quite large(${file.originalSize.text}), it might take a few moments before your testimonial is ready. Please stay with us...`,
+      });
+    } else {
+      this.setState({ imageInfo: "" });
+    }
+    this.handleFields(formObject.name, file.croppedFile);
+  }
+
   getFileUploader(formObject, key) {
     const { resetors } = this.state;
     return (
@@ -150,7 +167,7 @@ export default class FormGenerator extends Component {
         <MEUploader
           {...formObject}
           onFileSelected={(file, removeFxn) => {
-            this.handleFields(formObject.name, file);
+            this.handleFileSelection(formObject, file);
             this.setState({
               resetors: { ...resetors, [formObject.name]: removeFxn },
             });
@@ -327,6 +344,20 @@ export default class FormGenerator extends Component {
     this.setState({ formData: defaults });
   }
 
+  displayImageWarning() {
+    const { imageInfo } = this.state;
+    if (imageInfo)
+      return (
+        <METextView
+          mediaType="icon"
+          className="page-text-phone-mode"
+          icon={"fa fa-exclamation-circle"}
+          style={{ color: "orange", fontSize: "medium" }}
+        >
+          {imageInfo}
+        </METextView>
+      );
+  }
   displayInformation() {
     var { info } = this.props;
     const internalInfo = this.state.notification;
@@ -377,6 +408,7 @@ export default class FormGenerator extends Component {
 
             <br />
             <div>{this.displayInformation()}</div>
+            <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
               <MEButton
                 containerStyle={{

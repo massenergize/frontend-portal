@@ -403,6 +403,7 @@
   z-index: 500;
   cursor: pointer;
   top: 0;
+  left:0;
 }
 .move-up-and-vanish {
   transform: translateY(-80px);
@@ -919,7 +920,12 @@
   margin-left: 30px;
   margin: 10px;
 }
-
+/* me-file-chooser-position-correction */
+.me-f-c-pos-correction{
+  top:40vh !important; 
+  left:-260px !important; 
+  width:160% !important;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
@@ -1008,6 +1014,11 @@
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
 
+  .me-f-c-pos-correction{
+    top:90vh !important; 
+    left:-20px !important; 
+    width:110% !important;
+  }
   .mob-modal-correction{
     margin-top:-13vh;
   }
@@ -1423,6 +1434,7 @@
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+  background:white;
 }
 
 .indiv-done-it-orange {
@@ -1461,7 +1473,7 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
 
-  background: #eaeae6;
+  background: white;
   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  */
 }
 .force-height-event {

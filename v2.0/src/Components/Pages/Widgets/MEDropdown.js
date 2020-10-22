@@ -39,9 +39,8 @@ class MEDropdown extends Component {
   };
 
   onItemClick = (item, index) => {
-    const { onItemSelected, data } = this.props;
-    var { dataValues } = this.props;
-    dataValues = dataValues && dataValues.length > 0 ? dataValues : data;
+    var { onItemSelected, dataValues,data } = this.props;
+    dataValues = dataValues.length === 0 ? data : dataValues;
     this.setState({ activeItem: item });
     this.toggleDrop();
     if (onItemSelected) {
@@ -58,6 +57,7 @@ class MEDropdown extends Component {
   }
   ejectChildren = () => {
     var { data, dataValues } = this.props;
+    dataValues = dataValues.length === 0 ? data : dataValues;
     if (!data) return;
     if (data.length !== dataValues.length) {
       console.log("Warning: Your data list does not match your value list!!!!");

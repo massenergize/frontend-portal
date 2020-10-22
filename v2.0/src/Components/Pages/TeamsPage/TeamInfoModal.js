@@ -96,6 +96,9 @@ class TeamInfoModal extends React.Component {
         type: "file",
         label: "Select a logo for your team",
         defaultValue: team && team.logo && team.logo.url,
+        showOverlay:false,
+        maxWidth:600, // maximum width of crop frame
+        maxHeight:600 // maximum height of crop frame
       },
       ...parentFields,
     ];
