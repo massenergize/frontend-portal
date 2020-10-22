@@ -36,6 +36,7 @@ export const GOOD = "good";
  * @returns HTML Form event && form Content (e, content)
  *
  */
+
 export default class FormGenerator extends Component {
   constructor(props) {
     super(props);
@@ -127,6 +128,21 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  handleFileSelection(formObject, file) {
+    if (!file) {
+      this.setState({ imageInfo: "" });
+      return this.handleFields(formObject.name, file);
+    }
+    if (file.originalSize.size > 999999) {
+      this.setState({
+        imageInfo: `Your image is quite large(${file.originalSize.text}), it might take a few moments before your testimonial is ready. Please stay with us...`,
+      });
+    } else {
+      this.setState({ imageInfo: "" });
+    }
+    this.handleFields(formObject.name, file.croppedFile);
+  }
+
   getFileUploader(formObject, key) {
     return (
       <div key={key} className="small-form-spacing">
@@ -134,7 +150,7 @@ export default class FormGenerator extends Component {
         <MEUploader
           {...formObject}
           onFileSelected={(file) => {
-            this.handleFields(formObject.name, file);
+            this.handleFileSelection(formObject, file);
           }}
         />
       </div>
@@ -304,6 +320,20 @@ export default class FormGenerator extends Component {
     this.setState({ formData: defaults });
   }
 
+  displayImageWarning() {
+    const { imageInfo } = this.state;
+    if (imageInfo)
+      return (
+        <METextView
+          mediaType="icon"
+          className="page-text-phone-mode"
+          icon={"fa fa-exclamation-circle"}
+          style={{ color: "orange", fontSize: "medium" }}
+        >
+          {imageInfo}
+        </METextView>
+      );
+  }
   displayInformation() {
     var { info } = this.props;
     const internalInfo = this.state.notification;
@@ -348,12 +378,13 @@ export default class FormGenerator extends Component {
             style={{ color: "black", fontSize: 18, textAlign: "center" }}
           >
             {title}
-          </METextView> 
+          </METextView>
           <form onSubmit={this.onSubmit}>
             {this.createAndEjectForm()}
 
             <br />
             <div>{this.displayInformation()}</div>
+            <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
               <MEButton
                 containerStyle={{

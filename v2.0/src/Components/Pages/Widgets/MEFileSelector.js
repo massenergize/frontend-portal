@@ -177,15 +177,15 @@ class MEFileSelector extends Component {
     const { file, croppedVersionOfFile } = this.state;
     const originalSize = this.getFileSize(file);
     const newSize = this.getFileSize(croppedVersionOfFile);
-    // const toBeSent = {
-    //   originalFile: file,
-    //   originalSize: { size: file.size, text: originalSize },
-    //   croppedFile: croppedVersionOfFile,
-    //   croppedSize: { size: croppedVersionOfFile.size, text: newSize },
-    //   originalFileName: file.name,
-    // };
+    const toBeSent = {
+      originalFile: file,
+      originalSize: { size: file.size, text: originalSize },
+      croppedFile: croppedVersionOfFile,
+      croppedSize: { size: croppedVersionOfFile.size, text: newSize },
+      originalFileName: file.name,
+    };
 
-    onFileSelected(croppedVersionOfFile, this.removeImage); // the remove function is sent to allow the uploader to be rest outside of the component
+    onFileSelected(toBeSent, this.removeImage); // the remove function is sent to allow the uploader to be rest outside of the component
     return;
   }
 

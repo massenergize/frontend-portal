@@ -162,6 +162,8 @@ class StoryForm extends React.Component {
           "You can add an image to your testimonial. It should be your own picture, or one you are sure is not copyrighted material",
         modalContainerClassName:"me-f-c-pos-correction",
         showOverlay:false,
+        maxHeight:1000, 
+        maxWidth:1000,
         },
       {
         type: "textarea",
