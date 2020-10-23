@@ -32,8 +32,7 @@ class ActionModal extends Component {
             {this.props.content.title}
           </h5>
 
-          <p>{this.props.user.full_name}'s Actions</p>
-          <small className="m-label round-me mob-line-break">{date}</small>
+          <small> {this.props.user.full_name}'s Actions </small> <small className="m-label round-me mob-line-break">{date}</small>
           <div style={{ marginTop: -20, position:"relative"}}>
             {!this.props.content.image ? (
               <img
@@ -49,7 +48,13 @@ class ActionModal extends Component {
               />
             )}
             <br></br>
-            {/* <p> {this.props.user.full_name}'s Actions</p> */}
+
+            {/* <ul style={{ textAlign: "center", listStyle: "none", display: "inline", columns: 2,  webkitColumns: 2, mozColumns: 2}}>
+              <li style={{display: "inline", margin: "0 5em 0 0"}}>  </li>
+              <li style={{display: "inline"}}> Adding Action to your {this.props.status} list! </li>
+            </ul> */}
+
+            <p> Adding Action to your {this.props.status} list! </p>
 
             <ChooseHHForm
               aid={this.props.content.id}
