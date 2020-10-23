@@ -116,6 +116,7 @@ class StoryForm extends React.Component {
         data: ["--", ...actionTitles],
         dataValues: ["--", ...actionIds],
         value: "--",
+        resetKey:"--"
       },
       {
         name: "vendor_id",
@@ -126,6 +127,7 @@ class StoryForm extends React.Component {
         data: ["--", ...vendorTitles],
         dataValues: ["--", ...vendorIds],
         value: "--",
+        resetKey:"--" 
       },
       {
         type: "input",
@@ -160,7 +162,11 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label:
           "You can add an image to your testimonial. It should be your own picture, or one you are sure is not copyrighted material",
-      },
+        modalContainerClassName:"me-f-c-pos-correction",
+        showOverlay:false,
+        maxHeight:1000, 
+        maxWidth:1000,
+        },
       {
         type: "textarea",
         name: "body",
@@ -197,7 +203,7 @@ class StoryForm extends React.Component {
   }
   count = (words) => {
     // return words.split(' ').length //word count
-    return words.length; //char count
+    return words.length; //char count 
   };
   //updates the state when form elements are changed
   onChange(event) {

@@ -67,7 +67,7 @@ class TeamInfoModal extends React.Component {
         name: "tagline",
         type: "input",
         label: "Tagline*",
-        placeholder: "A catchy slogan for you team...",
+        placeholder: "A catchy slogan for your team...",
         value: team && team.tagline,
       },
       !team && {
@@ -96,6 +96,9 @@ class TeamInfoModal extends React.Component {
         type: "file",
         label: "Select a logo for your team",
         defaultValue: team && team.logo && team.logo.url,
+        showOverlay:false,
+        maxWidth:600, // maximum width of crop frame
+        maxHeight:600 // maximum height of crop frame
       },
       ...parentFields,
     ];
@@ -231,6 +234,10 @@ class TeamInfoModal extends React.Component {
     const {team} = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) return;
+
+    // stay in the same is_published state
+    data = { ...data, is_published: team.is_published };
+
     this.setState({
       notification: {
         icon: "fa fa-spinner fa-spin",

@@ -5,11 +5,13 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
-import { getTeamsData, inTeam } from './utils.js';
+import { getTeamsData, inTeam } from "./utils.js";
 import { Link, Redirect } from "react-router-dom";
 import { getRandomIntegerInRange } from "../../Utils";
-import MEButton from "./../Widgets/MEButton"
+import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
+import { apiCall } from "../../../api/functions";
+import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -19,12 +21,11 @@ class TeamsPage extends React.Component {
       searching: false,
       createTeamModalOpen: false,
       redirectID: null,
-      teamsData: getTeamsData(teamsStats)
+      teamsData: getTeamsData(teamsStats),
     };
   }
 
   handleSearch(event) {
-
     const { teamsData } = this.state;
 
     const query = event.target.value.trim();
@@ -33,8 +34,8 @@ class TeamsPage extends React.Component {
       return;
     }
 
-    const match = (team) => team.name.toLowerCase().includes(query.toLowerCase());
-
+    const match = (team) =>
+      team.name.toLowerCase().includes(query.toLowerCase());
 
     let searchedTeamsData = [];
     for (var i = 0; i < teamsData.length; i++) {
@@ -43,11 +44,12 @@ class TeamsPage extends React.Component {
       newTeamData.subTeams = [];
 
       //find matching sub teams
-      if (subTeams) subTeams.forEach(subTeam => {
-        if (match(subTeam.team)) {
-          newTeamData.subTeams.push(subTeam);
-        }
-      });
+      if (subTeams)
+        subTeams.forEach((subTeam) => {
+          if (match(subTeam.team)) {
+            newTeamData.subTeams.push(subTeam);
+          }
+        });
 
       //if any subteams matched, include parent in results and un-collapse it
       if (newTeamData.subTeams.length > 0) {
@@ -67,6 +69,25 @@ class TeamsPage extends React.Component {
     });
   }
 
+  // This fxn is meant to go to the backend and collect any new changes that have happened to any
+  async getAnyUpdatedTeamChanges(subdomain) {
+    const body = { subdomain: subdomain };
+    try {
+      const response = await apiCall("teams.stats", body);
+      if (response.success) {
+        this.props.reduxLoadTeamsPage(response.data);
+      }
+    } catch (e) {
+      console.log(e.toString());
+    }
+  }
+  componentDidMount() {
+    const subdomain =
+      this.props.communityData &&
+      this.props.communityData.community &&
+      this.props.communityData.community.subdomain;
+    this.getAnyUpdatedTeamChanges(subdomain);
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.teamsStats !== this.props.teamsStats) {
@@ -75,7 +96,6 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-
     const { teamsStats } = this.props;
 
     if (teamsStats === null) {
@@ -84,24 +104,27 @@ class TeamsPage extends React.Component {
           <LoadingCircle />
         </div>
       );
-    } 
+    }
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
     const { communityData, links } = this.props;
 
     return (
       <>
-
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
 
-        {createTeamModalOpen && <TeamInfoModal onComplete={this.onTeamCreate}
-          onClose={this.onCreateTeamModalClose} />}
+        {createTeamModalOpen && (
+          <TeamInfoModal
+            onComplete={this.onTeamCreate}
+            onClose={this.onCreateTeamModalClose}
+          />
+        )}
 
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
-            style={{ margin: "auto", minHeight:'100vh' }}
+            style={{ margin: "auto", minHeight: "100vh" }}
           >
             <PageTitle style={{ margin: "0 30px" }}>
               Teams in {communityData.community.name}
@@ -122,9 +145,12 @@ class TeamsPage extends React.Component {
                     className="teams-search"
                   />
                 </div>
-                <div className="col-3" style={{ paddingRight: '10px', maxWidth:"20%" }}>
+                <div
+                  className="col-3"
+                  style={{ paddingRight: "10px", maxWidth: "20%" }}
+                >
                   <MEButton
-                    style={{ width: "100%", margin:0 }}
+                    style={{ width: "100%", margin: 0 }}
                     // className=" round-only-right-side"
                     onClick={() => {
                       this.setState({ createTeamModalOpen: true });
@@ -139,15 +165,13 @@ class TeamsPage extends React.Component {
             <br />
 
             {teamsData.length > 0 ? (
-              <>
-                {this.renderTeams()}
-              </>
+              <>{this.renderTeams()}</>
             ) : (
-                <p>
-                  There are no teams in this community yet. You can start one by
-                  clicking the start team button above!
-                </p>
-              )}
+              <p>
+                There are no teams in this community yet. You can start one by
+                clicking the start team button above!
+              </p>
+            )}
           </div>
           <br />
         </div>
@@ -156,22 +180,20 @@ class TeamsPage extends React.Component {
   }
 
   renderTeams() {
-
     const { searching, teamsData, searchedTeamsData } = this.state;
     const { user } = this.props;
 
     if (searching) {
-
-      return <>
-        {searchedTeamsData.length > 0 ?
-          searchedTeamsData.map((teamData) => this.renderTeam(teamData))
-          :
-          <p>No teams match your search.</p>
-        }
-      </>;
-
-    }
-    else {
+      return (
+        <>
+          {searchedTeamsData.length > 0 ? (
+            searchedTeamsData.map((teamData) => this.renderTeam(teamData))
+          ) : (
+            <p>No teams match your search.</p>
+          )}
+        </>
+      );
+    } else {
       if (!user) {
         return (
           <>
@@ -232,17 +254,21 @@ class TeamsPage extends React.Component {
     }
   }
 
-  getAnimationClasses(){
-    const index = getRandomIntegerInRange(3); 
-    const animArr = ["me-anime-move-from-left-fastest", "me-anime-move-from-left-fast", "me-anime-move-from-left-normal"]; 
-    return animArr[index]
+  getAnimationClasses() {
+    const index = getRandomIntegerInRange(3);
+    const animArr = [
+      "me-anime-move-from-left-fastest",
+      "me-anime-move-from-left-fast",
+      "me-anime-move-from-left-normal",
+    ];
+    return animArr[index];
   }
   renderTeam(teamData) {
     const teamObj = teamData.team;
 
-    return ( 
+    return (
       <div key={teamObj.id}>
-        <div className={`team-card ${this.getAnimationClasses()}`} >
+        <div className={`team-card ${this.getAnimationClasses()}`}>
           <Link
             to={`${this.props.links.teams + "/" + teamObj.id} `}
             style={{ width: "100%" }}
@@ -253,8 +279,18 @@ class TeamsPage extends React.Component {
             >
               <div className="col-sm-3 team-card-column">
                 <div className="team-card-content">
-                  <h4 className="row team-card-title" style={{ marginLeft: 0, marginRight: 0 }}><b>{teamObj.name}</b></h4>
-                  <p className="row team-card-description" style={{ marginLeft: 0, marginRight: 0 }}>{teamObj.tagline}</p>
+                  <h4
+                    className="row team-card-title"
+                    style={{ marginLeft: 0, marginRight: 0 }}
+                  >
+                    <b>{teamObj.name}</b>
+                  </h4>
+                  <p
+                    className="row team-card-description"
+                    style={{ marginLeft: 0, marginRight: 0 }}
+                  >
+                    {teamObj.tagline}
+                  </p>
                 </div>
               </div>
               <div className="col-sm-9">
@@ -273,36 +309,42 @@ class TeamsPage extends React.Component {
                       </div>
                     </>
                   ) : (
-                      <div className="team-card-column">
-                        <TeamStatsBars teamStats={teamData} />
-                      </div>
-                    )}
+                    <div className="team-card-column">
+                      <TeamStatsBars teamStats={teamData} />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </Link>
         </div>
-        {teamData.subTeams && teamData.subTeams.length > 0 &&
+        {teamData.subTeams && teamData.subTeams.length > 0 && (
           <>
             <button
               className="btn round-me collapse-team-btn bottom-right z-depth-float"
               onClick={() => {
                 const { teamsData } = this.state;
-                const thisTeamIndex = teamsData.findIndex
-                  (_teamData => _teamData.team.id === teamData.team.id);
-                teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex].collapsed;
+                const thisTeamIndex = teamsData.findIndex(
+                  (_teamData) => _teamData.team.id === teamData.team.id
+                );
+                teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex]
+                  .collapsed;
                 this.setState({ teamsData: teamsData });
               }}
             >
-              {teamData.collapsed ? <span>Expand Sub-teams &darr;</span> : <span>Collapse Sub-teams &uarr;</span>}
+              {teamData.collapsed ? (
+                <span>Expand Sub-teams &darr;</span>
+              ) : (
+                <span>Collapse Sub-teams &uarr;</span>
+              )}
             </button>
-            {!teamData.collapsed &&
-              <div className="me-sub-teams-box" >
-                {teamData.subTeams.map(subTeam => this.renderTeam(subTeam))}
+            {!teamData.collapsed && (
+              <div className="me-sub-teams-box">
+                {teamData.subTeams.map((subTeam) => this.renderTeam(subTeam))}
               </div>
-            }
+            )}
           </>
-        }
+        )}
       </div>
     );
   }
@@ -313,7 +355,7 @@ class TeamsPage extends React.Component {
 
   onCreateTeamModalClose = () => {
     this.setState({ createTeamModalOpen: false });
-  }
+  };
 }
 
 const mapStoreToProps = (store) => {
@@ -324,4 +366,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.homePage,
   };
 };
-export default connect(mapStoreToProps, null)(TeamsPage);
+const mapDispatchToProps = {
+  reduxLoadTeamsPage,
+};
+export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);

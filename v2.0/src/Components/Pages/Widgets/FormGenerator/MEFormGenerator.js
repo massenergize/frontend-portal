@@ -8,7 +8,8 @@ import MEDropdown from "../MEDropdown";
 import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
 import MECheckBoxes from "../MECheckBoxGroup";
-import MEUploader from "../MEUploader";
+// import MEUploader from "../MEUploader";
+import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
 
 const INPUT = "input";
@@ -35,11 +36,13 @@ export const GOOD = "good";
  * @returns HTML Form event && form Content (e, content)
  *
  */
+
 export default class FormGenerator extends Component {
   constructor(props) {
     super(props);
     this.state = {
       formData: {},
+      resetors: {},
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.setDefaultValues = this.setDefaultValues.bind(this);
@@ -71,12 +74,27 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  // this fxnality plays a big role in updating the content of the dropdown component from outside
+  // and therefore allows us to reset dropdowns in the form appropriately
+  getDropDownValueForTwoWayBinding(formObject) {
+    // dropdowns do not always return the text a user chooses from the list, they can return a value, from another set
+    // of defined values inside "dataValues". So this mech below, is to make sure we still get back the displayed text, even in such situations (TODO:remember to write a detailed doc later...)
+    const passedValue = this.state.formData[formObject.name];
+    const data =
+      formObject.data && formObject.data.length > 0 ? formObject.data : [];
+    const index =
+      formObject.dataValues && formObject.dataValues.length > 0
+        ? formObject.dataValues.indexOf(passedValue)
+        : data.indexOf(passedValue);
+    return data[index];
+  }
   getDropdown(formObject, key) {
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEDropdown
           {...formObject}
+          value={this.getDropDownValueForTwoWayBinding(formObject)}
           onItemSelected={(selected) =>
             this.handleFields(formObject.name, selected)
           }
@@ -126,14 +144,33 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  handleFileSelection(formObject, file) {
+    if (!file) {
+      this.setState({ imageInfo: "" });
+      return this.handleFields(formObject.name, file);
+    }
+    if (file.originalSize.size > 999999) {
+      this.setState({
+        imageInfo: `Your image is quite large(${file.originalSize.text}), it might take a few moments before your testimonial is ready. Please stay with us...`,
+      });
+    } else {
+      this.setState({ imageInfo: "" });
+    }
+    this.handleFields(formObject.name, file.croppedFile);
+  }
+
   getFileUploader(formObject, key) {
+    const { resetors } = this.state;
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEUploader
           {...formObject}
-          onFileSelected={(file) => {
-            this.handleFields(formObject.name, file);
+          onFileSelected={(file, removeFxn) => {
+            this.handleFileSelection(formObject, file);
+            this.setState({
+              resetors: { ...resetors, [formObject.name]: removeFxn },
+            });
           }}
         />
       </div>
@@ -296,13 +333,31 @@ export default class FormGenerator extends Component {
       } else {
         defaults = {
           ...defaults,
-          [formItem.name]: formItem.value,
+          [formItem.name]: formItem.resetKey,
         };
+        if (formItem.type === FILE) {
+          const reset = this.state.resetors[formItem.name];
+          if (reset) reset();
+        }
       }
     });
     this.setState({ formData: defaults });
   }
 
+  displayImageWarning() {
+    const { imageInfo } = this.state;
+    if (imageInfo)
+      return (
+        <METextView
+          mediaType="icon"
+          className="page-text-phone-mode"
+          icon={"fa fa-exclamation-circle"}
+          style={{ color: "orange", fontSize: "medium" }}
+        >
+          {imageInfo}
+        </METextView>
+      );
+  }
   displayInformation() {
     var { info } = this.props;
     const internalInfo = this.state.notification;
@@ -353,6 +408,7 @@ export default class FormGenerator extends Component {
 
             <br />
             <div>{this.displayInformation()}</div>
+            <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
               <MEButton
                 containerStyle={{

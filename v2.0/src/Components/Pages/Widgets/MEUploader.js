@@ -5,8 +5,10 @@ import MECard from "./MECard";
 
 class MEUploader extends Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = { file: null };
+    this.removeImage = this.removeImage.bind(this); 
+    
   }
 
   searchForImage(e) {
@@ -21,7 +23,12 @@ class MEUploader extends Component {
     const file = e.target.files[0];
     this.setState({ file });
     if (!onFileSelected) return;
-    onFileSelected(file);
+    onFileSelected(file, this.removeImage);
+    return;
+  }
+
+  removeImage() {
+    this.setState({ file: null });
     return;
   }
 
@@ -34,7 +41,7 @@ class MEUploader extends Component {
           <img
             src={defaultValue}
             alt={`${name} image`}
-          onClick={(e) => this.searchForImage(e)}
+            onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
           />
           <br />

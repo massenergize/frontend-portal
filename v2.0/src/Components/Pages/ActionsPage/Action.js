@@ -142,7 +142,7 @@ class Action extends React.Component {
               this.removeFromCart(this.actionIsDone());
             }}
           >
-            Done It
+            Done It 
           </p>
         </CustomTooltip>
       );

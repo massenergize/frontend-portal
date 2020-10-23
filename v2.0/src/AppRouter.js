@@ -13,6 +13,7 @@ import AboutUsPage from "./components/Pages/AboutUsPage/AboutUsPage";
 import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
 import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
 import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
+import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
 import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
@@ -224,20 +225,33 @@ class AppRouter extends Component {
       var abtSliced = oldAbout.children.filter(
         (item) => item.name.toLowerCase() !== "impact"
       );
+      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced],
+        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced, contactUsItem,
+        { name: "All MassEnergize Community Sites",
+          link: "http://" + window.location.host,
+          special: true }
+        ,]
       };
+      if(menu[4]) {
+        newAbout.children = [...newAbout.children, menu.pop()]
+      }
       menu[3] = newAbout;
     }
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
+      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams")
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
       menu[1] = newAction;
     }
+    const actionsIndex = menu.findIndex((item) => item.name == "Actions");
+    const menuPostActions = menu.splice(actionsIndex+1);
+    menu = [...menu.splice(0,actionsIndex+1), {link: "/teams", name: "Teams"},...menuPostActions];
     return menu;
   }
 
@@ -294,11 +308,10 @@ class AppRouter extends Component {
     const { links } = this.props;
     var finalMenu = [];
     if (this.props.menu) {
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
       const navMenus = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
       })[0].content;
-      finalMenu = [...navMenus, contactUsItem];
+      finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const communitiesLink = 
@@ -352,7 +365,8 @@ class AppRouter extends Component {
             <Route exact path={links.services} component={ServicesPage} />
             <Route path={`${links.services}/:id`} component={OneServicePage} />
             <Route path={`${links.actions}/:id`} component={OneActionPage} />
-            <Route path={links.testimonials} component={StoriesPage} />
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route  path={`${links.testimonials}/:id`} component={OneTestimonialPage} />
             <Route exact path={links.teams} component={TeamsPage} />
             <Route path={`${links.teams}/:id`} component={OneTeamPage} />
             <Route path={links.impact} component={ImpactPage} />
