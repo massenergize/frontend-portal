@@ -194,8 +194,8 @@ class PhotoSensitiveAction extends React.Component {
     return classes[index];
   }
   render() {
-    if (!this.props.HHFormOpen && this.state.status)
-      this.setState({ status: null });
+    // if (!this.props.HHFormOpen && this.state.status)
+    //   this.setState({ status: null });
     if (this.shouldRender()) {
       //checks if the action should render or not
       return (
@@ -331,7 +331,7 @@ class PhotoSensitiveAction extends React.Component {
                     )}
                   </>
                 ) : null}
-                <ChooseHHForm
+                {/* <ChooseHHForm
                   aid={this.props.action.id}
                   status={this.state.status}
                   open={this.props.HHFormOpen}
@@ -342,7 +342,7 @@ class PhotoSensitiveAction extends React.Component {
                   inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
                   moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
                   closeForm={this.closeForm}
-                />
+                /> */}
                 {this.props.showTodoMsg === this.props.action.id ? (
                   <p
                     style={{
@@ -532,7 +532,7 @@ class PhotoSensitiveAction extends React.Component {
     this.setState({
       status: status,
     });
-    this.props.openModal();
+    this.props.openModal(this.props.action, status);
     // this.props.openHHForm(this.props.action.id);
   };
   closeForm = () => {

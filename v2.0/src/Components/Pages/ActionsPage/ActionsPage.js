@@ -44,7 +44,7 @@ class ActionsPage extends React.Component {
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
-      expanded: false,
+      openModalForm: null,
       modal_content: { //tbd
         image: null,
         title: null,
@@ -123,22 +123,33 @@ class ActionsPage extends React.Component {
   }
 
   renderModal() {
-    if (this.state.expanded) {
+    if (this.state.openModalForm) {
       return (
         <MEModal closeModal={this.closeModal} contentStyle={{minWidth:"100%"}}>
-          <ActionModal content={this.state.modal_content} />
-          <p> useless content to see what this looks like</p> 
+          <ActionModal 
+            content={this.state.modal_content} 
+            user={this.props.user}
+            status={this.state.status}
+            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+            closeModal={this.closeModal}
+          />
         </MEModal>
       );
     }
   }
 
-  openModal (params) {
-    this.setState({ expanded: params.id, modal_content: params.content });
+  openModal (params, status) {
+    this.setState({ openModalForm: params.id, 
+      modal_content: {
+        ...params,
+      }, 
+      status: status
+    });
   }
 
   closeModal() {
-    this.setState({ expanded: null });
+    this.setState({ openModalForm: null, status: null });
   }
 
   renderPaginator() {
@@ -334,19 +345,16 @@ class ActionsPage extends React.Component {
           addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
           inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-          HHFormOpen={this.state.openAddForm === action.id}
+          modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
-          closeHHForm={() => this.setState({ openAddForm: null })}
-          openHHForm={(aid) => this.setState({ openAddForm: aid })}
+          // closeHHForm={() => this.setState({ openAddForm: null })}
+          // openHHForm={(aid) => this.setState({ openAddForm: aid })}
           showTodoMsg={this.state.showTodoMsg}
           toggleShowTodoMsg={() => {
             this.setState({ showTodoMsg: false });
           }}
-          openModal={() => {
-            this.setState({expanded: true})
-            console.log("this is working");
-          }}
-          closeModal={()=>this.setState({expanded: null})}
+          openModal={this.openModal}
+          closeModal={()=>this.setState({openModalForm: null})}
         />
       );
     });

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
+import ChooseHHForm from "./ChooseHHForm";
 import * as moment from "moment";
 
 class ActionModal extends Component {
@@ -16,9 +17,9 @@ class ActionModal extends Component {
       this.props.content ? this.props.content.date : null
     ).format(format);
     var userName = "Anonymous";
-    const anonymous = this.props.content ? this.props.content.ano : null;
+    const anonymous = this.props.user ? this.props.user.ano : null;
     if (!anonymous) {
-      userName = this.props.content.user ? this.props.content.user : userName; //else just pust the default user name
+      userName = this.props.user ? this.props.user : userName; //else just pust the default user name
     }
 
     return (
@@ -30,9 +31,10 @@ class ActionModal extends Component {
           >
             {this.props.content.title}
           </h5>
-          <small className="story-name">{userName}</small>
+
+          <p>{this.props.user.full_name}'s Actions</p>
           <small className="m-label round-me mob-line-break">{date}</small>
-          <div style={{ marginTop: -20, position:"relative" }}>
+          <div style={{ marginTop: -20, position:"relative"}}>
             {!this.props.content.image ? (
               <img
                 className="testi-green-monster mob-modal-pic-tweak z-depth-float "
@@ -46,6 +48,22 @@ class ActionModal extends Component {
                 alt="IMG"
               />
             )}
+            <br></br>
+            {/* <p> {this.props.user.full_name}'s Actions</p> */}
+
+            <ChooseHHForm
+              aid={this.props.content.id}
+              status={this.props.status}
+              open={true}
+              user={this.props.user}
+              addToCart={(aid, hid, status) =>
+                this.props.addToCart(aid, hid, status)
+              }
+              inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
+              moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+              closeForm={this.props.closeModal}
+            />
+
             <div
             // style={{ marginTop: 30, maxHeight: 610, overflowY: "scroll" }}
             >

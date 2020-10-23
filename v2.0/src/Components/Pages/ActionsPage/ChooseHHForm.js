@@ -47,7 +47,7 @@ class ChooseHHForm extends React.Component {
                   style={{
                     padding: "2px 11px",
                     marginRight: 7,
-                    fontSize: "small",
+                    // fontSize: "small",
                   }}
                   type="submit"
                   disabled={
@@ -57,7 +57,9 @@ class ChooseHHForm extends React.Component {
                   Submit
                 </MEButton>
                 <MEButton
-                  style={{ padding: "2px 11px", fontSize: "small" }}
+                  style={{ padding: "2px 11px", 
+                    // fontSize: "small" 
+                  }}
                   onClick={this.props.closeForm}
                   variation="accent"
                 >
