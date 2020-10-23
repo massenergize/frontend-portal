@@ -124,9 +124,16 @@ class ChooseHHForm extends React.Component {
     const names = getPropsArrayFromJsonArray(filteredHH, "name");
     const values = getPropsArrayFromJsonArray(filteredHH, "id");
     var stateChoices = this.state.choice;
+    // const checkboxes = names.map((name, index)  => (
+    //   <input
+    //       style={{type: "checkbox"}}
+    //       name={name}
+    //       id={values[index]}
+    //   />
+    // )); 
     return (
       <MECheckBoxGroup
-        style={{ display: "inline" }}
+        style={{ display: "inline", columns: 2, webkitColumns: 2, mozColumns: 2 }}
         fineTuneSquare={{ left: 7, bottom: 6 }}
         data={names}
         dataValues={values}
