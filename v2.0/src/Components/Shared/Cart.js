@@ -51,7 +51,6 @@ class Cart extends React.Component {
                 {this.props.info
                   ? this.renderActionsMoreInfo(this.props.actionRels)
                   : this.renderActions(this.props.actionRels)}
-
               </tbody>
             </table>
           </div>
@@ -64,7 +63,7 @@ class Cart extends React.Component {
       return (
         <tr key="1">
           <td colSpan="100%">
-            <p className="m-0 p-2 w-100 text-center cool-font">
+            <p className="m-0 p-2 w-100 text-center cool-font" style={{fontSize:"1rem"}}>
               Nothing here, yet! See all{" "}
               <Link to={this.props.links.actions}> actions </Link>
             </p>
@@ -78,30 +77,52 @@ class Cart extends React.Component {
       var action = actionRel.action;
       return (
         <div key={key.toString()}>
-          <div >
-            <MECard style={{ borderRadius: 10, padding: 10 }}>
+          <div>
+            <MECard
+              style={{ borderRadius: 10, padding: 10, fontSize: ".9rem" }}
+            >
               <MELink to={`${this.props.links.actions}/${action.id}`}>
                 {action.title}
                 &nbsp;
               </MELink>
               <div className="">
                 {actionRel.status.toLowerCase() === "todo" ? (
-                  <MEButton
-                    onClick={() => this.moveToDone(actionRel)}
-                    icon="fa fa-check"
-                    iconStyle={{ margin: 0 }}
-                    iconSize="large"
-                    style={{ padding: "4px 8px" }}
-                  />
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.removeFromCart(actionRel);
+                    }}
+                    style={{ fontSize: ".8rem" }}
+                  >
+                    Done It
+                  </a>
                 ) : (
-                  <MEButton
-                    onClick={() => this.removeFromCart(actionRel)}
-                    className="me-delete-btn"
-                    icon="fa fa-trash"
-                    iconStyle={{ margin: 0 }}
-                    iconSize="large"
-                    style={{ padding: "4px 8px" }}
-                  />
+                  // <MEButton
+                  //   onClick={() => this.moveToDone(actionRel)}
+                  //   icon="fa fa-check"
+                  //   iconStyle={{ margin: 0 }}
+                  //   iconSize="large"
+                  //   style={{ padding: "4px 8px" }}
+                  // />
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.removeFromCart(actionRel);
+                    }}
+                    style={{ fontSize: ".8rem" }}
+                  >
+                    Remove
+                  </a>
+                  // <MEButton
+                  //   onClick={() => this.removeFromCart(actionRel)}
+                  //   className="me-delete-btn"
+                  //   icon="fa fa-trash"
+                  //   iconStyle={{ margin: 0 }}
+                  //   iconSize="large"
+                  //   style={{ padding: "4px 8px" }}
+                  // />
                 )}
               </div>
             </MECard>
@@ -116,7 +137,7 @@ class Cart extends React.Component {
       return (
         <tr key="1">
           <td colSpan="100%">
-            <p className="m-0 p-2 w-100 text-center cool-font">
+            <p className="m-0 p-2 w-100 text-center cool-font" style={{fontSize:"1rem"}}>
               Nothing here, yet! See all{" "}
               <Link to={this.props.links.actions}> actions </Link>
             </p>

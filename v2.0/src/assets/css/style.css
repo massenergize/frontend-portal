@@ -7852,6 +7852,7 @@ span.has-tooltip {
  height:140px; 
  object-fit: contain;
  border-radius: 10px;;
+ cursor:pointer;
 }
 .action-background-card {
   /* height: 360px; */

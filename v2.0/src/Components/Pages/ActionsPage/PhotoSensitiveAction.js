@@ -228,13 +228,15 @@ class PhotoSensitiveAction extends React.Component {
             </MEButton>
             <br />
           </div>
-          <img
-            className="action-img-correction"
-            // src={photo}
-            src={this.props.action.image ? this.props.action.image.url : null}
-            // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
-            alt="action image"
-          />
+          <Link to={this.props.links.actions + "/" + this.props.action.id}>
+            <img
+              className="action-img-correction"
+              // src={photo}
+              src={this.props.action.image ? this.props.action.image.url : null}
+              // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
+              alt="action image"
+            />
+          </Link>
           <div className="new-action-title-container">
             <METextView
               containerStyle={{ display: "block", textAlign: "center" }}

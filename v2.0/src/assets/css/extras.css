@@ -438,6 +438,8 @@
   min-width: 13rem;
   cursor: pointer;
   z-index: 20;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .me-card {
   padding: 20px;

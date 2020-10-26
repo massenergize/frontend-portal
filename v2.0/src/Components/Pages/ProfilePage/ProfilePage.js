@@ -417,19 +417,7 @@ class ProfilePage extends React.Component {
                     marginTop: 90,
                     height: "fit-content",
                   }}
-                >
-                  {/* <h3 className="col-12 text-right">
-                                        <SignOutButton style={{ display: 'inline-block' }} />
-                                    </h3>
-                                    <br /> */}
-                  {/* ---- REMOVE THIS WHEN YOU ARE DONE ----- */}
-                  {true ? (
-                    <Cart
-                      title="To Do List"
-                      actionRels={this.props.todo ? this.props.todo.reverse() :[]}
-                      status="TODO"
-                    />
-                  ) : null}
+                >           
                   {this.props.done ? (
                     <Cart
                       title="Completed Actions"
@@ -437,7 +425,15 @@ class ProfilePage extends React.Component {
                       status="DONE"
                     />
                   ) : null}
-                  {this.props.rsvps ? (
+                  {true ? (
+                    <Cart
+                      title="To Do List"
+                      actionRels={this.props.todo ? this.props.todo.reverse() :[]}
+                      status="TODO"
+                    />
+                  ) : null}
+                 
+                  {/* {this.props.rsvps ? (
                     <EventCart
                       title="Event RSVPs"
                       eventRSVPs={this.props.rsvps.filter(
@@ -446,7 +442,7 @@ class ProfilePage extends React.Component {
                           rsvp.attendee.id === this.props.user.id
                       )}
                     />
-                  ) : null}
+                  ) : null} */}
                   <center>
                     <MEButton
                       onClick={() => this.setState({ printing: true })}
