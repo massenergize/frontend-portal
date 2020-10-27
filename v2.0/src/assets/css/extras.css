@@ -5,16 +5,15 @@
   padding: 10px 10%;
 }
 
-.extra-story-cards{
-  font-size:medium; 
+.extra-story-cards {
+  font-size: medium;
   border-radius: 4px !important;
-  padding:10px 15px !important;
+  padding: 10px 15px !important;
 }
-.ripped-border{
-  padding:10px 15px;
-  border:dashed 4px #c5e796;
+.ripped-border {
+  padding: 10px 15px;
+  border: dashed 4px #c5e796;
   background: white;
-
 }
 .me-social:hover {
   transform: scale(1.1);
@@ -24,10 +23,10 @@
 .me-social {
   margin: 9px;
   border-radius: 55px;
-  outline:0;
+  outline: 0;
 }
 
-.me-social:focus{
+.me-social:focus {
   outline: 0 !important;
 }
 .image-chooser-default {
@@ -134,7 +133,7 @@
   min-height: 30vh;
   z-index: 50;
   background: white;
-  border-radius:10px;
+  border-radius: 10px;
 }
 
 .me-testimonial-img {
@@ -403,7 +402,7 @@
   z-index: 500;
   cursor: pointer;
   top: 0;
-  left:0;
+  left: 0;
 }
 .move-up-and-vanish {
   transform: translateY(-80px);
@@ -820,8 +819,8 @@
   background: white;
   border: solid 1px white;
   border-radius: 5px;
-  z-index:2;
-  left:-90px;
+  z-index: 2;
+  left: -90px;
 }
 .triangle {
   border: solid 15px red;
@@ -923,10 +922,10 @@
   margin: 10px;
 }
 /* me-file-chooser-position-correction */
-.me-f-c-pos-correction{
-  top:40vh !important; 
-  left:-260px !important; 
-  width:160% !important;
+.me-f-c-pos-correction {
+  top: 40vh !important;
+  left: -260px !important;
+  width: 160% !important;
 }
 /* ========= PC EXCLUSIVE ===== */
 
@@ -1002,7 +1001,7 @@
     overflow-y: scroll;
   }
   .pc-vanish {
-    display: none;
+    display: none !important;
   }
 
   /* ------------------------------- TABLETS ----------------------------- */
@@ -1015,21 +1014,25 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-
-  .me-f-c-pos-correction{
-    top:90vh !important; 
-    left:-20px !important; 
-    width:110% !important;
+  .phone-action-btns-mode {
+    font-size: 10px !important;
+    min-width: 60px !important;
+    padding: 7px 20px !important;
   }
-  .mob-modal-correction{
-    margin-top:-13vh;
+  .me-f-c-pos-correction {
+    top: 90vh !important;
+    left: -20px !important;
+    width: 110% !important;
+  }
+  .mob-modal-correction {
+    margin-top: -13vh;
   }
   .page-text-phone-mode {
     font-size: 14px !important;
   }
   .me-btn-phone-mode {
-    font-size: 13px !important;
-    padding: 10px 13px !important;
+    font-size: 12px !important;
+    padding: 5px 13px !important;
   }
   .snackbar-main-container {
     width: 100%;
@@ -1436,7 +1439,7 @@
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
-  background:white;
+  background: white;
 }
 
 .indiv-done-it-orange {
@@ -1619,9 +1622,9 @@
   box-shadow: 0 2px 0px 0 rgba(0, 0, 0, -0.84), 0 2px 10px 0 rgba(0, 0, 0, 0.12); */
 }
 .action-btns {
-  padding: 8px 20px !important;
+  padding: 8px 19px ;
   border-radius: 100px !important;
-  margin:6px;
+  margin: 6px;
 }
 .new-sign-in {
   border-radius: 200px;

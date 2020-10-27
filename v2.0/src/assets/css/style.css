@@ -367,7 +367,7 @@ textarea {
   padding: 0 3px;
   margin-left: 2px;
   transition: all 0.5s cubic-bezier(0.4, 0, 1, 1);
-  font-size: 12px !important;
+  font-size: 12px;
 }
 
 .thm-btn.style-4.red {
