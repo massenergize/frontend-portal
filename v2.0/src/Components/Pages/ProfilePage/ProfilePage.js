@@ -421,14 +421,14 @@ class ProfilePage extends React.Component {
                   {this.props.done ? (
                     <Cart
                       title="Completed Actions"
-                      actionRels={this.props.done ? this.props.done.reverse() :[]}
+                      actionRels={this.props.done ? this.props.done :[]}
                       status="DONE"
                     />
                   ) : null}
                   {true ? (
                     <Cart
                       title="To Do List"
-                      actionRels={this.props.todo ? this.props.todo.reverse() :[]}
+                      actionRels={this.props.todo ? this.props.todo :[]}
                       status="TODO"
                     />
                   ) : null}

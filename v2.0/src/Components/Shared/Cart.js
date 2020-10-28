@@ -63,7 +63,10 @@ class Cart extends React.Component {
       return (
         <tr key="1">
           <td colSpan="100%">
-            <p className="m-0 p-2 w-100 text-center cool-font" style={{fontSize:"1rem"}}>
+            <p
+              className="m-0 p-2 w-100 text-center cool-font"
+              style={{ fontSize: "1rem" }}
+            >
               Nothing here, yet! See all{" "}
               <Link to={this.props.links.actions}> actions </Link>
             </p>
@@ -91,7 +94,7 @@ class Cart extends React.Component {
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      this.removeFromCart(actionRel);
+                      this.moveToDone(actionRel);
                     }}
                     style={{ fontSize: ".8rem" }}
                   >
@@ -137,7 +140,10 @@ class Cart extends React.Component {
       return (
         <tr key="1">
           <td colSpan="100%">
-            <p className="m-0 p-2 w-100 text-center cool-font" style={{fontSize:"1rem"}}>
+            <p
+              className="m-0 p-2 w-100 text-center cool-font"
+              style={{ fontSize: "1rem" }}
+            >
               Nothing here, yet! See all{" "}
               <Link to={this.props.links.actions}> actions </Link>
             </p>
