@@ -55,8 +55,7 @@ class StoriesPage extends React.Component {
     const stories = this.props.stories;
     const values = this.state.check_values ? this.state.check_values : [];
 
-    if (values.length == 0)
-      return null;
+    if (values.length == 0) return null;
 
     const common = [];
     if (stories) {
@@ -94,7 +93,10 @@ class StoriesPage extends React.Component {
   renderModal() {
     if (this.state.expanded) {
       return (
-        <MEModal closeModal={this.closeModal} contentStyle={{minWidth:"100%"}}>
+        <MEModal
+          closeModal={this.closeModal}
+          contentStyle={{ minWidth: "100%" }}
+        >
           <StoryModal content={this.state.modal_content} />
         </MEModal>
       );
@@ -223,6 +225,15 @@ class StoriesPage extends React.Component {
                   {this.renderAddTestmonialBtn()}
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
+                  {/* --- SHOW FLOATING BTN IN PHONE VIEW WHEN USER IS SIGNED IN ------------ */}
+                  {this.props.user && (
+                    <MEButton
+                      onClick={this.scrollToForm}
+                      className="float-testimonial-btn pc-vanish"
+                    >
+                      Add Testimonial
+                    </MEButton>
+                  )}
                   <PageTitle>Testimonials</PageTitle>
                   {this.state.pageContent.pageCount > 0 ? (
                     <center>
@@ -273,72 +284,13 @@ class StoriesPage extends React.Component {
   closeModal() {
     this.setState({ expanded: null });
   }
-  // renderImage(img) {
-  //   if (img && !this.state.expanded) {
-  //     return (
-  //       <div>
-  //         <center>
-  //           <img className="testi-img" src={img.url} alt="IMG" />
-  //         </center>
-  //       </div>
-  //     );
-  //   } else if (!img && !this.state.expanded) {
-  //     return (
-  //       <div>
-  //         <center>
-  //           <img
-  //             className="testi-img"
-  //             src={leafy}
-  //             style={{ objectFit: "contain" }}
-  //             alt="IMG"
-  //           />
-  //         </center>
-  //       </div>
-  //     );
-  //   }
-  // }
-  // renderMoreBtn(body, id, title, imageObj, ano, user, date) {
-  //   var content = {
-  //     image: imageObj,
-  //     title: title,
-  //     desc: body,
-  //     ano: ano,
-  //     user: user,
-  //     date: date,
-  //   };
-  //   if (body.length > 100 && !this.state.expanded) {
-  //     return (
-  //       <button
-  //         className="testi-more"
-  //         onClick={() => {
-  //           this.setState({ expanded: id, modal_content: content });
-  //         }}
-  //       >
-  //         More...
-  //       </button>
-  //     );
-  //   }
-  // }
-  // showMoreForCard(body, id, title, imageObj, ano, user, date) {
-  //   var content = {
-  //     image: imageObj,
-  //     title: title,
-  //     desc: body,
-  //     ano: ano,
-  //     user: user,
-  //     date: date,
-  //   };
-  //   if (body.length > 100 && !this.state.expanded) {
-  //     this.setState({ expanded: id, modal_content: content });
-  //   }
-  // }
 
   renderStories(stories) {
     if (!stories) {
       return (
         <p>
-          There aren't any not any testimonials yet. If you have a story to tell, let
-            us know in the form below.
+          There aren't any not any testimonials yet. If you have a story to
+          tell, let us know in the form below.
         </p>
       );
     }
@@ -353,102 +305,15 @@ class StoriesPage extends React.Component {
       );
     }
     return stories.map((story, index) => {
-      // const format = "MMM, Do YYYY";
-      // const date = moment(story.created_at).format(format);
-      // var creatorName = "Anonymous";
-      // if (!story.anonymous) {
-      //   creatorName = story.preferred_name ? story.preferred_name : creatorName; // This is to cover for all testimonials that were created before the anonymous feature
-      //   if (story.preferred_name) {
-      //     // Remember to remove this block when sam deletes the "from {community}" from the backend....
-      //     creatorName = creatorName.split("from")[0];
-      //   }
-      // }
-      // var body = "";
-      // if (story.body.length > 0) {
-      //   body =
-      //     story.body.length > 80
-      //       ? story.body.substring(0, 80) + "..."
-      //       : story.body;
-      // }
       var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12 mob-testy-card-fix";
 
       return (
-        <div key={index} className={cn} style={{ marginBottom: 25 }}>
+        <div key={index} className={cn} style={{ marginBottom: 10 }}>
           <METestimonialCard
             {...story}
             links={this.props.links}
             readMore={this.readMore}
           />
-          {/* <div className="">
-            <div className="testi-card">
-              <div>
-                {this.renderImage(story.file)}
-                <div
-                  className="testi-para z-depth-1"
-                  onClick={() => {
-                    this.showMoreForCard(
-                      story.body,
-                      story.id,
-                      story.title,
-                      story.file,
-                      story.anonymous,
-                      story.preferred_name,
-                      story.created_at
-                    );
-                  }}
-                >
-                  <p
-                    style={{ marginBottom: 6, textTransform: "capitalize" }}
-                    className="make-me-dark"
-                  >
-                    <b>
-                      {story.title.length > 30
-                        ? story.title.substring(0, 25) + "..."
-                        : story.title}
-                    </b>
-                  </p>
-                  <small className="story-name" style={{ fontSize: "69%" }}>
-                    {creatorName}
-                  </small>
-                  <small
-                    className="m-label round-me"
-                    style={{ fontSize: "69%" }}
-                  >
-                    {date}
-                  </small>
-                  <p style={{ fontSize: "medium" }} className="make-me-dark">
-                    {body}
-                  </p>
-
-                  {story.action ? (
-                    <div>
-                      <small style={{ color: "lightgray" }}>
-                        This testimonial is about
-                      </small>
-                      <br />
-                      <Link
-                        to={`${this.props.links.actions}/${story.action.id}`}
-                        className="testi-anchor"
-                      >
-                        {story.action.title > 70
-                          ? story.action.title.substring(0, 70) + "..."
-                          : story.action.title}
-                      </Link>
-                    </div>
-                  ) : null}
-                  {this.renderMoreBtn(
-                    story.body,
-                    story.id,
-                    story.title,
-                    story.file,
-                    story.anonymous,
-                    story.preferred_name,
-                    story.created_at
-                  )}
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       );
     });

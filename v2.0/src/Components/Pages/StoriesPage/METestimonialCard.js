@@ -89,10 +89,10 @@ export default class METestimonialCard extends Component {
     return (
       <div>
         <MECard
-          style={{ padding: 0, position: "relative", borderRadius:15 }}
-          className={`${this.getAnimationClass()} ${className}`}
+          style={{ padding: 0, position: "relative", borderRadius: 15 }}
+          className={`${this.getAnimationClass()} ${className} phone-vanish`}
           // onClick={this.handleReadMore}
-          to = {`${this.props.links.testimonials}/${id}`}
+          to={`${this.props.links.testimonials}/${id}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">
@@ -141,6 +141,52 @@ export default class METestimonialCard extends Component {
               </div>
             </div>
           </div>
+        </MECard>
+
+        {/* ------ PHONE MODE -------- */}
+
+        <MECard
+          to={`${this.props.links.testimonials}/${id}`}
+          className="pc-vanish"
+          style={{
+            padding: 0,
+            position: "relative",
+            minHeight: 70,
+            marginLeft: 10,
+            borderRadius: 6,
+            marginBottom: 0,
+          }}
+        >
+          <img
+            src={this.getPhoto()}
+            style={{
+              display: "inline-block",
+              width: 80,
+              height: "100%",
+              objectFit: "cover",
+              position: "absolute",
+              backgroundRepeat: "no-repeat",
+              top: 0,
+              left: 0,
+              borderRadius: 6,
+            }}
+          />
+
+          <METextView
+            containerStyle={{
+              width: "70%",
+              marginLeft: "30%",
+
+              padding: "7",
+            }}
+            style={{ color: "#282828", fontSize: "15px" }}
+          >
+            {title}
+            <br />
+            <small>
+              <b>By {preferred_name ? preferred_name : "..."}</b>
+            </small>
+          </METextView>
         </MECard>
       </div>
     );
