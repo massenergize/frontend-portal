@@ -86,14 +86,25 @@ class PhotoSensitiveAction extends React.Component {
   checkTodoAndReturn() {
     if (!this.props.user) {
       return (
-        <Tooltip text="Sign in to make a TODO list">
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode"
-            style={{ marginLeft: 10 }}
-          >
-            To Do
-          </p>
-        </Tooltip>
+        <>
+          <Tooltip text="Sign in to make a TODO list">
+            <p
+              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode phone-vanish"
+              style={{ marginLeft: 10, padding: "7px 20px" }}
+            >
+              To Do
+            </p>
+          </Tooltip>
+          {/* -------- PHONE MODE --------------- */}
+          <Tooltip text="Sign in to make a TODO list">
+            <p
+              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode pc-vanish"
+              style={{ marginLeft: 3, padding: "5px 13px" }}
+            >
+              To Do
+            </p>
+          </Tooltip>
+        </>
       );
     }
     if (this.checkDone()) {
@@ -189,14 +200,25 @@ class PhotoSensitiveAction extends React.Component {
   checkDoneAndReturn() {
     if (!this.props.user) {
       return (
-        <Tooltip text="Sign in to mark actions as completed">
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode"
-            style={{ margin: 6, marginLeft: 10 }}
-          >
-            Done
-          </p>
-        </Tooltip>
+        <>
+          <Tooltip text="Sign in to mark actions as completed">
+            <p
+              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode phone-vanish"
+              style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
+            >
+              Done
+            </p>
+          </Tooltip>
+          {/* ------- PHONE BTN --------- */}
+          <Tooltip text="Sign in to mark actions as completed">
+            <p
+              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode pc-vanish"
+              style={{ margin: 6, marginLeft: 3, padding: "5px 13px" }}
+            >
+              Done
+            </p>
+          </Tooltip>
+        </>
       );
     }
     if (this.checkDone()) {
