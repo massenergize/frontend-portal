@@ -630,11 +630,10 @@ class ProfilePage extends React.Component {
 
     return Object.keys(teams).map((key) => {
       const team = teams[key];
-
       return (
         <div key={key}>
           <MECard
-            to={`${this.props.links.teams + "/" + team.id} `}
+            to={`${inThisCommunity(team) ? (this.props.links.teams + "/" + team.id) : ("#")} `}
             style={{
               borderRadius: 10,
             }}
@@ -656,7 +655,7 @@ class ProfilePage extends React.Component {
                 icon="fa fa-users"
                 mediaType="icon"
               >
-                {team.name}
+                {"* " + team.name}
               </METextView>
             )}
             {team.tagline && (
