@@ -179,12 +179,36 @@ class ServicesPage extends React.Component {
       return (
         <div key={index.toString()}>
           <MECard
-          style={{borderRadius:10}}
-            className="me-vendor-card me-anime-move-from-left"
+            style={{ borderRadius: 10 }}
+            className="me-vendor-card me-anime-move-from-left phone-vanish"
             to={`${this.props.links.services}/${vendor.id}`}
           >
             <img
               className="me-vendor-img"
+              src={vendor.logo ? vendor.logo.url : notFound}
+              alt={vendor.name}
+            />
+            <METextView style={{ color: "black", textTransform: "capitalize" }}>
+              {" "}
+              {vendor.name}
+            </METextView>
+          </MECard>
+
+          {/*  ------ PHONE VENDOR CARD ------------- */}
+          <MECard
+            style={{
+              borderRadius: 5,
+              border: "solid 0px #8ec344",
+              borderLeftWidth: 6,
+              padding: "20px 20px"
+            }}
+            className=" me-anime-move-from-left pc-vanish"
+            to={`${this.props.links.services}/${vendor.id}`}
+          
+          >
+            <img
+              className="me-vendor-img"
+              style={{ minHeight: 60 }}
               src={vendor.logo ? vendor.logo.url : notFound}
               alt={vendor.name}
             />

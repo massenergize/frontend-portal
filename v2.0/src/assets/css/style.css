@@ -367,7 +367,7 @@ textarea {
   padding: 0 3px;
   margin-left: 2px;
   transition: all 0.5s cubic-bezier(0.4, 0, 1, 1);
-  font-size: 12px !important;
+  font-size: 12px;
 }
 
 .thm-btn.style-4.red {
@@ -7847,11 +7847,21 @@ span.has-tooltip {
   text-align: center;
 } */
 
+.float-testimonial-btn{
+  position: fixed;
+  right: -3px;
+  top: 130px;
+  border-bottom-right-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  z-index:3;
+}
+
 .action-img-correction {
   width: 70% !important;
  height:140px; 
  object-fit: contain;
  border-radius: 10px;;
+ cursor:pointer;
 }
 .action-background-card {
   /* height: 360px; */
