@@ -1,6 +1,7 @@
 {
   "IS_LOCAL": true,
   "IS_PROD": false,
-  "IS_SANDBOX": false,
-  "BUILD_VERSION": "3.0.11"
+  "IS_CANARY": false,
+  "IS_SANDBOX": true,
+  "BUILD_VERSION": "3.0.13"
 }

@@ -55,7 +55,8 @@ class StoriesPage extends React.Component {
     const stories = this.props.stories;
     const values = this.state.check_values ? this.state.check_values : [];
 
-    if (values.length == 0) return null;
+    if (values.length === 0)
+      return null;
 
     const common = [];
     if (stories) {

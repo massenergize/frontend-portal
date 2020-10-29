@@ -72,7 +72,7 @@ class ActionsPage extends React.Component {
   findCommon() {
     const actions = this.props.actions;
     const values = this.state.check_values ? this.state.check_values : [];
-    if (values.length == 0)
+    if (values.length === 0)
       return null;
 
     const common = [];

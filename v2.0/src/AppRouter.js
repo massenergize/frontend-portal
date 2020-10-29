@@ -249,7 +249,7 @@ class AppRouter extends Component {
       };
       menu[1] = newAction;
     }
-    const actionsIndex = menu.findIndex((item) => item.name == "Actions");
+    const actionsIndex = menu.findIndex((item) => item.name === "Actions");
     const menuPostActions = menu.splice(actionsIndex+1);
     menu = [...menu.splice(0,actionsIndex+1), {link: "/teams", name: "Teams"},...menuPostActions];
     return menu;
