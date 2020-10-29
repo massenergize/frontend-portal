@@ -16,6 +16,7 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": False,
+      "IS_CANARY": False,
       "IS_SANDBOX": False,
       "BUILD_VERSION": generate_new_build_number(target)
     }
@@ -25,6 +26,7 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": False,
+      "IS_CANARY": False,
       "IS_SANDBOX": True,
       "BUILD_VERSION": generate_new_build_number(target)
     }
@@ -33,6 +35,7 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": True,
+      "IS_CANARY": False,
       "IS_SANDBOX": False,
       "BUILD_VERSION": generate_new_build_number(target)
     }
@@ -41,6 +44,23 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": True,
+      "IS_SANDBOX": True,
+      "BUILD_VERSION": generate_new_build_number(target)
+    }
+  elif target == 'canary':
+    return {
+      "IS_LOCAL": is_local,
+      "IS_PROD": False,
+      "IS_CANARY": True,
+      "IS_SANDBOX": False,
+      "BUILD_VERSION": generate_new_build_number(target)
+    }
+
+  elif target == 'canary-sandbox':
+    return {
+      "IS_LOCAL": is_local,
+      "IS_PROD": False,
+      "IS_CANARY": True,
       "IS_SANDBOX": True,
       "BUILD_VERSION": generate_new_build_number(target)
     }
@@ -100,7 +120,7 @@ def generate_config(target, is_local, is_deploy):
     write_json_contents(BUILD_VERSION_PATH, build_versions )
 
   if success:
-    return (f'Running ON {"PROD" if new_config.get("IS_PROD") else "DEV" }, \
+    return (f'Running ON {target.capitalize()}, \
       Local={new_config.get("IS_LOCAL") }', True)
   return ('Updating Config Failed!', False)
 
