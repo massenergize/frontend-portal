@@ -236,7 +236,9 @@ class TeamInfoModal extends React.Component {
     if (!data || data.isNotComplete) return;
 
     // stay in the same is_published state
-    data = { ...data, is_published: team.is_published };
+    if (team) {
+      data = { ...data, is_published: team.is_published };
+    }
 
     this.setState({
       notification: {
