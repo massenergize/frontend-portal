@@ -126,7 +126,7 @@ class ActionsPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
-        <MEModal closeModal={this.closeModal} contentStyle={{minWidth:"100%"}}>
+        <MEModal closeModal={this.closeModal} size="md" contentStyle={{minWidth:"100%"}}>
           <ActionModal 
             content={this.state.modal_content} 
             user={this.props.user}

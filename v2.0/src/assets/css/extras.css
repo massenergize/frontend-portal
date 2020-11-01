@@ -358,7 +358,8 @@
   padding: 20px 25rem !important;
 }
 .me-modal-md {
-  padding: 20px 17rem !important;
+  padding: 20px 7rem !important;
+  min-width: 575px;
 }
 
 .me-close:hover {
@@ -1333,7 +1334,7 @@
   padding: 0px;
   position: absolute;
   top: -65px;
-  left: 28px;
+  left: 5px;
   background: white;
 }
 

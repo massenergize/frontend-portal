@@ -33,7 +33,7 @@ class ActionModal extends Component {
           </h5>
 
           <small> {this.props.user.full_name}'s Actions </small> <small className="m-label round-me mob-line-break">{date}</small>
-          <div style={{ marginTop: -20, position:"relative"}}>
+          <div style={{ marginTop: -20, padding: '1em', position:"relative"}}>
             {!this.props.content.image ? (
               <img
                 className="testi-green-monster mob-modal-pic-tweak z-depth-float "
@@ -49,7 +49,7 @@ class ActionModal extends Component {
             )}
             <br></br>
 
-            {/* <ul style={{ textAlign: "center", listStyle: "none", display: "inline", columns: 2,  webkitColumns: 2, mozColumns: 2}}>
+            {/* <ul style={{ textAlign: "center", listStyle: "none", display: "inline", columns: 2}}>
               <li style={{display: "inline", margin: "0 5em 0 0"}}>  </li>
               <li style={{display: "inline"}}> Adding Action to your {this.props.status} list! </li>
             </ul> */}

@@ -133,7 +133,7 @@ class ChooseHHForm extends React.Component {
     // )); 
     return (
       <MECheckBoxGroup
-        style={{ display: "inline", columns: 2, webkitColumns: 2, mozColumns: 2 }}
+        style={{ display: "inline", columns: 2}}
         fineTuneSquare={{ left: 7, bottom: 6 }}
         data={names}
         dataValues={values}
