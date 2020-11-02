@@ -53,30 +53,31 @@ export default class MECheckBoxGroup extends Component {
     if (!data || data.length === 0) return <span></span>;
 
     return data.map((child, key) => {
-      var squareActive = "",
-        dotActive = "";
-      if (this.checked(child)) {
-        squareActive = "me-check-square-active";
-        dotActive = "me-floating-check-active";
-      }
-      return (
-        <div
-          key={key}
-          className={`me-check-container ${className}`}
-          onClick={() => this.handleOnClick(child)}
-          style={{
-            position: "relative",
-            marginRight: 6,
-            cursor: "pointer",
-            ...style,
-          }}
-        >
-          <div className={`me-floating-check ${dotActive} `} style={fineTuneSquare}></div>
-          <div className={`me-check-square ${squareActive}`}></div>
-          <span>{child}</span>
-        </div>
-      );
-    });
+          var squareActive = "",
+            dotActive = "";
+          if (this.checked(child)) {
+            squareActive = "me-check-square-active";
+            dotActive = "me-floating-check-active";
+          }
+          return (
+            <div
+              key={key}
+              className={`me-check-container ${className}`}
+              onClick={() => this.handleOnClick(child)}
+              style={{
+                position: "relative",
+                marginRight: 6,
+                cursor: "pointer",
+                ...style,
+              }}
+            >
+              <div className={`me-floating-check ${dotActive} `} style={fineTuneSquare}></div>
+              <div className={`me-check-square ${squareActive}`}></div>
+              <span>{child}</span>
+            </div>
+          );
+        }
+    );
   }
   render() {
     return <div>{this.ejectChildren()}</div>;
