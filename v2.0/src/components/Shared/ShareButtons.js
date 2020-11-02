@@ -24,7 +24,7 @@ function ShareButtons(props) {
       <TwitterShareButton className="me-social z-depth-1" url={url} title={text} hashtags={["MassEnergize", "Sustainability", "CleanEnergy"]}>
         <TwitterIcon size={50} round />
       </TwitterShareButton>
-      <EmailShareButton className="me-social z-depth-1" url={url} subject={pageTitle} body={pageDescription}>
+      <EmailShareButton className="me-social z-depth-1" url={url} subject={pageTitle} body={pageDescription} openShareDialogOnClick onClick={e => e.preventDefault()}>
         <EmailIcon size={50} round />
       </EmailShareButton>
     </div>
