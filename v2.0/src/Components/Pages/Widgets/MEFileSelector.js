@@ -36,6 +36,8 @@ class MEFileSelector extends Component {
 
     this.toggleCropperModal = this.toggleCropperModal.bind(this);
     this.removeImage = this.removeImage.bind(this);
+    this.initiateCropping = this.initiateCropping.bind(this);
+    this.searchForImage = this.searchForImage.bind(this);
     this.handleCropClick = this.handleCropClick.bind(this);
   }
 
@@ -52,22 +54,40 @@ class MEFileSelector extends Component {
     );
     return reader.readAsDataURL(file);
   }
+  shipProcessedFile(original, processedFile) {
+    const { onFileSelected } = this.props;
+    if (!onFileSelected) return;
+    const originalSize = this.getFileSize(original);
+    const newSize = this.getFileSize(processedFile);
+    const toBeSent = {
+      originalFile: original,
+      originalSize: { size: original.size, text: originalSize },
+      croppedFile: processedFile,
+      croppedSize: { size: processedFile.size, text: newSize },
+      originalFileName: original.name,
+    };
+    onFileSelected(toBeSent, this.removeImage);
+    return;
+  }
   processUnCroppedFile(file) {
     const reader = new FileReader();
-    const _this = this;
     reader.onload = (e) => {
       const img = new Image();
       img.onload = (e) => {
-        console.log("you have obvisouly run");
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        canvas.height = img.height;
-        canvas.width = img.width;
-        ctx.drawImage(img, 0, 0);
+        canvas.width = img.width > 500 ? 500 : img.width;
+        canvas.height = canvas.width * (img.height/img.width);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         const data = canvas.toDataURL("image/jpeg");
-        const newFile = this.base64StringtoFile(data, "newImage");
-    
-        this.setState({ croppedImageUrl: data, file:newFile, showPrev:true });
+        const newFile = this.base64StringtoFile(data, file.name);
+        this.shipProcessedFile(file, newFile);
+        this.setState({
+          croppedImageUrl: data,
+          file: newFile,
+          showPrev: true,
+          original: file,
+        });
       };
       img.src = e.target.result;
     };
@@ -77,7 +97,6 @@ class MEFileSelector extends Component {
     e.preventDefault();
     const theFiles = e.target.files;
     if (!theFiles || theFiles.length < 1) return;
-    const { onFileSelected } = this.props;
     const file = theFiles[0];
     this.processUnCroppedFile(file);
     // this.readContentOfSelectedFile(file); //in base64 and save to the state as src
@@ -213,6 +232,13 @@ class MEFileSelector extends Component {
     return;
   }
 
+  initiateCropping(e) {
+    if (e) e.preventDefault();
+    const { original } = this.state;
+    this.readContentOfSelectedFile(original);
+    this.toggleCropperModal();
+  }
+
   removeImage(e) {
     if (e) e.preventDefault();
     const { onFileSelected } = this.props;
@@ -245,7 +271,10 @@ class MEFileSelector extends Component {
               style={{ marginBottom: 10 }}
             >
               Crop
-            </MEButton>
+            </MEButton><br/>
+            <small>
+              Hold and drag your cursor over the parts you wish to use
+            </small>
           </center>
           {source && (
             <div
@@ -301,21 +330,30 @@ class MEFileSelector extends Component {
             {/* ------------------------ PREVIEW IMAGE ------------------- */}
             {croppedImageUrl && showPrev && (
               <img
-                onClick={this.toggleCropperModal}
+                onClick={this.searchForImage}
                 alt="Your cropped  image"
                 style={{
                   maxWidth: "100%",
+                  maxHeight: 300,
                   borderRadius: 10,
                   cursor: "pointer",
                   ...previewStyle,
                 }}
-                className="z-depth-float"
+                className="z-depth-float me-anime-open-in"
                 src={croppedImageUrl}
               />
             )}
             <br />
-            <a href="#" onClick={this.removeImage}>
+            <a style={{ marginTop: 6 }} href="#" onClick={this.removeImage}>
               Remove Image
+            </a>
+            <br />
+            <a
+              style={{ marginTop: 6 }}
+              href="#"
+              onClick={this.initiateCropping}
+            >
+              Crop Image
             </a>
             <p style={{ margin: 15, color: "#d2cfcf" }}>{file.name}</p>
 
