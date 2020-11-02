@@ -103,10 +103,13 @@ class ProfilePage extends React.Component {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
 
+
     if (!this.props.user) {
+    // can this execute?      
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
     }
+
     const myHouseholds = this.props.user.households || [];
     const myCommunities = this.props.user.communities || [];
 
@@ -118,6 +121,8 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+
+    /* This is not where communities get automatically added!
     if (this.props.community) {
       if (
         myCommunities.filter((com) => {
@@ -127,6 +132,8 @@ class ProfilePage extends React.Component {
         this.addDefaultCommunity();
       }
     }
+    */
+
     const { user } = this.props;
     return (
       <>

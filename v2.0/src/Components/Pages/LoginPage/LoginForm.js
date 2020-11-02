@@ -245,6 +245,7 @@ class LoginFormBase extends React.Component {
     }
     console.log("fetch and login failed");
     this.props.tryingToLogin(false);
+    window.localStorage.setItem("reg_protocol", "show");
     return false;
   };
 
