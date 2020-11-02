@@ -16,7 +16,7 @@ import MEModal from "./MEModal";
  * @prop {Number} maxWidth maximum width of the crop frame
  * @prop {Number} maxHeight of the crop frame
  * @prop {Object} previewStyle | normal css style for the preview image tag
- * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal 
+ * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal
  * should show | default = true
  * @prop {String} modalContainerClassName Just classnames that should be attached on to the cropping modal
  */
@@ -50,6 +50,27 @@ class MEFileSelector extends Component {
     reader.addEventListener("load", () =>
       this.setState({ src: reader.result })
     );
+    return reader.readAsDataURL(file);
+  }
+  processUnCroppedFile(file) {
+    const reader = new FileReader();
+    const _this = this;
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = (e) => {
+        console.log("you have obvisouly run");
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
+        const data = canvas.toDataURL("image/jpeg");
+        const newFile = this.base64StringtoFile(data, "newImage");
+    
+        this.setState({ croppedImageUrl: data, file:newFile, showPrev:true });
+      };
+      img.src = e.target.result;
+    };
     reader.readAsDataURL(file);
   }
   handleChange(e) {
@@ -58,9 +79,12 @@ class MEFileSelector extends Component {
     if (!theFiles || theFiles.length < 1) return;
     const { onFileSelected } = this.props;
     const file = theFiles[0];
-    this.readContentOfSelectedFile(file); //in base64 and save to the state as src
-    this.setState({ file }); // the a version of the same selected in the format of a FileObject
-    this.toggleCropperModal();
+    this.processUnCroppedFile(file);
+    // this.readContentOfSelectedFile(file); //in base64 and save to the state as src
+    // the a version of the same selected in the format of a FileObject
+
+    // this.setState({ file });
+    // this.toggleCropperModal();
     return;
   }
   toggleCropperModal() {
@@ -198,16 +222,22 @@ class MEFileSelector extends Component {
   }
   renderCroppingModal() {
     const { modal, src, crop } = this.state;
-    const { maxHeight, maxWidth, extSrc, modalContainerClassName , showOverlay} = this.props;
+    const {
+      maxHeight,
+      maxWidth,
+      extSrc,
+      modalContainerClassName,
+      showOverlay,
+    } = this.props;
     var source = src || extSrc;
     if (modal) {
       return (
         <MEModal
           closeModal={this.toggleCropperModal}
           style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-          contentStyle={{top:"20vh", width:"100%",left:0}}
-          containerClassName = {modalContainerClassName}
-          showOverlay = {showOverlay}
+          contentStyle={{ top: "20vh", width: "100%", left: 0 }}
+          containerClassName={modalContainerClassName}
+          showOverlay={showOverlay}
         >
           <center>
             <MEButton
@@ -246,7 +276,7 @@ class MEFileSelector extends Component {
   }
   switchStates() {
     const { file, croppedImageUrl, showPrev } = this.state;
-    const { previewStyle, defaultValue,name } = this.props;
+    const { previewStyle, defaultValue, name } = this.props;
 
     if (!file && defaultValue) {
       return (
@@ -254,7 +284,7 @@ class MEFileSelector extends Component {
           <img
             src={defaultValue}
             alt={`${name} image`}
-          onClick={(e) => this.searchForImage(e)}
+            onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
           />
           <br />
@@ -319,6 +349,7 @@ class MEFileSelector extends Component {
     const { style, className } = this.props;
     return (
       <div style={{ position: "relative", ...style }} className={className}>
+        {/* <img src={this.state.croppedImageUrl} /> */}
         <div className="g-uploader-container">{this.switchStates()}</div>
         <input
           type="file"
@@ -342,7 +373,7 @@ MEFileSelector.propTypes = {
   maxHeight: PropTypes.number,
   maxWidth: PropTypes.number,
   previewStyle: PropTypes.object,
-  modalContainerClassName:PropTypes.string,
+  modalContainerClassName: PropTypes.string,
   showOverlay: PropTypes.bool,
 };
 MEFileSelector.defaultProps = {
@@ -354,7 +385,7 @@ MEFileSelector.defaultProps = {
   maxHeight: 300,
   maxWidth: 300,
   previewStyle: {},
-  modalContainerClassName:"",
-  showOverlay:true,
+  modalContainerClassName: "",
+  showOverlay: true,
 };
 export default MEFileSelector;
