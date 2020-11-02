@@ -132,15 +132,17 @@ class ChooseHHForm extends React.Component {
     //   />
     // )); 
     return (
-      <MECheckBoxGroup
-        style={{ display: "inline", columns: 2}}
-        fineTuneSquare={{ left: 7, bottom: 6 }}
-        data={names}
-        dataValues={values}
-        value={stateChoices ? stateChoices : []}
-        name="hhchoice"
-        onItemSelected={this.onChange}
-      />
+      <div style={{columns: 3, textAlign: "left"}}>
+        <MECheckBoxGroup
+          // style={{ height: 400 }}
+          fineTuneSquare={{ left: 7, bottom: 6 }}
+          data={names}
+          dataValues={values}
+          value={stateChoices ? stateChoices : []}
+          name="hhchoice"
+          onItemSelected={this.onChange}
+        />
+      </div>
     );
   
   }
