@@ -132,7 +132,7 @@ class ChooseHHForm extends React.Component {
     //   />
     // )); 
     return (
-      <div style={{columns: 3, textAlign: "left"}}>
+      <div style={{columns: 3, textAlign: "left", maxWidth: '80%', alignContent: 'center'}}>
         <MECheckBoxGroup
           // style={{ height: 400 }}
           fineTuneSquare={{ left: 7, bottom: 6 }}
