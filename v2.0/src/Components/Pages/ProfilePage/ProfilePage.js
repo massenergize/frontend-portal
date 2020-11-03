@@ -662,7 +662,7 @@ class ProfilePage extends React.Component {
                 icon="fa fa-users"
                 mediaType="icon"
               >
-                {"* " + team.name}
+                {team.name + " *"}
               </METextView>
             )}
             {team.tagline && (
