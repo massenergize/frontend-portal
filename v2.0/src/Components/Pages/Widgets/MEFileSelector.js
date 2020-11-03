@@ -77,7 +77,7 @@ class MEFileSelector extends Component {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         canvas.width = img.width > 500 ? 500 : img.width;
-        canvas.height = canvas.width * (img.height/img.width);
+        canvas.height = canvas.width * (img.height / img.width);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         const data = canvas.toDataURL("image/jpeg");
         const newFile = this.base64StringtoFile(data, file.name);
@@ -125,7 +125,6 @@ class MEFileSelector extends Component {
    * @param {*} image
    */
   onImageLoaded = (image) => {
-    const { ratioHeight, ratioWidth } = this.props;
     this.imageRef = image;
     return false;
   };
@@ -258,53 +257,69 @@ class MEFileSelector extends Component {
     var source = src || extSrc;
     if (modal) {
       return (
-        <MEModal
-          closeModal={this.toggleCropperModal}
-          style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-          contentStyle={{ top: "20vh", width: "100%", left: 0 }}
-          containerClassName={modalContainerClassName}
-          showOverlay={showOverlay}
-        >
-          <center>
-            <MEButton
-              onClick={this.handleCropClick}
-              style={{ marginBottom: 10 }}
-            >
-              Crop
-            </MEButton><br/>
-            <small>
-              Hold and drag your cursor over the parts you wish to use
-            </small>
-          </center>
-          {source && (
-            <div
-              style={{
-                width: "60%",
-                display: "inline",
-                marginTop: 20,
-                maxHeight: 250,
-                overflowY: "scroll",
-              }}
-            >
-              <center>
-                <ReactCrop
-                  src={src}
-                  crop={crop}
-                  onImageLoaded={this.onImageLoaded}
-                  onComplete={this.onCropComplete}
-                  onChange={(newCrop) => this.whenCropChanges(newCrop)}
-                  maxWidth={maxWidth}
-                  maxHeight={maxHeight}
-                />
-              </center>
-            </div>
-          )}
-        </MEModal>
+        <>
+          {/* // <MEModal
+        //   closeModal={this.toggleCropperModal}
+        //   style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
+        //   contentStyle={{ top: "20vh", width: "100%", left: 0 }}
+        //   containerClassName={modalContainerClassName}
+        //   showOverlay={showOverlay}
+        // > */}
+          <div className="me-anime-open-in">
+            <center>
+              <MEButton
+                onClick={this.handleCropClick}
+                style={{ marginBottom: 10 }}
+              >
+                Crop
+              </MEButton>
+              <br />
+              <small>
+                Hold and drag your cursor over the parts you wish to use
+              </small>
+              <br />
+              <a
+                href="#"
+                style={{ margin: 15 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleCropperModal();
+                }}
+              >
+                Cancel Cropping
+              </a>
+            </center>
+            {source && (
+              <div
+                style={{
+                  width: "60%",
+                  display: "inline",
+                  marginTop: 20,
+                  maxHeight: 250,
+                  overflowY: "scroll",
+                }}
+              >
+                <center>
+                  <ReactCrop
+                    src={src}
+                    crop={crop}
+                    onImageLoaded={this.onImageLoaded}
+                    onComplete={this.onCropComplete}
+                    onChange={(newCrop) => this.whenCropChanges(newCrop)}
+                    maxWidth={maxWidth}
+                    maxHeight={maxHeight}
+                  />
+                </center>
+              </div>
+            )}
+          </div>
+          {/* </MEModal>  */}
+        </>
       );
     }
   }
   switchStates() {
-    const { file, croppedImageUrl, showPrev } = this.state;
+    const { file, croppedImageUrl, showPrev, modal } = this.state;
     const { previewStyle, defaultValue, name } = this.props;
 
     if (!file && defaultValue) {
@@ -322,10 +337,13 @@ class MEFileSelector extends Component {
       );
     }
 
+    if (file && modal) {
+      return this.renderCroppingModal();
+    }
+
     if (file) {
       return (
         <div>
-          {this.renderCroppingModal()}
           <center>
             {/* ------------------------ PREVIEW IMAGE ------------------- */}
             {croppedImageUrl && showPrev && (
