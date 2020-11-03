@@ -299,18 +299,22 @@ class OneActionPage extends React.Component {
       // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-1 ">
+          <p
+            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-1 me-anime-open-in"
+          >
             To Do
           </p>
         </CustomTooltip>
       );
     }
-    if (exists) { 
+    if (exists) {
       // show this button if the action has already been added to the todo list
       return (
         <CustomTooltip text="Thank you for adding this. Click again to remove.">
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me z-depth-1"
+            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me z-depth-1 me-anime-open-in"
+            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
             onClick={() => {
               this.setState({ showTodoMsg: false });
               this.removeFromCart(this.actionIsInTodo());
@@ -325,15 +329,17 @@ class OneActionPage extends React.Component {
       return (
         <CustomTooltip text="Add this to your TODO list">
           <MEButton
-            style={{ padding: "7px 14px", fontSize: 14 }}
+            className="phone-vanish me-anime-open-in"
+            style={{ padding: "5px 14px", fontSize:14 }}
             variation="accent"
-            // mediaType="icon"
-            // icon="fa fa-edit"
-            // className={
-            //   this.state.status === "TODO"
-            //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
-            //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
-            // }
+            onClick={() => this.openForm("TODO")}
+          >
+            To Do
+          </MEButton>
+          <MEButton
+          className="pc-vanish me-anime-open-in"
+            style={{ padding: "5px 20px", fontSize:14 }}
+            variation="accent"
             onClick={() => this.openForm("TODO")}
           >
             To Do
@@ -354,28 +360,35 @@ class OneActionPage extends React.Component {
       return (
         <CustomTooltip text="Thanks for adding, click again to remove.">
           <p
-            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1"
+            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 me-anime-open-in"
+            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
             onClick={() => {
               this.setState({ showTestimonialLink: false });
               this.removeFromCart(this.actionIsDone());
             }}
           >
-            Done 
+            Done
           </p>
         </CustomTooltip>
       );
     } else {
-        return (
+      return (
         <CustomTooltip text="Mark as Done, if you've done this">
           <MEButton
-            style={{ padding: "7px 14px", fontSize: 14 }}
-            // mediaType="icon"
-            // icon="fa fa-check"
-            // className={
-            //   this.state.status === "DONE"
-            //     ? "thm-btn style-4 selected action-btns cool-font  mob-font line-me green-done-it-correction"
-            //     : "thm-btn style-4 action-btns  cool-font mob-font line-me green-done-it-correction"
-            // }
+            className="phone-vanish me-anime-open-in"
+            style={{ padding: "5px 14px", fontSize: 14 }}
+            onClick={() => {
+              this.openForm("DONE");
+              this.setState({ showTodoMsg: false });
+            }}
+          >
+            {" "}
+            Done
+          </MEButton>
+          {/*  ---- PHONE MODE ------- */}
+          <MEButton
+            className="pc-vanish me-anime-open-in"
+            style={{ padding: "5px 20px", fontSize: 14 }}
             onClick={() => {
               this.openForm("DONE");
               this.setState({ showTodoMsg: false });
@@ -462,7 +475,14 @@ class OneActionPage extends React.Component {
                     <div className="btn-envelope">
                       {!this.props.user ? (
                         <CustomTooltip text="Sign in to make a TODO list">
-                          <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1">
+                          <p
+                            className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1"
+                            style={{
+                              margin: 6,
+                              marginLeft: 10,
+                              padding: "7px 20px",
+                            }}
+                          >
                             ToDo
                           </p>
                         </CustomTooltip>
@@ -472,7 +492,14 @@ class OneActionPage extends React.Component {
                       &nbsp;
                       {!this.props.user ? (
                         <CustomTooltip text="Sign in to mark actions as completed">
-                          <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1">
+                          <p
+                            className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1"
+                            style={{
+                              margin: 6,
+                              marginLeft: 10,
+                              padding: "7px 20px",
+                            }}
+                          >
                             Done
                           </p>
                         </CustomTooltip>

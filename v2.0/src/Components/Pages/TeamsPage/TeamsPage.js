@@ -12,6 +12,7 @@ import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
+import METextView from "../Widgets/METextView";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -145,6 +146,18 @@ class TeamsPage extends React.Component {
                     className="teams-search"
                   />
                 </div>
+                <METextView
+                  type="small"
+                  className="pc-vanish"
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: 13,
+                    color: "#6f3333",
+                  }}
+                >
+                  Starting a team is not yet available in phone mode. Visit the
+                  site on pc to be able to create a team
+                </METextView>
                 <div
                   className="col-3"
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
@@ -155,6 +168,7 @@ class TeamsPage extends React.Component {
                     onClick={() => {
                       this.setState({ createTeamModalOpen: true });
                     }}
+                    className="phone-vanish"
                   >
                     Start Team
                   </MEButton>
