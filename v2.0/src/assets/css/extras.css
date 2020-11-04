@@ -116,13 +116,13 @@
 }
 .me-testimonial-about {
   display: flex;
-  border: dashed 0px #d6d6d6;
+  border: solid 0px #f5f5f5;
   /* border-top-width:2px;  */
   border-bottom-width: 2px;
   padding: 15px;
-  /* color:#615c5c; */
-  color: white;
-  background: linear-gradient(to right, #ea5b08, #ffc107);
+  color: black;
+  /* background: linear-gradient(to right, #ea5b08, #ffc107); */
+  background:#fbfbfb; 
 }
 .me-testimonial-content-box {
   /* padding:15px;  */
