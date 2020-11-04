@@ -94,7 +94,7 @@ export default class METestimonialCard extends Component {
           <img src={this.getPhoto()} className="me-testimonial-img" />
           <div className="me-testimonial-content-box">
             <div className="me-testimonial-about">
-              <small style={{ fontSize: 15 }}>
+              <small style={{ fontSize: 17 }}>
                 <b>
                   {this.getEventTitle()}
                   {/* <br />
