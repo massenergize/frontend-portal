@@ -13,7 +13,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import firebase from "./config/firebaseConfig";
-import { IS_PROD } from "./config";
+import { IS_PROD, IS_CANARY } from "./config";
 
 //react redux firebase configure
 const rrfConfig = { userProfile: "users", firebaseStateName: "firebase" };
@@ -24,7 +24,7 @@ const rrfProps = {
   dispatch: store.dispatch,
 };
 
-const SENTRY_DSN = IS_PROD
+const SENTRY_DSN = IS_PROD || IS_CANARY
   ? "https://92581929e77e4312b27864e5b5c6a16e@o415460.ingest.sentry.io/5306611"
   : "https://987764a913714e0eba38e95c6d73fd52@o415460.ingest.sentry.io/5306642";
 Sentry.init({ dsn: SENTRY_DSN });

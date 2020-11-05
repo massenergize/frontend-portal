@@ -103,10 +103,13 @@ class ProfilePage extends React.Component {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
 
+
     if (!this.props.user) {
+    // can this execute?      
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
     }
+
     const myHouseholds = this.props.user.households || [];
     const myCommunities = this.props.user.communities || [];
 
@@ -118,6 +121,8 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+
+    /* This is not where communities get automatically added!
     if (this.props.community) {
       if (
         myCommunities.filter((com) => {
@@ -127,6 +132,8 @@ class ProfilePage extends React.Component {
         this.addDefaultCommunity();
       }
     }
+    */
+
     const { user } = this.props;
     return (
       <>
@@ -417,27 +424,23 @@ class ProfilePage extends React.Component {
                     marginTop: 90,
                     height: "fit-content",
                   }}
-                >
-                  {/* <h3 className="col-12 text-right">
-                                        <SignOutButton style={{ display: 'inline-block' }} />
-                                    </h3>
-                                    <br /> */}
-                  {/* ---- REMOVE THIS WHEN YOU ARE DONE ----- */}
-                  {true ? (
-                    <Cart
-                      title="To Do List"
-                      actionRels={this.props.todo ? this.props.todo.reverse() :[]}
-                      status="TODO"
-                    />
-                  ) : null}
+                >           
                   {this.props.done ? (
                     <Cart
                       title="Completed Actions"
-                      actionRels={this.props.done ? this.props.done.reverse() :[]}
+                      actionRels={this.props.done ? this.props.done :[]}
                       status="DONE"
                     />
                   ) : null}
-                  {this.props.rsvps ? (
+                  {true ? (
+                    <Cart
+                      title="To Do List"
+                      actionRels={this.props.todo ? this.props.todo :[]}
+                      status="TODO"
+                    />
+                  ) : null}
+                 
+                  {/* {this.props.rsvps ? (
                     <EventCart
                       title="Event RSVPs"
                       eventRSVPs={this.props.rsvps.filter(
@@ -446,7 +449,7 @@ class ProfilePage extends React.Component {
                           rsvp.attendee.id === this.props.user.id
                       )}
                     />
-                  ) : null}
+                  ) : null} */}
                   <center>
                     <MEButton
                       onClick={() => this.setState({ printing: true })}
@@ -634,11 +637,10 @@ class ProfilePage extends React.Component {
 
     return Object.keys(teams).map((key) => {
       const team = teams[key];
-
       return (
         <div key={key}>
           <MECard
-            to={`${this.props.links.teams + "/" + team.id} `}
+            to={`${inThisCommunity(team) ? (this.props.links.teams + "/" + team.id) : ("#")} `}
             style={{
               borderRadius: 10,
             }}
@@ -660,7 +662,7 @@ class ProfilePage extends React.Component {
                 icon="fa fa-users"
                 mediaType="icon"
               >
-                {team.name}
+                {team.name + " *"}
               </METextView>
             )}
             {team.tagline && (
