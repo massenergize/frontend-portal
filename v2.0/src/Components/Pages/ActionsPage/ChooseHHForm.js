@@ -1,9 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
+import {
+  reduxRemoveFromDone,
+  reduxRemoveFromTodo,
+} from "../../../redux/actions/userActions";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MEButton from "../Widgets/MEButton";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import MERadio from "../Widgets/MERadio";
+import { apiCall } from "./../../../api/functions";
 
 /********************************************************************/
 /**                        RSVP FORM                               **/
@@ -16,6 +21,7 @@ class ChooseHHForm extends React.Component {
     this.state = {
       error: null,
       choice: null,
+      toBeRemoved: [],
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -43,7 +49,7 @@ class ChooseHHForm extends React.Component {
         {this.props.open ? (
           <div>
             {this.state.error ? (
-              <p className="text-danger"> {this.state.error} </p>
+              <p style={{ color: "#e89898" }}> {this.state.error} </p>
             ) : null}
             <form onSubmit={this.handleSubmit} style={{ paddingBottom: 10 }}>
               {this.renderRadios(this.props.user.households)}
@@ -80,6 +86,25 @@ class ChooseHHForm extends React.Component {
     );
   }
 
+  removeFromCart = (actionRel) => {
+    if (!actionRel) return;
+    const status = actionRel.status;
+    apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(
+      (json) => {
+        if (json.success) {
+          if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
+          if (status === "DONE") {
+            this.props.done.filter((item) => item.id !== actionRel.id);
+            this.props.reduxRemoveFromDone(actionRel);
+            //this.props.reduxLoadDone(remainder);
+          }
+        }
+      }
+    );
+  };
+
+
+
   handleSubmit = (event) => {
     const houses = this.props.user.households;
     var choices = this.state.choice;
@@ -114,10 +139,40 @@ class ChooseHHForm extends React.Component {
         }
       });
     }
-    // this.setState({
-    //   choice: null
-    // });
+
+    this.removeHouseholdsThatWereUnselected();
+    this.props.closeForm();
   };
+
+  findTodoOrDoneItem(householdID, status) {
+    var { aid, todo, done } = this.props;
+    todo = todo || [];
+    done = done || [];
+    if (status === "DONE") {
+      const found = done.filter(
+        (item) =>
+          item.action.id === aid && item.real_estate_unit.id === householdID
+      )[0];
+      return found;
+    } else {
+      const found = todo.filter(
+        (item) =>
+          item.action.id === aid && item.real_estate_unit.id === householdID
+      )[0];
+      return found;
+    }
+    return null;
+  }
+  removeHouseholdsThatWereUnselected() {
+    // check the difference between the selected households on start and now, and remove the ones that the user unchecked
+    const { toBeRemoved } = this.state;
+    const { status, aid } = this.props;
+    // const left = choices && choices.filter( choice => !choicesOnStart.includes(choice));
+    toBeRemoved.forEach((choice) => {
+      const actionRel = this.findTodoOrDoneItem(choice, status);
+      this.removeFromCart(actionRel);
+    });
+  }
 
   checkForAlreadySelected() {
     const { status, done, todo, user, selectedAction, aid } = this.props;
@@ -129,52 +184,40 @@ class ChooseHHForm extends React.Component {
       (house) =>
         this.props.inCart(aid, house.id, status) && choice.push(house.id)
     );
-    this.setState({ choice });
-
+    this.setState({ choice, choicesOnStart: choice });
     return;
+  }
+  findAvailableHouses() {
+    var households = this.state.choice || [];
+    const housesAvailable = [];
+    const { status, aid } = this.props;
+    for (var i = 0; i < households.length; i++) {
+      var household = households[i];
+      if (
+        (status === "DONE" && !this.props.inCart(aid, household, "DONE")) ||
+        (status === "TODO" && !this.props.inCart(aid, household, "TODO"))
+      ) {
+        housesAvailable.push(household);
+      }
+    }
 
-    // console.log("I AM THE households", households);
-    // households.forEach((house) => {
-    //   var found;
-    //   if (status === "DONE") {
-    //     found = todo.filter((item) => {
-    //       console.log("LE ITEM", item);
-    //       if (
-    //         item.real_estate_unit.id === house.id &&
-    //         item.action.id === action.id
-    //       )
-    //         return item;
-    //     })[0];
-    //   } else if (status === "TODO") {
-    //     found = done.filter(
-    //       (item) =>
-    //         item.real_estate_unit.id === house.id &&
-    //         item.action.id === action.id
-    //     )[0];
-    //   }
-    //   if (found) all.push(found);
-    // });
-    // console.log("I AM THE ALL", all);
+    console.log("LE HOUSES", housesAvailable);
+    return housesAvailable;
   }
   renderRadios(households) {
+    const { status } = this.props;
     if (!households) return <div />;
-    // const filteredHH = households.filter(
-    //   (household) =>
-    //     (this.props.status === "DONE" &&
-    //       !this.props.inCart(this.props.aid, household.id, "DONE")) ||
-    //     (this.props.status === "TODO" &&
-    //       !this.props.inCart(this.props.aid, household.id))
-    // );
-    const names = getPropsArrayFromJsonArray(households, "name");
-    const values = getPropsArrayFromJsonArray(households, "id");
-    var stateChoices = this.state.choice;
-    // const checkboxes = names.map((name, index)  => (
-    //   <input
-    //       style={{type: "checkbox"}}
-    //       name={name}
-    //       id={values[index]}
-    //   />
-    // ));
+    var filteredHH = households;
+    if (status === "TODO") {
+      filteredHH = households.filter(
+        (household) => !this.props.inCart(this.props.aid, household.id, "DONE")
+      );
+    }
+    const names = getPropsArrayFromJsonArray(filteredHH, "name");
+    const values = getPropsArrayFromJsonArray(filteredHH, "id");
+    var stateChoices = this.state.choice || [];
+    // remove houses if action is already done  in the household
+
     return (
       <div
         style={{
@@ -208,12 +251,17 @@ class ChooseHHForm extends React.Component {
     }
   }
   //updates the state when form elements are changed
-  onChange(all) {
+  onChange(all, justSelected) {
+    const oldChoice = this.state.choice;
+    const rem = this.state.toBeRemoved || [];
     // var content = this.state.choice;
     // var init = [Number(value)];
     this.setState({
       error: null,
       choice: all,
+      toBeRemoved: oldChoice.includes(justSelected)
+        ? [...rem, justSelected]
+        : rem, // if the just selected item is inside the state already, it means the user just deselected, so add to removable
     });
   }
 
@@ -235,7 +283,7 @@ class ChooseHHForm extends React.Component {
       if (!this.state.error && !this.state.choice) {
         if (housesAvailable.length === 0) {
           this.setState({
-            error: `You have already added this action for all of your households`,
+            error: `You have  added this action for all of your households`,
           });
         } else {
           // this.setState({ choice: housesAvailable[0] });
@@ -251,4 +299,9 @@ const mapStoreToProps = (store) => {
   };
 };
 
-export default connect(mapStoreToProps, null)(ChooseHHForm);
+const mapDispatchToProps = {
+  reduxRemoveFromDone,
+  reduxRemoveFromTodo,
+};
+
+export default connect(mapStoreToProps, mapDispatchToProps)(ChooseHHForm);

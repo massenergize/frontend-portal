@@ -61,6 +61,7 @@ class ActionModal extends Component {
             </p>
 
             <ChooseHHForm
+              action={this.props.content}
               aid={this.props.content.id}
               status={this.props.status}
               open={true}
@@ -71,7 +72,6 @@ class ActionModal extends Component {
               inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
               moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
               closeForm={this.props.closeModal}
-              selectedAction={this.props.selectedAction}
             />
 
             <div
