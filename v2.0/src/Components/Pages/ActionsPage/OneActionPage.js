@@ -99,6 +99,7 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
     return (
       <>
+        {this.renderModal()}
         <Helmet>
           <meta property="og:title" content={action.title} />
           <meta
@@ -337,7 +338,7 @@ class OneActionPage extends React.Component {
             className="phone-vanish me-anime-open-in"
             style={{ padding: "5px 14px", fontSize:14 }}
             variation="accent"
-            onClick={() => this.openForm("TODO")}
+            onClick={() => this.openModal("TODO")}
           >
             To Do
           </MEButton>
@@ -390,7 +391,7 @@ class OneActionPage extends React.Component {
             className="phone-vanish me-anime-open-in"
             style={{ padding: "5px 14px", fontSize: 14 }}
             onClick={() => {
-              this.openForm("DONE");
+              this.openModal("DONE");
               this.setState({ showTodoMsg: false });
             }}
           >
@@ -484,7 +485,6 @@ class OneActionPage extends React.Component {
 
     return (
       <>
-        {this.renderModal()}
         <div>
           <div className="product-content-box">
             <div className="row">
@@ -886,16 +886,16 @@ class OneActionPage extends React.Component {
       });
     }
   };
-  openForm = (status) => {
-    this.setState({
-      status: status,
-    });
-  };
-  closeForm = () => {
-    this.setState({
-      status: null,
-    });
-  };
+  // openForm = (status) => {
+  //   this.setState({
+  //     status: status,
+  //   });
+  // };
+  // closeForm = () => {
+  //   this.setState({
+  //     status: null,
+  //   });
+  // };
 
   renderTags(tags) {
     return Object.keys(tags).map((key) => {
