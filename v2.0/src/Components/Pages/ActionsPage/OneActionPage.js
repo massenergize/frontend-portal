@@ -99,6 +99,7 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
     return (
       <>
+        {this.renderModal()}
         <Helmet>
           <meta property="og:title" content={action.title} />
           <meta
@@ -409,19 +410,6 @@ class OneActionPage extends React.Component {
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
           />
-          {/* <ChooseHHForm
-            aid={action.id}
-            open={this.state.status ? true : false}
-            addToCart={(aid, hid, status) =>
-              this.addToCart(aid, hid, status)
-            }
-            inCart={(aid, hid, cart) =>
-              this.inCart(aid, hid, cart)
-            }
-            moveToDone={(aid, hid) =>
-              this.moveToDoneByActionId(aid, hid)
-            }
-          /> */}
         </MEModal>
       );
     }
@@ -464,7 +452,6 @@ class OneActionPage extends React.Component {
 
     return (
       <>
-        {this.renderModal()}
         <div>
           <div className="product-content-box">
             <div className="row">
