@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MEButton from "../Widgets/MEButton";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
@@ -24,6 +25,10 @@ class ChooseHHForm extends React.Component {
       this.setState({ error: null });
     }
   }
+
+  componentDidMount() {
+    this.checkForAlreadySelected();
+  }
   render() {
     //Dont show anything if the user has only one household
     if (this.props.user && this.props.user.households.length === 1) {
@@ -42,7 +47,7 @@ class ChooseHHForm extends React.Component {
             ) : null}
             <form onSubmit={this.handleSubmit} style={{ paddingBottom: 10 }}>
               {this.renderRadios(this.props.user.households)}
-              <div style={{ paddingBottom: 20, paddingTop:10 }}>
+              <div style={{ paddingBottom: 20, paddingTop: 10 }}>
                 <MEButton
                   style={{
                     padding: "2px 11px",
@@ -57,8 +62,9 @@ class ChooseHHForm extends React.Component {
                   Submit
                 </MEButton>
                 <MEButton
-                  style={{ padding: "2px 11px", 
-                    // fontSize: "small" 
+                  style={{
+                    padding: "2px 11px",
+                    // fontSize: "small"
                   }}
                   onClick={this.props.closeForm}
                   variation="accent"
@@ -112,17 +118,55 @@ class ChooseHHForm extends React.Component {
     //   choice: null
     // });
   };
+
+  checkForAlreadySelected() {
+    const { status, done, todo, user, selectedAction, aid } = this.props;
+
+    const action = selectedAction || {};
+    const households = (user && user.households) || [];
+    const choice = [];
+    households.forEach(
+      (house) =>
+        this.props.inCart(aid, house.id, status) && choice.push(house.id)
+    );
+    this.setState({ choice });
+
+    return;
+
+    // console.log("I AM THE households", households);
+    // households.forEach((house) => {
+    //   var found;
+    //   if (status === "DONE") {
+    //     found = todo.filter((item) => {
+    //       console.log("LE ITEM", item);
+    //       if (
+    //         item.real_estate_unit.id === house.id &&
+    //         item.action.id === action.id
+    //       )
+    //         return item;
+    //     })[0];
+    //   } else if (status === "TODO") {
+    //     found = done.filter(
+    //       (item) =>
+    //         item.real_estate_unit.id === house.id &&
+    //         item.action.id === action.id
+    //     )[0];
+    //   }
+    //   if (found) all.push(found);
+    // });
+    // console.log("I AM THE ALL", all);
+  }
   renderRadios(households) {
     if (!households) return <div />;
-    const filteredHH = households.filter(
-      (household) =>
-        (this.props.status === "DONE" &&
-          !this.props.inCart(this.props.aid, household.id, "DONE")) ||
-        (this.props.status === "TODO" &&
-          !this.props.inCart(this.props.aid, household.id))
-    );
-    const names = getPropsArrayFromJsonArray(filteredHH, "name");
-    const values = getPropsArrayFromJsonArray(filteredHH, "id");
+    // const filteredHH = households.filter(
+    //   (household) =>
+    //     (this.props.status === "DONE" &&
+    //       !this.props.inCart(this.props.aid, household.id, "DONE")) ||
+    //     (this.props.status === "TODO" &&
+    //       !this.props.inCart(this.props.aid, household.id))
+    // );
+    const names = getPropsArrayFromJsonArray(households, "name");
+    const values = getPropsArrayFromJsonArray(households, "id");
     var stateChoices = this.state.choice;
     // const checkboxes = names.map((name, index)  => (
     //   <input
@@ -130,12 +174,19 @@ class ChooseHHForm extends React.Component {
     //       name={name}
     //       id={values[index]}
     //   />
-    // )); 
+    // ));
     return (
-      <div style={{columns: 3, textAlign: "left", maxWidth: '80%', alignContent: 'center'}}>
+      <div
+        style={{
+          columns: 3,
+          textAlign: "left",
+          maxWidth: "80%",
+          alignContent: "center",
+        }}
+      >
         <MECheckBoxGroup
           // style={{ height: 400 }}
-          fineTuneSquare={{ left: 7, bottom: 6 }}
+          fineTuneSquare={{ left: 7, bottom: 8 }}
           data={names}
           dataValues={values}
           value={stateChoices ? stateChoices : []}
@@ -144,7 +195,6 @@ class ChooseHHForm extends React.Component {
         />
       </div>
     );
-  
   }
 
   addIn(householdID) {
@@ -194,4 +244,11 @@ class ChooseHHForm extends React.Component {
     }
   };
 }
-export default ChooseHHForm;
+const mapStoreToProps = (store) => {
+  return {
+    todo: store.user.todo,
+    done: store.user.done,
+  };
+};
+
+export default connect(mapStoreToProps, null)(ChooseHHForm);

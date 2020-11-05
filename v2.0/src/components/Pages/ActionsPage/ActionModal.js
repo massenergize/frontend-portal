@@ -31,9 +31,9 @@ class ActionModal extends Component {
           >
             {this.props.content.title}
           </h5>
-
-          <small> {this.props.user.full_name}'s Actions </small> <small className="m-label round-me mob-line-break">{date}</small>
-          <div style={{ marginTop: -20, padding: '1em', position:"relative"}}>
+          <small> {this.props.user.full_name}'s Actions </small>{" "}
+          <small className="m-label round-me mob-line-break">{date}</small>
+          <div style={{ marginTop: -20, padding: "1em", position: "relative" }}>
             {!this.props.content.image ? (
               <img
                 className="testi-green-monster mob-modal-pic-tweak z-depth-float "
@@ -54,7 +54,11 @@ class ActionModal extends Component {
               <li style={{display: "inline"}}> Adding Action to your {this.props.status} list! </li>
             </ul> */}
 
-            <p> Adding Action to your {this.props.status} list! </p>
+            <p>
+              {" "}
+              Adding Action to your{" "}
+              {this.props.status && this.props.status.toLowerCase()} list!{" "}
+            </p>
 
             <ChooseHHForm
               aid={this.props.content.id}
@@ -67,6 +71,7 @@ class ActionModal extends Component {
               inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
               moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
               closeForm={this.props.closeModal}
+              selectedAction={this.props.selectedAction}
             />
 
             <div

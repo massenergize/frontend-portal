@@ -63,6 +63,7 @@ class ActionsPage extends React.Component {
         pageCount: 0,
       },
       perPage: PER_PAGE,
+      selectedAction:null
     };
     // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
@@ -134,6 +135,7 @@ class ActionsPage extends React.Component {
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
+            selectedAction = {this.state.selectedAction}
           />
         </MEModal>
       );
@@ -145,7 +147,8 @@ class ActionsPage extends React.Component {
       modal_content: {
         ...params,
       }, 
-      status: status
+      status: status, 
+      selectedAction:params
     });
   }
 
@@ -183,6 +186,7 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
+   
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
