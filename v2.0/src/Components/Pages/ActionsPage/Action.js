@@ -12,8 +12,7 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import CustomTooltip from "../Widgets/CustomTooltip";
-import MEModal from "../Widgets/MEModal";
-import ActionModal from "./ActionModal";
+
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -298,7 +297,6 @@ class Action extends React.Component {
                         </p>
                       </CustomTooltip>
                     ) : (
-                      this.checkDoneModalAndReturn()
                     )}
                   </div>
                 </div>
