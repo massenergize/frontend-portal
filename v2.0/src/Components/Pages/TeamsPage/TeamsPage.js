@@ -5,7 +5,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
-import { getTeamsData, inTeam } from "./utils.js";
+import { getTeamsData, inTeam, inThisTeam } from "./utils.js";
 import { Link, Redirect } from "react-router-dom";
 import { getRandomIntegerInRange } from "../../Utils";
 import MEButton from "./../Widgets/MEButton";
@@ -96,7 +96,7 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats } = this.props;
+    const { teamsStats, communityData, links } = this.props;
 
     if (teamsStats === null) {
       return (
@@ -107,7 +107,6 @@ class TeamsPage extends React.Component {
     }
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
-    const { communityData, links } = this.props;
 
     return (
       <>
@@ -167,11 +166,11 @@ class TeamsPage extends React.Component {
             {teamsData.length > 0 ? (
               <>{this.renderTeams()}</>
             ) : (
-              <p>
-                There are no teams in this community yet. You can start one by
-                clicking the start team button above!
-              </p>
-            )}
+                <p>
+                  There are no teams in this community yet. You can start one by
+                  clicking the start team button above!
+                </p>
+              )}
           </div>
           <br />
         </div>
@@ -189,8 +188,8 @@ class TeamsPage extends React.Component {
           {searchedTeamsData.length > 0 ? (
             searchedTeamsData.map((teamData) => this.renderTeam(teamData))
           ) : (
-            <p>No teams match your search.</p>
-          )}
+              <p>No teams match your search.</p>
+            )}
         </>
       );
     } else {
@@ -264,6 +263,12 @@ class TeamsPage extends React.Component {
     return animArr[index];
   }
   renderTeam(teamData) {
+
+    const { user } = this.props;
+
+    const isInTeam = inTeam(user, teamData);
+    const isInThisTeam = inThisTeam(user, teamData.team);
+
     const teamObj = teamData.team;
 
     return (
@@ -291,6 +296,10 @@ class TeamsPage extends React.Component {
                   >
                     {teamObj.tagline}
                   </p>
+                  {isInTeam && <p className="row team-card-description"
+                    style={{ paddingLeft: '15px', paddingRight: '10px', color: "#8dc63f" }}>
+                    &#10003; in this team {!isInThisTeam && "via a sub-team"}
+                  </p>}
                 </div>
               </div>
               <div className="col-sm-9">
@@ -309,10 +318,10 @@ class TeamsPage extends React.Component {
                       </div>
                     </>
                   ) : (
-                    <div className="team-card-column">
-                      <TeamStatsBars teamStats={teamData} />
-                    </div>
-                  )}
+                      <div className="team-card-column">
+                        <TeamStatsBars teamStats={teamData} />
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -335,8 +344,8 @@ class TeamsPage extends React.Component {
               {teamData.collapsed ? (
                 <span>Expand Sub-teams &darr;</span>
               ) : (
-                <span>Collapse Sub-teams &uarr;</span>
-              )}
+                  <span>Collapse Sub-teams &uarr;</span>
+                )}
             </button>
             {!teamData.collapsed && (
               <div className="me-sub-teams-box">
