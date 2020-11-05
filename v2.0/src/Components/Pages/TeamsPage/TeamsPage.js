@@ -226,6 +226,10 @@ class TeamsPage extends React.Component {
             </p>
           );
         } else {
+          myTeams.forEach((teamData) => {
+            teamData.subTeams.sort((a, b) => inThisTeam(user, b.team) - inThisTeam(user, a.team))
+          });
+
           myTeamsContent = (
             <div>{myTeams.map((teamData) => this.renderTeam(teamData))}</div>
           );
