@@ -44,7 +44,7 @@ class TeamInfoModal extends React.Component {
             data: pTeamNames,
             dataValues: pTeamIds,
             placeholder:
-              "Describe your team. Who are you, and brings you together?...",
+              "Choose which team is the parent team",
             value: team && team.parent ? team.parent.name : "NONE",
             defaultKey: "NONE",
           },
@@ -96,9 +96,11 @@ class TeamInfoModal extends React.Component {
         type: "file",
         label: "Select a logo for your team",
         defaultValue: team && team.logo && team.logo.url,
-        showOverlay:false,
-        maxWidth:600, // maximum width of crop frame
-        maxHeight:600 // maximum height of crop frame
+        showOverlay: false,
+        maxWidth: 800, // maximum width of crop frame
+        maxHeight: 800, // maximum height of crop frame
+        ratioHeight:3, 
+        ratioWidth:4,
       },
       ...parentFields,
     ];
@@ -123,14 +125,13 @@ class TeamInfoModal extends React.Component {
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
     const teams = teamsStats.map((teamStats) => teamStats.team);
     const parentTeamOptions = this.getParentTeamOptions();
-  
 
     let form;
     if (user) {
       form = (
         <MEFormGenerator
           style={{
-            maxHeight: "58vh",
+            maxHeight: "120vh",
             overflowY: "scroll",
             paddingTop: 0,
             marginTop: 0,
@@ -157,8 +158,10 @@ class TeamInfoModal extends React.Component {
     return (
       <>
         <MEModal
+          size="lg"
           closeModal={() => onClose()}
-          contentStyle={{ width: "100%", padding: 0 }}
+          contentStyle={{ width: "98%", padding: 0, top: 10, height: "100vh", margin:15 }}
+          style={{ height: "100vh" }}
         >
           <h4 style={{ paddingRight: "60px", marginBottom: 0 }}>
             {team ? (
@@ -231,12 +234,14 @@ class TeamInfoModal extends React.Component {
   };
 
   submitForm(e, data, resetForm) {
-    const {team} = this.props;
+    const { team } = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) return;
 
     // stay in the same is_published state
-    data = { ...data, is_published: team.is_published };
+    if (team) {
+      data = { ...data, is_published: team.is_published };
+    }
 
     this.setState({
       notification: {

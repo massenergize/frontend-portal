@@ -88,20 +88,19 @@ class ActionsPage extends React.Component {
   findCommon() {
     const actions = this.props.actions;
     const values = this.state.check_values ? this.state.check_values : [];
-    if (values.length == 0)
-      return null;
+    if (values.length === 0) return null;
 
     const common = [];
     if (actions) {
       for (let i = 0; i < actions.length; i++) {
         const action = actions[i];
-        const actionTags = (action && action.tags) || []
-        for (let j=0; j< actionTags.length; j++) {
+        const actionTags = (action && action.tags) || [];
+        for (let j = 0; j < actionTags.length; j++) {
           const tag = actionTags[j];
           if (tag) {
             if (values.includes(tag.id) && !common.includes(action)) {
               common.push(action);
-            }         
+            }
           }
         }
       }
@@ -145,7 +144,7 @@ class ActionsPage extends React.Component {
       modal_content: {
         ...params,
       }, 
-      status: status
+      status: status, 
     });
   }
 
@@ -183,6 +182,7 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
+   
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -212,10 +212,7 @@ class ActionsPage extends React.Component {
             <div className="container override-container-width">
               <div className="row">
                 {/* renders the sidebar */}
-                <div
-                  className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo"
-                 
-                >
+                <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
                   <MECard
                     className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
                     style={{
@@ -289,6 +286,12 @@ class ActionsPage extends React.Component {
       </>
     );
   }
+
+  doesFieldContainWord(field, word, action) {
+    const fieldValue = action[field];
+    if (fieldValue && fieldValue.toLowerCase().includes(word.toLowerCase())) return true;
+    return false;
+  }
   // on change in any category or tag checkbox update the actionsPage
   handleChange() {
     this.forceUpdate();
@@ -300,7 +303,12 @@ class ActionsPage extends React.Component {
     if (value.trim() !== "") {
       for (let i = 0; i < actions.length; i++) {
         const ac = actions[i];
-        if (ac.title.toLowerCase().includes(value.toLowerCase())) {
+        if (
+          this.doesFieldContainWord("title", value, ac) ||
+          this.doesFieldContainWord("deep_dive", value, ac) ||
+          this.doesFieldContainWord("steps_to_take", value, ac) ||
+          this.doesFieldContainWord("about", value, ac)
+        ) {
           common.push(ac);
         }
       }
@@ -320,11 +328,7 @@ class ActionsPage extends React.Component {
       );
     }
     if (actions.length === 0) {
-      return (
-        <p>
-          There aren't any actions in the selected categories.
-        </p>
-      );
+      return <p>There aren't any actions in the selected categories.</p>;
     }
     //returns a list of action components
     return Object.keys(actions).map((key) => {

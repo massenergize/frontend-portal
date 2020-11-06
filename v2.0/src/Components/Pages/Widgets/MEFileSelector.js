@@ -16,7 +16,7 @@ import MEModal from "./MEModal";
  * @prop {Number} maxWidth maximum width of the crop frame
  * @prop {Number} maxHeight of the crop frame
  * @prop {Object} previewStyle | normal css style for the preview image tag
- * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal 
+ * @prop {Boolean} showOverlay | determines whether or not the translucent backgroud of the cropping modal
  * should show | default = true
  * @prop {String} modalContainerClassName Just classnames that should be attached on to the cropping modal
  */
@@ -36,6 +36,8 @@ class MEFileSelector extends Component {
 
     this.toggleCropperModal = this.toggleCropperModal.bind(this);
     this.removeImage = this.removeImage.bind(this);
+    this.initiateCropping = this.initiateCropping.bind(this);
+    this.searchForImage = this.searchForImage.bind(this);
     this.handleCropClick = this.handleCropClick.bind(this);
   }
 
@@ -50,17 +52,58 @@ class MEFileSelector extends Component {
     reader.addEventListener("load", () =>
       this.setState({ src: reader.result })
     );
+    return reader.readAsDataURL(file);
+  }
+  shipProcessedFile(original, processedFile) {
+    const { onFileSelected } = this.props;
+    if (!onFileSelected) return;
+    const originalSize = this.getFileSize(original);
+    const newSize = this.getFileSize(processedFile);
+    const toBeSent = {
+      originalFile: original,
+      originalSize: { size: original.size, text: originalSize },
+      croppedFile: processedFile,
+      croppedSize: { size: processedFile.size, text: newSize },
+      originalFileName: original.name,
+    };
+    onFileSelected(toBeSent, this.removeImage);
+    return;
+  }
+  processUnCroppedFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = (e) => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = img.width > 500 ? 500 : img.width;
+        canvas.height = canvas.width * (img.height / img.width);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const data = canvas.toDataURL("image/jpeg");
+        const newFile = this.base64StringtoFile(data, file.name);
+        this.shipProcessedFile(file, newFile);
+        this.setState({
+          croppedImageUrl: data,
+          file: newFile,
+          showPrev: true,
+          original: file,
+        });
+      };
+      img.src = e.target.result;
+    };
     reader.readAsDataURL(file);
   }
   handleChange(e) {
     e.preventDefault();
     const theFiles = e.target.files;
     if (!theFiles || theFiles.length < 1) return;
-    const { onFileSelected } = this.props;
     const file = theFiles[0];
-    this.readContentOfSelectedFile(file); //in base64 and save to the state as src
-    this.setState({ file }); // the a version of the same selected in the format of a FileObject
-    this.toggleCropperModal();
+    this.processUnCroppedFile(file);
+    // this.readContentOfSelectedFile(file); //in base64 and save to the state as src
+    // the a version of the same selected in the format of a FileObject
+
+    // this.setState({ file });
+    // this.toggleCropperModal();
     return;
   }
   toggleCropperModal() {
@@ -82,7 +125,6 @@ class MEFileSelector extends Component {
    * @param {*} image
    */
   onImageLoaded = (image) => {
-    const { ratioHeight, ratioWidth } = this.props;
     this.imageRef = image;
     return false;
   };
@@ -189,6 +231,13 @@ class MEFileSelector extends Component {
     return;
   }
 
+  initiateCropping(e) {
+    if (e) e.preventDefault();
+    const { original } = this.state;
+    this.readContentOfSelectedFile(original);
+    this.toggleCropperModal();
+  }
+
   removeImage(e) {
     if (e) e.preventDefault();
     const { onFileSelected } = this.props;
@@ -198,55 +247,80 @@ class MEFileSelector extends Component {
   }
   renderCroppingModal() {
     const { modal, src, crop } = this.state;
-    const { maxHeight, maxWidth, extSrc, modalContainerClassName , showOverlay} = this.props;
+    const {
+      maxHeight,
+      maxWidth,
+      extSrc,
+      modalContainerClassName,
+      showOverlay,
+    } = this.props;
     var source = src || extSrc;
     if (modal) {
       return (
-        <MEModal
-          closeModal={this.toggleCropperModal}
-          style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-          contentStyle={{top:"20vh", width:"100%",left:0}}
-          containerClassName = {modalContainerClassName}
-          showOverlay = {showOverlay}
-        >
-          <center>
-            <MEButton
-              onClick={this.handleCropClick}
-              style={{ marginBottom: 10 }}
-            >
-              Crop
-            </MEButton>
-          </center>
-          {source && (
-            <div
-              style={{
-                width: "60%",
-                display: "inline",
-                marginTop: 20,
-                maxHeight: 250,
-                overflowY: "scroll",
-              }}
-            >
-              <center>
-                <ReactCrop
-                  src={src}
-                  crop={crop}
-                  onImageLoaded={this.onImageLoaded}
-                  onComplete={this.onCropComplete}
-                  onChange={(newCrop) => this.whenCropChanges(newCrop)}
-                  maxWidth={maxWidth}
-                  maxHeight={maxHeight}
-                />
-              </center>
-            </div>
-          )}
-        </MEModal>
+        <>
+          {/* // <MEModal
+        //   closeModal={this.toggleCropperModal}
+        //   style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
+        //   contentStyle={{ top: "20vh", width: "100%", left: 0 }}
+        //   containerClassName={modalContainerClassName}
+        //   showOverlay={showOverlay}
+        // > */}
+          <div className="me-anime-open-in">
+            <center>
+              <MEButton
+                onClick={this.handleCropClick}
+                style={{ marginBottom: 10 }}
+              >
+                Crop
+              </MEButton>
+              <br />
+              <small>
+                Hold and drag your cursor over the parts you wish to use
+              </small>
+              <br />
+              <a
+                href="#"
+                style={{ margin: 15 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleCropperModal();
+                }}
+              >
+                Cancel Cropping
+              </a>
+            </center>
+            {source && (
+              <div
+                style={{
+                  width: "60%",
+                  display: "inline",
+                  marginTop: 20,
+                  maxHeight: 250,
+                  overflowY: "scroll",
+                }}
+              >
+                <center>
+                  <ReactCrop
+                    src={src}
+                    crop={crop}
+                    onImageLoaded={this.onImageLoaded}
+                    onComplete={this.onCropComplete}
+                    onChange={(newCrop) => this.whenCropChanges(newCrop)}
+                    maxWidth={maxWidth}
+                    maxHeight={maxHeight}
+                  />
+                </center>
+              </div>
+            )}
+          </div>
+          {/* </MEModal>  */}
+        </>
       );
     }
   }
   switchStates() {
-    const { file, croppedImageUrl, showPrev } = this.state;
-    const { previewStyle, defaultValue,name } = this.props;
+    const { file, croppedImageUrl, showPrev, modal } = this.state;
+    const { previewStyle, defaultValue, name } = this.props;
 
     if (!file && defaultValue) {
       return (
@@ -254,7 +328,7 @@ class MEFileSelector extends Component {
           <img
             src={defaultValue}
             alt={`${name} image`}
-          onClick={(e) => this.searchForImage(e)}
+            onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
           />
           <br />
@@ -263,29 +337,41 @@ class MEFileSelector extends Component {
       );
     }
 
+    if (file && modal) {
+      return this.renderCroppingModal();
+    }
+
     if (file) {
       return (
         <div>
-          {this.renderCroppingModal()}
           <center>
             {/* ------------------------ PREVIEW IMAGE ------------------- */}
             {croppedImageUrl && showPrev && (
               <img
-                onClick={this.toggleCropperModal}
+                onClick={this.searchForImage}
                 alt="Your cropped  image"
                 style={{
                   maxWidth: "100%",
+                  maxHeight: 300,
                   borderRadius: 10,
                   cursor: "pointer",
                   ...previewStyle,
                 }}
-                className="z-depth-float"
+                className="z-depth-float me-anime-open-in"
                 src={croppedImageUrl}
               />
             )}
             <br />
-            <a href="#" onClick={this.removeImage}>
+            <a style={{ marginTop: 6 }} href="#" onClick={this.removeImage}>
               Remove Image
+            </a>
+            <br />
+            <a
+              style={{ marginTop: 6 }}
+              href="#"
+              onClick={this.initiateCropping}
+            >
+              Crop Image
             </a>
             <p style={{ margin: 15, color: "#d2cfcf" }}>{file.name}</p>
 
@@ -319,6 +405,7 @@ class MEFileSelector extends Component {
     const { style, className } = this.props;
     return (
       <div style={{ position: "relative", ...style }} className={className}>
+        {/* <img src={this.state.croppedImageUrl} /> */}
         <div className="g-uploader-container">{this.switchStates()}</div>
         <input
           type="file"
@@ -342,7 +429,7 @@ MEFileSelector.propTypes = {
   maxHeight: PropTypes.number,
   maxWidth: PropTypes.number,
   previewStyle: PropTypes.object,
-  modalContainerClassName:PropTypes.string,
+  modalContainerClassName: PropTypes.string,
   showOverlay: PropTypes.bool,
 };
 MEFileSelector.defaultProps = {
@@ -354,7 +441,7 @@ MEFileSelector.defaultProps = {
   maxHeight: 300,
   maxWidth: 300,
   previewStyle: {},
-  modalContainerClassName:"",
-  showOverlay:true,
+  modalContainerClassName: "",
+  showOverlay: true,
 };
 export default MEFileSelector;

@@ -16,7 +16,8 @@ class ImpactPage extends React.Component {
     //shorten all two-worded strings except "home energy"
     let stringArr = word.split(" ");
     if (word.toLowerCase() === "home energy") return word;
-    return stringArr[0];
+    var shortWord =  stringArr[0];
+    return shortWord.replace(/,/g/""); 
   }
 
    

@@ -39,38 +39,40 @@ class EditingProfileForm extends React.Component {
           {this.state.error ? (
             <p className="text-danger">{this.state.error}</p>
           ) : null}
+          <small>
+            Full Name <span className="text-danger">*</span>
+          </small>
           <METextField
             type="text"
             name="full_name"
             defaultValue={this.state.full_name}
             onChange={this.onChange}
-            required ={true}
+            required={true}
           />
+
           <small>
-            Full Name <span className="text-danger">*</span>
+            Email ( Not Editable ) <span className="text-default">*</span>
           </small>
           <METextField
             type="email"
             name="email"
             defaultValue={this.state.email}
             onChange={this.onChange}
-            required ={true}
+            required={true}
             readonly="true"
           />
-          <small>
-            Email ( Not Editable ) <span className="text-default">*</span>
-          </small>
 
+          <small>
+            Preferred Name <span className="text-danger">*</span>
+          </small>
           <METextField
             type="text"
             name="preferred_name"
             defaultValue={this.state.preferred_name}
             onChange={this.onChange}
-            required ={true}
+            required={true}
           />
-          <small>
-            Preferred Name <span className="text-danger">*</span>
-          </small>
+
           <br />
           <MEButton type="submit">{"Submit"}</MEButton>
           <MEButton

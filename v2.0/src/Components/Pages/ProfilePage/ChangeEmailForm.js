@@ -4,6 +4,9 @@ import { reduxLogin } from "../../../redux/actions/userActions";
 import { compose } from "recompose";
 import { withFirebase } from "react-redux-firebase";
 import { apiCall } from "../../../api/functions";
+import METextField from "../Widgets/METextField";
+import MEButton from "../Widgets/MEButton";
+import MECard from "../Widgets/MECard";
 
 class ChangeEmailFormBase extends React.Component {
   constructor(props) {
@@ -16,41 +19,44 @@ class ChangeEmailFormBase extends React.Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        {this.state.error ? (
-          <p className="text-danger">{this.state.error}</p>
-        ) : null}
-        <input
-          type="email"
-          name="email"
-          value={this.state.email}
-          onChange={this.onChange}
-          required
-        />
-        <p>
-          New Email <span className="text-danger">*</span>
-        </p>
+        <MECard className="me-anime-open-in">
+          {this.state.error ? (
+            <p className="text-danger" style={{ fontSize: 14 }}>
+              {this.state.error}
+            </p>
+          ) : null}
+          <small>
+            New Email <span className="text-danger">*</span>
+          </small>
 
-        <input
-          type="password"
-          name="password"
-          value={this.state.password}
-          onChange={this.onChange}
-          required
-        />
-        <p>
-          Password <span className="text-danger">*</span>
-        </p>
-        <button className="thm-btn bg-cl-1" type="submit">
-          {"Submit"}
-        </button>
-        <button
-          className="thm-btn red"
-          type="button"
-          onClick={() => this.props.closeForm()}
-        >
-          {" "}
-          Cancel{" "}
-        </button>
+          <METextField
+            type="email"
+            name="email"
+            value={this.state.email}
+            onChange={this.onChange}
+            placeholder="Enter new email"
+            required
+          />
+
+          <small>
+            Current Password <span className="text-danger">*</span>
+          </small>
+
+          <METextField
+            type="password"
+            name="password"
+            value={this.state.password}
+            onChange={this.onChange}
+            placeholder="Enter password"
+            required
+          />
+
+          <MEButton>{"Submit"}</MEButton>
+          <MEButton variation="accent" onClick={() => this.props.closeForm()}>
+            {" "}
+            Cancel{" "}
+          </MEButton>
+        </MECard>
       </form>
     );
   }
@@ -64,6 +70,10 @@ class ChangeEmailFormBase extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
 
+    if(!this.state.password || !this.state.email) {
+      this.setState({error:"Please make sure you have provided a new email and your current password"})
+      return;
+    }
     var cred = this.props.firebase.auth.EmailAuthProvider.credential(
       this.props.user.email,
       this.state.password
@@ -76,14 +86,12 @@ class ChangeEmailFormBase extends React.Component {
           .auth()
           .currentUser.updateEmail(this.state.email)
           .then(() => {
-            this.props.firebase
-              .auth()
-              .currentUser.sendEmailVerification();
-            apiCall('users.update', {
+            this.props.firebase.auth().currentUser.sendEmailVerification();
+            apiCall("users.update", {
               user_id: this.props.user.id,
               email: this.state.email,
             });
-            
+
             this.props.closeForm(
               "Thank you, your email has been changed. Please check your inbox to verify your new email"
             );

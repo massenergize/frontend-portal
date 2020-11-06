@@ -25,7 +25,7 @@ export function getTeamsData(teamsStats) {
 }
 
 export function inThisTeam(user, team) {
-  if (!user || !team) return false;
+  if (!user || !user.teams || !team) return false;
 
   return user.teams.filter(_team =>
     _team.id === team.id
@@ -33,7 +33,7 @@ export function inThisTeam(user, team) {
 }
 
 export function inSubTeam(user, teamData) {
-  if (!user || !teamData || !teamData.subTeams) return false;
+  if (!user || !user.teams || !teamData || !teamData.subTeams) return false;
 
   return user.teams.filter((team) =>
     teamData.subTeams.map(subTeamData => subTeamData.team.id).includes(team.id)

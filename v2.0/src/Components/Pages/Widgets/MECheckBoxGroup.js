@@ -19,15 +19,18 @@ export default class MECheckBoxGroup extends Component {
     super(props);
     this.state = {
       selected: this.props.value,
-      dataValues: this.props.dataValues
-        ? this.props.dataValues
-        : this.props.data,
-      data: this.props.data,
     };
   }
+
+  componentDidUpdate(prevProps) {
+    const { value } = this.props;
+    if (prevProps.value !== value) {
+      this.setState({ selected: value });
+    }
+  }
   handleOnClick(child) {
-    const { onItemSelected, data } = this.props;
-    const { selected, dataValues } = this.state;
+    const { onItemSelected, data, dataValues } = this.props;
+    const { selected } = this.state;
     child = dataValues[data.indexOf(child)];
     var allItems;
     if (!selected || !selected.includes(child)) {
@@ -43,7 +46,9 @@ export default class MECheckBoxGroup extends Component {
   }
 
   checked(child) {
-    const { selected, dataValues, data } = this.state;
+    const { selected } = this.state;
+    var { data, dataValues } = this.props;
+    dataValues = dataValues || data;
     const value = dataValues[data.indexOf(child)];
     if (selected && selected.includes(value)) return true;
     return false;
@@ -53,31 +58,33 @@ export default class MECheckBoxGroup extends Component {
     if (!data || data.length === 0) return <span></span>;
 
     return data.map((child, key) => {
-          var squareActive = "",
-            dotActive = "";
-          if (this.checked(child)) {
-            squareActive = "me-check-square-active";
-            dotActive = "me-floating-check-active";
-          }
-          return (
-            <div
-              key={key}
-              className={`me-check-container ${className}`}
-              onClick={() => this.handleOnClick(child)}
-              style={{
-                position: "relative",
-                marginRight: 6,
-                cursor: "pointer",
-                ...style,
-              }}
-            >
-              <div className={`me-floating-check ${dotActive} `} style={fineTuneSquare}></div>
-              <div className={`me-check-square ${squareActive}`}></div>
-              <span>{child}</span>
-            </div>
-          );
-        }
-    );
+      var squareActive = "",
+        dotActive = "";
+      if (this.checked(child)) {
+        squareActive = "me-check-square-active";
+        dotActive = "me-floating-check-active";
+      }
+      return (
+        <div
+          key={key}
+          className={`me-check-container ${className}`}
+          onClick={() => this.handleOnClick(child)}
+          style={{
+            position: "relative",
+            marginRight: 6,
+            cursor: "pointer",
+            ...style,
+          }}
+        >
+          <div
+            className={`me-floating-check ${dotActive} `}
+            style={fineTuneSquare}
+          ></div>
+          <div className={`me-check-square ${squareActive}`}></div>
+          <span>{child}</span>
+        </div>
+      );
+    });
   }
   render() {
     return <div>{this.ejectChildren()}</div>;
@@ -94,7 +101,7 @@ MECheckBoxGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
   onItemSelected: PropTypes.func.isRequired,
-  fineTuneSquare :PropTypes.object
+  fineTuneSquare: PropTypes.object,
 };
 MECheckBoxGroup.defaultProps = {
   data: [],
@@ -105,5 +112,5 @@ MECheckBoxGroup.defaultProps = {
   containerStyle: {},
   containerClassName: "",
   value: [],
-  fineTuneSquare:{}
+  fineTuneSquare: {},
 };
