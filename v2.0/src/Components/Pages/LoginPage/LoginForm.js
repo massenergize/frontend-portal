@@ -222,9 +222,6 @@ class LoginFormBase extends React.Component {
     apiCall("auth.login", body)
       .then((userData) => {
         this.inflatePageWithUserData(userData, email);
-        // this.fetchAndLogin(email).then((success) => {
-        //   if (success) console.log("yay");
-        // });
       })
       .catch((err) => {
         window.localStorage.setItem("reg_protocol", "show");
@@ -243,37 +240,12 @@ class LoginFormBase extends React.Component {
       this.props.tryingToLogin(false);
       return true;
     }
-    console.log("fetch and login failed");
+    console.log(json.error);
     this.props.tryingToLogin(false);
     window.localStorage.setItem("reg_protocol", "show");
+    window.location.reload()
     return false;
   };
-
-  //AUTH LOGIN NOW RETURNS USER DATA ALREADY, THERE IS NO NEED FOR /whoami
-  //   fetchAndLogin = async (email) => {
-  //     try {
-  //       this.props.tryingToLogin(true);
-  //       const json = await apiCall("auth.whoami");
-  //       if (json.success && json.data) {
-  //         console.log("EL USER", json.data);
-  //         this.props.reduxLogin(json.data);
-  //         const todo = await apiCall("users.actions.todo.list", { email });
-  //         this.props.reduxLoadTodo(todo.data);
-  //         const done = await apiCall("users.actions.completed.list", { email });
-  //         this.props.reduxLoadDone(done.data);
-  //         this.props.tryingToLogin(false);
-  //         return true;
-  //       }
-
-  //       console.log("fetch and login failed");
-  //       this.props.tryingToLogin(false);
-  //       return false;
-  //     } catch (err) {
-  //       console.log(err);
-  //       this.props.tryingToLogin(false);
-  //       return false;
-  //     }
-  //   };
 }
 
 //composes the login form by using higher order components to make it have routing and firebase capabilities

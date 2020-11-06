@@ -1,8 +1,8 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
-import Toast from "../Notification/Toast";
-import MEModal from "../Widgets/MEModal";
+// import Toast from "../Notification/Toast";
+// import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 

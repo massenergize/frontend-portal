@@ -2,7 +2,7 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import loader from "../../../assets/images/other/loader.gif";
+// import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
 import FormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 
@@ -42,7 +42,7 @@ class ContactAdminModal extends React.Component {
 
   render() {
     const { team, user, links, onClose } = this.props;
-    const { loading, error } = this.state;
+    // const { loading, error } = this.state;
 
     let modalContent;
     if (user) {

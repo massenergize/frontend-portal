@@ -73,7 +73,6 @@ class JoinLeaveTeamModal extends React.Component {
             )}
             {error && (
               <p
-                className
                 className="error-p team-modal-error-p team-modal-inline"
               >
                 {error}

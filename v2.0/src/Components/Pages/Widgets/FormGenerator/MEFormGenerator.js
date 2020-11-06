@@ -264,6 +264,8 @@ export default class FormGenerator extends Component {
           return this.getSectionCreator(formItem, index);
         case CHIPS:
           return this.getChipMaker(formItem, index);
+        default:
+          return <div></div>;
       }
     });
   }
@@ -361,7 +363,7 @@ export default class FormGenerator extends Component {
   displayInformation() {
     var { info } = this.props;
     const internalInfo = this.state.notification;
-    var info = internalInfo || info; // internal info takes priority
+    info = internalInfo || info; // internal info takes priority
     if (!info) return null;
     if (info.type === BAD) {
       return (

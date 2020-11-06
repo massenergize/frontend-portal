@@ -83,5 +83,4 @@ MERadio.defaultProps = {
   name: "some-name",
   containerStyle: {},
   containerClassName: "",
-  value: "",
 };

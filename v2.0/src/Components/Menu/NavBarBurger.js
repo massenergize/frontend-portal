@@ -349,14 +349,14 @@ class NavBarBurger extends React.Component {
   renderLogin() {
     const { links } = this.props;
     const { user } = this.props;
-    const style = {
-      borderColor:"white", 
-      borderTopWidth:5, 
-      borderTopColor:"#f57b34",
-      borderTopWidth:3,
-      borderRadius: "0",
-      padding: "0",
-    };
+    // const style = {
+    //   borderColor:"white", 
+    //   borderTopWidth:5, 
+    //   borderTopColor:"#f57b34",
+    //   borderTopWidth:3,
+    //   borderRadius: "0",
+    //   padding: "0",
+    // };
     if (user.info) {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button

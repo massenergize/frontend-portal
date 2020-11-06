@@ -4,7 +4,7 @@ import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
 import { getRandomIntegerInRange } from "../Utils";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 class CommunitySelectPage extends React.Component {
   constructor(props) {
