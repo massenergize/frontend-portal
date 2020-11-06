@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";

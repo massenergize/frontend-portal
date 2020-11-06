@@ -14,7 +14,7 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import SideBar from "../../Menu/SideBar";
+// import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 // import Action from "./Action";
 import Cart from "../../Shared/Cart";

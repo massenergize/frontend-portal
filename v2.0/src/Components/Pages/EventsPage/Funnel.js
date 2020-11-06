@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Accordion from "./../../Menu/Accordian";
+// import Accordion from "./../../Menu/Accordian";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
@@ -53,11 +53,11 @@ class EventFilter extends Component {
     const me = this;
     if (col) {
       return col.map((set, index) => {
-        const header = (
-          <div className="section-title w-100" style={{ margin: "0px" }}>
-            <span>{set.name}</span>
-          </div>
-        );
+        // const header = (
+        //   <div className="section-title w-100" style={{ margin: "0px" }}>
+        //     <span>{set.name}</span>
+        //   </div>
+        // );
         return (
           <div key={index.toString()}>
             <MESectionWrapper

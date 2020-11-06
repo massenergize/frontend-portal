@@ -13,7 +13,8 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
-import photo from "./try.png";
+// import photo from "./try.png";
+
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -316,9 +317,9 @@ class PhotoSensitiveAction extends React.Component {
           style={{
             minHeight: 160,
             borderRadius: 10,
-            border: "solid 2px #8dc343",
+            // border: "solid 2px #8dc343",
           }}
-          className="z-depth-float"
+          className="z-depth-1"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
             {this.checkDoneAndReturn()}
@@ -359,10 +360,9 @@ class PhotoSensitiveAction extends React.Component {
           <Link to={this.props.links.actions + "/" + this.props.action.id}>
             <img
               className="action-img-correction"
-              // src={photo}
               src={this.props.action.image ? this.props.action.image.url : null}
               // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
-              alt="action image"
+              alt="action"
             />
           </Link>
           <div

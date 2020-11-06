@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
-import loader from "../../../assets/images/other/loader.gif";
+// import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
 import MEFormGenerator, {
   BAD,
@@ -119,12 +119,12 @@ class TeamInfoModal extends React.Component {
   }
 
   render() {
-    const { team, onClose, teamsStats, user } = this.props;
-    const { loading, error, notification } = this.state;
+    const { team, onClose, user } = this.props;
+    const { notification } = this.state;
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const teams = teamsStats.map((teamStats) => teamStats.team);
-    const parentTeamOptions = this.getParentTeamOptions();
+    // const teams = teamsStats.map((teamStats) => teamStats.team);
+    // const parentTeamOptions = this.getParentTeamOptions();
 
     let form;
     if (user) {

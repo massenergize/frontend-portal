@@ -91,7 +91,7 @@ export default class METestimonialCard extends Component {
           style={{ padding: 0, position: "relative", borderRadius: 15 }}
           className={`${this.getAnimationClass()} ${className}`}
         >
-          <img src={this.getPhoto()} className="me-testimonial-img" />
+          <img src={this.getPhoto()} className="me-testimonial-img" alt="event" />
           <div className="me-testimonial-content-box">
             <div className="me-testimonial-about">
               <small style={{ fontSize: 17 }}>

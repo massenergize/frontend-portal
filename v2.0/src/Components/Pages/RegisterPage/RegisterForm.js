@@ -18,7 +18,7 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import Tooltip from "../../Shared/Tooltip";
+// import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 
 /* Modal config */

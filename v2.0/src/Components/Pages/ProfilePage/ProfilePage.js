@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -8,7 +8,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Counter from "./Counter";
 import AddingHouseholdForm from "./AddingHouseholdForm";
 import EditingProfileForm from "./EditingProfileForm";
-import EventCart from "./EventCart";
+// import EventCart from "./EventCart";
 import { withFirebase } from "react-redux-firebase";
 
 import {
@@ -29,7 +29,7 @@ import {
   reduxTeamAddHouse,
 } from "../../../redux/actions/pageActions";
 // import { watchFile } from 'fs';
-import Tooltip from "../../Shared/Tooltip";
+// import Tooltip from "../../Shared/Tooltip";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
@@ -111,7 +111,7 @@ class ProfilePage extends React.Component {
     }
 
     const myHouseholds = this.props.user.households || [];
-    const myCommunities = this.props.user.communities || [];
+    // const myCommunities = this.props.user.communities || [];
 
     if (!this.props.teamsPage) {
       return <LoadingCircle />;

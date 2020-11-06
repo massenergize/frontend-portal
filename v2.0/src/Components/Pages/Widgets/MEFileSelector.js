@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MEButton from "./MEButton";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import MEModal from "./MEModal";
+// import MEModal from "./MEModal";
 
 /**
  * A component that allows file selection and image cropping as well as resizing
@@ -186,7 +186,7 @@ class MEFileSelector extends Component {
     const MEGA = 1000000;
     const KILO = 1000;
     var size = file.size;
-    var unit = size < MEGA ? "KB" : "MB";
+    // var unit = size < MEGA ? "KB" : "MB";
     if (size < MEGA) return Math.round(size / KILO).toString() + " KB";
     return Math.round(size / MEGA).toString() + " MB";
   }
@@ -251,8 +251,6 @@ class MEFileSelector extends Component {
       maxHeight,
       maxWidth,
       extSrc,
-      modalContainerClassName,
-      showOverlay,
     } = this.props;
     var source = src || extSrc;
     if (modal) {
@@ -279,7 +277,7 @@ class MEFileSelector extends Component {
               </small>
               <br />
               <a
-                href="#"
+                href="##"
                 style={{ margin: 15 }}
                 onClick={(e) => {
                   e.preventDefault();
@@ -327,7 +325,7 @@ class MEFileSelector extends Component {
         <center>
           <img
             src={defaultValue}
-            alt={`${name} image`}
+            alt={`${name}`}
             onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
           />
@@ -349,7 +347,7 @@ class MEFileSelector extends Component {
             {croppedImageUrl && showPrev && (
               <img
                 onClick={this.searchForImage}
-                alt="Your cropped  image"
+                alt="Cropped"
                 style={{
                   maxWidth: "100%",
                   maxHeight: 300,
@@ -362,13 +360,13 @@ class MEFileSelector extends Component {
               />
             )}
             <br />
-            <a style={{ marginTop: 6 }} href="#" onClick={this.removeImage}>
+            <a style={{ marginTop: 6 }} href="##" onClick={this.removeImage}>
               Remove Image
             </a>
             <br />
             <a
               style={{ marginTop: 6 }}
-              href="#"
+              href="##"
               onClick={this.initiateCropping}
             >
               Crop Image

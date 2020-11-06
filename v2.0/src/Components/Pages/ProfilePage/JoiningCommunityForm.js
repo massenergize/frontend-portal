@@ -28,9 +28,10 @@ class JoiningCommunityForm extends React.Component {
         var alreadInCommunity = userComms.filter(
           (community) => community.id === com.id
         );
-        if (alreadInCommunity.length !== 0) return; // dont show the communities a user is already a part of
+        if (alreadInCommunity.length !== 0) return null; // dont show the communities a user is already a part of
       }
       commArr.push(com);
+      return null;
     });
     var commNames = getPropsArrayFromJsonArray(commArr, "name");
     var ids = getPropsArrayFromJsonArray(commArr, "id");
