@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import leafy from "./leafy.png";
+// import leafy from "./leafy.png";
 import defaultPhoto from "./me_energy_default.png";
 import * as moment from "moment";
 class StoryModal extends Component {

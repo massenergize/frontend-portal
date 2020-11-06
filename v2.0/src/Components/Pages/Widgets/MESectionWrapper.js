@@ -30,16 +30,16 @@ export default class MESectionWrapper extends Component {
   }
 
   showBody() {
-    const { containerClassName, containerStyle } = this.props;
+    let { containerClassName, containerStyle } = this.props;
     const { collapsed } = this.state;
     const moveUp = "move-up-and-vanish";
     const moveDown = "move-down-and-appear";
     var anime = collapsed ? moveUp : moveDown;
+    containerStyle = {...containerStyle, zIndex: -1}
     return (
       <div
         style={containerStyle}
         className={`me-section-wrapper-body ${anime} ${containerClassName}`}
-        style={{ zIndex: -1 }}
       >
         <div>{this.props.children}</div>
       </div>

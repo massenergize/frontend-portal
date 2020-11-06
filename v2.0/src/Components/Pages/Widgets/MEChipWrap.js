@@ -19,7 +19,7 @@ export default class MEChipWrap extends Component {
      return removeItem(item);
   }
   renderChips() {
-    const { data, removeItem } = this.props;
+    const { data } = this.props;
     if (!data) return;
     return data.map((text, index) => {
       return (

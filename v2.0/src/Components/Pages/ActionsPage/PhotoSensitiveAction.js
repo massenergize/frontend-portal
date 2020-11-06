@@ -13,7 +13,8 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
-import photo from "./try.png";
+// import photo from "./try.png";
+
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -357,10 +358,9 @@ class PhotoSensitiveAction extends React.Component {
           <Link to={this.props.links.actions + "/" + this.props.action.id}>
             <img
               className="action-img-correction"
-              // src={photo}
               src={this.props.action.image ? this.props.action.image.url : null}
               // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
-              alt="action image"
+              alt="action"
             />
           </Link>
           <div

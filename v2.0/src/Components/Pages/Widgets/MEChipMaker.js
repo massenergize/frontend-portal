@@ -53,7 +53,6 @@ export default class MEChipMaker extends Component {
   }
   removeItemOnClick(item) {
     const { items } = this.state;
-    const { onItemChange } = this.props;
     const filtered = items.filter((itm) => itm !== item);
     this.setState({ items: filtered });
     this.forwardChangedItems(filtered);

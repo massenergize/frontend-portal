@@ -50,6 +50,7 @@ class METextView extends Component {
           src={imageSource}
           className="put-me-inline"
           style={{ height: 30, width: 30, objectFit: "contain" }}
+          alt="text_view"
         />
       );
     }
