@@ -24,6 +24,9 @@ import MECard from "../Widgets/MECard";
 import Paginator from "../Widgets/Paginator";
 import { moveToPage } from "../../Utils";
 
+import MEModal from "../Widgets/MEModal";
+import ActionModal from "./ActionModal";
+
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
  * @props none - fetch data from api instead of getting data passed to you from props
@@ -34,12 +37,23 @@ const PER_PAGE = 6;
 class ActionsPage extends React.Component {
   constructor(props) {
     super(props);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       check_values: null,
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
+      openModalForm: null,
+      modal_content: { //tbd
+        image: null,
+        title: null,
+        desc: null,
+        ano: null,
+        user: null,
+      },
+      actionModal: false, //tbd
       mirror_actions: [],
       showTodoMsg: false,
       actions: [],
@@ -50,9 +64,11 @@ class ActionsPage extends React.Component {
       },
       perPage: PER_PAGE,
     };
+    // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.findCommon = this.findCommon.bind(this);
+
   }
 
   addMeToSelected(tagID) {
@@ -106,6 +122,36 @@ class ActionsPage extends React.Component {
     });
   }
 
+  renderModal() {
+    if (this.state.openModalForm) {
+      return (
+        <MEModal closeModal={this.closeModal} size="md" contentStyle={{minWidth:"100%"}}>
+          <ActionModal 
+            content={this.state.modal_content} 
+            user={this.props.user}
+            status={this.state.status}
+            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+            closeModal={this.closeModal}
+          />
+        </MEModal>
+      );
+    }
+  }
+
+  openModal (params, status) {
+    this.setState({ openModalForm: params.id, 
+      modal_content: {
+        ...params,
+      }, 
+      status: status, 
+    });
+  }
+
+  closeModal() {
+    this.setState({ openModalForm: null, status: null });
+  }
+
   renderPaginator() {
     const { pageContent, check_values } = this.state;
     var { actions } = this.props;
@@ -136,6 +182,7 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
+   
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -157,9 +204,9 @@ class ActionsPage extends React.Component {
       : actions;
     return (
       <>
+        {this.renderModal()}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
-
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
@@ -296,14 +343,16 @@ class ActionsPage extends React.Component {
           addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
           inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-          HHFormOpen={this.state.openAddForm === action.id}
+          modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
-          closeHHForm={() => this.setState({ openAddForm: null })}
-          openHHForm={(aid) => this.setState({ openAddForm: aid })}
+          // closeHHForm={() => this.setState({ openAddForm: null })}
+          // openHHForm={(aid) => this.setState({ openAddForm: aid })}
           showTodoMsg={this.state.showTodoMsg}
           toggleShowTodoMsg={() => {
             this.setState({ showTodoMsg: false });
           }}
+          openModal={this.openModal}
+          closeModal={()=>this.setState({openModalForm: null})}
         />
       );
     });

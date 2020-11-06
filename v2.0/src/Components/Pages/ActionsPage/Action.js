@@ -12,6 +12,7 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import CustomTooltip from "../Widgets/CustomTooltip";
+
 /**
  * Action Component is a single action for the action page, 
  * the action displays conditionally based on the filters on the page
@@ -83,13 +84,13 @@ class Action extends React.Component {
 
   checkTodoAndReturn() {
     if (this.checkDone()) {
-      return (
-        <CustomTooltip text="Cant use this feature, you have already done the action.">
-          <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-float">
-            To Do
-          </p>
-        </CustomTooltip>
-      );
+        return (
+          <CustomTooltip text="Cant use this feature, you have already done the action.">
+            <p className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-float">
+              To Do
+            </p>
+          </CustomTooltip>
+        );
     }
     if (this.checkTodo()) {
       return (
@@ -166,6 +167,7 @@ class Action extends React.Component {
     const index = getRandomIntegerInRange(3);
     return classes[index];
   }
+  
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
@@ -283,6 +285,18 @@ class Action extends React.Component {
                       </CustomTooltip>
                     ) : (
                       this.checkDoneAndReturn()
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-4 col-sm-4 col-lg-4 col-4">
+                  <div className="col-centered">
+                    {!this.props.user ? (
+                      <CustomTooltip text="Sign in to mark actions as completed" style={{ left:-65}}>
+                        <p className="has-tooltip thm-btn style-4 action-btns disabled">
+                          Testing It
+                        </p>
+                      </CustomTooltip>
+                    ) : (
                     )}
                   </div>
                 </div>

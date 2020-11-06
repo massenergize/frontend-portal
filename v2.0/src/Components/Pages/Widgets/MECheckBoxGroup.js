@@ -19,15 +19,18 @@ export default class MECheckBoxGroup extends Component {
     super(props);
     this.state = {
       selected: this.props.value,
-      dataValues: this.props.dataValues
-        ? this.props.dataValues
-        : this.props.data,
-      data: this.props.data,
     };
   }
+
+  componentDidUpdate(prevProps) {
+    const { value } = this.props;
+    if (prevProps.value !== value) {
+      this.setState({ selected: value });
+    }
+  }
   handleOnClick(child) {
-    const { onItemSelected, data } = this.props;
-    const { selected, dataValues } = this.state;
+    const { onItemSelected, data, dataValues } = this.props;
+    const { selected } = this.state;
     child = dataValues[data.indexOf(child)];
     var allItems;
     if (!selected || !selected.includes(child)) {
@@ -43,7 +46,9 @@ export default class MECheckBoxGroup extends Component {
   }
 
   checked(child) {
-    const { selected, dataValues, data } = this.state;
+    const { selected } = this.state;
+    var { data, dataValues } = this.props;
+    dataValues = dataValues || data;
     const value = dataValues[data.indexOf(child)];
     if (selected && selected.includes(value)) return true;
     return false;
@@ -71,7 +76,10 @@ export default class MECheckBoxGroup extends Component {
             ...style,
           }}
         >
-          <div className={`me-floating-check ${dotActive} `} style={fineTuneSquare}></div>
+          <div
+            className={`me-floating-check ${dotActive} `}
+            style={fineTuneSquare}
+          ></div>
           <div className={`me-check-square ${squareActive}`}></div>
           <span>{child}</span>
         </div>
@@ -93,7 +101,7 @@ MECheckBoxGroup.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
   onItemSelected: PropTypes.func.isRequired,
-  fineTuneSquare :PropTypes.object
+  fineTuneSquare: PropTypes.object,
 };
 MECheckBoxGroup.defaultProps = {
   data: [],
@@ -104,5 +112,5 @@ MECheckBoxGroup.defaultProps = {
   containerStyle: {},
   containerClassName: "",
   value: [],
-  fineTuneSquare:{}
+  fineTuneSquare: {},
 };

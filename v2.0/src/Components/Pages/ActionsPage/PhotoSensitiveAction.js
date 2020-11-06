@@ -78,10 +78,11 @@ class PhotoSensitiveAction extends React.Component {
   }
   checkTodo() {
     var action = this.props.action;
+    var households = this.props.user.households || [];
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-    return exists;
+    return exists && households.length === 1; // helps to ensure that button does not deactivate unless there is only one household
   }
 
   checkTodoAndReturn() {
@@ -202,10 +203,11 @@ class PhotoSensitiveAction extends React.Component {
   }
   checkDone() {
     var action = this.props.action;
+    var households = this.props.user.households || [];
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-    return exists;
+    return exists && households.length === 1;
   }
   checkDoneAndReturn() {
     if (!this.props.user) {
@@ -453,7 +455,7 @@ class PhotoSensitiveAction extends React.Component {
                 )}
               </>
             ) : null}
-            <ChooseHHForm
+            {/* <ChooseHHForm
               aid={this.props.action.id}
               status={this.state.status}
               open={this.props.HHFormOpen}
@@ -464,7 +466,7 @@ class PhotoSensitiveAction extends React.Component {
               inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
               moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
               closeForm={this.closeForm}
-            />
+            /> */}
             {this.props.showTodoMsg === this.props.action.id ? (
               <p
                 style={{
@@ -493,13 +495,15 @@ class PhotoSensitiveAction extends React.Component {
     this.setState({
       status: status,
     });
-    this.props.openHHForm(this.props.action.id);
+    this.props.openModal(this.props.action, status);
+    // this.props.openHHForm(this.props.action.id);
   };
   closeForm = () => {
     this.setState({
       status: null,
     });
-    this.props.closeHHForm();
+    this.props.closeModal();
+    // this.props.closeHHForm();
   };
   //checks the filters to see if the action should render or not
   shouldRender() {

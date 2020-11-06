@@ -78,6 +78,7 @@ class Cart extends React.Component {
     return Object.keys(actionRelations).map((key) => {
       var actionRel = actionRelations[key];
       var action = actionRel.action;
+      var houseHold = actionRel.real_estate_unit;
       return (
         <div key={key.toString()}>
           <div>
@@ -86,7 +87,11 @@ class Cart extends React.Component {
             >
               <MELink to={`${this.props.links.actions}/${action.id}`}>
                 {action.title}
-                &nbsp;
+                {houseHold && houseHold.name && (
+                  <small style={{ display: "block" }}>
+                    Household: {houseHold.name}
+                  </small>
+                )}
               </MELink>
               <div className="">
                 {actionRel.status.toLowerCase() === "todo" ? (

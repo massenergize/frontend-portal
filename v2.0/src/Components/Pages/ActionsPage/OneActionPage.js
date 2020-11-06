@@ -6,7 +6,9 @@ import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
-import ChooseHHForm from "./ChooseHHForm";
+// import ChooseHHForm from "./ChooseHHForm";
+import MEModal from "./../Widgets/MEModal";
+import ActionModal from './ActionModal';
 import {
   reduxAddToDone,
   reduxAddToTodo,
@@ -46,11 +48,14 @@ class OneActionPage extends React.Component {
       action: null,
       showTodoMsg: false,
       loading: true,
+      openModalForm: false,
       // about_html:null,
       // deep_dive_html:null,
       // steps_to_take_html:null
     };
     this.handleChange = this.handleChange.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   async componentDidMount() {
@@ -94,6 +99,7 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
     return (
       <>
+        {this.renderModal()}
         <Helmet>
           <meta property="og:title" content={action.title} />
           <meta
@@ -332,7 +338,7 @@ class OneActionPage extends React.Component {
             className="phone-vanish me-anime-open-in"
             style={{ padding: "5px 14px", fontSize: 14 }}
             variation="accent"
-            onClick={() => this.openForm("TODO")}
+            onClick={() => this.openModal("TODO")}
           >
             To Do
           </MEButton>
@@ -340,7 +346,14 @@ class OneActionPage extends React.Component {
             className="pc-vanish me-anime-open-in"
             style={{ padding: "5px 20px", fontSize: 14 }}
             variation="accent"
-            onClick={() => this.openForm("TODO")}
+            // mediaType="icon"
+            // icon="fa fa-edit"
+            // className={
+            //   this.state.status === "TODO"
+            //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
+            //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
+            // }
+            onClick={() => this.openModal("TODO")}
           >
             To Do
           </MEButton>
@@ -378,7 +391,7 @@ class OneActionPage extends React.Component {
             className="phone-vanish me-anime-open-in"
             style={{ padding: "5px 14px", fontSize: 14 }}
             onClick={() => {
-              this.openForm("DONE");
+              this.openModal("DONE");
               this.setState({ showTodoMsg: false });
             }}
           >
@@ -390,7 +403,7 @@ class OneActionPage extends React.Component {
             className="pc-vanish me-anime-open-in"
             style={{ padding: "5px 20px", fontSize: 14 }}
             onClick={() => {
-              this.openForm("DONE");
+              this.openModal("DONE");
               this.setState({ showTodoMsg: false });
             }}
           >
@@ -401,6 +414,38 @@ class OneActionPage extends React.Component {
       );
     }
   }
+
+  /**
+   * Modal Functions
+   */
+  renderModal() {
+    if (this.state.openModalForm) {
+      return (
+        <MEModal closeModal={this.closeModal} size="md" contentStyle={{minWidth:"100%"}}>
+          <ActionModal 
+            content={this.getMyAction()} 
+            user={this.props.user}
+            status={this.state.status}
+            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+            closeModal={this.closeModal}
+          />
+        </MEModal>
+      );
+    }
+  }
+
+  openModal (status) {
+    this.setState({ 
+      openModalForm: true,
+      status: status
+    });
+  }
+
+  closeModal() {
+    this.setState({ openModalForm: null, status: null });
+  }
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -426,407 +471,395 @@ class OneActionPage extends React.Component {
       : true;
 
     return (
-      <div>
-        <div className="product-content-box">
-          <div className="row">
-            <div className="col-lg-6 col-md-12">
-              {/* title */}
-              <div className="content-box">
-                <h2
-                  className="cool-font"
-                  style={{ padding: "20px 0px 0px 0px" }}
-                >
-                  {action.title}
-                </h2>
-              </div>
-              {/* displays the action's info: impact, difficulty, tags and categories*/}
-              <div style={{ padding: 15, position: "relative" }}>
-                <div className="" style={{ display: "inline-block" }}>
-                  <Tooltip
-                    text="Shows the level of impact this action makes relative to the other actions."
-                    dir="top"
+      <>
+        <div>
+          <div className="product-content-box">
+            <div className="row">
+              <div className="col-lg-6 col-md-12">
+                {/* title */}
+                <div className="content-box">
+                  <h2
+                    className="cool-font"
+                    style={{ padding: "20px 0px 0px 0px" }}
                   >
-                    <span className="has-tooltip">Impact</span>
-                  </Tooltip>
-                  <span>
-                    {this.renderTagBar(this.getTag("impact"), "impact")}
-                  </span>
+                    {action.title}
+                  </h2>
                 </div>
-                <div className="float_right" style={{ marginRight: 50 }}>
-                  Cost
-                  <span> {this.renderCost(this.getTag("cost"), "cost")} </span>
+                {/* displays the action's info: impact, difficulty, tags and categories*/}
+                <div style={{ padding: 15, position: "relative" }}>
+                  <div className="" style={{ display: "inline-block" }}>
+                    <Tooltip
+                      text="Shows the level of impact this action makes relative to the other actions."
+                      dir="top"
+                    >
+                      <span className="has-tooltip">Impact</span>
+                    </Tooltip>
+                    <span>
+                      {this.renderTagBar(this.getTag("impact"), "impact")}
+                    </span>
+                  </div>
+                  <div className="float_right" style={{ marginRight: 50 }}>
+                    Cost
+                    <span> {this.renderCost(this.getTag("cost"), "cost")} </span>
+                  </div>
                 </div>
-              </div>
 
-              {
-                /* displays ToDo and Done buttons if action is available in this community and not deleted*/
-                action_available ? (
-                  <div
-                    className="clearfix"
-                    style={{
-                      position: "relative",
-                      // marginLeft: "40px",
-                      marginTop: 10,
-                    }}
-                  >
-                    {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
-									{this.renderTags(action.tags)}
-								</p> */}
-                    <div className="btn-envelope">
-                      {!this.props.user ? (
-                        <CustomTooltip text="Sign in to make a TODO list">
-                          <p
-                            className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1"
-                            style={{
-                              margin: 6,
-                              marginLeft: 10,
-                              padding: "7px 20px",
-                            }}
-                          >
-                            ToDo
-                          </p>
-                        </CustomTooltip>
-                      ) : (
-                        this.checkTodoAndReturn()
-                      )}
-                      &nbsp;
-                      {!this.props.user ? (
-                        <CustomTooltip text="Sign in to mark actions as completed">
-                          <p
-                            className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1"
-                            style={{
-                              margin: 6,
-                              marginLeft: 10,
-                              padding: "7px 20px",
-                            }}
-                          >
-                            Done
-                          </p>
-                        </CustomTooltip>
-                      ) : (
-                        this.checkDoneAndReturn()
-                      )}
-                    </div>
-                    {this.state.status ? (
-                      <div style={{ paddingTop: "20px" }}>
-                        <ChooseHHForm
-                          aid={action.id}
-                          status={this.state.status}
-                          open={this.state.status ? true : false}
-                          user={this.props.user}
-                          addToCart={(aid, hid, status) =>
-                            this.addToCart(aid, hid, status)
-                          }
-                          inCart={(aid, hid, cart) =>
-                            this.inCart(aid, hid, cart)
-                          }
-                          moveToDone={(aid, hid) =>
-                            this.moveToDoneByActionId(aid, hid)
-                          }
-                          closeForm={this.closeForm}
-                        />{" "}
-                      </div>
-                    ) : null}
-                    {this.state.showTestimonialLink ? (
-                      <div>
-                        <p
-                          style={{ marginTop: 30, fontSize: 15 }}
-                          className="phone-vanish"
-                        >
-                          Nice job! How was your experience with this action?
-                          Tell us about it in a{" "}
-                          <a
-                            href="#testimonials-form"
-                            className="as-link"
-                            style={{ display: "inline-block" }}
-                            onClick={() =>
-                              this.setState({ tab: "testimonials" })
-                            }
-                          >
-                            testimonial
-                          </a>
-                          .
-                        </p>
-                        <p
-                          className="pc-vanish"
-                          style={{ marginTop: 30, fontSize: 15 }}
-                        >
-                          Nice job! How was your experience with this action?
-                          Tell us about it in a Tell us about it in a{" "}
-                          <a
-                            href={this.props.links.testimonials}
-                            className="as-link"
-                            style={{ display: "inline-block" }}
-                          >
-                            testimonial
-                          </a>
-                        </p>
-                      </div>
-                    ) : null}
-                  </div>
-                ) : (
-                  <div className="cool-font">
-                    This action is not available. It was from a different
-                    community or was deleted.
-                  </div>
-                )
-              }
-              {this.state.showTodoMsg ? (
-                <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
-                  Nicely done! You have now added this action to your todo list.
-                </p>
-              ) : null}
-            </div>
-            {/* action image */}
-            <div className="col-lg-6 col-md-12">
-              <div className="img-box action-pic-fix">
-                <img
-                  src={action.image ? action.image.url : null}
-                  alt=""
-                  data-imagezoom="true"
-                  className="img-responsive z-depth-float me-anime-open-in"
-                  style={{ marginTop: "20px", borderRadius: 9 }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* tab box holding description, steps to take, and stories about the action */}
-        <div className="product-tab-box">
-          <ul className="nav nav-tabs tab-menu">
-            {/* tab switching system, may be a better way to do this */}
-            <li
-              id="desctab"
-              className={this.state.tab === "description" ? "active" : ""}
-            >
-              <button
-                className="cool-font"
-                style={{ fontSize: this.state.fontSize }}
-                onClick={() => {
-                  this.setState({ tab: "description" });
-                }}
-                data-toggle="tab"
-              >
-                Description
-              </button>
-            </li>
-            <li
-              id="stepstab"
-              className={this.state.tab === "steps" ? "active" : ""}
-            >
-              <button
-                className="cool-font"
-                style={{ fontSize: this.state.fontSize }}
-                onClick={() => {
-                  this.setState({ tab: "steps" });
-                }}
-                data-toggle="tab"
-              >
-                Steps To Take
-              </button>
-            </li>
-            <li
-              id="reviewtab"
-              className={this.state.tab === "testimonials" ? "active" : ""}
-            >
-              <button
-                className="cool-font"
-                style={{ fontSize: this.state.fontSize }}
-                onClick={() => {
-                  this.setState({ tab: "testimonials" });
-                }}
-                data-toggle="tab"
-              >
-                Testimonials
-              </button>
-            </li>
-            {false ? (
-              <li
-                id="reviewtab"
-                className={this.state.tab === "question" ? "active" : ""}
-              >
-                <button
-                  className="cool-font"
-                  style={{ fontSize: this.state.fontSize }}
-                  onClick={() => {
-                    this.setState({ tab: "question" });
-                  }}
-                  data-toggle="tab"
-                >
-                  Ask A Question
-                </button>
-              </li>
-            ) : null}
-            {action.deep_dive && action.deep_dive !== "<p><br></p>" ? (
-              <li
-                id="deeptab"
-                className={this.state.tab === "deep" ? "active" : ""}
-              >
-                <button
-                  className="cool-font"
-                  style={{ fontSize: this.state.fontSize }}
-                  onClick={() => {
-                    this.setState({ tab: "deep" });
-                  }}
-                  data-toggle="tab"
-                >
-                  Deep Dive
-                </button>
-              </li>
-            ) : null}
-          </ul>
-          <div className="tab-content">
-            {/* description */}
-            <div
-              className={
-                this.state.tab === "description"
-                  ? "tab-pane active cool-font"
-                  : "tab-pane cool-font"
-              }
-              id="desc"
-            >
-              <div className="product-details-content">
-                <div className="desc-content-box">
-                  <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{
-                      __html: getHTMLContent(action.about),
-                    }}
-                  ></p>
-                </div>
-              </div>
-            </div>
-            {/* steps to take */}
-            <div
-              className={
-                this.state.tab === "steps"
-                  ? "tab-pane active cool-font"
-                  : "tab-pane cool-font"
-              }
-              id="steps"
-            >
-              <div className="product-details-content">
-                <div className="desc-content-box">
-                  <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{
-                      __html: getHTMLContent(action.steps_to_take),
-                    }}
-                  ></p>
-                </div>
-              </div>
-            </div>
-            {/* if it has deep dive */}
-            <div
-              className={
-                this.state.tab === "deep"
-                  ? "tab-pane active cool-font"
-                  : "tab-pane cool-font"
-              }
-              id="deep"
-            >
-              <div className="product-details-content">
-                <div className="desc-content-box">
-                  <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{
-                      __html: getHTMLContent(action.deep_dive),
-                    }}
-                  ></p>
-                  {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                this.state.tab === "question"
-                  ? "tab-pane active cool-font"
-                  : "tab-pane cool-font"
-              }
-              id="question"
-            >
-              <div className="product-details-content clearfix">
-                <div className="desc-content-box clearfix">
-                  {/* <p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p> */}
-                  <textarea
-                    className="form-control"
-                    ref="question_body"
-                    rows={5}
-                    style={{ padding: 25 }}
-                    placeholder="Please type your question here..."
-                  />
-                  {this.props.user ? (
-                    <button
-                      onClick={() => {
-                        this.sendQuestion();
-                      }}
-                      style={{ marginTop: 10, padding: "14px 41px" }}
-                      className="btn btn-success round-me pull-right"
-                    >
-                      Send Question
-                    </button>
-                  ) : (
-                    <a
-                      href={"/" + login_link + "/signin"}
+                {
+                  /* displays ToDo and Done buttons if action is available in this community and not deleted*/
+                  action_available ? (
+                    <div
+                      className="clearfix"
                       style={{
+                        position: "relative",
+                        // marginLeft: "40px",
                         marginTop: 10,
-                        padding: "14px 41px",
-                        background: "gray",
-                        border: "gray",
-                        color: "white",
-                        textDecoration: "none",
                       }}
-                      className="btn btn-success round-me pull-right"
                     >
-                      Sign In To Send
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                this.state.tab === "testimonials"
-                  ? "tab-pane active cool-font"
-                  : "tab-pane cool-font"
-              }
-              id="review"
-            >
-              <div className="review-box make-me-dark">
-                {/* Reviews */}
-                {this.renderStories(stories)}
-                {this.state.numberToShow < stories.length ? (
-                  <button
-                    style={{ margin: "0 auto 30px auto" }}
-                    className="as-link"
-                    onClick={() =>
-                      this.setState({ numberToShow: stories.length })
-                    }
-                  >
-                    {" "}
-                    Show all Testimonials{" "}
-                  </button>
+                      {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
+                    {this.renderTags(action.tags)}
+                  </p> */}
+                      <div className="btn-envelope">
+                        {!this.props.user ? (
+                          <CustomTooltip text="Sign in to make a TODO list">
+                            <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1">
+                              ToDo
+                            </p>
+                          </CustomTooltip>
+                        ) : (
+                          this.checkTodoAndReturn()
+                        )}
+                        &nbsp;
+                        {!this.props.user ? (
+                          <CustomTooltip text="Sign in to mark actions as completed">
+                            <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1">
+                              Done
+                            </p>
+                          </CustomTooltip>
+                        ) : (
+                          this.checkDoneAndReturn()
+                        )}
+                      </div>
+                      {/* {this.state.status ? (
+                        <div style={{ paddingTop: "20px" }}>
+                          <ChooseHHForm
+                            aid={action.id}
+                            status={this.state.status}
+                            open={this.state.status ? true : false}
+                            user={this.props.user}
+                            addToCart={(aid, hid, status) =>
+                              this.addToCart(aid, hid, status)
+                            }
+                            inCart={(aid, hid, cart) =>
+                              this.inCart(aid, hid, cart)
+                            }
+                            moveToDone={(aid, hid) =>
+                              this.moveToDoneByActionId(aid, hid)
+                            }
+                            closeForm={this.closeForm}
+                          />{" "}
+                        </div>
+                      ) : null} */}
+                      {this.state.showTestimonialLink ? (
+                        <div>
+                          <p
+                            style={{ marginTop: 30, fontSize: 15 }}
+                            className="phone-vanish"
+                          >
+                            Nice job! How was your experience with this action?
+                            Tell us about it in a{" "}
+                            <a
+                              href="#testimonials-form"
+                              className="as-link"
+                              style={{ display: "inline-block" }}
+                              onClick={() =>
+                                this.setState({ tab: "testimonials" })
+                              }
+                            >
+                              testimonial
+                            </a>
+                            .
+                          </p>
+                          <p
+                            className="pc-vanish"
+                            style={{ marginTop: 30, fontSize: 15 }}
+                          >
+                            Nice job! How was your experience with this action?
+                            Tell us about it in a Tell us about it in a{" "}
+                            <a
+                              href={this.props.links.testimonials}
+                              className="as-link"
+                              style={{ display: "inline-block" }}
+                            >
+                              testimonial
+                            </a>
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="cool-font">
+                      This action is not available. It was from a different
+                      community or was deleted.
+                    </div>
+                  )
+                }
+                {this.state.showTodoMsg ? (
+                  <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
+                    Nicely done! You have now added this action to your todo list.
+                  </p>
                 ) : null}
               </div>
-              {/* form to fill out to tell your own story */}
-              {this.props.user ? (
-                <div id="testimonials-form">
-                  <StoryForm
-                    uid={this.props.user.id}
-                    aid={action.id}
-                    addStory={this.addStory}
+              {/* action image */}
+              <div className="col-lg-6 col-md-12">
+                <div className="img-box action-pic-fix">
+                  <img
+                    src={action.image ? action.image.url : null}
+                    alt=""
+                    data-imagezoom="true"
+                    className="img-responsive z-depth-float me-anime-open-in"
+                    style={{ marginTop: "20px", borderRadius: 9 }}
                   />
                 </div>
-              ) : (
-                <p className="make-me-dark">
-                  <Link to={this.props.links.signin}> Sign In </Link> to submit
-                  your own story about taking this Action
-                </p>
-              )}
+              </div>
+            </div>
+          </div>
+          {/* tab box holding description, steps to take, and stories about the action */}
+          <div className="product-tab-box">
+            <ul className="nav nav-tabs tab-menu">
+              {/* tab switching system, may be a better way to do this */}
+              <li
+                id="desctab"
+                className={this.state.tab === "description" ? "active" : ""}
+              >
+                <button
+                  className="cool-font"
+                  style={{ fontSize: this.state.fontSize }}
+                  onClick={() => {
+                    this.setState({ tab: "description" });
+                  }}
+                  data-toggle="tab"
+                >
+                  Description
+                </button>
+              </li>
+              <li
+                id="stepstab"
+                className={this.state.tab === "steps" ? "active" : ""}
+              >
+                <button
+                  className="cool-font"
+                  style={{ fontSize: this.state.fontSize }}
+                  onClick={() => {
+                    this.setState({ tab: "steps" });
+                  }}
+                  data-toggle="tab"
+                >
+                  Steps To Take
+                </button>
+              </li>
+              <li
+                id="reviewtab"
+                className={this.state.tab === "testimonials" ? "active" : ""}
+              >
+                <button
+                  className="cool-font"
+                  style={{ fontSize: this.state.fontSize }}
+                  onClick={() => {
+                    this.setState({ tab: "testimonials" });
+                  }}
+                  data-toggle="tab"
+                >
+                  Testimonials
+                </button>
+              </li>
+              {false ? (
+                <li
+                  id="reviewtab"
+                  className={this.state.tab === "question" ? "active" : ""}
+                >
+                  <button
+                    className="cool-font"
+                    style={{ fontSize: this.state.fontSize }}
+                    onClick={() => {
+                      this.setState({ tab: "question" });
+                    }}
+                    data-toggle="tab"
+                  >
+                    Ask A Question
+                  </button>
+                </li>
+              ) : null}
+              {action.deep_dive && action.deep_dive !== "<p><br></p>" ? (
+                <li
+                  id="deeptab"
+                  className={this.state.tab === "deep" ? "active" : ""}
+                >
+                  <button
+                    className="cool-font"
+                    style={{ fontSize: this.state.fontSize }}
+                    onClick={() => {
+                      this.setState({ tab: "deep" });
+                    }}
+                    data-toggle="tab"
+                  >
+                    Deep Dive
+                  </button>
+                </li>
+              ) : null}
+            </ul>
+            <div className="tab-content">
+              {/* description */}
+              <div
+                className={
+                  this.state.tab === "description"
+                    ? "tab-pane active cool-font"
+                    : "tab-pane cool-font"
+                }
+                id="desc"
+              >
+                <div className="product-details-content">
+                  <div className="desc-content-box">
+                    <p
+                      className="cool-font make-me-dark"
+                      dangerouslySetInnerHTML={{
+                        __html: getHTMLContent(action.about),
+                      }}
+                    ></p>
+                  </div>
+                </div>
+              </div>
+              {/* steps to take */}
+              <div
+                className={
+                  this.state.tab === "steps"
+                    ? "tab-pane active cool-font"
+                    : "tab-pane cool-font"
+                }
+                id="steps"
+              >
+                <div className="product-details-content">
+                  <div className="desc-content-box">
+                    <p
+                      className="cool-font make-me-dark"
+                      dangerouslySetInnerHTML={{
+                        __html: getHTMLContent(action.steps_to_take),
+                      }}
+                    ></p>
+                  </div>
+                </div>
+              </div>
+              {/* if it has deep dive */}
+              <div
+                className={
+                  this.state.tab === "deep"
+                    ? "tab-pane active cool-font"
+                    : "tab-pane cool-font"
+                }
+                id="deep"
+              >
+                <div className="product-details-content">
+                  <div className="desc-content-box">
+                    <p
+                      className="cool-font make-me-dark"
+                      dangerouslySetInnerHTML={{
+                        __html: getHTMLContent(action.deep_dive),
+                      }}
+                    ></p>
+                    {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  this.state.tab === "question"
+                    ? "tab-pane active cool-font"
+                    : "tab-pane cool-font"
+                }
+                id="question"
+              >
+                <div className="product-details-content clearfix">
+                  <div className="desc-content-box clearfix">
+                    {/* <p className="cool-font" dangerouslySetInnerHTML={{ __html: action.steps_to_take }}></p> */}
+                    <textarea
+                      className="form-control"
+                      ref="question_body"
+                      rows={5}
+                      style={{ padding: 25 }}
+                      placeholder="Please type your question here..."
+                    />
+                    {this.props.user ? (
+                      <button
+                        onClick={() => {
+                          this.sendQuestion();
+                        }}
+                        style={{ marginTop: 10, padding: "14px 41px" }}
+                        className="btn btn-success round-me pull-right"
+                      >
+                        Send Question
+                      </button>
+                    ) : (
+                      <a
+                        href={"/" + login_link + "/signin"}
+                        style={{
+                          marginTop: 10,
+                          padding: "14px 41px",
+                          background: "gray",
+                          border: "gray",
+                          color: "white",
+                          textDecoration: "none",
+                        }}
+                        className="btn btn-success round-me pull-right"
+                      >
+                        Sign In To Send
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  this.state.tab === "testimonials"
+                    ? "tab-pane active cool-font"
+                    : "tab-pane cool-font"
+                }
+                id="review"
+              >
+                <div className="review-box make-me-dark">
+                  {/* Reviews */}
+                  {this.renderStories(stories)}
+                  {this.state.numberToShow < stories.length ? (
+                    <button
+                      style={{ margin: "0 auto 30px auto" }}
+                      className="as-link"
+                      onClick={() =>
+                        this.setState({ numberToShow: stories.length })
+                      }
+                    >
+                      {" "}
+                      Show all Testimonials{" "}
+                    </button>
+                  ) : null}
+                </div>
+                {/* form to fill out to tell your own story */}
+                {this.props.user ? (
+                  <div id="testimonials-form">
+                    <StoryForm
+                      uid={this.props.user.id}
+                      aid={action.id}
+                      addStory={this.addStory}
+                    />
+                  </div>
+                ) : (
+                  <p className="make-me-dark">
+                    <Link to={this.props.links.signin}> Sign In </Link> to submit
+                    your own story about taking this Action
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
   chooseFontSize = () => {
@@ -840,16 +873,16 @@ class OneActionPage extends React.Component {
       });
     }
   };
-  openForm = (status) => {
-    this.setState({
-      status: status,
-    });
-  };
-  closeForm = () => {
-    this.setState({
-      status: null,
-    });
-  };
+  // openForm = (status) => {
+  //   this.setState({
+  //     status: status,
+  //   });
+  // };
+  // closeForm = () => {
+  //   this.setState({
+  //     status: null,
+  //   });
+  // };
 
   renderTags(tags) {
     return Object.keys(tags).map((key) => {
