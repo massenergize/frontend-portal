@@ -43,8 +43,7 @@ class TeamInfoModal extends React.Component {
             type: "dropdown",
             data: pTeamNames,
             dataValues: pTeamIds,
-            placeholder:
-              "Describe your team. Who are you, and brings you together?...",
+            placeholder: team && team.parent ? team.parent.name : "",
             value: team && team.parent ? team.parent.name : "NONE",
             defaultKey: "NONE",
           },
