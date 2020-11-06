@@ -11,6 +11,7 @@ import {
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import MECard from "../Widgets/MECard";
+import METextField from "../Widgets/METextField";
 
 class DeleteAccountFormBase extends React.Component {
   constructor(props) {
@@ -62,16 +63,18 @@ class DeleteAccountFormBase extends React.Component {
             </label>
             {this.getProvider() === "email_and_password" ? (
               <>
-                <p>
+                <br />
+                <small>
                   Password <span className="text-danger">*</span>
-                  <input
-                    type="password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChange}
-                    required
-                  />
-                </p>
+                </small>
+                <METextField
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  placeholder="Enter Password..."
+                  required
+                />
               </>
             ) : null}
           </div>

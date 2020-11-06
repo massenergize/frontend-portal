@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
-import loader from "../../../assets/images/other/loader.gif";
+// import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
 import MEFormGenerator, {
   BAD,
@@ -43,7 +43,8 @@ class TeamInfoModal extends React.Component {
             type: "dropdown",
             data: pTeamNames,
             dataValues: pTeamIds,
-            placeholder: team && team.parent ? team.parent.name : "",
+            placeholder:
+              "Choose which team is the parent team",
             value: team && team.parent ? team.parent.name : "NONE",
             defaultKey: "NONE",
           },
@@ -95,9 +96,11 @@ class TeamInfoModal extends React.Component {
         type: "file",
         label: "Select a logo for your team",
         defaultValue: team && team.logo && team.logo.url,
-        showOverlay:false,
-        maxWidth:600, // maximum width of crop frame
-        maxHeight:600 // maximum height of crop frame
+        showOverlay: false,
+        maxWidth: 800, // maximum width of crop frame
+        maxHeight: 800, // maximum height of crop frame
+        ratioHeight:3, 
+        ratioWidth:4,
       },
       ...parentFields,
     ];
@@ -116,20 +119,19 @@ class TeamInfoModal extends React.Component {
   }
 
   render() {
-    const { team, onClose, teamsStats, user } = this.props;
-    const { loading, error, notification } = this.state;
+    const { team, onClose, user } = this.props;
+    const { notification } = this.state;
     //if other teams have us as a parent, can't set a parent ourselves
     //from that point, can set parent teams that are not ourselves AND don't have parents themselves (i.e. aren't sub-teams)
-    const teams = teamsStats.map((teamStats) => teamStats.team);
-    const parentTeamOptions = this.getParentTeamOptions();
-  
+    // const teams = teamsStats.map((teamStats) => teamStats.team);
+    // const parentTeamOptions = this.getParentTeamOptions();
 
     let form;
     if (user) {
       form = (
         <MEFormGenerator
           style={{
-            maxHeight: "58vh",
+            maxHeight: "120vh",
             overflowY: "scroll",
             paddingTop: 0,
             marginTop: 0,
@@ -156,8 +158,10 @@ class TeamInfoModal extends React.Component {
     return (
       <>
         <MEModal
+          size="lg"
           closeModal={() => onClose()}
-          contentStyle={{ width: "100%", padding: 0 }}
+          contentStyle={{ width: "98%", padding: 0, top: 10, height: "100vh", margin:15 }}
+          style={{ height: "100vh" }}
         >
           <h4 style={{ paddingRight: "60px", marginBottom: 0 }}>
             {team ? (
@@ -230,7 +234,7 @@ class TeamInfoModal extends React.Component {
   };
 
   submitForm(e, data, resetForm) {
-    const {team} = this.props;
+    const { team } = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) return;
 

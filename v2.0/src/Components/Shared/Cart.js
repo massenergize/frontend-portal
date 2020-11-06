@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "./Tooltip";
+// import Tooltip from "./Tooltip";
 import { connect } from "react-redux";
 import {
   reduxLoadDone,
@@ -16,8 +16,8 @@ import {
 import { apiCall } from "../../api/functions";
 import MESectionWrapper from "../Pages/Widgets/MESectionWrapper";
 import MECard from "../Pages/Widgets/MECard";
-import MEButton from "../Pages/Widgets/MEButton";
-import METextView from "../Pages/Widgets/METextView";
+// import MEButton from "../Pages/Widgets/MEButton";
+// import METextView from "../Pages/Widgets/METextView";
 import MELink from "../Pages/Widgets/MELink";
 
 /**
@@ -91,7 +91,7 @@ class Cart extends React.Component {
               <div className="">
                 {actionRel.status.toLowerCase() === "todo" ? (
                   <a
-                    href="#"
+                    href="##"
                     onClick={(e) => {
                       e.preventDefault();
                       this.moveToDone(actionRel);
@@ -109,7 +109,7 @@ class Cart extends React.Component {
                   //   style={{ padding: "4px 8px" }}
                   // />
                   <a
-                    href="#"
+                    href="##"
                     onClick={(e) => {
                       e.preventDefault();
                       this.removeFromCart(actionRel);

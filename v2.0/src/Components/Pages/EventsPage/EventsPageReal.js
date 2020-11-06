@@ -2,16 +2,16 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import PageTitle from "../../Shared/PageTitle";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import CONST from '../../Constants'
 import Funnel from "./Funnel";
-import notFound from "./not-found.jpg";
-import { dateFormatString, locationFormatJSX } from "../../Utils";
+// import notFound from "./not-found.jpg";
+import { dateFormatString } from "../../Utils";
 import MECard from "../Widgets/MECard";
-import METextView from "../Widgets/METextView";
+// import METextView from "../Widgets/METextView";
 import NewEventsCard from './NewEventsCard';
 
 /**
@@ -201,7 +201,7 @@ class EventsPage extends React.Component {
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        const location = event.location;
+
         return (
           <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
             <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>

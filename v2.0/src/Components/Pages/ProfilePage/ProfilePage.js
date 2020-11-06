@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -8,7 +8,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Counter from "./Counter";
 import AddingHouseholdForm from "./AddingHouseholdForm";
 import EditingProfileForm from "./EditingProfileForm";
-import EventCart from "./EventCart";
+// import EventCart from "./EventCart";
 import { withFirebase } from "react-redux-firebase";
 
 import {
@@ -29,7 +29,7 @@ import {
   reduxTeamAddHouse,
 } from "../../../redux/actions/pageActions";
 // import { watchFile } from 'fs';
-import Tooltip from "../../Shared/Tooltip";
+// import Tooltip from "../../Shared/Tooltip";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
@@ -103,12 +103,15 @@ class ProfilePage extends React.Component {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
 
+
     if (!this.props.user) {
+    // can this execute?      
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
     }
+
     const myHouseholds = this.props.user.households || [];
-    const myCommunities = this.props.user.communities || [];
+    // const myCommunities = this.props.user.communities || [];
 
     if (!this.props.teamsPage) {
       return <LoadingCircle />;
@@ -118,6 +121,8 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+
+    /* This is not where communities get automatically added!
     if (this.props.community) {
       if (
         myCommunities.filter((com) => {
@@ -127,6 +132,8 @@ class ProfilePage extends React.Component {
         this.addDefaultCommunity();
       }
     }
+    */
+
     const { user } = this.props;
     return (
       <>
@@ -655,7 +662,7 @@ class ProfilePage extends React.Component {
                 icon="fa fa-users"
                 mediaType="icon"
               >
-                {"* " + team.name}
+                {team.name + " *"}
               </METextView>
             )}
             {team.tagline && (

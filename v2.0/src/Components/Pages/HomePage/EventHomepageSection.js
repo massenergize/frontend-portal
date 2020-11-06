@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import defaultImg from "./../../../../src/assets/images/blog/i9.jpg";
-import { dateFormatString, locationFormatJSX } from "../../Utils";
+// import defaultImg from "./../../../../src/assets/images/blog/i9.jpg";
+import { dateFormatString } from "../../Utils";
 import NewEventsCard from "./../EventsPage/NewEventsCard";
 
 /**
@@ -37,17 +37,17 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
-        const ev_name =
-          event.name.length > 40
-            ? event.name.substring(0, 35) + "..."
-            : event.name;
+        // const ev_name =
+        //   event.name.length > 40
+        //     ? event.name.substring(0, 35) + "..."
+        //     : event.name;
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
 
-        const location = event.location;
-        const img = event.image && event.image.url ? event.image.url : defaultImg;
+        // const location = event.location;
+        // const img = event.image && event.image.url ? event.image.url : defaultImg;
     
         return (
           <div key={event.id.toString()} className="col-md-6 col-lg-4 col-sm-6 col-xs-12">
@@ -80,7 +80,7 @@ class Events extends React.Component {
         style={{ background: "white" }}
       >
         <div className="container">
-          <h3 className="cool-font text-center" style={{ fontSize: 20 }}>
+          <h3 className="cool-font text-center" style={{ fontSize: 20, marginBottom:30 }}>
             Upcoming Events and Campaigns
           </h3>
           <div className="row">

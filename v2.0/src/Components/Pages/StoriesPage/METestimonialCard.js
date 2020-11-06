@@ -82,7 +82,6 @@ export default class METestimonialCard extends Component {
       action,
       preferred_name,
       links,
-      created_at,
       title,
     } = this.props;
     action = action ? action : {};
@@ -94,30 +93,27 @@ export default class METestimonialCard extends Component {
           // onClick={this.handleReadMore}
           to={`${this.props.links.testimonials}/${id}`}
         >
-          <img src={this.getPhoto()} className="me-testimonial-img" />
+          <img src={this.getPhoto()} className="me-testimonial-img" alt="testimonial"/>
           <div className="me-testimonial-content-box">
             <div className="me-testimonial-about">
-              <small>
-                <b>
-                  <span className="fa fa-user" style={{ marginRight: 5 }} />
-                  By {preferred_name}
-                </b>
+              <small style={{ fontSize: 17 }}>
+                <b>{title}</b>
               </small>
-              <small style={{ marginLeft: "auto" }}>
+              {/* <small style={{ marginLeft: "auto" }}>
                 <b>
                   {" "}
                   <span className="fa fa-clock-o" style={{ marginRight: 5 }} />
                   {this.getFormatedTime(created_at)}
                 </b>
-              </small>
+              </small> */}
             </div>
             <div style={{ padding: 12 }}>
-              <METextView
+              {/* <METextView
                 className="me-testimonial-content"
                 style={{ fontSize: 18, color: "#282828" }}
               >
                 {title}
-              </METextView>
+              </METextView> */}
               <METextView
                 className="me-testimonial-content"
                 style={{ fontSize: 15, color: "#282828" }}
@@ -170,6 +166,7 @@ export default class METestimonialCard extends Component {
               left: 0,
               borderRadius: 6,
             }}
+            alt="testimonial"
           />
 
           <METextView

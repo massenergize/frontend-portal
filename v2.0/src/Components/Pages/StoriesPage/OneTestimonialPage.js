@@ -6,12 +6,10 @@ import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./me_energy_default.png";
 import {
-  dateFormatString,
   getHumanFriendlyDate,
   getRandomIntegerInRange,
-  locationFormatJSX,
 } from "../../Utils";
-import ShareButtons from "../../Shared/ShareButtons";
+// import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
@@ -123,6 +121,7 @@ class OneTestimonialPage extends React.Component {
                 width: 100,
                 objectFit: "cover",
               }}
+              alt="testimonial"
             />
             <p
               style={{
@@ -191,7 +190,6 @@ class OneTestimonialPage extends React.Component {
 
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
-    const location = story.location;
 
     return (
       <section className="event-section style-3">

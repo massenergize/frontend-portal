@@ -1,29 +1,29 @@
 import React from "react";
-import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+// import LoadingCircle from "../../Shared/LoadingCircle";
+// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
 import Funnel from "./../EventsPage/Funnel";
-import leafy from "./leafy.png";
+// import leafy from "./leafy.png";
 import StoryModal from "./StoryModal";
-import * as moment from "moment";
+// import * as moment from "moment";
 import METestimonialCard from "./METestimonialCard";
 import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
-import { getRandomIntegerInRange, moveToPage } from "../../Utils";
+import { moveToPage } from "../../Utils";
 import Paginator from "../Widgets/Paginator";
-import MEFileSelector from "../Widgets/MEFileSelector";
+// import MEFileSelector from "../Widgets/MEFileSelector";
 
 const PER_PAGE = 6;
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
-    const stories = props.stories ? props.stories : [];
+    // const stories = props.stories ? props.stories : [];
     this.closeModal = this.closeModal.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.state = {

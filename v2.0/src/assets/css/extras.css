@@ -116,13 +116,13 @@
 }
 .me-testimonial-about {
   display: flex;
-  border: dashed 0px #d6d6d6;
+  border: solid 0px #f5f5f5;
   /* border-top-width:2px;  */
   border-bottom-width: 2px;
   padding: 15px;
-  /* color:#615c5c; */
-  color: white;
-  background: linear-gradient(to right, #ea5b08, #ffc107);
+  color: black;
+  /* background: linear-gradient(to right, #ea5b08, #ffc107); */
+  background:#fbfbfb; 
 }
 .me-testimonial-content-box {
   /* padding:15px;  */
@@ -829,6 +829,8 @@
   border-right-color: white;
   border-bottom-color: white;
 }
+
+
 .c-tooltip-msg-container {
   padding-left: 10px;
   display: none;
@@ -1031,8 +1033,8 @@
     font-size: 14px !important;
   }
   .me-btn-phone-mode {
-    font-size: 12px !important;
-    padding: 5px 13px !important;
+    font-size: 12px ;
+    padding: 5px 13px ;
   }
   .snackbar-main-container {
     width: 100%;

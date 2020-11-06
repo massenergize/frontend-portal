@@ -13,7 +13,8 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
-import photo from "./try.png";
+// import photo from "./try.png";
+
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -112,8 +113,8 @@ class PhotoSensitiveAction extends React.Component {
         <>
           <Tooltip text="Cant use this feature, you have already done the action.">
             <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 phone-vanish"
-              style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
+              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 phone-vanish me-anime-open-in"
+              style={{ margin: 6, marginLeft: 10, padding: "7px 19px" }}
             >
               To Do
             </p>
@@ -121,9 +122,9 @@ class PhotoSensitiveAction extends React.Component {
           {/* -------- PHONE BTN ---------------- */}
           <Tooltip text="Cant use this feature, you have already done the action.">
             <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 pc-vanish"
+              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 pc-vanish me-anime-open-in "
               style={{
-                padding: "5px 13px",
+                padding: "7px 20px",
                 fontSize: 12,
                 margin: 6,
                 // marginLeft: 3,
@@ -142,12 +143,12 @@ class PhotoSensitiveAction extends React.Component {
           <Tooltip text="Thank you for adding this. Click again to remove.">
             <p
               style={{
-                padding: "5px 13px",
+                padding: "7px 20px",
                 fontSize: 12,
                 margin: 6,
                 // marginLeft: 3,
               }}
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 pc-vanish"
+              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 pc-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ showTodoMsg: false });
                 this.removeFromCart(this.actionIsInTodo());
@@ -166,7 +167,7 @@ class PhotoSensitiveAction extends React.Component {
                 margin: 6,
                 marginLeft: 10,
               }}
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 phone-vanish"
+              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 phone-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ showTodoMsg: false });
                 this.removeFromCart(this.actionIsInTodo());
@@ -181,8 +182,17 @@ class PhotoSensitiveAction extends React.Component {
       return (
         <Tooltip text="Add this to your TODO list">
           <MEButton
+            className="phone-vanish me-anime-open-in"
             onClick={() => this.openForm("TODO")}
             style={{ padding: "5px 20px", fontSize: 13 }}
+          >
+            To Do
+          </MEButton>
+          {/* ---- PHONE MODE ---- */}
+          <MEButton
+            className="pc-vanish me-anime-open-in"
+            onClick={() => this.openForm("TODO")}
+            style={{ padding: "5px 16px", fontSize: 13 }}
           >
             To Do
           </MEButton>
@@ -226,7 +236,7 @@ class PhotoSensitiveAction extends React.Component {
         <>
           <Tooltip text="Thanks for adding, click again to remove.">
             <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 phone-vanish"
+              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 phone-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ message: null });
                 this.removeFromCart(this.actionIsDone());
@@ -240,7 +250,7 @@ class PhotoSensitiveAction extends React.Component {
           {/* ------- PHONE MODE --------- */}
           {/* <Tooltip text="Thanks for adding, click again to remove."> */}
           <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 pc-vanish"
+            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 pc-vanish me-anime-open-in"
             onClick={() => {
               this.setState({ message: null });
               this.removeFromCart(this.actionIsDone());
@@ -248,7 +258,7 @@ class PhotoSensitiveAction extends React.Component {
             style={{
               margin: 6,
               // marginLeft: 0,
-              padding: "5px 13px",
+              padding: "7px 20px",
               fontSize: 12,
             }}
           >
@@ -261,7 +271,21 @@ class PhotoSensitiveAction extends React.Component {
       return (
         <Tooltip text="Mark as Done, if you've done this">
           <MEButton
+            className="phone-vanish"
             style={{ padding: "5px 20px", fontSize: 13 }}
+            onClick={() => {
+              this.openForm("DONE");
+              this.props.toggleShowTodoMsg();
+            }}
+          >
+            {" "}
+            Done
+          </MEButton>
+
+          {/* ----- PHONE MODE ----- */}
+          <MEButton
+            className="pc-vanish  me-anime-open-in"
+            style={{ padding: "5px 17px", fontSize: 13 }}
             onClick={() => {
               this.openForm("DONE");
               this.props.toggleShowTodoMsg();
@@ -291,9 +315,9 @@ class PhotoSensitiveAction extends React.Component {
           style={{
             minHeight: 160,
             borderRadius: 10,
-            border: "solid 2px #8dc343",
+            // border: "solid 2px #8dc343",
           }}
-          className="z-depth-float"
+          className="z-depth-1"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
             {this.checkDoneAndReturn()}
@@ -334,10 +358,9 @@ class PhotoSensitiveAction extends React.Component {
           <Link to={this.props.links.actions + "/" + this.props.action.id}>
             <img
               className="action-img-correction"
-              // src={photo}
               src={this.props.action.image ? this.props.action.image.url : null}
               // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
-              alt="action image"
+              alt="action"
             />
           </Link>
           <div

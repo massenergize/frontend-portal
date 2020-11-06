@@ -4,12 +4,9 @@ import MEButton from "./MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "./METextView";
 const TOP = "top";
-const BOTTOM = "bottom";
+// const BOTTOM = "bottom";
 
 export default class Paginator extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     // this.moveToPage(1);

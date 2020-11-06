@@ -106,10 +106,11 @@ class MEAutoComplete extends Component {
    */
   handleTyping = (e) => {
     const content = e.target.value.toLowerCase();
-    const { data, drop } = this.state;
+    const { data } = this.state;
     const hits = data.filter((text) => {
       const arr = text.toLowerCase().split(content);
       if (arr.length > 1) return text;
+      return null;
     });
     this.setState({ text: content, searchHits: hits, drop: true });
   };
@@ -120,7 +121,7 @@ class MEAutoComplete extends Component {
   };
 
   render() {
-    const { activeItem, placeholder, text } = this.state;
+    const {  placeholder, text } = this.state;
     const defaultText = placeholder ? placeholder : "Enter text here...";
     return (
       <div>
