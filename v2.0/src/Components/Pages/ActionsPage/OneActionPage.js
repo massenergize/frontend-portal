@@ -121,6 +121,13 @@ class OneActionPage extends React.Component {
                   <div className="single-products-details">
                     {this.renderAction(action)}
                   </div>
+                  <br />
+                  <ShareButtons
+                    label="Share this action!"
+                    pageTitle={action.title}
+                    pageDescription={action.featured_summary}
+                    url={window.location.href}
+                  />
                 </div>
                 {/* makes the todo and completed actions carts */}
                 {this.props.user ? (
@@ -154,13 +161,6 @@ class OneActionPage extends React.Component {
                 )}
               </div>
             </div>
-            <br />
-            <ShareButtons
-              label="Share this action!"
-              pageTitle={action.title}
-              pageDescription={action.featured_summary}
-              url={window.location.href}
-            />
           </section>
         </div>
       </>
@@ -330,15 +330,15 @@ class OneActionPage extends React.Component {
         <CustomTooltip text="Add this to your TODO list">
           <MEButton
             className="phone-vanish me-anime-open-in"
-            style={{ padding: "5px 14px", fontSize:14 }}
+            style={{ padding: "5px 14px", fontSize: 14 }}
             variation="accent"
             onClick={() => this.openForm("TODO")}
           >
             To Do
           </MEButton>
           <MEButton
-          className="pc-vanish me-anime-open-in"
-            style={{ padding: "5px 20px", fontSize:14 }}
+            className="pc-vanish me-anime-open-in"
+            style={{ padding: "5px 20px", fontSize: 14 }}
             variation="accent"
             onClick={() => this.openForm("TODO")}
           >

@@ -80,7 +80,7 @@ class Events extends React.Component {
         style={{ background: "white" }}
       >
         <div className="container">
-          <h3 className="cool-font text-center" style={{ fontSize: 20 }}>
+          <h3 className="cool-font text-center" style={{ fontSize: 20, marginBottom:30 }}>
             Upcoming Events and Campaigns
           </h3>
           <div className="row">
