@@ -221,7 +221,7 @@ class ChooseHHForm extends React.Component {
     return (
       <div
         style={{
-          columns: 3,
+          columns: 2,
           textAlign: "left",
           maxWidth: "80%",
           alignContent: "center",
