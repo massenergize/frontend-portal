@@ -50,7 +50,7 @@ class EditingProfileForm extends React.Component {
             required={true}
           />
 
-          <small>
+          {/* <small>
             Email ( Not Editable ) <span className="text-default">*</span>
           </small>
           <METextField
@@ -60,7 +60,7 @@ class EditingProfileForm extends React.Component {
             onChange={this.onChange}
             required={true}
             readonly="true"
-          />
+          /> */}
 
           <small>
             Preferred Name <span className="text-danger">*</span>
