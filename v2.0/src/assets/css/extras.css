@@ -1017,6 +1017,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .mob-check-fix{
+    max-width: 100% !important;
+  }
   .phone-action-btns-mode {
     font-size: 10px !important;
     min-width: 60px !important;

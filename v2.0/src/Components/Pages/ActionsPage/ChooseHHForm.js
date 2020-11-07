@@ -219,6 +219,7 @@ class ChooseHHForm extends React.Component {
 
     return (
       <div
+      className="mob-check-fix"
         style={{
           columns: 2,
           textAlign: "left",

@@ -82,7 +82,7 @@ class PhotoSensitiveAction extends React.Component {
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-    return exists && households.length === 1; // helps to ensure that button does not deactivate unless there is only one household
+    return exists;
   }
 
   checkTodoAndReturn() {
@@ -109,7 +109,7 @@ class PhotoSensitiveAction extends React.Component {
         </>
       );
     }
-    if (this.checkDone()) {
+    if (this.checkDone() && this.props.user.households.length == 1) {
       return (
         <>
           <Tooltip text="Cant use this feature, you have already done the action.">
@@ -152,7 +152,11 @@ class PhotoSensitiveAction extends React.Component {
               className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 pc-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ showTodoMsg: false });
-                this.removeFromCart(this.actionIsInTodo());
+                if (this.props.user.households.length > 1) {
+                  this.openForm("TODO");
+                } else {
+                  this.removeFromCart(this.actionIsInTodo());
+                }
               }}
             >
               To Do
@@ -171,7 +175,11 @@ class PhotoSensitiveAction extends React.Component {
               className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 phone-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ showTodoMsg: false });
-                this.removeFromCart(this.actionIsInTodo());
+                if (this.props.user.households.length > 1) {
+                  this.openForm("TODO");
+                } else {
+                  this.removeFromCart(this.actionIsInTodo());
+                }
               }}
             >
               To Do
@@ -207,7 +215,7 @@ class PhotoSensitiveAction extends React.Component {
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-    return exists && households.length === 1;
+    return exists;
   }
   checkDoneAndReturn() {
     if (!this.props.user) {
@@ -241,7 +249,11 @@ class PhotoSensitiveAction extends React.Component {
               className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 phone-vanish me-anime-open-in"
               onClick={() => {
                 this.setState({ message: null });
-                this.removeFromCart(this.actionIsDone());
+                if (this.props.user.households.length > 1) {
+                  this.openForm("DONE");
+                } else {
+                  this.removeFromCart(this.actionIsDone());
+                }
               }}
               style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
             >
@@ -255,7 +267,11 @@ class PhotoSensitiveAction extends React.Component {
             className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 pc-vanish me-anime-open-in"
             onClick={() => {
               this.setState({ message: null });
-              this.removeFromCart(this.actionIsDone());
+              if (this.props.user.households.length > 1) {
+                this.openForm("DONE");
+              } else {
+                this.removeFromCart(this.actionIsDone());
+              }
             }}
             style={{
               margin: 6,
@@ -380,6 +396,7 @@ class PhotoSensitiveAction extends React.Component {
                 }}
               >
                 {this.props.action.title}
+                <br />
               </METextView>
             </Link>
             {this.showNotifications()}

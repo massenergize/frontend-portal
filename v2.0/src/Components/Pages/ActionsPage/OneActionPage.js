@@ -8,7 +8,7 @@ import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
 // import ChooseHHForm from "./ChooseHHForm";
 import MEModal from "./../Widgets/MEModal";
-import ActionModal from './ActionModal';
+import ActionModal from "./ActionModal";
 import {
   reduxAddToDone,
   reduxAddToTodo,
@@ -56,6 +56,7 @@ class OneActionPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
   }
 
   async componentDidMount() {
@@ -243,6 +244,36 @@ class OneActionPage extends React.Component {
     }
     return null;
   }
+  moveToDone = (actionRel) => {
+    const body = {
+      user_id: this.props.user.id,
+      action_id: actionRel.action.id,
+      household_id: actionRel.real_estate_unit.id,
+    };
+    apiCall("users.actions.completed.add", body)
+      .then((json) => {
+        if (json.success) {
+          this.props.reduxMoveToDone(json.data);
+          // this.addToImpact(json.data.action);
+          this.setState({ testimonialLink: actionRel.action.id });
+        } else {
+          console.log(json.error);
+        }
+        //just update the state here
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  moveToDoneByActionId(aid, hid) {
+    const actionRel = this.props.todo.filter((actionRel) => {
+      return (
+        Number(actionRel.action.id) === Number(aid) &&
+        Number(actionRel.real_estate_unit.id) === Number(hid)
+      );
+    })[0];
+    if (actionRel) this.moveToDone(actionRel);
+  }
 
   /**
    * renders the action on the page
@@ -301,7 +332,7 @@ class OneActionPage extends React.Component {
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
 
-    if (this.checkDone()) {
+    if (this.checkDone() && this.props.user.households.length == 1) {
       // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
@@ -323,7 +354,12 @@ class OneActionPage extends React.Component {
             style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
             onClick={() => {
               this.setState({ showTodoMsg: false });
-              this.removeFromCart(this.actionIsInTodo());
+              // this.removeFromCart(this.actionIsInTodo());
+              if (this.props.user.households.length > 1) {
+                this.openModal("TODO");
+              } else {
+                this.removeFromCart(this.actionIsInTodo());
+              }
             }}
           >
             To Do
@@ -377,7 +413,12 @@ class OneActionPage extends React.Component {
             style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
             onClick={() => {
               this.setState({ showTestimonialLink: false });
-              this.removeFromCart(this.actionIsDone());
+              if (this.props.user.households.length > 1) {
+                this.openModal("DONE");
+              } else {
+                this.removeFromCart(this.actionIsDone());
+              }
+              // this.removeFromCart(this.actionIsDone());
             }}
           >
             Done
@@ -421,24 +462,29 @@ class OneActionPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
-        <MEModal closeModal={this.closeModal} size="md" contentStyle={{minWidth:"100%"}}>
-          <ActionModal 
-            content={this.getMyAction()} 
+        <MEModal
+          closeModal={this.closeModal}
+          size="md"
+          contentStyle={{ minWidth: "100%" }}
+        >
+          <ActionModal
+            content={this.getMyAction()}
             user={this.props.user}
             status={this.state.status}
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
+            moveToDone = {this.moveToDoneByActionId}
           />
         </MEModal>
       );
     }
   }
 
-  openModal (status) {
-    this.setState({ 
+  openModal(status) {
+    this.setState({
       openModalForm: true,
-      status: status
+      status: status,
     });
   }
 
@@ -500,7 +546,10 @@ class OneActionPage extends React.Component {
                   </div>
                   <div className="float_right" style={{ marginRight: 50 }}>
                     Cost
-                    <span> {this.renderCost(this.getTag("cost"), "cost")} </span>
+                    <span>
+                      {" "}
+                      {this.renderCost(this.getTag("cost"), "cost")}{" "}
+                    </span>
                   </div>
                 </div>
 
@@ -605,7 +654,8 @@ class OneActionPage extends React.Component {
                 }
                 {this.state.showTodoMsg ? (
                   <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
-                    Nicely done! You have now added this action to your todo list.
+                    Nicely done! You have now added this action to your todo
+                    list.
                   </p>
                 ) : null}
               </div>
@@ -851,8 +901,8 @@ class OneActionPage extends React.Component {
                   </div>
                 ) : (
                   <p className="make-me-dark">
-                    <Link to={this.props.links.signin}> Sign In </Link> to submit
-                    your own story about taking this Action
+                    <Link to={this.props.links.signin}> Sign In </Link> to
+                    submit your own story about taking this Action
                   </p>
                 )}
               </div>
