@@ -316,6 +316,7 @@ class OneTeamPage extends React.Component {
                               {teamData.subTeams.map((subTeamStats) => (
                                 <li key={subTeamStats.team.id}>
                                   <Link
+                                    style={{ 'verticalAlign': 'text-top' }}
                                     to={`${links.teams}/${subTeamStats.team.id}`}
                                   >
                                     <b>{subTeamStats.team.name}</b>
