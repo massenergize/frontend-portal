@@ -40,6 +40,7 @@ class ActionsPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
     this.state = {
       check_values: null,
       loaded: false,
@@ -133,6 +134,7 @@ class ActionsPage extends React.Component {
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
+            moveToDone = {this.moveToDoneByActionId}
           />
         </MEModal>
       );
