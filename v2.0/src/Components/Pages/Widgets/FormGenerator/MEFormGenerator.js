@@ -151,7 +151,7 @@ export default class FormGenerator extends Component {
     }
     if (file.originalSize.size > 999999) {
       this.setState({
-        imageInfo: `Your image is quite large(${file.originalSize.text}), it might take a few moments before your testimonial is ready. Please stay with us...`,
+        imageInfo: `Your image is quite large(${file.originalSize.text}), it might take a few moments to upload. Please be patient.`,
       });
     } else {
       this.setState({ imageInfo: "" });
