@@ -1,200 +1,29 @@
 import URLS from "./urls";
-import qs from "qs";
-import { IS_SANDBOX } from "../config/config";
+import { IS_SANDBOX, IS_PROD, IS_CANARY } from "../config/config";
+import store from '../redux/store';
 
-
-export const getJson = async url => {
-  try {
-    const data = await fetch(url, {
-      method: "GET",
-      credentials: "include"
-    });
-    const myJson = await data.json();
-    return myJson;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-export async function apiCallNoToken(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-  //Differentiate between dev deployment and real deployment
-
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
-
-  var params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: qs.stringify(dataToSend)
-  };
-
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-export async function rawCall(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-  const idToken = localStorage.getItem("idToken");
-  var params = {};
-  if (idToken) {
-    params = {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Bearer ${idToken}`
-      },
-      body: qs.stringify(dataToSend)
-    };
-  } else {
-    params = {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: qs.stringify(dataToSend)
-    };
-  }
-
-  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error: error.toString() };
-  }
-}
-
-//** Posts a body to a url and then returns the json of the response */
-export const postJson = async (url, body) => {
-  try {
-    const csrfResponse = await getJson(`${URLS.ROOT}/auth/csrf`);
-    const csrfToken = csrfResponse.data.csrfToken;
-    const response = await fetch(url, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken
-      },
-      body: JSON.stringify(body)
-    });
-    const myJson = await response.json();
-    return myJson;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
 
 /**
- *
- * @param {object} destinationUrl
- * @param {object} dataToSend
- * @param {string} relocationPage
- * This function handles sending data to the backend.  It takes advantage of
- * being a SimpleRequest hence no preflight checks will be done saving some
- * band-with and being faster in general while avoiding CORS issues.
+ * Handles making a POST request to the backend as a form submission
+ * It also adds meta data for the BE to get context on the request coming in.
+ * 
+ * @param { String } destinationUrl 
+ * @param { String } dataToSend 
+ * @param { String } relocationPage 
  */
-export async function authCall(token, relocationPage = null) {
-  //Differentiate between dev deployment and real deployment
-  var params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const response = await fetch(`${URLS.ROOT}/auth/whoami`, params);
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-
-
-
-//THIS FUNCTION IS USED FOR ALL BASIC ROUTES IN THE APP
 export async function apiCall(
   destinationUrl,
   dataToSend = {},
   relocationPage = null
 ) {
-  var params = {};
 
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
-
-  params = {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: qs.stringify(dataToSend)
+  // add some meta data for context in backend
+  dataToSend = { 
+    __is_prod: IS_PROD || IS_CANARY,
+    __is_sandbox: IS_SANDBOX,
+    __community: _getCurrentCommunityContext(),
+    ...dataToSend 
   };
-
-
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, params);
-
-  try {
-    const json = await response.json();
-    if (relocationPage && json && json.success) {
-      window.location.href = relocationPage;
-    } else if (!json.success) {
-      if (json.error === "Signature has expired") {
-        window.location.href = window.location;
-      } else {
-        console.log(destinationUrl, json.error);
-      }
-    }
-    return json;
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-
-// ----------------------------------
-export async function apiCallWithMedia(
-  destinationUrl,
-  dataToSend = {},
-  relocationPage = null
-) {
-
-  if (IS_SANDBOX) {
-    dataToSend = { is_dev: true, ...dataToSend };
-  }
 
   const formData = new FormData();
   Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
@@ -205,14 +34,13 @@ export async function apiCallWithMedia(
     body: formData
   });
 
+
   try {
     const json = await response.json();
     if (relocationPage && json && json.success) {
       window.location.href = relocationPage;
     } else if (!json.success) {
-      if (json.error === "Signature has expired") {
-        // window.alert("Session Expired.  Please reload and sign in again.")
-        console.log(destinationUrl, json);
+      if (json.error === "session_expired") {
         window.location.href = window.location;
       } else {
         console.log(destinationUrl, json.error);
@@ -224,19 +52,15 @@ export async function apiCallWithMedia(
   }
 }
 
-export const deleteJson = async url => {
-  try {
-    const data = await fetch(url, {
-      method: "DELETE",
-      credentials: "include"
-    });
-    const myJson = await data.json();
-    return myJson;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
+/**
+ * Gets the current community domain we are on
+ */
+function _getCurrentCommunityContext(){
+    const { page } = store.getState() || {}
+    const { community } = page || {}
+    const { subdomain } = community || {}
+    return subdomain
+}
 
 
 /**

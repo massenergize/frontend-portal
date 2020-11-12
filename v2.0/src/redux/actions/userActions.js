@@ -24,6 +24,9 @@ import {
   SHOW_REG
 } from './types'
 
+import { apiCall } from '../../api/functions'
+
+
 /** used to identify weather or not the registration page should be shown or not */
 export const reduxShowReg = (value) => dispatch => {
     return dispatch({
@@ -40,7 +43,8 @@ export const reduxLogin = (user) => dispatch => {
 }
  
 /** nulls the stored user after logout*/
-export const reduxLogout = () => dispatch => {
+export const reduxLogout = () => async dispatch => {
+  await apiCall('auth.logout')
   return dispatch({
     type: LOGOUT,
   });

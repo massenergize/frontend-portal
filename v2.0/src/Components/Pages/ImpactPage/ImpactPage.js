@@ -16,7 +16,8 @@ class ImpactPage extends React.Component {
     //shorten all two-worded strings except "home energy"
     let stringArr = word.split(" ");
     if (word.toLowerCase() === "home energy") return word;
-    return stringArr[0];
+    var shortWord =  stringArr[0];
+    return shortWord.replace(/,/g/""); 
   }
 
    
@@ -113,7 +114,7 @@ class ImpactPage extends React.Component {
 
     completed.forEach((el) => {
       if (el) {
-        graph2Categories.push(el.name);
+        graph2Categories.push(this.shortenWords(el.name));
         graph2Series[0].data.push(el.value);
         graph2Series[1].data.push(el.reported_value);
         phoneImpact.labels.push(this.shortenWords(el.name));
@@ -139,7 +140,7 @@ class ImpactPage extends React.Component {
                   {community ? community.name : null}
                 </h5>
                 <div
-                  className="card  mb-4 raise"
+                  className="card  mb-4 z-depth-float me-anime-open-in"
                   style={{
                     borderRadius: 10,
                     background: "transparent",
@@ -190,7 +191,7 @@ class ImpactPage extends React.Component {
                   </div>
                 </div>
                 <div
-                  className="card raise mb-4"
+                  className="card z-depth-float mb-4 me-anime-open-in"
                   style={{
                     borderRadius: 10,
                     background: "transparent",
@@ -240,7 +241,7 @@ class ImpactPage extends React.Component {
                 </div>
                 {goal && goal.target_carbon_footprint_reduction > 0 ? (
                   <div
-                    className="card raise mb-4"
+                    className="card z-depth-float mb-4 me-anime-open-in"
                     style={{
                       borderRadius: 10,
                       background: "transparent",
@@ -292,9 +293,9 @@ class ImpactPage extends React.Component {
               </div>
               <div className="col-12 col-lg-8">
                 <PageTitle>Our Community's Impact</PageTitle>
-                <div className="card rounded-0 mb-4" style={{ marginTop: 15 }}>
+                <div className="card rounded-0 mb-4 z-depth-float" style={{ marginTop: 15, border:0 }}>
                   <div
-                    className="card-header text-center bg-white"
+                    className="card-header text-center bg-white "
                     style={{ marginTop: 5 }}
                   >
                     <h4 className="cool-font phone-medium-title">
@@ -302,7 +303,7 @@ class ImpactPage extends React.Component {
                     </h4>
                     {/* <p style={{top:240,position:'absolute',fontSize:16, transform:'rotateZ(-90deg',left:-100}}>Number Of Actions Completed</p> */}
                   </div>
-                  <div className="card-body phone-vanish">
+                  <div className="card-body phone-vanish  me-anime-open-in">
                     <BarGraph
                       categories={graph2Categories}
                       series={graph2Series}

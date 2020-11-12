@@ -1,6 +1,5 @@
 import React from 'react';
-import URLS from '../../api/urls'
-import { postJson } from '../../api/functions';
+import { apiCall } from '../../api/functions';
 import { connect } from 'react-redux'
 
 /********************************************************************/
@@ -67,18 +66,15 @@ class SubscribeForm extends React.Component {
             "name": this.state.name,
             "community": this.props.community? this.props.community.id : null,
         }
-        postJson(URLS.SUBSCRIBERS, body).then(json => {
-            console.log(json);
+        apiCall('subscribers.add', body).then(json => {
             if (json.success) {
                 this.setState({ ...INITIAL_STATE, message: `Success! ${this.state.email} is now subscribed to our Community's Newsletter` });
             } else {
                 var known = false;
-                json.errors.forEach(error => {
-                    if (error.includes("duplicate")) {
-                        this.setState({ ...INITIAL_STATE, message: `${this.state.email} is already subscribed to our Community's Newsletter` });
-                        known = true;
-                    }
-                })
+                if (json.error.includes("duplicate")) {
+                    this.setState({ ...INITIAL_STATE, message: `${this.state.email} is already subscribed to our Community's Newsletter` });
+                    known = true;
+                }
                 if (!known)
                     this.setState({ ...INITIAL_STATE, message: 'unknown error while subscribing' });
             }

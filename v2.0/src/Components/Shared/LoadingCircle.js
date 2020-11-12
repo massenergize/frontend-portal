@@ -1,18 +1,33 @@
-import React from 'react'
+import React from "react";
 
 /**
  * Renders the loading screen that shows when server is still responding
  */
 class LoadingCircle extends React.Component {
-    render() {
-        let style = {
-            width: "10em"
-        };
-        return (
-            <div className="d-flex height-100vh justify-content-center align-items-center">
-                <img src={require('../../assets/images/other/loader.gif')} alt="Loading..." style={style}/>
-            </div>
-        );
+  render() {
+    var { width, height, id, style } = this.props;
+  
+
+    if (width && height) {
+      style = { width, height, ...style };
     }
+    return (
+      <div
+        id={id}
+        className="d-flex height-100vh justify-content-center align-items-center"
+        style={style}
+      >
+        {/* <img
+          src={require("../../assets/images/other/loader.gif")}
+          alt="Loading..."
+          style={style}
+        /> */}
+        <div className="me-circle-loader" style={style}></div>
+      </div>
+    );
+  }
 }
+LoadingCircle.defaultProps = {
+  style: {},
+};
 export default LoadingCircle;

@@ -2,82 +2,120 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+// import loader from "../../../assets/images/other/loader.gif";
+import MEModal from "../Widgets/MEModal";
+import FormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 
 class ContactAdminModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      error: null,
+      notification: null,
+    };
+    this.doSending = this.doSending.bind(this);
+  }
+
+  getNeededFields() {
+    return [
+      {
+        hasLabel: true,
+        type: "input",
+        label: "Title",
+        placeholder: "Enter title here...",
+        name: "title",
+        required: true,
+        value: "",
+      },
+      {
+        hasLabel: true,
+        type: "textarea",
+        label: "Message",
+        placeholder: "Enter message here...",
+        name: "body",
+        required: true,
+        value: "",
+      },
+    ];
+  }
 
   render() {
-
-    const team = this.props.team;
+    const { team, user, links, onClose } = this.props;
+    // const { loading, error } = this.state;
 
     let modalContent;
-    if (this.props.user) {
-
+    if (user) {
       modalContent = (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          this.sendMessage();
-        }
-        }>
-          <div>
-            <input id="contact-title" type="text" name="title" className="form-control" placeholder="Title..." reqiured style={{ marginBottom: "10px" }} />
-            <textarea id="contact-textarea" name="msg" className="form-control" rows={7} placeholder="Message..." required>
-            </textarea>
-            <button
-              style={{ marginTop: '10px', marginBottom: '0px',padding:'10px 40px' }}
-              type="submit"
-              className="btn btn-success round-me contact-admin-btn-new raise"
-            >
-              Send
-                </button>
-
-            <br />
-
-            <span id="sender-spinner" style={{ display: 'none' }} className="text text-success">sending <i className="fa fa-spinner fa-spin" /></span>
-          </div>
-        </form>);
+        <FormGenerator
+          style={{ padding: 0, margin: 0 }}
+          elevate={false}
+          animate={false}
+          fields={this.getNeededFields()}
+          actionText="Send"
+          onSubmit={this.doSending}
+          info={this.state.notification}
+        />
+      );
     } else {
-      modalContent = <p>You must <Link to={this.props.links.signin}>sign in or create an account</Link> to contact this team's admin</p>;
+      modalContent = (
+        <p>
+          You must <Link to={links.signin}>sign in or create an account</Link>{" "}
+          to contact this team's admin
+        </p>
+      );
     }
 
     return (
       <>
-        <div style={{ width: '100%', height: "100%" }}>
-          <div className="team-modal">
-            <h4 onClick={() => { this.props.onClose() }} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
-            <h4 style={{ paddingRight: '60px' }}>Contact admin of <b>{team.name}</b></h4>
-            <br />
-            {modalContent}
-          </div>
-        </div>
-        <div className="desc-modal-container">
-        </div>
+        <MEModal containerClassName="mob-modal-correction"  className="mod-modal-correction" contentStyle={{ width: "100%"}} closeModal={() => onClose()}>
+          <h4>
+            Contact admin of <b>{team && team.name}</b>
+          </h4>
+          {modalContent}
+        </MEModal>
       </>
     );
   }
 
-  sendMessage = () => {
-    var spinner = document.getElementById("sender-spinner");
-    var msg = document.getElementById("contact-textarea").value;
-    var title = document.getElementById("contact-title").value;
+  notify(message, type, icon) {
+    this.setState({
+      notification: {
+        icon: icon,
+        type: type,
+        text: message,
+      },
+    });
+  }
 
-    const body = {
-      team_id: this.props.team.id,
-      title: title,
-      message: msg,
-    };
+  doSending(e, data, resetForm) {
+    e.preventDefault();
+    this.notify("Sending...", "good", "fa fa-spinner fa-spin");
+    if(!data || data.isNotComplete) return;
+    this.sendMessage(data);
+  }
 
-    if (msg !== "" && title !== "") {
-      spinner.style.display = "block";
-      apiCall(`teams.contactAdmin`, body)
-        .then((json) => {
-          document.getElementById("contact-textarea").value = "";
-          document.getElementById("contact-title").value = "";
-          spinner.style.display = "none";
-
-          this.props.onClose();
-        });
+  sendMessage = async (body) => {
+    const { team, onClose } = this.props;
+    body = { ...body, team_id: team && team.id };
+    try {
+      // this.setState({ loading: true });
+      const json = await apiCall(`teams.contactAdmin`, body);
+      if (json.success) {
+        this.notify("Message sent", "good", "fa fa-check");
+        setTimeout(() => {
+          onClose();
+        }, 500);
+      } else {
+        this.notify(json.err, "bad", "fa fa-times");
+      }
+    } catch (err) {
+      this.notify(err.toString(), "bad", "fa fa-times");
+    } finally {
+      // this.setState({ loading: false });
     }
   };
+  // };
 }
 
 const mapStoreToProps = (store) => {

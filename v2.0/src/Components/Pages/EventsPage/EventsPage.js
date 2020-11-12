@@ -1,10 +1,7 @@
 import React from 'react'
-import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import SideBar from '../../Menu/SideBar'
 import PageTitle from '../../Shared/PageTitle';
-import URLS from '../../../api/urls'
-import { getJson } from '../../../api/functions'
 import LoadingCircle from '../../Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -33,7 +30,6 @@ class EventsPage extends React.Component {
 	}
 
 	render() {
-		console.log("I am the events", this.props)
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<>
@@ -307,7 +303,6 @@ class EventsPage extends React.Component {
 	}
 
 	renderCategoryFilter = () => {
-		console.log(this.props.tagCols)
 		if (!this.state.events_search_toggled) return <div></div>;
 		else {
 			return (

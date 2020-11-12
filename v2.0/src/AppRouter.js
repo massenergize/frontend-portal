@@ -13,6 +13,7 @@ import AboutUsPage from "./components/Pages/AboutUsPage/AboutUsPage";
 import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
 import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
 import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
+import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
 import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
@@ -20,11 +21,12 @@ import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
 import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
-import CompareTeamsPage from "./components/Pages/TeamsPage/CompareTeamsPage";
 import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import ErrorPage from "./components/Pages/Errors/ErrorPage"
 
@@ -72,11 +74,16 @@ class AppRouter extends Component {
       triedLogin: false,
       community: null,
     };
+
+    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(this);
   }
 
   componentDidMount() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
+    
+    // first set the domain for the current community
+    this.props.reduxLoadCommunity({ subdomain })
 
     this.props.reduxLoadLinks({
       home: `/${subdomain}`,
@@ -99,10 +106,14 @@ class AppRouter extends Component {
     Promise.all([
       apiCall("communities.info", body),
       apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body),
+      apiCall("menus.list", body), //should add all communities to the menus.list
     ])
       .then((res) => {
-        const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
+        const [
+          communityInfoResponse,
+          homePageResponse,
+          mainMenuResponse
+        ] = res;
         this.setState({ community: communityInfoResponse.data });
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
@@ -120,7 +131,6 @@ class AppRouter extends Component {
       apiCall("graphs.communities.impact", body),
       apiCall("donate_page_settings.info", body),
       apiCall("events.list", body),
-      apiCall("users.events.list", body),
       apiCall("policies.list", body),
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
@@ -135,14 +145,12 @@ class AppRouter extends Component {
           communityStatsResponse,
           donatePageResponse,
           eventsResponse,
-          eventsRsvpListResponse,
           policiesResponse,
           teamResponse,
           tagCollectionsResponse,
           testimonialsResponse,
           vendorsResponse,
         ] = res;
-
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
         this.props.reduxLoadTeamsPage(teamResponse.data);
         this.props.reduxLoadDonatePage(donatePageResponse.data);
@@ -151,7 +159,6 @@ class AppRouter extends Component {
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
-        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
         this.props.reduxLoadTagCols(tagCollectionsResponse.data);
         this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
         this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
@@ -168,29 +175,47 @@ class AppRouter extends Component {
     });
   }
 
-  async getUser(email) {
-    if (!email) return false;
+  async getUser() {
     await this.setStateAsync({ triedLogin: true });
+    let { data } = await apiCall("auth.whoami");
+    let user = null;
+    if(data){
+      user = data;
+    }else{
 
-    const [
-      userInfoResponse,
-      userActionsTodoResponse,
-      userActionsCompletedResponse,
-    ] = await Promise.all([
-      apiCall("users.info", { email }),
-      apiCall("users.actions.todo.list", { email }),
-      apiCall("users.actions.completed.list", { email }),
-    ]);
-
-    if (userInfoResponse && userInfoResponse.success && userInfoResponse.data) {
-      this.props.reduxLogin(userInfoResponse.data);
-      this.props.reduxLoadTodo(userActionsTodoResponse.data);
-      this.props.reduxLoadDone(userActionsCompletedResponse.data);
-      return true;
-    } else {
-      console.log(`no user with this email: ${email}`);
-      return false;
+      if(this.props.auth && firebase.auth().currentUser){
+        const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+        const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
+        user = newLoggedInUserResponse.data
+      }
     }
+
+    if(user){
+      // set the user in the redux state
+      this.props.reduxLogin(user);
+
+      // we know that the user is already signed in so proceed
+      const [
+        userActionsTodoResponse,
+        userActionsCompletedResponse,
+        eventsRsvpListResponse,
+      ] = await Promise.all([
+        apiCall("users.actions.todo.list", { email: user.email }),
+        apiCall("users.actions.completed.list", {  email: user.email  }),
+        apiCall("users.events.list", {  email: user.email  }),
+
+      ]);
+
+      if (userActionsTodoResponse && userActionsCompletedResponse) {
+        this.props.reduxLoadTodo(userActionsTodoResponse.data);
+        this.props.reduxLoadDone(userActionsCompletedResponse.data);
+        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
+        return true;
+      } else {
+        console.log(`no user with this email: ${user.email}`);
+        return false;
+      }
+    } 
   }
 
   modifiedMenu(menu) {
@@ -200,20 +225,33 @@ class AppRouter extends Component {
       var abtSliced = oldAbout.children.filter(
         (item) => item.name.toLowerCase() !== "impact"
       );
+      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced],
+        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced, contactUsItem,
+        { name: "All MassEnergize Community Sites",
+          link: "http://" + window.location.host,
+          special: true }
+        ,]
       };
+      if(menu[4]) {
+        newAbout.children = [...newAbout.children, menu.pop()]
+      }
       menu[3] = newAbout;
     }
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
+      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams")
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
       menu[1] = newAction;
     }
+    const actionsIndex = menu.findIndex((item) => item.name === "Actions");
+    const menuPostActions = menu.splice(actionsIndex+1);
+    menu = [...menu.splice(0,actionsIndex+1), {link: "/teams", name: "Teams"},...menuPostActions];
     return menu;
   }
 
@@ -236,6 +274,18 @@ class AppRouter extends Component {
     }
   }
 
+  userHasAnIncompleteRegistration(){
+    return (
+      this.state.triedLogin && // we tried to check who this user is
+      !this.props.user && // we didnt find a profile
+      this.props.auth.uid // but we found a firebase userID.  This means they did not finish creating their profile
+    ) ||
+    (
+      this.props.auth.uid && // firebase userID is created
+      !this.props.auth.emailVerified // but user did not verify their email yet
+    )
+  }
+
 
   
   render() {
@@ -245,42 +295,34 @@ class AppRouter extends Component {
       return <LoadingCircle />;
     }
 
-    if (
-      !this.state.triedLogin &&
-      this.props.auth &&
-      this.props.auth.uid &&
-      !this.props.user
-    ) {
-      this.getUser(this.props.auth.email).then((success) => {
-        this.setState({
-          triedLogin: true,
-        });
+    if (!this.state.triedLogin && !this.props.user) {
+      this.getUser().then((success) => {
+        console.log(`User Logged in: ${success}`)
       });
     }
 
-    if (this.props.auth.uid && !this.state.triedLogin) {
+    if (this.props.user && !this.state.triedLogin) {
       return <LoadingCircle />;
     }
+
     const { links } = this.props;
     var finalMenu = [];
     if (this.props.menu) {
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
       const navMenus = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
       })[0].content;
-      finalMenu = [...navMenus, contactUsItem];
+      finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const homeChil = [
-      { name: "current-home", link: "/" },
+    const communitiesLink = 
       {
-        name: "All Communities",
+        name: "All MassEnergize Community Sites",
         link: "http://" + window.location.host,
         special: true,
-      },
-    ];
-    const droppyHome = { name: "Home", children: homeChil };
-    finalMenu = [droppyHome, ...finalMenu];
+      }
+    ;
+    const droppyHome = [ {name: "Home", link: "/",} ];
+    finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
     const communityInfo = this.state.community || {};
@@ -288,6 +330,7 @@ class AppRouter extends Component {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
+      allCommunities: communitiesLink,
     };
     return (
       <div className="boxed-wrapper">
@@ -308,9 +351,8 @@ class AppRouter extends Component {
         ) : (
           <LoadingCircle />
         )}
-        {/**if theres a half finsished account the only place a user can go is the register page */
-        (this.state.triedLogin && !this.props.user && this.props.auth.uid) ||
-        (this.props.auth.uid && !this.props.auth.emailVerified) ? (
+        {/**if theres a half finished account the only place a user can go is the register page */
+        this.userHasAnIncompleteRegistration() ? (
           <Switch>
             <Route component={RegisterPage} />
           </Switch>
@@ -323,9 +365,9 @@ class AppRouter extends Component {
             <Route exact path={links.services} component={ServicesPage} />
             <Route path={`${links.services}/:id`} component={OneServicePage} />
             <Route path={`${links.actions}/:id`} component={OneActionPage} />
-            <Route path={links.testimonials} component={StoriesPage} />
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route  path={`${links.testimonials}/:id`} component={OneTestimonialPage} />
             <Route exact path={links.teams} component={TeamsPage} />
-            <Route path={`${links.teams}/compare`} component={CompareTeamsPage} />
             <Route path={`${links.teams}/:id`} component={OneTeamPage} />
             <Route path={links.impact} component={ImpactPage} />
             <Route path={links.donate} component={DonatePage} />

@@ -4,7 +4,7 @@ import FooterLinks from './FooterLinks'
 import { Link } from 'react-router-dom'
 import SubscribeForm from './SubscribeForm';
 import { connect } from 'react-redux'
-import {IS_PROD, IS_SANDBOX, BUILD_VERSION} from '../../config/config'
+import {IS_PROD, IS_CANARY, IS_SANDBOX, BUILD_VERSION} from '../../config/config'
 /**
  * Footer section has place for links, 
  */
@@ -18,6 +18,12 @@ class Footer extends React.Component {
 		}else if(IS_PROD && !IS_SANDBOX){
 			//prod main
 			BUILD_VERSION_TEXT = "Production Build " + BUILD_VERSION_TEXT
+		} else if(IS_CANARY && IS_SANDBOX){
+			// prod sandbox
+			BUILD_VERSION_TEXT = "Canary Build (Sandbox) " + BUILD_VERSION_TEXT
+		}else if(IS_CANARY && !IS_SANDBOX){
+			//prod main
+			BUILD_VERSION_TEXT = "Canary Build " + BUILD_VERSION_TEXT
 	
 		}else if(!IS_PROD && IS_SANDBOX){
 			// dev sandbox
@@ -68,16 +74,20 @@ class Footer extends React.Component {
 				</section>
 				<section className="coders " style={{ background: 'black' }}>
 					<div className="container">
-						<p className="m-0" style={{ fontSize: '12px' }}>Made with&nbsp;
-							<span className="fa fa-heart text-danger"></span> by&nbsp;
+            <p className="m-0" style={{ fontSize: '12px' }}>Made with
+              &nbsp;
+							  <span className="fa fa-heart text-danger"></span> by
+              &nbsp;
 								<u>Samuel Opoku-Agyemang</u>
-								&nbsp;&nbsp;
+							&nbsp;&nbsp;
 								<u>Kieran O'Day</u>
 							&nbsp;&nbsp;
 								<u>Mingle Li</u>
 							&nbsp;&nbsp;
 								<u>Frimpong Opoku-Agyemang</u>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              				&nbsp;&nbsp;
+								<u>Josh Katofsky</u>
+							<br />
 								<u>{BUILD_VERSION_TEXT}</u>
 						</p>
 					</div>

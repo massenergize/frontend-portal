@@ -292,7 +292,7 @@ class NavBarBurger extends React.Component {
                 navLink={navLink}
                 id="dropdown-custom-components"
               ></Dropdown.Toggle>
-              <Dropdown.Menu style={style}>
+              <Dropdown.Menu style={style} className="me-dropdown-theme me-anime-show-up-from-top z-depth-1">
                 {this.renderDropdownItems(navLink.children)}
               </Dropdown.Menu>
             </Dropdown>
@@ -324,7 +324,7 @@ class NavBarBurger extends React.Component {
           <Link
             to={`${links.home}#`}
             key={key}
-            className="cool-font dropdown-item p-3 small "
+            className=" cool-font p-3 small dropdown-item me-dropdown-theme-item"
             onClick={() => {
               window.location = child.link;
             }}
@@ -337,7 +337,7 @@ class NavBarBurger extends React.Component {
           <Link
             key={key}
             to={`${links.home}${child.link}`}
-            className="cool-font dropdown-item p-3 small "
+            className="cool-font  p-3 small dropdown-item me-dropdown-theme-item "
             onClick={() => document.dispatchEvent(new MouseEvent("click"))}
           >
             {child.name === "current-home" ? comm.name : child.name}
@@ -348,17 +348,20 @@ class NavBarBurger extends React.Component {
   }
   renderLogin() {
     const { links } = this.props;
-    const { auth, user } = this.props;
-    const style = {
-      borderTop: "5px solid #8dc63f",
-      borderRadius: "0",
-      padding: "0",
-    };
-    if (auth.uid && user.info) {
+    const { user } = this.props;
+    // const style = {
+    //   borderColor:"white", 
+    //   borderTopWidth:5, 
+    //   borderTopColor:"#f57b34",
+    //   borderTopWidth:3,
+    //   borderRadius: "0",
+    //   padding: "0",
+    // };
+    if (user.info) {
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
           ref={ref}
-          className="new-sign-in raise cool-font"
+          className="me-universal-btn me-undefault-btn me-btn-union cool-font"
           onClick={(e) => {
             e.preventDefault();
             props.onClick(e);
@@ -382,20 +385,19 @@ class NavBarBurger extends React.Component {
             userName={user.info.preferred_name}
             id="dropdown-custom-components"
           ></Dropdown.Toggle>
-          <Dropdown.Menu style={style}>
+          <Dropdown.Menu className="z-depth-1 me-dropdown-theme me-anime-show-up-from-top">
             <Link
               to={links.profile}
-              className="dropdown-item p-3 small font-weight-bold cool-font"
+              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => document.dispatchEvent(new MouseEvent("click"))}
             >
               My Profile
             </Link>
             <button
-              className="dropdown-item p-3 small font-weight-bold cool-font"
+              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => {
                 this.props.firebase.auth().signOut();
                 this.props.reduxLogout();
-                localStorage.removeItem("idToken");
               }}
             >
               <SignOutLink>Sign Out</SignOutLink>
@@ -406,7 +408,7 @@ class NavBarBurger extends React.Component {
     } else {
       return (
         <Link
-          className="cool-font new-sign-in float-right round-me raise"
+          className="cool-font new-sign-in float-right round-me z-depth-float"
           to={links.signin}
         >
           {/* <i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'} */}
@@ -584,8 +586,10 @@ class Menu extends React.Component {
 
     const styles = {
       container: {
+        right:-20,
+        marginTop:8,
         position: !this.props.submenu ? "absolute" : "relative",
-        width: "50vh",
+        width: "37vh",
         height: this.state.open
           ? !this.props.submenu
             ? "calc(150vh - " + getHeight() + "px)"
@@ -609,7 +613,7 @@ class Menu extends React.Component {
     }
 
     return (
-      <div style={styles.container}>
+      <div style={styles.container} className="z-depth-2">
         {this.state.open ? (
           <div style={styles.menuList}>{this.props.children}</div>
         ) : null}

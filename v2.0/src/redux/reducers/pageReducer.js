@@ -34,6 +34,8 @@ import {
 	TEAM_REMOVE_HOUSEHOLD
 } from '../actions/types';
 
+import { getTeamData, inSubTeam, inThisTeam } from '../../components/Pages/TeamsPage/utils';
+
 const initialState = {
 	//page data for each page
 	homePage: null,
@@ -62,7 +64,16 @@ const initialState = {
 };
 
 
+function alreadyInSubTeam(state, action) {
+  const teamsStats = state.teamsPage;
+  const teamStats = teamsStats.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+  const teamData = getTeamData(teamsStats, teamStats);
+  return (!inThisTeam(action.user, teamData.team) && inSubTeam(action.user, teamData)) 
+}
+
+
 export default function (state = initialState, action) {
+	var team;
 	switch (action.type) {
 		/**************************/
 		
@@ -217,8 +228,10 @@ export default function (state = initialState, action) {
 					action.payload
 				]
 			}
-		case ADD_TEAM_MEMBER:
-			var team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+    	case ADD_TEAM_MEMBER:
+      		if (alreadyInSubTeam(state, action)) return state;
+      
+      		team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			const newTeam = {
 				...team,
 				members: team.members + 1,
@@ -234,7 +247,9 @@ export default function (state = initialState, action) {
 					newTeam
 				]
 			} 
-		case REMOVE_TEAM_MEMBER:
+    	case REMOVE_TEAM_MEMBER:
+      		if (alreadyInSubTeam(state, action)) return state;
+      
 			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			return {
 				...state,
@@ -250,7 +265,9 @@ export default function (state = initialState, action) {
 					}
 				]
 			}
-		case TEAM_ADD_ACTION:
+    	case TEAM_ADD_ACTION:
+      		if (alreadyInSubTeam(state, action)) return state;
+
 			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return { 
 				...state,
@@ -262,7 +279,9 @@ export default function (state = initialState, action) {
 					}
 				]
 			}
-		case TEAM_REMOVE_ACTION:
+    	case TEAM_REMOVE_ACTION:
+      		if (alreadyInSubTeam(state, action)) return state;
+      
 			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
@@ -274,7 +293,9 @@ export default function (state = initialState, action) {
 					}
 				]
 			}
-		case TEAM_ADD_HOUSEHOLD:
+    	case TEAM_ADD_HOUSEHOLD:
+      		if (alreadyInSubTeam(state, action)) return;
+
 			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
@@ -286,7 +307,9 @@ export default function (state = initialState, action) {
 					}
 				]
 			}
-		case TEAM_REMOVE_HOUSEHOLD:
+    	case TEAM_REMOVE_HOUSEHOLD:
+      		if (alreadyInSubTeam(state, action)) return;
+
 			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,

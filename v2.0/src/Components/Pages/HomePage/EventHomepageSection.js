@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import defaultImg from "./../../../../src/assets/images/blog/i9.jpg";
-import { dateFormatString, locationFormatJSX } from "../../Utils";
+// import defaultImg from "./../../../../src/assets/images/blog/i9.jpg";
+import { dateFormatString } from "../../Utils";
+import NewEventsCard from "./../EventsPage/NewEventsCard";
 
 /**
  * Events section displays upcoming events,
@@ -36,62 +37,27 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
-        const ev_name =
-          event.name.length > 40
-            ? event.name.substring(0, 35) + "..."
-            : event.name;
+        // const ev_name =
+        //   event.name.length > 40
+        //     ? event.name.substring(0, 35) + "..."
+        //     : event.name;
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
 
-        const location = event.location;
-        const img = event.image.url ? event.image.url : defaultImg;
+        // const location = event.location;
+        // const img = event.image && event.image.url ? event.image.url : defaultImg;
+    
         return (
-          <article
-            key={index.toString()}
-            className="cursor home-events-hover col-md-6 col-lg-4 col-sm-6 col-xs-12"
-            style={{ marginBottom: 10, marginTop: 10 }}
-          >
-            <Link
-              to={this.props.links.events + "/" + event.id}
-              style={{ color: "black" }}
-            >
-              <div
-                className="z-depth-1"
-                style={{ borderRadius: 15, height: 460 }}
-              >
-                <img alt="IMG" src={img} className="home-events-img" />
-                <div style={{ padding: 11, paddingLeft: 17, height: 120 }}>
-                  <h5 className="zero-margin-btm">
-                    <b>{ev_name}</b>
-                  </h5>
-                  <small
-                    style={{ fontSize: 12, color: "#999999" }}
-                    className="text text-default text-sm-right"
-                  >
-                    {event.featured_summary}
-                  </small>
-                  {/* <p className="zero-margin-btm" style={{fontSize:11}} dangerouslySetInnerHTML={{__html: desc}}></p> */}
-                  <br />
-                  {location ? (
-                    <small
-                      style={{ fontSize: 12 }}
-                      className="text text-default text-sm-right"
-                    >
-                      {locationFormatJSX(location)}
-                    </small>
-                  ) : null}
-                  <p
-                    style={{ fontSize: 13 }}
-                    className="text text-success zero-margin-btm"
-                  >
-                    {dateString}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </article>
+          <div key={event.id.toString()} className="col-md-6 col-lg-4 col-sm-6 col-xs-12">
+            <NewEventsCard
+              {...event}
+              dateString={dateString}
+              links={this.props.links}
+              body_limit={95}
+            />
+          </div>
         );
       });
     } else {
@@ -114,7 +80,7 @@ class Events extends React.Component {
         style={{ background: "white" }}
       >
         <div className="container">
-          <h3 className="cool-font text-center" style={{ fontSize: 20 }}>
+          <h3 className="cool-font text-center" style={{ fontSize: 20, marginBottom:30 }}>
             Upcoming Events and Campaigns
           </h3>
           <div className="row">
@@ -137,7 +103,6 @@ class Events extends React.Component {
               <Link
                 to={`${this.props.links.events}`}
                 className="homepage-all-events-btn round-me z-depth-1"
-                
               >
                 See All Events
               </Link>

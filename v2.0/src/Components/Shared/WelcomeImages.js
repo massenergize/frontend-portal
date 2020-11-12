@@ -45,7 +45,7 @@ class WelcomeImages extends React.Component {
             return (
                 <div className="inner-banner text-center" style={divStyle}>
                     {this.imageURLs.map(image =>
-                        <img src={image} alt="" style={imageStyle} />)
+                        <img src={image} alt="Welcome" key={image} style={imageStyle} />)
                     }
                 </div>
             );
