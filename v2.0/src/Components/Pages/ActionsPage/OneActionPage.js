@@ -474,7 +474,7 @@ class OneActionPage extends React.Component {
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
-            moveToDone = {this.moveToDoneByActionId}
+            moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
       );
@@ -570,7 +570,10 @@ class OneActionPage extends React.Component {
                       <div className="btn-envelope">
                         {!this.props.user ? (
                           <CustomTooltip text="Sign in to make a TODO list">
-                            <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1">
+                            <p
+                              style={{ padding: "6px 16px" }}
+                              className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1"
+                            >
                               ToDo
                             </p>
                           </CustomTooltip>
@@ -580,7 +583,10 @@ class OneActionPage extends React.Component {
                         &nbsp;
                         {!this.props.user ? (
                           <CustomTooltip text="Sign in to mark actions as completed">
-                            <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1">
+                            <p
+                              style={{ padding: "6px 16px" }}
+                              className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1"
+                            >
                               Done
                             </p>
                           </CustomTooltip>
