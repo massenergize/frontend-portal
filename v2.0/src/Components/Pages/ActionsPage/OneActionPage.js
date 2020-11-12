@@ -980,7 +980,7 @@ class OneActionPage extends React.Component {
                 key={key}
               >
                 <div className="img-holder">
-                  <img src="" alt="" />
+                  {/* <img src="" alt="" /> */}
                 </div>
                 <div className="text-holder">
                   <div className="top">
