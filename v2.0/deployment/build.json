@@ -1,8 +1,8 @@
 {
   "dev": "3.0.22",
   "dev-sandbox": "3.0.22",
-  "prod": "2.9.49",
-  "prod-sandbox": "2.9.49",
+  "prod": "3.1.0",
+  "prod-sandbox": "3.1.0",
   "canary": "3.0.22",
   "canary-sandbox": "3.0.22"
 }
