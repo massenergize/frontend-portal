@@ -356,10 +356,6 @@
 .me-modal-sm {
   padding: 20px 25rem !important;
 }
-.me-modal-md {
-  padding: 20px 7rem !important;
-  min-width: 575px;
-}
 
 .me-close:hover {
   border-color: #f15f5f !important;
@@ -715,6 +711,9 @@
   font-style: italic;
 }
 
+.modal-force-full-width{
+  width:100% !important;
+}
 .leave-team-btn {
   height: 40px;
   color: white;
@@ -933,6 +932,12 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .me-modal-md {
+    margin-top:-10vh;
+    padding: 20px 7rem !important;
+    min-width: 575px;
+  }
+  
   .home-page-graph-tweak {
     margin-top: 20px !important;
   }
@@ -1040,6 +1045,7 @@
     font-size: 12px ;
     padding: 5px 13px ;
   }
+  
   .snackbar-main-container {
     width: 100%;
     position: absolute;
@@ -1057,6 +1063,7 @@
     padding: 13px !important;
   }
   .me-modal-md {
+    max-width:365px !important;
     padding: 13px !important;
   }
   .home-page-graph-tweak {

@@ -544,6 +544,7 @@ class RegisterFormBase extends React.Component {
                   {" "}
                   Cancel{" "}
                 </MEButton>
+                {this.renderCreationStatus()}
                 {/* </Tooltip> */}
               </div>
             </div>
@@ -553,6 +554,15 @@ class RegisterFormBase extends React.Component {
     );
   };
 
+  renderCreationStatus() {
+    const { creating } = this.state;
+    if (creating)
+      return (
+        <p style={{ color: "#8dc343" }}>
+          <span className="fa fa-spinner fa-spin"></span> Creating, please wait...
+        </p>
+      );
+  }
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
@@ -643,6 +653,7 @@ class RegisterFormBase extends React.Component {
         accepts_terms_and_conditions: termsAndServices,
         subdomain: community && community.subdomain,
       };
+      this.setState({ creating: true });
       apiCall("users.create", body)
         .then((json) => {
           var token = this.props.auth
@@ -651,11 +662,14 @@ class RegisterFormBase extends React.Component {
           var email = this.props.auth ? this.props.auth.email : null;
           if (json && json.success && json.data) {
             this.fetchMassToken(token, email);
+            window.location = this.props.links.profile;
+          } else {
+            this.setState({ creating: false });
           }
         })
         .catch((err) => {
           console.log(err);
-          this.setState({ ...INITIAL_STATE });
+          this.setState({ ...INITIAL_STATE, creating: false });
         });
       //this.setState({ ...INITIAL_STATE });
     }

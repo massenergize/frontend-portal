@@ -68,7 +68,13 @@ class ContactAdminModal extends React.Component {
 
     return (
       <>
-        <MEModal containerClassName="mob-modal-correction"  className="mod-modal-correction" contentStyle={{ width: "100%"}} closeModal={() => onClose()}>
+        <MEModal
+        size="md"
+          containerClassName="mob-modal-correction modal-force-full-width"
+          // className="mod-modal-correction"
+          // contentStyle={{ width: "100%" }}
+          closeModal={() => onClose()}
+        >
           <h4>
             Contact admin of <b>{team && team.name}</b>
           </h4>
@@ -91,7 +97,7 @@ class ContactAdminModal extends React.Component {
   doSending(e, data, resetForm) {
     e.preventDefault();
     this.notify("Sending...", "good", "fa fa-spinner fa-spin");
-    if(!data || data.isNotComplete) return;
+    if (!data || data.isNotComplete) return;
     this.sendMessage(data);
   }
 
