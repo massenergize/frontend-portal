@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // import Tooltip from "../../Shared/Tooltip";
-import ChooseHHForm from "./ChooseHHForm";
+// import ChooseHHForm from "./ChooseHHForm";
 import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
 import Tooltip from "../Widgets/CustomTooltip";
@@ -78,7 +78,7 @@ class PhotoSensitiveAction extends React.Component {
   }
   checkTodo() {
     var action = this.props.action;
-    var households = this.props.user.households || [];
+    // var households = this.props.user.households || [];
     var todo = this.props.todo ? this.props.todo : [];
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
@@ -109,7 +109,7 @@ class PhotoSensitiveAction extends React.Component {
         </>
       );
     }
-    if (this.checkDone() && this.props.user.households.length == 1) {
+    if (this.checkDone() && this.props.user.households.length === 1) {
       return (
         <>
           <Tooltip text="Cant use this feature, you have already done the action.">
@@ -211,7 +211,7 @@ class PhotoSensitiveAction extends React.Component {
   }
   checkDone() {
     var action = this.props.action;
-    var households = this.props.user.households || [];
+    // var households = this.props.user.households || [];
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;

@@ -160,12 +160,11 @@ class ChooseHHForm extends React.Component {
       )[0];
       return found;
     }
-    return null;
   }
   removeHouseholdsThatWereUnselected() {
     // check the difference between the selected households on start and now, and remove the ones that the user unchecked
     const { toBeRemoved } = this.state;
-    const { status, aid } = this.props;
+    const { status } = this.props;
     // const left = choices && choices.filter( choice => !choicesOnStart.includes(choice));
     toBeRemoved.forEach((choice) => {
       const actionRel = this.findTodoOrDoneItem(choice, status);
@@ -174,9 +173,9 @@ class ChooseHHForm extends React.Component {
   }
 
   checkForAlreadySelected() {
-    const { status, done, todo, user, selectedAction, aid } = this.props;
+    const { status, user, aid } = this.props;
 
-    const action = selectedAction || {};
+    // const action = selectedAction || {};
     const households = (user && user.households) || [];
     const choice = [];
     households.forEach(
