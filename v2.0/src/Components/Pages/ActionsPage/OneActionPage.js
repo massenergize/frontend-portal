@@ -332,7 +332,7 @@ class OneActionPage extends React.Component {
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
 
-    if (this.checkDone() && this.props.user.households.length == 1) {
+    if (this.checkDone() && this.props.user.households.length === 1) {
       // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
@@ -474,7 +474,7 @@ class OneActionPage extends React.Component {
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
-            moveToDone = {this.moveToDoneByActionId}
+            moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
       );
@@ -570,7 +570,10 @@ class OneActionPage extends React.Component {
                       <div className="btn-envelope">
                         {!this.props.user ? (
                           <CustomTooltip text="Sign in to make a TODO list">
-                            <p className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1">
+                            <p
+                              style={{ padding: "6px 15px" }}
+                              className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1"
+                            >
                               ToDo
                             </p>
                           </CustomTooltip>
@@ -580,7 +583,10 @@ class OneActionPage extends React.Component {
                         &nbsp;
                         {!this.props.user ? (
                           <CustomTooltip text="Sign in to mark actions as completed">
-                            <p className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1">
+                            <p
+                              style={{ padding: "6px 15px" }}
+                              className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1"
+                            >
                               Done
                             </p>
                           </CustomTooltip>
@@ -974,7 +980,7 @@ class OneActionPage extends React.Component {
                 key={key}
               >
                 <div className="img-holder">
-                  <img src="" alt="" />
+                  {/* <img src="" alt="" /> */}
                 </div>
                 <div className="text-holder">
                   <div className="top">
@@ -1092,15 +1098,15 @@ class OneActionPage extends React.Component {
         console.log(err);
       });
   };
-  moveToDoneByActionId(aid, hid) {
-    const actionRel = this.props.todo.filter((actionRel) => {
-      return (
-        Number(actionRel.action.id) === Number(aid) &&
-        Number(actionRel.real_estate_unit.id) === Number(hid)
-      );
-    })[0];
-    if (actionRel) this.moveToDone(actionRel);
-  }
+  // moveToDoneByActionId(aid, hid) {
+  //   const actionRel = this.props.todo.filter((actionRel) => {
+  //     return (
+  //       Number(actionRel.action.id) === Number(aid) &&
+  //       Number(actionRel.real_estate_unit.id) === Number(hid)
+  //     );
+  //   })[0];
+  //   if (actionRel) this.moveToDone(actionRel);
+  // }
   addToCart = (aid, hid, status) => {
     if (status !== "TODO" && status !== "DONE") return;
 

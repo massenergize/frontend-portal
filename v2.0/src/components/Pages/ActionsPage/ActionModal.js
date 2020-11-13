@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
 import ChooseHHForm from "./ChooseHHForm";
-import * as moment from "moment";
+// import * as moment from "moment";
 
 class ActionModal extends Component {
   constructor(props) {
