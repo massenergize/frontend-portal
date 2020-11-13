@@ -332,7 +332,7 @@ class OneActionPage extends React.Component {
     var exists =
       todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
 
-    if (this.checkDone() && this.props.user.households.length == 1) {
+    if (this.checkDone() && this.props.user.households.length === 1) {
       // show this deactivated grey button if the action has already been done
       return (
         <CustomTooltip text="Can't use this feature, you have already done the action">
@@ -1092,15 +1092,15 @@ class OneActionPage extends React.Component {
         console.log(err);
       });
   };
-  moveToDoneByActionId(aid, hid) {
-    const actionRel = this.props.todo.filter((actionRel) => {
-      return (
-        Number(actionRel.action.id) === Number(aid) &&
-        Number(actionRel.real_estate_unit.id) === Number(hid)
-      );
-    })[0];
-    if (actionRel) this.moveToDone(actionRel);
-  }
+  // moveToDoneByActionId(aid, hid) {
+  //   const actionRel = this.props.todo.filter((actionRel) => {
+  //     return (
+  //       Number(actionRel.action.id) === Number(aid) &&
+  //       Number(actionRel.real_estate_unit.id) === Number(hid)
+  //     );
+  //   })[0];
+  //   if (actionRel) this.moveToDone(actionRel);
+  // }
   addToCart = (aid, hid, status) => {
     if (status !== "TODO" && status !== "DONE") return;
 
