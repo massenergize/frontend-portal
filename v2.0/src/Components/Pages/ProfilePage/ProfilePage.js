@@ -451,13 +451,13 @@ class ProfilePage extends React.Component {
                     />
                   ) : null} */}
                   <center>
-                    <MEButton
+                    {/* <MEButton
                       onClick={() => this.setState({ printing: true })}
                       variation="union"
                       style={{ fontSize: 14 }}
                     >
                       Summary Of Your Actions
-                    </MEButton>
+                    </MEButton> */}
                   </center>
                 </div>
               </div>
