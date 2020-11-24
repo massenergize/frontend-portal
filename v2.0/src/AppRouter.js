@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
+import Favicon from "react-favicon"
 import "./assets/css/style.css";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
@@ -340,9 +341,10 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
+          <Favicon url="http://oflisback.github.io/react-favicon/public/img/github.ico" />
         <Helmet>
           <meta charset="UTF-8" />
-          <title>Mass Energize</title>
+          <title>{communityInfo.name}</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta
             name="viewport"
