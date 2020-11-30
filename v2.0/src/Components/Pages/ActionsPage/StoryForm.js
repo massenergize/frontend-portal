@@ -244,7 +244,7 @@ class StoryForm extends React.Component {
         formNotification: {
           icon: "fa fa-times",
           type: "bad",
-          text: "Sorry, you story is a bit too long..",
+          text: "Sorry, your story is a bit too long..",
         },
       });
     } else {
