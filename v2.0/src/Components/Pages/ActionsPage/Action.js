@@ -296,8 +296,7 @@ class Action extends React.Component {
                           Testing It
                         </p>
                       </CustomTooltip>
-                    ) : (
-                    )}
+                    ) : null}
                   </div>
                 </div>
                 <div className="col-12">
