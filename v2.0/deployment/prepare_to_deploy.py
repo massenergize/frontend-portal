@@ -44,6 +44,7 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": True,
+      "IS_CANARY": False,
       "IS_SANDBOX": True,
       "BUILD_VERSION": generate_new_build_number(target)
     }
