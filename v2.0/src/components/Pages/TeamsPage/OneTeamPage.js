@@ -45,6 +45,7 @@ class OneTeamPage extends React.Component {
           team: team,
           teamData: teamData,
         });
+      
       } else {
         this.setState({ error: json.error });
       }
@@ -62,8 +63,8 @@ class OneTeamPage extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { id } = this.props.match.params;
-    if (id !== prevProps.match.params.id) {
-      this.setState({ loading: true });
+    // if (id !== prevProps.match.params.id) {
+    if (this.props.teamsStats && !this.state.teamData && !this.state.error) {
       this.fetch(id);
     }
   }
@@ -258,7 +259,9 @@ class OneTeamPage extends React.Component {
                     headerText="About Us"
                     motherStyle={{ width: "100%" }}
                   >
-                    <div  dangerouslySetInnerHTML={{ __html: team.description }} />
+                    <div
+                      dangerouslySetInnerHTML={{ __html: team.description }}
+                    />
                   </MESectionWrapper>
                   {/* <div className="one-team-content-section slight-lift">
                     <h5>
@@ -316,7 +319,7 @@ class OneTeamPage extends React.Component {
                               {teamData.subTeams.map((subTeamStats) => (
                                 <li key={subTeamStats.team.id}>
                                   <Link
-                                    style={{ 'verticalAlign': 'text-top' }}
+                                    style={{ verticalAlign: "text-top" }}
                                     to={`${links.teams}/${subTeamStats.team.id}`}
                                   >
                                     <b>{subTeamStats.team.name}</b>
