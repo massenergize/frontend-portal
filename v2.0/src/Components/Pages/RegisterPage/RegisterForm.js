@@ -317,7 +317,7 @@ class RegisterFormBase extends React.Component {
                   {" "}
                   We sent a link to your email address. Please check your email
                   and follow the link to continue. If you don't see a message,
-                  be sure to check your junk mail folder.
+                  be sure to check your spam folder.
                   <button
                     type="button"
                     className="as-link"
