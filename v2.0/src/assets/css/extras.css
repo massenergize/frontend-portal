@@ -5,8 +5,8 @@
   padding: 10px 10%;
 }
 .v-story-img{
-  height:150px; 
-  width:150px;
+  height:100px; 
+  width:110px;
   object-fit: cover;
   display:inline-block;
   /* margin-top:-90px; */

@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import notFound from "./green-mat.jpg";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
-import MECard from "../Widgets/MECard";
-import MELink from "../Widgets/MELink";
-import METextView from "../Widgets/METextView";
 // import { createFirebaseInstance } from "react-redux-firebase";
 import DefaultClass from "../../Shared/Classes/DefaultClass";
 import { Link } from "react-router-dom";
+import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 class OneServicePage extends React.Component {
   constructor(props) {
     super(props);
@@ -73,8 +71,9 @@ class OneServicePage extends React.Component {
         story.vendor && story.vendor.id === Number(this.props.match.params.id)
       );
     });
-    const phone = vendor.phone_number ? vendor.phone_number : "Not Provided";
-    const email = vendor.email ? vendor.email : "Not Provided";
+    const phone =
+      vendor && vendor.phone_number ? vendor.phone_number : "Not Provided";
+    const email = vendor && vendor.email ? vendor.email : "Not Provided";
     // const key_contact = vendor.key_contact &&
     //   vendor.key_contact.email && vendor.key_contact.name
     //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
@@ -280,92 +279,95 @@ class OneServicePage extends React.Component {
                 </div> */}
         {Object.keys(stories).map((key) => {
           const story = stories[key];
-          const image = this.storyHasImage(story);
-          const date = new Date(story.created_at);
+          // const image = this.storyHasImage(story);
+          // const date = new Date(story.created_at);
           return (
-            // className="single-review-box"
-            <div key={key} style={{ padding: 0 }}>
-              <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
-                {/* <div className="img-holder">
-                <img src="" alt="" />
-              </div> */}
-                <div>
-                  <img
-                    src={image.url}
-                    className="v-story-img phone-vanish"
-                    alt="testimonial media"
-                  />
-
-                  <div
-                    className="text-holder"
-                    style={{ padding: 20, display: "inline-block", marginLeft:"15%" }}
-                  >
-                    {story.user && (
-                      <div className="top">
-                        <div className="name pull-left">
-                          <h4>
-                            {story.user.full_name} – {date.toLocaleDateString()}
-                            :
-                          </h4>
-                        </div>
-                      </div>
-                    )}
-                    <div className="text">
-                      <METextView
-                        style={{
-                          color: "black",
-                          marginLeft: 15,
-                          marginRight: 7,
-                        }}
-                      >
-                        {story.title}
-                        {this.state.expanded &&
-                        this.state.expanded === story.id ? (
-                          <button
-                            className="as-link"
-                            style={{ float: "right", marginLeft: 10 }}
-                            onClick={() => {
-                              this.setState({ expanded: null });
-                            }}
-                          >
-                            See Less
-                          </button>
-                        ) : null}
-                      </METextView>
-                      <p>
-                        {this.state.expanded && this.state.expanded === story.id
-                          ? story.body
-                          : story.body.substring(0, this.state.limit)}
-                        {this.state.limit < story.body.length &&
-                        this.state.expanded !== story.id ? (
-                          <button
-                            className="as-link"
-                            style={{ float: "right" }}
-                            onClick={() => {
-                              this.setState({ expanded: story.id });
-                            }}
-                          >
-                            Read More...
-                          </button>
-                        ) : null}
-                      </p>
-                    </div>
-                    {story.action ? (
-                      <div className="text">
-                        <p>
-                          Linked Action:{" "}
-                          <MELink
-                            to={`${this.props.links.actions}/${story.action.id}`}
-                          >
-                            {story.action.title}
-                          </MELink>
-                        </p>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              </MECard>
+            <div key={key}>
+              <MiniTestimonial story={story} links={this.props.links} />
             </div>
+            // className="single-review-box"
+            // <div key={key} style={{ padding: 0 }}>
+            //   <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
+            //     {/* <div className="img-holder">
+            //     <img src="" alt="" />
+            //   </div> */}
+            //     <div>
+            //       <img
+            //         src={image.url}
+            //         className="v-story-img phone-vanish"
+            //         alt="testimonial media"
+            //       />
+
+            //       <div
+            //         className="text-holder"
+            //         style={{ padding: 20, display: "inline-block", marginLeft:"15%" }}
+            //       >
+            //         {story.user && (
+            //           <div className="top">
+            //             <div className="name pull-left">
+            //               <h4>
+            //                 {story.user.full_name} – {date.toLocaleDateString()}
+            //                 :
+            //               </h4>
+            //             </div>
+            //           </div>
+            //         )}
+            //         <div className="text">
+            //           <METextView
+            //             style={{
+            //               color: "black",
+            //               marginLeft: 15,
+            //               marginRight: 7,
+            //             }}
+            //           >
+            //             {story.title}
+            //             {this.state.expanded &&
+            //             this.state.expanded === story.id ? (
+            //               <button
+            //                 className="as-link"
+            //                 style={{ float: "right", marginLeft: 10 }}
+            //                 onClick={() => {
+            //                   this.setState({ expanded: null });
+            //                 }}
+            //               >
+            //                 See Less
+            //               </button>
+            //             ) : null}
+            //           </METextView>
+            //           <p>
+            //             {this.state.expanded && this.state.expanded === story.id
+            //               ? story.body
+            //               : story.body.substring(0, this.state.limit)}
+            //             {this.state.limit < story.body.length &&
+            //             this.state.expanded !== story.id ? (
+            //               <button
+            //                 className="as-link"
+            //                 style={{ float: "right" }}
+            //                 onClick={() => {
+            //                   this.setState({ expanded: story.id });
+            //                 }}
+            //               >
+            //                 Read More...
+            //               </button>
+            //             ) : null}
+            //           </p>
+            //         </div>
+            //         {story.action ? (
+            //           <div className="text">
+            //             <p>
+            //               Linked Action:{" "}
+            //               <MELink
+            //                 to={`${this.props.links.actions}/${story.action.id}`}
+            //               >
+            //                 {story.action.title}
+            //               </MELink>
+            //             </p>
+            //           </div>
+            //         ) : null}
+            //       </div>
+            //     </div>
+            //   </MECard>
+            // </div>
           );
         })}
       </>
