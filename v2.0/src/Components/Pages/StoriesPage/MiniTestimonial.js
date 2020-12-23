@@ -24,9 +24,11 @@ export default class MiniTestimonial extends Component {
     if (!story.anononymous) {
       creatorName = story.preferred_name ? story.preferred_name : creatorName;
     }
+    
+    const url = story ? this.props.links.testimonials+"/" + story.id :""; 
     return (
       <div style={{ padding: 0 }}>
-        <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
+        <MECard className="me-anime-open-in" style={{ borderRadius: 10 }} to={url}>
           <div>
             <img
               src={image.url}
@@ -67,17 +69,17 @@ export default class MiniTestimonial extends Component {
                     ? story.body
                     : story.body.substring(0, this.state.limit)}
                   {this.state.limit < story.body.length &&
-                  this.state.expanded !== story.id ? (
-                    <button
-                      className="as-link"
-                      style={{ float: "right" }}
-                      onClick={() => {
-                        this.setState({ expanded: story.id });
-                      }}
-                    >
-                      Read More...
-                    </button>
-                  ) : null}
+                    this.state.expanded !== story.id ? (
+                      <button
+                        className="as-link"
+                        style={{ float: "right" }}
+                        onClick={() => {
+                          this.setState({ expanded: story.id });
+                        }}
+                      >
+                        Read More...
+                      </button>
+                    ) : null}
                 </p>
               </div>
               {story.action ? (
