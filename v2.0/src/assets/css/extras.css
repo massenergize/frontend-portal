@@ -4,7 +4,16 @@
   bottom: 20px;
   padding: 10px 10%;
 }
-
+.v-story-img{
+  height:100px; 
+  width:110px;
+  object-fit: cover;
+  display:inline-block;
+  /* margin-top:-90px; */
+  margin-top:20px;
+  border-radius:10px;
+  position:absolute;
+}
 .extra-story-cards {
   font-size: medium;
   border-radius: 4px !important;
@@ -1025,6 +1034,7 @@
   .mob-check-fix{
     max-width: 100% !important;
   }
+
   .phone-action-btns-mode {
     font-size: 10px !important;
     min-width: 60px !important;
@@ -1474,11 +1484,9 @@
   transition: .1s ease-in-out;
 } */
 .vendor-hover:hover {
-  -webkit-box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
-    0 17px 50px 0 rgba(0, 0, 0, 0.19);
-  transition: 0.4s ease-in-out;
+  -webkit-box-shadow: 0 0px 22px 0 rgba(0, 0, 0, 0.24), 0 1px 11px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 0px 22px 0 rgba(0, 0, 0, 0.24), 0 1px 11px 0 rgba(0, 0, 0, 0.19);
+  transition: 0.2s ease-in-out;
 }
 
 ::-webkit-scrollbar-track {

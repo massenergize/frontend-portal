@@ -22,12 +22,13 @@ import {
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import * as moment from "moment";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
 import MEButton from "../Widgets/MEButton";
+import MiniTestimonial from "../StoriesPage/MiniTestimonial";
+import MELink from "../Widgets/MELink";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -880,37 +881,42 @@ class OneActionPage extends React.Component {
                 }
                 id="review"
               >
-                <div className="review-box make-me-dark">
-                  {/* Reviews */}
-                  {this.renderStories(stories)}
-                  {this.state.numberToShow < stories.length ? (
-                    <button
-                      style={{ margin: "0 auto 30px auto" }}
-                      className="as-link"
-                      onClick={() =>
-                        this.setState({ numberToShow: stories.length })
-                      }
-                    >
-                      {" "}
-                      Show all Testimonials{" "}
-                    </button>
-                  ) : null}
-                </div>
-                {/* form to fill out to tell your own story */}
-                {this.props.user ? (
-                  <div id="testimonials-form">
-                    <StoryForm
-                      uid={this.props.user.id}
-                      aid={action.id}
-                      addStory={this.addStory}
-                    />
+                <MELink to={this.props.links.testimonials}>
+                  See Testimonials
+                </MELink>
+                <div className="phone-vanish">
+                  <div className="review-box make-me-dark">
+                    {/* Reviews */}
+                    {this.renderStories(stories)}
+                    {this.state.numberToShow < stories.length ? (
+                      <button
+                        style={{ margin: "0 auto 30px auto" }}
+                        className="as-link"
+                        onClick={() =>
+                          this.setState({ numberToShow: stories.length })
+                        }
+                      >
+                        {" "}
+                        Show all Testimonials{" "}
+                      </button>
+                    ) : null}
                   </div>
-                ) : (
-                  <p className="make-me-dark">
-                    <Link to={this.props.links.signin}> Sign In </Link> to
-                    submit your own story about taking this Action
-                  </p>
-                )}
+                  {/* form to fill out to tell your own story */}
+                  {this.props.user ? (
+                    <div id="testimonials-form">
+                      <StoryForm
+                        uid={this.props.user.id}
+                        aid={action.id}
+                        addStory={this.addStory}
+                      />
+                    </div>
+                  ) : (
+                    <p className="make-me-dark">
+                      <Link to={this.props.links.signin}> Sign In </Link> to
+                      submit your own story about taking this Action
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -963,85 +969,89 @@ class OneActionPage extends React.Component {
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
         {Object.keys(stories).map((key) => {
-          var creatorName = "Unknown user";
           const story = stories[key];
-          if (!story.anononymous) {
-            creatorName = story.preferred_name
-              ? story.preferred_name
-              : creatorName;
-          }
-          const format = "MMMM Do YYYY";
-          const date = moment(story.created_at).format(format);
-          if (key < this.state.numberToShow) {
-            return (
-              <div
-                className="single-review-box"
-                style={{ paddingLeft: 0, paddingBottom: 5 }}
-                key={key}
-              >
-                <div className="img-holder">
-                  {/* <img src="" alt="" /> */}
-                </div>
-                <div className="text-holder">
-                  <div className="top">
-                    <div className="name pull-left">
-                      <h4>{story.title} </h4>
-                    </div>
-                  </div>
-                  <div className="text">
-                    <h6>
-                      <small className="story-name">{creatorName}</small>
-                      <small className="m-label round-me">{date}</small>
-                      {this.state.expanded &&
-                      this.state.expanded === story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: null });
-                          }}
-                        >
-                          close
-                        </button>
-                      ) : null}
-                    </h6>
+          return (
+            <div key={key}>
+              <MiniTestimonial story={story} links={this.props.links} />
+            </div>
+          );
+          // if (!story.anononymous) {
+          //   creatorName = story.preferred_name
+          //     ? story.preferred_name
+          //     : creatorName;
+          // }
+          // const format = "MMMM Do YYYY";
+          // const date = moment(story.created_at).format(format);
+          // if (key < this.state.numberToShow) {
+          //   return (
+          //     <div
+          //       className="single-review-box"
+          //       style={{ paddingLeft: 0, paddingBottom: 5 }}
+          //       key={key}
+          //     >
+          //       <div className="img-holder">
+          //         {/* <img src="" alt="" /> */}
+          //       </div>
+          //       <div className="text-holder">
+          //         <div className="top">
+          //           <div className="name pull-left">
+          //             <h4>{story.title} </h4>
+          //           </div>
+          //         </div>
+          //         <div className="text">
+          //           <h6>
+          //             <small className="story-name">{creatorName}</small>
+          //             <small className="m-label round-me">{date}</small>
+          //             {this.state.expanded &&
+          //             this.state.expanded === story.id ? (
+          //               <button
+          //                 className="as-link"
+          //                 style={{ float: "right" }}
+          //                 onClick={() => {
+          //                   this.setState({ expanded: null });
+          //                 }}
+          //               >
+          //                 close
+          //               </button>
+          //             ) : null}
+          //           </h6>
 
-                    <p>
-                      {this.state.expanded && this.state.expanded === story.id
-                        ? story.body
-                        : story.body.substring(0, this.state.limit)}
-                      {this.state.limit < story.body.length &&
-                      this.state.expanded !== story.id ? (
-                        <button
-                          className="as-link"
-                          style={{ float: "right" }}
-                          onClick={() => {
-                            this.setState({ expanded: story.id });
-                          }}
-                        >
-                          more...
-                        </button>
-                      ) : null}
-                    </p>
-                  </div>
-                  {story.vendor ? (
-                    <div className="text">
-                      <p>
-                        Linked Service Provider:{" "}
-                        <Link
-                          to={`${this.props.links.services}/${story.vendor.id}`}
-                        >
-                          {story.vendor.name}
-                        </Link>
-                      </p>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            );
-          } else {
-            return <div key={key} />;
-          }
+          //           <p>
+          //             {this.state.expanded && this.state.expanded === story.id
+          //               ? story.body
+          //               : story.body.substring(0, this.state.limit)}
+          //             {this.state.limit < story.body.length &&
+          //             this.state.expanded !== story.id ? (
+          //               <button
+          //                 className="as-link"
+          //                 style={{ float: "right" }}
+          //                 onClick={() => {
+          //                   this.setState({ expanded: story.id });
+          //                 }}
+          //               >
+          //                 more...
+          //               </button>
+          //             ) : null}
+          //           </p>
+          //         </div>
+          //         {story.vendor ? (
+          //           <div className="text">
+          //             <p>
+          //               Linked Service Provider:{" "}
+          //               <Link
+          //                 to={`${this.props.links.services}/${story.vendor.id}`}
+          //               >
+          //                 {story.vendor.name}
+          //               </Link>
+          //             </p>
+          //           </div>
+          //         ) : null}
+          //       </div>
+          //     </div>
+          //   );
+          // } else {
+          //   return <div key={key} />;
+          // }
         })}
       </>
     );
