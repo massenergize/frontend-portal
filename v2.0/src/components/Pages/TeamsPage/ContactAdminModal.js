@@ -22,9 +22,9 @@ class ContactAdminModal extends React.Component {
       {
         hasLabel: true,
         type: "input",
-        label: "Title",
-        placeholder: "Enter title here...",
-        name: "title",
+        label: "Subject",
+        placeholder: "Enter subject here...",
+        name: "subject",
         required: true,
         value: "",
       },

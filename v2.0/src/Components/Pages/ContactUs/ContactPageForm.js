@@ -129,7 +129,7 @@ class ContactPageForm extends Component {
       {
         type: "input",
         name: "title",
-        placeholder: "Your Title *",
+        placeholder: "Subject *",
         required: true,
         history: false,
         value: "",
@@ -137,7 +137,7 @@ class ContactPageForm extends Component {
       {
         type: "textarea",
         name: "body",
-        placeholder: "Your Message *",
+        placeholder: "Message *",
         required: true,
         history: false,
         value: "",
