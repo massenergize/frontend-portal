@@ -229,12 +229,13 @@ class RegisterFormBase extends React.Component {
                   Google
                 </MEButton>
                 {/* ---------------- fACEBOOK WILL BE RE-ENABLED LATER -------------- */}
-                {/* <MEButton
+                {/* ---------------- BHN testing new facebook project login -------------- */}
+                <MEButton
                   onClick={this.signInWithFacebook}
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton> */}
+                </MEButton>
               </div>
             </div>
           </form>
@@ -317,7 +318,7 @@ class RegisterFormBase extends React.Component {
                   {" "}
                   We sent a link to your email address. Please check your email
                   and follow the link to continue. If you don't see a message,
-                  be sure to check your spam folder.
+                  be sure to <em>check your spam folder.</em>
                   <button
                     type="button"
                     className="as-link"
