@@ -33,27 +33,27 @@ export const CASE_PROPS = {
   DEFAULT_STATE: {
     TODO_PROPS: { ...DEFAULT_CASE_PROPS , 
       text: "To Do", 
-      className: "cam-btn-defaults",
+      // className: "cam-btn-defaults",
       hasPopover: true, 
       popoverText: "Add this to your To Do list "
       
     },
     DONE_IT_PROPS: { ...DEFAULT_CASE_PROPS, 
       text: "Done", 
-      className : "cam-btn-defaults", 
+      // className : "cam-btn-defaults", 
       hasPopover: true, 
       popoverText: "Mark as Done, if you've done this"
     },
   },
   IS_DONE: {
     TODO_PROPS: { ...DEFAULT_CASE_PROPS,
-      className : "cam-btn-defaults cam-gray-btn",
+      // className : "cam-gray-btn",
       text : "To Do",
       hasPopover: true, 
       popoverText: "Cant use this feature, you've done the action"
     },
     DONE_IT_PROPS: { ...DEFAULT_CASE_PROPS, 
-      className : "cam-btn-defaults cam-orange-btn",
+      className : "cam-orange-btn",
       text: "Done", 
       hasPopover: true, 
       popoverText: "Thanks for adding, click again to remove"
@@ -63,26 +63,26 @@ export const CASE_PROPS = {
   IS_IN_TODO: {
     TODO_PROPS: { ...DEFAULT_CASE_PROPS, 
       text: "To Do", 
-      className: "cam-btn-defaults cam-orange-btn",
+      className: "cam-orange-btn",
       hasPopover: true, 
       popoverText: "Thanks for adding, click again to remove"
     },
     DONE_IT_PROPS: { ...DEFAULT_CASE_PROPS, 
       text: "Done", 
-      className: "cam-btn-defaults",
+      // className: "cam-btn-defaults",
       hasPopover: true, 
       popoverText: "Mark as Done, if you've done this "
     },
   },
   NO_AUTH: {
     TODO_PROPS: { ...DEFAULT_CASE_PROPS, 
-      className : "cam-btn-defaults cam-gray-btn",
+      className : "cam-gray-btn",
       text : "To Do",
       hasPopover: true, 
       popoverText: "Sign In to add to your To Do list"
     },
     DONE_IT_PROPS: { ...DEFAULT_CASE_PROPS, 
-      className : "cam-btn-defaults cam-gray-btn",
+      className : "cam-gray-btn",
       text : "Done",
       hasPopover: true, 
       popoverText: "Sign In to mark this as done"

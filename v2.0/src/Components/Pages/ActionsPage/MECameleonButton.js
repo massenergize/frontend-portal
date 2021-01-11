@@ -36,7 +36,7 @@ class MECameleonButton extends Component {
       return (
         <CustomTooltip text={props.popoverText}>
           <MEButton
-            className={props.className}
+            className={`cam-btn-defaults ${props.className}`}
             style={props.style}
             onClick={this.handleOnClick}
           >
@@ -46,7 +46,7 @@ class MECameleonButton extends Component {
       );
     }
     return (
-      <MEButton className={props.className} style={props.style}>
+      <MEButton className={`cam-btn-defaults ${props.className}`} style={props.style}>
         {props.text}
       </MEButton>
     );

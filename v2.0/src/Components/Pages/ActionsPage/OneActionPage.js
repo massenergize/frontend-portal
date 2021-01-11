@@ -22,11 +22,9 @@ import {
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import CustomTooltip from "../Widgets/CustomTooltip";
 import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
-import MEButton from "../Widgets/MEButton";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
 import MECameleonButton from "./MECameleonButton";
@@ -189,16 +187,6 @@ class OneActionPage extends React.Component {
     return this.state.action;
   }
 
-  /* getParticularCollection(name) {
-		const cols = this.props.collection;
-		if (cols) {
-			const col = cols.filter(item => {
-				return item.name.toLowerCase() === name.toLowerCase();
-			});
-			return col ? col[0] : null;
-		}
-	} */
-
   getTag(name) {
     const tags = this.getMyAction().tags.filter((tag) => {
       return tag.tag_collection_name.toLowerCase() === name.toLowerCase();
@@ -337,77 +325,7 @@ class OneActionPage extends React.Component {
       }
     });
   };
-  checkTodoAndReturn() {
-    var action = this.getMyAction();
-    var todo = this.props.todo ? this.props.todo : [];
-    var exists =
-      todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-
-    if (this.checkDone() && this.props.user.households.length === 1) {
-      // show this deactivated grey button if the action has already been done
-      return (
-        <CustomTooltip text="Can't use this feature, you have already done the action">
-          <p
-            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it line-me z-depth-1 me-anime-open-in"
-          >
-            To Do
-          </p>
-        </CustomTooltip>
-      );
-    }
-    if (exists) {
-      // show this button if the action has already been added to the todo list
-      return (
-        <CustomTooltip text="Thank you for adding this. Click again to remove.">
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled  mob-font indiv-done-it-orange line-me z-depth-1 me-anime-open-in"
-            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
-            onClick={() => {
-              this.setState({ showTodoMsg: false });
-              // this.removeFromCart(this.actionIsInTodo());
-              if (this.props.user.households.length > 1) {
-                this.openModal("TODO");
-              } else {
-                this.removeFromCart(this.actionIsInTodo());
-              }
-            }}
-          >
-            To Do
-          </p>
-        </CustomTooltip>
-      );
-    } else {
-      // show white clickable ME button if the action has not been touched and ready to be added to TODO list
-      return (
-        <CustomTooltip text="Add this to your TODO list">
-          <MEButton
-            className="phone-vanish me-anime-open-in"
-            style={{ padding: "5px 14px", fontSize: 14 }}
-            variation="accent"
-            onClick={() => this.openModal("TODO")}
-          >
-            To Do
-          </MEButton>
-          <MEButton
-            className="pc-vanish me-anime-open-in"
-            style={{ padding: "5px 20px", fontSize: 14 }}
-            variation="accent"
-            // mediaType="icon"
-            // icon="fa fa-edit"
-            // className={
-            //   this.state.status === "TODO"
-            //     ? " thm-btn action-btns cool-font style-4 selected mob-font line-me "
-            //     : "thm-btn style-4 action-btns cool-font mob-font line-me"
-            // }
-            onClick={() => this.openModal("TODO")}
-          >
-            To Do
-          </MEButton>
-        </CustomTooltip>
-      );
-    }
-  }
+  
   checkDone() {
     var action = this.getMyAction();
     var done = this.props.done ? this.props.done : [];
@@ -416,12 +334,15 @@ class OneActionPage extends React.Component {
     return exists;
   }
 
+  userHasManyHouseHolds(){
+    return this.props.user.households.length > 1;
+  }
   runActionFunction(_for) {
-    const hasManyHouseHolds = this.props.user.households.length > 1;
+    // const hasManyHouseHolds = this.props.user.households.length > 1;
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
       if (isDone) { //--- user has already marked it as DONE, and wants to undo 
-        if (!hasManyHouseHolds) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+        if (!this.userHasManyHouseHolds()) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
           this.setState({ showTodoMsg: false });
           return;
@@ -430,7 +351,7 @@ class OneActionPage extends React.Component {
     } else if (_for === "TODO") { 
       const inTodo = this.actionIsInTodo();
       if (inTodo) { //---- user has already marked Action as TODO, and wants to undo it
-        if (!hasManyHouseHolds) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+        if (!this.userHasManyHouseHolds()) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
           this.setState({ showTodoMsg: false });
           return;
@@ -440,58 +361,16 @@ class OneActionPage extends React.Component {
     this.openModal(_for);
   }
 
-  checkDoneAndReturn() {
-    if (this.checkDone()) {
-      return (
-        <CustomTooltip text="Thanks for adding, click again to remove.">
-          <p
-            className="thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 me-anime-open-in"
-            style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
-            onClick={() => {
-              this.setState({ showTestimonialLink: false });
-              if (this.props.user.households.length > 1) {
-                this.openModal("DONE");
-              } else {
-                this.removeFromCart(this.actionIsDone());
-              }
-              // this.removeFromCart(this.actionIsDone());
-            }}
-          >
-            Done
-          </p>
-        </CustomTooltip>
-      );
-    } else {
-      return (
-        <CustomTooltip text="Mark as Done, if you've done this">
-          <MEButton
-            className="phone-vanish me-anime-open-in"
-            style={{ padding: "5px 14px", fontSize: 14 }}
-            onClick={() => {
-              this.openModal("DONE");
-              this.setState({ showTodoMsg: false });
-            }}
-          >
-            {" "}
-            Done
-          </MEButton>
-          {/*  ---- PHONE MODE ------- */}
-          <MEButton
-            className="pc-vanish me-anime-open-in"
-            style={{ padding: "5px 20px", fontSize: 14 }}
-            onClick={() => {
-              this.openModal("DONE");
-              this.setState({ showTodoMsg: false });
-            }}
-          >
-            {" "}
-            Done
-          </MEButton>
-        </CustomTooltip>
-      );
+  getTodoPopoverInfo(){ 
+    if(this.checkDone() && this.userHasManyHouseHolds()){ // overwrite default popover text of TODO button with below text if action is done, and use has many households
+      return { popoverText: "Add to your To Do list in another household"  } 
     }
+    if(this.checkDone()){
+      return { className: "cam-gray-btn"}
+    }
+    return {}
   }
-
+  
   /**
    * Modal Functions
    */
@@ -552,7 +431,7 @@ class OneActionPage extends React.Component {
       ? this.props.communityData.community
       : null;
 
-    // const login_link = community ? community.name : "";
+  
     const stories = this.props.stories.filter((story) => {
       if (story.action) {
         return story.action.id === Number(this.props.match.params.id);
@@ -566,7 +445,7 @@ class OneActionPage extends React.Component {
       : community
       ? community.id === action.community.id
       : true;
-
+    const actionStateCase = this.getActionStateCase(); 
     return (
       <>
         <div>
@@ -615,70 +494,27 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      {/* <p className="action-tags" style={{ fontSize: "20px" }}> Tags: <br />
-                    {this.renderTags(action.tags)}
-                  </p> */}
+                      
                       <div className="btn-envelope">
-                        {/* {!this.props.user ? (
-                          <CustomTooltip text="Sign in to make a TODO list">
-                            <p
-                              style={{ padding: "6px 15px" }}
-                              className=" has-tooltip thm-btn style-4 disabled action-btns line-me mob-font z-depth-1"
-                            >
-                              ToDo
-                            </p>
-                          </CustomTooltip>
-                        ) : ( */}
-
                         <>
                           <MECameleonButton
-                            _case={this.getActionStateCase()}
+                            _case={actionStateCase}
                             type={TODO}
                             {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("TODO")}
+                            {...this.getTodoPopoverInfo()}
                           />
 
                           <MECameleonButton
-                            _case={this.getActionStateCase()}
+                            _case={actionStateCase}
                             type={DONE}
                             {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("DONE")}
                           />
                         </>
-                        {/* )} */}
-                        {/* &nbsp;
-                        {!this.props.user ? (
-                          <CustomTooltip text="Sign in to mark actions as completed">
-                            <p
-                              style={{ padding: "6px 15px" }}
-                              className=" has-tooltip thm-btn style-4 disabled action-btns mob-font z-depth-1"
-                            >
-                              Done
-                            </p>
-                          </CustomTooltip>
-                        ) : // this.checkDoneAndReturn()
-                        null} */}
+                        
                       </div>
-                      {/* {this.state.status ? (
-                        <div style={{ paddingTop: "20px" }}>
-                          <ChooseHHForm
-                            aid={action.id}
-                            status={this.state.status}
-                            open={this.state.status ? true : false}
-                            user={this.props.user}
-                            addToCart={(aid, hid, status) =>
-                              this.addToCart(aid, hid, status)
-                            }
-                            inCart={(aid, hid, cart) =>
-                              this.inCart(aid, hid, cart)
-                            }
-                            moveToDone={(aid, hid) =>
-                              this.moveToDoneByActionId(aid, hid)
-                            }
-                            closeForm={this.closeForm}
-                          />{" "}
-                        </div>
-                      ) : null} */}
+                
                       {this.state.showTestimonialLink ? (
                         <div>
                           <p
@@ -908,32 +744,6 @@ class OneActionPage extends React.Component {
                       style={{ padding: 25 }}
                       placeholder="Please type your question here..."
                     />
-                    {/* {this.props.user ? (
-                      <button
-                        onClick={() => {
-                          this.sendQuestion();
-                        }}
-                        style={{ marginTop: 10, padding: "14px 41px" }}
-                        className="btn btn-success round-me pull-right"
-                      >
-                        Send Question
-                      </button>
-                    ) : (
-                      <a
-                        href={"/" + login_link + "/signin"}
-                        style={{
-                          marginTop: 10,
-                          padding: "14px 41px",
-                          background: "gray",
-                          border: "gray",
-                          color: "white",
-                          textDecoration: "none",
-                        }}
-                        className="btn btn-success round-me pull-right"
-                      >
-                        Sign In To Send
-                      </a>
-                    )} */}
                   </div>
                 </div>
               </div>
@@ -999,17 +809,7 @@ class OneActionPage extends React.Component {
       });
     }
   };
-  // openForm = (status) => {
-  //   this.setState({
-  //     status: status,
-  //   });
-  // };
-  // closeForm = () => {
-  //   this.setState({
-  //     status: null,
-  //   });
-  // };
-
+ 
   renderTags(tags) {
     return Object.keys(tags).map((key) => {
       var tagColName = "";
@@ -1039,83 +839,7 @@ class OneActionPage extends React.Component {
               <MiniTestimonial story={story} links={this.props.links} />
             </div>
           );
-          // if (!story.anononymous) {
-          //   creatorName = story.preferred_name
-          //     ? story.preferred_name
-          //     : creatorName;
-          // }
-          // const format = "MMMM Do YYYY";
-          // const date = moment(story.created_at).format(format);
-          // if (key < this.state.numberToShow) {
-          //   return (
-          //     <div
-          //       className="single-review-box"
-          //       style={{ paddingLeft: 0, paddingBottom: 5 }}
-          //       key={key}
-          //     >
-          //       <div className="img-holder">
-          //         {/* <img src="" alt="" /> */}
-          //       </div>
-          //       <div className="text-holder">
-          //         <div className="top">
-          //           <div className="name pull-left">
-          //             <h4>{story.title} </h4>
-          //           </div>
-          //         </div>
-          //         <div className="text">
-          //           <h6>
-          //             <small className="story-name">{creatorName}</small>
-          //             <small className="m-label round-me">{date}</small>
-          //             {this.state.expanded &&
-          //             this.state.expanded === story.id ? (
-          //               <button
-          //                 className="as-link"
-          //                 style={{ float: "right" }}
-          //                 onClick={() => {
-          //                   this.setState({ expanded: null });
-          //                 }}
-          //               >
-          //                 close
-          //               </button>
-          //             ) : null}
-          //           </h6>
 
-          //           <p>
-          //             {this.state.expanded && this.state.expanded === story.id
-          //               ? story.body
-          //               : story.body.substring(0, this.state.limit)}
-          //             {this.state.limit < story.body.length &&
-          //             this.state.expanded !== story.id ? (
-          //               <button
-          //                 className="as-link"
-          //                 style={{ float: "right" }}
-          //                 onClick={() => {
-          //                   this.setState({ expanded: story.id });
-          //                 }}
-          //               >
-          //                 more...
-          //               </button>
-          //             ) : null}
-          //           </p>
-          //         </div>
-          //         {story.vendor ? (
-          //           <div className="text">
-          //             <p>
-          //               Linked Service Provider:{" "}
-          //               <Link
-          //                 to={`${this.props.links.services}/${story.vendor.id}`}
-          //               >
-          //                 {story.vendor.name}
-          //               </Link>
-          //             </p>
-          //           </div>
-          //         ) : null}
-          //       </div>
-          //     </div>
-          //   );
-          // } else {
-          //   return <div key={key} />;
-          // }
         })}
       </>
     );
@@ -1172,15 +896,6 @@ class OneActionPage extends React.Component {
         console.log(err);
       });
   };
-  // moveToDoneByActionId(aid, hid) {
-  //   const actionRel = this.props.todo.filter((actionRel) => {
-  //     return (
-  //       Number(actionRel.action.id) === Number(aid) &&
-  //       Number(actionRel.real_estate_unit.id) === Number(hid)
-  //     );
-  //   })[0];
-  //   if (actionRel) this.moveToDone(actionRel);
-  // }
   addToCart = (aid, hid, status) => {
     if (status !== "TODO" && status !== "DONE") return;
 
