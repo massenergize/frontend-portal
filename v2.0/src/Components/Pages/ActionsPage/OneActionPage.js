@@ -30,6 +30,14 @@ import MEButton from "../Widgets/MEButton";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
 import MECameleonButton from "./MECameleonButton";
+import {
+  DEFAULT_STATE,
+  DONE,
+  IS_DONE,
+  IS_IN_TODO,
+  NO_AUTH,
+  TODO,
+} from "./ActionStateConstants";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -59,6 +67,7 @@ class OneActionPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
+    this.runActionFunction = this.runActionFunction.bind(this);
   }
 
   async componentDidMount() {
@@ -406,6 +415,31 @@ class OneActionPage extends React.Component {
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
     return exists;
   }
+
+  runActionFunction(_for) {
+    const hasManyHouseHolds = this.props.user.households.length > 1;
+    if (_for === "DONE") {
+      const isDone = this.actionIsDone();
+      if (isDone) { //--- user has already marked it as DONE, and wants to undo 
+        if (!hasManyHouseHolds) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+          this.removeFromCart(isDone);
+          this.setState({ showTodoMsg: false });
+          return;
+        }
+      }
+    } else if (_for === "TODO") { 
+      const inTodo = this.actionIsInTodo();
+      if (inTodo) { //---- user has already marked Action as TODO, and wants to undo it
+        if (!hasManyHouseHolds) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+          this.removeFromCart(inTodo);
+          this.setState({ showTodoMsg: false });
+          return;
+        }
+      }
+    }
+    this.openModal(_for);
+  }
+
   checkDoneAndReturn() {
     if (this.checkDone()) {
       return (
@@ -494,6 +528,21 @@ class OneActionPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
+  getActionStateCase() {
+    const { user } = this.props;
+    if (!user) return NO_AUTH;
+    if (this.actionIsDone()) return IS_DONE;
+    if (this.actionIsInTodo()) return IS_IN_TODO;
+
+    return DEFAULT_STATE;
+  }
+
+  getNoAuthParams() {
+    const { user, links } = this.props;
+    if (!user) return { to: links ? links.signin : "#" };
+    return {};
+  }
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -503,7 +552,7 @@ class OneActionPage extends React.Component {
       ? this.props.communityData.community
       : null;
 
-    const login_link = community ? community.name : "";
+    // const login_link = community ? community.name : "";
     const stories = this.props.stories.filter((story) => {
       if (story.action) {
         return story.action.id === Number(this.props.match.params.id);
@@ -570,7 +619,7 @@ class OneActionPage extends React.Component {
                     {this.renderTags(action.tags)}
                   </p> */}
                       <div className="btn-envelope">
-                        {!this.props.user ? (
+                        {/* {!this.props.user ? (
                           <CustomTooltip text="Sign in to make a TODO list">
                             <p
                               style={{ padding: "6px 15px" }}
@@ -579,13 +628,25 @@ class OneActionPage extends React.Component {
                               ToDo
                             </p>
                           </CustomTooltip>
-                        ) : (
-                          // this.checkTodoAndReturn() 
-                          <MECameleonButton>
-                             To Do
-                            </MECameleonButton>
-                        )}
-                        &nbsp;
+                        ) : ( */}
+
+                        <>
+                          <MECameleonButton
+                            _case={this.getActionStateCase()}
+                            type={TODO}
+                            {...this.getNoAuthParams()}
+                            onClick={() => this.runActionFunction("TODO")}
+                          />
+
+                          <MECameleonButton
+                            _case={this.getActionStateCase()}
+                            type={DONE}
+                            {...this.getNoAuthParams()}
+                            onClick={() => this.runActionFunction("DONE")}
+                          />
+                        </>
+                        {/* )} */}
+                        {/* &nbsp;
                         {!this.props.user ? (
                           <CustomTooltip text="Sign in to mark actions as completed">
                             <p
@@ -595,10 +656,8 @@ class OneActionPage extends React.Component {
                               Done
                             </p>
                           </CustomTooltip>
-                        ) : (
-                          // this.checkDoneAndReturn()
-                          null
-                        )}
+                        ) : // this.checkDoneAndReturn()
+                        null} */}
                       </div>
                       {/* {this.state.status ? (
                         <div style={{ paddingTop: "20px" }}>
@@ -849,7 +908,7 @@ class OneActionPage extends React.Component {
                       style={{ padding: 25 }}
                       placeholder="Please type your question here..."
                     />
-                    {this.props.user ? (
+                    {/* {this.props.user ? (
                       <button
                         onClick={() => {
                           this.sendQuestion();
@@ -874,7 +933,7 @@ class OneActionPage extends React.Component {
                       >
                         Sign In To Send
                       </a>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

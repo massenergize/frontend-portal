@@ -9,9 +9,11 @@
   box-shadow: 0 0 0 #f1f1f1, inset 4px 4px 4px green !important;
 }
 .cam-gray-btn{ 
-  background: hsl(0, 2%, 83%) !important;
-  border-color: #d4d2d2 !important;
-  color:black !important;
+  /* background: hsl(0, 2%, 83%) !important; */
+  background: gray !important;
+  /* border-color: #d4d2d2 !important; */
+  border-color: gray !important;
+  color:white !important;
  
 }
 .cam-gray-btn:active { 
@@ -20,6 +22,7 @@
 .cam-gray-btn:hover{ 
   background:white !important; 
   border-color: white !important; 
+  color: black !important;
   transition: .1s linear;
 }
 
