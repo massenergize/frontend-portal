@@ -1,3 +1,42 @@
+/* ----- CAMELEON BTN EXTRA CLASSES ------- */
+
+.cam-btn-defaults{
+  padding:6px 22px  !important;
+  font-size:14px;
+  transition: box-shadow 0.2s ease-in-out !important ;
+} 
+.cam-btn-defaults:active { 
+  box-shadow: 0 0 0 #f1f1f1, inset 4px 4px 4px green !important;
+}
+.cam-gray-btn{ 
+  background: hsl(0, 2%, 83%) !important;
+  border-color: #d4d2d2 !important;
+  color:black !important;
+ 
+}
+.cam-gray-btn:active { 
+  box-shadow: 0 0 0 #f1f1f1, inset 4px 4px 4px rgb(211, 211, 211) !important;
+}
+.cam-gray-btn:hover{ 
+  background:white !important; 
+  border-color: white !important; 
+  transition: .1s linear;
+}
+
+.cam-orange-btn { 
+  background: #ff7600 !important;
+  border-color: #ff7600 !important;
+  color: white !important;
+}
+.cam-orange-btn:hover{ 
+  background: #8dc343 !important; 
+  border-color:#8dc343 !important ;
+  color:white !important; 
+  transition:.1s linear;
+}
+
+
+/* ---------------------------------------- */
 .snackbar-main-container {
   width: 100%;
   position: absolute;

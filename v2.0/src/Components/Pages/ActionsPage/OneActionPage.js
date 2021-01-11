@@ -29,6 +29,7 @@ import { getHTMLContent } from "../HTML/HTMLShop";
 import MEButton from "../Widgets/MEButton";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
+import MECameleonButton from "./MECameleonButton";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -579,7 +580,10 @@ class OneActionPage extends React.Component {
                             </p>
                           </CustomTooltip>
                         ) : (
-                          this.checkTodoAndReturn()
+                          // this.checkTodoAndReturn() 
+                          <MECameleonButton>
+                             To Do
+                            </MECameleonButton>
                         )}
                         &nbsp;
                         {!this.props.user ? (
@@ -592,7 +596,8 @@ class OneActionPage extends React.Component {
                             </p>
                           </CustomTooltip>
                         ) : (
-                          this.checkDoneAndReturn()
+                          // this.checkDoneAndReturn()
+                          null
                         )}
                       </div>
                       {/* {this.state.status ? (
