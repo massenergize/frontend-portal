@@ -27,7 +27,7 @@ import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
-import MECameleonButton from "./MECameleonButton";
+import MECameleonButton from "./MEChameleonButton";
 import {
   DEFAULT_STATE,
   DONE,
