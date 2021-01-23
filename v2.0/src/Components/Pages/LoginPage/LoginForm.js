@@ -85,7 +85,14 @@ class LoginFormBase extends React.Component {
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
-                {/* <button onClick={this.signInWithFacebook} id="facebook" type="button" className="img-circle facebook"><span className="fa fa-facebook-f"></span></button> */}
+                {/*<button 
+                  onClick={this.signInWithFacebook} 
+                  id="facebook" 
+                  type="button" 
+                  className="img-circle facebook"
+                >
+                  <span className="fa fa-facebook-f"></span>
+                </button>*/}
                 <button
                   onClick={this.signInWithGoogle}
                   id="google"
@@ -95,14 +102,14 @@ class LoginFormBase extends React.Component {
                   <span className="fa fa-google"></span>
                 </button>
                 {/* ----- FACEBOOK WILL BE RE-ENABLED LATER ------- */}
-                {/* <button
+                <button
                   onClick={this.signInWithFacebook}
                   id="facebook"
                   type="button"
                   className="img-circle  round-me raise me-facebook-btn"
                 >
                   <span className="fa fa-facebook"></span>
-                </button> */}
+                </button>
               </div>
             </div>
           </form>
