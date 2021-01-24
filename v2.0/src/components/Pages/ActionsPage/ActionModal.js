@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
 import MEButton from "../Widgets/MEButton";
+import METextView from "../Widgets/METextView";
 import ChooseHHForm from "./ChooseHHForm";
 // import * as moment from "moment";
 
@@ -12,6 +13,16 @@ class ActionModal extends Component {
     this.state = {};
   }
 
+
+
+  ejectStuff(){ 
+    return [1,2,3,4,5,5,5,5,5].map( item  =>{
+      return (<div className="act-item">
+      <div className = "act-rect"></div>
+      <p>Here we go again</p>
+    </div>)
+    })
+  }
   render() {
     // const format = "MMM, Do YYYY";
     // const date = moment(
@@ -28,17 +39,28 @@ class ActionModal extends Component {
         <div class="act-title-bar">
           <h3>Name Of Action</h3>
         </div>
+        <METextView
+          mediaType="icon"
+          icon="fa fa-exclamation"
+          className="act-error"
+          containerStyle = {{display:"block"}}
+        >
+          Here is your first error
+        </METextView>
 
         <div className="act-modal-body">
-          <div className="act-item">
+          {this.ejectStuff()}
+          {/* <div className="act-item">
+            <div className = "act-rect"></div>
             <p>Here we go again</p>
-          </div>
-          <div className="act-item">
+          </div> */}
+          {/* <div className="act-item">
+          <div className = "act-rect act-selected"></div>
+            <p>Here we go again </p>
+          </div> */}
+          {/* <div className="act-item">
             <p>Here we go again</p>
-          </div>
-          <div className="act-item">
-            <p>Here we go again</p>
-          </div>
+          </div> */}
         </div>
         <div class="act-status-bar">
           <h4 style={{ margin: 20, fontWeight: "bold", color: "green" }}>

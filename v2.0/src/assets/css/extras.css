@@ -1,3 +1,19 @@
+.act-rect { 
+  width:17px; 
+  height:17px;
+  border:solid 2px green;
+  display:inline-block;
+  margin-right:10px;
+  position:absolute;
+  top:27%;
+}
+
+.act-selected { 
+ background: #18c125;
+ border-style : dotted;
+ border-color: #ccf3cc;
+}
+
 .act-item {
   padding: 10px 20px;
   border: dotted 0px #e2e2e2;
@@ -5,9 +21,11 @@
   cursor: pointer;
   margin: 0px;
   margin-top: 3px;
+  transition: transform 0.1s ease-out;
+  position: relative;
 }
 .act-item:hover {
-  background: #e2e2e2;
+  background: #f7f9f7;
   color: black;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
     0 2px 10px 0 rgba(0, 0, 0, 0.12) ;
@@ -15,10 +33,26 @@
   transition: 0.2s ease-out;
 }
 
+.act-item:active { 
+  transform:scale(.95)
+  
+}
+
+.act-error { 
+  background: #fff6e9;
+  color: #a0640c;
+  padding: 7px 30px;
+  width: 97%;
+  margin: 10px;
+  border-radius: 5px;
+  font-size:15px;
+}
 .act-item p {
   margin-bottom: 0px;
-  font-size: 17px;
+  font-size: 15px;
   color: #282828;
+  display: inline-block;
+  margin-left:4%;
 }
 .act-title-bar {
   padding: 15px 20px;
@@ -36,6 +70,11 @@
   min-height: 50vh;
   max-height: 90vh;
   position: relative;
+}
+
+.act-modal-body{ 
+  max-height: 70vh; 
+  overflow-y:scroll;
 }
 
 .act-status-bar {
