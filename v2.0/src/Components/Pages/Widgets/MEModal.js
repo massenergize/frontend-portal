@@ -39,6 +39,7 @@ export default class MEModal extends Component {
       contentStyle,
       containerClassName,
       showOverlay,
+      showCloseBtn,
     } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     const overlayStyle = showOverlay ? {} : { display: "none" };
@@ -49,23 +50,26 @@ export default class MEModal extends Component {
           style={overlayStyle}
           onClick={closeModal}
         ></div>
+
         <div
           className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
         >
-          <center>
-            <MEButton
-              onClick={closeModal}
-              className="me-close"
-              style={{
-                marginBottom: -70,
-                fontWeight: "bold",
-                padding: "10px 17px",
-              }}
-            >
-              <span className="fa fa-close" style={{ fontSize: 15 }}></span>
-            </MEButton>
-          </center>
+          {showCloseBtn && (
+            <center>
+              <MEButton
+                onClick={closeModal}
+                className="me-close"
+                style={{
+                  marginBottom: -70,
+                  fontWeight: "bold",
+                  padding: "10px 17px",
+                }}
+              >
+                <span className="fa fa-close" style={{ fontSize: 15 }}></span>
+              </MEButton>
+            </center>
+          )}
           <MECard
             className={`z-depth-5 ${className}`}
             style={{ ...defaults, ...style }}
@@ -95,4 +99,5 @@ MEModal.defaultProps = {
   size: "sm",
   containerClassName: "",
   showOverlay: true,
+  showCloseBtn: true,
 };

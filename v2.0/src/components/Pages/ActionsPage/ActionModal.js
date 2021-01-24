@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
+import MEButton from "../Widgets/MEButton";
 import ChooseHHForm from "./ChooseHHForm";
 // import * as moment from "moment";
 
@@ -21,6 +22,35 @@ class ActionModal extends Component {
     // if (!anonymous) {
     //   userName = this.props.user ? this.props.user : userName; //else just pust the default user name
     // }
+
+    return (
+      <div className="act-modal-whole">
+        <div class="act-title-bar">
+          <h3>Name Of Action</h3>
+        </div>
+
+        <div className="act-modal-body">
+          <div className="act-item">
+            <p>Here we go again</p>
+          </div>
+          <div className="act-item">
+            <p>Here we go again</p>
+          </div>
+          <div className="act-item">
+            <p>Here we go again</p>
+          </div>
+        </div>
+        <div class="act-status-bar">
+          <h4 style={{ margin: 20, fontWeight: "bold", color: "green" }}>
+            TODO
+          </h4>
+          <div style={{ marginLeft: "auto", marginRight: 0 }}>
+            <button className="flat-btn">Submit</button>
+            <button className="flat-btn close-flat">Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
 
     return (
       <div>
@@ -48,11 +78,6 @@ class ActionModal extends Component {
               />
             )}
             <br></br>
-
-            {/* <ul style={{ textAlign: "center", listStyle: "none", display: "inline", columns: 2}}>
-              <li style={{display: "inline", margin: "0 5em 0 0"}}>  </li>
-              <li style={{display: "inline"}}> Adding Action to your {this.props.status} list! </li>
-            </ul> */}
 
             <p>
               {" "}
