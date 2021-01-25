@@ -90,11 +90,11 @@ class HomePage extends React.Component {
           />
         ) : null}
         {this.props.pageData.show_featured_stats ? (
-          <Graphs graphs={graphs} size={120} goals={comGoals} />
+          <Graphs graphs={graphs} size={120} goals={comGoals} subtitle={this.props.pageData.featured_stats_description}/>
         ) : null}
  
         {this.props.pageData.show_featured_events ? (
-          <Events events={events} />
+          <Events events={events}  subtitle={this.props.pageData.featured_events_description}/>
         ) : null}
       </div>
     );

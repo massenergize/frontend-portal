@@ -100,7 +100,7 @@ class Graphs extends React.Component {
           className="section-title text-center mob-cancel-title-white"
           style={{ fontSize: 20 }}
         >
-          Help Us Reach Our Goals
+          {this.props.subtitle || "Help Us Meet Our Goals"}
         </h4>
         <div className="container">
           <div className="row no-gutter clearfix">
