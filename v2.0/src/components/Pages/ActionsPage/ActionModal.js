@@ -13,16 +13,6 @@ class ActionModal extends Component {
     this.state = {};
   }
 
-
-
-  ejectStuff(){ 
-    return [1,2,3,4,5,5,5,5,5].map( item  =>{
-      return (<div className="act-item">
-      <div className = "act-rect"></div>
-      <p>Here we go again</p>
-    </div>)
-    })
-  }
   render() {
     // const format = "MMM, Do YYYY";
     // const date = moment(
@@ -35,43 +25,39 @@ class ActionModal extends Component {
     // }
 
     return (
-      <div className="act-modal-whole">
-        <div class="act-title-bar">
-          <h3>Name Of Action</h3>
-        </div>
-        <METextView
-          mediaType="icon"
-          icon="fa fa-exclamation"
-          className="act-error"
-          containerStyle = {{display:"block"}}
-        >
-          Here is your first error
-        </METextView>
+      <ChooseHHForm
+        action={this.props.content}
+        aid={this.props.content.id}
+        status={this.props.status}
+        open={true}
+        user={this.props.user}
+        addToCart={(aid, hid, status) => this.props.addToCart(aid, hid, status)}
+        inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
+        moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+        closeForm={this.props.closeModal}
+      />
 
-        <div className="act-modal-body">
-          {this.ejectStuff()}
-          {/* <div className="act-item">
-            <div className = "act-rect"></div>
-            <p>Here we go again</p>
-          </div> */}
-          {/* <div className="act-item">
-          <div className = "act-rect act-selected"></div>
-            <p>Here we go again </p>
-          </div> */}
-          {/* <div className="act-item">
-            <p>Here we go again</p>
-          </div> */}
-        </div>
-        <div class="act-status-bar">
-          <h4 style={{ margin: 20, fontWeight: "bold", color: "green" }}>
-            TODO
-          </h4>
-          <div style={{ marginLeft: "auto", marginRight: 0 }}>
-            <button className="flat-btn">Submit</button>
-            <button className="flat-btn close-flat">Cancel</button>
-          </div>
-        </div>
-      </div>
+      // {/* <div class="act-title-bar">
+      //   <h3>Name Of Action</h3>
+      // </div>
+      // <METextView
+      //   mediaType="icon"
+      //   icon="fa fa-exclamation"
+      //   className="act-error"
+      //   containerStyle={{ display: "block" }}
+      // >
+      //   Here is your first error
+      // </METextView> */}
+
+      // {/* <div class="act-status-bar">
+      //   <h4 style={{ margin: 20, fontWeight: "bold", color: "green" }}>
+      //     TODO
+      //   </h4>
+      //   <div style={{ marginLeft: "auto", marginRight: 0 }}>
+      //     <button className="flat-btn">Submit</button>
+      //     <button className="flat-btn close-flat">Cancel</button>
+      //   </div>
+      // </div> */}
     );
 
     return (
