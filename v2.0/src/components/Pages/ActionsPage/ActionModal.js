@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
+import MEButton from "../Widgets/MEButton";
+import METextView from "../Widgets/METextView";
 import ChooseHHForm from "./ChooseHHForm";
 // import * as moment from "moment";
 
@@ -21,6 +23,42 @@ class ActionModal extends Component {
     // if (!anonymous) {
     //   userName = this.props.user ? this.props.user : userName; //else just pust the default user name
     // }
+
+    return (
+      <ChooseHHForm
+        action={this.props.content}
+        aid={this.props.content.id}
+        status={this.props.status}
+        open={true}
+        user={this.props.user}
+        addToCart={(aid, hid, status) => this.props.addToCart(aid, hid, status)}
+        inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
+        moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+        closeForm={this.props.closeModal}
+      />
+
+      // {/* <div class="act-title-bar">
+      //   <h3>Name Of Action</h3>
+      // </div>
+      // <METextView
+      //   mediaType="icon"
+      //   icon="fa fa-exclamation"
+      //   className="act-error"
+      //   containerStyle={{ display: "block" }}
+      // >
+      //   Here is your first error
+      // </METextView> */}
+
+      // {/* <div class="act-status-bar">
+      //   <h4 style={{ margin: 20, fontWeight: "bold", color: "green" }}>
+      //     TODO
+      //   </h4>
+      //   <div style={{ marginLeft: "auto", marginRight: 0 }}>
+      //     <button className="flat-btn">Submit</button>
+      //     <button className="flat-btn close-flat">Cancel</button>
+      //   </div>
+      // </div> */}
+    );
 
     return (
       <div>
@@ -48,11 +86,6 @@ class ActionModal extends Component {
               />
             )}
             <br></br>
-
-            {/* <ul style={{ textAlign: "center", listStyle: "none", display: "inline", columns: 2}}>
-              <li style={{display: "inline", margin: "0 5em 0 0"}}>  </li>
-              <li style={{display: "inline"}}> Adding Action to your {this.props.status} list! </li>
-            </ul> */}
 
             <p>
               {" "}

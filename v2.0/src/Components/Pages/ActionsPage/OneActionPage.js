@@ -325,7 +325,7 @@ class OneActionPage extends React.Component {
       }
     });
   };
-  
+
   checkDone() {
     var action = this.getMyAction();
     var done = this.props.done ? this.props.done : [];
@@ -334,24 +334,28 @@ class OneActionPage extends React.Component {
     return exists;
   }
 
-  userHasManyHouseHolds(){
+  userHasManyHouseHolds() {
     return this.props.user.households.length > 1;
   }
   runActionFunction(_for) {
     // const hasManyHouseHolds = this.props.user.households.length > 1;
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
-      if (isDone) { //--- user has already marked it as DONE, and wants to undo 
-        if (!this.userHasManyHouseHolds()) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+      if (isDone) {
+        //--- user has already marked it as DONE, and wants to undo
+        if (!this.userHasManyHouseHolds()) {
+          //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
           this.setState({ showTodoMsg: false });
           return;
         }
       }
-    } else if (_for === "TODO") { 
+    } else if (_for === "TODO") {
       const inTodo = this.actionIsInTodo();
-      if (inTodo) { //---- user has already marked Action as TODO, and wants to undo it
-        if (!this.userHasManyHouseHolds()) { //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+      if (inTodo) {
+        //---- user has already marked Action as TODO, and wants to undo it
+        if (!this.userHasManyHouseHolds()) {
+          //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
           this.setState({ showTodoMsg: false });
           return;
@@ -361,16 +365,17 @@ class OneActionPage extends React.Component {
     this.openModal(_for);
   }
 
-  getTodoPopoverInfo(){ 
-    if(this.checkDone() && this.userHasManyHouseHolds()){ // overwrite default popover text of TODO button with below text if action is done, and use has many households
-      return { popoverText: "Add to your To Do list in another household"  } 
+  getTodoPopoverInfo() {
+    if (this.checkDone() && this.userHasManyHouseHolds()) {
+      // overwrite default popover text of TODO button with below text if action is done, and use has many households
+      return { popoverText: "Add to your To Do list in another household" };
     }
-    if(this.checkDone()){
-      return { className: "cam-gray-btn"}
+    if (this.checkDone()) {
+      return { className: "cam-gray-btn" };
     }
-    return {}
+    return {};
   }
-  
+
   /**
    * Modal Functions
    */
@@ -378,9 +383,11 @@ class OneActionPage extends React.Component {
     if (this.state.openModalForm) {
       return (
         <MEModal
+          showCloseBtn={false}
           closeModal={this.closeModal}
-          size="md"
+          size="sm"
           contentStyle={{ minWidth: "100%" }}
+          style={{ padding: 0 }}
         >
           <ActionModal
             content={this.getMyAction()}
@@ -431,7 +438,6 @@ class OneActionPage extends React.Component {
       ? this.props.communityData.community
       : null;
 
-  
     const stories = this.props.stories.filter((story) => {
       if (story.action) {
         return story.action.id === Number(this.props.match.params.id);
@@ -445,7 +451,7 @@ class OneActionPage extends React.Component {
       : community
       ? community.id === action.community.id
       : true;
-    const actionStateCase = this.getActionStateCase(); 
+    const actionStateCase = this.getActionStateCase();
     return (
       <>
         <div>
@@ -494,7 +500,6 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      
                       <div className="btn-envelope">
                         <>
                           <MECameleonButton
@@ -512,9 +517,8 @@ class OneActionPage extends React.Component {
                             onClick={() => this.runActionFunction("DONE")}
                           />
                         </>
-                        
                       </div>
-                
+
                       {this.state.showTestimonialLink ? (
                         <div>
                           <p
@@ -809,7 +813,7 @@ class OneActionPage extends React.Component {
       });
     }
   };
- 
+
   renderTags(tags) {
     return Object.keys(tags).map((key) => {
       var tagColName = "";
@@ -839,7 +843,6 @@ class OneActionPage extends React.Component {
               <MiniTestimonial story={story} links={this.props.links} />
             </div>
           );
-
         })}
       </>
     );

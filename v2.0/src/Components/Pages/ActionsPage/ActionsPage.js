@@ -47,7 +47,8 @@ class ActionsPage extends React.Component {
       openAddForm: null,
       testimonialLink: null,
       openModalForm: null,
-      modal_content: { //tbd
+      modal_content: {
+        //tbd
         image: null,
         title: null,
         desc: null,
@@ -69,7 +70,6 @@ class ActionsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.findCommon = this.findCommon.bind(this);
-
   }
 
   addMeToSelected(tagID) {
@@ -126,27 +126,34 @@ class ActionsPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
-        <MEModal closeModal={this.closeModal} size="md" contentStyle={{minWidth:"100%"}}>
-          <ActionModal 
-            content={this.state.modal_content} 
+        <MEModal
+          showCloseBtn={false}
+          closeModal={this.closeModal}
+          size="sm"
+          contentStyle={{ minWidth: "100%" }}
+          style={{ padding: 0 }}
+        >
+          <ActionModal
+            content={this.state.modal_content}
             user={this.props.user}
             status={this.state.status}
             addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
-            moveToDone = {this.moveToDoneByActionId}
+            moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
       );
     }
   }
 
-  openModal (params, status) {
-    this.setState({ openModalForm: params.id, 
+  openModal(params, status) {
+    this.setState({
+      openModalForm: params.id,
       modal_content: {
         ...params,
-      }, 
-      status: status, 
+      },
+      status: status,
     });
   }
 
@@ -184,7 +191,6 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
-   
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -291,7 +297,8 @@ class ActionsPage extends React.Component {
 
   doesFieldContainWord(field, word, action) {
     const fieldValue = action[field];
-    if (fieldValue && fieldValue.toLowerCase().includes(word.toLowerCase())) return true;
+    if (fieldValue && fieldValue.toLowerCase().includes(word.toLowerCase()))
+      return true;
     return false;
   }
   // on change in any category or tag checkbox update the actionsPage
@@ -354,7 +361,7 @@ class ActionsPage extends React.Component {
             this.setState({ showTodoMsg: false });
           }}
           openModal={this.openModal}
-          closeModal={()=>this.setState({openModalForm: null})}
+          closeModal={() => this.setState({ openModalForm: null })}
         />
       );
     });

@@ -7,6 +7,7 @@ import {
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MEButton from "../Widgets/MEButton";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
+import METextView from "../Widgets/METextView";
 import { apiCall } from "./../../../api/functions";
 
 /********************************************************************/
@@ -34,6 +35,7 @@ class ChooseHHForm extends React.Component {
   componentDidMount() {
     this.checkForAlreadySelected();
   }
+
   render() {
     //Dont show anything if the user has only one household
     if (this.props.user && this.props.user.households.length === 1) {
@@ -45,42 +47,67 @@ class ChooseHHForm extends React.Component {
     this.checkHouseholds();
     return (
       <>
-        {this.props.open ? (
-          <div>
-            {this.state.error ? (
-              <p style={{ color: "#e89898" }}> {this.state.error} </p>
-            ) : null}
-            <form onSubmit={this.handleSubmit} style={{ paddingBottom: 10 }}>
-              {this.renderRadios(this.props.user.households)}
-              <div style={{ paddingBottom: 20, paddingTop: 10 }}>
-                <MEButton
-                  style={{
-                    padding: "2px 11px",
-                    marginRight: 7,
-                    // fontSize: "small",
-                  }}
-                  type="submit"
-                  disabled={
-                    this.state.error ? true : !this.state.choice ? true : false
-                  }
-                >
-                  Submit
-                </MEButton>
-                <MEButton
-                  style={{
-                    padding: "2px 11px",
-                    // fontSize: "small"
-                  }}
-                  onClick={this.props.closeForm}
-                  variation="accent"
-                >
-                  {" "}
-                  Cancel{" "}
-                </MEButton>
-              </div>
-            </form>
+        <div className="act-modal-whole">
+          <div class="act-title-bar">
+            <h3>{this.props.action.title}</h3>
           </div>
-        ) : null}
+
+          <div className="act-modal-body">
+            {this.props.open ? (
+              <div>
+                {this.state.error ? (
+                  <METextView
+                    mediaType="icon"
+                    icon="fa fa-exclamation"
+                    className="act-error"
+                    containerStyle={{ display: "block" }}
+                  >
+                    {this.state.error}
+                  </METextView>
+                ) : null}
+                <form
+                  onSubmit={this.handleSubmit}
+                  style={{ paddingBottom: 10 }}
+                >
+                  {this.renderHouseHoldsInLine(this.props.user.households)}
+                  <div class="act-status-bar">
+                    <h4
+                      style={{
+                        margin: 20,
+                        fontWeight: "bold",
+                        color: "green",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {this.props.status}
+                    </h4>
+                    <div style={{ marginLeft: "auto", marginRight: 0 }}>
+                      <button
+                        className="flat-btn"
+                        type="submit"
+                        disabled={
+                          this.state.error
+                            ? true
+                            : !this.state.choice
+                            ? true
+                            : false
+                        }
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="flat-btn close-flat"
+                        onClick={this.props.closeForm}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            ) : null}
+          </div>
+        </div>
       </>
     );
   }
@@ -101,8 +128,6 @@ class ChooseHHForm extends React.Component {
       }
     );
   };
-
-
 
   handleSubmit = (event) => {
     const houses = this.props.user.households;
@@ -198,10 +223,35 @@ class ChooseHHForm extends React.Component {
         housesAvailable.push(household);
       }
     }
-
-    console.log("LE HOUSES", housesAvailable);
     return housesAvailable;
   }
+
+  renderHouseHoldsInLine(households) {
+    const { status } = this.props;
+    if (!households) return <div />;
+    var filteredHH = households;
+    if (status === "TODO") {
+      filteredHH = households.filter(
+        (household) => !this.props.inCart(this.props.aid, household.id, "DONE")
+      );
+    }
+    const names = getPropsArrayFromJsonArray(filteredHH, "name");
+    const values = getPropsArrayFromJsonArray(filteredHH, "id");
+    return names.map((name, index) => {
+      const all = this.state.choice || [];
+      const selected = all.includes(values[index]);
+      return (
+        <div
+          className={`act-item`}
+          onClick={() => this.onChange(values[index])}
+        >
+          <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
+          <p>{name}</p>
+        </div>
+      );
+    });
+  }
+
   renderRadios(households) {
     const { status } = this.props;
     if (!households) return <div />;
@@ -218,7 +268,7 @@ class ChooseHHForm extends React.Component {
 
     return (
       <div
-      className="mob-check-fix"
+        className="mob-check-fix"
         style={{
           columns: 2,
           textAlign: "left",
@@ -250,17 +300,20 @@ class ChooseHHForm extends React.Component {
     }
   }
   //updates the state when form elements are changed
-  onChange(all, justSelected) {
-    const oldChoice = this.state.choice;
+  // if selected exists, remove from selected, and add to the list of "tobeRemoved"
+  onChange(justSelected) {
+    const oldChoices = this.state.choice || [];
+    const exists = oldChoices.includes(justSelected);
+    const updatedChoices = exists
+      ? oldChoices.filter((id) => id !== justSelected)
+      : [...oldChoices, justSelected];
     const rem = this.state.toBeRemoved || [];
     // var content = this.state.choice;
     // var init = [Number(value)];
     this.setState({
       error: null,
-      choice: all,
-      toBeRemoved: oldChoice.includes(justSelected)
-        ? [...rem, justSelected]
-        : rem, // if the just selected item is inside the state already, it means the user just deselected, so add to removable
+      choice: updatedChoices,
+      toBeRemoved: exists ? [...rem, justSelected] : rem, // if the just selected item is inside the state already, it means the user just deselected, so add to removable
     });
   }
 
