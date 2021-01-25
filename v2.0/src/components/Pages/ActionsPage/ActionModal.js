@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 // import leafy from "./leafy.png";
 import defaultPhoto from "../StoriesPage/me_energy_default.png";
-import MEButton from "../Widgets/MEButton";
-import METextView from "../Widgets/METextView";
 import ChooseHHForm from "./ChooseHHForm";
 // import * as moment from "moment";
 

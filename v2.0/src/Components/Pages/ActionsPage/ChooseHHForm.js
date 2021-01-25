@@ -5,7 +5,6 @@ import {
   reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import MEButton from "../Widgets/MEButton";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import METextView from "../Widgets/METextView";
 import { apiCall } from "./../../../api/functions";
