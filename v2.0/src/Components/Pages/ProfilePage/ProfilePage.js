@@ -200,7 +200,7 @@ class ProfilePage extends React.Component {
                               icon={"fa fa-leaf"}
                               title={"Impact"}
                               info={
-                                "A persons Carbon footprint is the amount of greenhouse gas (GHG) emissions from their energy use and personal consumption.  These emissions are measured in pounds of CO2 per year. The Impact reported here is the estimated reduction annually from the actions completed, using typical average assumptions."
+                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
                               }
                             />
                           </div>
@@ -254,7 +254,7 @@ class ProfilePage extends React.Component {
                               icon={"fa fa-leaf"}
                               title={"Impact"}
                               info={
-                                "A persons Carbon footprint is the amount of greenhouse gas (GHG) emissions from their energy use and personal consumption.  These emissions are measured in pounds of CO2 per year. The Impact reported here is the estimated reduction annually from the actions completed, using typical average assumptions."
+                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
                               }
                             />
                           </div>
