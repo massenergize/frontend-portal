@@ -171,18 +171,24 @@ class AddingHouseholdForm extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     const { user, community, householdID } = this.props;
-    const location =
-      this.state.address +
-      ", " +
-      this.state.city +
-      ", " +
-      this.state.state +
-      ", " +
-      this.state.zip;
+    const address = {
+      street: this.state.address,
+      city: this.state.city,
+      state: this.state.state,
+      zipcode: this.state.zip,
+    }
+    //const location =
+    //  this.state.address +
+    //  ", " +
+    //  this.state.city +
+    //  ", " +
+    //  this.state.state +
+    //  ", " +
+    //  this.state.zip;
     const body = { 
       name: this.state.name,
       unit_type: this.state.unittype,
-      location: location,
+      address: address,
       user_id: user && user.id,
       email: user && user.email,
       community: community && community.id,
