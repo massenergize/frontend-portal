@@ -93,7 +93,9 @@ class OneEventPage extends React.Component {
         <div className="container">
           <h3
             className="cool-font text-center"
-            style={{ textTransform: "capitalize" }}
+            style={{ 
+              //textTransform: "capitalize", 
+            }}
           >
             {event.name}
           </h3>

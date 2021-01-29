@@ -62,7 +62,10 @@ class ActionModal extends Component {
       <div>
         <center>
           <h5
-            style={{ marginBottom: 8, textTransform: "capitalize" }}
+            style={{ 
+              marginBottom: 8, 
+              //extTransform: "capitalize",
+            }}
             className="mob-modal-tittle"
           >
             {this.props.content.title}

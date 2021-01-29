@@ -194,7 +194,7 @@ class OneTeamPage extends React.Component {
                     <h2
                       style={{
                         textAlign: "center",
-                        textTransform: "capitalize",
+                        //textTransform: "capitalize",
                       }}
                       className="cool-font team-card-content"
                     >
@@ -212,7 +212,10 @@ class OneTeamPage extends React.Component {
                 <>
                   <div className="team-card-column col-9">
                     <h2
-                      style={{ textAlign: "left", textTransform: "capitalize" }}
+                      style={{ 
+                        textAlign: "left", 
+                        //textTransform: "capitalize",
+                       }}
                       className="cool-font team-card-content"
                     >
                       {teamTitle}

@@ -986,16 +986,18 @@
   transition: 0.4s;
 }
 .c-tooltip-text-paper {
-  position: absolute;
-  padding: 0px 9px;
+  position: relative;
+  padding: 0px 0px;
   min-width: 200px;
   max-width: 360px;
   overflow-wrap: break-word;
   background: white;
-  border: solid 1px white;
+  border: solid 1px grey;
   border-radius: 5px;
   z-index: 2;
-  left: -90px;
+  /* top: 50px; */
+  left: -30px;
+  bottom: -50px;
 }
 .triangle {
   border: solid 15px red;

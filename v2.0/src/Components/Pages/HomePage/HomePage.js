@@ -4,6 +4,7 @@ import Graphs from "./Graphs";
 import ErrorPage from "./../Errors/ErrorPage"
 import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
+import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 
 /*
@@ -11,14 +12,22 @@ import { connect } from "react-redux";
  */
 class HomePage extends React.Component {
   render() {
+
     if (!this.props.pageData) {
       return <ErrorPage
         errorMessage="Unable to load this Community"
         invalidCommunity
       />
     }
+
+    // don't need all the checks on pageData
+    const title = this.props.pageData ? this.props.pageData.title : "";
     const comGoals = this.props.pageData ? this.props.pageData.goal : null;
-    const communityDescription = this.props.pageData.description;
+
+    // switching Tagline from description to sub_title (if filled), to use description for description
+    const communityTagline = this.props.pageData.sub_title || this.props.pageData.description;
+    // description now will show on hover if filled
+    const communityDescription = ((this.props.pageData.description.length > 1) && (communityTagline!== this.props.pageData.description))? this.props.pageData.description : null;
     const events = this.props.pageData
       ? this.props.pageData.featured_events
       : [];
@@ -29,7 +38,7 @@ class HomePage extends React.Component {
       ? this.props.pageData.featured_links
       : [];
     //const header = section(pageData, "HomeHeader");
-    const title = this.props.pageData ? this.props.pageData.title : "";
+    
     const graphs = [
       {
         title: "Actions Completed",
@@ -79,8 +88,35 @@ class HomePage extends React.Component {
           : null
         }
         <div className="" style={{ padding: 30, background: 'white', color: "#383838" }}>
-          <h4 align='center' className="cool-font mob-font-lg">{communityDescription ? communityDescription : "Welcome To Our Page"}</h4>
-          {/* <p align='center' className=' col-md-8 col-lg-8 offset-md-2 cool-font ' style={{color:"#383838"}}>We believe that local leaders can engage their communities, but need better tools like fully customizable web platforms and strategies for outreach, networking and empowerment. Most groups just don’t have the bandwidth. But we do.</p> */}
+        <div className="text-center">
+
+          {communityDescription ? (
+            <Tooltip
+              align='center' 
+              title={communityTagline} 
+              text={communityDescription}
+              dir="right"
+            >
+            <h4
+              align='center'
+              className="cool-font mob-font-lg"
+            >
+              {communityTagline}
+              <span
+                className="fa fa-info-circle"
+                style={{ color: "#428a36", padding: "5px" }}
+              ></span>
+            </h4>
+          </Tooltip>
+        ) : (
+          <h4
+            align='center'
+            className="cool-font mob-font-lg"
+          >
+            {communityTagline}
+          </h4>
+        )}
+        </div>
         </div>
 
         {this.props.pageData.show_featured_links ? (
@@ -90,11 +126,21 @@ class HomePage extends React.Component {
           />
         ) : null}
         {this.props.pageData.show_featured_stats ? (
-          <Graphs graphs={graphs} size={120} goals={comGoals} />
+          <Graphs 
+            graphs={graphs} 
+            size={120} 
+            goals={comGoals} 
+            subtitle={this.props.pageData.featured_stats_subtitle}
+            info={this.props.pageData.featured_stats_description}
+          />
         ) : null}
  
         {this.props.pageData.show_featured_events ? (
-          <Events events={events} />
+          <Events 
+            events={events}  
+            subtitle={this.props.pageData.featured_events_subtitle}
+            info={this.props.pageData.featured_events_description}
+          />
         ) : null}
       </div>
     );

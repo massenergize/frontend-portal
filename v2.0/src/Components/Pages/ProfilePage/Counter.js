@@ -28,7 +28,7 @@ class Counter extends React.Component {
               {this.props.title} {this.props.unit && `(in ${this.props.unit})`}
               <span
                 className="fa fa-info-circle"
-                style={{ color: "#428a36" }}
+                style={{ color: "#428a36", padding:5 }}
               ></span>
             </h6>
           </Tooltip>
