@@ -15,7 +15,6 @@ class RegisterPage extends React.Component {
 							<div className="row">
 								{/* <!--Form Column--> */}
 								<div className="form-column column col-md-8 col-12 offset-md-2">
-									{/* {this.props.location.pathname !== this.props.links.signup ? <p style={{ color: 'red' }}> Please finish creating your profile before you continue</p> : null} */}
 									<RegisterForm />
 								</div>
 							</div>
