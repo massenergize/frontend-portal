@@ -123,7 +123,7 @@ class LoginFormBase extends React.Component {
             {" "}
             Don't have a profile?{" "}
             <Link className="energize-link" to={this.props.links.signup}>
-              Register Here
+              Create one
             </Link>{" "}
           </p>{" "}
         </div>
