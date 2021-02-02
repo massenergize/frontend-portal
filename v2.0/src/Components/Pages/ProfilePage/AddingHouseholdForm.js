@@ -142,6 +142,7 @@ class AddingHouseholdForm extends React.Component {
           <METextField
             type="text"
             name="zip"
+            required={true}
             placeholder="Zip Code..."
             defaultValue={this.state.zip ? this.state.zip : ""}
             onChange={this.onChange}
