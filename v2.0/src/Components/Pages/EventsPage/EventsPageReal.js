@@ -187,7 +187,7 @@ class EventsPage extends React.Component {
     }
     if (this.props.events.length === 0) {
       return (
-        <div className="text-center">
+        <div className="text-center" style={{width:"100%"}}>
           <p className="cool-font">
             {" "}
             Sorry, looks like there are no upcoming events in your community{" "}
@@ -206,73 +206,6 @@ class EventsPage extends React.Component {
           <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
             <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>
           </div>
-          // <Link
-          //   key={event.id.toString()}
-          //   to={`${this.props.links.events + "/" + event.id}`}
-          // >
-          //   <div className="item style-1 clearfix m-action-item" key={event.id}>
-          //     <div className="row no-gutter">
-          //       {/* renders the image */}
-          //       <div className="col-lg-4 col-12">
-          //         <figure
-          //           className="raise-2"
-          //           style={{
-          //             marginTop: 15,
-          //             marginRight: 10,
-          //             marginLeft: 20,
-          //             borderRadius: 10,
-          //             height: 190,
-          //           }}
-          //         >
-          //           <div
-          //             className=""
-          //             to={this.props.links.events + "/" + event.id}
-          //           >
-          //             <img
-          //               className="force-height-event"
-          //               style={{
-          //                 width: "100%",
-          //                 height: "100%",
-          //                 objectFit: "cover",
-          //                 borderRadius: 10,
-          //               }}
-          //               src={event.image ? event.image.url : notFound}
-          //               alt=""
-          //             />
-          //           </div>
-          //           {/* if the date has passed already the calender div should be all gray */}
-          //         </figure>
-          //       </div>
-          //       {/* renders the event text */}
-          //       <div className=" col-lg-8 col-12 ">
-          //         <div className="lower-content ">
-          //           <div
-          //             className="cool-font"
-          //             to={this.props.links.events + "/" + event.id}
-          //           >
-          //             <h4 className="cool-font"> {event.name} </h4>
-          //           </div>
-          //           <div className="text">
-          //             <p>{event.featured_summary}</p>
-          //           </div>
-          //         </div>
-          //       </div>
-          //       {/* renders the  date time and location of the event */}
-          //       <div className="col-12">
-          //         <ul className="post-meta list_inline">
-          //           {dateString}
-          //           {location ? (
-          //             <li>
-          //               &nbsp;|&nbsp;&nbsp;&nbsp;
-          //               <i className="fa fa-map-marker" />
-          //               {locationFormatJSX(location)}
-          //             </li>
-          //           ) : null}
-          //         </ul>
-          //       </div>
-          //     </div>
-          //   </div>
-          // </Link>
         );
       });
     }

@@ -997,8 +997,12 @@
   z-index: 2;
   /* top: 50px; */
   left: -30px;
-  bottom: -50px;
+  /* bottom: -50px; */
+  bottom:-16px;
+  padding: 5px;
+  line-height: 1;
 }
+
 .triangle {
   border: solid 15px red;
   width: 0px;
@@ -1011,6 +1015,9 @@
   padding-left: 10px;
   display: none;
   position: absolute;
+}
+.c-tooltip-msg-container:hover  .c-tooltip-text-paper{ 
+  display: none; 
 }
 .c-tooltip-container:hover .c-tooltip-msg-container {
   display: block;

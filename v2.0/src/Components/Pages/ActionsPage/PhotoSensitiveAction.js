@@ -194,11 +194,6 @@ class PhotoSensitiveAction extends React.Component {
               {...this.getNoAuthParams()}
               onClick={() => this.runActionFunction("DONE")}
             />
-
-            {/* {this.checkTodoAndReturn()} */}
-            {/* <br /> */}
-
-            {/* <MECameleonButton to={this.props.links.actions + "/" + this.props.action.id} text="Info" /> */}
              
              <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
@@ -329,18 +324,6 @@ class PhotoSensitiveAction extends React.Component {
                 )}
               </>
             ) : null}
-            {/* <ChooseHHForm
-              aid={this.props.action.id}
-              status={this.state.status}
-              open={this.props.HHFormOpen}
-              user={this.props.user}
-              addToCart={(aid, hid, status) =>
-                this.props.addToCart(aid, hid, status)
-              }
-              inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
-              moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
-              closeForm={this.closeForm}
-            /> */}
             {this.props.showTodoMsg === this.props.action.id ? (
               <p
                 style={{
@@ -430,17 +413,6 @@ class PhotoSensitiveAction extends React.Component {
     }
     return noFilter;
   }
-
-  // getParticularCollection(name) {
-  // 	const cols = this.props.collection;
-  // 	if (cols) {
-  // 		const col = cols.filter(item => {
-  // 			return item.name.toLowerCase() === name.toLowerCase();
-  // 		});
-  // 		return col ? col[0] : null;
-  // 	}
-  // 	return null;
-  // }
 
   getTag(name) {
     const tags = this.props.action.tags.filter((tag) => {

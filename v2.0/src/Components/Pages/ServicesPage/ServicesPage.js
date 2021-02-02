@@ -87,7 +87,7 @@ class ServicesPage extends React.Component {
 
     if (serviceProviders.length === 0) {
       return (
-        <div className="text-center">
+        <div className="text-center" style={{width:"100%"}}>
           <p>
             {" "}
             Looks like your community hasn't partnered with any service
