@@ -1,5 +1,5 @@
 {
-  "IS_LOCAL": false,
+  "IS_LOCAL": true,
   "IS_PROD": false,
   "IS_CANARY": false,
   "IS_SANDBOX": false,
