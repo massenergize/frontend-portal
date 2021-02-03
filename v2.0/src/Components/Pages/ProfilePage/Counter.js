@@ -23,7 +23,7 @@ class Counter extends React.Component {
           <CountUp end={this.props.end} duration={3} />
         </div>
         {this.props.info ? (
-          <Tooltip title={this.props.title} text={this.props.info} dir="right">
+          <Tooltip text={this.props.info} paperStyle={{left:-80}} dir="right">
             <h6 className="h6-card-fix">
               {this.props.title} {this.props.unit && `(in ${this.props.unit})`}
               <span

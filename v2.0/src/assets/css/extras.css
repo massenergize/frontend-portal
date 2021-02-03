@@ -1016,7 +1016,7 @@
   display: none;
   position: absolute;
 }
-.c-tooltip-msg-container:hover  .c-tooltip-text-paper{ 
+ .c-tooltip-text-paper:hover{ 
   display: none; 
 }
 .c-tooltip-container:hover .c-tooltip-msg-container {

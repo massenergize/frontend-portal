@@ -7,6 +7,7 @@ import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 
+
 /*
  * The Home Page of the MassEnergize
  */
@@ -92,10 +93,8 @@ class HomePage extends React.Component {
 
           {communityDescription ? (
             <Tooltip
-              align='center' 
-              title={communityTagline} 
               text={communityDescription}
-              dir="right"
+              paperStyle={{maxWidth:"100vh"}}
             >
             <h4
               align='center'
