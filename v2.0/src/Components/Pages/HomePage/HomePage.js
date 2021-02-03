@@ -7,6 +7,7 @@ import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 
+
 /*
  * The Home Page of the MassEnergize
  */
