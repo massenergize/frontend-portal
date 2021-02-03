@@ -92,10 +92,8 @@ class HomePage extends React.Component {
 
           {communityDescription ? (
             <Tooltip
-              align='center' 
-              title={communityTagline} 
               text={communityDescription}
-              dir="right"
+              paperStyle={{maxWidth:"100vh"}}
             >
             <h4
               align='center'
