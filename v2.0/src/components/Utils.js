@@ -4,7 +4,7 @@ import React from "react";
 
 export const getHumanFriendlyDate = (dateString)=>{
   if(!dateString) return null; 
-  return moment(dateString).format("MMMM Do YYYY hh:mm a ");
+  return moment(dateString).format("MMMM Do YYYY ");
 
 }
 export const getTextArrayAsString = (array, separationKey) => {

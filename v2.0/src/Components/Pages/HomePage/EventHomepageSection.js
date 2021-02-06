@@ -81,7 +81,7 @@ class Events extends React.Component {
       >
         <div className="container">
           <h3 className="cool-font text-center" style={{ fontSize: 20, marginBottom:30 }}>
-            Upcoming Events and Campaigns
+            {this.props.subtitle || "Upcoming Events and Campaigns"}           
           </h3>
           <div className="row">
             <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">

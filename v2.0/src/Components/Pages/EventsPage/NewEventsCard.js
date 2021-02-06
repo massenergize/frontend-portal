@@ -6,7 +6,7 @@ import METextView from "../Widgets/METextView";
 import * as moment from "moment";
 import { getRandomIntegerInRange, locationFormatJSX } from "../../Utils";
 
-export default class METestimonialCard extends Component {
+export default class NewEventsCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
@@ -26,7 +26,7 @@ export default class METestimonialCard extends Component {
     if (body && body.length > limit) {
       return (
         <>
-          {body.slice(0, 180) + "..."}
+          {body.slice(0, 90) + "..."}
           <MELink
             to={`${this.props.links.events + "/" + id}`}
             style={{ marginLeft: 6 }}
@@ -138,7 +138,7 @@ export default class METestimonialCard extends Component {
   }
 }
 
-METestimonialCard.defaultProps = {
+NewEventsCard.defaultProps = {
   body:
     "This is some more information about this testimonial. This is the default text...",
   prefered_name: "Anonymous",

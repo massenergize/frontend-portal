@@ -6,7 +6,8 @@ import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import MECard from "../Widgets/MECard";
-import METextView from "../Widgets/METextView";
+// import METextView from "../Widgets/METextView";
+import { Link } from "react-router-dom";
 
 class ServicesPage extends React.Component {
   constructor(props) {
@@ -86,7 +87,7 @@ class ServicesPage extends React.Component {
 
     if (serviceProviders.length === 0) {
       return (
-        <div className="text-center">
+        <div className="text-center" style={{width:"100%"}}>
           <p>
             {" "}
             Looks like your community hasn't partnered with any service
@@ -133,8 +134,8 @@ class ServicesPage extends React.Component {
                 </div>
 
                 <div
-                // className="row pt-3 pb-3"
-                // style={{ maxHeight: 700, overflowY: "scroll" }}
+                  className="row pt-3 pb-3"
+                  style={{ maxHeight: 700, overflowY: "scroll" }}
                 >
                   {this.renderVendors(vendors)}
                 </div>
@@ -176,48 +177,86 @@ class ServicesPage extends React.Component {
 
     return vendors.map((vendor, index) => {
       return (
-        <div key={index.toString()}>
-          <MECard
-            style={{ borderRadius: 10 }}
-            className="me-vendor-card me-anime-move-from-left phone-vanish"
-            to={`${this.props.links.services}/${vendor.id}`}
-          >
-            <img
-              className="me-vendor-img"
-              src={vendor.logo ? vendor.logo.url : notFound}
-              alt={vendor.name}
-            />
-            <METextView style={{ color: "black", textTransform: "capitalize" }}>
-              {" "}
-              {vendor.name}
-            </METextView>
-          </MECard>
-
-          {/*  ------ PHONE VENDOR CARD ------------- */}
-          <MECard
-            style={{
-              borderRadius: 5,
-              border: "solid 0px #8ec344",
-              borderLeftWidth: 6,
-              padding: "20px 20px"
-            }}
-            className=" me-anime-move-from-left pc-vanish"
-            to={`${this.props.links.services}/${vendor.id}`}
-          
-          >
-            <img
-              className="me-vendor-img"
-              style={{ minHeight: 60 }}
-              src={vendor.logo ? vendor.logo.url : notFound}
-              alt={vendor.name}
-            />
-            <METextView style={{ color: "black", textTransform: "capitalize" }}>
-              {" "}
-              {vendor.name}
-            </METextView>
+        <div className="col-12 col-md-4 col-lg-4" key={vendor.vendor}>
+          <MECard className="vendor-hover" style={{borderRadius:10}}>
+            {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
+            <div
+              className="card-body pref-height "
+              style={{
+                padding: 0,
+                borderTopRightRadius: 12,
+                borderTopLeftRadius: 12,
+              }}
+            >
+              <div className="col-12 text-center" style={{ padding: 0 }}>
+                <Link to={`${this.props.links.services}/${vendor.id}`}>
+                  <img
+                    className="w-100"
+                    style={{
+                      minHeight: 200,
+                      maxHeight: 200,
+                      objectFit: "contain",
+                      borderTopRightRadius: 12,
+                      borderTopLeftRadius: 12,
+                    }}
+                    src={vendor.logo ? vendor.logo.url : notFound}
+                    alt={vendor.name}
+                  />
+                </Link>
+                <Link to={`${this.props.links.services}/${vendor.id}`}>
+                  <h4 className="pt-3" style={{ fontSize: 14 }}>
+                    {vendor.name}
+                  </h4>
+                </Link>
+              </div>
+            </div>
+            {/* </div> */}
           </MECard>
         </div>
       );
+      // return (
+      //   <div key={index.toString()}>
+      //     <MECard
+      //       style={{ borderRadius: 10 }}
+      //       className="me-vendor-card me-anime-move-from-left phone-vanish"
+      //       to={`${this.props.links.services}/${vendor.id}`}
+      //     >
+      //       <img
+      //         className="me-vendor-img"
+      //         src={vendor.logo ? vendor.logo.url : notFound}
+      //         alt={vendor.name}
+      //       />
+      //       <METextView style={{ color: "black", textTransform: "capitalize" }}>
+      //         {" "}
+      //         {vendor.name}
+      //       </METextView>
+      //     </MECard>
+
+      //     {/*  ------ PHONE VENDOR CARD ------------- */}
+      //     <MECard
+      //       style={{
+      //         borderRadius: 5,
+      //         border: "solid 0px #8ec344",
+      //         borderLeftWidth: 6,
+      //         padding: "20px 20px"
+      //       }}
+      //       className=" me-anime-move-from-left pc-vanish"
+      //       to={`${this.props.links.services}/${vendor.id}`}
+
+      //     >
+      //       <img
+      //         className="me-vendor-img"
+      //         style={{ minHeight: 60 }}
+      //         src={vendor.logo ? vendor.logo.url : notFound}
+      //         alt={vendor.name}
+      //       />
+      //       <METextView style={{ color: "black", textTransform: "capitalize" }}>
+      //         {" "}
+      //         {vendor.name}
+      //       </METextView>
+      //     </MECard>
+      //   </div>
+      // );
     });
   }
 }

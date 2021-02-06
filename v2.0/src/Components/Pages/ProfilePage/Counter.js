@@ -1,6 +1,6 @@
 import React from "react";
 import CountUp from "react-countup";
-import Tooltip from "../../Shared/Tooltip";
+import Tooltip from "../Widgets/CustomTooltip";
 
 class Counter extends React.Component {
   constructor(props) {
@@ -23,12 +23,12 @@ class Counter extends React.Component {
           <CountUp end={this.props.end} duration={3} />
         </div>
         {this.props.info ? (
-          <Tooltip title={this.props.title} text={this.props.info} dir="right">
+          <Tooltip text={this.props.info} paperStyle={{left:-80}} dir="right">
             <h6 className="h6-card-fix">
               {this.props.title} {this.props.unit && `(in ${this.props.unit})`}
               <span
                 className="fa fa-info-circle"
-                style={{ color: "#428a36" }}
+                style={{ color: "#428a36", padding:5 }}
               ></span>
             </h6>
           </Tooltip>

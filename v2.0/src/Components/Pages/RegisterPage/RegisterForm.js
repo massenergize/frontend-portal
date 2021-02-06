@@ -20,6 +20,7 @@ import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
 // import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
+import METextView from "../Widgets/METextView";
 
 /* Modal config */
 const INITIAL_STATE = {
@@ -46,6 +47,7 @@ class RegisterFormBase extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      is_using_facebook: false,
       ...INITIAL_STATE,
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
@@ -170,7 +172,8 @@ class RegisterFormBase extends React.Component {
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Register With Email and Password</h3>
+            <h3>Enter your E-mail and a Password</h3>
+            <p>This helps us count your impact correctly, and avoid double counting.  We collect no sensitive personal data, and do not share data.</p>
           </div>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -229,12 +232,13 @@ class RegisterFormBase extends React.Component {
                   Google
                 </MEButton>
                 {/* ---------------- fACEBOOK WILL BE RE-ENABLED LATER -------------- */}
-                {/* <MEButton
+                {/* ---------------- BHN testing new facebook project login -------------- */}
+                <MEButton
                   onClick={this.signInWithFacebook}
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton> */}
+                </MEButton>
               </div>
             </div>
           </form>
@@ -272,6 +276,12 @@ class RegisterFormBase extends React.Component {
               <span className="fa fa-google"></span>oogle
             </button>
           </div> */}
+          {this.state.is_using_facebook && (
+            <METextView style={{ color: "darkorange", fontSize: 16 }}>
+              <strong>Note</strong>: If you are using facebook, please make sure the facebook account
+              you intend to register with has a dedicated primary email.
+            </METextView>
+          )}
           <p>
             <Link
               className="energize-link"
@@ -317,14 +327,17 @@ class RegisterFormBase extends React.Component {
                   {" "}
                   We sent a link to your email address. Please check your email
                   and follow the link to continue. If you don't see a message,
-                  be sure to check your junk mail folder.
+                  be sure to{" "}
+                  <strong style={{ color: "maroon" }}>
+                    <em>check your spam folder.</em>
+                  </strong>
                   <button
                     type="button"
                     className="as-link"
                     onClick={this.sendVerificationEmail}
                   >
                     {" "}
-                    Resend Verification Email{" "}
+                    Didnt receive any verification email? Resend Verification Email{" "}
                   </button>
                   <br />
                   <Link
@@ -559,7 +572,8 @@ class RegisterFormBase extends React.Component {
     if (creating)
       return (
         <p style={{ color: "#8dc343" }}>
-          <span className="fa fa-spinner fa-spin"></span> Creating, please wait...
+          <span className="fa fa-spinner fa-spin"></span> Creating, please
+          wait...
         </p>
       );
   }
@@ -700,7 +714,8 @@ class RegisterFormBase extends React.Component {
           });
       });
   };
-  signInWithFacebook = () => {
+  signInWithFacebook = (e) => {
+    this.setState({ is_using_facebook: true });
     this.props.firebase
       .auth()
       .setPersistence(this.state.persistence)
@@ -737,7 +752,6 @@ class RegisterFormBase extends React.Component {
 
   inflatePageWithUserData = async (json, email) => {
     if (json.success && json.data) {
-      console.log("EL USER", json.data);
       this.props.reduxLogin(json.data);
       const todo = await apiCall("users.actions.todo.list", { email });
       this.props.reduxLoadTodo(todo.data);

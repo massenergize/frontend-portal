@@ -196,7 +196,9 @@ class OneTestimonialPage extends React.Component {
         <div className="container">
           <h3
             className="cool-font text-center"
-            style={{ textTransform: "capitalize" }}
+            style={{ 
+              //textTransform: "capitalize",
+            }}
           >
             {story.title}
           </h3>

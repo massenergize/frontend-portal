@@ -168,7 +168,7 @@ class TeamInfoModal extends React.Component {
               <span>
                 Edit <b>{team.name}</b>
               </span>
-            ) : (
+            ) : ( 
               "Create Team"
             )}
           </h4>
@@ -236,6 +236,8 @@ class TeamInfoModal extends React.Component {
   submitForm(e, data, resetForm) {
     const { team } = this.props;
     e.preventDefault();
+
+
     if (!data || data.isNotComplete) return;
 
     // stay in the same is_published state

@@ -20,7 +20,7 @@ export default class MECard extends Component {
         return (
           <>
             <a
-              style={{ color: "black", textTransform: "capitalize", ...style }}
+              style={{ color: "black", ...style }}
               href={to || href}
               className={`${classes} ${hoverable}`}
             >
@@ -32,7 +32,7 @@ export default class MECard extends Component {
       return (
         <>
           <Link
-            style={{ color: "black", textTransform: "capitalize", ...style }}
+            style={{ color: "black", ...style }}
             to={to || href}
             className={`${classes} ${hoverable}`}
           >

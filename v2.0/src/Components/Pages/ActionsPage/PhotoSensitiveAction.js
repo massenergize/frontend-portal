@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // import ChooseHHForm from "./ChooseHHForm";
 import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
-import Tooltip from "../Widgets/CustomTooltip";
+// import Tooltip from "../Widgets/CustomTooltip";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
@@ -13,6 +13,8 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
+import { DEFAULT_STATE, DONE, IS_DONE, IS_IN_TODO, NO_AUTH, TODO } from "./ActionStateConstants";
+import MECameleonButton from "./MEChameleonButton";
 // import photo from "./try.png";
 
 /**
@@ -85,130 +87,64 @@ class PhotoSensitiveAction extends React.Component {
     return exists;
   }
 
-  checkTodoAndReturn() {
-    if (!this.props.user) {
-      return (
-        <>
-          <Tooltip text="Sign in to make a TODO list">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode phone-vanish"
-              style={{ marginLeft: 10, padding: "7px 20px" }}
-            >
-              To Do
-            </p>
-          </Tooltip>
-          {/* -------- PHONE MODE --------------- */}
-          <Tooltip text="Sign in to make a TODO list">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode pc-vanish"
-              style={{ marginLeft: 3, padding: "5px 13px" }}
-            >
-              To Do
-            </p>
-          </Tooltip>
-        </>
-      );
-    }
-    if (this.checkDone() && this.props.user.households.length === 1) {
-      return (
-        <>
-          <Tooltip text="Cant use this feature, you have already done the action.">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 phone-vanish me-anime-open-in"
-              style={{ margin: 6, marginLeft: 10, padding: "7px 19px" }}
-            >
-              To Do
-            </p>
-          </Tooltip>
-          {/* -------- PHONE BTN ---------------- */}
-          <Tooltip text="Cant use this feature, you have already done the action.">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it z-depth-1 pc-vanish me-anime-open-in "
-              style={{
-                padding: "7px 20px",
-                fontSize: 12,
-                margin: 6,
-                // marginLeft: 3,
-              }}
-            >
-              To Do
-            </p>
-          </Tooltip>
-        </>
-      );
-    }
-    if (this.checkTodo()) {
-      return (
-        <>
-          {/* ------- PHONE BTN -------- */}
-          <Tooltip text="Thank you for adding this. Click again to remove.">
-            <p
-              style={{
-                padding: "7px 20px",
-                fontSize: 12,
-                margin: 6,
-                // marginLeft: 3,
-              }}
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 pc-vanish me-anime-open-in"
-              onClick={() => {
-                this.setState({ showTodoMsg: false });
-                if (this.props.user.households.length > 1) {
-                  this.openForm("TODO");
-                } else {
-                  this.removeFromCart(this.actionIsInTodo());
-                }
-              }}
-            >
-              To Do
-            </p>
-          </Tooltip>
+  getActionStateCase() {
+    const { user } = this.props;
+    if (!user) return NO_AUTH;
+    if (this.actionIsDone()) return IS_DONE;
+    if (this.actionIsInTodo()) return IS_IN_TODO;
 
-          {/* ------- PC BTN -------- */}
-          <Tooltip text="Thank you for adding this. Click again to remove.">
-            <p
-              style={{
-                padding: "7px 20px",
-                fontSize: "small",
-                margin: 6,
-                marginLeft: 10,
-              }}
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange z-depth-1 phone-vanish me-anime-open-in"
-              onClick={() => {
-                this.setState({ showTodoMsg: false });
-                if (this.props.user.households.length > 1) {
-                  this.openForm("TODO");
-                } else {
-                  this.removeFromCart(this.actionIsInTodo());
-                }
-              }}
-            >
-              To Do
-            </p>
-          </Tooltip>
-        </>
-      );
-    } else {
-      return (
-        <Tooltip text="Add this to your TODO list">
-          <MEButton
-            className="phone-vanish me-anime-open-in"
-            onClick={() => this.openForm("TODO")}
-            style={{ padding: "5px 20px", fontSize: 13 }}
-          >
-            To Do
-          </MEButton>
-          {/* ---- PHONE MODE ---- */}
-          <MEButton
-            className="pc-vanish me-anime-open-in"
-            onClick={() => this.openForm("TODO")}
-            style={{ padding: "5px 16px", fontSize: 13 }}
-          >
-            To Do
-          </MEButton>
-        </Tooltip>
-      );
-    }
+    return DEFAULT_STATE;
   }
+
+  getNoAuthParams() {
+    const { user, links } = this.props;
+    if (!user) return { to: links ? links.signin : "#" };
+    return {};
+  }
+
+  userHasManyHouseHolds() {
+    return this.props.user.households.length > 1;
+  }
+  runActionFunction(_for) {
+    // const hasManyHouseHolds = this.props.user.households.length > 1;
+    if (_for === "DONE") {
+      const isDone = this.actionIsDone();
+      if (isDone) {
+        //--- user has already marked it as DONE, and wants to undo
+        if (!this.userHasManyHouseHolds()) {
+          //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+          this.removeFromCart(isDone);
+          this.setState({ showTodoMsg: false });
+          return;
+        }
+      }
+    } else if (_for === "TODO") {
+      const inTodo = this.actionIsInTodo();
+      if (inTodo) {
+        //---- user has already marked Action as TODO, and wants to undo it
+        if (!this.userHasManyHouseHolds()) {
+          //-- Check and see if user has more than one household. More? Open modal, else just do your magic
+          this.removeFromCart(inTodo);
+          this.setState({ showTodoMsg: false });
+          return;
+        }
+      }
+    }
+    this.openForm(_for);
+  }
+
+  getTodoPopoverInfo() {
+    if (this.checkDone() && this.userHasManyHouseHolds()) {
+      // overwrite default popover text of TODO button with below text if action is done, and use has many households
+      return { popoverText: "Add to your To Do list in another household" };
+    }
+    if (this.checkDone()) {
+      return { className: "cam-gray-btn" };
+    }
+    return {};
+  }
+
+
   checkDone() {
     var action = this.props.action;
     // var households = this.props.user.households || [];
@@ -216,105 +152,6 @@ class PhotoSensitiveAction extends React.Component {
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
     return exists;
-  }
-  checkDoneAndReturn() {
-    if (!this.props.user) {
-      return (
-        <>
-          <Tooltip text="Sign in to mark actions as completed">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode phone-vanish"
-              style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
-            >
-              Done
-            </p>
-          </Tooltip>
-          {/* ------- PHONE BTN --------- */}
-          <Tooltip text="Sign in to mark actions as completed">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled z-depth-1 phone-action-btns-mode pc-vanish"
-              style={{ margin: 6, marginLeft: 3, padding: "5px 13px" }}
-            >
-              Done
-            </p>
-          </Tooltip>
-        </>
-      );
-    }
-    if (this.checkDone()) {
-      return (
-        <>
-          <Tooltip text="Thanks for adding, click again to remove.">
-            <p
-              className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 phone-vanish me-anime-open-in"
-              onClick={() => {
-                this.setState({ message: null });
-                if (this.props.user.households.length > 1) {
-                  this.openForm("DONE");
-                } else {
-                  this.removeFromCart(this.actionIsDone());
-                }
-              }}
-              style={{ margin: 6, marginLeft: 10, padding: "7px 20px" }}
-            >
-              Done
-            </p>
-          </Tooltip>
-
-          {/* ------- PHONE MODE --------- */}
-          {/* <Tooltip text="Thanks for adding, click again to remove."> */}
-          <p
-            className="has-tooltip thm-btn style-4 action-btns disabled indiv-done-it-orange  z-depth-1 pc-vanish me-anime-open-in"
-            onClick={() => {
-              this.setState({ message: null });
-              if (this.props.user.households.length > 1) {
-                this.openForm("DONE");
-              } else {
-                this.removeFromCart(this.actionIsDone());
-              }
-            }}
-            style={{
-              margin: 6,
-              // marginLeft: 0,
-              padding: "7px 20px",
-              fontSize: 12,
-            }}
-          >
-            Done
-          </p>
-          {/* </Tooltip> */}
-        </>
-      );
-    } else {
-      return (
-        <Tooltip text="Mark as Done, if you've done this">
-          <MEButton
-            className="phone-vanish"
-            style={{ padding: "5px 20px", fontSize: 13 }}
-            onClick={() => {
-              this.openForm("DONE");
-              this.props.toggleShowTodoMsg();
-            }}
-          >
-            {" "}
-            Done
-          </MEButton>
-
-          {/* ----- PHONE MODE ----- */}
-          <MEButton
-            className="pc-vanish  me-anime-open-in"
-            style={{ padding: "5px 17px", fontSize: 13 }}
-            onClick={() => {
-              this.openForm("DONE");
-              this.props.toggleShowTodoMsg();
-            }}
-          >
-            {" "}
-            Done
-          </MEButton>
-        </Tooltip>
-      );
-    }
   }
 
   getAnimationClass() {
@@ -324,6 +161,7 @@ class PhotoSensitiveAction extends React.Component {
   }
 
   newRender() {
+    const actionStateCase = this.getActionStateCase(); 
     return (
       <div
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${this.getAnimationClass()}`}
@@ -338,17 +176,31 @@ class PhotoSensitiveAction extends React.Component {
           className="z-depth-1"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
-            {this.checkDoneAndReturn()}
+            {/* {this.checkDoneAndReturn()} */}
 
-            <br />
-            {this.checkTodoAndReturn()}
-            <br />
-            <MEButton
+            <MECameleonButton
+              _case={actionStateCase}
+              type={TODO}
+              {...this.getNoAuthParams()}
+              onClick={() => this.runActionFunction("TODO")}
+              {...this.getTodoPopoverInfo()}
+            />
+
+            {/* <br /> */}
+            
+            <MECameleonButton
+              _case={actionStateCase}
+              type={DONE}
+              {...this.getNoAuthParams()}
+              onClick={() => this.runActionFunction("DONE")}
+            />
+             
+             <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{
-                padding: "5px 22px ",
-                fontSize: "small",
-                minWidth: 81,
+                padding: "5px 18px ",
+                fontSize: "14px",
+                minWidth: 76,
                 textAlign: "center",
                 marginLeft: 5,
               }}
@@ -358,19 +210,19 @@ class PhotoSensitiveAction extends React.Component {
             </MEButton>
 
             {/* ----- Show this button in phone mode --------- */}
-            <MEButton
+             <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{
                 padding: "5px 22px ",
                 fontSize: "small",
                 minWidth: 67,
                 textAlign: "center",
-                marginLeft: 3,
+                marginLeft: 5,
               }}
               className="pc-vanish"
             >
               Info
-            </MEButton>
+            </MEButton> 
             <br />
           </div>
           <Link to={this.props.links.actions + "/" + this.props.action.id}>
@@ -472,18 +324,6 @@ class PhotoSensitiveAction extends React.Component {
                 )}
               </>
             ) : null}
-            {/* <ChooseHHForm
-              aid={this.props.action.id}
-              status={this.state.status}
-              open={this.props.HHFormOpen}
-              user={this.props.user}
-              addToCart={(aid, hid, status) =>
-                this.props.addToCart(aid, hid, status)
-              }
-              inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
-              moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
-              closeForm={this.closeForm}
-            /> */}
             {this.props.showTodoMsg === this.props.action.id ? (
               <p
                 style={{
@@ -573,17 +413,6 @@ class PhotoSensitiveAction extends React.Component {
     }
     return noFilter;
   }
-
-  // getParticularCollection(name) {
-  // 	const cols = this.props.collection;
-  // 	if (cols) {
-  // 		const col = cols.filter(item => {
-  // 			return item.name.toLowerCase() === name.toLowerCase();
-  // 		});
-  // 		return col ? col[0] : null;
-  // 	}
-  // 	return null;
-  // }
 
   getTag(name) {
     const tags = this.props.action.tags.filter((tag) => {

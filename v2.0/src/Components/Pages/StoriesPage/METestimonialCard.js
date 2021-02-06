@@ -17,17 +17,14 @@ export default class METestimonialCard extends Component {
     return photo;
   }
   getBody() {
-    const { body } = this.props;
+    const { body, id } = this.props;
     if (body.length > 90) {
       return (
         <>
           {body.slice(0, 90) + "..."}
           <MELink
-            href="#"
             style={{ marginLeft: 6 }}
-            onClick={(e) => {
-              this.handleReadMore(e);
-            }}
+            to={`${this.props.links.testimonials}/${id}`}
           >
             {" "}
             Read more
@@ -90,7 +87,6 @@ export default class METestimonialCard extends Component {
         <MECard
           style={{ padding: 0, position: "relative", borderRadius: 15 }}
           className={`${this.getAnimationClass()} ${className} phone-vanish`}
-          // onClick={this.handleReadMore}
           to={`${this.props.links.testimonials}/${id}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" alt="testimonial"/>
@@ -99,21 +95,8 @@ export default class METestimonialCard extends Component {
               <small style={{ fontSize: 17 }}>
                 <b>{title}</b>
               </small>
-              {/* <small style={{ marginLeft: "auto" }}>
-                <b>
-                  {" "}
-                  <span className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {this.getFormatedTime(created_at)}
-                </b>
-              </small> */}
             </div>
             <div style={{ padding: 12 }}>
-              {/* <METextView
-                className="me-testimonial-content"
-                style={{ fontSize: 18, color: "#282828" }}
-              >
-                {title}
-              </METextView> */}
               <METextView
                 className="me-testimonial-content"
                 style={{ fontSize: 15, color: "#282828" }}
