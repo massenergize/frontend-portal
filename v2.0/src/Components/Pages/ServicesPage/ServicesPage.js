@@ -6,6 +6,7 @@ import notFound from "./green-mat.jpg";
 import Funnel from "../EventsPage/Funnel";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import MECard from "../Widgets/MECard";
+import error_png from "./../../Pages/Errors/oops.png";
 // import METextView from "../Widgets/METextView";
 import { Link } from "react-router-dom";
 
@@ -87,11 +88,20 @@ class ServicesPage extends React.Component {
 
     if (serviceProviders.length === 0) {
       return (
-        <div className="text-center" style={{width:"100%"}}>
-          <p>
+        <div
+          className="text-center"
+          style={{
+            width: "100%",
+            height: window.screen.height - 200,
+            paddingTop: "10vh",
+          }}
+        >
+          <img src={error_png} style={{ height: 70, width: 70 }} alt ="error emoji png "/>
+          <p style={{ marginTop: 10, textAlign: "center" }}>
             {" "}
             Looks like your community hasn't partnered with any service
-            providers yet. Try again later
+            providers yet.
+            <br /> Try again later
           </p>
         </div>
       );
@@ -178,7 +188,7 @@ class ServicesPage extends React.Component {
     return vendors.map((vendor, index) => {
       return (
         <div className="col-12 col-md-4 col-lg-4" key={vendor.vendor}>
-          <MECard className="vendor-hover" style={{borderRadius:10}}>
+          <MECard className="vendor-hover" style={{ borderRadius: 10 }}>
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
               className="card-body pref-height "

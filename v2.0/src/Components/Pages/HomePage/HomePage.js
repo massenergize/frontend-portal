@@ -13,7 +13,6 @@ import { connect } from "react-redux";
  */
 class HomePage extends React.Component {
   render() {
-
     if (!this.props.pageData) {
       return <ErrorPage
         errorMessage="Unable to load this Community"
