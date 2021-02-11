@@ -328,16 +328,20 @@ class ActionsPage extends React.Component {
   };
   // renders all the actions
   renderActions(actions) {
-    if (!actions) {
+    if (!actions ) {
       return (
-        <p>
+        <p style={{ width: "100%", textAlign: "center" }}>
           There aren't any actions available in this community yet, come back
           later.
         </p>
       );
     }
     if (actions.length === 0) {
-      return <p>There aren't any actions in the selected categories.</p>;
+      return (
+        <p style={{ width: "100%", textAlign: "center" }}>
+          There aren't any actions in the selected categories.
+        </p>
+      );
     }
     //returns a list of action components
     return Object.keys(actions).map((key) => {
