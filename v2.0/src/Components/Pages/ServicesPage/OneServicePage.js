@@ -142,7 +142,7 @@ class OneServicePage extends React.Component {
                         e.preventDefault();
                         window.open(
                           this.changeToAbsoluteURL(vendor.website),
-                          "_blank"
+                          "_blank"  
                         );
                       }}
                       rel="noopener noreferrer"
