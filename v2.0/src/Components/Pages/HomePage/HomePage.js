@@ -6,7 +6,7 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { IS_PROD } from "../../../config";
+import { IS_SANDBOX } from "../../../config";
 
 /*
  * The Home Page of the MassEnergize
@@ -21,7 +21,7 @@ class HomePage extends React.Component {
         />
       );
     }
-    if (IS_PROD && !this.props.pageData.is_published) {
+    if (!IS_SANDBOX && !this.props.pageData.is_published) {
       return (
         <ErrorPage
           errorMessage="Sorry, your community isn't live at the moment."
