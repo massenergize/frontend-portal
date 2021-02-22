@@ -235,7 +235,7 @@ class PhotoSensitiveAction extends React.Component {
           </Link>
           <div
             className="new-action-title-container"
-            style={{ textAlign: "center" }}
+            // style={{ textAlign: "center" }}
           >
             <Link to={this.props.links.actions + "/" + this.props.action.id}>
               <METextView
@@ -243,6 +243,7 @@ class PhotoSensitiveAction extends React.Component {
                 style={{
                   padding: "0px 10px",
                   marginBottom: 3,
+                  marginLeft:20,
                   color: "black",
                   fontSize: 18,
                 }}
