@@ -495,7 +495,7 @@ class RegisterFormBase extends React.Component {
                     >
                       Privacy Policy
                     </button>
-                    {" "} (in brief, MassEnergize or host organization won't share my data) 
+                    {" "} (in short, MassEnergize or host organization won't share my data) 
                     and agree to comply with the{" "} 
                     <button
                       type="button"
