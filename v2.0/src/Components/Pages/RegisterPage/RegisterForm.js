@@ -392,7 +392,7 @@ class RegisterFormBase extends React.Component {
                     name="preferredName"
                     value={preferredName}
                     onChange={this.onChange}
-                    placeholder="Enter a Preferred Name or Nickname"
+                    placeholder="Preferred Name (visible to others)"
                   />
                 </div>
                 <div className="form-group">
@@ -486,7 +486,7 @@ class RegisterFormBase extends React.Component {
                 />
                 <br/>
                 <p style={{ marginLeft: "25px" }}>
-                    By continuing, I accept MassEnergize's{" "}
+                    By continuing, I accept the{" "}
                     <button
                       type="button"
                       onClick={() => this.setState({ showPP: true })}
@@ -495,7 +495,7 @@ class RegisterFormBase extends React.Component {
                     >
                       Privacy Policy
                     </button>
-                    {" "} (in brief, we won't share your data) 
+                    {" "} (in brief, MassEnergize or host organization won't share my data) 
                     and agree to comply with the{" "} 
                     <button
                       type="button"
@@ -505,7 +505,6 @@ class RegisterFormBase extends React.Component {
                     >
                       Terms of Service
                     </button>
-                    {" "} (you are not a robot or spammer)
                  </p>
                 
               </>
