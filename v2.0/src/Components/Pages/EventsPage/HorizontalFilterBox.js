@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import Accordion from "./../../Menu/Accordian";
-import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import METextField from "../Widgets/METextField";
 import MELightDropDown from "../Widgets/MELightDropDown";
 class HorizontalFilterBox extends Component {
+  constructor() {
+    super();
+    this.state = {
+      activeTags: [],
+    };
+    this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
+      this
+    );
+    this.deselectTags = this.deselectTags.bind(this);
+  }
   makeTagsSystematic = (tagCols) => {
     //arrange side filters in this order: Categories, Impact, difficulty
     if (!tagCols) return tagCols;
@@ -50,31 +57,56 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
+  onItemSelectedFromDropDown(name, value) {
+    this.props.boxClick(value);
+    const { activeTags } = this.state;
+    const isAlreadyIn = activeTags.filter(
+      (item) => name === item[0] && value === item[1]
+    );
+    if (isAlreadyIn.length === 0) {
+      this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
+    }
+  }
+
+  deselectTags(tag) {
+    const { activeTags } = this.state;
+    const rem = activeTags.filter(
+      (item) => tag[0] !== item[0] && tag[1] !== item[1]
+    );
+    this.props.boxClick(tag[1]);
+    this.setState({ activeTags: rem });
+  }
+
+  renderActiveTags() {
+    const { activeTags } = this.state;
+    return activeTags.map((tagArr, index) => {
+      return (
+        <small
+          className="round-me h-cat-select"
+          key={index.toString()}
+          onClick={() => this.deselectTags(tagArr)}
+        >
+          {tagArr[0]} <i className="fa fa-close"></i>
+        </small>
+      );
+    });
+  }
   renderDifferentCollections = () => {
     const collection = this.getCollectionSetAccordingToPage();
     const col = this.makeTagsSystematic(collection);
-    const me = this;
     if (col) {
       return col.map((set, index) => {
         // if (set.name === "Category") {
         const data = getPropsArrayFromJsonArray(set.tags, "name");
+        const dataValues = getPropsArrayFromJsonArray(set.tags, "id");
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
               label={<span className="h-f-label">{`Sort By ${set.name}`}</span>}
               data={data}
+              dataValues={dataValues}
+              onItemSelected={this.onItemSelectedFromDropDown}
             />
-
-            {/* //   <MESectionWrapper */}
-            {/* //     style={{ minWidth: "7rem", marginTop: 8 }}
-            //     headerText={set.name}
-            //     collapsed={set.name !== "Category"}
-            //   > */}
-            {/* <div style={{ textAlign: "center" }}> */}
-            {/* <p style={{ fontSize: "medium" }}>Sort These Actions By</p> */}
-            {/* {me.renderTagCheckBoxes(set.tags ? set.tags.slice(0, 6) : [])} */}
-            {/* </div> */}
-            {/* //   </MESectionWrapper> */}
           </div>
         );
         // }
@@ -82,38 +114,10 @@ class HorizontalFilterBox extends Component {
     }
   };
   render() {
-    const found = this.props.foundNumber;
-    const type = this.props.type;
     return (
       <div style={{ textAlign: "center" }}>
-        {/* {type !== "testimonial" ? (
-          <div>
-            <METextField
-              onChange={(event) => {
-                this.props.search(event);
-              }}
-              type="text"
-              placeholder="Search..."
-              value={this.props.searchTextValue}
-            />
-            <small style={{ color: "#70a96f" }}>
-              {found} {found === 1 ? this.props.type : this.props.type + "s "}{" "}
-              found
-            </small>
-          </div>
-        ) : null} */}
         {this.renderDifferentCollections()}
-        <div>
-          <small className="round-me h-cat-select">
-            Demonstration <i className="fa fa-close"></i>
-          </small>
-          <small className="round-me h-cat-select">
-            Demonstration <i className="fa fa-close"></i>
-          </small>
-          <small className="round-me h-cat-select">
-            Demonstration <i className="fa fa-close"></i>
-          </small>
-        </div>
+        <div>{this.renderActiveTags()}</div>
       </div>
     );
   }

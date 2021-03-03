@@ -19,15 +19,15 @@ import Action from "./PhotoSensitiveAction";
 // import Action from "./Action";
 import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
-import Funnel from "../EventsPage/Funnel";
-import MECard from "../Widgets/MECard";
+// import Funnel from "../EventsPage/Funnel";
+// import MECard from "../Widgets/MECard";
 import Paginator from "../Widgets/Paginator";
 import { moveToPage } from "../../Utils";
 
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
-import MELightDropDown from "../Widgets/MELightDropDown";
+// import MELightDropDown from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters

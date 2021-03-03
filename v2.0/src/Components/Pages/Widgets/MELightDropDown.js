@@ -3,11 +3,25 @@ import Dropdown from "react-bootstrap/esm/Dropdown";
 // import PropTypes from "prop-types";
 
 export default class MELightDropDown extends Component {
+  onItemSelected(e, child) {
+    e.preventDefault();
+    const { onItemSelected, dataValues, data } = this.props;
+    if (!onItemSelected) return;
+    if (!dataValues || dataValues.length === 0) {
+      onItemSelected(child, child);
+      return;
+    }
+    onItemSelected(child, dataValues[data.indexOf(child)]); // onItemSelected(name, value)
+  }
+
   renderChildren(data) {
     if (!data) return;
     return data.map((child, index) => {
-      return ( 
-        <div key={index.toString()}>
+      return (
+        <div
+          key={index.toString()}
+          onClick={(e) => this.onItemSelected(e, child)}
+        >
           <Dropdown.Item
             className="dropdown-item  me-dropdown-theme-item force-padding-15"
             style={{ fontWeight: "normal" }}
@@ -54,4 +68,5 @@ export default class MELightDropDown extends Component {
 MELightDropDown.defaultProps = {
   label: "Clickable Header",
   data: ["Data", "Data Name", "Data Age"],
+  dataValues: [],
 };
