@@ -138,15 +138,16 @@ class OneServicePage extends React.Component {
 
                   {vendor.website ? (
                     <a
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
                         window.open(
                           this.changeToAbsoluteURL(vendor.website),
-                          "_blank"
+                          "_blank"  
                         );
                       }}
                       rel="noopener noreferrer"
                       style={{ color: "#f56d39", cursor: "pointer" }}
-                      href={vendor.website}
+                      href="#silent"
                     >
                       <i className="fa fa-globe fa-m-right"></i>{" "}
                       {vendor.website.length > 33

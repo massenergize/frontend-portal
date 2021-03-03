@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 // import defaultImg from "./../../../../src/assets/images/blog/i9.jpg";
 import { dateFormatString } from "../../Utils";
 import NewEventsCard from "./../EventsPage/NewEventsCard";
-
+import Tooltip from "../Widgets/CustomTooltip";
 /**
  * Events section displays upcoming events,
  * @props
@@ -48,9 +48,12 @@ class Events extends React.Component {
 
         // const location = event.location;
         // const img = event.image && event.image.url ? event.image.url : defaultImg;
-    
+
         return (
-          <div key={event.id.toString()} className="col-md-6 col-lg-4 col-sm-6 col-xs-12">
+          <div
+            key={event.id.toString()}
+            className="col-md-6 col-lg-4 col-sm-6 col-xs-12"
+          >
             <NewEventsCard
               {...event}
               dateString={dateString}
@@ -80,9 +83,32 @@ class Events extends React.Component {
         style={{ background: "white" }}
       >
         <div className="container">
-          <h3 className="cool-font text-center" style={{ fontSize: 20, marginBottom:30 }}>
-            {this.props.subtitle || "Upcoming Events and Campaigns"}           
+        {this.props.info ? (
+          <Tooltip 
+            title={this.props.subtitle || "Upcoming Events and Campaigns"} 
+            text={this.props.info}
+            dir="right"
+          >
+          <h3
+            className="cool-font text-center"
+            style={{ fontSize: 20, marginBottom: 30 }}
+          >
+            {this.props.subtitle || "Upcoming Events and Campaigns"}
+            <span
+                className="fa fa-info-circle"
+                style={{ color: "#428a36", padding: "5px" }}
+              ></span>
           </h3>
+          </Tooltip>
+        ) : (
+          <h3
+            className="section-title text-center mob-cancel-title-white"
+            style={{ fontSize: 20 }}
+          >
+            {this.props.subtitle || "Upcoming Events and Campaigns"}
+          </h3>
+        )}
+
           <div className="row">
             <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">
               {/* <div className="section-title m-0">
@@ -97,7 +123,9 @@ class Events extends React.Component {
               {/* <Link to={`${this.props.links.events}`} className="cool-font thm-btn mb-4 btn-finishing raise pull-right float-right mob-btn-left-fix">All Events</Link> */}
             </div>
           </div>
-          <div className="row mob-helper">{this.renderEvents()}</div>
+          <div className="row mob-helper center-content">
+            {this.renderEvents()}
+          </div>
           {this.props.events.length !== 0 ? (
             <center>
               <Link

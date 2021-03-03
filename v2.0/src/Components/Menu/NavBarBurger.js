@@ -7,10 +7,9 @@ import SignOutLink from "../Shared/SignOutLink";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
 
-
 function getHeight() {
   const navBar = document.getElementById("nav-bar");
-  return navBar ? (navBar.offsetHeight) + 1 : 91;
+  return navBar ? navBar.offsetHeight + 1 : 91;
 }
 
 class NavBarBurger extends React.Component {
@@ -109,10 +108,10 @@ class NavBarBurger extends React.Component {
         <nav
           className={`theme_menu navbar p-0  z-depth-1 ${
             this.props.sticky ? "fixed-top border-bottom" : ""
-            }`}
+          }`}
           style={{
             height: "auto",
-            minHeight: '90px',
+            minHeight: "90px",
             position: "fixed",
             width: "100%",
             background: "white",
@@ -121,7 +120,10 @@ class NavBarBurger extends React.Component {
         >
           <div className="container">
             <div className="row no-gutter width-100">
-              <div className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex" style={{ display: 'flex', alignItems: 'center' }}>
+              <div
+                className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 {/*  main-logo col d-flex  align-items-center*/}
 
                 {/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
@@ -155,7 +157,10 @@ class NavBarBurger extends React.Component {
                 </Link>
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6" style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                  className="col-lg-8 col-md-4 col-sm-6 col-6"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
                   <div style={{ margin: "auto 0 auto auto" }}>
                     <div style={styles.container}>
                       <MenuButton
@@ -177,31 +182,33 @@ class NavBarBurger extends React.Component {
                   </div>
                 </div>
               ) : (
-                  <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
-
-                    <div style={styles.container}>
-                      <nav
-                        className="padding-0 menuzord d-flex"
-                        style={{
-                          display: "inline-block",
-                          padding: "30px 0px",
-                          flexGrow: 1
-                        }}
-                        id="main_menu"
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+                  <div style={styles.container}>
+                    <nav
+                      className="padding-0 menuzord d-flex"
+                      style={{
+                        display: "inline-block",
+                        padding: "30px 0px",
+                        flexGrow: 1,
+                      }}
+                      id="main_menu"
+                    >
+                      <ul
+                        className="cool-font menuzord-menu height-100 d-flex flex-row"
+                        style={{ marginLeft: "auto" }}
                       >
-                        <ul className="cool-font menuzord-menu height-100 d-flex flex-row" style={{ marginLeft: 'auto' }}>
-                          {this.renderNavLinks(this.props.navLinks)}
-                        </ul>
-                      </nav>
-                      {this.renderLogin()}
-                    </div>
+                        {this.renderNavLinks(this.props.navLinks)}
+                      </ul>
+                    </nav>
+                    {this.renderLogin()}
                   </div>
-                )}
+                </div>
+              )}
             </div>
           </div>
         </nav>
         <div style={{ height: getHeight() }}></div>
-      </div >
+      </div>
     );
   }
 
@@ -292,7 +299,10 @@ class NavBarBurger extends React.Component {
                 navLink={navLink}
                 id="dropdown-custom-components"
               ></Dropdown.Toggle>
-              <Dropdown.Menu style={style} className="me-dropdown-theme me-anime-show-up-from-top z-depth-1">
+              <Dropdown.Menu
+                style={style}
+                className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
+              >
                 {this.renderDropdownItems(navLink.children)}
               </Dropdown.Menu>
             </Dropdown>
@@ -322,7 +332,6 @@ class NavBarBurger extends React.Component {
       if (child.special) {
         return (
           <Link
-            to={`${links.home}#`}
             key={key}
             className=" cool-font p-3 small dropdown-item me-dropdown-theme-item"
             onClick={() => {
@@ -350,8 +359,8 @@ class NavBarBurger extends React.Component {
     const { links } = this.props;
     const { user } = this.props;
     // const style = {
-    //   borderColor:"white", 
-    //   borderTopWidth:5, 
+    //   borderColor:"white",
+    //   borderTopWidth:5,
     //   borderTopColor:"#f57b34",
     //   borderTopWidth:3,
     //   borderRadius: "0",
@@ -369,7 +378,7 @@ class NavBarBurger extends React.Component {
           style={{
             margin: "auto 0 auto 10px",
             fontSize: "12px",
-            fontWeight: 600
+            fontWeight: 600,
           }}
         >
           {/* <i className="fa fa-user" />{'\u00A0'} */}
@@ -583,11 +592,10 @@ class Menu extends React.Component {
   }
 
   render() {
-
     const styles = {
       container: {
-        right:-20,
-        marginTop:8,
+        right: -20,
+        marginTop: 8,
         position: !this.props.submenu ? "absolute" : "relative",
         width: "37vh",
         height: this.state.open
@@ -679,8 +687,8 @@ class MenuButton extends React.Component {
           this.props.onClick
             ? this.props.onClick
             : () => {
-              this.handleClick();
-            }
+                this.handleClick();
+              }
         }
       >
         <div style={{ ...styles.line, ...styles.lineTop }} />

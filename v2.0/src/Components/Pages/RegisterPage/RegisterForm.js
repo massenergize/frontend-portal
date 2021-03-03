@@ -303,8 +303,8 @@ class RegisterFormBase extends React.Component {
       city,
       state,
       zip,
-      serviceProvider,
-      termsAndServices,
+      //serviceProvider,
+      //termsAndServices,
     } = this.state;
 
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
@@ -392,7 +392,7 @@ class RegisterFormBase extends React.Component {
                     name="preferredName"
                     value={preferredName}
                     onChange={this.onChange}
-                    placeholder="Enter a Preferred Name or Nickname"
+                    placeholder="Preferred Name (visible to others)"
                   />
                 </div>
                 <div className="form-group">
@@ -480,43 +480,13 @@ class RegisterFormBase extends React.Component {
                   />
                 </div>
 
-                <label className="checkbox-container">
-                  <input
-                    className="checkbox"
-                    type="checkbox"
-                    name="serviceProvider"
-                    onChange={() => {
-                      this.setState({ serviceProvider: !serviceProvider });
-                    }}
-                    checked={serviceProvider}
-                  />
-                  <span className="checkmark"></span>
-                  <p style={{ marginLeft: "25px" }}>
-                    Are you a Service Provider?
-                  </p>
-                </label>
-                <label className="checkbox-container">
-                  <input
-                    className="checkbox"
-                    type="checkbox"
-                    name="termsAndServices"
-                    onChange={() => {
-                      this.setState({ termsAndServices: !termsAndServices });
-                    }}
-                    checked={termsAndServices}
-                  />
-                  <span className="checkmark"></span>
-                  <p style={{ marginLeft: "25px" }}>
-                    I agree to MassEnergize’s{" "}
-                    <button
-                      type="button"
-                      onClick={() => this.setState({ showTOS: true })}
-                      className="as-link"
-                      style={{ display: "inline-block" }}
-                    >
-                      Terms of Service
-                    </button>{" "}
-                    and{" "}
+                <ReCAPTCHA
+                  sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
+                  onChange={this.onReCaptchaChange}
+                />
+                <br/>
+                <p style={{ marginLeft: "25px" }}>
+                    By continuing, I accept the{" "}
                     <button
                       type="button"
                       onClick={() => this.setState({ showPP: true })}
@@ -525,13 +495,18 @@ class RegisterFormBase extends React.Component {
                     >
                       Privacy Policy
                     </button>
-                  </p>
-                  {/* <span className="text-danger mb-3 small" style={{ display: (this.state.showTOSError) ? "block" : "none" }}>You need to agree to the terms of service!</span> */}
-                </label>
-                <ReCAPTCHA
-                  sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
-                  onChange={this.onReCaptchaChange}
-                />
+                    {" "} (in short, MassEnergize or host organization won't share my data) 
+                    and agree to comply with the{" "} 
+                    <button
+                      type="button"
+                      onClick={() => this.setState({ showTOS: true })}
+                      className="as-link"
+                      style={{ display: "inline-block" }}
+                    >
+                      Terms of Service
+                    </button>
+                 </p>
+                
               </>
             )}
             {this.state.error && (
@@ -636,9 +611,10 @@ class RegisterFormBase extends React.Component {
   }
   onFinalSubmit(event) {
     event.preventDefault();
-    if (!this.state.termsAndServices) {
-      this.setState({ error: "You need to agree to the terms and services" });
-    } else if (!this.state.captchaConfirmed) {
+    //if (!this.state.termsAndServices) {
+    //  this.setState({ error: "You need to agree to the terms and services" });
+    //} else 
+    if (!this.state.captchaConfirmed) {
       this.setState({ error: "Invalid reCAPTCHA, please try again" });
     } else {
       /** Collects the form data and sends it to the backend */
@@ -649,13 +625,13 @@ class RegisterFormBase extends React.Component {
         city,
         state,
         zip,
-        serviceProvider,
-        termsAndServices,
+        //serviceProvider,
+        //termsAndServices,
       } = this.state;
-      if (!termsAndServices) {
-        this.setState({ showTOSError: true });
-        return;
-      }
+      //if (!termsAndServices) {
+      //  this.setState({ showTOSError: true });
+      //  return;
+      //}
       const { auth, community } = this.props;
       const location = " , " + city + ", " + state + ", " + zip;
       const body = {
@@ -663,8 +639,10 @@ class RegisterFormBase extends React.Component {
         preferred_name: preferredName === "" ? firstName : preferredName,
         email: auth.email,
         location: location,
-        is_vendor: serviceProvider,
-        accepts_terms_and_conditions: termsAndServices,
+        //is_vendor: serviceProvider,
+        is_vendor: false,
+        accepts_terms_and_conditions: true,
+        //accepts_terms_and_conditions: termsAndServices,
         subdomain: community && community.subdomain,
       };
       this.setState({ creating: true });

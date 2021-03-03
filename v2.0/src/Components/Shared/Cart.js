@@ -95,42 +95,39 @@ class Cart extends React.Component {
               </MELink>
               <div className="">
                 {actionRel.status.toLowerCase() === "todo" ? (
-                  <a
-                    href="##"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.moveToDone(actionRel);
-                    }}
-                    style={{ fontSize: ".8rem" }}
-                  >
-                    Done It
-                  </a>
+                  <>
+                    <a
+                      href="##"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.moveToDone(actionRel);
+                      }}
+                      style={{ fontSize: ".8rem" }}
+                    >
+                      Done It
+                    </a>
+                    <a
+                      href="##"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.removeFromCart(actionRel);
+                      }}
+                      style={{ fontSize: ".8rem", marginLeft:15, color:"maroon" }}
+                    >
+                      Remove
+                    </a>
+                  </>
                 ) : (
-                  // <MEButton
-                  //   onClick={() => this.moveToDone(actionRel)}
-                  //   icon="fa fa-check"
-                  //   iconStyle={{ margin: 0 }}
-                  //   iconSize="large"
-                  //   style={{ padding: "4px 8px" }}
-                  // />
                   <a
                     href="##"
                     onClick={(e) => {
                       e.preventDefault();
                       this.removeFromCart(actionRel);
                     }}
-                    style={{ fontSize: ".8rem" }}
+                    style={{ fontSize: ".8rem", color:"maroon" }}
                   >
                     Remove
                   </a>
-                  // <MEButton
-                  //   onClick={() => this.removeFromCart(actionRel)}
-                  //   className="me-delete-btn"
-                  //   icon="fa fa-trash"
-                  //   iconStyle={{ margin: 0 }}
-                  //   iconSize="large"
-                  //   style={{ padding: "4px 8px" }}
-                  // />
                 )}
               </div>
             </MECard>
