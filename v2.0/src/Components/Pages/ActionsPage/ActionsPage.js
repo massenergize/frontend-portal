@@ -26,6 +26,8 @@ import { moveToPage } from "../../Utils";
 
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
+import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import MELightDropDown from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -221,7 +223,7 @@ class ActionsPage extends React.Component {
               <div className="row">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  <MECard
+                  {/* <MECard
                     className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
                     style={{
                       marginBottom: 10,
@@ -238,33 +240,38 @@ class ActionsPage extends React.Component {
                       tagCols={this.props.tagCols}
                       boxClick={this.handleBoxClick}
                     />
-                  </MECard>
-                  {this.props.user ? (
-                    <div className="phone-vanish">
-                      {this.props.todo ? (
-                        <Cart
-                          title="To Do List"
-                          actionRels={this.props.todo}
-                          status="TODO"
-                        />
-                      ) : null}
-                      {this.props.done ? (
-                        <Cart
-                          title="Completed Actions"
-                          actionRels={this.props.done}
-                          status="DONE"
-                        />
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div>
-                      <p>
-                        <Link to={`${this.props.links.signin}`}> Sign In </Link>{" "}
-                        to add actions to your todo list or to mark them as
-                        complete
-                      </p>
-                    </div>
-                  )}
+                  </MECard> */}
+                  <div style={{ marginTop: 70 }}>
+                    {this.props.user ? (
+                      <div className="phone-vanish">
+                        {this.props.todo ? (
+                          <Cart
+                            title="To Do List"
+                            actionRels={this.props.todo}
+                            status="TODO"
+                          />
+                        ) : null}
+                        {this.props.done ? (
+                          <Cart
+                            title="Completed Actions"
+                            actionRels={this.props.done}
+                            status="DONE"
+                          />
+                        ) : null}
+                      </div>
+                    ) : (
+                      <div>
+                        <p>
+                          <Link to={`${this.props.links.signin}`}>
+                            {" "}
+                            Sign In{" "}
+                          </Link>{" "}
+                          to add actions to your todo list or to mark them as
+                          complete
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
@@ -278,11 +285,20 @@ class ActionsPage extends React.Component {
                     </center>
                   ) : null} */}
                   {/* {this.renderPaginator()} */}
+                  <HorizontalFilterBox
+                      type="action"
+                      search={this.handleSearch}
+                      foundNumber={this.state.mirror_actions.length}
+                      searchTextValue={this.state.searchBoxText}
+                      tagCols={this.props.tagCols}
+                      boxClick={this.handleBoxClick}
+                    />
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 10 }}
                   >
+                    
                     {this.renderActions(actions)}
                     {/* {this.renderPaginator()} */}
                   </div>
@@ -328,7 +344,7 @@ class ActionsPage extends React.Component {
   };
   // renders all the actions
   renderActions(actions) {
-    if (!actions ) {
+    if (!actions) {
       return (
         <p style={{ width: "100%", textAlign: "center" }}>
           There aren't any actions available in this community yet, come back

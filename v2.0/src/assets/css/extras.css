@@ -4,6 +4,57 @@
   justify-content: center;
 }
 
+/* h-cat-select = horizontal-category-selected */
+.h-cat-select {
+  color: #ff7709;
+  cursor: pointer;
+  /* border: solid 1px #eaeaea; */
+  border: solid 1px #ff7709;
+  font-size: xx-small;
+  padding: 2px 10px;
+  margin:0px 2px;
+}
+
+.h-cat-select:hover {
+  background: #8dc343;
+  color:white;
+  border: solid 1px #8dc343;
+  transition: 0.1s ease-in-out;
+}
+
+.h-f-label {
+  color: #696969;
+}
+
+.h-f-label:hover {
+  text-decoration: underline;
+  color: #8dc343;
+  transition: 0.3s ease-in-out;
+}
+/* ---------------- Just Overwriting Some default Bootstrap Mechs... ------------------------- */
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  background: transparent !important;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+
+.me-light-drop-clickable {
+  border: 0px;
+}
+.me-light-drop-clickable:hover {
+  background: transparent;
+  color: black;
+
+  transition: 0.3s ease-in-out;
+}
+
+.me-light-drop-clickable:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
 .act-rect {
   width: 17px;
   height: 17px;
@@ -483,6 +534,10 @@
 }
 .force-padding-20 {
   padding: 20px !important;
+}
+
+.force-padding-15 {
+  padding: 12px !important;
 }
 .only-left-border:focus,
 .only-left-border:active,
