@@ -102,7 +102,7 @@ class HorizontalFilterBox extends Component {
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
-              label={<span className="h-f-label">{`Sort By ${set.name}`}</span>}
+              label={<span className="h-f-label">{`${set.name}`}</span>}
               data={data}
               dataValues={dataValues}
               onItemSelected={this.onItemSelectedFromDropDown}
