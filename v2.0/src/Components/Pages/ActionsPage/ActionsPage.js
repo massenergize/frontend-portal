@@ -27,6 +27,7 @@ import { moveToPage } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import ActionBoxCounter from "./ActionBoxCounter";
 // import MELightDropDown from "../Widgets/MELightDropDown";
 
 /**
@@ -215,7 +216,12 @@ class ActionsPage extends React.Component {
     return (
       <>
         {this.renderModal()}
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{
+            height: window.screen.height - 200,
+          }}
+        >
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
           {/* main shop section */}
           <div className="shop sec-padd">
@@ -241,10 +247,17 @@ class ActionsPage extends React.Component {
                       boxClick={this.handleBoxClick}
                     />
                   </MECard> */}
-                  <div style={{ marginTop: 70 }}>
+                  <div style={{ marginTop: 140 }}>
                     {this.props.user ? (
                       <div className="phone-vanish">
-                        {this.props.todo ? (
+                        <ActionBoxCounter />
+                        <ActionBoxCounter
+                          type="To Do"
+                          style={{ marginTop: 20 }}
+                          big={2}
+                          med={4000}
+                        />
+                        {/* {this.props.todo ? (
                           <Cart
                             title="To Do List"
                             actionRels={this.props.todo}
@@ -257,7 +270,7 @@ class ActionsPage extends React.Component {
                             actionRels={this.props.done}
                             status="DONE"
                           />
-                        ) : null}
+                        ) : null} */}
                       </div>
                     ) : (
                       <div>
@@ -275,7 +288,10 @@ class ActionsPage extends React.Component {
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <PageTitle>Actions</PageTitle>
+                  <PageTitle>
+                    Let us know what you have already done and pledge to do more
+                    for impact
+                  </PageTitle>
                   {/* {this.state.pageContent.pageCount > 0 ? (
                     <center>
                       <small>
@@ -286,19 +302,18 @@ class ActionsPage extends React.Component {
                   ) : null} */}
                   {/* {this.renderPaginator()} */}
                   <HorizontalFilterBox
-                      type="action"
-                      search={this.handleSearch}
-                      foundNumber={this.state.mirror_actions.length}
-                      searchTextValue={this.state.searchBoxText}
-                      tagCols={this.props.tagCols}
-                      boxClick={this.handleBoxClick}
-                    />
+                    type="action"
+                    search={this.handleSearch}
+                    foundNumber={this.state.mirror_actions.length}
+                    searchTextValue={this.state.searchBoxText}
+                    tagCols={this.props.tagCols}
+                    boxClick={this.handleBoxClick}
+                  />
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 10 }}
                   >
-                    
                     {this.renderActions(actions)}
                     {/* {this.renderPaginator()} */}
                   </div>

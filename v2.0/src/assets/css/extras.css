@@ -1,3 +1,54 @@
+.action-box-counter {
+  display: inline-block;
+  /* padding:15px;  */
+  min-height: 280px;
+  border: solid 3px #8dc343;
+  border-radius: 10px;
+  width: 100%;
+  position: relative;
+}
+.full-list-btn {
+  width: 100%;
+  background: #8dc343;
+  position: absolute;
+  bottom: 0;
+  padding: 7px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  color:white;
+}
+
+.full-list-btn:hover{
+  background: #4caf50;
+  transition: 0.3s ease-in-out;
+}
+
+
+.full-list-btn:focus{
+  outline: none;
+}
+.box-ico {
+  margin: 10px;
+  font-size: 25px;
+  color: #8dc343;
+}
+
+.box-counter-label-btn {
+  padding: 0px 19px;
+  font-size: 11px;
+  background: #8dc343;
+  border-radius: 55px;
+  cursor: pointer;
+  color: white;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.box-counter-label-btn:hover {
+  background: #ff7709;
+  transition: 0.3s ease-out;
+}
+
 .center-content {
   display: flex;
   align-items: center;
@@ -12,12 +63,12 @@
   border: solid 1px #ff7709;
   font-size: xx-small;
   padding: 2px 10px;
-  margin:0px 2px;
+  margin: 0px 2px;
 }
 
 .h-cat-select:hover {
   background: #8dc343;
-  color:white;
+  color: white;
   border: solid 1px #8dc343;
   transition: 0.1s ease-in-out;
 }
