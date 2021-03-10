@@ -17,15 +17,18 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 // import Action from "./Action";
-import Cart from "../../Shared/Cart";
+// import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
-import Funnel from "../EventsPage/Funnel";
-import MECard from "../Widgets/MECard";
+// import Funnel from "../EventsPage/Funnel";
+// import MECard from "../Widgets/MECard";
 import Paginator from "../Widgets/Paginator";
 import { moveToPage } from "../../Utils";
 
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
+import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import ActionBoxCounter from "./ActionBoxCounter";
+// import MELightDropDown from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -191,6 +194,7 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
+    
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -213,7 +217,12 @@ class ActionsPage extends React.Component {
     return (
       <>
         {this.renderModal()}
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{
+            height: window.screen.height - 200,
+          }}
+        >
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
           {/* main shop section */}
           <div className="shop sec-padd">
@@ -221,7 +230,7 @@ class ActionsPage extends React.Component {
               <div className="row">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  <MECard
+                  {/* <MECard
                     className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
                     style={{
                       marginBottom: 10,
@@ -238,37 +247,68 @@ class ActionsPage extends React.Component {
                       tagCols={this.props.tagCols}
                       boxClick={this.handleBoxClick}
                     />
-                  </MECard>
-                  {this.props.user ? (
-                    <div className="phone-vanish">
-                      {this.props.todo ? (
-                        <Cart
-                          title="To Do List"
-                          actionRels={this.props.todo}
-                          status="TODO"
+                  </MECard> */}
+                  <div style={{ marginTop: 100 }}>
+                    {this.props.user ? (
+                      <div className="phone-vanish">
+                        <ActionBoxCounter
+                          type="DONE"
+                          done={this.props.done}
+                          link={
+                            this.props.links ? this.props.links.profile : "#"
+                          }
                         />
-                      ) : null}
-                      {this.props.done ? (
-                        <Cart
-                          title="Completed Actions"
-                          actionRels={this.props.done}
-                          status="DONE"
+                        <ActionBoxCounter
+                          type="TODO"
+                          style={{ marginTop: 20 }}
+                          todo={this.props.todo}
+                          link={
+                            this.props.links ? this.props.links.profile : "#"
+                          }
                         />
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div>
-                      <p>
-                        <Link to={`${this.props.links.signin}`}> Sign In </Link>{" "}
-                        to add actions to your todo list or to mark them as
-                        complete
-                      </p>
-                    </div>
-                  )}
+                        {/* {this.props.todo ? (
+                          <Cart
+                            title="To Do List"
+                            actionRels={this.props.todo}
+                            status="TODO"
+                          />
+                        ) : null}
+                        {this.props.done ? (
+                          <Cart
+                            title="Completed Actions"
+                            actionRels={this.props.done}
+                            status="DONE"
+                          />
+                        ) : null} */}
+                      </div>
+                    ) : (
+                      <div>
+                        <p>
+                          <Link to={`${this.props.links.signin}`}>
+                            {" "}
+                            Sign In{" "}
+                          </Link>{" "}
+                          to add actions to your todo list or to mark them as
+                          complete
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <PageTitle>Actions</PageTitle>
+                  <HorizontalFilterBox
+                    type="action"
+                    search={this.handleSearch}
+                    foundNumber={this.state.mirror_actions.length}
+                    searchTextValue={this.state.searchBoxText}
+                    tagCols={this.props.tagCols}
+                    boxClick={this.handleBoxClick}
+                  />
+                  <PageTitle style={{fontSize:24}}>
+                    Let us know what you have already done and pledge to do more
+                    for impact
+                  </PageTitle>
                   {/* {this.state.pageContent.pageCount > 0 ? (
                     <center>
                       <small>
@@ -278,6 +318,7 @@ class ActionsPage extends React.Component {
                     </center>
                   ) : null} */}
                   {/* {this.renderPaginator()} */}
+
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
@@ -328,7 +369,7 @@ class ActionsPage extends React.Component {
   };
   // renders all the actions
   renderActions(actions) {
-    if (!actions ) {
+    if (!actions) {
       return (
         <p style={{ width: "100%", textAlign: "center" }}>
           There aren't any actions available in this community yet, come back

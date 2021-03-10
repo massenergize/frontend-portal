@@ -1,7 +1,111 @@
+.action-box-counter {
+  display: inline-block;
+  /* padding:15px;  */
+  min-height: 280px;
+  border: solid 3px #8dc343;
+  border-radius: 10px;
+  width: 100%;
+  position: relative;
+}
+.full-list-btn {
+  width: 100%;
+  background: #8dc343;
+  position: absolute;
+  bottom: 0;
+  padding: 7px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  color:white;
+}
+
+.full-list-btn:hover{
+  background: #4caf50;
+  transition: 0.3s ease-in-out;
+}
+
+
+.full-list-btn:focus{
+  outline: none;
+}
+.box-ico {
+  margin: 10px;
+  font-size: 25px;
+  color: #8dc343;
+}
+
+.box-counter-label-btn {
+  padding: 0px 19px;
+  font-size: 11px;
+  background: #8dc343;
+  border-radius: 55px;
+  cursor: pointer;
+  color: white;
+  margin-top: 6px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.box-counter-label-btn:hover {
+  color:white;
+  background: #ff7709;
+  transition: 0.3s ease-out;
+}
+
 .center-content {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* h-cat-select = horizontal-category-selected */
+.h-cat-select {
+  color: #ff7709;
+  cursor: pointer;
+  /* border: solid 1px #eaeaea; */
+  border: solid 1px #ff7709;
+  font-size: xx-small;
+  padding: 2px 10px;
+  margin: 0px 2px;
+}
+
+.h-cat-select:hover {
+  background: #8dc343;
+  color: white;
+  border: solid 1px #8dc343;
+  transition: 0.1s ease-in-out;
+}
+
+.h-f-label {
+  color: #696969;
+}
+
+.h-f-label:hover {
+  text-decoration: underline;
+  color: #8dc343;
+  transition: 0.3s ease-in-out;
+}
+/* ---------------- Just Overwriting Some default Bootstrap Mechs... ------------------------- */
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  background: transparent !important;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+
+.me-light-drop-clickable {
+  border: 0px;
+}
+.me-light-drop-clickable:hover {
+  background: transparent;
+  color: black;
+
+  transition: 0.3s ease-in-out;
+}
+
+.me-light-drop-clickable:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
 }
 
 .act-rect {
@@ -483,6 +587,10 @@
 }
 .force-padding-20 {
   padding: 20px !important;
+}
+
+.force-padding-15 {
+  padding: 12px !important;
 }
 .only-left-border:focus,
 .only-left-border:active,

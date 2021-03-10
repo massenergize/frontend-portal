@@ -40,6 +40,7 @@ import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
+import { sumOfCarbonScores } from "../../Utils";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -98,14 +99,13 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-
+    console.log("I am the props", this.props.done);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
 
-
     if (!this.props.user) {
-    // can this execute?      
+      // can this execute?
       this.props.firebase.auth().signOut();
       this.props.reduxLogout();
     }
@@ -189,13 +189,7 @@ class ProfilePage extends React.Component {
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
                             <Counter
-                              end={(this.props.done || [])
-                                .map((t) =>
-                                  t.action && t.action.calculator_action
-                                    ? t.action.calculator_action.average_points
-                                    : 0
-                                )
-                                .reduce((partial_sum, a) => partial_sum + a, 0)}
+                              end={sumOfCarbonScores(this.props.done || [])}
                               unit={"lbs CO2"}
                               icon={"fa fa-leaf"}
                               title={"Impact"}
@@ -279,7 +273,7 @@ class ProfilePage extends React.Component {
                       View all Teams
                     </MEButton>
                   </div>
-                  
+
                   <br />
                   <MESectionWrapper headerText="Your Households">
                     {this.renderHouseholds(user.households)}
@@ -424,22 +418,22 @@ class ProfilePage extends React.Component {
                     marginTop: 90,
                     height: "fit-content",
                   }}
-                >           
+                >
                   {this.props.done ? (
                     <Cart
                       title="Completed Actions"
-                      actionRels={this.props.done ? this.props.done :[]}
+                      actionRels={this.props.done ? this.props.done : []}
                       status="DONE"
                     />
                   ) : null}
                   {true ? (
                     <Cart
                       title="To Do List"
-                      actionRels={this.props.todo ? this.props.todo :[]}
+                      actionRels={this.props.todo ? this.props.todo : []}
                       status="TODO"
                     />
                   ) : null}
-                 
+
                   {/* {this.props.rsvps ? (
                     <EventCart
                       title="Event RSVPs"
@@ -640,7 +634,11 @@ class ProfilePage extends React.Component {
       return (
         <div key={key}>
           <MECard
-            to={`${inThisCommunity(team) ? (this.props.links.teams + "/" + team.id) : ("#")} `}
+            to={`${
+              inThisCommunity(team)
+                ? this.props.links.teams + "/" + team.id
+                : "#"
+            } `}
             style={{
               borderRadius: 10,
             }}

@@ -1,12 +1,20 @@
 import * as moment from "moment";
 import React from "react";
 
-
-export const getHumanFriendlyDate = (dateString)=>{
-  if(!dateString) return null; 
+export const sumOfCarbonScores = (data) => {
+  if (!data) return 0;
+  return data
+    .map((t) =>
+      t.action && t.action.calculator_action
+        ? t.action.calculator_action.average_points
+        : 0
+    )
+    .reduce((partial_sum, a) => partial_sum + a, 0);
+};
+export const getHumanFriendlyDate = (dateString) => {
+  if (!dateString) return null;
   return moment(dateString).format("MMMM Do YYYY ");
-
-}
+};
 export const getTextArrayAsString = (array, separationKey) => {
   if (!array || !separationKey) return "";
   let text = "";
