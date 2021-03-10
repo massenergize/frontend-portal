@@ -42,9 +42,11 @@
   color: white;
   margin-top: 6px;
   display: inline-block;
+  text-decoration: none;
 }
 
 .box-counter-label-btn:hover {
+  color:white;
   background: #ff7709;
   transition: 0.3s ease-out;
 }

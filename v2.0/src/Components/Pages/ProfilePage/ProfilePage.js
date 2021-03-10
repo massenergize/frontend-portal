@@ -40,6 +40,7 @@ import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
+import { sumOfCarbonScores } from "../../Utils";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -98,7 +99,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    console.log("I am the props", this.props);
+    console.log("I am the props", this.props.done);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -188,13 +189,7 @@ class ProfilePage extends React.Component {
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
                             <Counter
-                              end={(this.props.done || [])
-                                .map((t) =>
-                                  t.action && t.action.calculator_action
-                                    ? t.action.calculator_action.average_points
-                                    : 0
-                                )
-                                .reduce((partial_sum, a) => partial_sum + a, 0)}
+                              end={sumOfCarbonScores(this.props.done || [])}
                               unit={"lbs CO2"}
                               icon={"fa fa-leaf"}
                               title={"Impact"}

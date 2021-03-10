@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import CountUp from "react-countup";
+import { Link } from "react-router-dom";
+import { sumOfCarbonScores } from "../../Utils";
+
+const DONE = "DONE";
+// const TODO = "TODO";
 export default class ActionBoxCounter extends Component {
   render() {
-    const { type, style, big, med } = this.props;
+    const { type, style, todo, done } = this.props;
+    const data = type === DONE ? done : todo;
     return (
       <div className="action-box-counter z-depth-float" style={style}>
         <div style={{ padding: 15 }}>
           <center>
             <CountUp
-              end={big}
+              end={data ? data.length : 0}
               duration={3}
               style={{ fontSize: 60, fontWeight: "700" }}
             />
@@ -16,9 +22,15 @@ export default class ActionBoxCounter extends Component {
             <small
               style={{ fontWeight: "600", fontSize: 21, color: "#656161" }}
             >
-              {type}
+              {type === DONE ? "Done!" : "To Do"}
             </small>
-            <h2 style={{ fontWeight: "600", margin: 10 }}>{med}</h2>
+            <br />
+            <CountUp
+              end={sumOfCarbonScores(data)}
+              duration={2}
+              style={{ fontWeight: "600", margin: 10, fontSize: 26 }}
+            />
+            <br />
             <i className="fa fa-tree box-ico"></i>{" "}
             <small>
               <b>Planted</b>
@@ -26,7 +38,9 @@ export default class ActionBoxCounter extends Component {
             {/* <i className="fa fa-caret-right box-ico"></i> */}
             <i className="fa fa-arrow-circle-right box-ico"></i>
             <br />
-            <p className="box-counter-label-btn">Full List</p>
+            <Link to={this.props.link} className="box-counter-label-btn">
+              Full List
+            </Link>
           </center>
         </div>
         {/* <button className="full-list-btn">
@@ -38,9 +52,8 @@ export default class ActionBoxCounter extends Component {
 }
 
 ActionBoxCounter.defaultProps = {
-  type: "Done!",
+  type: DONE,
   style: {},
-  big: 100,
-  med: 2000,
-
+  todo: [],
+  done: [],
 };

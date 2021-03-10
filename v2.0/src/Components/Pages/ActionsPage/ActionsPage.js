@@ -17,7 +17,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 // import Action from "./Action";
-import Cart from "../../Shared/Cart";
+// import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
 // import Funnel from "../EventsPage/Funnel";
 // import MECard from "../Widgets/MECard";
@@ -194,6 +194,7 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
+    
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -247,15 +248,23 @@ class ActionsPage extends React.Component {
                       boxClick={this.handleBoxClick}
                     />
                   </MECard> */}
-                  <div style={{ marginTop: 140 }}>
+                  <div style={{ marginTop: 100 }}>
                     {this.props.user ? (
                       <div className="phone-vanish">
-                        <ActionBoxCounter />
                         <ActionBoxCounter
-                          type="To Do"
+                          type="DONE"
+                          done={this.props.done}
+                          link={
+                            this.props.links ? this.props.links.profile : "#"
+                          }
+                        />
+                        <ActionBoxCounter
+                          type="TODO"
                           style={{ marginTop: 20 }}
-                          big={2}
-                          med={4000}
+                          todo={this.props.todo}
+                          link={
+                            this.props.links ? this.props.links.profile : "#"
+                          }
                         />
                         {/* {this.props.todo ? (
                           <Cart
@@ -288,7 +297,15 @@ class ActionsPage extends React.Component {
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <PageTitle>
+                  <HorizontalFilterBox
+                    type="action"
+                    search={this.handleSearch}
+                    foundNumber={this.state.mirror_actions.length}
+                    searchTextValue={this.state.searchBoxText}
+                    tagCols={this.props.tagCols}
+                    boxClick={this.handleBoxClick}
+                  />
+                  <PageTitle style={{fontSize:24}}>
                     Let us know what you have already done and pledge to do more
                     for impact
                   </PageTitle>
@@ -301,14 +318,7 @@ class ActionsPage extends React.Component {
                     </center>
                   ) : null} */}
                   {/* {this.renderPaginator()} */}
-                  <HorizontalFilterBox
-                    type="action"
-                    search={this.handleSearch}
-                    foundNumber={this.state.mirror_actions.length}
-                    searchTextValue={this.state.searchBoxText}
-                    tagCols={this.props.tagCols}
-                    boxClick={this.handleBoxClick}
-                  />
+
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
