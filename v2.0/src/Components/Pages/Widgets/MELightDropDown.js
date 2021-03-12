@@ -38,12 +38,12 @@ export default class MELightDropDown extends Component {
     });
   }
   render() {
-    const { label, data } = this.props;
+    const { label, data, style } = this.props;
     return (
       <div>
         <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
           <Dropdown.Toggle
-            style={{ padding: "9px 16px" }}
+            style={{ padding: "9px 16px", ...style }}
             className="me-undefault-btn me-light-drop-clickable undo-dropdown-active"
           >
             {label}
@@ -68,4 +68,5 @@ MELightDropDown.defaultProps = {
   label: "Clickable Header",
   data: ["Data", "Data Name", "Data Age"],
   dataValues: [],
+  style: {},
 };

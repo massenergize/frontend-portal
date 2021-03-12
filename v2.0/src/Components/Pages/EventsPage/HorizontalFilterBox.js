@@ -12,7 +12,6 @@ class HorizontalFilterBox extends Component {
     this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
       this
     );
-    this.deselectTags = this.deselectTags.bind(this);
   }
   makeTagsSystematic = (tagCols) => {
     //arrange side filters in this order: Categories, Impact, difficulty
@@ -43,35 +42,35 @@ class HorizontalFilterBox extends Component {
     return tagCols;
   }
   onItemSelectedFromDropDown(name, value, type) {
-    this.props.boxClick({ collectionName: type, value });
-    // const { activeTags } = this.state;
-    // const isAlreadyIn = activeTags.filter(
-    //   (item) => name === item[0] && value === item[1]
-    // );
+    const param = { collectionName: type, value };
+    this.props.boxClick(param);
+    var { activeTags } = this.state;
+    activeTags = (activeTags || []).filter(
+      (item) => item.collectionName !== param.collectionName
+    );
+    if (param.value !== "None") activeTags.push(param);
+    this.setState({ activeTags });
     // if (isAlreadyIn.length === 0) {
     //   this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
     // }
   }
 
-  deselectTags(tag) {
-    const { activeTags } = this.state;
-    const rem = activeTags.filter(
-      (item) => tag[0] !== item[0] && tag[1] !== item[1]
-    );
-    this.props.boxClick(tag[1]);
-    this.setState({ activeTags: rem });
-  }
 
   renderActiveTags() {
     const { activeTags } = this.state;
-    return activeTags.map((tagArr, index) => {
+    if (!activeTags || activeTags.length === 0)
+      return <small>No filters have been applied yet</small>;
+    return activeTags.map((tagObj, index) => {
       return (
         <small
-          className="round-me h-cat-select"
+          style={{ fontWeight: "600", color: "#7cb331" }}
+          // className="round-me h-cat-select"
           key={index.toString()}
-          onClick={() => this.deselectTags(tagArr)}
+          onClick={() => this.deselectTags(tagObj)}
         >
-          {tagArr[0]} <i className="fa fa-close"></i>
+          <span style={{ color: "black" }}>{tagObj.collectionName}</span> :{" "}
+          <span>{tagObj.value}</span>
+          {index + 1 !== activeTags.length ? " , " : ""}
         </small>
       );
     });
@@ -87,6 +86,7 @@ class HorizontalFilterBox extends Component {
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
+              style={{ background: "transparent", marginBottom: 4 }}
               label={<span className="h-f-label">{`${set.name}`}</span>}
               data={data}
               // dataValues={dataValues}
@@ -101,9 +101,30 @@ class HorizontalFilterBox extends Component {
   };
   render() {
     return (
-      <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "3px 0px 0px",
+          marginBottom: 10,
+          borderRadius: 10,
+          background: "#f1f1f1",
+          marginTop: -20,
+        }}
+        className="z-depth-sticker"
+      >
         {this.renderDifferentCollections()}
-        {/* <div>{this.renderActiveTags()}</div> */}
+        <div
+          style={{
+            width: "100%",
+            padding: 10,
+            background: "white",
+            minHeight: 40,
+            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
+        >
+          {this.renderActiveTags()}
+        </div>
       </div>
     );
   }
