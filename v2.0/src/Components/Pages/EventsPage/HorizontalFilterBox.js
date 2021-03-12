@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
+// import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown from "../Widgets/MELightDropDown";
 class HorizontalFilterBox extends Component {
@@ -32,21 +32,6 @@ class HorizontalFilterBox extends Component {
     return [...available, ...the_rest];
   };
 
-  renderTagCheckBoxes(tags) {
-    const tagNames = getPropsArrayFromJsonArray(tags, "name");
-    const tagIds = getPropsArrayFromJsonArray(tags, "id");
-    if (tags) {
-      return (
-        <MECheckBoxGroup
-          data={tagNames}
-          dataValues={tagIds}
-          className="filter-check-text-font"
-          onItemSelected={(all, id) => this.props.boxClick(id)}
-          style={{ display: "inline-block" }}
-        />
-      );
-    }
-  }
   // All collections are created by admins
   //all collections have an array of tags
   getCollectionSetAccordingToPage() {
@@ -57,15 +42,15 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(name, value) {
-    this.props.boxClick(value);
-    const { activeTags } = this.state;
-    const isAlreadyIn = activeTags.filter(
-      (item) => name === item[0] && value === item[1]
-    );
-    if (isAlreadyIn.length === 0) {
-      this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
-    }
+  onItemSelectedFromDropDown(name, value, type) {
+    this.props.boxClick({ collectionName: type, value });
+    // const { activeTags } = this.state;
+    // const isAlreadyIn = activeTags.filter(
+    //   (item) => name === item[0] && value === item[1]
+    // );
+    // if (isAlreadyIn.length === 0) {
+    //   this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
+    // }
   }
 
   deselectTags(tag) {
@@ -98,14 +83,15 @@ class HorizontalFilterBox extends Component {
       return col.map((set, index) => {
         // if (set.name === "Category") {
         const data = getPropsArrayFromJsonArray(set.tags, "name");
-        const dataValues = getPropsArrayFromJsonArray(set.tags, "id");
+        // const dataValues = getPropsArrayFromJsonArray(set.tags, "id");
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
               label={<span className="h-f-label">{`${set.name}`}</span>}
               data={data}
-              dataValues={dataValues}
+              // dataValues={dataValues}
               onItemSelected={this.onItemSelectedFromDropDown}
+              categoryType={set.name}
             />
           </div>
         );
@@ -117,7 +103,7 @@ class HorizontalFilterBox extends Component {
     return (
       <div style={{ textAlign: "center" }}>
         {this.renderDifferentCollections()}
-        <div>{this.renderActiveTags()}</div>
+        {/* <div>{this.renderActiveTags()}</div> */}
       </div>
     );
   }

@@ -1,21 +1,26 @@
 import React, { Component } from "react";
 import Dropdown from "react-bootstrap/esm/Dropdown";
 // import PropTypes from "prop-types";
-
+export const NONE = "None";
 export default class MELightDropDown extends Component {
   onItemSelected(e, child) {
     e.preventDefault();
     const { onItemSelected, dataValues, data } = this.props;
     if (!onItemSelected) return;
     if (!dataValues || dataValues.length === 0) {
-      onItemSelected(child, child);
+      onItemSelected(child, child, this.props.categoryType);
       return;
     }
-    onItemSelected(child, dataValues[data.indexOf(child)]); // onItemSelected(name, value)
+    onItemSelected(
+      child,
+      dataValues[data.indexOf(child)],
+      this.props.categoryType
+    ); // onItemSelected(name, value)
   }
 
   renderChildren(data) {
     if (!data) return;
+    data = [NONE, ...data];
     return data.map((child, index) => {
       return (
         <div
@@ -52,12 +57,6 @@ export default class MELightDropDown extends Component {
             className="me-dropdown-theme me-anime-slide-from-top z-depth-1"
           >
             {this.renderChildren(data)}
-            {/* <Dropdown.Item className="dropdown-item  me-dropdown-theme-item force-padding-20">
-              Edit Profile
-            </Dropdown.Item>
-            <Dropdown.Item className="dropdown-item me-dropdown-theme-item force-padding-20">
-              The Other Thing
-            </Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
       </div>
