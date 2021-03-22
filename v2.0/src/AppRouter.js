@@ -77,15 +77,13 @@ class AppRouter extends Component {
       community: null,
     };
 
-    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(
-      this
-    );
+    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(this);
   }
 
   componentDidMount() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
-
+    
     // first set the domain for the current community
     this.props.reduxLoadCommunity({ subdomain });
 
@@ -113,8 +111,12 @@ class AppRouter extends Component {
       apiCall("menus.list", body), //should add all communities to the menus.list
     ])
       .then((res) => {
-        const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
-        this.setState({ community: communityInfoResponse.data });
+        const [
+          communityInfoResponse,
+          homePageResponse,
+          mainMenuResponse
+        ] = res;
+        this.setState({ community: communityInfoResponse.data});
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
         this.props.reduxLoadMenu(mainMenuResponse.data);
@@ -217,7 +219,7 @@ class AppRouter extends Component {
         console.log(`no user with this email: ${user.email}`);
         return false;
       }
-    }
+    } 
   }
 
   modifiedMenu(menu) {
@@ -288,10 +290,10 @@ class AppRouter extends Component {
   userHasAnIncompleteRegistration() {
     return (
       (this.state.triedLogin && // we tried to check who this user is
-        !this.props.user && // we didnt find a profile
-        this.props.auth.uid) || // but we found a firebase userID.  This means they did not finish creating their profile
+      !this.props.user && // we didnt find a profile
+      this.props.auth.uid) || // but we found a firebase userID.  This means they did not finish creating their profile
       (this.props.auth.uid && // firebase userID is created
-        !this.props.auth.emailVerified) // but user did not verify their email yet
+      !this.props.auth.emailVerified) // but user did not verify their email yet
     );
   }
 
@@ -323,9 +325,9 @@ class AppRouter extends Component {
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const communitiesLink = {
-      name: "All MassEnergize Community Sites",
-      link: "http://" + window.location.host,
-      special: true,
+        name: "All MassEnergize Community Sites",
+        link: "http://" + window.location.host,
+        special: true,
     };
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
@@ -338,10 +340,16 @@ class AppRouter extends Component {
       email: communityInfo.owner_email,
       allCommunities: communitiesLink,
     };
+
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-          <Favicon url="http://oflisback.github.io/react-favicon/public/img/github.ico" />
+         { communityInfo.favicon ? (
+          <div>
+          <Favicon url={communityInfo.favicon.url} />
+          </div>
+          ) : (<div/>) }
+
         <Helmet>
           <meta charset="UTF-8" />
           <title>{communityInfo.name}</title>
@@ -361,53 +369,45 @@ class AppRouter extends Component {
         {
           /**if theres a half finished account the only place a user can go is the register page */
           this.userHasAnIncompleteRegistration() ? (
-            <Switch>
-              <Route component={RegisterPage} />
-            </Switch>
-          ) : (
-            <Switch>
-              {/* ---- This route is a facebook app requirement. */}
-              <Route
-                path={`/${subdomain}/how-to-delete-my-data`}
-                component={Help}
-              />
-              <Route exact path={links.home} component={HomePage} />
-              <Route exact path={`${links.home}/home`} component={HomePage} />
-              <Route exact path={links.actions} component={ActionsPage} />
-              <Route path={links.aboutus} component={AboutUsPage} />
-              <Route exact path={links.services} component={ServicesPage} />
-              <Route
-                path={`${links.services}/:id`}
-                component={OneServicePage}
-              />
-              <Route path={`${links.actions}/:id`} component={OneActionPage} />
-              <Route exact path={links.testimonials} component={StoriesPage} />
-              <Route
-                path={`${links.testimonials}/:id`}
-                component={OneTestimonialPage}
-              />
-              <Route exact path={links.teams} component={TeamsPage} />
-              <Route path={`${links.teams}/:id`} component={OneTeamPage} />
-              <Route path={links.impact} component={ImpactPage} />
-              <Route path={links.donate} component={DonatePage} />
-              <Route exact path={links.events} component={EventsPage} />
-              <Route path={`${links.events}/:id`} component={OneEventPage} />
-              <Route path={links.signin} component={LoginPage} />
-              <Route path={links.signup} component={RegisterPage} />
-              <Route path={links.profile} component={ProfilePage} />
-              <Route path={links.policies} component={PoliciesPage} />
-              <Route path={links.contactus} component={ContactPage} />
-              <Route
-                component={() => (
-                  <ErrorPage
-                    errorMessage="Page not found"
-                    errorDescription="The page you are trying to access does not exist"
-                  />
-                )}
-              />
-            </Switch>
-          )
-        }
+          <Switch>
+            <Route component={RegisterPage} />
+          </Switch>
+        ) : (
+          <Switch>
+            {/* ---- This route is a facebook app requirement. */}
+            <Route
+              path={`/${subdomain}/how-to-delete-my-data`}
+              component={Help}
+            />
+            <Route exact path={links.home} component={HomePage} />
+            <Route exact path={`${links.home}/home`} component={HomePage} />
+            <Route exact path={links.actions} component={ActionsPage} />
+            <Route path={links.aboutus} component={AboutUsPage} />
+            <Route exact path={links.services} component={ServicesPage} />
+            <Route path={`${links.services}/:id`} component={OneServicePage} />
+            <Route path={`${links.actions}/:id`} component={OneActionPage} />
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route  path={`${links.testimonials}/:id`} component={OneTestimonialPage} />
+            <Route exact path={links.teams} component={TeamsPage} />
+            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+            <Route path={links.impact} component={ImpactPage} />
+            <Route path={links.donate} component={DonatePage} />
+            <Route exact path={links.events} component={EventsPage} />
+            <Route path={`${links.events}/:id`} component={OneEventPage} />
+            <Route path={links.signin} component={LoginPage} />
+            <Route path={links.signup} component={RegisterPage} />
+            <Route path={links.profile} component={ProfilePage} />
+            <Route path={links.policies} component={PoliciesPage} />
+            <Route path={links.contactus} component={ContactPage} />
+            <Route component={() => 
+               <ErrorPage
+                 errorMessage="Page not found"
+                 errorDescription="The page you are trying to access does not exist"
+               />
+              }
+            />
+          </Switch>
+        )}
         {this.props.menu ? (
           <Footer
             footerLinks={
