@@ -15,7 +15,19 @@ import CommunitySocials from "./CommunitySocials";
  * Footer section has place for links,
  */
 class Footer extends React.Component {
+  getMoreInfo() {
+    const { community } = this.props;
+    var moreInfo = community && community.more_info;
+    try {
+      if (moreInfo) moreInfo = JSON.parse(moreInfo);
+    } catch (error) {
+      console.log("Error getting more info");
+    } finally {
+      return moreInfo || { wants_socials: false };
+    }
+  }
   render() {
+    // console.log("I am the community", this.props.community);
     let BUILD_VERSION_TEXT = BUILD_VERSION;
     if (IS_PROD && IS_SANDBOX) {
       // prod sandbox
@@ -37,6 +49,8 @@ class Footer extends React.Component {
       BUILD_VERSION_TEXT = "Development Build " + BUILD_VERSION_TEXT;
     }
 
+    const moreInfo = this.getMoreInfo();
+
     return (
       <div className="d-flex flex-column">
         <footer className="main-footer m-footer-color">
@@ -57,8 +71,11 @@ class Footer extends React.Component {
                   />
                   {/* <!--Footer Column--> */}
                   <div className="col-12 col-md-4">
-                    {/* <SubscribeForm /> */}
-                    <CommunitySocials community={this.props.community} />
+                    {moreInfo.wants_socials ==="true" ? (
+                      <CommunitySocials community={this.props.community} moreInfo={moreInfo} />
+                    ) : (
+                      <SubscribeForm />
+                    )}
                   </div>
                 </div>
               </div>
