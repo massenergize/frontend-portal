@@ -4,6 +4,23 @@
   justify-content: center;
 }
 
+.footer-social{
+  display:inline-block;
+  padding:13px 20px;
+  border-radius: 55px;
+  background:#3c5897;
+  cursor:pointer;
+  margin:5px;
+}
+
+.footer-social i { 
+  color:white; 
+  font-size:25px;
+}
+.footer-social:hover{
+  transform:scale(1.06);
+  transition:.2s ease-in-out;
+}
 .act-rect {
   width: 17px;
   height: 17px;
