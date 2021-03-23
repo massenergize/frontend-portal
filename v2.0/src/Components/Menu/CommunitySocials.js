@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { changeToProperURL } from "../Utils";
 
 export default class CommunitySocials extends Component {
@@ -15,6 +15,7 @@ export default class CommunitySocials extends Component {
           </div>
           {moreInfo && moreInfo.facebook_link && (
             <a
+              rel="noopener noreferrer"
               target="_blank"
               className="footer-social"
               href={changeToProperURL(moreInfo.facebook_link)}
@@ -24,6 +25,7 @@ export default class CommunitySocials extends Component {
           )}
           {moreInfo && moreInfo.instagram_link && (
             <a
+              rel="noopener noreferrer"
               target="_blank"
               href={changeToProperURL(moreInfo.instagram_link)}
               className="footer-social"
@@ -34,6 +36,7 @@ export default class CommunitySocials extends Component {
           )}
           {moreInfo && moreInfo.twitter_link && (
             <a
+              rel="noopener noreferrer"
               target="_blank"
               href={changeToProperURL(moreInfo.twitter_link)}
               className="footer-social"
