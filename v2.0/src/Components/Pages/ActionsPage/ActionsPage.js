@@ -61,7 +61,8 @@ class ActionsPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
-  addMeToSelected(param) {
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
@@ -119,7 +120,7 @@ class ActionsPage extends React.Component {
       const combined = new Set([...filters, ...actionTags]);
       // if the set of unique values of filters and action tags has the same number of elements
       // as the array of tag names of an action, it means an action qualifies for all the selected filters
-      return (combined.size === actionTags.length) && action;
+      return combined.size === actionTags.length && action;
     });
     return rem;
   }
@@ -203,8 +204,8 @@ class ActionsPage extends React.Component {
                     boxClick={this.addMeToSelected}
                   />
                   <PageTitle style={{ fontSize: 24 }}>
-                    Let us know what you have already done and pledge to do more
-                    for impact
+                    Let us know what you have already done, and pledge to do
+                    more for impact
                   </PageTitle>
 
                   <div
