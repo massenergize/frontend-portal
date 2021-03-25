@@ -14,21 +14,22 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-// import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
-// import Action from "./Action";
-// import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
-// import Funnel from "../EventsPage/Funnel";
-// import MECard from "../Widgets/MECard";
-import Paginator from "../Widgets/Paginator";
-import { moveToPage } from "../../Utils";
 
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
+// import SideBar from "../../Menu/SideBar";
+// import Action from "./Action";
+// import Cart from "../../Shared/Cart";
+// import Funnel from "../EventsPage/Funnel";
+// import MECard from "../Widgets/MECard";
 // import MELightDropDown from "../Widgets/MELightDropDown";
+// import Paginator from "../Widgets/Paginator";
+// import { moveToPage } from "../../Utils";
+// const PER_PAGE = 6;
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -36,7 +37,7 @@ import ActionBoxCounter from "./ActionBoxCounter";
  *
  * @todo change the columns for small sizes change button colors bars underneath difficulty and ease instead of "easy, medium, hard"
  */
-const PER_PAGE = 6;
+
 class ActionsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -67,9 +68,7 @@ class ActionsPage extends React.Component {
         itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
         pageCount: 0,
       },
-      perPage: PER_PAGE,
     };
-    // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.findCommon = this.findCommon.bind(this);
@@ -85,10 +84,12 @@ class ActionsPage extends React.Component {
       this.setState({ check_values: [tagID, ...arr] });
     }
   }
+
   handleBoxClick(id) {
     // var id = event.target.value;
     this.addMeToSelected(id);
   }
+
   findCommon() {
     const actions = this.props.actions;
     const values = this.state.check_values ? this.state.check_values : [];
@@ -112,19 +113,6 @@ class ActionsPage extends React.Component {
     return common;
   }
 
-  goToPage(pageNumber) {
-    const { actions } = this.props;
-    const { perPage } = this.state;
-    const nextPageContent = moveToPage(actions, pageNumber, perPage);
-    this.setState({
-      actions: nextPageContent.data,
-      pageContent: {
-        currentPage: nextPageContent.currentPage,
-        itemsLeft: nextPageContent.itemsLeft,
-        pageCount: nextPageContent.pageCount,
-      },
-    });
-  }
 
   renderModal() {
     if (this.state.openModalForm) {
@@ -164,7 +152,22 @@ class ActionsPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
-  renderPaginator() {
+  /* 
+  goToPage(pageNumber) {
+    const { actions } = this.props;
+    const { perPage } = this.state;
+    const nextPageContent = moveToPage(actions, pageNumber, perPage);
+    this.setState({
+      actions: nextPageContent.data,
+      pageContent: {
+        currentPage: nextPageContent.currentPage,
+        itemsLeft: nextPageContent.itemsLeft,
+        pageCount: nextPageContent.pageCount,
+      },
+    });
+  }
+  */
+  /* renderPaginator() {
     const { pageContent, check_values } = this.state;
     var { actions } = this.props;
     actions = actions ? actions : [];
@@ -180,6 +183,8 @@ class ActionsPage extends React.Component {
       />
     );
   }
+  */
+
   getContentToDisplay() {
     const { mirror_actions, actions } = this.state; // items from when user is typing in search box
     const propActions = this.props.actions;
@@ -188,11 +193,11 @@ class ActionsPage extends React.Component {
     if (common) return common;
     if (actions.length === 0) {
       if (!propActions || propActions.length === 0) return null;
-      // return propActions.slice(0, this.state.perPage);
       return propActions;
     }
     return actions;
   }
+
   render() {
     
     if (!this.props.actions) {
@@ -367,6 +372,7 @@ class ActionsPage extends React.Component {
       this.setState({ mirror_actions: [], searchBoxText: value });
     }
   };
+
   // renders all the actions
   renderActions(actions) {
     if (!actions) {

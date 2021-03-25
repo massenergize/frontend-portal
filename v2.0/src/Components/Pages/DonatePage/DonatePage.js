@@ -1,6 +1,7 @@
 import React from 'react';
 import PageTitle from '../../Shared/PageTitle';
 import { connect } from 'react-redux';
+import ReactPlayer from "react-player"
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 
@@ -11,6 +12,7 @@ class DonatePage extends React.Component {
 		const pageData = this.props.donatePage;
 		if (pageData == null) return <LoadingCircle />
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'
+		const videoLink = pageData ? pageData.featured_video_link : null;
 		//const button = section(pageSections, "DonatePageButton", true);
 		return (
 			<>
@@ -27,6 +29,15 @@ class DonatePage extends React.Component {
 							:null
 						}
 						</center>
+
+						{videoLink ?
+						<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
+							{/* <Video link={videoLink} /> */}
+							<ReactPlayer url={videoLink} />
+						</div>
+						: null
+						}
+
 						<br />
 						<div className="row text-center justify-content-center">
 							<div className="col-12 col-md-6 col-lg-4">
