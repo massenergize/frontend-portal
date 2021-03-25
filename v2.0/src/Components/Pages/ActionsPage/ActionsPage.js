@@ -17,7 +17,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
-import { getPropsArrayFromJsonArray } from "../../Utils";
+import { filterTagCollections, getPropsArrayFromJsonArray } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -125,6 +125,30 @@ class ActionsPage extends React.Component {
     return rem;
   }
 
+  filterTagCollections(actions) {
+    if (!actions) return [];
+    const collections = {};
+    actions.forEach((action) => {
+      action.tags &&
+        action.tags.forEach((tag) => {
+          const name = tag.tag_collection_name;
+          const found = collections[name];
+          if (found) {
+            if (!found.alreadyIn.includes(tag.id)) {
+              collections[name].tags.push(tag);
+              collections[name].alreadyIn.push(tag.id);
+            }
+          } else {
+            collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
+          }
+        });
+    });
+    const arr = [];
+    Object.keys(collections).forEach((key) => {
+      arr.push(collections[key]);
+    });
+    return arr;
+  }
   render() {
     if (!this.props.actions) {
       return <LoadingCircle />;
@@ -139,7 +163,6 @@ class ActionsPage extends React.Component {
       );
 
     var actions = this.getContentToDisplay();
-
     actions = actions
       ? actions.sort((a, b) => {
           return a.rank - b.rank;
@@ -426,7 +449,7 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: store.page.tagCols,
+    tagCols: filterTagCollections(store.page.actions),
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,

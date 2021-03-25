@@ -80,8 +80,8 @@ class HorizontalFilterBox extends Component {
     return activeTags.filter((item) => item.collectionName === set.name)[0];
   };
   renderDifferentCollections = () => {
-    const collection = this.getCollectionSetAccordingToPage();
-    const col = this.makeTagsSystematic(collection);
+    const col = this.getCollectionSetAccordingToPage();
+    // const col = this.makeTagsSystematic(collection);
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
