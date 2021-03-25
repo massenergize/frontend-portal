@@ -55,7 +55,6 @@ class HorizontalFilterBox extends Component {
     // }
   }
 
-
   renderActiveTags() {
     const { activeTags } = this.state;
     if (!activeTags || activeTags.length === 0)
@@ -75,45 +74,66 @@ class HorizontalFilterBox extends Component {
       );
     });
   }
+  currentSelectedVal = (set) => {
+    const { activeTags } = this.state;
+    if (!activeTags) return;
+    return activeTags.filter((item) => item.collectionName === set.name)[0];
+  };
   renderDifferentCollections = () => {
-    const collection = this.getCollectionSetAccordingToPage();
-    const col = this.makeTagsSystematic(collection);
+    const col = this.getCollectionSetAccordingToPage();
+    // const col = this.makeTagsSystematic(collection);
     if (col) {
       return col.map((set, index) => {
-        // if (set.name === "Category") {
+        const selected = this.currentSelectedVal(set);
         const data = getPropsArrayFromJsonArray(set.tags, "name");
-        // const dataValues = getPropsArrayFromJsonArray(set.tags, "id");
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
               style={{ background: "transparent", marginBottom: 4 }}
-              label={<span className="h-f-label">{`${set.name}`}</span>}
+              label={
+                <span className="h-f-label">
+                  {selected
+                    ? `${selected.collectionName} : ${selected.value}`
+                    : set.name}
+                </span>
+              }
               data={data}
-              // dataValues={dataValues}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
             />
           </div>
         );
-        // }
       });
+     
     }
   };
-  render() {
+
+  clearFilters = (e) => {
+    e.preventDefault();
+    this.setState({ activeTags: [] });
+    this.props.boxClick(null, true);
+  };
+  renderClearFilter() {
+    const { activeTags } = this.state;
     return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "3px 0px 0px",
-          marginBottom: 10,
-          borderRadius: 10,
-          background: "#f1f1f1",
-          marginTop: -20,
-        }}
-        className="z-depth-sticker"
-      >
-        {this.renderDifferentCollections()}
-        <div
+      activeTags &&
+      activeTags.length > 0 && (
+        <center style={{display:"inline-block"}}>
+          <a className="filter-close" href="#void" onClick={this.clearFilters}>
+            <i className="fa fa-times-circle" style={{ marginRight: 5 }}></i>
+            Clear Filters
+          </a>
+        </center>
+      )
+    );
+  }
+  render() {
+    // const { activeTags } = this.state;
+    return (
+      <div className="hori-filter-container">
+        {this.renderClearFilter()}{this.renderDifferentCollections()}
+
+        {/* <div
           style={{
             width: "100%",
             padding: 10,
@@ -124,7 +144,7 @@ class HorizontalFilterBox extends Component {
           }}
         >
           {this.renderActiveTags()}
-        </div>
+        </div> */}
       </div>
     );
   }

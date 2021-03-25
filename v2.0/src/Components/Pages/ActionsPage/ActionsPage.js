@@ -17,7 +17,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
-import { getPropsArrayFromJsonArray } from "../../Utils";
+import { filterTagCollections, getPropsArrayFromJsonArray } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -61,7 +61,8 @@ class ActionsPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
-  addMeToSelected(param) {
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
@@ -119,11 +120,35 @@ class ActionsPage extends React.Component {
       const combined = new Set([...filters, ...actionTags]);
       // if the set of unique values of filters and action tags has the same number of elements
       // as the array of tag names of an action, it means an action qualifies for all the selected filters
-      return (combined.size === actionTags.length) && action;
+      return combined.size === actionTags.length && action;
     });
     return rem;
   }
 
+  filterTagCollections(actions) {
+    if (!actions) return [];
+    const collections = {};
+    actions.forEach((action) => {
+      action.tags &&
+        action.tags.forEach((tag) => {
+          const name = tag.tag_collection_name;
+          const found = collections[name];
+          if (found) {
+            if (!found.alreadyIn.includes(tag.id)) {
+              collections[name].tags.push(tag);
+              collections[name].alreadyIn.push(tag.id);
+            }
+          } else {
+            collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
+          }
+        });
+    });
+    const arr = [];
+    Object.keys(collections).forEach((key) => {
+      arr.push(collections[key]);
+    });
+    return arr;
+  }
   render() {
     if (!this.props.actions) {
       return <LoadingCircle />;
@@ -138,7 +163,6 @@ class ActionsPage extends React.Component {
       );
 
     var actions = this.getContentToDisplay();
-
     actions = actions
       ? actions.sort((a, b) => {
           return a.rank - b.rank;
@@ -203,8 +227,8 @@ class ActionsPage extends React.Component {
                     boxClick={this.addMeToSelected}
                   />
                   <PageTitle style={{ fontSize: 24 }}>
-                    Let us know what you have already done and pledge to do more
-                    for impact
+                    Let us know what you have already done, and pledge to do
+                    more for impact
                   </PageTitle>
 
                   <div
@@ -425,7 +449,7 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: store.page.tagCols,
+    tagCols: filterTagCollections(store.page.actions),
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,

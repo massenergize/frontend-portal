@@ -7,6 +7,29 @@
   width: 100%;
   position: relative;
 }
+
+.hori-filter-container {
+  text-align: center;
+  padding: 3px 0px 0px;
+  margin-bottom: 16px;
+  border-radius: -22px;
+  margin-top: -20px;
+  border: solid 2px #fba930;
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+
+.filter-close {
+  font-weight: bold;
+  color: #de8603;
+  font-size: medium;
+  cursor: pointer;
+}
+.filter-close:hover {
+  text-decoration: underline;
+  color: #467718;
+  transition: 0.3s ease-in-out;
+}
 .full-list-btn {
   width: 100%;
   background: #8dc343;

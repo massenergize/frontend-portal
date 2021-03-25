@@ -1,6 +1,31 @@
 import * as moment from "moment";
 import React from "react";
 
+
+export const filterTagCollections = (actions) =>{
+  if (!actions) return [];
+  const collections = {};
+  actions.forEach((action) => {
+    action.tags &&
+      action.tags.forEach((tag) => {
+        const name = tag.tag_collection_name;
+        const found = collections[name];
+        if (found) {
+          if (!found.alreadyIn.includes(tag.id)) {
+            collections[name].tags.push(tag);
+            collections[name].alreadyIn.push(tag.id);
+          }
+        } else {
+          collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
+        }
+      });
+  });
+  const arr = [];
+  Object.keys(collections).forEach((key) => {
+    arr.push(collections[key]);
+  });
+  return arr;
+}
 export const sumOfCarbonScores = (data) => {
   if (!data) return 0;
   return data
