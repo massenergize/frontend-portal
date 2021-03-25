@@ -36,6 +36,15 @@ export const sumOfCarbonScores = (data) => {
     )
     .reduce((partial_sum, a) => partial_sum + a, 0);
 };
+export const changeToProperURL = (url) => {
+  if (!url) return "#";
+  if (isAProperURL(url)) return url;
+  return "https://" + url;
+};
+export const isAProperURL = (url) => {
+  if (!url) return false;
+  return url.split("http").length > 1;
+};
 export const getHumanFriendlyDate = (dateString) => {
   if (!dateString) return null;
   return moment(dateString).format("MMMM Do YYYY ");
