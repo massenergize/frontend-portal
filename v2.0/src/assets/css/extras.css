@@ -8,6 +8,8 @@
   position: relative;
 }
 
+
+
 .hori-filter-container {
   text-align: center;
   padding: 3px 0px 0px;
@@ -113,6 +115,9 @@
 .btn-primary:not(:disabled):not(.disabled):active,
 .show > .btn-primary.dropdown-toggle {
   background: transparent !important;
+}
+.clear-drop-after::after{
+  display:none !important;
 }
 
 /* ----------------------------------------------------------------------------------------- */

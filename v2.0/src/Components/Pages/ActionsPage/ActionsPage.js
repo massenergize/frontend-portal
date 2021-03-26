@@ -22,6 +22,7 @@ import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
+import { NONE } from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -66,7 +67,7 @@ class ActionsPage extends React.Component {
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
-    if (!param || param.value !== "None") arr.push(param);
+    if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
   }
 

@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 // import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import MELightDropDown from "../Widgets/MELightDropDown";
+import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
+import METextField from "../Widgets/METextField";
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
     this.state = {
       activeTags: [],
+      dropActive: false,
     };
     this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
       this
@@ -48,7 +50,7 @@ class HorizontalFilterBox extends Component {
     activeTags = (activeTags || []).filter(
       (item) => item.collectionName !== param.collectionName
     );
-    if (param.value !== "None") activeTags.push(param);
+    if (param.value !== NONE) activeTags.push(param);
     this.setState({ activeTags });
     // if (isAlreadyIn.length === 0) {
     //   this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
@@ -79,6 +81,7 @@ class HorizontalFilterBox extends Component {
     if (!activeTags) return;
     return activeTags.filter((item) => item.collectionName === set.name)[0];
   };
+
   renderDifferentCollections = () => {
     const col = this.getCollectionSetAccordingToPage();
     // const col = this.makeTagsSystematic(collection);
@@ -92,11 +95,11 @@ class HorizontalFilterBox extends Component {
               style={{ background: "transparent", marginBottom: 4 }}
               label={
                 <span className="h-f-label">
-                  {selected
-                    ? `${selected.collectionName} : ${selected.value}`
-                    : set.name}
+                  {selected ? ` ${selected.value}` : set.name}{" "}
+                  {/* {this.renderIcon(selected)} */}
                 </span>
               }
+              labelIcon={this.renderIcon(selected)}
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
@@ -104,7 +107,6 @@ class HorizontalFilterBox extends Component {
           </div>
         );
       });
-     
     }
   };
 
@@ -118,20 +120,52 @@ class HorizontalFilterBox extends Component {
     return (
       activeTags &&
       activeTags.length > 0 && (
-        <center style={{display:"inline-block"}}>
-          <a className="filter-close" href="#void" onClick={this.clearFilters}>
-            <i className="fa fa-times-circle" style={{ marginRight: 5 }}></i>
-            Clear Filters
+        <center style={{ display: "inline-block" }}>
+          <a
+            className="filter-close me-open-in"
+            href="#void"
+            onClick={this.clearFilters}
+            style={{ position: "absolute", left: 28, top: -5 }}
+          >
+            Clear Filters{" "}
+            <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>
           </a>
         </center>
       )
     );
   }
+  renderIcon(selected) {
+    // const { dropActive } = this.state;
+    if (selected && selected.value)
+      return (
+        <span
+          onClick={() => {
+            this.onItemSelectedFromDropDown(
+              null,
+              NONE,
+              selected.collectionName
+            );
+            console.log("here we go");
+          }}
+        >
+          <i
+            className="fa fa-times-circle filter-close"
+            style={{ marginLeft: -10, textDecoration: "none" }}
+          ></i>
+        </span>
+      );
+    return <i className=" fa fa-angle-down" style={{ marginLeft: -10 }}></i>;
+  }
   render() {
     // const { activeTags } = this.state;
     return (
       <div className="hori-filter-container">
-        {this.renderClearFilter()}{this.renderDifferentCollections()}
+        {this.renderClearFilter()}
+        {this.renderDifferentCollections()}
+        <METextField
+          containerStyle={{ display: "inline-block" }}
+          style={{ display: "inline-block", borderWidth: 0 }}
+        />
 
         {/* <div
           style={{

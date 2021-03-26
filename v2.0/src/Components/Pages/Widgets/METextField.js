@@ -92,7 +92,9 @@ class METextField extends Component {
   };
 
   render() {
-    return <div>{this.ejectComponent()}</div>;
+    var { containerStyle } = this.props;
+    containerStyle = containerStyle ? containerStyle : {}
+    return <div style={containerStyle}>{this.ejectComponent()}</div>;
   }
 }
 METextField.propTypes = {
