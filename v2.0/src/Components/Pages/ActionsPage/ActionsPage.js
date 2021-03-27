@@ -37,8 +37,9 @@ class ActionsPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.state = {
-      checked_values: null,
+      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
@@ -123,37 +124,30 @@ class ActionsPage extends React.Component {
       // as the array of tag names of an action, it means an action qualifies for all the selected filters
       return combined.size === actionTags.length && action;
     });
-    return rem;
+
+    return rem.sort((a, b) => {
+      return a.rank - b.rank;
+    });
   }
 
-  filterTagCollections(actions) {
-    if (!actions) return [];
-    const collections = {};
-    actions.forEach((action) => {
-      action.tags &&
-        action.tags.forEach((tag) => {
-          const name = tag.tag_collection_name;
-          const found = collections[name];
-          if (found) {
-            if (!found.alreadyIn.includes(tag.id)) {
-              collections[name].tags.push(tag);
-              collections[name].alreadyIn.push(tag.id);
-            }
-          } else {
-            collections[name] = {
-              name: name,
-              tags: [tag],
-              alreadyIn: [tag.id],
-            };
-          }
-        });
-    });
-    const arr = [];
-    Object.keys(collections).forEach((key) => {
-      arr.push(collections[key]);
-    });
-    return arr;
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
   }
+
+  searchIsActiveSoFindContentThatMatch() {
+    const content = this.getContentToDisplay() || this.props.actions;
+    const word = this.state.searchText;
+    if (!word) return null;
+    return content.filter(
+      (action) =>
+        action.title.toLowerCase().includes(word) ||
+        action.about.toLowerCase().includes(word) ||
+        action.featured_summary.toLowerCase().includes(word) ||
+        action.deep_dive.toLowerCase().includes(word)
+    );
+  }
+
   render() {
     if (!this.props.actions) {
       return <LoadingCircle />;
@@ -167,12 +161,13 @@ class ActionsPage extends React.Component {
         />
       );
 
-    var actions = this.getContentToDisplay();
-    actions = actions
-      ? actions.sort((a, b) => {
-          return a.rank - b.rank;
-        })
-      : actions;
+    var actions =
+      this.searchIsActiveSoFindContentThatMatch() || this.getContentToDisplay();
+    // actions = actions
+    //   ? actions.sort((a, b) => {
+    //       return a.rank - b.rank;
+    //     })
+    //   : actions;
     return (
       <>
         {this.renderModal()}
@@ -227,9 +222,10 @@ class ActionsPage extends React.Component {
                   <HorizontalFilterBox
                     type="action"
                     foundNumber={this.state.mirror_actions.length}
-                    searchTextValue={this.state.searchBoxText}
+                    // searchTextValue={this.state.searchBoxText}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
+                    search={this.handleSearch}
                   />
                   <PageTitle style={{ fontSize: 24 }}>
                     Let us know what you have already done, and pledge to do

@@ -169,31 +169,15 @@ class HorizontalFilterBox extends Component {
             fontSize: "medium",
             marginLeft: 31,
           }}
+          onChange={(event) => {
+            this.props.search(event);
+          }}
           icon="fa fa-search"
           iconColor="rgb(210 210 210)"
           containerStyle={{ display: "inline-block" }}
-          style={{
-            display: "inline-block",
-            borderWidth: 0,
-            paddingLeft: 33,
-            marginLeft: 30,
-            width: "130%",
-          }}
+          className="hori-search-box"
           placeholder="Search..."
         />
-
-        {/* <div
-          style={{
-            width: "100%",
-            padding: 10,
-            background: "white",
-            minHeight: 40,
-            borderBottomRightRadius: 10,
-            borderBottomLeftRadius: 10,
-          }}
-        >
-          {this.renderActiveTags()}
-        </div> */}
       </div>
     );
   }

@@ -8,7 +8,13 @@
   position: relative;
 }
 
-
+.hori-search-box {
+  display: inline-block !important;
+  border-width: 0px !important;
+  padding-left: 33px !important;
+  margin-left: 30px !important;
+  width: 130%;
+}
 
 .hori-filter-container {
   text-align: center;
@@ -116,8 +122,8 @@
 .show > .btn-primary.dropdown-toggle {
   background: transparent !important;
 }
-.clear-drop-after::after{
-  display:none !important;
+.clear-drop-after::after {
+  display: none !important;
 }
 
 /* ----------------------------------------------------------------------------------------- */
