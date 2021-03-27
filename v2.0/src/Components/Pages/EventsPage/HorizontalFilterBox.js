@@ -163,8 +163,23 @@ class HorizontalFilterBox extends Component {
         {this.renderClearFilter()}
         {this.renderDifferentCollections()}
         <METextField
+          iconStyle={{
+            position: "absolute",
+            top: -2,
+            fontSize: "medium",
+            marginLeft: 31,
+          }}
+          icon="fa fa-search"
+          iconColor="rgb(210 210 210)"
           containerStyle={{ display: "inline-block" }}
-          style={{ display: "inline-block", borderWidth: 0 }}
+          style={{
+            display: "inline-block",
+            borderWidth: 0,
+            paddingLeft: 33,
+            marginLeft: 30,
+            width: "130%",
+          }}
+          placeholder="Search..."
         />
 
         {/* <div

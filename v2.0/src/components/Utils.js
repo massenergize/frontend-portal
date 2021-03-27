@@ -1,14 +1,25 @@
 import * as moment from "moment";
 import React from "react";
 
+/**
+ * This function takes actions and records only tags and tag categories that are 
+ * active
+ * @param {*} actions just normal arr of actions
+ * @param {*} cols original tag collection arr set that is returned by the api
+ * @returns
+ */
 
-export const filterTagCollections = (actions) =>{
+//TODO: This whole mech should probably be done in the backend
+export const filterTagCollections = (actions, cols) => {
   if (!actions) return [];
   const collections = {};
   actions.forEach((action) => {
     action.tags &&
       action.tags.forEach((tag) => {
         const name = tag.tag_collection_name;
+        // Collect the rank value from the original tag collection array to be used for sorting later (TODO:backend needs to add this)
+        const original = (cols || []).filter((set) => set.name === name)[0];
+        const rank = original && original.rank;
         const found = collections[name];
         if (found) {
           if (!found.alreadyIn.includes(tag.id)) {
@@ -16,16 +27,25 @@ export const filterTagCollections = (actions) =>{
             collections[name].alreadyIn.push(tag.id);
           }
         } else {
-          collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
+          collections[name] = {
+            name: name,
+            tags: [tag],
+            alreadyIn: [tag.id],
+            rank,
+          };
         }
       });
   });
-  const arr = [];
+  var arr = [];
   Object.keys(collections).forEach((key) => {
     arr.push(collections[key]);
   });
+  // Now sort array of tag collections based on ranks from lowest -> highest
+  arr = arr.sort((a, b) => a.rank - b.rank);
   return arr;
-}
+};
+
+
 export const sumOfCarbonScores = (data) => {
   if (!data) return 0;
   return data

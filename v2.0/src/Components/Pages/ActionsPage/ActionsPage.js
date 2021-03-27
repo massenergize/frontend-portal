@@ -140,7 +140,11 @@ class ActionsPage extends React.Component {
               collections[name].alreadyIn.push(tag.id);
             }
           } else {
-            collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
+            collections[name] = {
+              name: name,
+              tags: [tag],
+              alreadyIn: [tag.id],
+            };
           }
         });
     });
@@ -450,7 +454,8 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: filterTagCollections(store.page.actions),
+    tagCols: filterTagCollections(store.page.actions, store.page.tagCols),
+    rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
