@@ -1,6 +1,16 @@
 import * as moment from "moment";
 import React from "react";
 
+export const changeToProperURL = (url) => {
+  if (!url) return "#";
+  if (isAProperURL(url)) return url;
+  return "https://" + url;
+};
+export const isAProperURL = (url) => {
+  if (!url) return false;
+  return url.split("http").length > 1;
+}
+
 export const applyTagsAndGetContent =(content, checkedValues)=> {
   if (!checkedValues || checkedValues.length === 0) return content;
   //apply AND filter
