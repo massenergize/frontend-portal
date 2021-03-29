@@ -17,11 +17,15 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
-import { filterTagCollections, getPropsArrayFromJsonArray } from "../../Utils";
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+} from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
+import { NONE } from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -36,8 +40,9 @@ class ActionsPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.state = {
-      checked_values: null,
+      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
@@ -66,7 +71,7 @@ class ActionsPage extends React.Component {
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
-    if (!param || param.value !== "None") arr.push(param);
+    if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
   }
 
@@ -108,47 +113,26 @@ class ActionsPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
-  getContentToDisplay() {
-    const checkedValues = this.state.checked_values;
-    const { actions } = this.props;
-    // filter isnt active yet, just give user all actions
-    if (!checkedValues || checkedValues.length === 0) return actions;
-    //apply AND filter
-    const filters = getPropsArrayFromJsonArray(checkedValues, "value");
-    const rem = (actions || []).filter((action) => {
-      const actionTags = getPropsArrayFromJsonArray(action.tags, "name");
-      const combined = new Set([...filters, ...actionTags]);
-      // if the set of unique values of filters and action tags has the same number of elements
-      // as the array of tag names of an action, it means an action qualifies for all the selected filters
-      return combined.size === actionTags.length && action;
-    });
-    return rem;
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
   }
 
-  filterTagCollections(actions) {
-    if (!actions) return [];
-    const collections = {};
-    actions.forEach((action) => {
-      action.tags &&
-        action.tags.forEach((tag) => {
-          const name = tag.tag_collection_name;
-          const found = collections[name];
-          if (found) {
-            if (!found.alreadyIn.includes(tag.id)) {
-              collections[name].tags.push(tag);
-              collections[name].alreadyIn.push(tag.id);
-            }
-          } else {
-            collections[name] = { name: name, tags: [tag], alreadyIn: [tag.id] };
-          }
-        });
-    });
-    const arr = [];
-    Object.keys(collections).forEach((key) => {
-      arr.push(collections[key]);
-    });
-    return arr;
+  searchIsActiveSoFindContentThatMatch() {
+    const word = this.state.searchText;
+    if (!word) return null;
+    const content =
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values) ||
+      this.props.events;
+    return content.filter(
+      (action) =>
+        action.title.toLowerCase().includes(word) ||
+        action.about.toLowerCase().includes(word) ||
+        action.featured_summary.toLowerCase().includes(word) ||
+        action.deep_dive.toLowerCase().includes(word)
+    );
   }
+
   render() {
     if (!this.props.actions) {
       return <LoadingCircle />;
@@ -162,12 +146,9 @@ class ActionsPage extends React.Component {
         />
       );
 
-    var actions = this.getContentToDisplay();
-    actions = actions
-      ? actions.sort((a, b) => {
-          return a.rank - b.rank;
-        })
-      : actions;
+    var actions =
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
       <>
         {this.renderModal()}
@@ -222,9 +203,9 @@ class ActionsPage extends React.Component {
                   <HorizontalFilterBox
                     type="action"
                     foundNumber={this.state.mirror_actions.length}
-                    searchTextValue={this.state.searchBoxText}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
+                    search={this.handleSearch}
                   />
                   <PageTitle style={{ fontSize: 24 }}>
                     Let us know what you have already done, and pledge to do
@@ -449,7 +430,8 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: filterTagCollections(store.page.actions),
+    tagCols: filterTagCollections(store.page.actions, store.page.tagCols),
+    rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,

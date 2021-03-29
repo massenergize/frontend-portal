@@ -16,12 +16,10 @@ export default class ActionBoxCounter extends Component {
             <CountUp
               end={data ? data.length : 0}
               duration={3}
-              style={{ fontSize: 60, fontWeight: "700" }}
+              style={{ fontSize: 60, fontWeight: "700", color: "black" }}
             />
             <br />
-            <small
-              style={{ fontWeight: "600", fontSize: 21, color: "#656161" }}
-            >
+            <small style={{ fontWeight: "600", fontSize: 21, color: "black" }}>
               {type === DONE ? "Done!" : "To Do"}
             </small>
             <br />
@@ -32,20 +30,20 @@ export default class ActionBoxCounter extends Component {
             />
             <br />
             <i className="fa fa-tree box-ico"></i>{" "}
-            <small>
+            <small style={{ color: "black" }}>
               <b>Planted</b>
             </small>{" "}
             {/* <i className="fa fa-caret-right box-ico"></i> */}
             <i className="fa fa-arrow-circle-right box-ico"></i>
             <br />
-            <Link to={this.props.link} className="box-counter-label-btn">
+            {/* <Link to={this.props.link} className="box-counter-label-btn">
               Full List
-            </Link>
+            </Link> */}
           </center>
         </div>
-        {/* <button className="full-list-btn">
+        <Link to={this.props.link} className="full-list-btn">
           Full List
-        </button> */}
+        </Link>
       </div>
     );
   }

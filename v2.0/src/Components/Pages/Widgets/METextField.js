@@ -31,6 +31,18 @@ class METextField extends Component {
     onChange(e);
   };
 
+  ejectIcon() {
+    const { icon, iconSize, iconColor, iconStyle } = this.props;
+    const iconStyles = {
+      marginRight: 5,
+      color: iconColor,
+      fontSize: iconSize,
+      ...iconStyle,
+    };
+    if (icon) {
+      return <span className={`fa ${icon} me-btn-icon`} style={iconStyles} />;
+    }
+  }
 
   ejectComponent = () => {
     const {
@@ -59,7 +71,7 @@ class METextField extends Component {
           name={name}
           type={type}
           placeholder={placeholder}
-          value={defaultValue || value }
+          value={defaultValue || value}
           style={styles}
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
@@ -74,7 +86,7 @@ class METextField extends Component {
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
-          value={defaultValue || value }
+          value={defaultValue || value}
           rows={rows ? rows : "10"}
           style={styles}
           required={isRequired ? isRequired : false}
@@ -92,7 +104,14 @@ class METextField extends Component {
   };
 
   render() {
-    return <div>{this.ejectComponent()}</div>;
+    var { containerStyle } = this.props;
+    containerStyle = containerStyle ? containerStyle : {};
+    return (
+      <div style={containerStyle}>
+        {this.ejectIcon()}
+        {this.ejectComponent()}
+      </div>
+    );
   }
 }
 METextField.propTypes = {
@@ -109,7 +128,7 @@ METextField.propTypes = {
   history: PropTypes.bool,
   readonly: PropTypes.bool,
 };
- 
+
 METextField.defaultProps = {
   name: getRandomIntegerInRange(100).toString(),
   inputType: "input",
@@ -123,7 +142,10 @@ METextField.defaultProps = {
   type: "text",
   placeholder: "Enter text here...",
   readonly: false,
-  id:""
+  id: "",
+  iconStyle: {},
+  iconSize: "small",
+  iconColor: "#282828",
 };
 
 export default METextField;

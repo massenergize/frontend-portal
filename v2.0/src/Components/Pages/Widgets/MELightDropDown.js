@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Dropdown from "react-bootstrap/esm/Dropdown";
 // import PropTypes from "prop-types";
-export const NONE = "None";
+export const NONE = "------";
 export default class MELightDropDown extends Component {
   onItemSelected(e, child) {
     e.preventDefault();
@@ -38,16 +38,17 @@ export default class MELightDropDown extends Component {
     });
   }
   render() {
-    const { label, data, style } = this.props;
+    const { label, data, style, labelIcon } = this.props;
     return (
       <div>
         <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
           <Dropdown.Toggle
             style={{ padding: "9px 16px", ...style }}
-            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active"
+            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after"
           >
             {label}
           </Dropdown.Toggle>
+          {labelIcon}
           <Dropdown.Menu
             style={{
               borderTop: "5px solid #8dc63f",
