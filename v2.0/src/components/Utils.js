@@ -1,12 +1,19 @@
 import * as moment from "moment";
 import React from "react";
 
-
-export const getHumanFriendlyDate = (dateString)=>{
-  if(!dateString) return null; 
+export const changeToProperURL = (url) => {
+  if (!url) return "#";
+  if (isAProperURL(url)) return url;
+  return "https://" + url;
+};
+export const isAProperURL = (url) => {
+  if (!url) return false;
+  return url.split("http").length > 1;
+};
+export const getHumanFriendlyDate = (dateString) => {
+  if (!dateString) return null;
   return moment(dateString).format("MMMM Do YYYY ");
-
-}
+};
 export const getTextArrayAsString = (array, separationKey) => {
   if (!array || !separationKey) return "";
   let text = "";
