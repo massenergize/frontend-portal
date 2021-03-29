@@ -17,7 +17,10 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 // import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
-import { filterTagCollections, getPropsArrayFromJsonArray } from "../../Utils";
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+} from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -110,35 +113,17 @@ class ActionsPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
-  getContentToDisplay() {
-    const checkedValues = this.state.checked_values;
-    const { actions } = this.props;
-    // filter isnt active yet, just give user all actions
-    if (!checkedValues || checkedValues.length === 0) return actions;
-    //apply AND filter
-    const filters = getPropsArrayFromJsonArray(checkedValues, "value");
-    const rem = (actions || []).filter((action) => {
-      const actionTags = getPropsArrayFromJsonArray(action.tags, "name");
-      const combined = new Set([...filters, ...actionTags]);
-      // if the set of unique values of filters and action tags has the same number of elements
-      // as the array of tag names of an action, it means an action qualifies for all the selected filters
-      return combined.size === actionTags.length && action;
-    });
-
-    return rem.sort((a, b) => {
-      return a.rank - b.rank;
-    });
-  }
-
   handleSearch(e) {
     e.preventDefault();
     this.setState({ searchText: e.target.value });
   }
 
   searchIsActiveSoFindContentThatMatch() {
-    const content = this.getContentToDisplay() || this.props.actions;
     const word = this.state.searchText;
     if (!word) return null;
+    const content =
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values) ||
+      this.props.events;
     return content.filter(
       (action) =>
         action.title.toLowerCase().includes(word) ||
@@ -162,12 +147,8 @@ class ActionsPage extends React.Component {
       );
 
     var actions =
-      this.searchIsActiveSoFindContentThatMatch() || this.getContentToDisplay();
-    // actions = actions
-    //   ? actions.sort((a, b) => {
-    //       return a.rank - b.rank;
-    //     })
-    //   : actions;
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
       <>
         {this.renderModal()}
@@ -222,7 +203,6 @@ class ActionsPage extends React.Component {
                   <HorizontalFilterBox
                     type="action"
                     foundNumber={this.state.mirror_actions.length}
-                    // searchTextValue={this.state.searchBoxText}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}

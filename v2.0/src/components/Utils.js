@@ -1,6 +1,24 @@
 import * as moment from "moment";
 import React from "react";
 
+export const applyTagsAndGetContent =(content, checkedValues)=> {
+  if (!checkedValues || checkedValues.length === 0) return content;
+  //apply AND filter
+  const filters = getPropsArrayFromJsonArray(checkedValues, "value");
+  const rem = (content || []).filter((item) => {
+    const contentTags = getPropsArrayFromJsonArray(item.tags, "name");
+    const combined = new Set([...filters, ...contentTags]);
+    // if the set of unique values of filters and action tags have the same number of elements
+    // as the array of tag names of an action, it means an action qualifies for all the selected filters
+    return combined.size === contentTags.length && item;
+  });
+
+  return rem.sort((a, b) => {
+    return a.rank - b.rank;
+  });
+}
+
+
 /**
  * This function takes actions and records only tags and tag categories that are 
  * active

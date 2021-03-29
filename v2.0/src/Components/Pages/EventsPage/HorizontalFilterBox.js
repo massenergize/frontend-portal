@@ -15,23 +15,6 @@ class HorizontalFilterBox extends Component {
       this
     );
   }
-  makeTagsSystematic = (tagCols) => {
-    //arrange side filters in this order: Categories, Impact, difficulty
-    if (!tagCols) return tagCols;
-    var arr = [];
-    arr[0] = tagCols.filter((item) => item.name === "Category")[0];
-    arr[1] = tagCols.filter((item) => item.name === "Impact")[0];
-    arr[2] = tagCols.filter((item) => item.name === "Difficulty")[0];
-    var the_rest = tagCols.filter((item) => {
-      return (
-        item.name !== "Category" &&
-        item.name !== "Impact" &&
-        item.name !== "Difficulty"
-      );
-    });
-    var available = arr.filter((item) => item !== undefined);
-    return [...available, ...the_rest];
-  };
 
   // All collections are created by admins
   //all collections have an array of tags
@@ -88,7 +71,8 @@ class HorizontalFilterBox extends Component {
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
-        const data = getPropsArrayFromJsonArray(set.tags, "name");
+        const tags = set.tags.sort((a, b) => a.rank - b.rank);
+        const data = getPropsArrayFromJsonArray(tags, "name");
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
@@ -170,6 +154,7 @@ class HorizontalFilterBox extends Component {
             marginLeft: 31,
           }}
           onChange={(event) => {
+            if (!this.props.search) return;
             this.props.search(event);
           }}
           icon="fa fa-search"

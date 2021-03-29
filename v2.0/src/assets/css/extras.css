@@ -44,13 +44,15 @@
   position: absolute;
   bottom: 0;
   padding: 7px;
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
   color: white;
+  text-align: center;
 }
 
 .full-list-btn:hover {
   background: #4caf50;
+  color:white;
   transition: 0.3s ease-in-out;
 }
 
