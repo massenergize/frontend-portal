@@ -15,7 +15,11 @@ import METestimonialCard from "./METestimonialCard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
-import { applyTagsAndGetContent, filterTagCollections } from "../../Utils";
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+  searchIsActiveFindContent,
+} from "../../Utils";
 // import Paginator from "../Widgets/Paginator";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
@@ -111,17 +115,16 @@ class StoriesPage extends React.Component {
   }
 
   searchIsActiveSoFindContentThatMatch() {
-    const word = this.state.searchText;
-    if (!word) return null;
-    const content =
-      applyTagsAndGetContent(this.props.stories, this.state.checked_values) ||
-      this.props.events;
-    return content.filter(
-      (action) =>
-        action.title.toLowerCase().includes(word) ||
-        action.body.toLowerCase().includes(word)
+    return searchIsActiveFindContent(
+      this.props.stories,
+      this.state.checked_values,
+      this.state.searchText,
+      (story, word) =>
+        story.title.toLowerCase().includes(word) ||
+        story.body.toLowerCase().includes(word)
     );
   }
+  
   render() {
     console.log("i am the testimonials", this.props.stories);
     if (!this.props.pageData)
@@ -155,10 +158,7 @@ class StoriesPage extends React.Component {
                 >
                   {this.renderAddTestmonialBtn()}
                 </div>
-                <div
-                  className="col-md-9 col-lg-9 col-sm-12 "
-                 
-                > 
+                <div className="col-md-9 col-lg-9 col-sm-12 ">
                   <HorizontalFilterBox
                     type="testimonials"
                     tagCols={this.props.tagCols}

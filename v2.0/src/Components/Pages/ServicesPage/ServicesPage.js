@@ -9,7 +9,11 @@ import MECard from "../Widgets/MECard";
 import error_png from "./../../Pages/Errors/oops.png";
 // import METextView from "../Widgets/METextView";
 import { Link } from "react-router-dom";
-import { applyTagsAndGetContent, filterTagCollections } from "../../Utils";
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+  searchIsActiveFindContent,
+} from "../../Utils";
 import { NONE } from "../Widgets/MELightDropDown";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 
@@ -37,17 +41,13 @@ class ServicesPage extends React.Component {
     this.setState({ searchText: e.target.value });
   }
   searchIsActiveSoFindContentThatMatch() {
-    const word = this.state.searchText;
-    if (!word) return null;
-    const content =
-      applyTagsAndGetContent(
-        this.props.serviceProviders,
-        this.state.checked_values
-      ) || this.props.events;
-    return content.filter(
-      (action) =>
-        action.name.toLowerCase().includes(word) ||
-        action.description.toLowerCase().includes(word)
+    return searchIsActiveFindContent(
+      this.props.serviceProviders,
+      this.state.checked_values,
+      this.state.searchText,
+      (service, word) =>
+        service.name.toLowerCase().includes(word) ||
+        service.description.toLowerCase().includes(word)
     );
   }
 

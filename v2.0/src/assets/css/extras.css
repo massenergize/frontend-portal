@@ -8,6 +8,13 @@
   position: relative;
 }
 
+/* .round-filter-clear-all{ 
+  border-radius:55px; 
+  background:maroon; 
+  padding:10px; 
+  position: absolute; 
+  transform: translateX(50)
+} */
 .hori-search-box {
   display: inline-block !important;
   border-width: 0px !important;

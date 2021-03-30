@@ -13,6 +13,7 @@ import {
   dateFormatString,
   filterTagCollections,
   applyTagsAndGetContent,
+  searchIsActiveFindContent,
 } from "../../Utils";
 // import MECard from "../Widgets/MECard";
 // import METextView from "../Widgets/METextView";
@@ -52,20 +53,17 @@ class EventsPage extends React.Component {
   }
 
   searchIsActiveSoFindContentThatMatch() {
-    const word = this.state.searchText;
-    if (!word) return null;
-    const content =
-      applyTagsAndGetContent(this.props.events, this.state.checked_values) ||
-      this.props.events;
-    return content.filter(
-      (action) =>
-        action.name.toLowerCase().includes(word) ||
-        action.description.toLowerCase().includes(word) ||
-        action.featured_summary.toLowerCase().includes(word)
+    return searchIsActiveFindContent(
+      this.props.events,
+      this.state.checked_values,
+      this.state.searchText,
+      (event, word) =>
+        event.name.toLowerCase().includes(word) ||
+        event.description.toLowerCase().includes(word) ||
+        event.featured_summary.toLowerCase().includes(word)
     );
   }
   render() {
-  
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -85,7 +83,7 @@ class EventsPage extends React.Component {
       <>
         <div
           className="boxed_wrapper"
-          style={{ marginBottom: 70, height: window.screen.height - 200 }}
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
           <div className="boxed-wrapper">

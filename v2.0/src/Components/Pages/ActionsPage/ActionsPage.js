@@ -20,6 +20,7 @@ import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
   filterTagCollections,
+  searchIsActiveFindContent,
 } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
@@ -119,13 +120,11 @@ class ActionsPage extends React.Component {
   }
 
   searchIsActiveSoFindContentThatMatch() {
-    const word = this.state.searchText;
-    if (!word) return null;
-    const content =
-      applyTagsAndGetContent(this.props.actions, this.state.checked_values) ||
-      this.props.events;
-    return content.filter(
-      (action) =>
+    return searchIsActiveFindContent(
+      this.props.actions,
+      this.state.checked_values,
+      this.state.searchText,
+      (action, word) =>
         action.title.toLowerCase().includes(word) ||
         action.about.toLowerCase().includes(word) ||
         action.featured_summary.toLowerCase().includes(word) ||
@@ -155,7 +154,7 @@ class ActionsPage extends React.Component {
         <div
           className="boxed_wrapper"
           style={{
-            height: window.screen.height - 200,
+            minHeight: window.screen.height - 200,
           }}
         >
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
