@@ -41,7 +41,7 @@ export default class MELightDropDown extends Component {
     const { label, data, style, labelIcon } = this.props;
     return (
       <div>
-        <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
+        <Dropdown onSelect={() => null} style={{ display: "inline-block", padding:"0px 10px" }}>
           <Dropdown.Toggle
             style={{ padding: "9px 16px", ...style }}
             className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after"

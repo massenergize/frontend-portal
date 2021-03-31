@@ -1,7 +1,31 @@
 import * as moment from "moment";
 import React from "react";
 
-export const applyTagsAndGetContent =(content, checkedValues)=> {
+export const searchIsActiveFindContent = (
+  data,
+  activeFilters,
+  word,
+  func
+) => {
+  if (!word) return null;
+  word = word.toLowerCase();
+  const content =
+    applyTagsAndGetContent(data, activeFilters) || data;
+  if (!func) return null;
+  return content.filter((action) => func(action, word));
+};
+
+export const changeToProperURL = (url) => {
+  if (!url) return "#";
+  if (isAProperURL(url)) return url;
+  return "https://" + url;
+};
+export const isAProperURL = (url) => {
+  if (!url) return false;
+  return url.split("http").length > 1;
+};
+
+export const applyTagsAndGetContent = (content, checkedValues) => {
   if (!checkedValues || checkedValues.length === 0) return content;
   //apply AND filter
   const filters = getPropsArrayFromJsonArray(checkedValues, "value");
@@ -16,11 +40,10 @@ export const applyTagsAndGetContent =(content, checkedValues)=> {
   return rem.sort((a, b) => {
     return a.rank - b.rank;
   });
-}
-
+};
 
 /**
- * This function takes actions and records only tags and tag categories that are 
+ * This function takes actions and records only tags and tag categories that are
  * active
  * @param {*} actions just normal arr of actions
  * @param {*} cols original tag collection arr set that is returned by the api
@@ -63,7 +86,6 @@ export const filterTagCollections = (actions, cols) => {
   return arr;
 };
 
-
 export const sumOfCarbonScores = (data) => {
   if (!data) return 0;
   return data
@@ -73,15 +95,6 @@ export const sumOfCarbonScores = (data) => {
         : 0
     )
     .reduce((partial_sum, a) => partial_sum + a, 0);
-};
-export const changeToProperURL = (url) => {
-  if (!url) return "#";
-  if (isAProperURL(url)) return url;
-  return "https://" + url;
-};
-export const isAProperURL = (url) => {
-  if (!url) return false;
-  return url.split("http").length > 1;
 };
 export const getHumanFriendlyDate = (dateString) => {
   if (!dateString) return null;

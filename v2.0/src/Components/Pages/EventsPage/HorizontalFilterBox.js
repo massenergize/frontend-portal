@@ -67,7 +67,6 @@ class HorizontalFilterBox extends Component {
 
   renderDifferentCollections = () => {
     const col = this.getCollectionSetAccordingToPage();
-    // const col = this.makeTagsSystematic(collection);
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
@@ -101,21 +100,20 @@ class HorizontalFilterBox extends Component {
   };
   renderClearFilter() {
     const { activeTags } = this.state;
-    return (
-      activeTags &&
-      activeTags.length > 0 && (
-        <center style={{ display: "inline-block" }}>
-          <a
-            className="filter-close me-open-in"
-            href="#void"
-            onClick={this.clearFilters}
-            style={{ position: "absolute", left: 28, top: -5 }}
-          >
-            Clear Filters{" "}
-            <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>
-          </a>
-        </center>
-      )
+    return activeTags && activeTags.length > 0 ? (
+      <center style={{ display: "inline-block" }}>
+        <a
+          className="filter-close me-open-in"
+          href="#void"
+          onClick={this.clearFilters}
+          // style={{ position: "absolute", left: 28, top: -5 }}
+        >
+          Clear Filters{" "}
+          <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>
+        </a>
+      </center>
+    ) : (
+      <div style={{ width: 113, display: "inline-block" }}></div>
     );
   }
   renderIcon(selected) {
@@ -149,7 +147,7 @@ class HorizontalFilterBox extends Component {
         <METextField
           iconStyle={{
             position: "absolute",
-            top: -2,
+            top: 10,
             fontSize: "medium",
             marginLeft: 31,
           }}
@@ -159,7 +157,7 @@ class HorizontalFilterBox extends Component {
           }}
           icon="fa fa-search"
           iconColor="rgb(210 210 210)"
-          containerStyle={{ display: "inline-block" }}
+          containerStyle={{ display: "inline-block", position: "relative" }}
           className="hori-search-box"
           placeholder="Search..."
         />
