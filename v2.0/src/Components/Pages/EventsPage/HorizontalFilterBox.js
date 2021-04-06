@@ -1,52 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
+// import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import MELightDropDown from "../Widgets/MELightDropDown";
+import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
+import METextField from "../Widgets/METextField";
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
     this.state = {
       activeTags: [],
+      dropActive: false,
     };
     this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
       this
     );
-    this.deselectTags = this.deselectTags.bind(this);
   }
-  makeTagsSystematic = (tagCols) => {
-    //arrange side filters in this order: Categories, Impact, difficulty
-    if (!tagCols) return tagCols;
-    var arr = [];
-    arr[0] = tagCols.filter((item) => item.name === "Category")[0];
-    arr[1] = tagCols.filter((item) => item.name === "Impact")[0];
-    arr[2] = tagCols.filter((item) => item.name === "Difficulty")[0];
-    var the_rest = tagCols.filter((item) => {
-      return (
-        item.name !== "Category" &&
-        item.name !== "Impact" &&
-        item.name !== "Difficulty"
-      );
-    });
-    var available = arr.filter((item) => item !== undefined);
-    return [...available, ...the_rest];
-  };
 
-  renderTagCheckBoxes(tags) {
-    const tagNames = getPropsArrayFromJsonArray(tags, "name");
-    const tagIds = getPropsArrayFromJsonArray(tags, "id");
-    if (tags) {
-      return (
-        <MECheckBoxGroup
-          data={tagNames}
-          dataValues={tagIds}
-          className="filter-check-text-font"
-          onItemSelected={(all, id) => this.props.boxClick(id)}
-          style={{ display: "inline-block" }}
-        />
-      );
-    }
-  }
   // All collections are created by admins
   //all collections have an array of tags
   getCollectionSetAccordingToPage() {
@@ -57,67 +26,141 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(name, value) {
-    this.props.boxClick(value);
-    const { activeTags } = this.state;
-    const isAlreadyIn = activeTags.filter(
-      (item) => name === item[0] && value === item[1]
+  onItemSelectedFromDropDown(name, value, type) {
+    const param = { collectionName: type, value };
+    this.props.boxClick(param);
+    var { activeTags } = this.state;
+    activeTags = (activeTags || []).filter(
+      (item) => item.collectionName !== param.collectionName
     );
-    if (isAlreadyIn.length === 0) {
-      this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
-    }
-  }
-
-  deselectTags(tag) {
-    const { activeTags } = this.state;
-    const rem = activeTags.filter(
-      (item) => tag[0] !== item[0] && tag[1] !== item[1]
-    );
-    this.props.boxClick(tag[1]);
-    this.setState({ activeTags: rem });
+    if (param.value !== NONE) activeTags.push(param);
+    this.setState({ activeTags });
+    // if (isAlreadyIn.length === 0) {
+    //   this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
+    // }
   }
 
   renderActiveTags() {
     const { activeTags } = this.state;
-    return activeTags.map((tagArr, index) => {
+    if (!activeTags || activeTags.length === 0)
+      return <small>No filters have been applied yet</small>;
+    return activeTags.map((tagObj, index) => {
       return (
         <small
-          className="round-me h-cat-select"
+          style={{ fontWeight: "600", color: "#7cb331" }}
+          // className="round-me h-cat-select"
           key={index.toString()}
-          onClick={() => this.deselectTags(tagArr)}
+          onClick={() => this.deselectTags(tagObj)}
         >
-          {tagArr[0]} <i className="fa fa-close"></i>
+          <span style={{ color: "black" }}>{tagObj.collectionName}</span> :{" "}
+          <span>{tagObj.value}</span>
+          {index + 1 !== activeTags.length ? " , " : ""}
         </small>
       );
     });
   }
+  currentSelectedVal = (set) => {
+    const { activeTags } = this.state;
+    if (!activeTags) return;
+    return activeTags.filter((item) => item.collectionName === set.name)[0];
+  };
+
   renderDifferentCollections = () => {
-    const collection = this.getCollectionSetAccordingToPage();
-    const col = this.makeTagsSystematic(collection);
+    const col = this.getCollectionSetAccordingToPage();
     if (col) {
       return col.map((set, index) => {
-        // if (set.name === "Category") {
-        const data = getPropsArrayFromJsonArray(set.tags, "name");
-        const dataValues = getPropsArrayFromJsonArray(set.tags, "id");
+        const selected = this.currentSelectedVal(set);
+        const tags = set.tags.sort((a, b) => a.rank - b.rank);
+        const data = getPropsArrayFromJsonArray(tags, "name");
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
-              label={<span className="h-f-label">{`${set.name}`}</span>}
+              style={{ background: "transparent", marginBottom: 4 }}
+              label={
+                <span className="h-f-label">
+                  {selected ? ` ${selected.value}` : set.name}{" "}
+                  {/* {this.renderIcon(selected)} */}
+                </span>
+              }
+              labelIcon={this.renderIcon(selected)}
               data={data}
-              dataValues={dataValues}
               onItemSelected={this.onItemSelectedFromDropDown}
+              categoryType={set.name}
             />
           </div>
         );
-        // }
       });
     }
   };
+
+  clearFilters = (e) => {
+    e.preventDefault();
+    this.setState({ activeTags: [] });
+    this.props.boxClick(null, true);
+  };
+  renderClearFilter() {
+    const { activeTags } = this.state;
+    return activeTags && activeTags.length > 0 ? (
+      <center style={{ display: "inline-block" }}>
+        <a
+          className="filter-close me-open-in"
+          href="#void"
+          onClick={this.clearFilters}
+          // style={{ position: "absolute", left: 28, top: -5 }}
+        >
+          Clear Filters{" "}
+          <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>
+        </a>
+      </center>
+    ) : (
+      <div style={{ width: 113, display: "inline-block" }}></div>
+    );
+  }
+  renderIcon(selected) {
+    // const { dropActive } = this.state;
+    if (selected && selected.value)
+      return (
+        <span
+          onClick={() => {
+            this.onItemSelectedFromDropDown(
+              null,
+              NONE,
+              selected.collectionName
+            );
+            console.log("here we go");
+          }}
+        >
+          <i
+            className="fa fa-times-circle filter-close"
+            style={{ marginLeft: -10, textDecoration: "none" }}
+          ></i>
+        </span>
+      );
+    return <i className=" fa fa-angle-down" style={{ marginLeft: -10 }}></i>;
+  }
   render() {
+    // const { activeTags } = this.state;
     return (
-      <div style={{ textAlign: "center" }}>
+      <div className="hori-filter-container">
+        {this.renderClearFilter()}
         {this.renderDifferentCollections()}
-        <div>{this.renderActiveTags()}</div>
+        <METextField
+          iconStyle={{
+            position: "absolute",
+            top: 10,
+            fontSize: "medium",
+            marginLeft: 31,
+          }}
+          onChange={(event) => {
+            if (!this.props.search) return;
+            this.props.search(event);
+          }}
+          icon="fa fa-search"
+          iconColor="rgb(210 210 210)"
+          containerStyle={{ display: "inline-block", position: "relative" }}
+          className="hori-search-box"
+          placeholder="Search..."
+        />
       </div>
     );
   }

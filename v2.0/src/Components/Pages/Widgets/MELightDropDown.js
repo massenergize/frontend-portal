@@ -1,21 +1,26 @@
 import React, { Component } from "react";
 import Dropdown from "react-bootstrap/esm/Dropdown";
 // import PropTypes from "prop-types";
-
+export const NONE = "------";
 export default class MELightDropDown extends Component {
   onItemSelected(e, child) {
     e.preventDefault();
     const { onItemSelected, dataValues, data } = this.props;
     if (!onItemSelected) return;
     if (!dataValues || dataValues.length === 0) {
-      onItemSelected(child, child);
+      onItemSelected(child, child, this.props.categoryType);
       return;
     }
-    onItemSelected(child, dataValues[data.indexOf(child)]); // onItemSelected(name, value)
+    onItemSelected(
+      child,
+      dataValues[data.indexOf(child)],
+      this.props.categoryType
+    ); // onItemSelected(name, value)
   }
 
   renderChildren(data) {
     if (!data) return;
+    data = [NONE, ...data];
     return data.map((child, index) => {
       return (
         <div
@@ -33,16 +38,17 @@ export default class MELightDropDown extends Component {
     });
   }
   render() {
-    const { label, data } = this.props;
+    const { label, data, style, labelIcon } = this.props;
     return (
       <div>
-        <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
+        <Dropdown onSelect={() => null} style={{ display: "inline-block", padding:"0px 10px" }}>
           <Dropdown.Toggle
-            style={{ padding: "9px 16px" }}
-            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active"
+            style={{ padding: "9px 16px", ...style }}
+            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after"
           >
             {label}
           </Dropdown.Toggle>
+          {labelIcon}
           <Dropdown.Menu
             style={{
               borderTop: "5px solid #8dc63f",
@@ -52,12 +58,6 @@ export default class MELightDropDown extends Component {
             className="me-dropdown-theme me-anime-slide-from-top z-depth-1"
           >
             {this.renderChildren(data)}
-            {/* <Dropdown.Item className="dropdown-item  me-dropdown-theme-item force-padding-20">
-              Edit Profile
-            </Dropdown.Item>
-            <Dropdown.Item className="dropdown-item me-dropdown-theme-item force-padding-20">
-              The Other Thing
-            </Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -69,4 +69,5 @@ MELightDropDown.defaultProps = {
   label: "Clickable Header",
   data: ["Data", "Data Name", "Data Age"],
   dataValues: [],
+  style: {},
 };

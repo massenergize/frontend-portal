@@ -16,20 +16,16 @@ import {
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
-
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+  searchIsActiveFindContent,
+} from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
-// import SideBar from "../../Menu/SideBar";
-// import Action from "./Action";
-// import Cart from "../../Shared/Cart";
-// import Funnel from "../EventsPage/Funnel";
-// import MECard from "../Widgets/MECard";
-// import MELightDropDown from "../Widgets/MELightDropDown";
-// import Paginator from "../Widgets/Paginator";
-// import { moveToPage } from "../../Utils";
-// const PER_PAGE = 6;
+import { NONE } from "../Widgets/MELightDropDown";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -43,10 +39,10 @@ class ActionsPage extends React.Component {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.state = {
-      check_values: null,
+      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
@@ -63,6 +59,7 @@ class ActionsPage extends React.Component {
       mirror_actions: [],
       showTodoMsg: false,
       actions: [],
+      status: null,
       pageContent: {
         currentPage: 1,
         itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
@@ -70,19 +67,16 @@ class ActionsPage extends React.Component {
       },
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleBoxClick = this.handleBoxClick.bind(this);
-    this.findCommon = this.findCommon.bind(this);
+    this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
-  addMeToSelected(tagID) {
-    tagID = Number(tagID);
-    const arr = this.state.check_values ? this.state.check_values : [];
-    if (arr.includes(tagID)) {
-      var filtered = arr.filter((item) => item !== tagID);
-      this.setState({ check_values: filtered.length === 0 ? null : filtered });
-    } else {
-      this.setState({ check_values: [tagID, ...arr] });
-    }
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
+    var arr = this.state.checked_values ? this.state.checked_values : [];
+    // remove previously selected tag of selected category and put the new one
+    arr = arr.filter((item) => item.collectionName !== param.collectionName);
+    if (!param || param.value !== NONE) arr.push(param);
+    this.setState({ checked_values: arr });
   }
 
   handleBoxClick(id) {
@@ -152,39 +146,23 @@ class ActionsPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
-  /* 
-  goToPage(pageNumber) {
-    const { actions } = this.props;
-    const { perPage } = this.state;
-    const nextPageContent = moveToPage(actions, pageNumber, perPage);
-    this.setState({
-      actions: nextPageContent.data,
-      pageContent: {
-        currentPage: nextPageContent.currentPage,
-        itemsLeft: nextPageContent.itemsLeft,
-        pageCount: nextPageContent.pageCount,
-      },
-    });
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
   }
-  */
-  /* renderPaginator() {
-    const { pageContent, check_values } = this.state;
-    var { actions } = this.props;
-    actions = actions ? actions : [];
-    if (check_values && check_values.length > 0) return <i></i>; // dont want to show paginator when user is in search mode
-    return (
-      <Paginator
-        currentPage={pageContent.currentPage}
-        pageCount={pageContent.pageCount}
-        nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
-        prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
-        showNext={pageContent.itemsLeft !== 0 && actions.length > PER_PAGE}
-        showPrev={pageContent.currentPage > 1}
-      />
+
+  searchIsActiveSoFindContentThatMatch() {
+    return searchIsActiveFindContent(
+      this.props.actions,
+      this.state.checked_values,
+      this.state.searchText,
+      (action, word) =>
+        action.title.toLowerCase().includes(word) ||
+        action.about.toLowerCase().includes(word) ||
+        action.featured_summary.toLowerCase().includes(word) ||
+        action.deep_dive.toLowerCase().includes(word)
     );
   }
-  */
-
   getContentToDisplay() {
     const { mirror_actions, actions } = this.state; // items from when user is typing in search box
     const propActions = this.props.actions;
@@ -193,13 +171,12 @@ class ActionsPage extends React.Component {
     if (common) return common;
     if (actions.length === 0) {
       if (!propActions || propActions.length === 0) return null;
+      // return propActions.slice(0, this.state.perPage);
       return propActions;
     }
     return actions;
   }
-
   render() {
-    
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
@@ -212,20 +189,16 @@ class ActionsPage extends React.Component {
         />
       );
 
-    var actions = this.getContentToDisplay();
-
-    actions = actions
-      ? actions.sort((a, b) => {
-          return a.rank - b.rank;
-        })
-      : actions;
+    var actions =
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
       <>
         {this.renderModal()}
         <div
           className="boxed_wrapper"
           style={{
-            height: window.screen.height - 200,
+            minHeight: window.screen.height - 200,
           }}
         >
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
@@ -235,24 +208,6 @@ class ActionsPage extends React.Component {
               <div className="row">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  {/* <MECard
-                    className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
-                    style={{
-                      marginBottom: 10,
-                      padding: "45px 14px",
-                      borderRadius: 15,
-                    }}
-                  >
-                    <h4>Filter by...</h4>
-                    <Funnel
-                      type="action"
-                      search={this.handleSearch}
-                      foundNumber={this.state.mirror_actions.length}
-                      searchTextValue={this.state.searchBoxText}
-                      tagCols={this.props.tagCols}
-                      boxClick={this.handleBoxClick}
-                    />
-                  </MECard> */}
                   <div style={{ marginTop: 100 }}>
                     {this.props.user ? (
                       <div className="phone-vanish">
@@ -271,20 +226,6 @@ class ActionsPage extends React.Component {
                             this.props.links ? this.props.links.profile : "#"
                           }
                         />
-                        {/* {this.props.todo ? (
-                          <Cart
-                            title="To Do List"
-                            actionRels={this.props.todo}
-                            status="TODO"
-                          />
-                        ) : null}
-                        {this.props.done ? (
-                          <Cart
-                            title="Completed Actions"
-                            actionRels={this.props.done}
-                            status="DONE"
-                          />
-                        ) : null} */}
                       </div>
                     ) : (
                       <div>
@@ -304,25 +245,15 @@ class ActionsPage extends React.Component {
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <HorizontalFilterBox
                     type="action"
-                    search={this.handleSearch}
                     foundNumber={this.state.mirror_actions.length}
-                    searchTextValue={this.state.searchBoxText}
                     tagCols={this.props.tagCols}
-                    boxClick={this.handleBoxClick}
+                    boxClick={this.addMeToSelected}
+                    search={this.handleSearch}
                   />
-                  <PageTitle style={{fontSize:24}}>
-                    Let us know what you have already done and pledge to do more
-                    for impact
+                  <PageTitle style={{ fontSize: 24 }}>
+                    Let us know what you have already done, and pledge to do
+                    more for impact
                   </PageTitle>
-                  {/* {this.state.pageContent.pageCount > 0 ? (
-                    <center>
-                      <small>
-                        When you switch pages, images take a moment to reflect,
-                        please bear with us...
-                      </small>
-                    </center>
-                  ) : null} */}
-                  {/* {this.renderPaginator()} */}
 
                   <div
                     className="row"
@@ -330,7 +261,6 @@ class ActionsPage extends React.Component {
                     style={{ marginTop: 10 }}
                   >
                     {this.renderActions(actions)}
-                    {/* {this.renderPaginator()} */}
                   </div>
                 </div>
               </div>
@@ -341,12 +271,6 @@ class ActionsPage extends React.Component {
     );
   }
 
-  doesFieldContainWord(field, word, action) {
-    const fieldValue = action[field];
-    if (fieldValue && fieldValue.toLowerCase().includes(word.toLowerCase()))
-      return true;
-    return false;
-  }
   // on change in any category or tag checkbox update the actionsPage
   handleChange() {
     this.forceUpdate();
@@ -372,7 +296,6 @@ class ActionsPage extends React.Component {
       this.setState({ mirror_actions: [], searchBoxText: value });
     }
   };
-
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -570,7 +493,8 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: store.page.tagCols,
+    tagCols: filterTagCollections(store.page.actions, store.page.tagCols),
+    rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
