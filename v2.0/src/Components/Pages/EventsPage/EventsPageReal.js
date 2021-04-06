@@ -2,7 +2,6 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import PageTitle from "../../Shared/PageTitle";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -63,6 +62,7 @@ class EventsPage extends React.Component {
         event.featured_summary.toLowerCase().includes(word)
     );
   }
+  
   render() {
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
