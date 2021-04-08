@@ -15,7 +15,7 @@ export default class MELightDropDown extends Component {
       child,
       dataValues[data.indexOf(child)],
       this.props.categoryType
-    ); // onItemSelected(name, value)
+    );
   }
 
   renderChildren(data) {
@@ -47,8 +47,9 @@ export default class MELightDropDown extends Component {
             className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after"
           >
             {label}
+            {labelIcon}
           </Dropdown.Toggle>
-          {labelIcon}
+      
           <Dropdown.Menu
             style={{
               borderTop: "5px solid #8dc63f",

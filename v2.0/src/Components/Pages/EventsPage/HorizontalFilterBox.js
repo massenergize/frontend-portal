@@ -35,9 +35,6 @@ class HorizontalFilterBox extends Component {
     );
     if (param.value !== NONE) activeTags.push(param);
     this.setState({ activeTags });
-    // if (isAlreadyIn.length === 0) {
-    //   this.setState({ activeTags: [...activeTags, [name, value]] }); // save the name of the tag, and the value of the tag together in an arr for easy access later
-    // }
   }
 
   renderActiveTags() {
@@ -47,18 +44,30 @@ class HorizontalFilterBox extends Component {
     return activeTags.map((tagObj, index) => {
       return (
         <small
-          style={{ fontWeight: "600", color: "#7cb331" }}
-          // className="round-me h-cat-select"
+          // style={{ fontWeight: "600", color: "#7cb331" }}
+          className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
-          onClick={() => this.deselectTags(tagObj)}
+          onClick={() =>
+            this.onItemSelectedFromDropDown(null, NONE, tagObj.collectionName)
+          }
         >
-          <span style={{ color: "black" }}>{tagObj.collectionName}</span> :{" "}
-          <span>{tagObj.value}</span>
-          {index + 1 !== activeTags.length ? " , " : ""}
+          <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
+          <i className="fa fa-close" style={{ marginLeft: 3 }} />
+          {/* {index + 1 !== activeTags.length ? " , " : ""} */}
         </small>
       );
     });
   }
+
+  renderTagComponent = () => {
+    const { version } = this.props;
+    if (!version || version !== 2) return <></>;
+    return (
+      <div style={{ padding: 10, background: "#fffbf1" }}>
+        {this.renderActiveTags()}
+      </div>
+    );
+  };
   currentSelectedVal = (set) => {
     const { activeTags } = this.state;
     if (!activeTags) return;
@@ -66,19 +75,22 @@ class HorizontalFilterBox extends Component {
   };
 
   renderDifferentCollections = () => {
+    const { version } = this.props;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
         const tags = set.tags.sort((a, b) => a.rank - b.rank);
         const data = getPropsArrayFromJsonArray(tags, "name");
+        const selectedName = selected ? selected.value : set.name;
+        const cat = version && version === 2 ? set.name : selectedName;
         return (
           <div key={index.toString()} style={{ display: "inline-block" }}>
             <MELightDropDown
               style={{ background: "transparent", marginBottom: 4 }}
               label={
-                <span className="h-f-label">
-                  {selected ? ` ${selected.value}` : set.name}{" "}
+                <span className="h-f-label" style={{ textDecoration: "none" }}>
+                  {cat}
                   {/* {this.renderIcon(selected)} */}
                 </span>
               }
@@ -98,6 +110,7 @@ class HorizontalFilterBox extends Component {
     this.setState({ activeTags: [] });
     this.props.boxClick(null, true);
   };
+
   renderClearFilter() {
     const { activeTags } = this.state;
     return activeTags && activeTags.length > 0 ? (
@@ -116,30 +129,27 @@ class HorizontalFilterBox extends Component {
       <div style={{ width: 113, display: "inline-block" }}></div>
     );
   }
+
   renderIcon(selected) {
-    // const { dropActive } = this.state;
+    const { version } = this.props;
+    if (version && version === 2)
+      return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
     if (selected && selected.value)
       return (
         <span
-          onClick={() => {
-            this.onItemSelectedFromDropDown(
-              null,
-              NONE,
-              selected.collectionName
-            );
-            console.log("here we go");
-          }}
+          onClick={() =>
+            this.onItemSelectedFromDropDown(null, NONE, selected.collectionName)
+          }
         >
           <i
             className="fa fa-times-circle filter-close"
-            style={{ marginLeft: -10, textDecoration: "none" }}
+            style={{ marginLeft: 5, textDecoration: "none" }}
           ></i>
         </span>
       );
-    return <i className=" fa fa-angle-down" style={{ marginLeft: -10 }}></i>;
+    return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
   render() {
-    // const { activeTags } = this.state;
     return (
       <div className="hori-filter-container">
         {this.renderClearFilter()}
@@ -161,6 +171,7 @@ class HorizontalFilterBox extends Component {
           className="hori-search-box"
           placeholder="Search..."
         />
+        {this.renderTagComponent()}
       </div>
     );
   }
@@ -169,6 +180,10 @@ const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
   };
+};
+
+HorizontalFilterBox.defaultProps = {
+  version: 1,
 };
 
 export default connect(mapStoreToProps)(HorizontalFilterBox);

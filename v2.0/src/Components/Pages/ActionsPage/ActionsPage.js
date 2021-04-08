@@ -205,6 +205,7 @@ class ActionsPage extends React.Component {
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
+                    version={2}
                   />
                   <PageTitle style={{ fontSize: 24 }}>
                     Let us know what you have already done, and pledge to do
