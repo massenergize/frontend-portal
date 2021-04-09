@@ -131,7 +131,7 @@ class CommunitySelectPage extends React.Component {
               <p className="text-center">
                 <MEButton
                 className="me-anime-open-in"
-                  href="https://massenergize.org"
+                  href="//massenergize.org"
                   variation="accent"
                   target="_blank"
                 >

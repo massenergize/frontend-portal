@@ -101,7 +101,10 @@ class TeamsPage extends React.Component {
 
     if (teamsStats === null) {
       return (
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ minHeight: window.screen.height - 200 }}
+        >
           <LoadingCircle />
         </div>
       );
@@ -120,7 +123,10 @@ class TeamsPage extends React.Component {
           />
         )}
 
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
@@ -180,11 +186,11 @@ class TeamsPage extends React.Component {
             {teamsData.length > 0 ? (
               <>{this.renderTeams()}</>
             ) : (
-                <p>
-                  There are no teams in this community yet. You can start one by
-                  clicking the start team button above!
-                </p>
-              )}
+              <p>
+                There are no teams in this community yet. You can start one by
+                clicking the start team button above!
+              </p>
+            )}
           </div>
           <br />
         </div>
@@ -202,8 +208,8 @@ class TeamsPage extends React.Component {
           {searchedTeamsData.length > 0 ? (
             searchedTeamsData.map((teamData) => this.renderTeam(teamData))
           ) : (
-              <p>No teams match your search.</p>
-            )}
+            <p>No teams match your search.</p>
+          )}
         </>
       );
     } else {
@@ -241,7 +247,9 @@ class TeamsPage extends React.Component {
           );
         } else {
           myTeams.forEach((teamData) => {
-            teamData.subTeams.sort((a, b) => inThisTeam(user, b.team) - inThisTeam(user, a.team))
+            teamData.subTeams.sort(
+              (a, b) => inThisTeam(user, b.team) - inThisTeam(user, a.team)
+            );
           });
 
           myTeamsContent = (
@@ -281,7 +289,6 @@ class TeamsPage extends React.Component {
     return animArr[index];
   }
   renderTeam(teamData) {
-
     const { user } = this.props;
 
     const isInTeam = inTeam(user, teamData);
@@ -314,10 +321,18 @@ class TeamsPage extends React.Component {
                   >
                     {teamObj.tagline}
                   </p>
-                  {isInTeam && <p className="row team-card-description"
-                    style={{ paddingLeft: '15px', paddingRight: '10px', color: "#8dc63f" }}>
-                    &#10003; in this team {!isInThisTeam && "via a sub-team"}
-                  </p>}
+                  {isInTeam && (
+                    <p
+                      className="row team-card-description"
+                      style={{
+                        paddingLeft: "15px",
+                        paddingRight: "10px",
+                        color: "#8dc63f",
+                      }}
+                    >
+                      &#10003; in this team {!isInThisTeam && "via a sub-team"}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="col-sm-9">
@@ -336,10 +351,10 @@ class TeamsPage extends React.Component {
                       </div>
                     </>
                   ) : (
-                      <div className="team-card-column">
-                        <TeamStatsBars teamStats={teamData} />
-                      </div>
-                    )}
+                    <div className="team-card-column">
+                      <TeamStatsBars teamStats={teamData} />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -362,8 +377,8 @@ class TeamsPage extends React.Component {
               {teamData.collapsed ? (
                 <span>Expand Sub-teams &darr;</span>
               ) : (
-                  <span>Collapse Sub-teams &uarr;</span>
-                )}
+                <span>Collapse Sub-teams &uarr;</span>
+              )}
             </button>
             {!teamData.collapsed && (
               <div className="me-sub-teams-box">

@@ -159,7 +159,7 @@ export default class FormGenerator extends Component {
     this.handleFields(formObject.name, file.croppedFile);
   }
 
-  getFileUploader(formObject, key) {
+  getFileUploader(formObject, key) { 
     const { resetors } = this.state;
     return (
       <div key={key} className="small-form-spacing">

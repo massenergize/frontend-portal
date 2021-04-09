@@ -13,7 +13,7 @@ class CustomTooltip extends Component {
     });
   }
   render() {
-    const {containerStyle, contentStyle} = this.props;
+    const {containerStyle, contentStyle, paperStyle} = this.props;
     return (
       <div style={{ display: "inline-block", ...containerStyle }} className="c-tooltip-container" >
         <div
@@ -23,7 +23,7 @@ class CustomTooltip extends Component {
             ...contentStyle
           }}
         >
-          <div className="c-tooltip-text-paper  z-depth-float-half">
+          <div className="c-tooltip-text-paper  z-depth-float-half" style={paperStyle}>
             <span style={{ fontSize: 12 }}>{this.props.text}</span>
           </div>
         </div>
@@ -37,14 +37,15 @@ class CustomTooltip extends Component {
  
 
 CustomTooltip.propTypes ={
-  style: PropTypes.object
+  style: PropTypes.object, 
+  contentStyle: PropTypes.object, 
+  paperStyle: PropTypes.object
 }
-CustomTooltip.defaultProps = {
-  style:{}
-}
-export default CustomTooltip;
-
 CustomTooltip.defaultProps = {
   containerStyle:{},
-  contentStyle:{}
+  contentStyle:{}, 
+  paperStyle:{}
 }
+
+export default CustomTooltip;
+

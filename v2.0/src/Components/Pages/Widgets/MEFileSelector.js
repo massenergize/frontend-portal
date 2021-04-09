@@ -32,6 +32,7 @@ class MEFileSelector extends Component {
         y: 5,
       },
       showPrev: false,
+      defaultRemoved: false,
     };
 
     this.toggleCropperModal = this.toggleCropperModal.bind(this);
@@ -247,11 +248,7 @@ class MEFileSelector extends Component {
   }
   renderCroppingModal() {
     const { modal, src, crop } = this.state;
-    const {
-      maxHeight,
-      maxWidth,
-      extSrc,
-    } = this.props;
+    const { maxHeight, maxWidth, extSrc } = this.props;
     var source = src || extSrc;
     if (modal) {
       return (
@@ -317,10 +314,16 @@ class MEFileSelector extends Component {
     }
   }
   switchStates() {
-    const { file, croppedImageUrl, showPrev, modal } = this.state;
+    const {
+      file,
+      croppedImageUrl,
+      showPrev,
+      modal,
+      defaultRemoved,
+    } = this.state;
     const { previewStyle, defaultValue, name } = this.props;
 
-    if (!file && defaultValue) {
+    if (!file && defaultValue && !defaultRemoved) {
       return (
         <center>
           <img
@@ -329,6 +332,17 @@ class MEFileSelector extends Component {
             onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
           />
+          <br />
+          <a
+            style={{ marginTop: 6 }}
+            href="##"
+            onClick={() => {
+              this.setState({ defaultRemoved: true }); // this is jsut to give the UI change that the picture has been removed, when this component is being used to edit in a form
+              this.removeImage();
+            }}
+          >
+            Remove Image
+          </a>
           <br />
           <MEButton onClick={(e) => this.searchForImage(e)}>Change</MEButton>
         </center>

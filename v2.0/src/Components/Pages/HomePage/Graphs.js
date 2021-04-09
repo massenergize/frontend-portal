@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createCircleGraphData } from "./../../Utils";
 import { Doughnut } from "react-chartjs-2";
+import Tooltip from "../Widgets/CustomTooltip";
+//import Tooltip from "../../Shared/Tooltip";
 /** Renders the graphs on the home page and a link to the impact page
  * @props :
     graphs
@@ -96,12 +98,34 @@ class Graphs extends React.Component {
     // }
     return (
       <section className="fact-counter style-2 no-padd">
-        <h4
-          className="section-title text-center mob-cancel-title-white"
-          style={{ fontSize: 20 }}
-        >
-          Help Us Reach Our Goals
-        </h4>
+        <div className="text-center">
+        {this.props.info ? (
+          <Tooltip 
+            title={this.props.subtitle || "Help Us Meet Our Goals"} 
+            text={this.props.info}
+            dir="right"
+          >
+            <h4
+              className="section-title text-center mob-cancel-title-white"
+              style={{ fontSize: 20 }}
+            >
+              {this.props.subtitle || "Help Us Meet Our Goals"}
+              <span
+                className="fa fa-info-circle"
+                style={{ color: "#428a36", padding: "5px" }}
+              ></span>
+            </h4>
+          </Tooltip>
+        ) : (
+          <h4
+            className="section-title text-center mob-cancel-title-white"
+            style={{ fontSize: 20 }}
+          >
+            {this.props.subtitle || "Help Us Meet Our Goals"}
+          </h4>
+        )}
+        </div>
+
         <div className="container">
           <div className="row no-gutter clearfix">
             {/* {dumbycol} */}

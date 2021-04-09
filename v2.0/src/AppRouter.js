@@ -25,10 +25,10 @@ import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from "firebase/app";
+import "firebase/auth";
 
-import ErrorPage from "./components/Pages/Errors/ErrorPage"
+import ErrorPage from "./components/Pages/Errors/ErrorPage";
 
 import {
   reduxLoadCommunity,
@@ -66,6 +66,7 @@ import { reduxLoadLinks } from "./redux/actions/linkActions";
 import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
+import Help from "./components/Pages/Help/Help";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -75,15 +76,17 @@ class AppRouter extends Component {
       community: null,
     };
 
-    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(this);
+    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(
+      this
+    );
   }
 
   componentDidMount() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
-    
+
     // first set the domain for the current community
-    this.props.reduxLoadCommunity({ subdomain })
+    this.props.reduxLoadCommunity({ subdomain });
 
     this.props.reduxLoadLinks({
       home: `/${subdomain}`,
@@ -99,7 +102,7 @@ class AppRouter extends Component {
       signup: `/${subdomain}/signup`,
       profile: `/${subdomain}/profile`,
       policies: `/${subdomain}/policies`,
-      contactus: `/${subdomain}/contactus`
+      contactus: `/${subdomain}/contactus`,
     });
 
     // for lazy loading: load these first
@@ -109,11 +112,7 @@ class AppRouter extends Component {
       apiCall("menus.list", body), //should add all communities to the menus.list
     ])
       .then((res) => {
-        const [
-          communityInfoResponse,
-          homePageResponse,
-          mainMenuResponse
-        ] = res;
+        const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
         this.setState({ community: communityInfoResponse.data });
         this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
         this.props.reduxLoadHomePage(homePageResponse.data);
@@ -179,18 +178,21 @@ class AppRouter extends Component {
     await this.setStateAsync({ triedLogin: true });
     let { data } = await apiCall("auth.whoami");
     let user = null;
-    if(data){
+    if (data) {
       user = data;
-    }else{
-
-      if(this.props.auth && firebase.auth().currentUser){
-        const idToken = await firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-        const newLoggedInUserResponse = await apiCall('auth.login', {'idToken': idToken})
-        user = newLoggedInUserResponse.data
+    } else {
+      if (this.props.auth && firebase.auth().currentUser) {
+        const idToken = await firebase
+          .auth()
+          .currentUser.getIdToken(/* forceRefresh */ true);
+        const newLoggedInUserResponse = await apiCall("auth.login", {
+          idToken: idToken,
+        });
+        user = newLoggedInUserResponse.data;
       }
     }
 
-    if(user){
+    if (user) {
       // set the user in the redux state
       this.props.reduxLogin(user);
 
@@ -201,9 +203,8 @@ class AppRouter extends Component {
         eventsRsvpListResponse,
       ] = await Promise.all([
         apiCall("users.actions.todo.list", { email: user.email }),
-        apiCall("users.actions.completed.list", {  email: user.email  }),
-        apiCall("users.events.list", {  email: user.email  }),
-
+        apiCall("users.actions.completed.list", { email: user.email }),
+        apiCall("users.events.list", { email: user.email }),
       ]);
 
       if (userActionsTodoResponse && userActionsCompletedResponse) {
@@ -215,7 +216,7 @@ class AppRouter extends Component {
         console.log(`no user with this email: ${user.email}`);
         return false;
       }
-    } 
+    }
   }
 
   modifiedMenu(menu) {
@@ -229,20 +230,25 @@ class AppRouter extends Component {
 
       var newAbout = {
         name: "About Us",
-        children: [{ link: "/impact", name: "Our Impact" }, ...abtSliced, contactUsItem,
-        { name: "All MassEnergize Community Sites",
-          link: "http://" + window.location.host,
-          special: true }
-        ,]
+        children: [
+          { link: "/impact", name: "Our Impact" },
+          ...abtSliced,
+          contactUsItem,
+          {
+            name: "All MassEnergize Community Sites",
+            link: "http://" + window.location.host,
+            special: true,
+          },
+        ],
       };
-      if(menu[4]) {
-        newAbout.children = [...newAbout.children, menu.pop()]
+      if (menu[4]) {
+        newAbout.children = [...newAbout.children, menu.pop()];
       }
       menu[3] = newAbout;
     }
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
-      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams")
+      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
@@ -250,8 +256,12 @@ class AppRouter extends Component {
       menu[1] = newAction;
     }
     const actionsIndex = menu.findIndex((item) => item.name === "Actions");
-    const menuPostActions = menu.splice(actionsIndex+1);
-    menu = [...menu.splice(0,actionsIndex+1), {link: "/teams", name: "Teams"},...menuPostActions];
+    const menuPostActions = menu.splice(actionsIndex + 1);
+    menu = [
+      ...menu.splice(0, actionsIndex + 1),
+      { link: "/teams", name: "Teams" },
+      ...menuPostActions,
+    ];
     return menu;
   }
 
@@ -274,21 +284,18 @@ class AppRouter extends Component {
     }
   }
 
-  userHasAnIncompleteRegistration(){
+  userHasAnIncompleteRegistration() {
     return (
-      this.state.triedLogin && // we tried to check who this user is
-      !this.props.user && // we didnt find a profile
-      this.props.auth.uid // but we found a firebase userID.  This means they did not finish creating their profile
-    ) ||
-    (
-      this.props.auth.uid && // firebase userID is created
-      !this.props.auth.emailVerified // but user did not verify their email yet
-    )
+      (this.state.triedLogin && // we tried to check who this user is
+        !this.props.user && // we didnt find a profile
+        this.props.auth.uid) || // but we found a firebase userID.  This means they did not finish creating their profile
+      (this.props.auth.uid && // firebase userID is created
+        !this.props.auth.emailVerified) // but user did not verify their email yet
+    );
   }
 
-
-  
   render() {
+    const { subdomain } = this.props.match.params;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
@@ -297,7 +304,7 @@ class AppRouter extends Component {
 
     if (!this.state.triedLogin && !this.props.user) {
       this.getUser().then((success) => {
-        console.log(`User Logged in: ${success}`)
+        console.log(`User Logged in: ${success}`);
       });
     }
 
@@ -314,14 +321,12 @@ class AppRouter extends Component {
       finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const communitiesLink = 
-      {
-        name: "All MassEnergize Community Sites",
-        link: "http://" + window.location.host,
-        special: true,
-      }
-    ;
-    const droppyHome = [ {name: "Home", link: "/",} ];
+    const communitiesLink = {
+      name: "All MassEnergize Community Sites",
+      link: "http://" + window.location.host,
+      special: true,
+    };
+    const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
@@ -351,42 +356,56 @@ class AppRouter extends Component {
         ) : (
           <LoadingCircle />
         )}
-        {/**if theres a half finished account the only place a user can go is the register page */
-        this.userHasAnIncompleteRegistration() ? (
-          <Switch>
-            <Route component={RegisterPage} />
-          </Switch>
-        ) : (
-          <Switch>
-            <Route exact path={links.home} component={HomePage} />
-            <Route exact path={`${links.home}/home`} component={HomePage} />
-            <Route exact path={links.actions} component={ActionsPage} />
-            <Route path={links.aboutus} component={AboutUsPage} />
-            <Route exact path={links.services} component={ServicesPage} />
-            <Route path={`${links.services}/:id`} component={OneServicePage} />
-            <Route path={`${links.actions}/:id`} component={OneActionPage} />
-            <Route exact path={links.testimonials} component={StoriesPage} />
-            <Route  path={`${links.testimonials}/:id`} component={OneTestimonialPage} />
-            <Route exact path={links.teams} component={TeamsPage} />
-            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
-            <Route path={links.impact} component={ImpactPage} />
-            <Route path={links.donate} component={DonatePage} />
-            <Route exact path={links.events} component={EventsPage} />
-            <Route path={`${links.events}/:id`} component={OneEventPage} />
-            <Route path={links.signin} component={LoginPage} />
-            <Route path={links.signup} component={RegisterPage} />
-            <Route path={links.profile} component={ProfilePage} />
-            <Route path={links.policies} component={PoliciesPage} />
-            <Route path={links.contactus} component={ContactPage} />
-            <Route component={() => 
-               <ErrorPage
-                 errorMessage="Page not found"
-                 errorDescription="The page you are trying to access does not exist"
-               />
-              }
-            />
-          </Switch>
-        )}
+        {
+          /**if theres a half finished account the only place a user can go is the register page */
+          this.userHasAnIncompleteRegistration() ? (
+            <Switch>
+              <Route component={RegisterPage} />
+            </Switch>
+          ) : (
+            <Switch>
+              {/* ---- This route is a facebook app requirement. */}
+              <Route
+                path={`/${subdomain}/how-to-delete-my-data`}
+                component={Help}
+              />
+              <Route exact path={links.home} component={HomePage} />
+              <Route exact path={`${links.home}/home`} component={HomePage} />
+              <Route exact path={links.actions} component={ActionsPage} />
+              <Route path={links.aboutus} component={AboutUsPage} />
+              <Route exact path={links.services} component={ServicesPage} />
+              <Route
+                path={`${links.services}/:id`}
+                component={OneServicePage}
+              />
+              <Route path={`${links.actions}/:id`} component={OneActionPage} />
+              <Route exact path={links.testimonials} component={StoriesPage} />
+              <Route
+                path={`${links.testimonials}/:id`}
+                component={OneTestimonialPage}
+              />
+              <Route exact path={links.teams} component={TeamsPage} />
+              <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+              <Route path={links.impact} component={ImpactPage} />
+              <Route path={links.donate} component={DonatePage} />
+              <Route exact path={links.events} component={EventsPage} />
+              <Route path={`${links.events}/:id`} component={OneEventPage} />
+              <Route path={links.signin} component={LoginPage} />
+              <Route path={links.signup} component={RegisterPage} />
+              <Route path={links.profile} component={ProfilePage} />
+              <Route path={links.policies} component={PoliciesPage} />
+              <Route path={links.contactus} component={ContactPage} />
+              <Route
+                component={() => (
+                  <ErrorPage
+                    errorMessage="Page not found"
+                    errorDescription="The page you are trying to access does not exist"
+                  />
+                )}
+              />
+            </Switch>
+          )
+        }
         {this.props.menu ? (
           <Footer
             footerLinks={

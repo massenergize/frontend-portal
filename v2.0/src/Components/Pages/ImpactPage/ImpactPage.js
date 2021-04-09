@@ -17,8 +17,9 @@ class ImpactPage extends React.Component {
     let stringArr = word.split(" ");
     if (word.toLowerCase() === "home energy") return word;
     var shortWord =  stringArr[0];
-    return shortWord.replace(/,/g/""); 
+    return shortWord.replace(",",""); 
   }
+  // }
 
    
   render() {
