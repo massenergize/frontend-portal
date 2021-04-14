@@ -6,6 +6,7 @@ import {
 	LOAD_SERVICE_PROVIDERS_PAGE,
 	LOAD_TESTIMONIALS_PAGE,
 	LOAD_TEAMS_PAGE,
+	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
 	LOAD_DONATE_PAGE,
@@ -26,7 +27,7 @@ import {
 	LOAD_COMMUNITIES,
 	LOAD_TAG_COLS,
 	LOAD_COMMUNITY_DATA,
-	Load_COMMUNITY_ADMINS,
+	LOAD_COMMUNITY_ADMINS,
 	CHANGE_DATA,
 	TEAM_ADD_ACTION,
 	TEAM_REMOVE_ACTION,
@@ -98,7 +99,7 @@ export default function (state = initialState, action) {
 				...state,
 				communityData: action.payload
 			}
-		case Load_COMMUNITY_ADMINS:
+		case LOAD_COMMUNITY_ADMINS:
 			return {
 				...state,
 				communityAdmins: action.payload
@@ -167,6 +168,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				events: action.payload
+			}
+		case LOAD_TEAMS:
+			return {
+				...state,
+				teams: action.payload
 			}
 		case LOAD_SERVICE_PROVIDERS:
 			return {

@@ -19,6 +19,7 @@ import {
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
 
 /**
  * Renders the event page
@@ -64,9 +65,17 @@ class EventsPage extends React.Component {
   }
   
   render() {
+
+    const pageData = this.props.pageData;
+		if (pageData == null) return <LoadingCircle />
+
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
+
+ 		const title = pageData && pageData.title ? pageData.title : 'Events and Campaigns'
+    //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
+    const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -105,9 +114,38 @@ class EventsPage extends React.Component {
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                     />
-                    <PageTitle style={{ fontSize: 24 }}>
-                      Events and Campaigns
-                    </PageTitle>
+                    <div className="text-center">
+                      {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+ 
+                        <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+
+                        </PageTitle>
+                      </Tooltip>
+                      ) : (
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                      </PageTitle>
+                      )}
+                    </div>
+
+
+                    <center>
+						        {
+							        pageData.sub_title? 
+							        <small>{pageData.sub_title}</small>
+							        :null
+						        }
+						        </center>
+
                     <div
                       className="mob-event-cards-fix outer-box sec-padd event-style2"
                       style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
@@ -184,6 +222,7 @@ const mapStoreToProps = (store) => {
     collection: store.page.collection,
     auth: store.firebase.auth,
     user: store.user.info,
+    pageData: store.page.eventsPage,
     events: store.page.events,
     eventRSVPs: store.page.rsvps,
     links: store.links,

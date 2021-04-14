@@ -37,6 +37,7 @@ import {
   reduxLoadServiceProvidersPage,
   reduxLoadTestimonialsPage,
   reduxLoadTeamsPage,
+  reduxLoadTeams,
   reduxLoadAboutUsPage,
   reduxLoadCommunitiesStats,
   reduxLoadDonatePage,
@@ -125,12 +126,15 @@ class AppRouter extends Component {
 
     Promise.all([
       apiCall("about_us_page_settings.info", body),
+      apiCall("actions_page_settings.info", body),
       apiCall("actions.list", body),
       apiCall("graphs.actions.completed", body),
       apiCall("graphs.communities.impact", body),
       apiCall("donate_page_settings.info", body),
+      apiCall("events_page_settings.info", body),
       apiCall("events.list", body),
       apiCall("policies.list", body),
+      apiCall("teams_page_settings.info", body),     
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
       apiCall("testimonials.list", body),
@@ -139,25 +143,31 @@ class AppRouter extends Component {
       .then((res) => {
         const [
           aboutUsPageResponse,
+          actionsPageResponse,
           actionsResponse,
           actionsCompletedResponse,
           communityStatsResponse,
           donatePageResponse,
+          eventsPageResponse,
           eventsResponse,
           policiesResponse,
+          teamsPageResponse,
           teamResponse,
           tagCollectionsResponse,
           testimonialsResponse,
           vendorsResponse,
         ] = res;
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
-        this.props.reduxLoadTeamsPage(teamResponse.data);
+        this.props.reduxLoadActionsPage(actionsPageResponse.data);
         this.props.reduxLoadDonatePage(donatePageResponse.data);
+        this.props.reduxLoadEventsPage(eventsPageResponse.data);
         this.props.reduxLoadEvents(eventsResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
+        this.props.reduxLoadTeamsPage(teamsPageResponse.data);
+        this.props.reduxLoadTeams(teamResponse.data);
         this.props.reduxLoadTagCols(tagCollectionsResponse.data);
         this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
         this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
@@ -445,6 +455,7 @@ const mapDispatchToProps = {
   reduxLoadMenu,
   reduxLoadPolicies,
   reduxLoadActions,
+  reduxLoadTeams,
   reduxLoadEvents,
   reduxLoadServiceProviders,
   reduxLoadTestimonials,

@@ -2,7 +2,7 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
+import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
 // import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
@@ -259,7 +259,7 @@ class TeamInfoModal extends React.Component {
       team,
       onComplete,
       communityData,
-      reduxLoadTeamsPage,
+      reduxLoadTeams,
       reduxJoinTeam,
     } = this.props;
     var url;
@@ -288,7 +288,7 @@ class TeamInfoModal extends React.Component {
           community_id: communityData.community.id,
         });
         if (teamsStatsResponse.success) {
-          reduxLoadTeamsPage(teamsStatsResponse.data);
+          reduxLoadTeams(teamsStatsResponse.data);
         }
         onComplete(newTeam.id);
       } else {
@@ -318,7 +318,7 @@ const mapStoreToProps = (store) => {
   };
 };
 const mapDispatchToProps = {
-  reduxLoadTeamsPage,
+  reduxLoadTeams,
   reduxJoinTeam,
 };
 
