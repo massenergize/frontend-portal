@@ -141,7 +141,7 @@ class EventsPage extends React.Component {
                     <center>
 						        {
 							        pageData.sub_title? 
-							        <small>{pageData.sub_title}</small>
+							        <p>{pageData.sub_title}</p>
 							        :null
 						        }
 						        </center>
