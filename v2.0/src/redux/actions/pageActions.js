@@ -8,6 +8,7 @@ import {
 	LOAD_COMMUNITIES_STATS,
 	LOAD_DONATE_PAGE,
 	LOAD_EVENTS_PAGE,
+	LOAD_IMPACT_PAGE,
 	LOAD_MENU,
 	LOAD_POLICIES,
 	LOAD_ACTIONS,
@@ -129,6 +130,13 @@ export const reduxLoadDonatePage = (page) => dispatch => {
 export const reduxLoadEventsPage = (page) => dispatch => {
 	return dispatch({
 		type: LOAD_EVENTS_PAGE,
+		payload: page
+	})
+}
+
+export const reduxLoadImpactPage = (page) => dispatch => {
+	return dispatch({
+		type: LOAD_IMPACT_PAGE,
 		payload: page
 	})
 }

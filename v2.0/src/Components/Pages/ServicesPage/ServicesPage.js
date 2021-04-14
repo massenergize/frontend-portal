@@ -1,13 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import PageTitle from "../../Shared/PageTitle";
 import ErrorPage from "./../Errors/ErrorPage";
 import notFound from "./green-mat.jpg";
-// import Funnel from "../EventsPage/Funnel";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import MECard from "../Widgets/MECard";
 import error_png from "./../../Pages/Errors/oops.png";
-// import METextView from "../Widgets/METextView";
 import { Link } from "react-router-dom";
 import {
   applyTagsAndGetContent,
@@ -16,6 +15,9 @@ import {
 } from "../../Utils";
 import { NONE } from "../Widgets/MELightDropDown";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import Tooltip from "../Widgets/CustomTooltip";
+// import Funnel from "../EventsPage/Funnel";
+// import METextView from "../Widgets/METextView";
 
 class ServicesPage extends React.Component {
   constructor(props) {
@@ -52,7 +54,7 @@ class ServicesPage extends React.Component {
   }
 
   render() {
-    var { serviceProviders } = this.props;
+    var { serviceProviders, pageData } = this.props;
 
     if (!serviceProviders) {
       return <LoadingCircle />;
@@ -92,6 +94,10 @@ class ServicesPage extends React.Component {
       );
     }
 
+    const title = pageData && pageData.title ? pageData.title : 'Service Providers'
+    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : "Click to view each provider's services";
+    const description = pageData.description ? pageData.description : null;
+
     var vendors =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(serviceProviders, this.state.checked_values);
@@ -115,12 +121,46 @@ class ServicesPage extends React.Component {
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
                   />
-                  <h3 className="text-center" style={{ fontSize: 24 }}>
+
+                    <div className="text-center">
+                      {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+ 
+                        <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+
+                        </PageTitle>
+                      </Tooltip>
+                      ) : (
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                      </PageTitle>
+                      )}
+                    </div>
+
+
+                    <center>
+						        {
+							        sub_title? 
+							        <p>{sub_title}</p>
+							        :null
+						        }
+						        </center>
+
+                  {/*<h3 className="text-center" style={{ fontSize: 24 }}>
                     Service Providers
                   </h3>
                   <h5 className="text-center" style={{ color: "darkgray" }}>
                     Click to view each provider's services
                   </h5>
+                  */}
                 </div>
 
                 <div

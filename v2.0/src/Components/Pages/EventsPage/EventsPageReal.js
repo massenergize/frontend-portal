@@ -5,21 +5,21 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-// import CONST from '../../Constants'
-// import Funnel from "./Funnel";
-// import notFound from "./not-found.jpg";
 import {
   dateFormatString,
   filterTagCollections,
   applyTagsAndGetContent,
   searchIsActiveFindContent,
 } from "../../Utils";
-// import MECard from "../Widgets/MECard";
-// import METextView from "../Widgets/METextView";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+// import CONST from '../../Constants'
+// import Funnel from "./Funnel";
+// import notFound from "./not-found.jpg";
+// import MECard from "../Widgets/MECard";
+// import METextView from "../Widgets/METextView";
 
 /**
  * Renders the event page
@@ -74,7 +74,7 @@ class EventsPage extends React.Component {
     }
 
  		const title = pageData && pageData.title ? pageData.title : 'Events and Campaigns'
-    //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
+    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
@@ -114,6 +114,7 @@ class EventsPage extends React.Component {
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                     />
+
                     <div className="text-center">
                       {description ? (
                       <Tooltip
@@ -140,8 +141,8 @@ class EventsPage extends React.Component {
 
                     <center>
 						        {
-							        pageData.sub_title? 
-							        <p>{pageData.sub_title}</p>
+							        sub_title? 
+							        <p>{sub_title}</p>
 							        :null
 						        }
 						        </center>

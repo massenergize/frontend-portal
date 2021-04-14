@@ -42,6 +42,7 @@ import {
   reduxLoadCommunitiesStats,
   reduxLoadDonatePage,
   reduxLoadEventsPage,
+  reduxLoadImpactPage,
   reduxLoadMenu,
   reduxLoadPolicies,
   reduxLoadActions,
@@ -133,6 +134,7 @@ class AppRouter extends Component {
       apiCall("donate_page_settings.info", body),
       apiCall("events_page_settings.info", body),
       apiCall("events.list", body),
+      apiCall("impact_page_settings.info", body),
       apiCall("policies.list", body),
       apiCall("teams_page_settings.info", body),     
       apiCall("teams.stats", body),
@@ -150,6 +152,7 @@ class AppRouter extends Component {
           donatePageResponse,
           eventsPageResponse,
           eventsResponse,
+          impactPageResponse,
           policiesResponse,
           teamsPageResponse,
           teamResponse,
@@ -162,6 +165,7 @@ class AppRouter extends Component {
         this.props.reduxLoadDonatePage(donatePageResponse.data);
         this.props.reduxLoadEventsPage(eventsPageResponse.data);
         this.props.reduxLoadEvents(eventsResponse.data);
+        this.props.reduxLoadImpactPage(impactPageResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
@@ -452,6 +456,7 @@ const mapDispatchToProps = {
   reduxLoadCommunitiesStats,
   reduxLoadDonatePage,
   reduxLoadEventsPage,
+  reduxLoadImpactPage,
   reduxLoadMenu,
   reduxLoadPolicies,
   reduxLoadActions,

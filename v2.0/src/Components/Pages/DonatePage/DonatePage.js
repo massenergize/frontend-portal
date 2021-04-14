@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ReactPlayer from "react-player"
 import LoadingCircle from '../../Shared/LoadingCircle';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
+import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
 
@@ -13,14 +14,50 @@ class DonatePage extends React.Component {
 		if (pageData == null) return <LoadingCircle />
 		const title = pageData && pageData.title ? pageData.title : 'Support Us!'
 		const videoLink = pageData ? pageData.featured_video_link : null;
+		const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null
+		const description = pageData.description ? pageData.description : null;
 		//const button = section(pageSections, "DonatePageButton", true);
+
 		return (
 			<>
 
 				<div className='boxed_wrapper' >
 					<BreadCrumbBar links={[{ name: 'Donate' }]} />
+
 					<div className="container p-5">
-						<PageTitle>{title}</PageTitle>
+
+						<div className="text-center">
+                    	  {description ? (
+                    	  <Tooltip
+                    	    text={description}
+                    	    paperStyle={{ maxWidth: "100vh" }}
+                    	  >
+						  
+                    	    <PageTitle style={{ fontSize: 24 }}>
+                    	    {title}
+                    	      <span
+                    	        className="fa fa-info-circle"
+                    	        style={{ color: "#428a36", padding: "5px" }}
+                    	      ></span>
+
+                    	    </PageTitle>
+                    	  </Tooltip>
+                    	  ) : (
+                    	  <PageTitle style={{ fontSize: 24 }}>
+                    	    {title}
+                    	  </PageTitle>
+                    	  )}
+                    	</div>
+
+						<center>
+						        {
+							        sub_title? 
+							        <p>{sub_title}</p>
+							        :null
+						        }
+						</center>
+
+						{/*<PageTitle>{title}</PageTitle>
 						<center>
 							<p className="make-me-dark">{pageData && pageData.description ? pageData.description : 'Your contribution will support our MassEnergize initiative greatly. Feel free to donate any amount by clicking the button below!'}</p>
 						{
@@ -29,6 +66,7 @@ class DonatePage extends React.Component {
 							:null
 						}
 						</center>
+						*/}
 
 						{videoLink ?
 						<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
