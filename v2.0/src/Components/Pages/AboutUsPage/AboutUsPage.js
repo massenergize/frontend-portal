@@ -1,6 +1,7 @@
 import React from 'react'
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import Video from './Video'
+//import Video from './Video'
+import ReactPlayer from "react-player"
 import ErrorPage from "./../Errors/ErrorPage"
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
@@ -31,16 +32,19 @@ class AboutUsPage extends React.Component {
 				<BreadCrumbBar links={[{ name: 'About Us' }]} />
 				<div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
 					<div style={{ marginTop: 70 }}></div>
-					{videoLink ?
-						<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-							<Video link={videoLink} />
-						</div>
-						: null
-					}
 					<div className={paragraphContent ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
 						<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
 						<div className="community-about-text cool-font make-me-dark" style={{fontSize:'large', textAlign:'justify'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 					</div>
+
+					{videoLink ?
+						<div className={videoLink ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
+							{/* <Video link={videoLink} /> */}
+							<ReactPlayer url={videoLink} />
+						</div>
+						: null
+					}
+
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 						<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
 						<p className="cool-font make-me-dark">

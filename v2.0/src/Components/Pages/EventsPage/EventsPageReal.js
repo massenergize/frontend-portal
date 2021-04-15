@@ -2,24 +2,24 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import PageTitle from "../../Shared/PageTitle";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-// import CONST from '../../Constants'
-// import Funnel from "./Funnel";
-// import notFound from "./not-found.jpg";
 import {
   dateFormatString,
   filterTagCollections,
   applyTagsAndGetContent,
   searchIsActiveFindContent,
 } from "../../Utils";
-// import MECard from "../Widgets/MECard";
-// import METextView from "../Widgets/METextView";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
+// import CONST from '../../Constants'
+// import Funnel from "./Funnel";
+// import notFound from "./not-found.jpg";
+// import MECard from "../Widgets/MECard";
+// import METextView from "../Widgets/METextView";
 
 /**
  * Renders the event page
@@ -63,10 +63,19 @@ class EventsPage extends React.Component {
         event.featured_summary.toLowerCase().includes(word)
     );
   }
+  
   render() {
+
+    const pageData = this.props.pageData;
+		if (pageData == null) return <LoadingCircle />
+
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
+
+ 		const title = pageData && pageData.title ? pageData.title : 'Events and Campaigns'
+    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null;
+    const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -105,9 +114,39 @@ class EventsPage extends React.Component {
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                     />
-                    <PageTitle style={{ fontSize: 24 }}>
-                      Events and Campaigns
-                    </PageTitle>
+
+                    <div className="text-center">
+                      {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+ 
+                        <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+
+                        </PageTitle>
+                      </Tooltip>
+                      ) : (
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                      </PageTitle>
+                      )}
+                    </div>
+
+
+                    <center>
+						        {
+							        sub_title? 
+							        <p>{sub_title}</p>
+							        :null
+						        }
+						        </center>
+
                     <div
                       className="mob-event-cards-fix outer-box sec-padd event-style2"
                       style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
@@ -184,6 +223,7 @@ const mapStoreToProps = (store) => {
     collection: store.page.collection,
     auth: store.firebase.auth,
     user: store.user.info,
+    pageData: store.page.eventsPage,
     events: store.page.events,
     eventRSVPs: store.page.rsvps,
     links: store.links,
