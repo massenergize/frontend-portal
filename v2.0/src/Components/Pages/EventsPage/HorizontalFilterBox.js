@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 // import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
@@ -60,7 +61,9 @@ class HorizontalFilterBox extends Component {
   }
 
   renderTagComponent = () => {
-    const { version } = this.props;
+    var { version } = this.props;
+    version = this.getVersionToShow() || version;
+
     if (!version || version !== 2) return <></>;
     return (
       <div style={{ padding: 10, background: "#fffbf1" }}>
@@ -75,7 +78,8 @@ class HorizontalFilterBox extends Component {
   };
 
   renderDifferentCollections = () => {
-    const { version } = this.props;
+    var { version } = this.props;
+    version = this.getVersionToShow() || version;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
       return col.map((set, index) => {
@@ -131,7 +135,8 @@ class HorizontalFilterBox extends Component {
   }
 
   renderIcon(selected) {
-    const { version } = this.props;
+    var { version } = this.props;
+    version = this.getVersionToShow() || version;
     if (version && version === 2)
       return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
     if (selected && selected.value)
@@ -148,6 +153,14 @@ class HorizontalFilterBox extends Component {
         </span>
       );
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
+  }
+
+  getVersionToShow() {
+    const { match } = this.props;
+    const params = match && match.params;
+    const type = params && params.type;
+    return type && type.toLowerCase() === "bubble" ? 2 : 1;
+   
   }
   render() {
     return (
@@ -186,4 +199,5 @@ HorizontalFilterBox.defaultProps = {
   version: 1,
 };
 
-export default connect(mapStoreToProps)(HorizontalFilterBox);
+
+export default withRouter(connect(mapStoreToProps)(HorizontalFilterBox));

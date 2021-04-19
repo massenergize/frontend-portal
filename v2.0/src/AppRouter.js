@@ -136,7 +136,7 @@ class AppRouter extends Component {
       apiCall("events.list", body),
       apiCall("impact_page_settings.info", body),
       apiCall("policies.list", body),
-      apiCall("teams_page_settings.info", body),     
+      apiCall("teams_page_settings.info", body),
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
       apiCall("testimonials.list", body),
@@ -385,14 +385,44 @@ class AppRouter extends Component {
               />
               <Route exact path={links.home} component={HomePage} />
               <Route exact path={`${links.home}/home`} component={HomePage} />
+              {/* ----------------------------- DEMO ROUTES ---------------------------------- */}
+              <Route
+                exact
+                path={`${links.actions}-demo/filter/:type`}
+                component={ActionsPage}
+              />
+              <Route
+                exact
+                path={`${links.services}-demo/filter/:type`}
+                component={ServicesPage}
+              />
+
+              <Route
+                exact
+                path={`${links.testimonials}-demo/filter/:type`}
+                component={StoriesPage}
+              />
+              <Route
+                exact
+                path={`${links.events}-demo/filter/:type`}
+                component={EventsPage}
+              />
+
+              {/* ------------------------------------------------------------------------------- */}
               <Route exact path={links.actions} component={ActionsPage} />
+              <Route
+                exact
+                path={`${links.actions}/:id`}
+                component={OneActionPage}
+              />
+
               <Route path={links.aboutus} component={AboutUsPage} />
               <Route exact path={links.services} component={ServicesPage} />
               <Route
                 path={`${links.services}/:id`}
                 component={OneServicePage}
               />
-              <Route path={`${links.actions}/:id`} component={OneActionPage} />
+
               <Route exact path={links.testimonials} component={StoriesPage} />
               <Route
                 path={`${links.testimonials}/:id`}
