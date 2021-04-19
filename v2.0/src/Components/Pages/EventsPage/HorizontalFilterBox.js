@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import METextField from "../Widgets/METextField";
+export const NO_BUBBLE_VERSION = 1;
+export const BUBBLE_VERSION = 2;
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
@@ -26,7 +28,7 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(name, value, type) {
+  onItemSelectedFromDropDown(value, type) {
     const param = { collectionName: type, value };
     this.props.boxClick(param);
     var { activeTags } = this.state;
@@ -48,7 +50,7 @@ class HorizontalFilterBox extends Component {
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
           onClick={() =>
-            this.onItemSelectedFromDropDown(null, NONE, tagObj.collectionName)
+            this.onItemSelectedFromDropDown(NONE, tagObj.collectionName)
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -59,33 +61,40 @@ class HorizontalFilterBox extends Component {
     });
   }
 
-  renderTagComponent = () => {
+  renderTagComponent = (style = { padding: 10, background: "#fffbf1" }) => {
     const { version } = this.props;
     if (!version || version !== 2) return <></>;
-    return (
-      <div style={{ padding: 10, background: "#fffbf1" }}>
-        {this.renderActiveTags()}
-      </div>
-    );
+    return <div style={style}>{this.renderActiveTags()}</div>;
   };
+  /**
+   * Returns the current selected item of the category that matches @set
+   * @param {*} set  Where @set = any tag under a tagCollection
+   * @returns
+   */
   currentSelectedVal = (set) => {
     const { activeTags } = this.state;
     if (!activeTags) return;
     return activeTags.filter((item) => item.collectionName === set.name)[0];
   };
 
-  renderDifferentCollections = () => {
+  /**
+   * This method loops over the available tagCollections and
+   * returns an HTML representation of categories and the tags associated with each
+   * as dropdown
+   * @returns
+   */
+  renderDifferentCollections = (style = { display: "inline-block" }) => {
     const { version } = this.props;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
-      return col.map((set, index) => {
+      return [...col,...col].map((set, index) => {
         const selected = this.currentSelectedVal(set);
         const tags = set.tags.sort((a, b) => a.rank - b.rank);
         const data = getPropsArrayFromJsonArray(tags, "name");
         const selectedName = selected ? selected.value : set.name;
         const cat = version && version === 2 ? set.name : selectedName;
         return (
-          <div key={index.toString()} style={{ display: "inline-block" }}>
+          <div key={index.toString()} style={style}>
             <MELightDropDown
               style={{ background: "transparent", marginBottom: 4 }}
               label={
@@ -138,7 +147,7 @@ class HorizontalFilterBox extends Component {
       return (
         <span
           onClick={() =>
-            this.onItemSelectedFromDropDown(null, NONE, selected.collectionName)
+            this.onItemSelectedFromDropDown(NONE, selected.collectionName)
           }
         >
           <i
@@ -151,28 +160,56 @@ class HorizontalFilterBox extends Component {
   }
   render() {
     return (
-      <div className="hori-filter-container">
-        {this.renderClearFilter()}
-        {this.renderDifferentCollections()}
-        <METextField
-          iconStyle={{
-            position: "absolute",
-            top: 10,
-            fontSize: "medium",
-            marginLeft: 31,
-          }}
-          onChange={(event) => {
-            if (!this.props.search) return;
-            this.props.search(event);
-          }}
-          icon="fa fa-search"
-          iconColor="rgb(210 210 210)"
-          containerStyle={{ display: "inline-block", position: "relative" }}
-          className="hori-search-box"
-          placeholder="Search..."
-        />
-        {this.renderTagComponent()}
-      </div>
+      <>
+        <div className="hori-filter-container phone-vanish">
+          {this.renderClearFilter()}
+          {this.renderDifferentCollections()}
+          <METextField
+            iconStyle={{
+              position: "absolute",
+              top: 10,
+              fontSize: "medium",
+              marginLeft: 31,
+            }}
+            onChange={(event) => {
+              if (!this.props.search) return;
+              this.props.search(event);
+            }}
+            icon="fa fa-search"
+            iconColor="rgb(210 210 210)"
+            containerStyle={{ display: "inline-block", position: "relative" }}
+            className="hori-search-box"
+            placeholder="Search..."
+          />
+          {this.renderTagComponent()}
+        </div>
+        {/* --------------------- PHONE MODE ----------------- */}
+        <div className="hori-filter-container pc-vanish">
+          {/* {this.renderClearFilter()} */}
+          {/* <div style={{ overflowX:"scroll" }}> */}
+            {this.renderDifferentCollections()}
+          {/* </div> */}
+
+          {/* <METextField
+            iconStyle={{
+              position: "absolute",
+              top: 10,
+              fontSize: "medium",
+              marginLeft: 31,
+            }}
+            onChange={(event) => {
+              if (!this.props.search) return;
+              this.props.search(event);
+            }}
+            icon="fa fa-search"
+            iconColor="rgb(210 210 210)"
+            containerStyle={{ display: "block", position: "relative" }}
+            className="hori-search-box"
+            placeholder="Search..."
+          /> */}
+          {this.renderTagComponent()}
+        </div>
+      </>
     );
   }
 }

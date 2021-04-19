@@ -1,3 +1,7 @@
+.me-custom-page-title{ 
+  font-size:24;
+}
+
 .action-box-counter {
   display: inline-block;
   /* padding:15px;  */
@@ -1386,6 +1390,7 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+ 
   .mob-check-fix {
     max-width: 100% !important;
   }
@@ -1438,7 +1443,7 @@
     margin-left: 9% !important;
   }
   .phone-big-title {
-    font-size: 1.6rem !important;
+    font-size: 18px !important;
   }
   .phone-medium-title {
     font-size: 1rem !important;

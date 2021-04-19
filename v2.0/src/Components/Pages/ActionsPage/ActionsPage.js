@@ -24,7 +24,7 @@ import {
 } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
-import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import HorizontalFilterBox, { NO_BUBBLE_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 
@@ -205,9 +205,9 @@ class ActionsPage extends React.Component {
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
-                    version={2}
+                    version={NO_BUBBLE_VERSION}
                   />
-                  <PageTitle style={{ fontSize: 24 }}>
+                  <PageTitle className="me-custom-page-title">
                     Let us know what you have already done, and pledge to do
                     more for impact
                   </PageTitle>
