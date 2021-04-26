@@ -6,6 +6,7 @@ import {
 	LOAD_SERVICE_PROVIDERS_PAGE,
 	LOAD_TESTIMONIALS_PAGE,
 	LOAD_TEAMS_PAGE,
+	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
 	LOAD_DONATE_PAGE,
@@ -26,7 +27,7 @@ import {
 	LOAD_COMMUNITIES,
 	LOAD_TAG_COLS,
 	LOAD_COMMUNITY_DATA,
-	Load_COMMUNITY_ADMINS,
+	LOAD_COMMUNITY_ADMINS,
 	CHANGE_DATA,
 	TEAM_ADD_ACTION,
 	TEAM_REMOVE_ACTION,
@@ -52,6 +53,7 @@ const initialState = {
 	//objects to be loaded
 	actions: null,
 	events: null,
+	teams: null,
 	serviceProviders: null,
 	testimonials: null,
 	tagCols: null,
@@ -65,7 +67,7 @@ const initialState = {
 
 
 function alreadyInSubTeam(state, action) {
-  const teamsStats = state.teamsPage;
+  const teamsStats = state.teams;
   const teamStats = teamsStats.filter(stats => { return stats.team.id === action.payload.team.id })[0]
   const teamData = getTeamData(teamsStats, teamStats);
   return (!inThisTeam(action.user, teamData.team) && inSubTeam(action.user, teamData)) 
@@ -98,7 +100,7 @@ export default function (state = initialState, action) {
 				...state,
 				communityData: action.payload
 			}
-		case Load_COMMUNITY_ADMINS:
+		case LOAD_COMMUNITY_ADMINS:
 			return {
 				...state,
 				communityAdmins: action.payload
@@ -168,6 +170,11 @@ export default function (state = initialState, action) {
 				...state,
 				events: action.payload
 			}
+		case LOAD_TEAMS:
+			return {
+				...state,
+				teams: action.payload
+			}
 		case LOAD_SERVICE_PROVIDERS:
 			return {
 				...state,
@@ -231,7 +238,7 @@ export default function (state = initialState, action) {
     	case ADD_TEAM_MEMBER:
       		if (alreadyInSubTeam(state, action)) return state;
       
-      		team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+      		team = state.teams.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			const newTeam = {
 				...team,
 				members: team.members + 1,
@@ -242,19 +249,19 @@ export default function (state = initialState, action) {
 			}
 			return {
 				...state,
-				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.team.id }),
+				teams: [
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.team.id }),
 					newTeam
 				]
 			} 
     	case REMOVE_TEAM_MEMBER:
       		if (alreadyInSubTeam(state, action)) return state;
       
-			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.team.id })[0]
+			team = state.teams.filter(stats => { return stats.team.id === action.payload.team.id })[0]
 			return {
 				...state,
-				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.team.id }),
+				teams: [
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.team.id }),
 					{
 						...team,
 						members: team.members - 1,
@@ -268,11 +275,11 @@ export default function (state = initialState, action) {
     	case TEAM_ADD_ACTION:
       		if (alreadyInSubTeam(state, action)) return state;
 
-			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teams.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return { 
 				...state,
-				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+				teams: [
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.id }),
 					{
 						...team,
 						actions_completed: team.actions_completed + 1
@@ -282,11 +289,11 @@ export default function (state = initialState, action) {
     	case TEAM_REMOVE_ACTION:
       		if (alreadyInSubTeam(state, action)) return state;
       
-			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teams.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
 				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.id }),
 					{
 						...team,
 						actions_completed: team.actions_completed - 1,
@@ -296,11 +303,11 @@ export default function (state = initialState, action) {
     	case TEAM_ADD_HOUSEHOLD:
       		if (alreadyInSubTeam(state, action)) return;
 
-			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teams.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
-				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+				teams: [
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.id }),
 					{
 						...team,
 						households: team.households + 1
@@ -310,11 +317,11 @@ export default function (state = initialState, action) {
     	case TEAM_REMOVE_HOUSEHOLD:
       		if (alreadyInSubTeam(state, action)) return;
 
-			team = state.teamsPage.filter(stats => { return stats.team.id === action.payload.id })[0]
+			team = state.teams.filter(stats => { return stats.team.id === action.payload.id })[0]
 			return {
 				...state,
-				teamsPage: [
-					...state.teamsPage.filter(stats => { return stats.team.id !== action.payload.id }),
+				teams: [
+					...state.teams.filter(stats => { return stats.team.id !== action.payload.id }),
 					{
 						...team,
 						households: team.households - 1

@@ -11,8 +11,9 @@ import { getRandomIntegerInRange } from "../../Utils";
 import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
-import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
+import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
+import Tooltip from "../Widgets/CustomTooltip";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -76,7 +77,7 @@ class TeamsPage extends React.Component {
     try {
       const response = await apiCall("teams.stats", body);
       if (response.success) {
-        this.props.reduxLoadTeamsPage(response.data);
+        this.props.reduxLoadTeams(response.data);
       }
     } catch (e) {
       console.log(e.toString());
@@ -97,8 +98,8 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats, communityData, links } = this.props;
-
+    const { teamsStats, communityData, links, pageData } = this.props;
+    if (pageData == null) return <LoadingCircle />
     if (teamsStats === null) {
       return (
         <div
@@ -109,6 +110,9 @@ class TeamsPage extends React.Component {
         </div>
       );
     }
+    const title = pageData && pageData.title ? pageData.title : 'Teams in ' + communityData.community.name;
+    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Groups collaborating: schools, congregations, neighborhoods, sports teams, and more. Get creative!'
+    const description = pageData.description ? pageData.description : null;
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
@@ -132,15 +136,48 @@ class TeamsPage extends React.Component {
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
             style={{ margin: "auto", minHeight: "100vh" }}
           >
-            <PageTitle style={{ margin: "0 30px" }}>
+
+            <div className="text-center">
+                      {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+ 
+                        <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+
+                        </PageTitle>
+                      </Tooltip>
+                      ) : (
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                      </PageTitle>
+                      )}
+                    </div>
+
+
+                    <center>
+						        {
+							        sub_title? 
+							        <p>{sub_title}</p>
+							        :null
+						        }
+						        </center>
+
+            {/*<PageTitle style={{ margin: "0 30px" }}>
               Teams in {communityData.community.name}
             </PageTitle>
             <center>
               <p>
                 Groups collaborating: schools, congregations, neighborhoods,
                 sports teams, and more. Get creative!
-              </p>
-
+                  </p>*/}
+            <center>
               <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-9">
                   <METextField
@@ -403,12 +440,13 @@ class TeamsPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    teamsStats: store.page.teamsPage,
+    teamsStats: store.page.teams,
     links: store.links,
     communityData: store.page.homePage,
+    pageData: store.page.teamsPage,
   };
 };
 const mapDispatchToProps = {
-  reduxLoadTeamsPage,
+  reduxLoadTeams,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);
