@@ -624,8 +624,8 @@ class ProfilePage extends React.Component {
     if (!teams) return null;
 
     const currentCommunityTeamIDs =
-      this.props.teamsPage &&
-      this.props.teamsPage.map((teamStats) => teamStats.team.id);
+      this.props.teams &&
+      this.props.teams.map((teamStats) => teamStats.team.id);
     const inThisCommunity = (team) =>
       currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 

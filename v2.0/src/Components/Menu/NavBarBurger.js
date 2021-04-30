@@ -472,6 +472,7 @@ class SubMenuItem extends React.Component {
               e.preventDefault();
               window.location = item.link;
             }}
+            href="#"
           >
             {item.name}
           </MenuItem>
