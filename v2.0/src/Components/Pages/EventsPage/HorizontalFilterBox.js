@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 // import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
+// import MEModal from "../Widgets/MEModal";
+// import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
+import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 export const NO_BUBBLE_VERSION = 1;
 export const BUBBLE_VERSION = 2;
 class HorizontalFilterBox extends Component {
@@ -87,7 +90,7 @@ class HorizontalFilterBox extends Component {
     const { version } = this.props;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
-      return [...col,...col].map((set, index) => {
+      return [...col, ...col].map((set, index) => {
         const selected = this.currentSelectedVal(set);
         const tags = set.tags.sort((a, b) => a.rank - b.rank);
         const data = getPropsArrayFromJsonArray(tags, "name");
@@ -114,12 +117,68 @@ class HorizontalFilterBox extends Component {
     }
   };
 
+  renderBarsButton() {
+    const col = this.getCollectionSetAccordingToPage();
+    if (col.length > 3 || true)
+      // @TODO remove true when you are done
+      return (
+        <button
+          className="custom-bars-btn"
+          onClick={() => this.setState({ showMore: true })}
+        >
+          <i className="fa fa-bars"></i> <small>More</small>
+        </button>
+      );
+  }
+
+  renderMoreModal() {
+    const { showMore } = this.state;
+    if (showMore)
+      return (
+        <MobileModeFilterModal
+          data={this.getCollectionSetAccordingToPage()}
+          activeTags={this.state.activeTags}
+          currentSelectedVal ={this.currentSelectedVal}
+        />
+      );
+  }
+  renderPhoneCollections = (style = { display: "inline-block" }) => {
+    const { version } = this.props;
+    var col = this.getCollectionSetAccordingToPage();
+    col = (col || []).length > 3 ? col.slice(0, 2) : col;
+    if (col) {
+      return col.map((set, index) => {
+        const selected = this.currentSelectedVal(set);
+        const tags = set.tags.sort((a, b) => a.rank - b.rank);
+        const data = getPropsArrayFromJsonArray(tags, "name");
+        const selectedName = selected ? selected.value : set.name;
+        const cat = version && version === 2 ? set.name : selectedName;
+        return (
+          <div key={index.toString()} style={style}>
+            <MELightDropDown
+              style={{ background: "transparent", marginBottom: 4 }}
+              label={
+                <span className="h-f-label" style={{ textDecoration: "none" }}>
+                  {cat.length > 10 ? cat.slice(0, 7) + "..." : cat}
+                  {/* {this.renderIcon(selected)} */}
+                </span>
+              }
+              labelIcon={this.renderIcon(selected)}
+              data={data}
+              onItemSelected={this.onItemSelectedFromDropDown}
+              categoryType={set.name}
+            />
+          </div>
+        );
+      });
+    }
+  };
+
   clearFilters = (e) => {
     e.preventDefault();
     this.setState({ activeTags: [] });
     this.props.boxClick(null, true);
   };
-
   renderClearFilter() {
     const { activeTags } = this.state;
     return activeTags && activeTags.length > 0 ? (
@@ -158,9 +217,11 @@ class HorizontalFilterBox extends Component {
       );
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
+
   render() {
     return (
       <>
+        {this.renderMoreModal()}
         <div className="hori-filter-container phone-vanish">
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
@@ -187,7 +248,8 @@ class HorizontalFilterBox extends Component {
         <div className="hori-filter-container pc-vanish">
           {/* {this.renderClearFilter()} */}
           {/* <div style={{ overflowX:"scroll" }}> */}
-            {this.renderDifferentCollections()}
+          {this.renderPhoneCollections()}
+          {this.renderBarsButton()}
           {/* </div> */}
 
           {/* <METextField
