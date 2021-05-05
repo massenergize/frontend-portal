@@ -19,6 +19,7 @@ class HorizontalFilterBox extends Component {
     this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
       this
     );
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   // All collections are created by admins
@@ -138,7 +139,11 @@ class HorizontalFilterBox extends Component {
         <MobileModeFilterModal
           data={this.getCollectionSetAccordingToPage()}
           activeTags={this.state.activeTags}
-          currentSelectedVal ={this.currentSelectedVal}
+          currentSelectedVal={this.currentSelectedVal}
+          onItemSelected={this.onItemSelectedFromDropDown}
+          clearAll={this.clearFilters}
+          NONE={NONE}
+          close={() => this.setState({ showMore: false })}
         />
       );
   }
