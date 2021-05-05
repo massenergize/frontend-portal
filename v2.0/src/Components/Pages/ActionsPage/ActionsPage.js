@@ -187,7 +187,7 @@ class ActionsPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : "Actions";
     //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
-    const description = pageData.description ? pageData.description : null;
+    const description = pageData && pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
