@@ -136,10 +136,12 @@ class AppRouter extends Component {
       apiCall("events.list", body),
       apiCall("impact_page_settings.info", body),
       apiCall("policies.list", body),
-      apiCall("teams_page_settings.info", body),     
+      apiCall("teams_page_settings.info", body),
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
+      apiCall("testimonials_page_settings.info", body),
       apiCall("testimonials.list", body),
+      apiCall("vendors_page_settings.info", body),
       apiCall("vendors.list", body),
     ])
       .then((res) => {
@@ -157,7 +159,9 @@ class AppRouter extends Component {
           teamsPageResponse,
           teamResponse,
           tagCollectionsResponse,
+          testimonialsPageResponse,
           testimonialsResponse,
+          vendorsPageResponse,
           vendorsResponse,
         ] = res;
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -167,7 +171,9 @@ class AppRouter extends Component {
         this.props.reduxLoadEvents(eventsResponse.data);
         this.props.reduxLoadImpactPage(impactPageResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
+        this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
+        this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
         this.props.reduxLoadTeamsPage(teamsPageResponse.data);
@@ -378,7 +384,7 @@ class AppRouter extends Component {
             </Switch>
           ) : (
             <Switch>
-              {/* ---- This route is a facebook app requirement. */}
+              {/* ---- This route is a facebook app requirement. -------- */}
               <Route
                 path={`/${subdomain}/how-to-delete-my-data`}
                 component={Help}
@@ -386,13 +392,19 @@ class AppRouter extends Component {
               <Route exact path={links.home} component={HomePage} />
               <Route exact path={`${links.home}/home`} component={HomePage} />
               <Route exact path={links.actions} component={ActionsPage} />
+              <Route
+                exact
+                path={`${links.actions}/:id`}
+                component={OneActionPage}
+              />
+
               <Route path={links.aboutus} component={AboutUsPage} />
               <Route exact path={links.services} component={ServicesPage} />
               <Route
                 path={`${links.services}/:id`}
                 component={OneServicePage}
               />
-              <Route path={`${links.actions}/:id`} component={OneActionPage} />
+
               <Route exact path={links.testimonials} component={StoriesPage} />
               <Route
                 path={`${links.testimonials}/:id`}

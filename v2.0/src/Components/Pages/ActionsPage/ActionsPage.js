@@ -108,7 +108,6 @@ class ActionsPage extends React.Component {
     return common;
   }
 
-
   renderModal() {
     if (this.state.openModalForm) {
       return (
@@ -164,6 +163,7 @@ class ActionsPage extends React.Component {
         action.deep_dive.toLowerCase().includes(word)
     );
   }
+
   getContentToDisplay() {
     const { mirror_actions, actions } = this.state; // items from when user is typing in search box
     const propActions = this.props.actions;
@@ -178,18 +178,16 @@ class ActionsPage extends React.Component {
     return actions;
   }
   render() {
-
     const pageData = this.props.pageData;
-    console.log(pageData);
-		if (pageData == null) return <LoadingCircle />
-    
+    if (pageData == null) return <LoadingCircle />;
+
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
 
-    const title = pageData && pageData.title ? pageData.title : 'Actions'
+    const title = pageData && pageData.title ? pageData.title : "Actions";
     //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
-    const description = pageData.description ? pageData.description : null;
+    const description = pageData && pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -259,36 +257,30 @@ class ActionsPage extends React.Component {
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
-                    version={2}
                   />
                   <div className="text-center">
-                  {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                   <PageTitle style={{ fontSize: 24 }}>
-                    {title}
-                    <span
-                    className="fa fa-info-circle"
-                    style={{ color: "#428a36", padding: "5px" }}
-                  ></span>
-
-                  </PageTitle>
-                  </Tooltip>
-                  ) : (
-                    <PageTitle style={{ fontSize: 24 }}>
-                    {title}
-                  </PageTitle>
-                  )}
+                    {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+                        <PageTitle style={{ fontSize: 24 }}>
+                          {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+                        </PageTitle>
+                      </Tooltip>
+                    ) : (
+                      <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                    )}
                   </div>
                   <center>
-						        {
-							        pageData.sub_title ? 
-							        <small>{pageData.sub_title}</small>
-							        :null
-						        }
-						      </center>
+                    {pageData.sub_title ? (
+                      <small>{pageData.sub_title}</small>
+                    ) : null}
+                  </center>
 
                   <div
                     className="row"
@@ -521,7 +513,6 @@ class ActionsPage extends React.Component {
   }
 }
 const mapStoreToProps = (store) => {
-  console.log(store.page);
   return {
     homePageData: store.page.homePage,
     auth: store.firebase.auth,

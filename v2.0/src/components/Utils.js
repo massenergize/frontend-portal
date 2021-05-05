@@ -1,16 +1,20 @@
 import * as moment from "moment";
 import React from "react";
 
-export const searchIsActiveFindContent = (
-  data,
-  activeFilters,
-  word,
-  func
-) => {
+export const getFilterVersionFromURL = (location, paramName) => {
+  if (!location || !location.search) return "";
+  const search = location.search;
+  var broken = search.slice(1, search.length);
+  broken = broken.split("=");
+  var found = broken.filter((item) => item.toLowerCase() === "filter")[0];
+  if (!found) return "";
+  return broken[broken.indexOf(found) + 1];
+};
+
+export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
   if (!word) return null;
   word = word.toLowerCase();
-  const content =
-    applyTagsAndGetContent(data, activeFilters) || data;
+  const content = applyTagsAndGetContent(data, activeFilters) || data;
   if (!func) return null;
   return content.filter((action) => func(action, word));
 };

@@ -8,11 +8,10 @@ export default class MELightDropDown extends Component {
     const { onItemSelected, dataValues, data } = this.props;
     if (!onItemSelected) return;
     if (!dataValues || dataValues.length === 0) {
-      onItemSelected(child, child, this.props.categoryType);
+      onItemSelected( child, this.props.categoryType);
       return;
     }
     onItemSelected(
-      child,
       dataValues[data.indexOf(child)],
       this.props.categoryType
     );
@@ -43,8 +42,8 @@ export default class MELightDropDown extends Component {
       <div>
         <Dropdown onSelect={() => null} style={{ display: "inline-block", padding:"0px 10px" }}>
           <Dropdown.Toggle
-            style={{ padding: "9px 16px", ...style }}
-            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after"
+            style={{  ...style }}
+            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after me-light-drop-fine-tune"
           >
             {label}
             {labelIcon}
