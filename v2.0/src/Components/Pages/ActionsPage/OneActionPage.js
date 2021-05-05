@@ -650,7 +650,7 @@ class OneActionPage extends React.Component {
                   </button>
                 </li>
               ) : null}
-              {action.deep_dive && action.deep_dive !== "<p><br></p>" ? (
+              {action.deep_dive && action.deep_dive.length > 12 ? (
                 <li
                   id="deeptab"
                   className={this.state.tab === "deep" ? "active" : ""}

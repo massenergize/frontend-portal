@@ -14,7 +14,6 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-// import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
 import PageTitle from "../../Shared/PageTitle";
 import {
@@ -24,9 +23,10 @@ import {
 } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
-import HorizontalFilterBox, { NO_BUBBLE_VERSION } from "../EventsPage/HorizontalFilterBox";
+import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -61,8 +61,12 @@ class ActionsPage extends React.Component {
       showTodoMsg: false,
       actions: [],
       status: null,
+      pageContent: {
+        currentPage: 1,
+        itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
+        pageCount: 0,
+      },
     };
-    // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -74,6 +78,34 @@ class ActionsPage extends React.Component {
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
     if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
+  }
+
+  handleBoxClick(id) {
+    // var id = event.target.value;
+    this.addMeToSelected(id);
+  }
+
+  findCommon() {
+    const actions = this.props.actions;
+    const values = this.state.check_values ? this.state.check_values : [];
+    if (values.length === 0) return null;
+
+    const common = [];
+    if (actions) {
+      for (let i = 0; i < actions.length; i++) {
+        const action = actions[i];
+        const actionTags = (action && action.tags) || [];
+        for (let j = 0; j < actionTags.length; j++) {
+          const tag = actionTags[j];
+          if (tag) {
+            if (values.includes(tag.id) && !common.includes(action)) {
+              common.push(action);
+            }
+          }
+        }
+      }
+    }
+    return common;
   }
 
   renderModal() {
@@ -132,10 +164,30 @@ class ActionsPage extends React.Component {
     );
   }
 
+  getContentToDisplay() {
+    const { mirror_actions, actions } = this.state; // items from when user is typing in search box
+    const propActions = this.props.actions;
+    const common = this.findCommon();
+    if (mirror_actions.length > 0) return mirror_actions;
+    if (common) return common;
+    if (actions.length === 0) {
+      if (!propActions || propActions.length === 0) return null;
+      // return propActions.slice(0, this.state.perPage);
+      return propActions;
+    }
+    return actions;
+  }
   render() {
+    const pageData = this.props.pageData;
+    if (pageData == null) return <LoadingCircle />;
+
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
+
+    const title = pageData && pageData.title ? pageData.title : "Actions";
+    //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
+    const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -205,12 +257,30 @@ class ActionsPage extends React.Component {
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
-                    version={NO_BUBBLE_VERSION}
                   />
-                  <PageTitle className="me-custom-page-title">
-                    Let us know what you have already done, and pledge to do
-                    more for impact
-                  </PageTitle>
+                  <div className="text-center">
+                    {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+                        <PageTitle style={{ fontSize: 24 }}>
+                          {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+                        </PageTitle>
+                      </Tooltip>
+                    ) : (
+                      <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                    )}
+                  </div>
+                  <center>
+                    {pageData.sub_title ? (
+                      <small>{pageData.sub_title}</small>
+                    ) : null}
+                  </center>
 
                   <div
                     className="row"
@@ -232,7 +302,27 @@ class ActionsPage extends React.Component {
   handleChange() {
     this.forceUpdate();
   }
-
+  handleSearch = (event) => {
+    const value = event.target.value;
+    const actions = this.props.actions;
+    const common = [];
+    if (value.trim() !== "") {
+      for (let i = 0; i < actions.length; i++) {
+        const ac = actions[i];
+        if (
+          this.doesFieldContainWord("title", value, ac) ||
+          this.doesFieldContainWord("deep_dive", value, ac) ||
+          this.doesFieldContainWord("steps_to_take", value, ac) ||
+          this.doesFieldContainWord("about", value, ac)
+        ) {
+          common.push(ac);
+        }
+      }
+      this.setState({ mirror_actions: [...common], searchBoxText: value });
+    } else {
+      this.setState({ mirror_actions: [], searchBoxText: value });
+    }
+  };
   // renders all the actions
   renderActions(actions) {
     if (!actions) {

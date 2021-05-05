@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 // import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
+import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
-export const NO_BUBBLE_VERSION = 1;
-export const BUBBLE_VERSION = 2;
+export const FILTER_BAR_VERSION = "filter_bar_version";
+// const OPTION1 = "option1";
+const OPTION2 = "option2";
+
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
@@ -67,7 +70,8 @@ class HorizontalFilterBox extends Component {
   }
 
   renderTagComponent = (style = { padding: 10, background: "#fffbf1" }) => {
-    const { version } = this.props;
+    const version = this.getVersionToShow();
+
     if (!version || version !== 2) return <></>;
     return <div style={style}>{this.renderActiveTags()}</div>;
   };
@@ -82,14 +86,9 @@ class HorizontalFilterBox extends Component {
     return activeTags.filter((item) => item.collectionName === set.name)[0];
   };
 
-  /**
-   * This method loops over the available tagCollections and
-   * returns an HTML representation of categories and the tags associated with each
-   * as dropdown
-   * @returns
-   */
   renderDifferentCollections = (style = { display: "inline-block" }) => {
-    const { version } = this.props;
+    var { version } = this.props;
+    version = this.getVersionToShow() || version;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
       return col.map((set, index) => {
@@ -204,7 +203,7 @@ class HorizontalFilterBox extends Component {
   }
 
   renderIcon(selected) {
-    const { version } = this.props;
+    const version = this.getVersionToShow();
     if (version && version === 2)
       return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
     if (selected && selected.value)
@@ -223,6 +222,11 @@ class HorizontalFilterBox extends Component {
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
 
+  getVersionToShow() {
+    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
+    if (version === OPTION2) return 2;
+    return 1;
+  }
   render() {
     return (
       <>
@@ -306,4 +310,4 @@ HorizontalFilterBox.defaultProps = {
   version: 1,
 };
 
-export default connect(mapStoreToProps)(HorizontalFilterBox);
+export default withRouter(connect(mapStoreToProps)(HorizontalFilterBox));

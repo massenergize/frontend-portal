@@ -26,7 +26,12 @@ export default class ActionBoxCounter extends Component {
             <CountUp
               end={sumOfCarbonScores(data)}
               duration={2}
-              style={{ fontWeight: "600", margin: 10, fontSize: 26 }}
+              style={{
+                fontWeight: "600",
+                margin: 10,
+                fontSize: 26,
+                color: "black",
+              }}
             />
             <br />
             <i className="fa fa-tree box-ico"></i>{" "}

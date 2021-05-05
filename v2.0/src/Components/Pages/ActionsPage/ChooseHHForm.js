@@ -9,10 +9,6 @@ import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import METextView from "../Widgets/METextView";
 import { apiCall } from "./../../../api/functions";
 
-/********************************************************************/
-/**                        RSVP FORM                               **/
-/********************************************************************/
-
 class ChooseHHForm extends React.Component {
   constructor(props) {
     super(props);

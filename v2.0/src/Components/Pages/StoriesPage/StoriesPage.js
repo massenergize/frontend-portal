@@ -2,16 +2,12 @@ import React from "react";
 // import LoadingCircle from "../../Shared/LoadingCircle";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import ErrorPage from "./../Errors/ErrorPage";
+import LoadingCircle from "../../Shared/LoadingCircle";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
-// import Funnel from "./../EventsPage/Funnel";
-// import leafy from "./leafy.png";
 import StoryModal from "./StoryModal";
-// import * as moment from "moment";
 import METestimonialCard from "./METestimonialCard";
-// import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
@@ -20,9 +16,15 @@ import {
   filterTagCollections,
   searchIsActiveFindContent,
 } from "../../Utils";
-// import Paginator from "../Widgets/Paginator";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
+//import ErrorPage from "./../Errors/ErrorPage";
+// import Funnel from "./../EventsPage/Funnel";
+// import leafy from "./leafy.png";
+// import * as moment from "moment";
+// import MECard from "../Widgets/MECard";
+// import Paginator from "../Widgets/Paginator";
 // import { inThisTeam } from "../TeamsPage/utils";
 // import MEFileSelector from "../Widgets/MEFileSelector";
 
@@ -126,16 +128,28 @@ class StoriesPage extends React.Component {
   }
   
   render() {
-    console.log("i am the testimonials", this.props.stories);
-    if (!this.props.pageData)
-      return (
-        <ErrorPage
-          errorMessage="Data unavailable"
-          errorDescription="Unable to load Testimonials data"
-        />
-      );
 
-    const stories =
+
+      const pageData = this.props.pageData;
+      if (pageData == null) return <LoadingCircle />
+  
+      if (!this.props.events || !this.props.tagCols) {
+        return <LoadingCircle />;
+      }
+
+      //if (!this.props.pageData)
+      //return (
+      //  <ErrorPage
+      //    errorMessage="Data unavailable"
+      //    errorDescription="Unable to load Testimonials data"
+      //  />
+      //);
+  
+      const title = pageData && pageData.title ? pageData.title : 'Testimonials'
+      const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null;
+      const description = pageData.description ? pageData.description : null;
+  
+      const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
 
@@ -165,7 +179,40 @@ class StoriesPage extends React.Component {
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
                   />
-                  <PageTitle style={{ fontSize: 24 }}>Testimonials</PageTitle>
+
+                    <div className="text-center">
+                      {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+ 
+                        <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+
+                        </PageTitle>
+                      </Tooltip>
+                      ) : (
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                      </PageTitle>
+                      )}
+                    </div>
+
+
+                    <center>
+						        {
+							        sub_title? 
+							        <p>{sub_title}</p>
+							        :null
+						        }
+						        </center>
+
+
                   <div
                     className="row"
                     style={{
