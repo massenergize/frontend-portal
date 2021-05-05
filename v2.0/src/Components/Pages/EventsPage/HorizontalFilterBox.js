@@ -15,6 +15,7 @@ class HorizontalFilterBox extends Component {
     this.state = {
       activeTags: [],
       dropActive: false,
+      showSearch: false,
     };
     this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
       this
@@ -91,7 +92,7 @@ class HorizontalFilterBox extends Component {
     const { version } = this.props;
     const col = this.getCollectionSetAccordingToPage();
     if (col) {
-      return [...col, ...col].map((set, index) => {
+      return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
         const tags = set.tags.sort((a, b) => a.rank - b.rank);
         const data = getPropsArrayFromJsonArray(tags, "name");
@@ -121,7 +122,6 @@ class HorizontalFilterBox extends Component {
   renderBarsButton() {
     const col = this.getCollectionSetAccordingToPage();
     if (col.length > 3 || true)
-      // @TODO remove true when you are done
       return (
         <button
           className="custom-bars-btn"
@@ -250,31 +250,47 @@ class HorizontalFilterBox extends Component {
           {this.renderTagComponent()}
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
-        <div className="hori-filter-container pc-vanish">
-          {/* {this.renderClearFilter()} */}
-          {/* <div style={{ overflowX:"scroll" }}> */}
-          {this.renderPhoneCollections()}
-          {this.renderBarsButton()}
-          {/* </div> */}
+        <div className="pc-vanish" style={{ marginBottom: 10 }}>
+          <div className="hori-filter-container">
+            {/* {this.renderClearFilter()} */}
+            {/* <div style={{ overflowX:"scroll" }}> */}
+            {this.renderPhoneCollections()}
+            <span
+              onClick={() =>
+                this.setState({ showSearch: !this.state.showSearch })
+              }
+            >
+              <i
+                className="fa fa-search custom-bars-btn"
+                style={{ padding: 10 }}
+              ></i>
+            </span>
+            {this.renderBarsButton()}
 
-          {/* <METextField
-            iconStyle={{
-              position: "absolute",
-              top: 10,
-              fontSize: "medium",
-              marginLeft: 31,
-            }}
-            onChange={(event) => {
-              if (!this.props.search) return;
-              this.props.search(event);
-            }}
-            icon="fa fa-search"
-            iconColor="rgb(210 210 210)"
-            containerStyle={{ display: "block", position: "relative" }}
-            className="hori-search-box"
-            placeholder="Search..."
-          /> */}
-          {this.renderTagComponent()}
+            {this.renderTagComponent()}
+          </div>
+          {this.state.showSearch && (
+            <METextField
+              onChange={(event) => {
+                if (!this.props.search) return;
+                this.props.search(event);
+              }}
+              iconColor="rgb(210 210 210)"
+              containerStyle={{
+                position: "relative",
+                border: "dotted 0px orange",
+                borderBottomWidth: 2,
+              }}
+              style={{
+                padding: "0px 20px",
+                fontSize: 14,
+                marginBottom: 0,
+                marginTop: -10,
+                border: 0,
+              }}
+              placeholder="Search..."
+            />
+          )}
         </div>
       </>
     );

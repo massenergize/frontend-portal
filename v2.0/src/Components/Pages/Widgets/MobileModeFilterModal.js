@@ -14,7 +14,7 @@ export default class MobileModeFilterModal extends React.Component {
       clearAll,
       onItemSelected,
       NONE,
-      close,
+      close
     } = this.props;
     return (
       <MEModal
