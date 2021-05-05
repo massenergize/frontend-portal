@@ -272,7 +272,7 @@ class TeamInfoModal extends React.Component {
     data = { ...data, community_id: communityData.community.id };
     try {
       // this.setState({ loading: true });
-      const teamResponse = await apiCall(url, data);
+      const teamResponse = await apiCall(url, data);    
       if (teamResponse.success) {
         this.setState({
           notification: {
@@ -313,7 +313,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsStats: store.page.teamsPage,
+    teamsStats: store.page.teams,
     communityData: store.page.homePage,
   };
 };

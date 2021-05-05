@@ -24,8 +24,9 @@ export default class ActionBoxCounter extends Component {
             </small>
             <br />
             <CountUp
-              end={sumOfCarbonScores(data)}
-              duration={2}
+              end={sumOfCarbonScores(data) / 2200}
+              duration={1}
+              decimals={1}
               style={{
                 fontWeight: "600",
                 margin: 10,
@@ -34,12 +35,12 @@ export default class ActionBoxCounter extends Component {
               }}
             />
             <br />
-            <i className="fa fa-tree box-ico"></i>{" "}
+            {/* ADD BACK WHEN WORKING <i className="fa fa-tree box-ico"></i>{" "} */}
             <small style={{ color: "black" }}>
-              <b>Planted</b>
+              <b>Tons CO2</b>
             </small>{" "}
             {/* <i className="fa fa-caret-right box-ico"></i> */}
-            <i className="fa fa-arrow-circle-right box-ico"></i>
+            {/* ADD BACK ONCE OPERATIVE  <i className="fa fa-arrow-circle-right box-ico"></i> */}
             <br />
             {/* <Link to={this.props.link} className="box-counter-label-btn">
               Full List

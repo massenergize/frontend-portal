@@ -489,7 +489,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsStats: store.page.teamsPage,
+    teamsStats: store.page.teams,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);
