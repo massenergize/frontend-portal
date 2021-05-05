@@ -210,7 +210,10 @@ class HorizontalFilterBox extends Component {
       return (
         <span
           onClick={() =>
-            this.onItemSelectedFromDropDown(NONE, selected.collectionName)
+            this.onItemSelectedFromDropDown(
+              NONE,
+              selected && selected.collectionName
+            )
           }
         >
           <i

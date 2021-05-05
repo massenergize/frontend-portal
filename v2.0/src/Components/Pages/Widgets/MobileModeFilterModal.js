@@ -14,7 +14,7 @@ export default class MobileModeFilterModal extends React.Component {
       clearAll,
       onItemSelected,
       NONE,
-      close
+      close,
     } = this.props;
     return (
       <MEModal
@@ -53,7 +53,7 @@ export default class MobileModeFilterModal extends React.Component {
                     className={` accordion-clear`}
                     key={index.toString()}
                     onClick={() =>
-                      onItemSelected(NONE, selected.collectionName)
+                      onItemSelected(NONE, selected && selected.collectionName)
                     }
                   >
                     {NONE}
