@@ -139,7 +139,9 @@ class AppRouter extends Component {
       apiCall("teams_page_settings.info", body),
       apiCall("teams.stats", body),
       apiCall("tag_collections.list", body),
+      apiCall("testimonials_page_settings.info", body),
       apiCall("testimonials.list", body),
+      apiCall("vendors_page_settings.info", body),
       apiCall("vendors.list", body),
     ])
       .then((res) => {
@@ -157,7 +159,9 @@ class AppRouter extends Component {
           teamsPageResponse,
           teamResponse,
           tagCollectionsResponse,
+          testimonialsPageResponse,
           testimonialsResponse,
+          vendorsPageResponse,
           vendorsResponse,
         ] = res;
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -167,7 +171,9 @@ class AppRouter extends Component {
         this.props.reduxLoadEvents(eventsResponse.data);
         this.props.reduxLoadImpactPage(impactPageResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
+        this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
+        this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
         this.props.reduxLoadTeamsPage(teamsPageResponse.data);
