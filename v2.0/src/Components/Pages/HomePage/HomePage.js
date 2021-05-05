@@ -7,11 +7,18 @@ import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 import { IS_SANDBOX } from "../../../config";
+import { getFilterVersionFromURL } from "../../Utils";
+import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
-/*
+/*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  componentDidMount() {
+    const version = getFilterVersionFromURL(this.props.location);
+    if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+  }
+
   render() {
     if (!this.props.pageData) {
       return (

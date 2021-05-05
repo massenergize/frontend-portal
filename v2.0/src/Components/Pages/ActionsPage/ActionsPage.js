@@ -163,6 +163,8 @@ class ActionsPage extends React.Component {
         action.deep_dive.toLowerCase().includes(word)
     );
   }
+
+  
   getContentToDisplay() {
     const { mirror_actions, actions } = this.state; // items from when user is typing in search box
     const propActions = this.props.actions;

@@ -5,6 +5,10 @@ import { withRouter } from "react-router";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import METextField from "../Widgets/METextField";
+export const FILTER_BAR_VERSION = "filter_bar_version";
+// const OPTION1 = "option1";
+const OPTION2 = "option2";
+
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
@@ -61,8 +65,7 @@ class HorizontalFilterBox extends Component {
   }
 
   renderTagComponent = () => {
-    var { version } = this.props;
-    version = this.getVersionToShow() || version;
+    const version = this.getVersionToShow();
 
     if (!version || version !== 2) return <></>;
     return (
@@ -135,8 +138,7 @@ class HorizontalFilterBox extends Component {
   }
 
   renderIcon(selected) {
-    var { version } = this.props;
-    version = this.getVersionToShow() || version;
+    const version = this.getVersionToShow();
     if (version && version === 2)
       return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
     if (selected && selected.value)
@@ -156,11 +158,9 @@ class HorizontalFilterBox extends Component {
   }
 
   getVersionToShow() {
-    const { match } = this.props;
-    const params = match && match.params;
-    const type = params && params.type;
-    return type && type.toLowerCase() === "bubble" ? 2 : 1;
-   
+    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
+    if (version === OPTION2) return 2;
+    return 1;
   }
   render() {
     return (
@@ -198,6 +198,5 @@ const mapStoreToProps = (store) => {
 HorizontalFilterBox.defaultProps = {
   version: 1,
 };
-
 
 export default withRouter(connect(mapStoreToProps)(HorizontalFilterBox));

@@ -378,37 +378,13 @@ class AppRouter extends Component {
             </Switch>
           ) : (
             <Switch>
-              {/* ---- This route is a facebook app requirement. */}
+              {/* ---- This route is a facebook app requirement. -------- */}
               <Route
                 path={`/${subdomain}/how-to-delete-my-data`}
                 component={Help}
               />
               <Route exact path={links.home} component={HomePage} />
               <Route exact path={`${links.home}/home`} component={HomePage} />
-              {/* ----------------------------- DEMO ROUTES ---------------------------------- */}
-              <Route
-                exact
-                path={`${links.actions}-demo/filter/:type`}
-                component={ActionsPage}
-              />
-              <Route
-                exact
-                path={`${links.services}-demo/filter/:type`}
-                component={ServicesPage}
-              />
-
-              <Route
-                exact
-                path={`${links.testimonials}-demo/filter/:type`}
-                component={StoriesPage}
-              />
-              <Route
-                exact
-                path={`${links.events}-demo/filter/:type`}
-                component={EventsPage}
-              />
-
-              {/* ------------------------------------------------------------------------------- */}
               <Route exact path={links.actions} component={ActionsPage} />
               <Route
                 exact
