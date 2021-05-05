@@ -274,7 +274,7 @@ class HorizontalFilterBox extends Component {
             </span>
             {this.renderBarsButton()}
 
-            {this.renderTagComponent()}
+            {/* {this.renderTagComponent()} */}
           </div>
           {this.state.showSearch && (
             <METextField
