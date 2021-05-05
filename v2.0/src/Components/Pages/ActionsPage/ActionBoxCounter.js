@@ -24,10 +24,15 @@ export default class ActionBoxCounter extends Component {
             </small>
             <br />
             <CountUp
-              end={sumOfCarbonScores(data)/2200.}
+              end={sumOfCarbonScores(data) / 2200}
               duration={1}
               decimals={1}
-              style={{ fontWeight: "600", margin: 10, fontSize: 26 }}
+              style={{
+                fontWeight: "600",
+                margin: 10,
+                fontSize: 26,
+                color: "black",
+              }}
             />
             <br />
             {/* ADD BACK WHEN WORKING <i className="fa fa-tree box-ico"></i>{" "} */}

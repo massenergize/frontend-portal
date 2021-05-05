@@ -5,11 +5,11 @@ import React from "react";
  */
 export default class PageTitle extends React.Component {
   render() {
-    const { style } = this.props;
+    const { style, className } = this.props;
     return (
       <div className="row text-center justify-content-center mb-5 zero-margin-btm">
         <h2
-          className="cool-font phone-big-title"
+          className={`cool-font phone-big-title ${className}`}
           style={{ marginBottom: 10, ...style }}
         >
           {this.props.children}
