@@ -121,7 +121,7 @@ class HorizontalFilterBox extends Component {
 
   renderBarsButton() {
     const col = this.getCollectionSetAccordingToPage();
-    if (col.length > 3 || true)
+    if (col.length > 3)
       return (
         <button
           className="custom-bars-btn"
