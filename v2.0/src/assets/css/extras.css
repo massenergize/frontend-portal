@@ -1,3 +1,17 @@
+.phone-search-input {
+  width: 100%;
+  margin: 4px;
+  border: solid 0px grey;
+  border-radius: 55px;
+  padding: 8px 20px;
+  margin-bottom: 30px;
+  margin-top: -25px;
+  font-size: 14px;
+  box-shadow: 1px 1px 4px 0px rgb(0 0 0 / 7%), 0 2px 4px 0 rgb(0 0 0 / 3%);
+  -webkit-box-shadow: 1px 1px 4px 0px rgb(0 0 0 / 7%),
+    0 2px 4px 0 rgb(0 0 0 / 3%);
+}
+
 .me-custom-page-title {
   font-size: 24px;
 }
@@ -31,7 +45,6 @@
   background: green;
   color: white;
   border-color: white;
-  
 }
 
 .accordion-item:active {
@@ -115,17 +128,6 @@
   padding-left: 33px !important;
   margin-left: 30px !important;
   width: 130%;
-}
-
-.hori-filter-container {
-  text-align: center;
-  padding: 3px 0px 0px;
-  margin-bottom: 16px;
-  border-radius: -22px;
-  margin-top: -20px;
-  border: solid 2px #fba930;
-  border-left-width: 0px;
-  border-right-width: 0px;
 }
 
 .filter-close {
@@ -1390,6 +1392,16 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .hori-filter-container {
+    text-align: center;
+    padding: 3px 0px 0px;
+    margin-bottom: 16px;
+    border-radius: -22px;
+    margin-top: -20px;
+    border: solid 2px #fba930;
+    border-left-width: 0px;
+    border-right-width: 0px;
+  }
   .me-modal-md {
     margin-top: -10vh;
     padding: 20px 7rem !important;
@@ -1480,6 +1492,26 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .phone-marg-top {
+    margin-top: 50px;
+  }
+  .hori-filter-container {
+    width: 100%;
+    position: absolute;
+    z-index: 4;
+    /* height: 100vh; */
+    text-align: center;
+    padding: 3px 0px 0px;
+    margin-bottom: 16px;
+    border-radius: -22px;
+    margin-top: -20px;
+    border: solid 2px #fba930;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    white-space: nowrap;
+    overflow-x: scroll;
+  }
   .me-light-drop-fine-tune {
     padding: 9px 0px !important;
   }
