@@ -61,11 +61,7 @@ class ActionsPage extends React.Component {
       showTodoMsg: false,
       actions: [],
       status: null,
-      pageContent: {
-        currentPage: 1,
-        itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
-        pageCount: 0,
-      },
+     
     };
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -83,29 +79,6 @@ class ActionsPage extends React.Component {
   handleBoxClick(id) {
     // var id = event.target.value;
     this.addMeToSelected(id);
-  }
-
-  findCommon() {
-    const actions = this.props.actions;
-    const values = this.state.check_values ? this.state.check_values : [];
-    if (values.length === 0) return null;
-
-    const common = [];
-    if (actions) {
-      for (let i = 0; i < actions.length; i++) {
-        const action = actions[i];
-        const actionTags = (action && action.tags) || [];
-        for (let j = 0; j < actionTags.length; j++) {
-          const tag = actionTags[j];
-          if (tag) {
-            if (values.includes(tag.id) && !common.includes(action)) {
-              common.push(action);
-            }
-          }
-        }
-      }
-    }
-    return common;
   }
 
   renderModal() {
@@ -164,19 +137,6 @@ class ActionsPage extends React.Component {
     );
   }
 
-  getContentToDisplay() {
-    const { mirror_actions, actions } = this.state; // items from when user is typing in search box
-    const propActions = this.props.actions;
-    const common = this.findCommon();
-    if (mirror_actions.length > 0) return mirror_actions;
-    if (common) return common;
-    if (actions.length === 0) {
-      if (!propActions || propActions.length === 0) return null;
-      // return propActions.slice(0, this.state.perPage);
-      return propActions;
-    }
-    return actions;
-  }
   render() {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -213,10 +173,42 @@ class ActionsPage extends React.Component {
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div className="row">
+              <div style={{ marginBottom: 30, marginTop: -20 }}>
+                <div className="text-center">
+                  {description ? (
+                    <Tooltip
+                      text={description}
+                      paperStyle={{ maxWidth: "100vh" }}
+                    >
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                        <span
+                          className="fa fa-info-circle"
+                          style={{ color: "#428a36", padding: "5px" }}
+                        ></span>
+                      </PageTitle>
+                    </Tooltip>
+                  ) : (
+                    <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                  )}
+                </div>
+                <center>
+                  {pageData.sub_title ? (
+                    <small>{pageData.sub_title}</small>
+                  ) : null}
+                </center>
+              </div>
+              <HorizontalFilterBox
+                type="action"
+                foundNumber={this.state.mirror_actions.length}
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+              />
+              <div className="row phone-marg-top">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  <div style={{ marginTop: 100 }}>
+                  <div style={{ marginTop: 20 }}>
                     {this.props.user ? (
                       <div className="phone-vanish">
                         <ActionBoxCounter
@@ -251,41 +243,10 @@ class ActionsPage extends React.Component {
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <HorizontalFilterBox
-                    type="action"
-                    foundNumber={this.state.mirror_actions.length}
-                    tagCols={this.props.tagCols}
-                    boxClick={this.addMeToSelected}
-                    search={this.handleSearch}
-                  />
-                  <div className="text-center">
-                    {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
-                        <PageTitle style={{ fontSize: 24 }}>
-                          {title}
-                          <span
-                            className="fa fa-info-circle"
-                            style={{ color: "#428a36", padding: "5px" }}
-                          ></span>
-                        </PageTitle>
-                      </Tooltip>
-                    ) : (
-                      <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
-                    )}
-                  </div>
-                  <center>
-                    {pageData.sub_title ? (
-                      <small>{pageData.sub_title}</small>
-                    ) : null}
-                  </center>
-
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
-                    style={{ marginTop: 10 }}
+                    style={{ marginTop: 20 }}
                   >
                     {this.renderActions(actions)}
                   </div>
@@ -302,27 +263,8 @@ class ActionsPage extends React.Component {
   handleChange() {
     this.forceUpdate();
   }
-  handleSearch = (event) => {
-    const value = event.target.value;
-    const actions = this.props.actions;
-    const common = [];
-    if (value.trim() !== "") {
-      for (let i = 0; i < actions.length; i++) {
-        const ac = actions[i];
-        if (
-          this.doesFieldContainWord("title", value, ac) ||
-          this.doesFieldContainWord("deep_dive", value, ac) ||
-          this.doesFieldContainWord("steps_to_take", value, ac) ||
-          this.doesFieldContainWord("about", value, ac)
-        ) {
-          common.push(ac);
-        }
-      }
-      this.setState({ mirror_actions: [...common], searchBoxText: value });
-    } else {
-      this.setState({ mirror_actions: [], searchBoxText: value });
-    }
-  };
+
+  // };
   // renders all the actions
   renderActions(actions) {
     if (!actions) {

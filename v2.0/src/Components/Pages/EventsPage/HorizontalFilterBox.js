@@ -19,10 +19,10 @@ class HorizontalFilterBox extends Component {
       activeTags: [],
       dropActive: false,
       showSearch: false,
+      longHeight: false,
     };
-    this.onItemSelectedFromDropDown = this.onItemSelectedFromDropDown.bind(
-      this
-    );
+    this.onItemSelectedFromDropDown =
+      this.onItemSelectedFromDropDown.bind(this);
     this.clearFilters = this.clearFilters.bind(this);
   }
 
@@ -43,7 +43,11 @@ class HorizontalFilterBox extends Component {
     activeTags = (activeTags || []).filter(
       (item) => item.collectionName !== param.collectionName
     );
-    if (param.value !== NONE) activeTags.push(param);
+    if (param.value !== NONE) {
+      activeTags.push(param);
+      this.setState({ longHeight: false, activeTags }); // important in phone mode. ( For showing dropdowns )
+      return;
+    }
     this.setState({ activeTags });
   }
 
@@ -171,6 +175,10 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
+              menuTextClick={() => {
+                if (this.state.longHeight) this.setState({ longHeight: false });
+                else this.setState({ longHeight: true });
+              }}
             />
           </div>
         );
@@ -231,6 +239,7 @@ class HorizontalFilterBox extends Component {
     return 1;
   }
   render() {
+    const { longHeight } = this.state;
     return (
       <>
         {this.renderMoreModal()}
@@ -258,51 +267,38 @@ class HorizontalFilterBox extends Component {
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
-          <div className="hori-filter-container">
-            {/* {this.renderClearFilter()} */}
-            {/* <div style={{ overflowX:"scroll" }}> */}
-            {this.renderPhoneCollections()}
-            <span
-              onClick={() =>
-                this.setState({ showSearch: !this.state.showSearch })
-              }
-            >
-              <i
-                className="fa fa-search custom-bars-btn"
-                style={{ padding: 10 }}
-              ></i>
-            </span>
-            {this.renderBarsButton()}
+          <input
+            className="phone-search-input "
+            placeholder="Search..."
+            onChange={(event) => {
+              if (!this.props.search) return;
+              this.props.search(event);
+            }}
+          />
 
-            {/* {this.renderTagComponent()} */}
+          <div
+            className="hori-filter-container"
+            style={{
+              height: longHeight ? "100vh" : 50,
+              overflowX:
+                (this.getCollectionSetAccordingToPage() || []).length > 3
+                  ? "scroll"
+                  : "hidden",
+            }}
+          >
+            {this.renderPhoneCollections()}
+            <hr style={{ background: "white", marginTop: 0, width: "150%" }} />
+            <div
+              onClick={() => this.setState({ longHeight: false })}
+              style={{ width: "150%", height: "100vh" }}
+            ></div>
           </div>
-          {this.state.showSearch && (
-            <METextField
-              onChange={(event) => {
-                if (!this.props.search) return;
-                this.props.search(event);
-              }}
-              iconColor="rgb(210 210 210)"
-              containerStyle={{
-                position: "relative",
-                border: "dotted 0px orange",
-                borderBottomWidth: 2,
-              }}
-              style={{
-                padding: "0px 20px",
-                fontSize: 14,
-                marginBottom: 0,
-                marginTop: -10,
-                border: 0,
-              }}
-              placeholder="Search..."
-            />
-          )}
         </div>
       </>
     );
   }
 }
+
 const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
