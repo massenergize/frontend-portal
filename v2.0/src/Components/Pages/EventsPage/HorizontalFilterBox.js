@@ -175,7 +175,10 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
-              menuTextClick={() => this.setState({ longHeight: true })}
+              menuTextClick={() => {
+                if (this.state.longHeight) this.setState({ longHeight: false });
+                else this.setState({ longHeight: true });
+              }}
             />
           </div>
         );
