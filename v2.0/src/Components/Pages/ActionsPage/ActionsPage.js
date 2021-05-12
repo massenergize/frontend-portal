@@ -246,7 +246,7 @@ class ActionsPage extends React.Component {
                   <div
                     className="row"
                     id="actions-container mob-actions-page-padding-remove"
-                    style={{ marginTop: 10 }}
+                    style={{ marginTop: 20 }}
                   >
                     {this.renderActions(actions)}
                   </div>

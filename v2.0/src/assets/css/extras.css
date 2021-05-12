@@ -3,7 +3,7 @@
   margin: 4px;
   border: solid 0px grey;
   border-radius: 55px;
-  padding: 8px 20px;
+  padding: 10px 25px;
   margin-bottom: 30px;
   margin-top: -25px;
   font-size: 14px;
@@ -1481,6 +1481,7 @@
   .pc-vanish {
     display: none !important;
   }
+ 
 
   /* ------------------------------- TABLETS ----------------------------- */
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -1505,7 +1506,7 @@
     margin-bottom: 16px;
     border-radius: -22px;
     margin-top: -20px;
-    border: solid 2px #fba930;
+    border: solid 0px #f1f1f1;
     border-left-width: 0px;
     border-right-width: 0px;
     border-top-width: 0px;

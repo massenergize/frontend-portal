@@ -34,7 +34,7 @@ export default class MELightDropDown extends Component {
     });
   }
   render() {
-    const { label, data, style, labelIcon } = this.props;
+    const { label, data, style, labelIcon, menuTextClick } = this.props;
     return (
       <div>
         <Dropdown
@@ -45,7 +45,11 @@ export default class MELightDropDown extends Component {
             style={{ ...style }}
             className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after me-light-drop-fine-tune"
           >
-            <span>
+            <span
+              onClick={() => {
+                if (menuTextClick) menuTextClick();
+              }}
+            >
               {label}
               {labelIcon}
             </span>
