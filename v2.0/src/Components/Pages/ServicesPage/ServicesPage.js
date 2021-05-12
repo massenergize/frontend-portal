@@ -96,7 +96,7 @@ class ServicesPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : 'Service Providers'
     const sub_title = pageData && pageData.sub_title ? pageData.sub_title : "Click to view each provider's services";
-    const description = pageData.description ? pageData.description : null;
+    const description = pageData && pageData.description ? pageData.description : null;
 
     var vendors =
       this.searchIsActiveSoFindContentThatMatch() ||
@@ -293,7 +293,7 @@ class ServicesPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    pageData: store.page.ServicesPage,
+    pageData: store.page.servicesPage,
     serviceProviders: store.page.serviceProviders,
     links: store.links,
     tagCols: filterTagCollections(

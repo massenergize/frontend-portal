@@ -76,6 +76,7 @@ class AppRouter extends Component {
     this.state = {
       triedLogin: false,
       community: null,
+      error: null,
     };
 
     this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(
@@ -84,6 +85,10 @@ class AppRouter extends Component {
   }
 
   componentDidMount() {
+    this.fetch();
+  }
+
+  async fetch() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
 
@@ -107,16 +112,26 @@ class AppRouter extends Component {
       contactus: `/${subdomain}/contactus`,
     });
 
-    // for lazy loading: load these first
-    Promise.all([
-      apiCall("communities.info", body),
-      apiCall("home_page_settings.info", body),
-      apiCall("menus.list", body), //should add all communities to the menus.list
-    ])
+    /* first see if the community exists and is published (if not sandbox) */
+    const json = await apiCall("communities.info", body);
+		if (json.success) {
+				this.props.reduxLoadCommunityInformation(json.data);
+        this.setState({ community: json.data, 
+                      error: null });
+		}
+    else {
+      this.setState({ community: null,
+        error: json.error });        
+    }
+
+    if (this.state.community) {
+      // for lazy loading: load these first
+      Promise.all([
+        apiCall("home_page_settings.info", body),
+        apiCall("menus.list", body), //should add all communities to the menus.list
+      ])
       .then((res) => {
-        const [communityInfoResponse, homePageResponse, mainMenuResponse] = res;
-        this.setState({ community: communityInfoResponse.data });
-        this.props.reduxLoadCommunityInformation(communityInfoResponse.data);
+        const [homePageResponse, mainMenuResponse] = res;
         this.props.reduxLoadHomePage(homePageResponse.data);
         this.props.reduxLoadMenu(mainMenuResponse.data);
       })
@@ -125,23 +140,25 @@ class AppRouter extends Component {
         console.log(err);
       });
 
-    Promise.all([
-      apiCall("about_us_page_settings.info", body),
-      apiCall("actions_page_settings.info", body),
-      apiCall("actions.list", body),
-      apiCall("graphs.actions.completed", body),
-      apiCall("graphs.communities.impact", body),
-      apiCall("donate_page_settings.info", body),
-      apiCall("events_page_settings.info", body),
-      apiCall("events.list", body),
-      apiCall("impact_page_settings.info", body),
-      apiCall("policies.list", body),
-      apiCall("teams_page_settings.info", body),
-      apiCall("teams.stats", body),
-      apiCall("tag_collections.list", body),
-      apiCall("testimonials.list", body),
-      apiCall("vendors.list", body),
-    ])
+      Promise.all([
+        apiCall("about_us_page_settings.info", body),
+        apiCall("actions_page_settings.info", body),
+        apiCall("actions.list", body),
+        apiCall("graphs.actions.completed", body),
+        apiCall("graphs.communities.impact", body),
+        apiCall("donate_page_settings.info", body),
+        apiCall("events_page_settings.info", body),
+        apiCall("events.list", body),
+        apiCall("impact_page_settings.info", body),
+        apiCall("policies.list", body),
+        apiCall("teams_page_settings.info", body),
+        apiCall("teams.stats", body),
+        apiCall("tag_collections.list", body),
+        apiCall("testimonials_page_settings.info", body),
+        apiCall("testimonials.list", body),
+        apiCall("vendors_page_settings.info", body),
+        apiCall("vendors.list", body),
+      ])
       .then((res) => {
         const [
           aboutUsPageResponse,
@@ -157,7 +174,9 @@ class AppRouter extends Component {
           teamsPageResponse,
           teamResponse,
           tagCollectionsResponse,
+          testimonialsPageResponse,
           testimonialsResponse,
+          vendorsPageResponse,
           vendorsResponse,
         ] = res;
         this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -167,7 +186,9 @@ class AppRouter extends Component {
         this.props.reduxLoadEvents(eventsResponse.data);
         this.props.reduxLoadImpactPage(impactPageResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
+        this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
+        this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
         this.props.reduxLoadPolicies(policiesResponse.data);
         this.props.reduxLoadTeamsPage(teamsPageResponse.data);
@@ -180,6 +201,7 @@ class AppRouter extends Component {
         this.setState({ error: err });
         console.log(err);
       });
+    }
   }
 
   setStateAsync(state) {
@@ -314,6 +336,14 @@ class AppRouter extends Component {
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
       return <LoadingCircle />;
+    }
+
+    /* error page if community isn't published */
+    if (!this.state.community) {
+      return (<ErrorPage
+        errorMessage="Page not found"
+        errorDescription="This community page is not accessible.  Please contact the community administrator to resolve the problem."
+      />)
     }
 
     if (!this.state.triedLogin && !this.props.user) {

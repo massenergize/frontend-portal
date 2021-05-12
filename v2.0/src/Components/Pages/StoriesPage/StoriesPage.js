@@ -131,10 +131,12 @@ class StoriesPage extends React.Component {
 
 
       const pageData = this.props.pageData;
+
       if (pageData == null) return <LoadingCircle />
   
-      if (!this.props.events || !this.props.tagCols) {
-        return <LoadingCircle />;
+      //if (!this.props.events || !this.props.tagCols) {
+      if (!this.props.tagCols) {
+          return <LoadingCircle />;
       }
 
       //if (!this.props.pageData)
@@ -287,7 +289,7 @@ class StoriesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    pageData: store.page.homePage,
+    pageData: store.page.testimonialsPage,
     stories: store.page.testimonials,
     user: store.user.info,
     links: store.links,
