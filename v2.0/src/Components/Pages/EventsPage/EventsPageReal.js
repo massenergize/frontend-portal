@@ -63,18 +63,19 @@ class EventsPage extends React.Component {
         event.featured_summary.toLowerCase().includes(word)
     );
   }
-  
-  render() {
 
+  render() {
     const pageData = this.props.pageData;
-		if (pageData == null) return <LoadingCircle />
+    if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
 
- 		const title = pageData && pageData.title ? pageData.title : 'Events and Campaigns'
-    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null;
+    const title =
+      pageData && pageData.title ? pageData.title : "Events and Campaigns";
+    const sub_title =
+      pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
@@ -108,6 +109,29 @@ class EventsPage extends React.Component {
                     {this.renderSideBar()}
                   </div> */}
                   <div className="col-lg-10 col-md-10 col-12 offset-md-1">
+                    <div style={{ marginBottom: 30 }}>
+                      <div className="text-center">
+                        {description ? (
+                          <Tooltip
+                            text={description}
+                            paperStyle={{ maxWidth: "100vh" }}
+                          >
+                            <PageTitle style={{ fontSize: 24 }}>
+                              {title}
+                              <span
+                                className="fa fa-info-circle"
+                                style={{ color: "#428a36", padding: "5px" }}
+                              ></span>
+                            </PageTitle>
+                          </Tooltip>
+                        ) : (
+                          <PageTitle style={{ fontSize: 24 }}>
+                            {title}
+                          </PageTitle>
+                        )}
+                      </div>
+                      <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                    </div>
                     <HorizontalFilterBox
                       type="events"
                       tagCols={this.props.tagCols}
@@ -115,40 +139,8 @@ class EventsPage extends React.Component {
                       search={this.handleSearch}
                     />
 
-                    <div className="text-center">
-                      {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
- 
-                        <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                          <span
-                            className="fa fa-info-circle"
-                            style={{ color: "#428a36", padding: "5px" }}
-                          ></span>
-
-                        </PageTitle>
-                      </Tooltip>
-                      ) : (
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                      </PageTitle>
-                      )}
-                    </div>
-
-
-                    <center>
-						        {
-							        sub_title? 
-							        <p>{sub_title}</p>
-							        :null
-						        }
-						        </center>
-
                     <div
-                      className="mob-event-cards-fix outer-box sec-padd event-style2"
+                      className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
                       style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
                     >
                       <div className="row">{this.renderEvents(found)}</div>

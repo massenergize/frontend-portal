@@ -126,32 +126,31 @@ class StoriesPage extends React.Component {
         story.body.toLowerCase().includes(word)
     );
   }
-  
+
   render() {
+    const pageData = this.props.pageData;
 
+    if (pageData == null) return <LoadingCircle />;
 
-      const pageData = this.props.pageData;
+    //if (!this.props.events || !this.props.tagCols) {
+    if (!this.props.tagCols) {
+      return <LoadingCircle />;
+    }
 
-      if (pageData == null) return <LoadingCircle />
-  
-      //if (!this.props.events || !this.props.tagCols) {
-      if (!this.props.tagCols) {
-          return <LoadingCircle />;
-      }
+    //if (!this.props.pageData)
+    //return (
+    //  <ErrorPage
+    //    errorMessage="Data unavailable"
+    //    errorDescription="Unable to load Testimonials data"
+    //  />
+    //);
 
-      //if (!this.props.pageData)
-      //return (
-      //  <ErrorPage
-      //    errorMessage="Data unavailable"
-      //    errorDescription="Unable to load Testimonials data"
-      //  />
-      //);
-  
-      const title = pageData && pageData.title ? pageData.title : 'Testimonials'
-      const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null;
-      const description = pageData.description ? pageData.description : null;
-  
-      const stories =
+    const title = pageData && pageData.title ? pageData.title : "Testimonials";
+    const sub_title =
+      pageData && pageData.sub_title ? pageData.sub_title : null;
+    const description = pageData.description ? pageData.description : null;
+
+    const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
 
@@ -167,54 +166,38 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="row">
-                <div
-                  className="col-md-3 phone-vanish"
-                  style={{ marginTop: 90 }}
-                >
+              <div style={{ marginBottom: 30 }}>
+                <div className="text-center">
+                  {description ? (
+                    <Tooltip
+                      text={description}
+                      paperStyle={{ maxWidth: "100vh" }}
+                    >
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                        <span
+                          className="fa fa-info-circle"
+                          style={{ color: "#428a36", padding: "5px" }}
+                        ></span>
+                      </PageTitle>
+                    </Tooltip>
+                  ) : (
+                    <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                  )}
+                </div>
+                <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+              </div>
+              <HorizontalFilterBox
+                type="testimonials"
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+              />
+              <div className="row phone-marg-top-90">
+                <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   {this.renderAddTestmonialBtn()}
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
-                  <HorizontalFilterBox
-                    type="testimonials"
-                    tagCols={this.props.tagCols}
-                    boxClick={this.addMeToSelected}
-                    search={this.handleSearch}
-                  />
-
-                    <div className="text-center">
-                      {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
- 
-                        <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                          <span
-                            className="fa fa-info-circle"
-                            style={{ color: "#428a36", padding: "5px" }}
-                          ></span>
-
-                        </PageTitle>
-                      </Tooltip>
-                      ) : (
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                      </PageTitle>
-                      )}
-                    </div>
-
-
-                    <center>
-						        {
-							        sub_title? 
-							        <p>{sub_title}</p>
-							        :null
-						        }
-						        </center>
-
-
                   <div
                     className="row"
                     style={{
