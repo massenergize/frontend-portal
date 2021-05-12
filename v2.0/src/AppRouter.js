@@ -77,6 +77,7 @@ class AppRouter extends Component {
       triedLogin: false,
       community: null,
       error: null,
+      loading: true,
     };
 
     this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(
@@ -117,10 +118,12 @@ class AppRouter extends Component {
 		if (json.success) {
 				this.props.reduxLoadCommunityInformation(json.data);
         this.setState({ community: json.data, 
-                      error: null });
+                        loading: false ,
+                        error: null });
 		}
     else {
       this.setState({ community: null,
+        loading: false ,        
         error: json.error });        
     }
 
@@ -335,6 +338,10 @@ class AppRouter extends Component {
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
+      return <LoadingCircle />;
+    }
+
+    if (this.state.loading) {
       return <LoadingCircle />;
     }
 
