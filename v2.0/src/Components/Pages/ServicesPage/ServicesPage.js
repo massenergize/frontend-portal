@@ -94,9 +94,14 @@ class ServicesPage extends React.Component {
       );
     }
 
-    const title = pageData && pageData.title ? pageData.title : 'Service Providers'
-    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : "Click to view each provider's services";
-    const description = pageData && pageData.description ? pageData.description : null;
+    const title =
+      pageData && pageData.title ? pageData.title : "Service Providers";
+    const sub_title =
+      pageData && pageData.sub_title
+        ? pageData.sub_title
+        : "Click to view each provider's services";
+    const description =
+      pageData && pageData.description ? pageData.description : null;
 
     var vendors =
       this.searchIsActiveSoFindContentThatMatch() ||
@@ -114,6 +119,27 @@ class ServicesPage extends React.Component {
           <div className="container override-container-width">
             <div className="row">
               <div className="col-md-10 col-lg-10 col-sm-12 offset-md-1 ">
+                <div style={{ marginBottom: 30 }}>
+                  <div className="text-center">
+                    {description ? (
+                      <Tooltip
+                        text={description}
+                        paperStyle={{ maxWidth: "100vh" }}
+                      >
+                        <PageTitle style={{ fontSize: 24 }}>
+                          {title}
+                          <span
+                            className="fa fa-info-circle"
+                            style={{ color: "#428a36", padding: "5px" }}
+                          ></span>
+                        </PageTitle>
+                      </Tooltip>
+                    ) : (
+                      <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                    )}
+                  </div>
+                  <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                </div>
                 <div>
                   <HorizontalFilterBox
                     type="action"
@@ -121,50 +147,10 @@ class ServicesPage extends React.Component {
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
                   />
-
-                    <div className="text-center">
-                      {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
- 
-                        <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                          <span
-                            className="fa fa-info-circle"
-                            style={{ color: "#428a36", padding: "5px" }}
-                          ></span>
-
-                        </PageTitle>
-                      </Tooltip>
-                      ) : (
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                      </PageTitle>
-                      )}
-                    </div>
-
-
-                    <center>
-						        {
-							        sub_title? 
-							        <p>{sub_title}</p>
-							        :null
-						        }
-						        </center>
-
-                  {/*<h3 className="text-center" style={{ fontSize: 24 }}>
-                    Service Providers
-                  </h3>
-                  <h5 className="text-center" style={{ color: "darkgray" }}>
-                    Click to view each provider's services
-                  </h5>
-                  */}
                 </div>
 
                 <div
-                  className="row pt-3 pb-3"
+                  className="row pt-3 pb-3 phone-marg-top-90"
                   style={{ maxHeight: 700, overflowY: "scroll" }}
                 >
                   {this.renderVendors(vendors)}

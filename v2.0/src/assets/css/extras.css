@@ -1493,6 +1493,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .phone-marg-top-90{ 
+    margin-top:90px !important;
+  }
   .phone-marg-top {
     margin-top: 50px;
   }
