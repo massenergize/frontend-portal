@@ -9,7 +9,9 @@ import {
 	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
+	LOAD_CONTACT_US_PAGE,
 	LOAD_DONATE_PAGE,
+	LOAD_IMPACT_PAGE,
 	LOAD_EVENTS,
 	LOAD_ACTIONS,
 	LOAD_SERVICE_PROVIDERS,
@@ -47,6 +49,7 @@ const initialState = {
 	aboutUsPage: null,
 	donatePage: null,
 	eventsPage: null,
+	impactPage: null,
 	//menu, navbar footer...
 	menu: null,
 	policies: null,
@@ -140,11 +143,25 @@ export default function (state = initialState, action) {
 				...state,
 				communitiesStats: action.payload
 			}
+
+		case LOAD_CONTACT_US_PAGE:
+			return {
+				...state,
+				contactUsPage: action.payload
+			}
+
 		case LOAD_DONATE_PAGE:
 			return {
 				...state,
 				donatePage: action.payload
 			}
+
+		case LOAD_IMPACT_PAGE:
+			return {
+				...state,
+				impactPage: action.payload
+			}
+	
 		case LOAD_EVENTS_PAGE:
 			return {
 				...state,

@@ -42,7 +42,9 @@ class ContactUsPage extends React.Component {
     }
   }
   render() {
-    const communityInfo = this.props.pageData || this.props.community
+    const communityInfo = this.props.community;
+    const title = this.props.pageData.title ? this.props.pageData.title :  "Contact " + communityInfo.name
+    const sub_title = this.props.pageData.sub_title ? this.props.pageData.sub_title :  "We are always striving to make this better and welcome your feedback! Reach the community organizer by filling in the form."
     if (!this.props.homePageData && !communityInfo) {
       return (
         <div className="boxed_wrapper" >
@@ -68,8 +70,8 @@ class ContactUsPage extends React.Component {
             <div className="container mob-contact-white-cleaner" >
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                  <h3>Contact <b>{name}</b> </h3>
-                  <p className="make-me-dark">We are always striving to make this better and welcome your feedback! Reach the community organizer for <em>{name}</em> by filling in the form.</p>
+                  <h3>{title}</h3>
+                  <p className="make-me-dark">{sub_title}</p>
                   {this.ejectLocation(location)}
                   {/* {this.ejectAdmins(admins)} */}
                 </div>
@@ -93,7 +95,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     community: store.page.community,
     communityAdmins: store.page.communityAdmins,
-    pageData: store.page.comInformation
+    pageData: store.page.contactUsPage
   }
 }
 
