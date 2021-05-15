@@ -20,10 +20,12 @@ class HorizontalFilterBox extends Component {
       dropActive: false,
       showSearch: false,
       longHeight: false,
+      selected_collection: null,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
     this.clearFilters = this.clearFilters.bind(this);
+    this.phoneMenuTextClick = this.phoneMenuTextClick.bind(this);
   }
 
   // All collections are created by admins
@@ -150,10 +152,15 @@ class HorizontalFilterBox extends Component {
         />
       );
   }
+  phoneMenuTextClick(set) {
+    if (this.state.longHeight && set.name === this.state.selected_collection)
+      this.setState({ longHeight: false, selected_collection: null });
+    else this.setState({ longHeight: true, selected_collection: set.name });
+  }
   renderPhoneCollections = (style = { display: "inline-block" }) => {
     const { version } = this.props;
     var col = this.getCollectionSetAccordingToPage();
-    col = (col || []).length > 3 ? col.slice(0, 2) : col;
+    // col = (col || []).length > 3 ? col.slice(0, 2) : col;
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
@@ -175,10 +182,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
-              menuTextClick={() => {
-                if (this.state.longHeight) this.setState({ longHeight: false });
-                else this.setState({ longHeight: true });
-              }}
+              menuTextClick={() => this.phoneMenuTextClick(set)}
             />
           </div>
         );
