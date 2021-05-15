@@ -19,9 +19,7 @@ class ImpactPage extends React.Component {
     var shortWord =  stringArr[0];
     return shortWord.replace(",",""); 
   }
-  // }
 
-   
   render() {
     if (!this.props.comData) {
       return <ErrorPage
@@ -31,10 +29,8 @@ class ImpactPage extends React.Component {
 
 
     }
-    const community = this.props.communityData
-      ? this.props.comData.community
-      : null;
-    const goal = this.props.comData ? this.props.comData.goal : null;
+    const community = this.props.community
+    const goal = this.props.community ? this.props.community.goal : null;
     const completed = this.props.communityData
       ? this.props.communityData.data
       : [];
@@ -356,6 +352,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     tagCols: store.page.tagCols,
     comData: store.page.homePage,
+    community: store.page.community,
     links: store.links
   };
 };
