@@ -42,6 +42,7 @@ export const LOAD_TESTIMONIALS_PAGE = 'LOAD_TESTIMONIALS_PAGE' //testimonials_pa
 export const LOAD_TEAMS_PAGE = 'LOAD_TEAMS_PAGE' //teams_page
 export const LOAD_ABOUT_US_PAGE = 'LOAD_ABOUT_US_PAGE' //about_us
 export const LOAD_COMMUNITIES_STATS = 'LOAD_COMMUNITIES_STATS' //impact_page stats
+export const LOAD_CONTACT_US_PAGE = 'LOAD_CONTACT_US_PAGE'
 export const LOAD_DONATE_PAGE = 'LOAD_DONATE_PAGE'
 export const LOAD_EVENTS_PAGE = 'LOAD_EVENTS_PAGE'
 export const LOAD_IMPACT_PAGE = 'LOAD_IMPACT_PAGE'

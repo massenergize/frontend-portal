@@ -9,6 +9,7 @@ import {
 	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
+	LOAD_CONTACT_US_PAGE,
 	LOAD_DONATE_PAGE,
 	LOAD_IMPACT_PAGE,
 	LOAD_EVENTS,
@@ -142,6 +143,13 @@ export default function (state = initialState, action) {
 				...state,
 				communitiesStats: action.payload
 			}
+
+		case LOAD_CONTACT_US_PAGE:
+			return {
+				...state,
+				contactUsPage: action.payload
+			}
+
 		case LOAD_DONATE_PAGE:
 			return {
 				...state,

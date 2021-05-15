@@ -6,6 +6,7 @@ import {
 	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
+	LOAD_CONTACT_US_PAGE,
 	LOAD_DONATE_PAGE,
 	LOAD_EVENTS_PAGE,
 	LOAD_IMPACT_PAGE,
@@ -116,6 +117,13 @@ export const reduxLoadAboutUsPage = (page) => dispatch => {
 export const reduxLoadCommunitiesStats = (page) => dispatch => {
 	return dispatch({
 		type: LOAD_COMMUNITIES_STATS,
+		payload: page
+	})
+}
+
+export const reduxLoadContactUsPage = (page) => dispatch => {
+	return dispatch({
+		type: LOAD_CONTACT_US_PAGE,
 		payload: page
 	})
 }
