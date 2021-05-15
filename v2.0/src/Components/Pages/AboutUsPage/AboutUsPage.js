@@ -24,16 +24,17 @@ class AboutUsPage extends React.Component {
 		}
 
 		const pageData = this.props.pageData;
-		const videoLink = pageData ? pageData.featured_video_link : null;
+		const title = pageData.title ? pageData.title : "About Our Community";
+		const videoLink = pageData.featured_video_link ? pageData.featured_video_link : null;
 		const paragraphContent = pageData.description;
-		const donateMessage = "Help support our cause by donating";
+		const donateMessage = pageData.sub_title ? pageData.sub_title : "Help support our cause by donating";
 		return (
 			<div className="boxed_wrapper">
 				<BreadCrumbBar links={[{ name: 'About Us' }]} />
 				<div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
 					<div style={{ marginTop: 70 }}></div>
 					<div className={paragraphContent ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-						<center><h2 className="cool-font" style={{ padding: 20 }}>About Our Community</h2></center>
+						<center><h2 className="cool-font" style={{ padding: 20 }}>{title}</h2></center>
 						<div className="community-about-text cool-font make-me-dark" style={{fontSize:'large', textAlign:'justify'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 					</div>
 
@@ -67,8 +68,8 @@ const mapStoreToProps = (store) => {
 		community: store.page.community,
 		communityAdmins: store.page.communityAdmins,
 		pageData: store.page.aboutUsPage,
-    homePageData: store.page.homePageData,
-    links: store.links,
+    	homePageData: store.page.homePageData,
+    	links: store.links,
 	}
 }
 
