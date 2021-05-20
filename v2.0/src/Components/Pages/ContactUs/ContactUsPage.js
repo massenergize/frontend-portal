@@ -26,12 +26,14 @@ class ContactUsPage extends React.Component {
     }
   }
   ejectLocation(location) {
-    
     if (location) {
       return (
         <div>
           <h4>Location</h4>
-          <p className="make-me-dark">{location.city? location.city : ''}{location.state? `, ${location.state}` : ''}{location.zipcode? `, ${location.zipcode}` : ''}</p>
+          <p className="make-me-dark">
+          {location.address ? location.address + ',\n' : ''}
+          {location.city? location.city : ''}{location.state? `, ${location.state}` : ''}{location.zipcode? `, ${location.zipcode}` : ''}
+          </p>
         </div>
       )
     } else {
@@ -44,7 +46,7 @@ class ContactUsPage extends React.Component {
   render() {
     const communityInfo = this.props.community;
     const title = this.props.pageData.title ? this.props.pageData.title :  "Contact " + communityInfo.name
-    const sub_title = this.props.pageData.sub_title ? this.props.pageData.sub_title :  "We are always striving to make this better and welcome your feedback! Reach the community organizer by filling in the form."
+    const description = this.props.pageData.description ? this.props.pageData.description :  "We are always striving to make this better and welcome your feedback! Reach the community organizer by filling in the form."
     if (!this.props.homePageData && !communityInfo) {
       return (
         <div className="boxed_wrapper" >
@@ -55,7 +57,6 @@ class ContactUsPage extends React.Component {
 
     const {
       id,
-      name,
       location,
       admins
     } = communityInfo;
@@ -71,9 +72,9 @@ class ContactUsPage extends React.Component {
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>{title}</h3>
-                  <p className="make-me-dark">{sub_title}</p>
+                  <p className="make-me-dark">{description}</p>
                   {this.ejectLocation(location)}
-                  {/* {this.ejectAdmins(admins)} */}
+                  {this.ejectAdmins(admins)}
                 </div>
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 mob-zero-padding">
                   <ContactPageForm admins={admins} community_id={id} />
