@@ -3,16 +3,18 @@ import { connect } from "react-redux";
 import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
-import { getRandomIntegerInRange } from "../Utils";
+import { getPropsArrayFromJsonArray, getRandomIntegerInRange } from "../Utils";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
+import { withRouter } from "react-router";
 // import { Link } from "react-router-dom";
-
+const MOST_VISITED = "most_visited";
 class CommunitySelectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       mirror_communities: [],
     };
+    this.handleCommunitySelected = this.handleCommunitySelected.bind(this);
   }
 
   handleSearch(event) {
@@ -47,20 +49,106 @@ class CommunitySelectPage extends React.Component {
     }
   }
 
+  handleCommunitySelected(value) {
+    const { communities } = this.props;
+    const com = communities.filter((item) => item.id === value)[0];
+    this.saveSelectedToStorage(value); // Save selected community's id to localStorage before moving
+    this.props.history.push(`/${com.subdomain}`);
+  }
+
+  /**
+   * The function is in charge of adding the ids of values of selected communities and
+   * saving it in storage
+   * @param {*} id
+   * @returns
+   *
+   */
+  saveSelectedToStorage(id) {
+    var mostVisited = this.getMostVisited();
+    const exists = mostVisited.filter((item) => item === id)[0];
+    if (exists) return;
+    else mostVisited.push(id);
+    localStorage.setItem(
+      MOST_VISITED,
+      JSON.stringify([id, mostVisited.slice(1, 5)])
+    ); // Just a way to keep  the record limit up to 6
+  }
+
+  getMostVisited() {
+    var mostVisited = localStorage.getItem(MOST_VISITED);
+    mostVisited = JSON.parse(mostVisited) || [];
+    return mostVisited;
+  }
   showAutoComplete() {
+    const data = getPropsArrayFromJsonArray(this.props.communities, "name");
+    const values = getPropsArrayFromJsonArray(this.props.communities, "id");
     return (
       <>
         <MEAutoComplete
-          data={["Here", "there", "She", "Without", "Woman"]}
+          showItemsOnStart={true}
+          useCaret={true}
+          data={data}
+          dataValues={values}
           style={{
             border: "2px solid #ed5c17",
             borderRadius: 55,
             paddingLeft: 25,
           }}
           containerClassName="com-select-auto-edits"
-          // curtainStyles = {{top:"38%"}}
+          placeholder="What community do you belong to?"
+          onItemSelected={this.handleCommunitySelected}
         />
       </>
+    );
+  }
+
+  /**
+   *  In summary, the displayed bubbles look best when its only 6 items.
+   * Always display most visited communities, if they are not up to 6, take more from
+   * the general community list to drive it up to 6 items
+   * @param {*} communities
+   * @returns
+   */
+  renderCommunityBubbles(communities) {
+    const visited = this.getMostVisited();
+    var coms = [];
+    if (visited.length < 6) {
+      communities = communities.filter((com) => {
+        if (visited.contains(com.id) !== false) coms.push(com);
+        else return com;
+      });
+      coms = [...coms, communities.slice(0, 6 - visited.length)];
+    }
+
+    console.log("I am the coms", coms);
+
+    return (
+      <ul className="text-center" style={{ marginBottom: 10 }}>
+        <center>
+          <small style={{ color: "#c5c5c5" }}>Most Visited</small>
+        </center>
+        {Object.keys(coms).map((key) => {
+          const com = coms[key];
+          return (
+            <li
+              key={key}
+              style={{
+                display: "inline-block",
+                margin: "5px",
+                fontSize: 15,
+              }}
+            >
+              {" "}
+              <a
+                className={`com-domain-link ${this.getAnimationClass()}`}
+                href={`/${com.subdomain}`}
+              >
+                {com.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     );
   }
   getAnimationClass() {
@@ -111,31 +199,9 @@ class CommunitySelectPage extends React.Component {
                 {" "}
                 Select Your Community Below
               </p>
-              {this.showSearchBar()}
+              {/* {this.showSearchBar()} */}
               {this.showAutoComplete()}
-              {/* <ul className="text-center" style={{ marginBottom: 10 }}>
-                {Object.keys(communities).map((key) => {
-                  const com = communities[key];
-                  return (
-                    <li
-                      key={key}
-                      style={{
-                        display: "inline-block",
-                        margin: "5px",
-                        fontSize: 15,
-                      }}
-                    >
-                      {" "}
-                      <a
-                        className={`com-domain-link ${this.getAnimationClass()}`}
-                        href={`/${com.subdomain}`}
-                      >
-                        {com.name}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul> */}
+              {this.renderCommunityBubbles(communities)}
               <h3
                 className="text-center"
                 style={{
@@ -170,4 +236,4 @@ const mapStoreToProps = (store) => {
     communities: store.page.communities,
   };
 };
-export default connect(mapStoreToProps)(CommunitySelectPage);
+export default connect(mapStoreToProps)(withRouter(CommunitySelectPage));

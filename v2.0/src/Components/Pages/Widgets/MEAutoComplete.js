@@ -34,7 +34,20 @@ class MEAutoComplete extends Component {
 
     if (this.props.showItemsOnStart && drop)
       return (
-        <div className=" z-depth-1" style={{ minHeight: 50, zIndex: 101 }}>
+        <div
+          className=" z-depth-1 me-anime-slide-from-top"
+          style={{
+            minHeight: 50,
+            zIndex: 101,
+            maxHeight: 300,
+            overflowY: "scroll",
+            position: "absolute",
+            width: "100%",
+            background: "white",
+            borderRadius: 10,
+            top: 10,
+          }}
+        >
           {this.ejectChildren()}
         </div>
       );
@@ -54,17 +67,14 @@ class MEAutoComplete extends Component {
   };
 
   onItemClick = (item) => {
-    var { onItemSelected, persistOnSelect } = this.props;
+    var { onItemSelected, persistOnSelect, data, dataValues } = this.props;
+    dataValues = dataValues || data;
     this.setState({ activeItem: item });
     this.toggleDrop();
-    if (persistOnSelect) {
-      this.setState({ text: item });
-    } else {
-      this.setState({ text: "" });
-    }
-    if (onItemSelected) {
-      onItemSelected(item);
-    }
+    if (persistOnSelect) this.setState({ text: item });
+    else this.setState({ text: "" });
+    const value = dataValues[data.indexOf(item)];
+    if (onItemSelected) onItemSelected(value);
   };
 
   getContentToSearch = () => {
@@ -74,7 +84,6 @@ class MEAutoComplete extends Component {
   };
   ejectChildren = () => {
     const data = this.getContentToSearch();
-    console.log("I am the fucking data", data);
     if (!data) return;
     return data.map((item, index) => {
       const activeClass =
@@ -145,7 +154,6 @@ class MEAutoComplete extends Component {
   };
 
   render() {
-    console.log(this.props.data);
     const { containerClassName, useCaret, placeholder, text } = this.props;
     const defaultText = placeholder ? placeholder : "Enter text here...";
     return (
@@ -204,8 +212,8 @@ MEAutoComplete.defaultProps = {
   style: {},
   className: "",
   persistOnSelect: false,
-  showItemsOnStart: true,
-  useCaret: true,
+  showItemsOnStart: false,
+  useCaret: false,
   curtainStyles: {},
 };
 export default MEAutoComplete;

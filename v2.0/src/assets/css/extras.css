@@ -746,6 +746,7 @@
 
 .me-drop-item {
   cursor: pointer;
+  color: black;
 }
 .me-drop-item:hover {
   background: #f57b34;
@@ -2083,11 +2084,12 @@
 .com-domain-link {
   color: #17865d !important;
   border: solid 1px #f1efef;
-  padding: 10px 15px;
+  padding: 6px 25px;
   margin: 0px;
   background: white;
   border-radius: 100px;
   cursor: pointer;
+  text-transform: capitalize;
 }
 .com-domain-link:hover {
   border-color: White;
