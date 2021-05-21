@@ -65,18 +65,17 @@ class CommunitySelectPage extends React.Component {
    */
   saveSelectedToStorage(id) {
     var mostVisited = this.getMostVisited();
-    const exists = mostVisited.filter((item) => item === id)[0];
-    if (exists) return;
-    else mostVisited.push(id);
+    mostVisited = mostVisited.filter((item) => item !== id);
     localStorage.setItem(
       MOST_VISITED,
-      JSON.stringify([id, mostVisited.slice(1, 5)])
+      JSON.stringify([id, ...mostVisited.slice(0, 5)])
     ); // Just a way to keep  the record limit up to 6
   }
 
   getMostVisited() {
     var mostVisited = localStorage.getItem(MOST_VISITED);
     mostVisited = JSON.parse(mostVisited) || [];
+    console.log("I am the most visited", mostVisited);
     return mostVisited;
   }
   showAutoComplete() {
@@ -85,7 +84,6 @@ class CommunitySelectPage extends React.Component {
     return (
       <>
         <MEAutoComplete
-          showItemsOnStart={true}
           useCaret={true}
           data={data}
           dataValues={values}
@@ -114,21 +112,20 @@ class CommunitySelectPage extends React.Component {
     var coms = [];
     if (visited.length < 6) {
       communities = communities.filter((com) => {
-        if (visited.contains(com.id) !== false) coms.push(com);
-        else return com;
+        if (visited.includes(com.id) !== false) {
+          coms[visited.indexOf(com.id)] = com; // To keep the most recently clicked community arrangement
+        } else return com;
       });
-      coms = [...coms, communities.slice(0, 6 - visited.length)];
-    }
-
-    console.log("I am the coms", coms);
-
+      coms = [...coms, ...communities.slice(0, 6 - visited.length)];
+    } else
+      coms = communities.filter((com) => visited.includes(com.id) === true);
     return (
       <ul className="text-center" style={{ marginBottom: 10 }}>
         <center>
           <small style={{ color: "#c5c5c5" }}>Most Visited</small>
         </center>
-        {Object.keys(coms).map((key) => {
-          const com = coms[key];
+        {coms.map((com, key) => {
+          // const com = coms[key];
           return (
             <li
               key={key}

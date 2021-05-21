@@ -32,7 +32,7 @@ class MEAutoComplete extends Component {
   dropItems = () => {
     const { text, drop, searchHits } = this.state;
 
-    if (this.props.showItemsOnStart && drop)
+    if (this.props.useCaret && drop)
       return (
         <div
           className=" z-depth-1 me-anime-slide-from-top"
@@ -202,7 +202,6 @@ MEAutoComplete.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   persistOnSelect: PropTypes.bool,
-  showItemsOnStart: PropTypes.bool,
   useCaret: PropTypes.bool,
   curtainStyles: PropTypes.object,
 };
@@ -212,7 +211,6 @@ MEAutoComplete.defaultProps = {
   style: {},
   className: "",
   persistOnSelect: false,
-  showItemsOnStart: false,
   useCaret: false,
   curtainStyles: {},
 };
