@@ -12,7 +12,8 @@ import METextField from "./METextField";
  * @props style
  * @props id  (normal HTML id )
  * @props persistOnSelect = true OR false | Determines whether or not input should be field with currently selected item
- *
+ *@props showItemsOnStart = true OR false | showDoprdown with all dropdown items when a user clicks textbox and is about to type
+ * @props useCaret = true OR false | Show caret button
  */
 class MEAutoComplete extends Component {
   constructor(props) {
@@ -23,16 +24,24 @@ class MEAutoComplete extends Component {
       placeholder: this.props.placeholder,
       searchHits: [],
       text: this.props.value,
-      data: this.props.data ? this.props.data : [],
+      // data: this.props.data ? this.props.data : [],
     };
     this.toggleDrop = this.toggleDrop.bind(this);
   }
 
   dropItems = () => {
     const { text, drop, searchHits } = this.state;
+
+    if (this.props.showItemsOnStart && drop)
+      return (
+        <div className=" z-depth-1" style={{ minHeight: 50, zIndex: 101 }}>
+          {this.ejectChildren()}
+        </div>
+      );
+
     if (text && drop && searchHits.length > 0) {
       return (
-        <div className="g-dropdown" style={{ minHeight: 50 }}>
+        <div className=" z-depth-1" style={{ minHeight: 50, zIndex: 101 }}>
           {this.ejectChildren()}
         </div>
       );
@@ -58,18 +67,32 @@ class MEAutoComplete extends Component {
     }
   };
 
+  getContentToSearch = () => {
+    if (this.state.searchHits && this.state.searchHits.length > 0)
+      return this.state.searchHits;
+    return this.props.data;
+  };
   ejectChildren = () => {
-    const data = this.state.searchHits;
+    const data = this.getContentToSearch();
+    console.log("I am the fucking data", data);
     if (!data) return;
     return data.map((item, index) => {
       const activeClass =
-        item === this.state.activeItem ? "g-drop-item-active" : "";
+        item === this.state.activeItem ? "me-drop-item-active" : "";
       return (
         <div key={index}>
           <METextView
             type="p"
-            style={{ padding: 15, cursor: "pointer", display: "block" }}
-            className={`g-drop-item ${activeClass}`}
+            style={{
+              padding: 15,
+              cursor: "pointer",
+              display: "block",
+              zIndex: 101,
+
+              marginBottom: 0,
+            }}
+            className={`me-drop-item ${activeClass}`}
+            containerStyle={{ display: "block" }}
             onClick={() => {
               this.onItemClick(item);
             }}
@@ -82,10 +105,12 @@ class MEAutoComplete extends Component {
   };
   activateGhostCurtain = () => {
     const { drop } = this.state;
+
     if (drop)
       return (
         <div
           className="ghost-cover-screen"
+          style={this.props.curtainStyles}
           onClick={() => this.toggleDrop()}
         ></div>
       );
@@ -101,12 +126,11 @@ class MEAutoComplete extends Component {
    * "pongo".split("po") =["","ngo"],
    * "police".split("po") =["","lice"],
    * "paradise".split("po") =["paradise"]
-   * This is how we find the similarity *insert flexing emoji* loool!
    *
    */
   handleTyping = (e) => {
     const content = e.target.value.toLowerCase();
-    const { data } = this.state;
+    const { data } = this.props;
     const hits = data.filter((text) => {
       const arr = text.toLowerCase().split(content);
       if (arr.length > 1) return text;
@@ -121,12 +145,25 @@ class MEAutoComplete extends Component {
   };
 
   render() {
-    const {  placeholder, text } = this.state;
+    console.log(this.props.data);
+    const { containerClassName, useCaret, placeholder, text } = this.props;
     const defaultText = placeholder ? placeholder : "Enter text here...";
     return (
       <div>
         {this.activateGhostCurtain()}
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className={containerClassName}>
+          {useCaret && (
+            <span
+              className="round-caret"
+              onClick={() =>
+                this.setState({
+                  drop: !this.state.drop,
+                })
+              }
+            >
+              <i className="fa fa-caret-down"></i>
+            </span>
+          )}
           <METextField
             id={this.props.id}
             defaultValue={text ? text : ""}
@@ -157,5 +194,18 @@ MEAutoComplete.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   persistOnSelect: PropTypes.bool,
+  showItemsOnStart: PropTypes.bool,
+  useCaret: PropTypes.bool,
+  curtainStyles: PropTypes.object,
+};
+
+MEAutoComplete.defaultProps = {
+  containerClassName: "",
+  style: {},
+  className: "",
+  persistOnSelect: false,
+  showItemsOnStart: true,
+  useCaret: true,
+  curtainStyles: {},
 };
 export default MEAutoComplete;

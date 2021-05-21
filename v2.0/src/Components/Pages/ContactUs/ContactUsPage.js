@@ -55,7 +55,6 @@ class ContactUsPage extends React.Component {
 
     const {
       id,
-      name,
       location,
       admins
     } = communityInfo;

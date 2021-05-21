@@ -4,6 +4,7 @@ import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
 import { getRandomIntegerInRange } from "../Utils";
+import MEAutoComplete from "./Widgets/MEAutoComplete";
 // import { Link } from "react-router-dom";
 
 class CommunitySelectPage extends React.Component {
@@ -32,7 +33,7 @@ class CommunitySelectPage extends React.Component {
   }
 
   showSearchBar() {
-    if (this.props.communities.length >= 50) {
+    if (this.props.communities.length >= 300) {
       return (
         <input
           onChange={(event) => {
@@ -46,11 +47,26 @@ class CommunitySelectPage extends React.Component {
     }
   }
 
+  showAutoComplete() {
+    return (
+      <>
+        <MEAutoComplete
+          data={["Here", "there", "She", "Without", "Woman"]}
+          style={{
+            border: "2px solid #ed5c17",
+            borderRadius: 55,
+            paddingLeft: 25,
+          }}
+          containerClassName="com-select-auto-edits"
+          // curtainStyles = {{top:"38%"}}
+        />
+      </>
+    );
+  }
   getAnimationClass() {
     const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
     const index = getRandomIntegerInRange(3);
     return classes[index];
-  
   }
   render() {
     const communities =
@@ -96,7 +112,8 @@ class CommunitySelectPage extends React.Component {
                 Select Your Community Below
               </p>
               {this.showSearchBar()}
-              <ul className="text-center" style={{ marginBottom: 10 }}>
+              {this.showAutoComplete()}
+              {/* <ul className="text-center" style={{ marginBottom: 10 }}>
                 {Object.keys(communities).map((key) => {
                   const com = communities[key];
                   return (
@@ -108,15 +125,17 @@ class CommunitySelectPage extends React.Component {
                         fontSize: 15,
                       }}
                     >
-                      
                       {" "}
-                      <a className={`com-domain-link ${this.getAnimationClass()}` }href={`/${com.subdomain}`}>
+                      <a
+                        className={`com-domain-link ${this.getAnimationClass()}`}
+                        href={`/${com.subdomain}`}
+                      >
                         {com.name}
                       </a>
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
               <h3
                 className="text-center"
                 style={{
@@ -126,14 +145,15 @@ class CommunitySelectPage extends React.Component {
                 }}
               >
                 {" "}
-                Or go to our main site
+                Go To Our Main Site
               </h3>
               <p className="text-center">
                 <MEButton
-                className="me-anime-open-in"
+                  className="me-anime-open-in"
                   href="//massenergize.org"
                   variation="accent"
                   target="_blank"
+                  style={{ padding: "7px 30px" }}
                 >
                   MassEnergize
                 </MEButton>{" "}

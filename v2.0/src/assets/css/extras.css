@@ -12,6 +12,20 @@
     0 2px 4px 0 rgb(0 0 0 / 3%);
 }
 
+.round-caret {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  padding: 7px 15px;
+  background: #f1f1f1;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.round-caret:hover {
+  background: #cccccc;
+  transition: 0.2s ease-out;
+}
 .me-custom-page-title {
   font-size: 24px;
 }
@@ -703,7 +717,7 @@
   height: 1000000000px;
   width: 10000000000px;
   position: fixed;
-  z-index: 100;
+  /* z-index: 100; */
   top: 0px;
   left: 0px;
   opacity: 0.01 !important;
@@ -1392,6 +1406,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .com-select-auto-edits {
+    margin-right: 20%;
+    margin-left: 20%;
+  }
   .hori-filter-container {
     text-align: center;
     padding: 3px 0px 0px;
@@ -1481,7 +1499,6 @@
   .pc-vanish {
     display: none !important;
   }
- 
 
   /* ------------------------------- TABLETS ----------------------------- */
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -1493,8 +1510,12 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .phone-marg-top-90{ 
-    margin-top:90px !important;
+  .com-select-auto-edits {
+    margin-right: 5%;
+    margin-left: 5%;
+  }
+  .phone-marg-top-90 {
+    margin-top: 90px !important;
   }
   .phone-marg-top {
     margin-top: 50px;
