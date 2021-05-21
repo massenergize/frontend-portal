@@ -75,7 +75,6 @@ class CommunitySelectPage extends React.Component {
   getMostVisited() {
     var mostVisited = localStorage.getItem(MOST_VISITED);
     mostVisited = JSON.parse(mostVisited) || [];
-    console.log("I am the most visited", mostVisited);
     return mostVisited;
   }
   showAutoComplete() {
@@ -114,11 +113,15 @@ class CommunitySelectPage extends React.Component {
       communities = communities.filter((com) => {
         if (visited.includes(com.id) !== false) {
           coms[visited.indexOf(com.id)] = com; // To keep the most recently clicked community arrangement
+          return null;
         } else return com;
       });
       coms = [...coms, ...communities.slice(0, 6 - visited.length)];
     } else
-      coms = communities.filter((com) => visited.includes(com.id) === true);
+      communities.forEach((com) => {
+        if (visited.includes(com.id) === true)
+          coms[visited.indexOf(com.id)] = com;
+      });
     return (
       <ul className="text-center" style={{ marginBottom: 10 }}>
         <center>
