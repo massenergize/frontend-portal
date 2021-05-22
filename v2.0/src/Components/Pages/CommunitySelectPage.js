@@ -3,15 +3,18 @@ import { connect } from "react-redux";
 import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
-import { getRandomIntegerInRange } from "../Utils";
+import { getPropsArrayFromJsonArray, getRandomIntegerInRange } from "../Utils";
+import MEAutoComplete from "./Widgets/MEAutoComplete";
+import { withRouter } from "react-router";
 // import { Link } from "react-router-dom";
-
+const MOST_VISITED = "most_visited";
 class CommunitySelectPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       mirror_communities: [],
     };
+    this.handleCommunitySelected = this.handleCommunitySelected.bind(this);
   }
 
   handleSearch(event) {
@@ -32,7 +35,7 @@ class CommunitySelectPage extends React.Component {
   }
 
   showSearchBar() {
-    if (this.props.communities.length >= 50) {
+    if (this.props.communities.length >= 300) {
       return (
         <input
           onChange={(event) => {
@@ -46,11 +49,112 @@ class CommunitySelectPage extends React.Component {
     }
   }
 
+  handleCommunitySelected(value) {
+    const { communities } = this.props;
+    const com = communities.filter((item) => item.id === value)[0];
+    this.saveSelectedToStorage(value); // Save selected community's id to localStorage before moving
+    this.props.history.push(`/${com.subdomain}`);
+  }
+
+  /**
+   * The function is in charge of adding the ids of values of selected communities and
+   * saving it in storage
+   * @param {*} id
+   * @returns
+   *
+   */
+  saveSelectedToStorage(id) {
+    var mostVisited = this.getMostVisited();
+    mostVisited = mostVisited.filter((item) => item !== id);
+    localStorage.setItem(
+      MOST_VISITED,
+      JSON.stringify([id, ...mostVisited.slice(0, 5)])
+    ); // Just a way to keep  the record limit up to 6
+  }
+
+  getMostVisited() {
+    var mostVisited = localStorage.getItem(MOST_VISITED);
+    mostVisited = JSON.parse(mostVisited) || [];
+    return mostVisited;
+  }
+  showAutoComplete() {
+    const data = getPropsArrayFromJsonArray(this.props.communities, "name");
+    const values = getPropsArrayFromJsonArray(this.props.communities, "id");
+    return (
+      <>
+        <MEAutoComplete
+          useCaret={true}
+          data={data}
+          dataValues={values}
+          style={{
+            border: "2px solid #ed5c17",
+            borderRadius: 55,
+            paddingLeft: 25,
+          }}
+          containerClassName="com-select-auto-edits"
+          placeholder="What community do you belong to?"
+          onItemSelected={this.handleCommunitySelected}
+        />
+      </>
+    );
+  }
+
+  /**
+   *  In summary, the displayed bubbles look best when its only 6 items.
+   * Always display most visited communities, if they are not up to 6, take more from
+   * the general community list to drive it up to 6 items
+   * @param {*} communities
+   * @returns
+   */
+  renderCommunityBubbles(communities) {
+    const visited = this.getMostVisited();
+    var coms = [];
+    if (visited.length < 6) {
+      communities = communities.filter((com) => {
+        if (visited.includes(com.id) !== false) {
+          coms[visited.indexOf(com.id)] = com; // To keep the most recently clicked community arrangement
+          return null;
+        } else return com;
+      });
+      coms = [...coms, ...communities.slice(0, 6 - visited.length)];
+    } else
+      communities.forEach((com) => {
+        if (visited.includes(com.id) === true)
+          coms[visited.indexOf(com.id)] = com;
+      });
+    return (
+      <ul className="text-center" style={{ marginBottom: 10 }}>
+        <center>
+          <small style={{ color: "#c5c5c5" }}>Most Visited</small>
+        </center>
+        {coms.map((com, key) => {
+          // const com = coms[key];
+          return (
+            <li
+              key={key}
+              style={{
+                display: "inline-block",
+                margin: "5px",
+                fontSize: 15,
+              }}
+            >
+              {" "}
+              <a
+                className={`com-domain-link ${this.getAnimationClass()}`}
+                href={`/${com.subdomain}`}
+              >
+                {com.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
   getAnimationClass() {
     const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
     const index = getRandomIntegerInRange(3);
     return classes[index];
-  
   }
   render() {
     const communities =
@@ -95,28 +199,9 @@ class CommunitySelectPage extends React.Component {
                 {" "}
                 Select Your Community Below
               </p>
-              {this.showSearchBar()}
-              <ul className="text-center" style={{ marginBottom: 10 }}>
-                {Object.keys(communities).map((key) => {
-                  const com = communities[key];
-                  return (
-                    <li
-                      key={key}
-                      style={{
-                        display: "inline-block",
-                        margin: "5px",
-                        fontSize: 15,
-                      }}
-                    >
-                      
-                      {" "}
-                      <a className={`com-domain-link ${this.getAnimationClass()}` }href={`/${com.subdomain}`}>
-                        {com.name}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
+              {/* {this.showSearchBar()} */}
+              {this.showAutoComplete()}
+              {this.renderCommunityBubbles(communities)}
               <h3
                 className="text-center"
                 style={{
@@ -126,14 +211,15 @@ class CommunitySelectPage extends React.Component {
                 }}
               >
                 {" "}
-                Or go to our main site
+                Go To Our Main Site
               </h3>
               <p className="text-center">
                 <MEButton
-                className="me-anime-open-in"
+                  className="me-anime-open-in"
                   href="//massenergize.org"
                   variation="accent"
                   target="_blank"
+                  style={{ padding: "7px 30px" }}
                 >
                   MassEnergize
                 </MEButton>{" "}
@@ -150,4 +236,4 @@ const mapStoreToProps = (store) => {
     communities: store.page.communities,
   };
 };
-export default connect(mapStoreToProps)(CommunitySelectPage);
+export default connect(mapStoreToProps)(withRouter(CommunitySelectPage));
