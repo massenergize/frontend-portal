@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 import MEButton from "./Widgets/MEButton";
-import { getPropsArrayFromJsonArray, getRandomIntegerInRange } from "../Utils";
+import {
+  getPropsArrayFromJsonArrayAdv,
+  getRandomIntegerInRange,
+} from "../Utils";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
 import { withRouter } from "react-router";
 // import { Link } from "react-router-dom";
@@ -11,42 +14,7 @@ const MOST_VISITED = "most_visited";
 class CommunitySelectPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mirror_communities: [],
-    };
     this.handleCommunitySelected = this.handleCommunitySelected.bind(this);
-  }
-
-  handleSearch(event) {
-    var text = event.target.value.toLowerCase();
-    var similar = [];
-    for (let i = 0; i < this.props.communities.length; i++) {
-      const el = this.props.communities[i];
-      if (el.name.toLowerCase().includes(text)) {
-        similar.push(el);
-      }
-    }
-    this.setState({ mirror_communities: similar });
-  }
-  transfer() {
-    if (this.props.communities) {
-      this.setState({ mirror_communities: [...this.props.communities] });
-    }
-  }
-
-  showSearchBar() {
-    if (this.props.communities.length >= 300) {
-      return (
-        <input
-          onChange={(event) => {
-            this.handleSearch(event);
-          }}
-          type="text"
-          placeholder="Search for your community..."
-          className="form-control font-textbox round-me land-textbox"
-        />
-      );
-    }
   }
 
   handleCommunitySelected(value) {
@@ -78,8 +46,22 @@ class CommunitySelectPage extends React.Component {
     return mostVisited;
   }
   showAutoComplete() {
-    const data = getPropsArrayFromJsonArray(this.props.communities, "name");
-    const values = getPropsArrayFromJsonArray(this.props.communities, "id");
+    var communities = [];
+
+    (this.props.communities || []).forEach((com) => {
+      communities.push(this.locationInformation(com));
+    });
+    communities = (communities || []).sort((a, b) =>
+      a.name_with_community === b.name_with_community ? 0 : a < b ? -1 : 1
+    );
+    const data = getPropsArrayFromJsonArrayAdv(
+      communities,
+      (obj) => obj.name_with_community
+    );
+    const values = getPropsArrayFromJsonArrayAdv(
+      communities,
+      (obj) => obj.community.id
+    );
     return (
       <>
         <MEAutoComplete
@@ -100,8 +82,39 @@ class CommunitySelectPage extends React.Component {
   }
 
   /**
+   * Just a function that checks for appropriate location fields and returns each community with a prefix of
+   * its location if available
+   * @param {*} community
+   * @returns
+   */
+  locationInformation(community) {
+    const res = {
+      has_location:
+        community && community.locations && community.locations.length > 0,
+    };
+    const location = res.has_location
+      ? community.locations.filter((l) => l.location_type === "FULL_ADDRESS")[0]
+      : null;
+    res.location = location;
+    res.has_full_address = res.has_location && location;
+    res.geo_focused = community.is_geographically_focused;
+    if (res.has_full_address) {
+      // Only add the County-State prefix when there is a location with full_address type in the list
+      const prefix = `${res.location.county || ""} ${
+        res.location.county ? " , " : ""
+      } ${res.location.state || ""}`;
+      res.name_with_community = `${prefix} ${prefix ? " - " : ""} ${
+        community.name
+      }`;
+    } else res.name_with_community = community.name;
+
+    res.community = community;
+    return res;
+  }
+
+  /**
    *  In summary, the displayed bubbles look best when its only 6 items.
-   * Always display most visited communities, if they are not up to 6, take more from
+   * Always display 6 most visited communities, if they are not up to 6, take more from
    * the general community list to drive it up to 6 items
    * @param {*} communities
    * @returns
@@ -125,7 +138,9 @@ class CommunitySelectPage extends React.Component {
     return (
       <ul className="text-center" style={{ marginBottom: 10 }}>
         <center>
-          <small style={{ color: "#c5c5c5" }}>Most Visited</small>
+          <small style={{ color: "#c5c5c5" }}>
+            Select Your Community or Visit Any Community Site
+          </small>
         </center>
         {coms.map((com, key) => {
           // const com = coms[key];
@@ -157,11 +172,7 @@ class CommunitySelectPage extends React.Component {
     return classes[index];
   }
   render() {
-    const communities =
-      this.state.mirror_communities.length === 0
-        ? this.props.communities
-        : this.state.mirror_communities;
-
+    const communities = this.props.communities;
     if (!this.props.communities) return <LoadingCircle />;
     return (
       <div className="">
@@ -210,8 +221,8 @@ class CommunitySelectPage extends React.Component {
                   margin: 15,
                 }}
               >
-                {" "}
-                Go To Our Main Site
+                Find Out More About MassEnergize and Starting Your Community
+                Site
               </h3>
               <p className="text-center">
                 <MEButton
