@@ -53,8 +53,9 @@ class CommunitySelectPage extends React.Component {
     });
     communities.sort((a, b) =>
       a.name_with_community
+        .trim()
         .toUpperCase()
-        .localeCompare(b.name_with_community.toUpperCase())
+        .localeCompare(b.name_with_community.trim().toUpperCase())
     );
 
     const data = getPropsArrayFromJsonArrayAdv(
@@ -92,19 +93,17 @@ class CommunitySelectPage extends React.Component {
    * @returns
    */
   locationInformation(community) {
-    const moreInfo = JSON.parse(community.more_info);
+    const location = community.location;
     const res = {
-      has_location:
-        moreInfo && moreInfo.location & community.is_geographically_focused,
+      has_location: location,
     };
-    const location = moreInfo && moreInfo.location;
     res.location = location;
     if (res.has_location) {
       // Only add the County-State prefix when there is a location, and the community is geographically focused
       const prefix = `${location.county || ""} ${
         location.county ? " , " : ""
       } ${location.state || ""}`;
-      res.name_with_community = `${prefix} ${prefix ? " - " : ""} ${
+      res.name_with_community = `${prefix} ${prefix.trim() ? " - " : ""} ${
         community.name
       }`;
     } else res.name_with_community = community.name;
