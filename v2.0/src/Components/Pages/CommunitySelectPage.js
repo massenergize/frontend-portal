@@ -51,9 +51,12 @@ class CommunitySelectPage extends React.Component {
     (this.props.communities || []).forEach((com) => {
       communities.push(this.locationInformation(com));
     });
-    communities = (communities || []).sort((a, b) =>
-      a.name_with_community === b.name_with_community ? 0 : a < b ? -1 : 1
+    communities.sort((a, b) =>
+      a.name_with_community
+        .toUpperCase()
+        .localeCompare(b.name_with_community.toUpperCase())
     );
+
     const data = getPropsArrayFromJsonArrayAdv(
       communities,
       (obj) => obj.name_with_community
@@ -65,6 +68,7 @@ class CommunitySelectPage extends React.Component {
     return (
       <>
         <MEAutoComplete
+          textStyle={{ textTransform: "capitalize" }}
           useCaret={true}
           data={data}
           dataValues={values}
@@ -82,27 +86,24 @@ class CommunitySelectPage extends React.Component {
   }
 
   /**
-   * Just a function that checks for appropriate location fields and returns each community with a prefix of
+   * A function that checks for appropriate location fields and returns each community with a prefix of
    * its location if available
    * @param {*} community
    * @returns
    */
   locationInformation(community) {
+    const moreInfo = JSON.parse(community.more_info);
     const res = {
       has_location:
-        community && community.locations && community.locations.length > 0,
+        moreInfo && moreInfo.location & community.is_geographically_focused,
     };
-    const location = res.has_location
-      ? community.locations.filter((l) => l.location_type === "FULL_ADDRESS")[0]
-      : null;
+    const location = moreInfo && moreInfo.location;
     res.location = location;
-    res.has_full_address = res.has_location && location;
-    res.geo_focused = community.is_geographically_focused;
-    if (res.has_full_address) {
-      // Only add the County-State prefix when there is a location with full_address type in the list
-      const prefix = `${res.location.county || ""} ${
-        res.location.county ? " , " : ""
-      } ${res.location.state || ""}`;
+    if (res.has_location) {
+      // Only add the County-State prefix when there is a location, and the community is geographically focused
+      const prefix = `${location.county || ""} ${
+        location.county ? " , " : ""
+      } ${location.state || ""}`;
       res.name_with_community = `${prefix} ${prefix ? " - " : ""} ${
         community.name
       }`;
