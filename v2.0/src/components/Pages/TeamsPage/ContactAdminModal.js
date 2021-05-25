@@ -60,7 +60,7 @@ class ContactAdminModal extends React.Component {
     } else {
       modalContent = (
         <p>
-          You must <Link to={links.signin}>sign in or create an account</Link>{" "}
+          You must <Link to={links.signin}>sign in or create a profile</Link>{" "}
           to contact this team's admin
         </p>
       );

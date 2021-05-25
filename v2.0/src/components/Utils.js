@@ -162,6 +162,12 @@ export function getPropsArrayFromJsonArray(array, property) {
   array.forEach((item) => toGo.push(item[property]));
   return toGo;
 }
+export function getPropsArrayFromJsonArrayAdv(array, modifier) {
+  if (!array || !modifier) return [];
+  const toGo = [];
+  array.forEach((item) => toGo.push(modifier(item)));
+  return toGo;
+}
 
 function sameYear(date1, date2) {
   return date1.getFullYear() === date2.getFullYear();

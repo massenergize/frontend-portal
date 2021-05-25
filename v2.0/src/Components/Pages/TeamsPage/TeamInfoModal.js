@@ -149,7 +149,7 @@ class TeamInfoModal extends React.Component {
       form = (
         <p>
           You must{" "}
-          <Link to={this.props.links.signin}>Sign In or Create An Account</Link>{" "}
+          <Link to={this.props.links.signin}>Sign In or Create a Profile</Link>{" "}
           to start a team.
         </p>
       );

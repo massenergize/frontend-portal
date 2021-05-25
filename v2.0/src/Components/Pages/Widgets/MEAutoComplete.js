@@ -97,7 +97,6 @@ class MEAutoComplete extends Component {
               cursor: "pointer",
               display: "block",
               zIndex: 101,
-
               marginBottom: 0,
             }}
             className={`me-drop-item ${activeClass}`}
@@ -106,7 +105,7 @@ class MEAutoComplete extends Component {
               this.onItemClick(item);
             }}
           >
-            {item}
+            <span style={this.props.textStyle}>{item}</span>
           </METextView>
         </div>
       );
@@ -213,5 +212,6 @@ MEAutoComplete.defaultProps = {
   persistOnSelect: false,
   useCaret: false,
   curtainStyles: {},
+  textStyle: {},
 };
 export default MEAutoComplete;

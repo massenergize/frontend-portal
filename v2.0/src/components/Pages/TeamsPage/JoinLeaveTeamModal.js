@@ -84,7 +84,7 @@ class JoinLeaveTeamModal extends React.Component {
     } else {
       modalContent = (
         <p>
-          You must <Link to={links.signin}>sign in or create an account</Link>{" "}
+          You must <Link to={links.signin}>sign in or create a profile</Link>{" "}
           to {this.leaving ? "leave" : "join"} this team
         </p>
       );
