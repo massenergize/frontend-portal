@@ -140,7 +140,7 @@ class CommunitySelectPage extends React.Component {
             >
               {" "}
               <a
-                className={`com-domain-link ${this.getAnimationClass()}`}
+                className={`com-domain-link ${this.getAnimationClass()} bubble-communities`}
                 href={`/${com.subdomain}`}
               >
                 {com.name}
@@ -183,7 +183,7 @@ class CommunitySelectPage extends React.Component {
                 }}
                 src={logo}
               />
-              <h1 className="text-center raise-my-text me-anime-open-in">
+              <h1 className="text-center raise-my-text me-anime-open-in me-tag-line">
                 {" "}
                 <span style={{ color: "#ed5a14" }}>Welcome to </span>our{" "}
                 <span style={{ color: "green" }}>Community Portal</span>{" "}

@@ -1511,6 +1511,12 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .bubble-communities {
+    font-size: 13px;
+  }
+  .me-tag-line {
+    font-size: 25px;
+  }
   .com-select-auto-edits {
     margin-right: 5%;
     margin-left: 5%;
