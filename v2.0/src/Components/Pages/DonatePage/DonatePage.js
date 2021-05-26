@@ -25,7 +25,10 @@ class DonatePage extends React.Component {
     const donation_link_text = "Make a donation to the community group";
     return (
       <>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar links={[{ name: "Donate" }]} />
 
           <div className="container p-5">
@@ -36,13 +39,9 @@ class DonatePage extends React.Component {
             <center>{description ? <p>{description}</p> : null}</center>
 
             {videoLink ? (
-              <div
-                className={
-                  videoLink ? "col-sm-12 col-md-12" : "d-none"
-                }
-              >
+              <div className={videoLink ? "col-sm-12 col-md-12" : "d-none"}>
                 {/* <Video link={videoLink} /> */}
-                <ReactPlayer url={videoLink} width="100%" height="500px" />
+                <ReactPlayer url={videoLink} width="100%" height="550px" />
               </div>
             ) : null}
 

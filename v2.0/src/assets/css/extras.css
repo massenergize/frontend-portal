@@ -1999,6 +1999,8 @@
   background:#ff7600 !important; 
   transition: .1s ease-in-out;
 } */
+
+
 .vendor-hover:hover {
   -webkit-box-shadow: 0 0px 22px 0 rgba(0, 0, 0, 0.24),
     0 1px 11px 0 rgba(0, 0, 0, 0.19);

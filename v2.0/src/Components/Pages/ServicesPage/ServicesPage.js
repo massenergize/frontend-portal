@@ -152,6 +152,7 @@ class ServicesPage extends React.Component {
                 <div
                   className="row pt-3 pb-3 phone-marg-top-90"
                   // style={{ maxHeight: 700, overflowY: "scroll" }}
+                  style={{ position: "relative" }}
                 >
                   {this.renderVendors(vendors)}
                 </div>
@@ -195,8 +196,8 @@ class ServicesPage extends React.Component {
       return (
         <div className={`col-12 col-md-4 col-lg-4`} key={index.toString()}>
           <MECard
-            className={`vendor-hover  ${MEAnimation.getAnimationClass()}}`}
-            style={{ borderRadius: 10, position: "relative"}}
+            className={`vendor-hover  ${MEAnimation.getAnimationClass()}`}
+            style={{ borderRadius: 10, position: "relative" }}
           >
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
