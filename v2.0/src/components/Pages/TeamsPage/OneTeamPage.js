@@ -26,6 +26,7 @@ class OneTeamPage extends React.Component {
       isAdmin: false,
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
+      numOfSubTeams: 0,
     };
   }
 
@@ -162,7 +163,10 @@ class OneTeamPage extends React.Component {
           />
         )}
 
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[{ link: links.teams, name: "Teams" }, { name: team.name }]}
           />
@@ -175,111 +179,45 @@ class OneTeamPage extends React.Component {
               </p>
             </center>
           )}
-          <div
-            className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
-            style={{ margin: "auto" }}
-          >
-            {/* <div className="team-card-column" style={{ margin: "0 auto" }}>
-              {team.logo ? (
-                <>
-                  <div className="team-card-column col-3">
-                    <img
-                      className="one-team-image team-card-content"
-                      src={team.logo.url}
-                      alt=""
-                    />
-                  </div>
-                  <div className="team-card-column col-6">
-                    <h2
-                      style={{
-                        textAlign: "center",
-                        //textTransform: "capitalize",
-                      }}
-                      className="cool-font team-card-content"
-                    >
-                      {teamTitle}
-                    </h2>
-                  </div>
-                  <div
-                    className="team-card-column col-3"
-                    style={{ padding: 0 }}
-                  >
-                    {buttonOrInTeam}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="team-card-column col-9">
-                    <h2
-                      style={{
-                        textAlign: "left",
-                        //textTransform: "capitalize",
-                      }}
-                      className="cool-font team-card-content"
-                    >
-                      {teamTitle}
-                    </h2>
-                  </div>
-                  <div
-                    className="team-card-column col-3"
-                    style={{ padding: 0 }}
-                  >
-                    {buttonOrInTeam}
-                  </div>
-                </>
-              )}
-            </div> */}
-
-            {/* <div className="row">
-              <div className="team-card-column">
-                <p
-                  className="team-card-content"
-                  style={{ textAlign: "center", margin: "5px auto" }}
-                >
-                  {team.tagline}
-                </p>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="team-card-column">
-                <TeamStatsBars teamStats={team.is_published && teamData} />
-              </div>
-            </div> */}
-          </div>
-
-          <br />
 
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8"
             style={{ margin: "auto" }}
           >
             <div className="row">
+              {/* ------------------------- NARROW LEFT SIDE FOR( ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
               <div className="col-md-3 col-12">
-                <div className="row" style={{ margin: 0 }}>
+                <div className="row" style={{ marginTop: "10vh" }}>
                   <MESectionWrapper
-                    headerText="About Us"
+                    headerText={`About ${team && team.name}`}
                     motherStyle={{ width: "100%" }}
+                    headerType="plain"
+                    className="team-s-w-header team-s-w-about-us-h"
+                    containerClassName="team-s-w-body "
                   >
                     <div
                       dangerouslySetInnerHTML={{ __html: team.description }}
                     />
                   </MESectionWrapper>
-                  {/* <div className="one-team-content-section slight-lift">
-                    <h5>
-                      <b>Description</b>
-                    </h5>
-                    <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
-                      <div className="boxed_wrapper">
-                        <p>{team.description}</p>
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
-                <div className="row" style={{ margin: 0, marginTop: 10 }}>
+                <div className="row" style={{ marginTop: 10 }}>
                   <MESectionWrapper
-                    headerText="Members"
+                    headerText={
+                      <span>
+                        Members{" "}
+                        <span className="round-badge">
+                          {" "}
+                          {teamData && teamData.members > 0
+                            ? teamData.members
+                            : ""}{" "}
+                        </span>
+                      </span>
+                    }
                     motherStyle={{ width: "100%" }}
+                    headerType="plain"
+                    className="team-s-w-header team-s-w-members-h"
+                    containerClassName="team-s-w-body team-s-w-members-b"
+                    caret={true}
                   >
                     {subTeams && (
                       <>
@@ -293,23 +231,23 @@ class OneTeamPage extends React.Component {
                       teamID={team.id}
                     />
                   </MESectionWrapper>
-                  {/* <div className="one-team-content-section slight-lift">
-                    <h5 style={{ marginBottom: '15px' }}>
-                      <b>Members</b>
-                      {subTeams && <><br /><small>Contains members of sub-teams</small></>}
-                    </h5>
-                    <TeamMembersList
-                      onMembersLoad={this.onMembersLoad}
-                      key={remountForcer}
-                      teamID={team.id}
-                    />
-                  </div> */}
                 </div>
                 {subTeams && (
-                  <div className="row" style={{ margin: 0, marginTop: 10 }}>
+                  <div className="row" style={{ marginTop: 10 }}>
                     <MESectionWrapper
-                      headerText="Sub-Teams"
+                      headerText={
+                        <span>
+                          Sub-Teams{" "}
+                          <span className="round-badge">
+                            {subTeams && teamData.subTeams.length}
+                          </span>
+                        </span>
+                      }
                       motherStyle={{ width: "100%" }}
+                      headerType="plain"
+                      className="team-s-w-header team-s-w-members-h"
+                      containerClassName="team-s-w-body team-s-w-members-b"
+                      caret={true}
                     >
                       <div
                         style={{ maxHeight: "200px", overflowY: "auto" }}
@@ -323,8 +261,13 @@ class OneTeamPage extends React.Component {
                                   <Link
                                     style={{ verticalAlign: "text-top" }}
                                     to={`${links.teams}/${subTeamStats.team.id}`}
+                                    className="subteams-link"
                                   >
-                                    <b>{subTeamStats.team.name}</b>
+                                    <i
+                                      className="fa  fa-long-arrow-right"
+                                      style={{ marginRight: 6 }}
+                                    ></i>
+                                    {subTeamStats.team.name}
                                   </Link>
                                 </li>
                               ))}
@@ -333,34 +276,10 @@ class OneTeamPage extends React.Component {
                         </div>
                       </div>
                     </MESectionWrapper>
-                    {/* <div className="one-team-content-section slight-lift">
-                      <h5 style={{ margin: 0 }}>
-                        <b>Sub-teams</b>
-                      </h5>
-                      <div
-                        style={{ maxHeight: "200px", overflowY: "auto" }}
-                        className="show-scrollbar"
-                      >
-                        <div className="boxed_wrapper">
-                          <div className="team-ul">
-                            <ul>
-                              {teamData.subTeams.map((subTeamStats) => (
-                                <li key={subTeamStats.team.id}>
-                                  <Link
-                                    to={`${links.teams}/${subTeamStats.team.id}`}
-                                  >
-                                    <b>{subTeamStats.team.name}</b>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 )}
               </div>
+              {/* ----------------------------------------- GRAPH AREA, TEAM TITLE, AND OTHER TEAM INFO ------------------------- */}
               <div className="col-md-9 col-12">
                 <div className="team-card-column" style={{ margin: "0 auto" }}>
                   {team.logo ? (

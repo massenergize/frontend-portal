@@ -63,7 +63,6 @@
 @import url(./extras.css);
 @import url(./me-anime.css);
 
-
 /* ==============================
    2. Global styles
    ============================== */
@@ -7848,21 +7847,21 @@ span.has-tooltip {
   text-align: center;
 } */
 
-.float-testimonial-btn{
+.float-testimonial-btn {
   position: fixed;
   right: -3px;
   top: 130px;
   border-bottom-right-radius: 0px !important;
   border-top-right-radius: 0px !important;
-  z-index:3;
+  z-index: 3;
 }
 
 .action-img-correction {
   width: 70% !important;
- height:140px; 
- object-fit: contain;
- border-radius: 10px;;
- cursor:pointer;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 10px;
+  cursor: pointer;
 }
 .action-background-card {
   /* height: 360px; */
@@ -7870,13 +7869,13 @@ span.has-tooltip {
   width: 70%;
 }
 
-.new-action-title-container{
+.new-action-title-container {
   background: rgb(249 249 249);
-    /* margin-top: 5px; */
-    margin-top: 12px;
-    border-radius: 0px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+  /* margin-top: 5px; */
+  margin-top: 12px;
+  border-radius: 0px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .new-action-btns-div {
   position: absolute;
@@ -7888,7 +7887,7 @@ span.has-tooltip {
   height: 80%;
   border-radius: 10px;
   z-index: 1;
-  margin-top:3px;
+  margin-top: 3px;
 }
 
 .single-shop-item .img-box {
@@ -9614,8 +9613,6 @@ button.as-link:hover {
   margin-bottom: 0;
 }
 
-
-
 .review-form p {
   margin-top: 1rem;
   margin-bottom: 0;
@@ -9633,10 +9630,10 @@ button.as-link:hover {
   /* font-style: italic */
 }
 
-.me-sub-teams-box{
-  padding-left:10%; 
-  padding-top:10px;
-  border:dotted 0px #d5dcd7fa; 
+.me-sub-teams-box {
+  padding-left: 10%;
+  padding-top: 10px;
+  border: dotted 0px #d5dcd7fa;
   border-left-width: 7px;
 }
 .teams-search {
@@ -9663,7 +9660,7 @@ button.as-link:hover {
 }
 
 .team-card:hover {
-  background:#f8fff4;
+  background: #f8fff4;
   transition: 0.2 forwards;
 }
 
@@ -9774,11 +9771,11 @@ button.as-link:hover {
 
 .team-ul ul {
   /* color: #999; */
-  color:#282828;
-  font-size: 18px;
+  color: #282828;
+  font-size: 17px;
   margin: 0px;
-  padding-left: 30px;
-  list-style-type: circle;
+  padding-left: 0px;
+  list-style-type: none;
 }
 
 .team-modal {

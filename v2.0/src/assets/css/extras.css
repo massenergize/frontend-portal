@@ -1,3 +1,52 @@
+.team-s-w-about-us-h {
+  border: solid 0px #8dc443;
+  /* border-radius: 5px; */
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  cursor: pointer;
+}
+.team-s-w-about-us-h:hover {
+  /* background: whitesmoke; */
+  border-color: #fd704c;
+  transition: 0.2s ease-out;
+}
+
+.subteams-link {
+  color: black;
+}
+.subteams-link:hover {
+  color: #8dc443;
+}
+.team-s-w-members-h {
+  border: solid 0px #8dc443;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.team-s-w-members-h:hover {
+  background: whitesmoke;
+  transition: 0.3 ease-out;
+}
+.team-s-w-header {
+  padding: 10px;
+  font-weight: bold;
+  text-transform: capitalize;
+  z-index: 10;
+  /* border: solid 0px #e8e8e8;
+  border-bottom-width: 2px; */
+}
+.team-s-w-body {
+  padding: 5px 10px;
+}
+.team-s-w-members-b {
+  border: dotted 0px #cccccc;
+  border-left-width: 4px;
+  margin-top: 10px;
+  margin-left: 19px;
+  z-index: -1;
+}
+
 .phone-search-input {
   width: 100%;
   margin: 4px;
@@ -877,6 +926,7 @@
   opacity: 0;
   z-index: -1;
   height: 0px;
+  width: 0px;
   transition: 0.3s linear;
 }
 
@@ -884,7 +934,15 @@
   transform: translateY(0px);
   opacity: 1;
   height: auto;
+  width: auto;
   transition: 0.3s linear;
+}
+
+.round-badge {
+  border: solid 2px #fd704c;
+  border-radius: 55px;
+  padding: 2px 6px;
+  font-size: 11px;
 }
 .me-badge {
   position: absolute;
@@ -896,6 +954,16 @@
   font-size: 12px;
   font-weight: bolder;
   background: white;
+}
+.me-sect-w-right {
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  border-radius: 55px;
+  color: black;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bolder;
 }
 .me-section-wrapper-header {
   /* border-radius:6px; */
