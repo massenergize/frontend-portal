@@ -45,7 +45,6 @@ class OneTeamPage extends React.Component {
           team: team,
           teamData: teamData,
         });
-      
       } else {
         this.setState({ error: json.error });
       }
@@ -180,7 +179,7 @@ class OneTeamPage extends React.Component {
             className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
             style={{ margin: "auto" }}
           >
-            <div className="team-card-column" style={{ margin: "0 auto" }}>
+            {/* <div className="team-card-column" style={{ margin: "0 auto" }}>
               {team.logo ? (
                 <>
                   <div className="team-card-column col-3">
@@ -212,10 +211,10 @@ class OneTeamPage extends React.Component {
                 <>
                   <div className="team-card-column col-9">
                     <h2
-                      style={{ 
-                        textAlign: "left", 
+                      style={{
+                        textAlign: "left",
                         //textTransform: "capitalize",
-                       }}
+                      }}
                       className="cool-font team-card-content"
                     >
                       {teamTitle}
@@ -229,9 +228,9 @@ class OneTeamPage extends React.Component {
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
 
-            <div className="row">
+            {/* <div className="row">
               <div className="team-card-column">
                 <p
                   className="team-card-content"
@@ -246,7 +245,7 @@ class OneTeamPage extends React.Component {
               <div className="team-card-column">
                 <TeamStatsBars teamStats={team.is_published && teamData} />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <br />
@@ -256,7 +255,7 @@ class OneTeamPage extends React.Component {
             style={{ margin: "auto" }}
           >
             <div className="row">
-              <div className="col-md-5 col-12">
+              <div className="col-md-3 col-12">
                 <div className="row" style={{ margin: 0 }}>
                   <MESectionWrapper
                     headerText="About Us"
@@ -362,7 +361,74 @@ class OneTeamPage extends React.Component {
                   </div>
                 )}
               </div>
-              <div className="col-md-7 col-12">
+              <div className="col-md-9 col-12">
+                <div className="team-card-column" style={{ margin: "0 auto" }}>
+                  {team.logo ? (
+                    <>
+                      <div className="team-card-column col-3">
+                        <img
+                          className="one-team-image team-card-content"
+                          src={team.logo.url}
+                          alt=""
+                        />
+                      </div>
+                      <div className="team-card-column col-6">
+                        <h2
+                          style={{
+                            textAlign: "center",
+                            //textTransform: "capitalize",
+                          }}
+                          className="cool-font team-card-content"
+                        >
+                          {teamTitle}
+                        </h2>
+                      </div>
+                      <div
+                        className="team-card-column col-3"
+                        style={{ padding: 0 }}
+                      >
+                        {buttonOrInTeam}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="team-card-column col-9">
+                        <h2
+                          style={{
+                            textAlign: "left",
+                            //textTransform: "capitalize",
+                          }}
+                          className="cool-font team-card-content"
+                        >
+                          {teamTitle}
+                        </h2>
+                      </div>
+                      <div
+                        className="team-card-column col-3"
+                        style={{ padding: 0 }}
+                      >
+                        {buttonOrInTeam}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="row">
+                  <div className="team-card-column">
+                    <p
+                      className="team-card-content"
+                      style={{ textAlign: "center", margin: "5px auto" }}
+                    >
+                      {team.tagline}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="team-card-column">
+                    <TeamStatsBars teamStats={team.is_published && teamData} />
+                  </div>
+                </div>
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section z-depth-float-half me-anime-open-in">
                     <h5>
@@ -414,32 +480,6 @@ class OneTeamPage extends React.Component {
           <br />
 
           <div className="row justify-content-center">
-            {/* <div style={{ paddingRight: "30px" }}>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <MEButton
-                  // className="btn round-me contact-admin-btn-new raise"
-                  onClick={() => {
-                    this.setState({ contactEditModalOpen: true });
-                  }}
-                >
-                  {user && isAdmin ? "Edit Team" : "Contact Admin"}
-                </MEButton>
-              </div>
-              {isInThisTeam && !isAdmin && (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <MEButton
-                    mediaType="icon"
-                    icon="fa fa-times"
-                    // className="btn round-me leave-team-btn raise"
-                    onClick={() => {
-                      this.setState({ joinLeaveModalOpen: true });
-                    }}
-                  >
-                    Leave Team
-                  </MEButton>
-                </div>
-              )}
-            </div> */}
             {team.is_published && (
               <div style={{ display: "block" }}>
                 <ShareButtons
