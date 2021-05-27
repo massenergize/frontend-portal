@@ -284,6 +284,7 @@ class HorizontalFilterBox extends Component {
             className="hori-filter-container"
             style={{
               height: longHeight ? "100vh" : 50,
+              overflowY: "hidden",
               overflowX:
                 (this.getCollectionSetAccordingToPage() || []).length > 3
                   ? "scroll"

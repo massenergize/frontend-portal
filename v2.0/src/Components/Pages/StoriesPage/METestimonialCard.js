@@ -4,7 +4,7 @@ import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
-import { getRandomIntegerInRange } from "../../Utils";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
 
 export default class METestimonialCard extends Component {
   constructor(props) {
@@ -67,11 +67,7 @@ export default class METestimonialCard extends Component {
     const date = moment(created_at).format(format);
     return date;
   }
-  getAnimationClass() {
-    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
-    const index = getRandomIntegerInRange(3);
-    return classes[index];
-  }
+ 
   render() {
     var {
       id,
@@ -86,7 +82,7 @@ export default class METestimonialCard extends Component {
       <div>
         <MECard
           style={{ padding: 0, position: "relative", borderRadius: 15 }}
-          className={`${this.getAnimationClass()} ${className} phone-vanish`}
+          className={`${MEAnimation.getAnimationClass()} ${className} phone-vanish`}
           to={`${this.props.links.testimonials}/${id}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" alt="testimonial"/>
