@@ -38,34 +38,62 @@ class TeamStatsBars extends React.Component {
       }
       membersJSX = (
         <p>
-          <b>{members.toLocaleString()}</b> member{members !== 1 && "s"}
+          <span className="phone-vanish">
+            <b>{members.toLocaleString()}</b> member{members !== 1 && "s"}
+          </span>
+          <span className="pc-vanish" style={{ fontSize: 10 }}>
+            <b>{members.toLocaleString()}</b> member{members !== 1 && "s"}
+          </span>
         </p>
       );
 
       actionsJSX = (
         <p>
-          <b>{actions.toLocaleString()}</b> action{actions !== 1 && "s"}{" "}
-          completed
-          {actionsPerMember && (
-            <span>
-              {" "}
-              (<b>{actionsPerMember.toLocaleString()}</b> / member)
-            </span>
-          )}
+          <span className="phone-vanish">
+            <b>{actions.toLocaleString()}</b> action{actions !== 1 && "s"}{" "}
+            completed
+            {actionsPerMember && (
+              <span>
+                {" "}
+                (<b>{actionsPerMember.toLocaleString()}</b> / member)
+              </span>
+            )}
+          </span>
+          <span className="pc-vanish" style={{ fontSize: 10 }}>
+            <b>{actions.toLocaleString()}</b> act. comp.
+            {actionsPerMember && (
+              <span>
+                {" "}
+                (<b>{actionsPerMember.toLocaleString()}</b>/mem)
+              </span>
+            )}
+          </span>
         </p>
       );
 
       carbonJSX = (
         <p>
-          {" "}
-          <b>{carbonSaved.toLocaleString()}</b> lb{carbonSaved !== 1 && "s"}.
-          carbon saved
-          {carbonSavedPerMember && (
-            <span>
-              {" "}
-              (<b>{carbonSavedPerMember.toLocaleString()}</b> / member)
-            </span>
-          )}
+          <span className="phone-vanish">
+            {" "}
+            <b>{carbonSaved.toLocaleString()}</b> lb{carbonSaved !== 1 && "s"}.
+            carbon saved
+            {carbonSavedPerMember && (
+              <span>
+                {" "}
+                (<b>{carbonSavedPerMember.toLocaleString()}</b> / member)
+              </span>
+            )}
+          </span>
+          <span className="pc-vanish" style={{ fontSize: 10 }}>
+            {" "}
+            <b>{carbonSaved.toLocaleString()}</b> lb{carbonSaved !== 1 && "s"}.
+            <b> C</b>. saved
+             {carbonSavedPerMember && (
+              <span>
+                (<b>{carbonSavedPerMember.toLocaleString()}</b>/mem)
+              </span>
+            )}
+          </span>
         </p>
       );
     }

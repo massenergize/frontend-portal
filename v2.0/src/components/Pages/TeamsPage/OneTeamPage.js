@@ -141,7 +141,15 @@ class OneTeamPage extends React.Component {
     );
 
     const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
-
+    const teamInfo = {
+      teamTitle,
+      teamData,
+      subTeams,
+      hasLogo,
+      team,
+      links,
+      remountForcer,
+    };
     return (
       <>
         <Helmet>
@@ -195,114 +203,11 @@ class OneTeamPage extends React.Component {
             style={{ margin: "auto" }}
           >
             <div className="row">
-              {/* ------------------------- NARROW LEFT SIDE FOR (ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
               <div className="col-md-3 col-12" style={{ marginTop: 0 }}>
-                <div className="row" style={{ minHeight: 142 }}>
-                  <center style={{ width: "100%" }}>
-                    {hasLogo && (
-                      <img
-                        className="one-team-image team-card-content"
-                        src={team.logo.url}
-                        alt=""
-                      />
-                    )}
-                    {team.parent && (
-                      <div style={{ padding: 10 }}>{teamTitle}</div>
-                    )}
-                  </center>
+                {/* ------------------------- NARROW LEFT SIDE FOR (ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
+                <div className="phone-vanish" style={{ padding: "0px 10px" }}>
+                  {this.renderMoreTeamInfo(teamInfo)}
                 </div>
-                <div className="row">
-                  <MESectionWrapper
-                    headerText={`About ${team && team.name}`}
-                    motherStyle={{ width: "100%" }}
-                    headerType="plain"
-                    className="team-s-w-header team-s-w-about-us-h"
-                    containerClassName="team-s-w-body "
-                    caret
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{ __html: team.description }}
-                    />
-                  </MESectionWrapper>
-                </div>
-                <div className="row" style={{ marginTop: 10 }}>
-                  <MESectionWrapper
-                    headerText={
-                      <span>
-                        Members{" "}
-                        <span className="round-badge">
-                          {" "}
-                          {teamData && teamData.members > 0
-                            ? teamData.members
-                            : ""}{" "}
-                        </span>
-                      </span>
-                    }
-                    motherStyle={{ width: "100%" }}
-                    headerType="plain"
-                    className="team-s-w-header team-s-w-members-h"
-                    containerClassName="team-s-w-body team-s-w-members-b"
-                    caret={true}
-                  >
-                    {subTeams && (
-                      <>
-                        <small>Contains members of sub-teams</small>
-                      </>
-                    )}
-
-                    <TeamMembersList
-                      onMembersLoad={this.onMembersLoad}
-                      key={remountForcer}
-                      teamID={team.id}
-                    />
-                  </MESectionWrapper>
-                </div>
-                {subTeams && (
-                  <div className="row" style={{ marginTop: 10 }}>
-                    <MESectionWrapper
-                      headerText={
-                        <span>
-                          Sub-Teams{" "}
-                          <span className="round-badge">
-                            {subTeams && teamData.subTeams.length}
-                          </span>
-                        </span>
-                      }
-                      motherStyle={{ width: "100%" }}
-                      headerType="plain"
-                      className="team-s-w-header team-s-w-members-h"
-                      containerClassName="team-s-w-body team-s-w-members-b"
-                      caret={true}
-                    >
-                      <div
-                        style={{ maxHeight: "200px", overflowY: "auto" }}
-                        className="show-scrollbar"
-                      >
-                        <div className="boxed_wrapper">
-                          <div className="team-ul">
-                            <ul>
-                              {teamData.subTeams.map((subTeamStats) => (
-                                <li key={subTeamStats.team.id}>
-                                  <Link
-                                    style={{ verticalAlign: "text-top" }}
-                                    to={`${links.teams}/${subTeamStats.team.id}`}
-                                    className="subteams-link"
-                                  >
-                                    <i
-                                      className="fa  fa-long-arrow-right"
-                                      style={{ marginRight: 6 }}
-                                    ></i>
-                                    {subTeamStats.team.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </MESectionWrapper>
-                  </div>
-                )}
               </div>
               {/* ----------------------------------------- GRAPH AREA, TEAM TITLE, AND OTHER TEAM INFO ------------------------- */}
               <div className="col-md-9 col-12">
@@ -313,10 +218,16 @@ class OneTeamPage extends React.Component {
                         style={{
                           textAlign: "center",
                           fontWeight: "bold",
-                          //textTransform: "capitalize",
                         }}
                         className="cool-font team-card-content"
                       >
+                        {hasLogo && ( //img only shows in mobile view
+                          <img
+                            className="one-team-image-mobile pc-vanish"
+                            src={team.logo.url}
+                            alt=""
+                          />
+                        )}
                         {team && team.name}
                         {!isInTeam ? (
                           <i
@@ -356,7 +267,7 @@ class OneTeamPage extends React.Component {
                   type={PACKED}
                 />
                 <div className="row" style={{ margin: 0 }}>
-                  <div className="one-team-content-section z-depth-float-half me-anime-open-in">
+                  <div className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless">
                     <h5>
                       <b>Actions Completed</b>
                       <br />
@@ -368,8 +279,12 @@ class OneTeamPage extends React.Component {
                     </h5>
                     <TeamActionsGraph key={remountForcer} teamID={team.id} />
 
-                    <p style={{ textAlign: "center" }}>
-                      Complete <Link to={links.actions}>more actions</Link>!
+                    <p style={{ textAlign: "center", marginTop: 15 }}>
+                      Complete{" "}
+                      <Link to={links.actions} className="me-link">
+                        more actions
+                      </Link>
+                      !
                     </p>
                   </div>
                   <center style={{ width: "100%" }}>
@@ -400,6 +315,17 @@ class OneTeamPage extends React.Component {
                   </center>
                 </div>
               </div>
+              {/* ------------------------------- MOBILE TEAM INFO AREA ----------------------- */}
+              <div
+                className="pc-vanish"
+                style={{
+                  padding: "0px 20px",
+                  margin: "20px 10px",
+                  width: "100%",
+                }}
+              >
+                {this.renderMoreTeamInfo(teamInfo)}
+              </div>
             </div>
           </div>
 
@@ -423,6 +349,123 @@ class OneTeamPage extends React.Component {
     );
   }
 
+  renderMoreTeamInfo(props) {
+    const {
+      teamTitle,
+      teamData,
+      subTeams,
+      hasLogo,
+      team,
+      links,
+      remountForcer,
+    } = props;
+    return (
+      <>
+        <div className="row phone-vanish" style={{ minHeight: 142 }}>
+          <center>
+            {hasLogo && (
+              <img
+                className="one-team-image team-card-content"
+                src={team.logo.url}
+                alt=""
+              />
+            )}
+            {team.parent && <div style={{ padding: 10 }}>{teamTitle}</div>}
+          </center>
+        </div>
+        <div className="row">
+          <MESectionWrapper
+            headerText={`About ${team && team.name}`}
+            motherStyle={{ width: "100%" }}
+            headerType="plain"
+            className="team-s-w-header team-s-w-about-us-h"
+            containerClassName="team-s-w-body "
+            caret
+          >
+            <div dangerouslySetInnerHTML={{ __html: team.description }} />
+          </MESectionWrapper>
+        </div>
+        <div className="row" style={{ marginTop: 10 }}>
+          <MESectionWrapper
+            headerText={
+              <span>
+                Members{" "}
+                <span className="round-badge">
+                  {" "}
+                  {teamData && teamData.members > 0
+                    ? teamData.members
+                    : ""}{" "}
+                </span>
+              </span>
+            }
+            motherStyle={{ width: "100%" }}
+            headerType="plain"
+            className="team-s-w-header team-s-w-members-h"
+            containerClassName="team-s-w-body team-s-w-members-b"
+            caret={true}
+          >
+            {subTeams && (
+              <>
+                <small>Contains members of sub-teams</small>
+              </>
+            )}
+
+            <TeamMembersList
+              onMembersLoad={this.onMembersLoad}
+              key={remountForcer}
+              teamID={team.id}
+            />
+          </MESectionWrapper>
+        </div>
+        {subTeams && (
+          <div className="row" style={{ marginTop: 10 }}>
+            <MESectionWrapper
+              headerText={
+                <span>
+                  Sub-Teams{" "}
+                  <span className="round-badge">
+                    {subTeams && teamData.subTeams.length}
+                  </span>
+                </span>
+              }
+              motherStyle={{ width: "100%" }}
+              headerType="plain"
+              className="team-s-w-header team-s-w-members-h"
+              containerClassName="team-s-w-body team-s-w-members-b"
+              caret={true}
+            >
+              <div
+                style={{ maxHeight: "200px", overflowY: "auto" }}
+                className="show-scrollbar"
+              >
+                <div className="boxed_wrapper">
+                  <div className="team-ul">
+                    <ul>
+                      {teamData.subTeams.map((subTeamStats) => (
+                        <li key={subTeamStats.team.id}>
+                          <Link
+                            style={{ verticalAlign: "text-top" }}
+                            to={`${links.teams}/${subTeamStats.team.id}`}
+                            className="subteams-link"
+                          >
+                            <i
+                              className="fa  fa-long-arrow-right"
+                              style={{ marginRight: 6 }}
+                            ></i>
+                            {subTeamStats.team.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </MESectionWrapper>
+          </div>
+        )}
+      </>
+    );
+  }
   onMembersLoad = (members) => {
     const { user } = this.props;
     const myTeamMember = members.filter((member) => member.user_id === user.id);
