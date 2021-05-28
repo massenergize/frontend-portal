@@ -130,9 +130,9 @@ class OneTeamPage extends React.Component {
       <>
         {team.parent && (
           <span style={{ fontSize: "16px" }}>
-            <Link className="me-link" to={`${links.teams}/${team.parent.id}`}>
+            <a className="me-link" href={`${links.teams}/${team.parent.id}`}>
               {team.parent.name}
-            </Link>
+            </a>
             &nbsp;/ {team.name}
             <br />
           </span>
@@ -314,6 +314,16 @@ class OneTeamPage extends React.Component {
                     )}
                   </center>
                 </div>
+
+                {/* -------------------------------- SHARING BUTTONS FOR PC MODE -------------------------- */}
+                <div
+                  className="row justify-content-center phone-vanish"
+                  style={{ marginTop: 50 }}
+                >
+                  {/* ------------------------ LEFT NARROR AREA THAT DISPLAYS TEAM INFO IN PC MODE ---------------------- */}
+                  {this.renderSocials(team)}
+                </div>
+                <br />
               </div>
               {/* ------------------------------- MOBILE TEAM INFO AREA ----------------------- */}
               <div
@@ -331,20 +341,31 @@ class OneTeamPage extends React.Component {
 
           <br />
 
-          <div className="row justify-content-center">
-            {team.is_published && (
-              <div style={{ display: "block" }}>
-                <ShareButtons
-                  label="Share this team!"
-                  pageTitle={team.name}
-                  pageDescription={team.tagline}
-                  url={window.location.href}
-                />
-              </div>
-            )}
+          {/* -------------- SHARING BUTTONS FOR MOBILE ---------------------------- */}
+          <div className="row justify-content-center pc-vanish">
+            {this.renderSocials(team)}
           </div>
           <br />
         </div>
+      </>
+    );
+  }
+
+  renderSocials(team) {
+    return (
+      <>
+        {team.is_published && (
+          <div style={{ display: "block" }}>
+            <ShareButtons
+              label="Share this team!"
+              pageTitle={team.name}
+              pageDescription={team.tagline}
+              url={window.location.href}
+            />
+          </div>
+        )}
+
+        <br />
       </>
     );
   }
