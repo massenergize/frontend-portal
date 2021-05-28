@@ -4,7 +4,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import TeamStatsBars from "./TeamStatsBars";
+import TeamStatsBars, { PACKED } from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
@@ -99,6 +99,7 @@ class OneTeamPage extends React.Component {
       <>
         {!isInTeam ? (
           <MEButton
+            style={{ fontSize: 14 }}
             onClick={() => {
               this.setState({ joinLeaveModalOpen: true });
             }}
@@ -106,27 +107,36 @@ class OneTeamPage extends React.Component {
             Join Team
           </MEButton>
         ) : (
-          <div className="team-card-content">
-            <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
-              &#10003; in this team {!isInThisTeam && "via a sub-team"}
+          <div className="" style={{ display: "inline-block" }}>
+            <p
+              style={{
+                color: "#8dc63f",
+                textAlign: "center",
+                margin: 0,
+                fontSize: 14,
+                textTransform: "capitalize",
+              }}
+            >
+              <i className="fa fa-check-circle"></i> in this team{" "}
+              {!isInThisTeam && "via a sub-team"}
             </p>
           </div>
         )}
       </>
     );
 
+    const hasLogo = team && team.logo && team.logo.url;
     const teamTitle = (
       <>
         {team.parent && (
           <span style={{ fontSize: "16px" }}>
-            <Link to={`${links.teams}/${team.parent.id}`}>
+            <Link className="me-link" to={`${links.teams}/${team.parent.id}`}>
               {team.parent.name}
             </Link>
-            &nbsp;/
+            &nbsp;/ {team.name}
             <br />
           </span>
         )}
-        {team.name}
       </>
     );
 
@@ -185,15 +195,30 @@ class OneTeamPage extends React.Component {
             style={{ margin: "auto" }}
           >
             <div className="row">
-              {/* ------------------------- NARROW LEFT SIDE FOR( ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
-              <div className="col-md-3 col-12">
-                <div className="row" style={{ marginTop: "10vh" }}>
+              {/* ------------------------- NARROW LEFT SIDE FOR (ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
+              <div className="col-md-3 col-12" style={{ marginTop: 0 }}>
+                <div className="row" style={{ minHeight: 142 }}>
+                  <center style={{ width: "100%" }}>
+                    {hasLogo && (
+                      <img
+                        className="one-team-image team-card-content"
+                        src={team.logo.url}
+                        alt=""
+                      />
+                    )}
+                    {team.parent && (
+                      <div style={{ padding: 10 }}>{teamTitle}</div>
+                    )}
+                  </center>
+                </div>
+                <div className="row">
                   <MESectionWrapper
                     headerText={`About ${team && team.name}`}
                     motherStyle={{ width: "100%" }}
                     headerType="plain"
                     className="team-s-w-header team-s-w-about-us-h"
                     containerClassName="team-s-w-body "
+                    caret
                   >
                     <div
                       dangerouslySetInnerHTML={{ __html: team.description }}
@@ -282,72 +307,54 @@ class OneTeamPage extends React.Component {
               {/* ----------------------------------------- GRAPH AREA, TEAM TITLE, AND OTHER TEAM INFO ------------------------- */}
               <div className="col-md-9 col-12">
                 <div className="team-card-column" style={{ margin: "0 auto" }}>
-                  {team.logo ? (
-                    <>
-                      <div className="team-card-column col-3">
-                        <img
-                          className="one-team-image team-card-content"
-                          src={team.logo.url}
-                          alt=""
-                        />
-                      </div>
-                      <div className="team-card-column col-6">
-                        <h2
-                          style={{
-                            textAlign: "center",
-                            //textTransform: "capitalize",
-                          }}
-                          className="cool-font team-card-content"
-                        >
-                          {teamTitle}
-                        </h2>
-                      </div>
-                      <div
-                        className="team-card-column col-3"
-                        style={{ padding: 0 }}
+                  <>
+                    <div className="team-card-column col-12">
+                      <h2
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          //textTransform: "capitalize",
+                        }}
+                        className="cool-font team-card-content"
                       >
-                        {buttonOrInTeam}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="team-card-column col-9">
-                        <h2
-                          style={{
-                            textAlign: "left",
-                            //textTransform: "capitalize",
-                          }}
-                          className="cool-font team-card-content"
-                        >
-                          {teamTitle}
-                        </h2>
-                      </div>
-                      <div
-                        className="team-card-column col-3"
-                        style={{ padding: 0 }}
-                      >
-                        {buttonOrInTeam}
-                      </div>
-                    </>
-                  )}
+                        {team && team.name}
+                        {!isInTeam ? (
+                          <i
+                            className="fa fa-long-arrow-left"
+                            style={{
+                              marginLeft: 17,
+                              color: isInTeam ? "black" : "#fd704c",
+                            }}
+                          ></i>
+                        ) : (
+                          <></>
+                        )}
+                        <span style={{ margin: "0px 15px" }}>
+                          {buttonOrInTeam}
+                        </span>
+                      </h2>
+                    </div>
+                  </>
                 </div>
 
                 <div className="row">
                   <div className="team-card-column">
                     <p
                       className="team-card-content"
-                      style={{ textAlign: "center", margin: "5px auto" }}
+                      style={{
+                        textAlign: "center",
+                        margin: "8px auto",
+                        color: "#282828",
+                      }}
                     >
                       {team.tagline}
                     </p>
                   </div>
                 </div>
-
-                <div className="row">
-                  <div className="team-card-column">
-                    <TeamStatsBars teamStats={team.is_published && teamData} />
-                  </div>
-                </div>
+                <TeamStatsBars
+                  teamStats={team.is_published && teamData}
+                  type={PACKED}
+                />
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section z-depth-float-half me-anime-open-in">
                     <h5>

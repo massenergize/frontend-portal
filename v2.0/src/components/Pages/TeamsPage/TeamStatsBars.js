@@ -1,18 +1,22 @@
 import React from "react";
-
+export const DEFAULT = "DEFAULT";
+export const PACKED = "PACKED";
 class TeamStatsBars extends React.Component {
   render() {
-    const { teamStats } = this.props;
+    const { teamStats, type } = this.props;
 
     let membersJSX, actionsJSX, carbonJSX;
 
     if (!teamStats) {
-      membersJSX = actionsJSX = carbonJSX = (
-        <p style={{ color: "darkgray" }}>
-          {" "}
-          stats will display after team approval 
-        </p>
-      );
+      membersJSX =
+        actionsJSX =
+        carbonJSX =
+          (
+            <p style={{ color: "darkgray" }}>
+              {" "}
+              stats will display after team approval
+            </p>
+          );
     } else {
       const actions = teamStats.actions_completed;
       const carbonSaved = teamStats.carbon_footprint_reduction;
@@ -45,7 +49,7 @@ class TeamStatsBars extends React.Component {
           {actionsPerMember && (
             <span>
               {" "}
-              (<b>{actionsPerMember.toLocaleString()}</b> per member)
+              (<b>{actionsPerMember.toLocaleString()}</b> / member)
             </span>
           )}
         </p>
@@ -59,7 +63,7 @@ class TeamStatsBars extends React.Component {
           {carbonSavedPerMember && (
             <span>
               {" "}
-              (<b>{carbonSavedPerMember.toLocaleString()}</b> per member)
+              (<b>{carbonSavedPerMember.toLocaleString()}</b> / member)
             </span>
           )}
         </p>
@@ -67,15 +71,58 @@ class TeamStatsBars extends React.Component {
     }
 
     return (
-      <div className="team-card-content">
-        <div className="info-section members">{membersJSX}</div>
-        <div className="info-section data" style={{ background: "#fce6c0" }}>
-          {actionsJSX}
-        </div>
-        <div className="info-section data">{carbonJSX}</div>
-      </div>
+      <>
+        {type === DEFAULT && (
+          <div className="team-card-content">
+            <div className="info-section members">{membersJSX}</div>
+            <div
+              className="info-section data"
+              style={{ background: "#fce6c0" }}
+            >
+              {actionsJSX}
+            </div>
+            <div className="info-section data">{carbonJSX}</div>
+          </div>
+        )}
+
+        {type === PACKED && (
+          <div className="row" style={{ padding: "0px 10px" }}>
+            <div className="stats-bar-container z-depth-sticker">
+              <div
+                className="stats-q-box"
+                style={{
+                  background: "#fafbf8",
+                  borderTopLeftRadius: 6,
+                  borderBottomLeftRadius: 6,
+                }}
+              >
+                {membersJSX}
+              </div>
+              <div
+                className="stats-q-box"
+                style={{ background: "rgb(252, 230, 192)" }}
+              >
+                {actionsJSX}
+              </div>
+              <div
+                className="stats-q-box"
+                style={{
+                  background: "#f2ffe0",
+                  borderTopRightRadius: 6,
+                  borderBottomRightRadius: 6,
+                }}
+              >
+                {carbonJSX}
+              </div>
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }
 
+TeamStatsBars.defaultProps = {
+  type: DEFAULT,
+};
 export default TeamStatsBars;
