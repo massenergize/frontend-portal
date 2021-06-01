@@ -419,7 +419,7 @@ class ProfilePage extends React.Component {
                     height: "fit-content",
                   }}
                 >
-                  {this.props.done ? (
+                  {true ? (
                     <Cart
                       title="Completed Actions"
                       actionRels={this.props.done ? this.props.done : []}
