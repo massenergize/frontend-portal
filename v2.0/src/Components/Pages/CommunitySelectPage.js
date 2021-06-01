@@ -4,12 +4,17 @@ import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
 // import MEButton from "./Widgets/MEButton";
 import {
+  getPropsArrayFromJsonArray,
   getPropsArrayFromJsonArrayAdv,
   getRandomIntegerInRange,
 } from "../Utils";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
 import { withRouter } from "react-router";
-// import { Link } from "react-router-dom";
+import { ME_STATES } from "./ProfilePage/States";
+
+const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
+const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+
 const MOST_VISITED = "most_visited";
 class CommunitySelectPage extends React.Component {
   constructor(props) {
@@ -99,10 +104,13 @@ class CommunitySelectPage extends React.Component {
     };
     res.location = location;
     if (res.has_location) {
+      const state = location.state ? meStatesDataValues[meStatesData.indexOf(location.state)] : "";
+      
+
       // Only add the County-State prefix when there is a location, and the community is geographically focused
-      const prefix = `${location.county || ""} ${
-        location.county ? " , " : ""
-      } ${location.state || ""}`;
+      const prefix = `${location.city || ""}${
+        location.city ? ", " : ""
+      } ${state || ""}`;
       res.name_with_community = `${prefix} ${prefix.trim() ? " - " : ""} ${
         community.name
       }`;
