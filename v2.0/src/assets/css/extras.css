@@ -1,3 +1,12 @@
+.events-about-content  a { 
+    color:#8dc343;
+    text-decoration: none;
+}
+
+.events-about-content a:hover{ 
+  text-decoration: underline;
+}
+
 .phone-search-input {
   width: 100%;
   margin: 4px;
@@ -1407,6 +1416,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .scroll-fix{ 
+    height:100vh; 
+    overflow-y:scroll;
+  }
   .com-select-auto-edits {
     margin-right: 20%;
     margin-left: 20%;
@@ -1511,6 +1524,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .scroll-fix{ 
+    height:fit-content; 
+    overflow-y: hidden;
+  }
   .com-select-auto-edits {
     margin-right: 5%;
     margin-left: 5%;

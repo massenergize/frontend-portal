@@ -7,7 +7,7 @@ const DONE = "DONE";
 // const TODO = "TODO";
 export default class ActionBoxCounter extends Component {
   render() {
-    const { type, style, todo, done } = this.props;
+    const { type, style, todo, done, user } = this.props;
     const data = type === DONE ? done : todo;
     return (
       <div className="action-box-counter z-depth-float" style={style}>
@@ -37,7 +37,9 @@ export default class ActionBoxCounter extends Component {
             <br />
             {/* ADD BACK WHEN WORKING <i className="fa fa-tree box-ico"></i>{" "} */}
             <small style={{ color: "black" }}>
-              <b>Tons CO2</b>
+              <b>
+                {!user ? "Sign in to see your CO2 / yr" : "Tons CO2 / year"}
+              </b>
             </small>{" "}
             {/* <i className="fa fa-caret-right box-ico"></i> */}
             {/* ADD BACK ONCE OPERATIVE  <i className="fa fa-arrow-circle-right box-ico"></i> */}
@@ -48,7 +50,7 @@ export default class ActionBoxCounter extends Component {
           </center>
         </div>
         <Link to={this.props.link} className="full-list-btn">
-          Full List
+          {!user ? "Sign In" : "Full List"}
         </Link>
       </div>
     );
