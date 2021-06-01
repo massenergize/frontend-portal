@@ -155,7 +155,7 @@ class CommunitySelectPage extends React.Component {
             >
               {" "}
               <a
-                className={`com-domain-link ${this.getAnimationClass()}`}
+                className={`com-domain-link ${this.getAnimationClass()} bubble-communities`}
                 href={`/${com.subdomain}`}
               >
                 {com.name}
