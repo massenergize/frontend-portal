@@ -63,7 +63,10 @@ class OneEventPage extends React.Component {
           <meta property="og:description" content={event.featured_summary} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
