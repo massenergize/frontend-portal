@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -61,7 +61,6 @@ class ActionsPage extends React.Component {
       showTodoMsg: false,
       actions: [],
       status: null,
-     
     };
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -147,7 +146,8 @@ class ActionsPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : "Actions";
     //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
-    const description = pageData && pageData.description ? pageData.description : null;
+    const description =
+      pageData && pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -209,42 +209,38 @@ class ActionsPage extends React.Component {
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
                   <div style={{ marginTop: 20 }}>
-                    {this.props.user ? (
-                      <div className="phone-vanish">
-                        <ActionBoxCounter
-                          type="DONE"
-                          done={this.props.done}
-                          link={
-                            this.props.links ? this.props.links.profile : "#"
-                          }
-                        />
-                        <ActionBoxCounter
-                          type="TODO"
-                          style={{ marginTop: 20 }}
-                          todo={this.props.todo}
-                          link={
-                            this.props.links ? this.props.links.profile : "#"
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <p>
-                          <Link to={`${this.props.links.signin}`}>
-                            {" "}
-                            Sign In{" "}
-                          </Link>{" "}
-                          to add actions to your todo list or to mark them as
-                          complete
-                        </p>
-                      </div>
-                    )}
+                    {/* {this.props.user ? ( */}
+                    <div className="phone-vanish">
+                      <ActionBoxCounter
+                        type="DONE"
+                        done={this.props.done}
+                        link={this.props.links ? this.props.links.profile : "#"}
+                      />
+                      <ActionBoxCounter
+                        type="TODO"
+                        style={{ marginTop: 20 }}
+                        todo={this.props.todo}
+                        link={this.props.links ? this.props.links.profile : "#"}
+                      />
+                    </div>
+                    {/* // ) : (
+                    //   <div>
+                    //     <p>
+                    //       <Link to={`${this.props.links.signin}`}>
+                    //         {" "}
+                    //         Sign In{" "}
+                    //       </Link>{" "}
+                    //       to add actions to your todo list or to mark them as
+                    //       complete
+                    //     </p>
+                    //   </div>
+                    // )} */}
                   </div>
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
-                    className="row"
+                    className="row scroll-fix"
                     id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 20 }}
                   >

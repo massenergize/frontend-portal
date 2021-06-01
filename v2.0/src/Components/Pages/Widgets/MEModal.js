@@ -59,7 +59,7 @@ export default class MEModal extends Component {
             <center>
               <MEButton
                 onClick={closeModal}
-                className="me-close"
+                className="me-close close-mob-padding"
                 style={{
                   marginBottom: -70,
                   fontWeight: "bold",

@@ -2,14 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import LoadingCircle from "../Shared/LoadingCircle";
 import logo from "../../logo.png";
-import MEButton from "./Widgets/MEButton";
+// import MEButton from "./Widgets/MEButton";
 import {
+  getPropsArrayFromJsonArray,
   getPropsArrayFromJsonArrayAdv,
   getRandomIntegerInRange,
 } from "../Utils";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
 import { withRouter } from "react-router";
-// import { Link } from "react-router-dom";
+import { ME_STATES } from "./ProfilePage/States";
+
+const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
+const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+
 const MOST_VISITED = "most_visited";
 class CommunitySelectPage extends React.Component {
   constructor(props) {
@@ -79,7 +84,7 @@ class CommunitySelectPage extends React.Component {
             paddingLeft: 25,
           }}
           containerClassName="com-select-auto-edits"
-          placeholder="What community do you belong to?"
+          placeholder="Choose your community"
           onItemSelected={this.handleCommunitySelected}
         />
       </>
@@ -99,10 +104,13 @@ class CommunitySelectPage extends React.Component {
     };
     res.location = location;
     if (res.has_location) {
+      const state = location.state ? meStatesDataValues[meStatesData.indexOf(location.state)] : "";
+      
+
       // Only add the County-State prefix when there is a location, and the community is geographically focused
-      const prefix = `${location.county || ""} ${
-        location.county ? " , " : ""
-      } ${location.state || ""}`;
+      const prefix = `${location.city || ""}${
+        location.city ? ", " : ""
+      } ${state || ""}`;
       res.name_with_community = `${prefix} ${prefix.trim() ? " - " : ""} ${
         community.name
       }`;
@@ -137,11 +145,11 @@ class CommunitySelectPage extends React.Component {
       });
     return (
       <ul className="text-center" style={{ marginBottom: 10 }}>
-        <center>
+        {/* <center>
           <small style={{ color: "#c5c5c5" }}>
             Select Your Community or Visit Any Community Site
           </small>
-        </center>
+        </center> */}
         {coms.map((com, key) => {
           // const com = coms[key];
           return (
@@ -155,7 +163,7 @@ class CommunitySelectPage extends React.Component {
             >
               {" "}
               <a
-                className={`com-domain-link ${this.getAnimationClass()}`}
+                className={`com-domain-link ${this.getAnimationClass()} bubble-communities`}
                 href={`/${com.subdomain}`}
               >
                 {com.name}
@@ -172,15 +180,22 @@ class CommunitySelectPage extends React.Component {
     return classes[index];
   }
   render() {
-    const communities = this.props.communities;
+    // const communities = this.props.communities;
     if (!this.props.communities) return <LoadingCircle />;
     return (
       <div className="">
-        <div className="container">
-          <div className="row">
+        <div className="container" style={{ height: "100vh" }}>
+          <div
+            className="row"
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+            }}
+          >
             <div
               className="col-lg-12 col-md-12 col-sm-10 col-xs-12  "
-              style={{ paddingTop: "" }}
+              style={{ marginTop: "-20vh" }}
             >
               <img
                 alt="IMG"
@@ -189,17 +204,20 @@ class CommunitySelectPage extends React.Component {
                   margin: "auto",
                   display: "block",
                   maxWidth: "200px",
-                  marginTop: "16%",
+                  marginTop: "0px",
                   marginBottom: 10,
                 }}
                 src={logo}
               />
-              <h1 className="text-center raise-my-text me-anime-open-in">
+              <h1
+                className="text-center raise-my-text me-anime-open-in"
+                style={{ marginBottom: 15 }}
+              >
                 {" "}
                 <span style={{ color: "#ed5a14" }}>Welcome to </span>our{" "}
-                <span style={{ color: "green" }}>Community Portal</span>{" "}
+                <span style={{ color: "#49ac23" }}>Community Portal</span>{" "}
               </h1>
-              <p
+              {/* <p
                 className="text-center"
                 style={{
                   fontSize: "1.2rem",
@@ -209,11 +227,11 @@ class CommunitySelectPage extends React.Component {
               >
                 {" "}
                 Select Your Community Below
-              </p>
+              </p> */}
               {/* {this.showSearchBar()} */}
               {this.showAutoComplete()}
-              {this.renderCommunityBubbles(communities)}
-              <h3
+              {/* {this.renderCommunityBubbles(communities)} */}
+              {/* <h3
                 className="text-center"
                 style={{
                   fontSize: "1.2rem",
@@ -223,9 +241,9 @@ class CommunitySelectPage extends React.Component {
               >
                 Find Out More About MassEnergize and Starting Your Community
                 Site
-              </h3>
+              </h3> */}
               <p className="text-center">
-                <MEButton
+                {/* <MEButton
                   className="me-anime-open-in"
                   href="//massenergize.org"
                   variation="accent"
@@ -233,7 +251,22 @@ class CommunitySelectPage extends React.Component {
                   style={{ padding: "7px 30px" }}
                 >
                   MassEnergize
-                </MEButton>{" "}
+                </MEButton>{" "} */}
+
+                <a
+                  href="http://www.massenergize.org"
+                  className=""
+                  style={{
+                    margin: 20,
+                    color: "#49ac23",
+                    textDecoration: "underline",
+                  }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Find out how to start your own MassEnergize community site
+                  here
+                </a>
               </p>
             </div>
           </div>
