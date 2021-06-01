@@ -215,12 +215,14 @@ class ActionsPage extends React.Component {
                         type="DONE"
                         done={this.props.done}
                         link={this.props.links ? this.props.links.profile : "#"}
+                        user ={this.props.user}
                       />
                       <ActionBoxCounter
                         type="TODO"
                         style={{ marginTop: 20 }}
                         todo={this.props.todo}
                         link={this.props.links ? this.props.links.profile : "#"}
+                        user ={this.props.user}
                       />
                     </div>
                     {/* // ) : (

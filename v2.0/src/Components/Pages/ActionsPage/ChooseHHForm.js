@@ -43,7 +43,7 @@ class ChooseHHForm extends React.Component {
     return (
       <>
         <div className="act-modal-whole">
-          <div class="act-title-bar">
+          <div className="act-title-bar">
             <h3>{this.props.action.title}</h3>
           </div>
 
@@ -65,7 +65,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   {this.renderHouseHoldsInLine(this.props.user.households)}
-                  <div class="act-status-bar">
+                  <div className="act-status-bar">
                     <h4
                       style={{
                         margin: 20,
