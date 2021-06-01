@@ -107,7 +107,7 @@ export default class NewEventsCard extends Component {
                 {this.getBody()}
               </METextView>
 
-              <div className="testimonial-link-holder z-depth-float-half">
+              <div className="testimonial-link-holder">
                 <METextView
                   mediaType="icon"
                   icon="fa fa-clock-o"

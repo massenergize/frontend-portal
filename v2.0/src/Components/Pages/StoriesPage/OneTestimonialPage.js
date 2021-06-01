@@ -5,10 +5,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./me_energy_default.png";
-import {
-  getHumanFriendlyDate,
-  getRandomIntegerInRange,
-} from "../../Utils";
+import { getHumanFriendlyDate, getRandomIntegerInRange } from "../../Utils";
 // import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 import photo from "./../ActionsPage/try.png";
@@ -163,7 +160,10 @@ class OneTestimonialPage extends React.Component {
           <meta property="og:description" content={story.featured_summary} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[
               { link: this.props.links.testimonials, name: "Testimonials" },
@@ -196,9 +196,11 @@ class OneTestimonialPage extends React.Component {
         <div className="container">
           <h3
             className="cool-font text-center"
-            style={{ 
-              //textTransform: "capitalize",
-            }}
+            style={
+              {
+                //textTransform: "capitalize",
+              }
+            }
           >
             {story.title}
           </h3>

@@ -211,20 +211,20 @@ class ServicesPage extends React.Component {
               <div className="col-12 text-center" style={{ padding: 0 }}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <img
-                    className="w-100"
-                    style={{
-                      minHeight: 200,
-                      maxHeight: 200,
-                      objectFit: "contain",
-                      borderTopRightRadius: 12,
-                      borderTopLeftRadius: 12,
-                    }}
+                    className="w-100 service-prov-img"
                     src={vendor.logo ? vendor.logo.url : notFound}
                     alt={vendor.name}
                   />
                 </Link>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
-                  <h4 className="pt-3" style={{ fontSize: 14 }}>
+                  <h4
+                    className="pt-3"
+                    style={{
+                      fontSize: "clamp(19px, 21px, 26px)",
+                      textTransform: "capitalize",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {vendor.name}
                   </h4>
                 </Link>
