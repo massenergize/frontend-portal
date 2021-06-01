@@ -1,3 +1,12 @@
+.events-about-content  a { 
+    color:#8dc343;
+    text-decoration: none;
+}
+
+.events-about-content a:hover{ 
+  text-decoration: underline;
+}
+
 .stats-bar-container {
   display: flex;
   flex-wrap: nowrap;
@@ -1513,6 +1522,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .scroll-fix{ 
+    height:100vh; 
+    overflow-y:scroll;
   .stats-q-box {
     cursor: pointer;
     padding: 10px;
@@ -1640,6 +1652,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .scroll-fix{ 
+    height:fit-content; 
+    overflow-y: hidden;
+  }
   .mob-borderless{ 
     box-shadow: 0px 0px 0px !important;
     border:0px  !important;
