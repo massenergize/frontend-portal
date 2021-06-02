@@ -12,6 +12,8 @@ import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
+import DefaultClass from "../../Shared/Classes/DefaultClass";
+import { Link } from "react-router-dom";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -104,7 +106,9 @@ class OneTestimonialPage extends React.Component {
     if (action) {
       return (
         <div>
-          <h5 style={{ color: "#7d7d7d" }}>This testimonial is related to</h5>
+          <small style={{ color: "#7d7d7d" }}>
+            This testimonial is related to
+          </small>
           <MECard
             style={{ borderRadius: 6, padding: 0 }}
             to={`${this.props.links.actions}/${action.id}`}
@@ -259,6 +263,7 @@ class OneTestimonialPage extends React.Component {
                   Add a testimonial
                 </MELink>
                 {this.renderOtherTestimonials()}
+                {this.renderRelatedVendor(story)}
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
@@ -272,7 +277,10 @@ class OneTestimonialPage extends React.Component {
 
                   </p> */}
                   <br />
-                  <p className="cool-font" style={{ color: "black" }}>
+                  <p
+                    className="cool-font"
+                    style={{ color: "black", textAlign: "justify" }}
+                  >
                     {story && story.body}
                   </p>
                   {this.renderRelatedAction()}
@@ -299,6 +307,30 @@ class OneTestimonialPage extends React.Component {
           </div>
         </div>
       </section>
+    );
+  }
+  renderRelatedVendor(story = {}) {
+    console.log("i am teh story", this.props);
+    const link = this.props.links && this.props.links.services;
+    console.log(this.props.stories);
+    const vendor = story && story.vendor;
+    if (!vendor) return;
+    return (
+      <>
+        <p style={{ margin: "10px 0px", fontWeight: "bold", color: "black" }}>
+          Related Vendor
+        </p>
+
+        <Link to={`${link}/${vendor.id}`}>
+          <div className="stories-sm-vendor">
+            <img
+              src={DefaultClass.getTestimonialsDefaultPhoto()}
+              alt="vendor logo"
+            />
+            <small>{vendor.name}</small>
+          </div>
+        </Link>
+      </>
     );
   }
   renderDetails(details) {

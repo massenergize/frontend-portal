@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ReactPlayer from "react-player";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import MEButton from "../Widgets/MEButton";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
@@ -15,14 +16,15 @@ class DonatePage extends React.Component {
     const donation_link = pageData ? pageData.donation_link : null;
     //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null
     const description = pageData.description ? pageData.description : null;
+    const com = pageData && pageData.community;
     //const button = section(pageSections, "DonatePageButton", true);
-
     // TODO: customize donation button and text
     // make video image smaller, wrapped by description
     // page separator
     // Standard MassEnergize donation text
+    console.log("I am the page data", pageData);
 
-    const donation_link_text = "Make a donation to the community group";
+    // const donation_link_text = "Make a donation to the community group";
     return (
       <>
         <div
@@ -36,17 +38,54 @@ class DonatePage extends React.Component {
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
             </div>
 
-            <center>{description ? <p>{description}</p> : null}</center>
+            <center>
+              {description ? (
+                <p style={{ color: "black" }}>{description}</p>
+              ) : null}
+            </center>
+
+            {donation_link && (
+              <center style={{ width: "100%" }}>
+                <MEButton
+                  target="_blank"
+                  href={donation_link}
+                  // variation="union"
+                >
+                  Donate to {com && com.name}
+                </MEButton>
+              </center>
+            )}
 
             {videoLink ? (
-              <div className={videoLink ? "col-sm-12 col-md-12" : "d-none"}>
+              <div
+                className={videoLink ? "col-sm-12 col-md-12" : "d-none"}
+                style={{ padding: "15px 0px" }}
+              >
                 {/* <Video link={videoLink} /> */}
                 <ReactPlayer url={videoLink} width="100%" height="550px" />
               </div>
             ) : null}
 
             <br />
-            {donation_link ? (
+
+            <PageTitle style={{ fontSize: 24 }}>
+              Donate To{" "}
+              <b>
+                <span style={{ color: "#8dc63f" }}>Mass</span>
+                <span style={{ color: "rgb(249 74 34)" }}>Energize</span>
+              </b>
+            </PageTitle>
+            <center style={{ width: "100%" }}>
+              <MEButton
+                href="https://paypal.me/massenergize?locale.x=en_US"
+                target="_blank"
+                // variation="accent"
+              >
+                Donate via Paypal
+              </MEButton>
+            </center>
+
+            {/* {donation_link ? (
               <div className="row text-center justify-content-center">
                 <div className="col-12 col-md-6 col-lg-4">
                   <div target="_top">
@@ -90,7 +129,7 @@ class DonatePage extends React.Component {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </>
