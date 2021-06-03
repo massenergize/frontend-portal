@@ -11,7 +11,7 @@
   cursor: pointer;
   /* padding: 10px; */
   border-radius: 5px;
-  border:solid 1px #e8e7e7;
+  border: solid 1px #e8e7e7;
 }
 .stories-sm-vendor:active {
   transform: scale(1.1);
@@ -2271,8 +2271,8 @@
 }
 
 .loc-banner {
-  padding: 20px !important;
-  background-color: #344038 !important;
+  padding: 10px 10px !important;
+  background-color: #8dc443 !important;
 }
 
 .home-events-img {

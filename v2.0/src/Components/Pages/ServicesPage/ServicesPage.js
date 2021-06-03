@@ -55,8 +55,6 @@ class ServicesPage extends React.Component {
 
   render() {
     var { serviceProviders, pageData } = this.props;
-    console.log("I am teh service providers", serviceProviders);
-
     if (!serviceProviders) {
       return <LoadingCircle />;
     }
@@ -221,7 +219,7 @@ class ServicesPage extends React.Component {
                   <h4
                     className="pt-3"
                     style={{
-                      fontSize: "clamp(19px, 21px, 26px)",
+                      fontSize: "clamp(14px, 16px, 21px)",
                       textTransform: "capitalize",
                       fontWeight: "bold",
                     }}
@@ -235,56 +233,13 @@ class ServicesPage extends React.Component {
           </MECard>
         </div>
       );
-      // return (
-      //   <div key={index.toString()}>
-      //     <MECard
-      //       style={{ borderRadius: 10 }}
-      //       className="me-vendor-card me-anime-move-from-left phone-vanish"
-      //       to={`${this.props.links.services}/${vendor.id}`}
-      //     >
-      //       <img
-      //         className="me-vendor-img"
-      //         src={vendor.logo ? vendor.logo.url : notFound}
-      //         alt={vendor.name}
-      //       />
-      //       <METextView style={{ color: "black", textTransform: "capitalize" }}>
-      //         {" "}
-      //         {vendor.name}
-      //       </METextView>
-      //     </MECard>
-
-      //     {/*  ------ PHONE VENDOR CARD ------------- */}
-      //     <MECard
-      //       style={{
-      //         borderRadius: 5,
-      //         border: "solid 0px #8ec344",
-      //         borderLeftWidth: 6,
-      //         padding: "20px 20px"
-      //       }}
-      //       className=" me-anime-move-from-left pc-vanish"
-      //       to={`${this.props.links.services}/${vendor.id}`}
-
-      //     >
-      //       <img
-      //         className="me-vendor-img"
-      //         style={{ minHeight: 60 }}
-      //         src={vendor.logo ? vendor.logo.url : notFound}
-      //         alt={vendor.name}
-      //       />
-      //       <METextView style={{ color: "black", textTransform: "capitalize" }}>
-      //         {" "}
-      //         {vendor.name}
-      //       </METextView>
-      //     </MECard>
-      //   </div>
-      // );
     });
   }
 }
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    pageData: store.page.servicesPage,
+    pageData: store.page.serviceProvidersPage,
     serviceProviders: store.page.serviceProviders,
     links: store.links,
     tagCols: filterTagCollections(

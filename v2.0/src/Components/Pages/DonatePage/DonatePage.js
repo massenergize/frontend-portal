@@ -14,17 +14,9 @@ class DonatePage extends React.Component {
     const title = pageData && pageData.title ? pageData.title : "Support Us!";
     const videoLink = pageData ? pageData.featured_video_link : null;
     const donation_link = pageData ? pageData.donation_link : null;
-    //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null
+    const sub_title =
+      pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
-    const com = pageData && pageData.community;
-    //const button = section(pageSections, "DonatePageButton", true);
-    // TODO: customize donation button and text
-    // make video image smaller, wrapped by description
-    // page separator
-    // Standard MassEnergize donation text
-    console.log("I am the page data", pageData);
-
-    // const donation_link_text = "Make a donation to the community group";
     return (
       <>
         <div
@@ -36,44 +28,45 @@ class DonatePage extends React.Component {
           <div className="container p-5">
             <div className="text-center">
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+              {sub_title && <p>{sub_title}</p>}
+              {donation_link && (
+                <center style={{ width: "100%" }}>
+                  <MEButton target="_blank" href={donation_link}>
+                    Donate
+                  </MEButton>
+                </center>
+              )}
             </div>
+            <br />
 
-            <center>
-              {description ? (
-                <p style={{ color: "black" }}>{description}</p>
-              ) : null}
-            </center>
-
-            {donation_link && (
-              <center style={{ width: "100%" }}>
-                <MEButton
-                  target="_blank"
-                  href={donation_link}
-                  // variation="union"
-                >
-                  Donate to {com && com.name}
-                </MEButton>
-              </center>
-            )}
+            <p
+              dangerouslySetInnerHTML={{ __html: description }}
+              style={{ color: "black" }}
+            ></p>
 
             {videoLink ? (
               <div
                 className={videoLink ? "col-sm-12 col-md-12" : "d-none"}
-                style={{ padding: "15px 0px" }}
+                style={{
+                  display: "flex",
+                  padding: "15px 0px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
                 {/* <Video link={videoLink} /> */}
-                <ReactPlayer url={videoLink} width="100%" height="550px" />
+                <ReactPlayer url={videoLink} width="60%" height="400px" />
               </div>
             ) : null}
 
             <br />
 
             <PageTitle style={{ fontSize: 24 }}>
-              Donate To{" "}
-              <b>
+              Donate To MassEnergize
+              {/* <b>
                 <span style={{ color: "#8dc63f" }}>Mass</span>
                 <span style={{ color: "rgb(249 74 34)" }}>Energize</span>
-              </b>
+              </b> */}
             </PageTitle>
             <center style={{ width: "100%" }}>
               <MEButton

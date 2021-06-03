@@ -12,7 +12,6 @@ import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
-import DefaultClass from "../../Shared/Classes/DefaultClass";
 import { Link } from "react-router-dom";
 
 class OneTestimonialPage extends React.Component {
@@ -300,7 +299,6 @@ class OneTestimonialPage extends React.Component {
     );
   }
   renderRelatedVendor(story = {}) {
-    console.log("i am teh story", this.props);
     const link = this.props.links && this.props.links.services;
 
     console.log(this.props.stories);
