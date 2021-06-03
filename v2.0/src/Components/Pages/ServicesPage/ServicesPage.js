@@ -283,7 +283,7 @@ class ServicesPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    pageData: store.page.servicesPage,
+    pageData: store.page.serviceProvidersPage,
     serviceProviders: store.page.serviceProviders,
     links: store.links,
     tagCols: filterTagCollections(
