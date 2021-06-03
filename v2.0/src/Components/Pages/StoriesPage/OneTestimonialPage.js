@@ -267,16 +267,6 @@ class OneTestimonialPage extends React.Component {
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
-                  <h5 className="cool-font" style={{ color: "lightgray" }}>
-                    Story
-                  </h5>
-                  {/* <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: story.description }}
-                  >
-
-                  </p> */}
-                  <br />
                   <p
                     className="cool-font"
                     style={{ color: "black", textAlign: "justify" }}
@@ -312,24 +302,34 @@ class OneTestimonialPage extends React.Component {
   renderRelatedVendor(story = {}) {
     console.log("i am teh story", this.props);
     const link = this.props.links && this.props.links.services;
+
     console.log(this.props.stories);
     const vendor = story && story.vendor;
+    const logo = vendor && vendor.logo;
+    const title = (
+      <p style={{ margin: "10px 0px", fontWeight: "bold", color: "black" }}>
+        Related Vendor
+      </p>
+    );
     if (!vendor) return;
+    if (logo)
+      return (
+        <>
+          {title}
+
+          <Link to={`${link}/${vendor.id}`}>
+            <div className="stories-sm-vendor">
+              <img src={logo.url} alt="vendor logo" />
+              <small>{vendor.name}</small>
+            </div>
+          </Link>
+        </>
+      );
+
     return (
       <>
-        <p style={{ margin: "10px 0px", fontWeight: "bold", color: "black" }}>
-          Related Vendor
-        </p>
-
-        <Link to={`${link}/${vendor.id}`}>
-          <div className="stories-sm-vendor">
-            <img
-              src={DefaultClass.getTestimonialsDefaultPhoto()}
-              alt="vendor logo"
-            />
-            <small>{vendor.name}</small>
-          </div>
-        </Link>
+        {title}
+        <MELink to={`${link}/${vendor.id}`}>{vendor.name}</MELink>
       </>
     );
   }

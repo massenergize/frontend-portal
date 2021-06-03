@@ -55,6 +55,7 @@ class ServicesPage extends React.Component {
 
   render() {
     var { serviceProviders, pageData } = this.props;
+    console.log("I am teh service providers", serviceProviders);
 
     if (!serviceProviders) {
       return <LoadingCircle />;

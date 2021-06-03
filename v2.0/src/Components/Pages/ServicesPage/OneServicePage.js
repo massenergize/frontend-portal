@@ -8,6 +8,7 @@ import MESectionWrapper from "../Widgets/MESectionWrapper";
 import DefaultClass from "../../Shared/Classes/DefaultClass";
 import { Link } from "react-router-dom";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
+import ErrorPage from "../Errors/ErrorPage";
 class OneServicePage extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +27,10 @@ class OneServicePage extends React.Component {
     })[0];
     return (
       <>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[
               { name: "Service Providers", link: this.props.links.services },
@@ -66,6 +70,16 @@ class OneServicePage extends React.Component {
     return webbie;
   }
   renderVendor(vendor) {
+    if (!vendor)
+      return (
+        <ErrorPage
+          errorMessage="Sorry, the vendor you are looking for could not be found..."
+          allowBack
+        />
+        // <center style={{ width: "100%" }}>
+        //   <p>Sorry, the vendor you are looking for could not be found</p>
+        // </center>
+      );
     const stories = this.props.testimonials.filter((story) => {
       return (
         story.vendor && story.vendor.id === Number(this.props.match.params.id)
@@ -78,9 +92,10 @@ class OneServicePage extends React.Component {
     //   vendor.key_contact.email && vendor.key_contact.name
     //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
     //     : "Not Provided";
+    console.log("I am the vendor", vendor);
 
     return (
-      <div className="col-12" key={vendor.vendor}>
+      <div className="col-12" key={vendor && vendor.id}>
         <div
           className="card rounded-0 spacing"
           style={{ borderColor: "white" }}
@@ -142,7 +157,7 @@ class OneServicePage extends React.Component {
                         e.preventDefault();
                         window.open(
                           this.changeToAbsoluteURL(vendor.website),
-                          "_blank"  
+                          "_blank"
                         );
                       }}
                       rel="noopener noreferrer"

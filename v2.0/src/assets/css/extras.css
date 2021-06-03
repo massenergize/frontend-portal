@@ -11,6 +11,7 @@
   cursor: pointer;
   /* padding: 10px; */
   border-radius: 5px;
+  border:solid 1px #e8e7e7;
 }
 .stories-sm-vendor:active {
   transform: scale(1.1);
