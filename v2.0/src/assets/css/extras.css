@@ -27,7 +27,7 @@
 .stories-sm-vendor img {
   border-radius: 5px;
   max-height: 300px;
-
+  padding:10px 20px;
   object-fit: cover;
 }
 
@@ -1701,6 +1701,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .donate-page-space-fix{ 
+    padding:15px !important;
+  }
   .scroll-fix {
     height: fit-content;
     overflow-y: hidden;

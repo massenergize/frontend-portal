@@ -42,7 +42,7 @@ export const CASE_PROPS = {
       text: "Done", 
       // className : "cam-btn-defaults", 
       hasPopover: true, 
-      popoverText: "Mark as Done, if you've done this"
+      popoverText: "Mark as Done"
     },
   },
   IS_DONE: {
@@ -71,7 +71,7 @@ export const CASE_PROPS = {
       text: "Done", 
       // className: "cam-btn-defaults",
       hasPopover: true, 
-      popoverText: "Mark as Done, if you've done this "
+      popoverText: "Mark as Done"
     },
   },
   NO_AUTH: {

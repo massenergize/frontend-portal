@@ -8,6 +8,14 @@ import MEButton from "../Widgets/MEButton";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
+  renderVideo(videoLink) {
+    if (!videoLink) return;
+    return (
+      <div className={videoLink ? "col-sm-12 col-md-12" : "d-none"}>
+        <ReactPlayer url={videoLink} width="100%" height="400px" />
+      </div>
+    );
+  }
   render() {
     const pageData = this.props.donatePage;
     if (pageData == null) return <LoadingCircle />;
@@ -25,7 +33,7 @@ class DonatePage extends React.Component {
         >
           <BreadCrumbBar links={[{ name: "Donate" }]} />
 
-          <div className="container p-5">
+          <div className="container p-5 donate-page-space-fix" >
             <div className="text-center">
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               {sub_title && <p>{sub_title}</p>}
@@ -39,90 +47,29 @@ class DonatePage extends React.Component {
             </div>
             <br />
 
-            <p
-              dangerouslySetInnerHTML={{ __html: description }}
-              style={{ color: "black" }}
-            ></p>
-
-            {videoLink ? (
-              <div
-                className={videoLink ? "col-sm-12 col-md-12" : "d-none"}
-                style={{
-                  display: "flex",
-                  padding: "15px 0px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* <Video link={videoLink} /> */}
-                <ReactPlayer url={videoLink} width="60%" height="400px" />
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: "1" }} className="phone-vanish">
+                {this.renderVideo(videoLink)}
               </div>
-            ) : null}
-
+              <p
+                dangerouslySetInnerHTML={{ __html: description }}
+                style={{ color: "black", flex: "1", textAlign: "justify" }}
+              ></p>
+            </div>
+            <div className="pc-vanish">{this.renderVideo(videoLink)}</div>
             <br />
 
             <PageTitle style={{ fontSize: 24 }}>
               Donate To MassEnergize
-              {/* <b>
-                <span style={{ color: "#8dc63f" }}>Mass</span>
-                <span style={{ color: "rgb(249 74 34)" }}>Energize</span>
-              </b> */}
             </PageTitle>
             <center style={{ width: "100%" }}>
               <MEButton
                 href="https://paypal.me/massenergize?locale.x=en_US"
                 target="_blank"
-                // variation="accent"
               >
                 Donate via Paypal
               </MEButton>
             </center>
-
-            {/* {donation_link ? (
-              <div className="row text-center justify-content-center">
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div target="_top">
-                    <a
-                      rel="noopener noreferrer"
-                      href={donation_link}
-                      target="_blank"
-                    >
-                      <input
-                        type="image"
-                        className="w-100"
-                        src="https://i.imgur.com/CwBgXO2.png"
-                        border="0"
-                        name="submit"
-                        title={donation_link_text}
-                        alt={donation_link_text}
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="row text-center justify-content-center">
-                <div className="col-12 col-md-6 col-lg-4">
-                  <div target="_top">
-                    <a
-                      rel="noopener noreferrer"
-                      href="https://paypal.me/massenergize?locale.x=en_US"
-                      target="_blank"
-                    >
-                      <input
-                        type="image"
-                        className="w-100"
-                        src="https://i.imgur.com/CwBgXO2.png"
-                        border="0"
-                        name="submit"
-                        title="PayPal - The safer, easier way to pay online!"
-                        alt="Donate with PayPal button"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </>

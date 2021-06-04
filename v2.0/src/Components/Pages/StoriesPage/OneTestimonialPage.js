@@ -300,8 +300,6 @@ class OneTestimonialPage extends React.Component {
   }
   renderRelatedVendor(story = {}) {
     const link = this.props.links && this.props.links.services;
-
-    console.log(this.props.stories);
     const vendor = story && story.vendor;
     const logo = vendor && vendor.logo;
     const title = (
