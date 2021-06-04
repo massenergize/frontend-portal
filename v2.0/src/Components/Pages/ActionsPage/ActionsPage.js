@@ -215,28 +215,16 @@ class ActionsPage extends React.Component {
                         type="DONE"
                         done={this.props.done}
                         link={this.props.links ? this.props.links.profile : "#"}
-                        user ={this.props.user}
+                        user={this.props.user}
                       />
                       <ActionBoxCounter
                         type="TODO"
                         style={{ marginTop: 20 }}
                         todo={this.props.todo}
                         link={this.props.links ? this.props.links.profile : "#"}
-                        user ={this.props.user}
+                        user={this.props.user}
                       />
                     </div>
-                    {/* // ) : (
-                    //   <div>
-                    //     <p>
-                    //       <Link to={`${this.props.links.signin}`}>
-                    //         {" "}
-                    //         Sign In{" "}
-                    //       </Link>{" "}
-                    //       to add actions to your todo list or to mark them as
-                    //       complete
-                    //     </p>
-                    //   </div>
-                    // )} */}
                   </div>
                 </div>
                 {/* renders the actions */}
@@ -244,7 +232,7 @@ class ActionsPage extends React.Component {
                   <div
                     className="row scroll-fix"
                     id="actions-container mob-actions-page-padding-remove"
-                    style={{ marginTop: 20 }}
+                    style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}
                   </div>

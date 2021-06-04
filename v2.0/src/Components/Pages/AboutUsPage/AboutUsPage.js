@@ -48,7 +48,7 @@ class AboutUsPage extends React.Component {
 
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 						<center><h2 className="cool-font" style={{ padding: 20 }}>About MassEnergize</h2></center>
-						<p className="cool-font make-me-dark">
+						<p className="cool-font make-me-dark" style={{textAlign:"justify"}}>
 							Our mission is to provide communities with the tools and resources to motivate and support their residents, businesses and non-profits in a wide array of actions to reduce greenhouse gas emissions and prepare for a changing climate. We leverage the collective expertise, experience and buying power of multiple towns, cities and local organizations by collaborating with them on tools, strategies, and resources. This community web platform is one example of our work. For more information go to <a href="https://www.massenergize.org" target="_blank" rel="noopener noreferrer">www.massenergize.org</a>.
 
 						</p>

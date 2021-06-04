@@ -73,7 +73,8 @@ html {
 
 body {
   font-family: "Google Sans", "Open Sans", sans-serif;
-  color: #999;
+  /* color: #999; */
+  color: black;
 }
 
 body.burger-menu-open {
@@ -1415,7 +1416,8 @@ textarea {
   padding: 11px 12px !important;
   font-size: 13px !important;
   position: relative;
-  color: #888;
+  /* color: #888; */
+  color: black;
   font-weight: 700;
   font-family: "Google Sans", "Oxygen", "Open Sans", sans-serif;
 }
@@ -9732,7 +9734,7 @@ button.as-link:hover {
   object-fit: cover;
   border-radius: 10px;
 }
-.one-team-image-mobile{
+.one-team-image-mobile {
   margin-bottom: 10px;
   margin-right: 20px;
   border-radius: 5px;
@@ -9746,7 +9748,7 @@ button.as-link:hover {
   margin: auto;
   display: block;
   object-fit: contain;
-  border-radius:6px;
+  border-radius: 6px;
 }
 
 .one-team-content-section {
