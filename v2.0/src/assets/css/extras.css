@@ -1,9 +1,57 @@
-.events-about-content  a { 
-    color:#8dc343;
-    text-decoration: none;
+/* .stories-side-vendors-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+} */
+
+.stories-sm-vendor {
+  /* text-align: center; */
+  cursor: pointer;
+  /* padding: 10px; */
+  border-radius: 5px;
+  border: solid 1px #e8e7e7;
+}
+.stories-sm-vendor:active {
+  transform: scale(1.1);
+  transition: 0.3s ease-out;
+}
+/* 
+.stories-sm-vendor:hover {
+  -webkit-box-shadow: -2px 2px 20px 0px rgb(0 0 0 / 0%),
+    0 2px 10px 0 rgb(0 0 0 / 9%) !important;
+  box-shadow: -2px 2px 20px 0px rgb(0 0 0 / 0%), 0 2px 10px 0 rgb(0 0 0 / 9%) !important;
+} */
+
+.stories-sm-vendor img {
+  border-radius: 5px;
+  max-height: 300px;
+  padding:10px 20px;
+  object-fit: cover;
 }
 
-.events-about-content a:hover{ 
+.stories-sm-vendor small {
+  font-size: 15px;
+  color: black;
+  font-weight: bolder;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding: 10px;
+}
+
+.stories-sm-vendor small:hover {
+  text-decoration: underline;
+  color: rgb(74, 30, 4);
+}
+
+.events-about-content a {
+  color: #8dc343;
+  text-decoration: none;
+}
+
+.events-about-content a:hover {
   text-decoration: underline;
 }
 
@@ -1522,9 +1570,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
-  .scroll-fix{ 
-    height:100vh; 
-    overflow-y:scroll;
+  .scroll-fix {
+    height: 100vh;
+    overflow-y: scroll;
   }
   .stats-q-box {
     cursor: pointer;
@@ -1653,13 +1701,16 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .scroll-fix{ 
-    height:fit-content; 
+  .donate-page-space-fix{ 
+    padding:15px !important;
+  }
+  .scroll-fix {
+    height: fit-content;
     overflow-y: hidden;
   }
-  .mob-borderless{ 
+  .mob-borderless {
     box-shadow: 0px 0px 0px !important;
-    border:0px  !important;
+    border: 0px !important;
   }
   .stats-q-box {
     cursor: pointer;
@@ -2223,8 +2274,8 @@
 }
 
 .loc-banner {
-  padding: 20px !important;
-  background-color: #344038 !important;
+  padding: 10px 10px !important;
+  background-color: #8dc443 !important;
 }
 
 .home-events-img {

@@ -12,6 +12,7 @@ import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
+import { Link } from "react-router-dom";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -104,7 +105,9 @@ class OneTestimonialPage extends React.Component {
     if (action) {
       return (
         <div>
-          <h5 style={{ color: "#7d7d7d" }}>This testimonial is related to</h5>
+          <small style={{ color: "#7d7d7d" }}>
+            This testimonial is related to
+          </small>
           <MECard
             style={{ borderRadius: 6, padding: 0 }}
             to={`${this.props.links.actions}/${action.id}`}
@@ -259,20 +262,14 @@ class OneTestimonialPage extends React.Component {
                   Add a testimonial
                 </MELink>
                 {this.renderOtherTestimonials()}
+                {this.renderRelatedVendor(story)}
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
-                  <h5 className="cool-font" style={{ color: "lightgray" }}>
-                    Story
-                  </h5>
-                  {/* <p
-                    className="cool-font make-me-dark"
-                    dangerouslySetInnerHTML={{ __html: story.description }}
+                  <p
+                    className="cool-font"
+                    style={{ color: "black", textAlign: "justify" }}
                   >
-
-                  </p> */}
-                  <br />
-                  <p className="cool-font" style={{ color: "black" }}>
                     {story && story.body}
                   </p>
                   {this.renderRelatedAction()}
@@ -299,6 +296,37 @@ class OneTestimonialPage extends React.Component {
           </div>
         </div>
       </section>
+    );
+  }
+  renderRelatedVendor(story = {}) {
+    const link = this.props.links && this.props.links.services;
+    const vendor = story && story.vendor;
+    const logo = vendor && vendor.logo;
+    const title = (
+      <p style={{ margin: "10px 0px", fontWeight: "bold", color: "black" }}>
+        Related Vendor
+      </p>
+    );
+    if (!vendor) return;
+    if (logo)
+      return (
+        <>
+          {title}
+
+          <Link to={`${link}/${vendor.id}`}>
+            <div className="stories-sm-vendor">
+              <img src={logo.url} alt="vendor logo" />
+              <small>{vendor.name}</small>
+            </div>
+          </Link>
+        </>
+      );
+
+    return (
+      <>
+        {title}
+        <MELink to={`${link}/${vendor.id}`}>{vendor.name}</MELink>
+      </>
     );
   }
   renderDetails(details) {
