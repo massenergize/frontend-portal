@@ -5,7 +5,7 @@ import AppRouter from './AppRouter'
 import { connect } from 'react-redux'
 import { reduxLoadCommunities } from './redux/actions/pageActions'
 import { apiCall } from './api/functions'
-import CommunitySelectPage from './components/Pages/CommunitySelectPage';
+import CommunitySelectPage from './Components/Pages/CommunitySelectPage';
 import { reduxLogout } from './redux/actions/userActions'
 // import firebase from "./config/firebaseConfig";
 class App extends Component {

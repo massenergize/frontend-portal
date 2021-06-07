@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import Video from './Video'
 import ErrorPage from "./../Errors/ErrorPage"

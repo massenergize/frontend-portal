@@ -129,7 +129,8 @@ class Graphs extends React.Component {
         <div className="container">
           <div className="row no-gutter clearfix">
             {/* {dumbycol} */}
-            {this.renderGraphs(this.props.graphs)}
+            {//this.renderGraphs(this.props.graphs)}
+            }
 
             {/* <article
               className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
