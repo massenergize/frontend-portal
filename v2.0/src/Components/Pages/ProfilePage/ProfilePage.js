@@ -99,7 +99,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    console.log("I am the props", this.props.done);
+    //console.log("I am the props", this.props.teams);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -113,7 +113,7 @@ class ProfilePage extends React.Component {
     const myHouseholds = this.props.user.households || [];
     // const myCommunities = this.props.user.communities || [];
 
-    if (!this.props.teamsPage) {
+    if (!this.props.teams) {
       return <LoadingCircle />;
     }
 
@@ -623,11 +623,12 @@ class ProfilePage extends React.Component {
   renderTeams(teams) {
     if (!teams) return null;
     const currentCommunityTeamIDs =
-        teams.map((team) => team.id);
+        this.props.teams.map((team) => team.team.id);
+
     const inThisCommunity = (team) =>
       currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 
-    return Object.keys(teams).map((key) => {
+      return Object.keys(teams).map((key) => {
       const team = teams[key];
       return (
         <div key={key}>
@@ -906,7 +907,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
-    teamsPage: store.page.teamsPage,
+    teams: store.page.teams,
     communities: store.user.info ? store.user.info.communities : null,
     community: store.page.community,
     communityData: store.page.communityData,
