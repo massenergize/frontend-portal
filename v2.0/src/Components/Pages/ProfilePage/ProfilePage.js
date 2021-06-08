@@ -625,10 +625,11 @@ class ProfilePage extends React.Component {
     const currentCommunityTeamIDs =
         this.props.teams.map((team) => team.team.id);
 
+    //console.log("currentCommunityTeamIDs",currentCommunityTeamIDs)
     const inThisCommunity = (team) =>
       currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 
-      return Object.keys(teams).map((key) => {
+    return Object.keys(teams).map((key) => {
       const team = teams[key];
       return (
         <div key={key}>
@@ -645,7 +646,6 @@ class ProfilePage extends React.Component {
             {inThisCommunity(team) ? (
               // <h6>{team.name}</h6>
               <METextView
-                type="small"
                 style={{ color: "black" }}
                 icon="fa fa-users"
                 mediaType="icon"
@@ -654,7 +654,7 @@ class ProfilePage extends React.Component {
               </METextView>
             ) : (
               <METextView
-                type="small"
+
                 style={{ color: "black" }}
                 icon="fa fa-users"
                 mediaType="icon"
@@ -664,6 +664,7 @@ class ProfilePage extends React.Component {
             )}
             {team.tagline && (
               <METextView
+                type="small"                
                 containerStyle={{ display: "block" }}
                 style={{ color: "black" }}
               >
