@@ -277,11 +277,6 @@ class AppRouter extends Component {
           { link: "/impact", name: "Our Impact" },
           ...abtSliced,
           contactUsItem,
-          {
-            name: "All MassEnergize Community Sites",
-            link: "http://" + window.location.host,
-            special: true,
-          },
         ],
       };
       if (menu[4]) {

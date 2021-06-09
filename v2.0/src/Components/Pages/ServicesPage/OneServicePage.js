@@ -141,8 +141,7 @@ class OneServicePage extends React.Component {
                     style={{ borderRadius: 5 }}
                   >
                     <span className="fa fa-map-pin fa-m-right"></span>{" "}
-                    {/* {vendor.location.city}, {vendor.location.state} */}
-                    Some city, some state
+                    {vendor.location.city}, {vendor.location.state} 
                   </div>
                 ) : null}
 
