@@ -24,12 +24,12 @@ class AboutUsPage extends React.Component {
 		}
 
 		const pageData = this.props.pageData;
-		console.log("AboutUs-pageData",pageData)
+		//console.log("AboutUs-pageData",pageData)
 		const donatePageData = this.props.donatePageData;
 		const title = pageData.title ? pageData.title : "About Our Community";
 		const subtitle = pageData.sub_title ? pageData.sub_title : "Help support our cause by donating";
 		const videoLink = pageData.featured_video_link ? pageData.featured_video_link : null;
-		const image = pageData.image ? pageData.image : null;
+		//const image = pageData.image ? pageData.image : null;
 		const paragraphContent = pageData.description;
 		const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : "We welcome your support!";
 		return (
@@ -53,10 +53,11 @@ class AboutUsPage extends React.Component {
 						: null
 					}
 
+					{/* this image doesn't work yet, will fix later 
 					{image ?
 				  
 						<div className={image ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-							{/* <Video link={videoLink} /> */}
+
 							<center>
 							<div className="img-box action-pic-fix">
 								<img
@@ -70,7 +71,7 @@ class AboutUsPage extends React.Component {
 							</center>
 						</div>
 						: null
-					}
+					}   */}
 
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 						<center><h2 className="cool-font" style={{ padding: 10 }}>About MassEnergize</h2></center>
