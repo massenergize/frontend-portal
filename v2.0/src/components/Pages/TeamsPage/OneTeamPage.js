@@ -382,7 +382,10 @@ class OneTeamPage extends React.Component {
     } = props;
     return (
       <>
-        <div className="row phone-vanish" style={{ minHeight: 142 }}>
+        <div
+          className="row phone-vanish"
+          style={{ minHeight: 142, padding: 10 }}
+        >
           <center>
             {hasLogo && (
               <img
