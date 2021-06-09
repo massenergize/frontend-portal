@@ -8,13 +8,28 @@ import MEButton from "../Widgets/MEButton";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
-  renderVideo(videoLink) {
+  renderVideoOrImage(videoLink) {
     if (!videoLink) return;
+    if (this.hasVideo() === false)
+      return (
+        <img
+          src={videoLink}
+          style={{ objectFit: "container", maxHeight: 400 }}
+          alt="Donate media"
+        />
+      );
     return (
       <div className={videoLink ? "col-sm-12 col-md-12" : "d-none"}>
         <ReactPlayer url={videoLink} width="100%" height="400px" />
       </div>
     );
+  }
+  hasVideo() {
+    var moreInfo = this.props.donatePage && this.props.donatePage.more_info;
+    moreInfo = moreInfo ? JSON.parse(moreInfo) : {};
+    if (moreInfo.hasVideo === "true") return true;
+    if (moreInfo.hasVideo === "false") return false;
+    return undefined;
   }
   render() {
     const pageData = this.props.donatePage;
@@ -33,7 +48,7 @@ class DonatePage extends React.Component {
         >
           <BreadCrumbBar links={[{ name: "Donate" }]} />
 
-          <div className="container p-5 donate-page-space-fix" >
+          <div className="container p-5 donate-page-space-fix">
             <div className="text-center">
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               {sub_title && <p>{sub_title}</p>}
@@ -48,15 +63,19 @@ class DonatePage extends React.Component {
             <br />
 
             <div style={{ display: "flex" }}>
-              <div style={{ flex: "1" }} className="phone-vanish">
-                {this.renderVideo(videoLink)}
-              </div>
+              {this.hasVideo() !== undefined && (
+                <div style={{ flex: "1" }} className="phone-vanish">
+                  {this.renderVideoOrImage(videoLink)}
+                </div>
+              )}
               <p
                 dangerouslySetInnerHTML={{ __html: description }}
                 style={{ color: "black", flex: "1", textAlign: "justify" }}
               ></p>
             </div>
-            <div className="pc-vanish">{this.renderVideo(videoLink)}</div>
+            <div className="pc-vanish">
+              {this.renderVideoOrImage(videoLink)}
+            </div>
             <br />
 
             <PageTitle style={{ fontSize: 24 }}>
