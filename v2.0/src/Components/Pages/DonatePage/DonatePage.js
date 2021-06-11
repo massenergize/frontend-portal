@@ -20,7 +20,7 @@ class DonatePage extends React.Component {
     const pageData = this.props.donatePage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData && pageData.title ? pageData.title : "Support Us!";
-    const videoLink = pageData ? pageData.featured_video_link : null;
+    var videoLink = pageData ? pageData.featured_video_link : null;
     const donation_link = pageData ? pageData.donation_link : null;
     const sub_title =
       pageData && pageData.sub_title ? pageData.sub_title : null;
@@ -33,7 +33,7 @@ class DonatePage extends React.Component {
         >
           <BreadCrumbBar links={[{ name: "Donate" }]} />
 
-          <div className="container p-5 donate-page-space-fix" >
+          <div className="container p-5 donate-page-space-fix">
             <div className="text-center">
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               {sub_title && <p>{sub_title}</p>}
@@ -48,9 +48,11 @@ class DonatePage extends React.Component {
             <br />
 
             <div style={{ display: "flex" }}>
-              <div style={{ flex: "1" }} className="phone-vanish">
-                {this.renderVideo(videoLink)}
-              </div>
+              {videoLink && (
+                <div style={{ flex: "1" }} className="phone-vanish">
+                  {this.renderVideo(videoLink)}
+                </div>
+              )}
               <p
                 dangerouslySetInnerHTML={{ __html: description }}
                 style={{ color: "black", flex: "1", textAlign: "justify" }}
