@@ -20,7 +20,7 @@ class DonatePage extends React.Component {
     const pageData = this.props.donatePage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData && pageData.title ? pageData.title : "Support Us!";
-    var videoLink = pageData ? pageData.featured_video_link : null;
+    const videoLink = pageData ? pageData.featured_video_link : null;
     const donation_link = pageData ? pageData.donation_link : null;
     const sub_title =
       pageData && pageData.sub_title ? pageData.sub_title : null;
