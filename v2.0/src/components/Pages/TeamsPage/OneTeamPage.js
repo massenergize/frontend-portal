@@ -4,7 +4,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import TeamStatsBars from "./TeamStatsBars";
+import TeamStatsBars, { PACKED } from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
 import TeamMembersList from "./TeamMembersList";
 import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
@@ -26,6 +26,7 @@ class OneTeamPage extends React.Component {
       isAdmin: false,
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
+      numOfSubTeams: 0,
     };
   }
 
@@ -45,7 +46,6 @@ class OneTeamPage extends React.Component {
           team: team,
           teamData: teamData,
         });
-      
       } else {
         this.setState({ error: json.error });
       }
@@ -99,6 +99,7 @@ class OneTeamPage extends React.Component {
       <>
         {!isInTeam ? (
           <MEButton
+            style={{ fontSize: 14 }}
             onClick={() => {
               this.setState({ joinLeaveModalOpen: true });
             }}
@@ -106,32 +107,49 @@ class OneTeamPage extends React.Component {
             Join Team
           </MEButton>
         ) : (
-          <div className="team-card-content">
-            <p style={{ color: "#8dc63f", textAlign: "center", margin: 0 }}>
-              &#10003; in this team {!isInThisTeam && "via a sub-team"}
+          <div className="" style={{ display: "inline-block" }}>
+            <p
+              style={{
+                color: "#8dc63f",
+                textAlign: "center",
+                margin: 0,
+                fontSize: 14,
+                textTransform: "capitalize",
+              }}
+            >
+              <i className="fa fa-check-circle"></i> in this team{" "}
+              {!isInThisTeam && "via a sub-team"}
             </p>
           </div>
         )}
       </>
     );
 
+    const hasLogo = team && team.logo && team.logo.url;
     const teamTitle = (
       <>
         {team.parent && (
           <span style={{ fontSize: "16px" }}>
-            <Link to={`${links.teams}/${team.parent.id}`}>
+            <a className="me-link" href={`${links.teams}/${team.parent.id}`}>
               {team.parent.name}
-            </Link>
-            &nbsp;/
+            </a>
+            &nbsp;/ {team.name}
             <br />
           </span>
         )}
-        {team.name}
       </>
     );
 
     const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
-
+    const teamInfo = {
+      teamTitle,
+      teamData,
+      subTeams,
+      hasLogo,
+      team,
+      links,
+      remountForcer,
+    };
     return (
       <>
         <Helmet>
@@ -163,7 +181,10 @@ class OneTeamPage extends React.Component {
           />
         )}
 
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[{ link: links.teams, name: "Teams" }, { name: team.name }]}
           />
@@ -176,195 +197,77 @@ class OneTeamPage extends React.Component {
               </p>
             </center>
           )}
-          <div
-            className="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-5"
-            style={{ margin: "auto" }}
-          >
-            <div className="team-card-column" style={{ margin: "0 auto" }}>
-              {team.logo ? (
-                <>
-                  <div className="team-card-column col-3">
-                    <img
-                      className="one-team-image team-card-content"
-                      src={team.logo.url}
-                      alt=""
-                    />
-                  </div>
-                  <div className="team-card-column col-6">
-                    <h2
-                      style={{
-                        textAlign: "center",
-                        //textTransform: "capitalize",
-                      }}
-                      className="cool-font team-card-content"
-                    >
-                      {teamTitle}
-                    </h2>
-                  </div>
-                  <div
-                    className="team-card-column col-3"
-                    style={{ padding: 0 }}
-                  >
-                    {buttonOrInTeam}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="team-card-column col-9">
-                    <h2
-                      style={{ 
-                        textAlign: "left", 
-                        //textTransform: "capitalize",
-                       }}
-                      className="cool-font team-card-content"
-                    >
-                      {teamTitle}
-                    </h2>
-                  </div>
-                  <div
-                    className="team-card-column col-3"
-                    style={{ padding: 0 }}
-                  >
-                    {buttonOrInTeam}
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className="row">
-              <div className="team-card-column">
-                <p
-                  className="team-card-content"
-                  style={{ textAlign: "center", margin: "5px auto" }}
-                >
-                  {team.tagline}
-                </p>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="team-card-column">
-                <TeamStatsBars teamStats={team.is_published && teamData} />
-              </div>
-            </div>
-          </div>
-
-          <br />
 
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8"
             style={{ margin: "auto" }}
           >
             <div className="row">
-              <div className="col-md-5 col-12">
-                <div className="row" style={{ margin: 0 }}>
-                  <MESectionWrapper
-                    headerText="About Us"
-                    motherStyle={{ width: "100%" }}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{ __html: team.description }}
-                    />
-                  </MESectionWrapper>
-                  {/* <div className="one-team-content-section slight-lift">
-                    <h5>
-                      <b>Description</b>
-                    </h5>
-                    <div style={{ maxHeight: '200px', overflowY: 'auto' }} className="show-scrollbar">
-                      <div className="boxed_wrapper">
-                        <p>{team.description}</p>
-                      </div>
-                    </div>
-                  </div> */}
+              <div className="col-md-3 col-12" style={{ marginTop: 0 }}>
+                {/* ------------------------- NARROW LEFT SIDE FOR (ABOUT US, TEAM MEMBERS, SUBTEAMS) --------------------- */}
+                <div className="phone-vanish" style={{ padding: "0px 10px" }}>
+                  {this.renderMoreTeamInfo(teamInfo)}
                 </div>
-                <div className="row" style={{ margin: 0, marginTop: 10 }}>
-                  <MESectionWrapper
-                    headerText="Members"
-                    motherStyle={{ width: "100%" }}
-                  >
-                    {subTeams && (
-                      <>
-                        <small>Contains members of sub-teams</small>
-                      </>
-                    )}
-
-                    <TeamMembersList
-                      onMembersLoad={this.onMembersLoad}
-                      key={remountForcer}
-                      teamID={team.id}
-                    />
-                  </MESectionWrapper>
-                  {/* <div className="one-team-content-section slight-lift">
-                    <h5 style={{ marginBottom: '15px' }}>
-                      <b>Members</b>
-                      {subTeams && <><br /><small>Contains members of sub-teams</small></>}
-                    </h5>
-                    <TeamMembersList
-                      onMembersLoad={this.onMembersLoad}
-                      key={remountForcer}
-                      teamID={team.id}
-                    />
-                  </div> */}
-                </div>
-                {subTeams && (
-                  <div className="row" style={{ margin: 0, marginTop: 10 }}>
-                    <MESectionWrapper
-                      headerText="Sub-Teams"
-                      motherStyle={{ width: "100%" }}
-                    >
-                      <div
-                        style={{ maxHeight: "200px", overflowY: "auto" }}
-                        className="show-scrollbar"
-                      >
-                        <div className="boxed_wrapper">
-                          <div className="team-ul">
-                            <ul>
-                              {teamData.subTeams.map((subTeamStats) => (
-                                <li key={subTeamStats.team.id}>
-                                  <Link
-                                    style={{ verticalAlign: "text-top" }}
-                                    to={`${links.teams}/${subTeamStats.team.id}`}
-                                  >
-                                    <b>{subTeamStats.team.name}</b>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </MESectionWrapper>
-                    {/* <div className="one-team-content-section slight-lift">
-                      <h5 style={{ margin: 0 }}>
-                        <b>Sub-teams</b>
-                      </h5>
-                      <div
-                        style={{ maxHeight: "200px", overflowY: "auto" }}
-                        className="show-scrollbar"
-                      >
-                        <div className="boxed_wrapper">
-                          <div className="team-ul">
-                            <ul>
-                              {teamData.subTeams.map((subTeamStats) => (
-                                <li key={subTeamStats.team.id}>
-                                  <Link
-                                    to={`${links.teams}/${subTeamStats.team.id}`}
-                                  >
-                                    <b>{subTeamStats.team.name}</b>
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-                  </div>
-                )}
               </div>
-              <div className="col-md-7 col-12">
+              {/* ----------------------------------------- GRAPH AREA, TEAM TITLE, AND OTHER TEAM INFO ------------------------- */}
+              <div className="col-md-9 col-12">
+                <div className="team-card-column" style={{ margin: "0 auto" }}>
+                  <>
+                    <div className="team-card-column col-12">
+                      <h2
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                        }}
+                        className="cool-font team-card-content"
+                      >
+                        {hasLogo && ( //img only shows in mobile view
+                          <img
+                            className="one-team-image-mobile pc-vanish"
+                            src={team.logo.url}
+                            alt=""
+                          />
+                        )}
+                        {team && team.name}
+                        {!isInTeam ? (
+                          <i
+                            className="fa fa-long-arrow-left"
+                            style={{
+                              marginLeft: 17,
+                              color: isInTeam ? "black" : "#fd704c",
+                            }}
+                          ></i>
+                        ) : (
+                          <></>
+                        )}
+                        <span style={{ margin: "0px 15px" }}>
+                          {buttonOrInTeam}
+                        </span>
+                      </h2>
+                    </div>
+                  </>
+                </div>
+
+                <div className="row">
+                  <div className="team-card-column">
+                    <p
+                      className="team-card-content"
+                      style={{
+                        textAlign: "center",
+                        margin: "8px auto",
+                        color: "#282828",
+                      }}
+                    >
+                      {team.tagline}
+                    </p>
+                  </div>
+                </div>
+                <TeamStatsBars
+                  teamStats={team.is_published && teamData}
+                  type={PACKED}
+                />
                 <div className="row" style={{ margin: 0 }}>
-                  <div className="one-team-content-section z-depth-float-half me-anime-open-in">
+                  <div className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless">
                     <h5>
                       <b>Actions Completed</b>
                       <br />
@@ -376,8 +279,12 @@ class OneTeamPage extends React.Component {
                     </h5>
                     <TeamActionsGraph key={remountForcer} teamID={team.id} />
 
-                    <p style={{ textAlign: "center" }}>
-                      Complete <Link to={links.actions}>more actions</Link>!
+                    <p style={{ textAlign: "center", marginTop: 15 }}>
+                      Complete{" "}
+                      <Link to={links.actions} className="me-link">
+                        more actions
+                      </Link>
+                      !
                     </p>
                   </div>
                   <center style={{ width: "100%" }}>
@@ -407,49 +314,36 @@ class OneTeamPage extends React.Component {
                     )}
                   </center>
                 </div>
+
+                {/* -------------------------------- SHARING BUTTONS FOR PC MODE -------------------------- */}
+                <div
+                  className="row justify-content-center phone-vanish"
+                  style={{ marginTop: 50 }}
+                >
+                  {/* ------------------------ LEFT NARROR AREA THAT DISPLAYS TEAM INFO IN PC MODE ---------------------- */}
+                  {this.renderSocials(team)}
+                </div>
+                <br />
+              </div>
+              {/* ------------------------------- MOBILE TEAM INFO AREA ----------------------- */}
+              <div
+                className="pc-vanish"
+                style={{
+                  padding: "0px 20px",
+                  margin: "20px 10px",
+                  width: "100%",
+                }}
+              >
+                {this.renderMoreTeamInfo(teamInfo)}
               </div>
             </div>
           </div>
 
           <br />
 
-          <div className="row justify-content-center">
-            {/* <div style={{ paddingRight: "30px" }}>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <MEButton
-                  // className="btn round-me contact-admin-btn-new raise"
-                  onClick={() => {
-                    this.setState({ contactEditModalOpen: true });
-                  }}
-                >
-                  {user && isAdmin ? "Edit Team" : "Contact Admin"}
-                </MEButton>
-              </div>
-              {isInThisTeam && !isAdmin && (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <MEButton
-                    mediaType="icon"
-                    icon="fa fa-times"
-                    // className="btn round-me leave-team-btn raise"
-                    onClick={() => {
-                      this.setState({ joinLeaveModalOpen: true });
-                    }}
-                  >
-                    Leave Team
-                  </MEButton>
-                </div>
-              )}
-            </div> */}
-            {team.is_published && (
-              <div style={{ display: "block" }}>
-                <ShareButtons
-                  label="Share this team!"
-                  pageTitle={team.name}
-                  pageDescription={team.tagline}
-                  url={window.location.href}
-                />
-              </div>
-            )}
+          {/* -------------- SHARING BUTTONS FOR MOBILE ---------------------------- */}
+          <div className="row justify-content-center pc-vanish">
+            {this.renderSocials(team)}
           </div>
           <br />
         </div>
@@ -457,6 +351,142 @@ class OneTeamPage extends React.Component {
     );
   }
 
+  renderSocials(team) {
+    return (
+      <>
+        {team.is_published && (
+          <div style={{ display: "block" }}>
+            <ShareButtons
+              label="Share this team!"
+              pageTitle={team.name}
+              pageDescription={team.tagline}
+              url={window.location.href}
+            />
+          </div>
+        )}
+
+        <br />
+      </>
+    );
+  }
+
+  renderMoreTeamInfo(props) {
+    const {
+      teamTitle,
+      teamData,
+      subTeams,
+      hasLogo,
+      team,
+      links,
+      remountForcer,
+    } = props;
+    return (
+      <>
+        <div className="row phone-vanish" style={{ minHeight: 142 }}>
+          <center>
+            {hasLogo && (
+              <img
+                className="one-team-image team-card-content"
+                src={team.logo.url}
+                alt=""
+              />
+            )}
+            {team.parent && <div style={{ padding: 10 }}>{teamTitle}</div>}
+          </center>
+        </div>
+        <div className="row">
+          <MESectionWrapper
+            headerText={`About ${team && team.name}`}
+            motherStyle={{ width: "100%" }}
+            headerType="plain"
+            className="team-s-w-header team-s-w-about-us-h"
+            containerClassName="team-s-w-body "
+            caret
+          >
+            <div dangerouslySetInnerHTML={{ __html: team.description }} />
+          </MESectionWrapper>
+        </div>
+        <div className="row" style={{ marginTop: 10 }}>
+          <MESectionWrapper
+            headerText={
+              <span>
+                Members{" "}
+                <span className="round-badge">
+                  {" "}
+                  {teamData && teamData.members > 0
+                    ? teamData.members
+                    : ""}{" "}
+                </span>
+              </span>
+            }
+            motherStyle={{ width: "100%" }}
+            headerType="plain"
+            className="team-s-w-header team-s-w-members-h"
+            containerClassName="team-s-w-body team-s-w-members-b"
+            caret={true}
+          >
+            {subTeams && (
+              <>
+                <small>Contains members of sub-teams</small>
+              </>
+            )}
+
+            <TeamMembersList
+              onMembersLoad={this.onMembersLoad}
+              key={remountForcer}
+              teamID={team.id}
+            />
+          </MESectionWrapper>
+        </div>
+        {subTeams && (
+          <div className="row" style={{ marginTop: 10 }}>
+            <MESectionWrapper
+              headerText={
+                <span>
+                  Sub-Teams{" "}
+                  <span className="round-badge">
+                    {subTeams && teamData.subTeams.length}
+                  </span>
+                </span>
+              }
+              motherStyle={{ width: "100%" }}
+              headerType="plain"
+              className="team-s-w-header team-s-w-members-h"
+              containerClassName="team-s-w-body team-s-w-members-b"
+              caret={true}
+            >
+              <div
+                style={{ maxHeight: "200px", overflowY: "auto" }}
+                className="show-scrollbar"
+              >
+                <div className="boxed_wrapper">
+                  <div className="team-ul">
+                    <ul>
+                      {teamData.subTeams.map((subTeamStats) => (
+                        <li key={subTeamStats.team.id}>
+                          <Link
+                            style={{ verticalAlign: "text-top" }}
+                            to={`${links.teams}/${subTeamStats.team.id}`}
+                            className="subteams-link"
+                          >
+                            <i
+                              className="fa  fa-long-arrow-right"
+                              style={{ marginRight: 6 }}
+                            ></i>
+                            {subTeamStats.team.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </MESectionWrapper>
+          </div>
+        )}
+      </>
+    );
+  }
   onMembersLoad = (members) => {
     const { user } = this.props;
     const myTeamMember = members.filter((member) => member.user_id === user.id);
@@ -489,7 +519,7 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsStats: store.page.teamsPage,
+    teamsStats: store.page.teams,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);

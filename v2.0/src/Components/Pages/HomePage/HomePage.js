@@ -7,11 +7,18 @@ import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 import { IS_SANDBOX } from "../../../config";
+import { getFilterVersionFromURL } from "../../Utils";
+import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
-/*
+/*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  componentDidMount() {
+    const version = getFilterVersionFromURL(this.props.location);
+    if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+  }
+
   render() {
     if (!this.props.pageData) {
       return (
@@ -30,7 +37,6 @@ class HomePage extends React.Component {
       );
     }
     const title = this.props.pageData ? this.props.pageData.title : "";
-    const comGoals = this.props.pageData ? this.props.pageData.goal : null;
 
     // switching Tagline from description to sub_title (if filled), to use description for description
     const communityTagline =
@@ -52,39 +58,40 @@ class HomePage extends React.Component {
       : [];
     //const header = section(pageData, "HomeHeader");
 
+    const goals = this.props.community ? this.props.community.goal : null;
     const graphs = [
       {
         title: "Actions Completed",
-        data: comGoals
+        data: goals
           ? {
-              target: comGoals.target_number_of_actions,
+              target: goals.target_number_of_actions,
               attained:
-                comGoals.attained_number_of_actions +
-                comGoals.organic_attained_number_of_actions,
+                goals.attained_number_of_actions +
+                goals.organic_attained_number_of_actions,
             }
           : null,
       },
       {
         title: "Households Engaged",
-        data: comGoals
+        data: goals
           ? {
-              target: comGoals.target_number_of_households,
+              target: goals.target_number_of_households,
               attained:
-                comGoals.attained_number_of_households +
-                comGoals.organic_attained_number_of_households,
+                goals.attained_number_of_households +
+                goals.organic_attained_number_of_households,
             }
           : null,
       },
     ];
-    if (comGoals && comGoals.target_carbon_footprint_reduction > 0) {
+    if (goals && goals.target_carbon_footprint_reduction > 0) {
       graphs.push({
         title: "Carbon Reduction",
-        data: comGoals
+        data: goals
           ? {
-              target: comGoals.target_carbon_footprint_reduction,
+              target: goals.target_carbon_footprint_reduction,
               attained:
-                comGoals.attained_carbon_footprint_reduction +
-                comGoals.organic_attained_carbon_footprint_reduction,
+                goals.attained_carbon_footprint_reduction +
+                goals.organic_attained_carbon_footprint_reduction,
             }
           : null,
       });
@@ -131,7 +138,7 @@ class HomePage extends React.Component {
           <Graphs
             graphs={graphs}
             size={120}
-            goals={comGoals}
+            goals={goals}
             subtitle={this.props.pageData.featured_stats_subtitle}
             info={this.props.pageData.featured_stats_description}
           />
@@ -153,7 +160,8 @@ const mapStoreToProps = (store) => {
   return {
     pageData: store.page.homePage,
     events: store.page.events,
-    graphsData: store.page.communityData,
+    communityData: store.page.communityData,
+    community: store.page.community,
     links: store.links,
   };
 };

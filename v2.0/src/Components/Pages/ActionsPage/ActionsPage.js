@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -14,18 +14,19 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-// import SideBar from "../../Menu/SideBar";
 import Action from "./PhotoSensitiveAction";
-// import Action from "./Action";
-import Cart from "../../Shared/Cart";
 import PageTitle from "../../Shared/PageTitle";
-import Funnel from "../EventsPage/Funnel";
-import MECard from "../Widgets/MECard";
-import Paginator from "../Widgets/Paginator";
-import { moveToPage } from "../../Utils";
-
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+  searchIsActiveFindContent,
+} from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
+import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import ActionBoxCounter from "./ActionBoxCounter";
+import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -33,16 +34,16 @@ import ActionModal from "./ActionModal";
  *
  * @todo change the columns for small sizes change button colors bars underneath difficulty and ease instead of "easy, medium, hard"
  */
-const PER_PAGE = 6;
+
 class ActionsPage extends React.Component {
   constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.state = {
-      check_values: null,
+      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
       loaded: false,
       openAddForm: null,
       testimonialLink: null,
@@ -59,68 +60,24 @@ class ActionsPage extends React.Component {
       mirror_actions: [],
       showTodoMsg: false,
       actions: [],
-      pageContent: {
-        currentPage: 1,
-        itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
-        pageCount: 0,
-      },
-      perPage: PER_PAGE,
+      status: null,
     };
-    // this.doAction = this.doAction.bind(this)
     this.handleChange = this.handleChange.bind(this);
-    this.handleBoxClick = this.handleBoxClick.bind(this);
-    this.findCommon = this.findCommon.bind(this);
+    this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
-  addMeToSelected(tagID) {
-    tagID = Number(tagID);
-    const arr = this.state.check_values ? this.state.check_values : [];
-    if (arr.includes(tagID)) {
-      var filtered = arr.filter((item) => item !== tagID);
-      this.setState({ check_values: filtered.length === 0 ? null : filtered });
-    } else {
-      this.setState({ check_values: [tagID, ...arr] });
-    }
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
+    var arr = this.state.checked_values ? this.state.checked_values : [];
+    // remove previously selected tag of selected category and put the new one
+    arr = arr.filter((item) => item.collectionName !== param.collectionName);
+    if (!param || param.value !== NONE) arr.push(param);
+    this.setState({ checked_values: arr });
   }
+
   handleBoxClick(id) {
     // var id = event.target.value;
     this.addMeToSelected(id);
-  }
-  findCommon() {
-    const actions = this.props.actions;
-    const values = this.state.check_values ? this.state.check_values : [];
-    if (values.length === 0) return null;
-
-    const common = [];
-    if (actions) {
-      for (let i = 0; i < actions.length; i++) {
-        const action = actions[i];
-        const actionTags = (action && action.tags) || [];
-        for (let j = 0; j < actionTags.length; j++) {
-          const tag = actionTags[j];
-          if (tag) {
-            if (values.includes(tag.id) && !common.includes(action)) {
-              common.push(action);
-            }
-          }
-        }
-      }
-    }
-    return common;
-  }
-
-  goToPage(pageNumber) {
-    const { actions } = this.props;
-    const { perPage } = this.state;
-    const nextPageContent = moveToPage(actions, pageNumber, perPage);
-    this.setState({
-      actions: nextPageContent.data,
-      pageContent: {
-        currentPage: nextPageContent.currentPage,
-        itemsLeft: nextPageContent.itemsLeft,
-        pageCount: nextPageContent.pageCount,
-      },
-    });
   }
 
   renderModal() {
@@ -161,39 +118,36 @@ class ActionsPage extends React.Component {
     this.setState({ openModalForm: null, status: null });
   }
 
-  renderPaginator() {
-    const { pageContent, check_values } = this.state;
-    var { actions } = this.props;
-    actions = actions ? actions : [];
-    if (check_values && check_values.length > 0) return <i></i>; // dont want to show paginator when user is in search mode
-    return (
-      <Paginator
-        currentPage={pageContent.currentPage}
-        pageCount={pageContent.pageCount}
-        nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
-        prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
-        showNext={pageContent.itemsLeft !== 0 && actions.length > PER_PAGE}
-        showPrev={pageContent.currentPage > 1}
-      />
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
+  }
+
+  searchIsActiveSoFindContentThatMatch() {
+    return searchIsActiveFindContent(
+      this.props.actions,
+      this.state.checked_values,
+      this.state.searchText,
+      (action, word) =>
+        action.title.toLowerCase().includes(word) ||
+        action.about.toLowerCase().includes(word) ||
+        action.featured_summary.toLowerCase().includes(word) ||
+        action.deep_dive.toLowerCase().includes(word)
     );
   }
-  getContentToDisplay() {
-    const { mirror_actions, actions } = this.state; // items from when user is typing in search box
-    const propActions = this.props.actions;
-    const common = this.findCommon();
-    if (mirror_actions.length > 0) return mirror_actions;
-    if (common) return common;
-    if (actions.length === 0) {
-      if (!propActions || propActions.length === 0) return null;
-      // return propActions.slice(0, this.state.perPage);
-      return propActions;
-    }
-    return actions;
-  }
+
   render() {
+    const pageData = this.props.pageData;
+    if (pageData == null) return <LoadingCircle />;
+
     if (!this.props.actions) {
       return <LoadingCircle />;
     }
+
+    const title = pageData && pageData.title ? pageData.title : "Actions";
+    //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Let us know what you have already done, and pledge to do more for impact'
+    const description =
+      pageData && pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -203,88 +157,84 @@ class ActionsPage extends React.Component {
         />
       );
 
-    var actions = this.getContentToDisplay();
-
-    actions = actions
-      ? actions.sort((a, b) => {
-          return a.rank - b.rank;
-        })
-      : actions;
+    var actions =
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
       <>
         {this.renderModal()}
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{
+            minHeight: window.screen.height - 200,
+          }}
+        >
           <BreadCrumbBar links={[{ name: "All Actions" }]} />
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div className="row">
+              <div style={{ marginBottom: 30, marginTop: -20 }}>
+                <div className="text-center">
+                  {description ? (
+                    <Tooltip
+                      text={description}
+                      paperStyle={{ maxWidth: "100vh" }}
+                    >
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                        <span
+                          className="fa fa-info-circle"
+                          style={{ color: "#428a36", padding: "5px" }}
+                        ></span>
+                      </PageTitle>
+                    </Tooltip>
+                  ) : (
+                    <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                  )}
+                </div>
+                <center>
+                  {pageData.sub_title ? (
+                    <small>{pageData.sub_title}</small>
+                  ) : null}
+                </center>
+              </div>
+              <HorizontalFilterBox
+                type="action"
+                foundNumber={this.state.mirror_actions.length}
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+              />
+              <div className="row phone-marg-top">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  <MECard
-                    className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
-                    style={{
-                      marginBottom: 10,
-                      padding: "45px 14px",
-                      borderRadius: 15,
-                    }}
-                  >
-                    <h4>Filter by...</h4>
-                    <Funnel
-                      type="action"
-                      search={this.handleSearch}
-                      foundNumber={this.state.mirror_actions.length}
-                      searchTextValue={this.state.searchBoxText}
-                      tagCols={this.props.tagCols}
-                      boxClick={this.handleBoxClick}
-                    />
-                  </MECard>
-                  {this.props.user ? (
+                  <div style={{ marginTop: 20 }}>
+                    {/* {this.props.user ? ( */}
                     <div className="phone-vanish">
-                      {this.props.todo ? (
-                        <Cart
-                          title="To Do List"
-                          actionRels={this.props.todo}
-                          status="TODO"
-                        />
-                      ) : null}
-                      {this.props.done ? (
-                        <Cart
-                          title="Completed Actions"
-                          actionRels={this.props.done}
-                          status="DONE"
-                        />
-                      ) : null}
+                      <ActionBoxCounter
+                        type="DONE"
+                        done={this.props.done}
+                        link={this.props.links ? this.props.links.profile : "#"}
+                        user={this.props.user}
+                      />
+                      <ActionBoxCounter
+                        type="TODO"
+                        style={{ marginTop: 20 }}
+                        todo={this.props.todo}
+                        link={this.props.links ? this.props.links.profile : "#"}
+                        user={this.props.user}
+                      />
                     </div>
-                  ) : (
-                    <div>
-                      <p>
-                        <Link to={`${this.props.links.signin}`}> Sign In </Link>{" "}
-                        to add actions to your todo list or to mark them as
-                        complete
-                      </p>
-                    </div>
-                  )}
+                  </div>
                 </div>
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <PageTitle>Actions</PageTitle>
-                  {/* {this.state.pageContent.pageCount > 0 ? (
-                    <center>
-                      <small>
-                        When you switch pages, images take a moment to reflect,
-                        please bear with us...
-                      </small>
-                    </center>
-                  ) : null} */}
-                  {/* {this.renderPaginator()} */}
                   <div
-                    className="row"
+                    className="row scroll-fix"
                     id="actions-container mob-actions-page-padding-remove"
-                    style={{ marginTop: 10 }}
+                    style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}
-                    {/* {this.renderPaginator()} */}
                   </div>
                 </div>
               </div>
@@ -295,40 +245,15 @@ class ActionsPage extends React.Component {
     );
   }
 
-  doesFieldContainWord(field, word, action) {
-    const fieldValue = action[field];
-    if (fieldValue && fieldValue.toLowerCase().includes(word.toLowerCase()))
-      return true;
-    return false;
-  }
   // on change in any category or tag checkbox update the actionsPage
   handleChange() {
     this.forceUpdate();
   }
-  handleSearch = (event) => {
-    const value = event.target.value;
-    const actions = this.props.actions;
-    const common = [];
-    if (value.trim() !== "") {
-      for (let i = 0; i < actions.length; i++) {
-        const ac = actions[i];
-        if (
-          this.doesFieldContainWord("title", value, ac) ||
-          this.doesFieldContainWord("deep_dive", value, ac) ||
-          this.doesFieldContainWord("steps_to_take", value, ac) ||
-          this.doesFieldContainWord("about", value, ac)
-        ) {
-          common.push(ac);
-        }
-      }
-      this.setState({ mirror_actions: [...common], searchBoxText: value });
-    } else {
-      this.setState({ mirror_actions: [], searchBoxText: value });
-    }
-  };
+
+  // };
   // renders all the actions
   renderActions(actions) {
-    if (!actions ) {
+    if (!actions) {
       return (
         <p style={{ width: "100%", textAlign: "center" }}>
           There aren't any actions available in this community yet, come back
@@ -523,7 +448,8 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: store.page.tagCols,
+    tagCols: filterTagCollections(store.page.actions, store.page.tagCols),
+    rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,

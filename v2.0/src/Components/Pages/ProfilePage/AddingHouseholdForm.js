@@ -25,13 +25,15 @@ class AddingHouseholdForm extends React.Component {
     var city = "";
     var state = "MA";
     var zip = "";
-    if (props.location && props.location !== "") {
-      var locationparts = props.location.split(", ");
-      address = locationparts[0];
-      city = locationparts[1];
-      state = locationparts[2];
-      zip = locationparts[3];
+
+    if (props.location) {
+      // passing location as JSON address
+      address = props.location.street;
+      city = props.location.city;
+      state = props.location.state;
+      zip = props.location.zipcode;
     }
+
     this.state = {
       name: props.name ? props.name : INITIAL_STATE.name,
       unittype: props.unittype ? props.unittype : INITIAL_STATE.unittype,
@@ -39,6 +41,7 @@ class AddingHouseholdForm extends React.Component {
       city: city,
       state: state,
       zip: zip,
+      error: null,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -142,11 +145,15 @@ class AddingHouseholdForm extends React.Component {
           <METextField
             type="text"
             name="zip"
+            required={true}
             placeholder="Zip Code..."
             defaultValue={this.state.zip ? this.state.zip : ""}
             onChange={this.onChange}
           />
         </div>
+        <p className="text-danger" style={{ fontSize: 16 }}>
+              {this.state.error}
+        </p>
         <br />
         <div className="col p-0">
           <MEButton
@@ -171,18 +178,26 @@ class AddingHouseholdForm extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     const { user, community, householdID } = this.props;
-    const location =
-      this.state.address +
-      ", " +
-      this.state.city +
-      ", " +
-      this.state.state +
-      ", " +
-      this.state.zip;
+
+    const zipCodePattern = /^\d{5}$|^\d{5}$/;    
+    if (!this.state.zip || this.state.zip.length < 5 || !zipCodePattern.test(this.state.zip)) {
+      this.setState({
+        error: "Please enter a valid US zip code"
+      })
+      return;
+    }
+    
+    const address = {
+      street: this.state.address,
+      city: this.state.city,
+      state: this.state.state,
+      zipcode: this.state.zip,
+    }
+
     const body = { 
       name: this.state.name,
       unit_type: this.state.unittype,
-      location: location,
+      address: JSON.stringify(address),
       user_id: user && user.id,
       email: user && user.email,
       community: community && community.id,

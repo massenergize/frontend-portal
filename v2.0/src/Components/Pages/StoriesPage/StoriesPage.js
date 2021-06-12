@@ -2,34 +2,40 @@ import React from "react";
 // import LoadingCircle from "../../Shared/LoadingCircle";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import ErrorPage from "./../Errors/ErrorPage";
+import LoadingCircle from "../../Shared/LoadingCircle";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
-import Funnel from "./../EventsPage/Funnel";
-// import leafy from "./leafy.png";
 import StoryModal from "./StoryModal";
-// import * as moment from "moment";
 import METestimonialCard from "./METestimonialCard";
-import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
-import { moveToPage } from "../../Utils";
-import Paginator from "../Widgets/Paginator";
+import {
+  applyTagsAndGetContent,
+  filterTagCollections,
+  searchIsActiveFindContent,
+} from "../../Utils";
+import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
+import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
+//import ErrorPage from "./../Errors/ErrorPage";
+// import Funnel from "./../EventsPage/Funnel";
+// import leafy from "./leafy.png";
+// import * as moment from "moment";
+// import MECard from "../Widgets/MECard";
+// import Paginator from "../Widgets/Paginator";
+// import { inThisTeam } from "../TeamsPage/utils";
 // import MEFileSelector from "../Widgets/MEFileSelector";
 
-const PER_PAGE = 6;
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
-    // const stories = props.stories ? props.stories : [];
     this.closeModal = this.closeModal.bind(this);
-    this.handleBoxClick = this.handleBoxClick.bind(this);
     this.state = {
       limit: 140, //size of a tweet
       expanded: null,
-      check_values: null,
+      checked_values: null,
       modal_content: {
         image: null,
         title: null,
@@ -39,58 +45,23 @@ class StoriesPage extends React.Component {
       },
       testimonialModal: false,
       stories: [],
-      pageContent: {
-        currentPage: 1,
-        itemsLeft: -1, // set to -1 to be able to differentiate when there is really no content, and when its just first time page load
-        pageCount: 0,
-      },
-      perPage: PER_PAGE,
+      searchText: null,
     };
-
     this.readMore = this.readMore.bind(this);
     this.renderStories = this.renderStories.bind(this);
-    this.goToPage = this.goToPage.bind(this);
-  }
-  findCommon() {
-    const stories = this.props.stories;
-    const values = this.state.check_values ? this.state.check_values : [];
-
-    if (values.length === 0)
-      return null;
-
-    const common = [];
-    if (stories) {
-      for (let i = 0; i < stories.length; i++) {
-        const story = stories[i];
-        const ev = stories[i].action;
-        if (ev) {
-          for (let j = 0; j < ev.tags.length; j++) {
-            const tag = ev.tags[j];
-            //only push events if they arent there already
-            if (values.includes(tag.id) && !common.includes(story)) {
-              common.push(story);
-            }
-          }
-        }
-      }
-    }
-    return common;
+    this.addMeToSelected = this.addMeToSelected.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
-  addMeToSelected(tagID) {
-    tagID = Number(tagID);
-    const arr = this.state.check_values ? this.state.check_values : [];
-    if (arr.includes(tagID)) {
-      var filtered = arr.filter((item) => item !== tagID);
-      this.setState({ check_values: filtered.length === 0 ? null : filtered });
-    } else {
-      this.setState({ check_values: [tagID, ...arr] });
-    }
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
+    var arr = this.state.checked_values ? this.state.checked_values : [];
+    // remove previously selected tag of selected category and put the new one
+    arr = arr.filter((item) => item.collectionName !== param.collectionName);
+    if (!param || param.value !== NONE) arr.push(param);
+    this.setState({ checked_values: arr });
   }
-  handleBoxClick(id) {
-    // var id = event.target.value;
-    this.addMeToSelected(id);
-  }
+
   renderModal() {
     if (this.state.expanded) {
       return (
@@ -140,122 +111,101 @@ class StoriesPage extends React.Component {
     });
   }
 
-  goToPage(pageNumber) {
-    const { stories } = this.props;
-    const { perPage } = this.state;
-    const nextPageContent = moveToPage(stories, pageNumber, perPage);
-    this.setState({
-      stories: nextPageContent.data,
-      pageContent: {
-        currentPage: nextPageContent.currentPage,
-        itemsLeft: nextPageContent.itemsLeft,
-        pageCount: nextPageContent.pageCount,
-      },
-    });
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
   }
-  renderPaginator() {
-    const { pageContent, check_values } = this.state;
-    var { stories } = this.props;
-    stories = stories ? stories : [];
-    if (check_values && check_values.length > 0) return <i></i>; // dont want to show paginator when user is in search mode
-    return (
-      <Paginator
-        currentPage={pageContent.currentPage}
-        pageCount={pageContent.pageCount}
-        nextFxn={() => this.goToPage(this.state.pageContent.currentPage + 1)}
-        prevFxn={() => this.goToPage(this.state.pageContent.currentPage - 1)}
-        showNext={pageContent.itemsLeft !== 0 && stories.length > PER_PAGE}
-        showPrev={pageContent.currentPage > 1}
-      />
+
+  searchIsActiveSoFindContentThatMatch() {
+    return searchIsActiveFindContent(
+      this.props.stories,
+      this.state.checked_values,
+      this.state.searchText,
+      (story, word) =>
+        story.title.toLowerCase().includes(word) ||
+        story.body.toLowerCase().includes(word)
     );
   }
-  getContentToDisplay() {
-    const { stories } = this.props;
-    const stateStories = this.state.stories;
-    const common = this.findCommon();
 
-    if (common) return common;
-    if (stateStories.length === 0) {
-      if (!stories || stories.length === 0) return null;
-      // return stories.slice(0, this.state.perPage);
-      return stories;
+  render() {
+    const pageData = this.props.pageData;
+
+    if (pageData == null) return <LoadingCircle />;
+
+    //if (!this.props.events || !this.props.tagCols) {
+    if (!this.props.tagCols) {
+      return <LoadingCircle />;
     }
 
-    return stateStories;
-  }
-  render() {
-    if (!this.props.pageData)
-      return (
-        <ErrorPage
-          errorMessage="Data unavailable"
-          errorDescription="Unable to load Testimonials data"
-        />
-      );
+    //if (!this.props.pageData)
+    //return (
+    //  <ErrorPage
+    //    errorMessage="Data unavailable"
+    //    errorDescription="Unable to load Testimonials data"
+    //  />
+    //);
 
-    const stories = this.getContentToDisplay();
+    const title = pageData && pageData.title ? pageData.title : "Testimonials";
+    const sub_title =
+      pageData && pageData.sub_title ? pageData.sub_title : null;
+    const description = pageData.description ? pageData.description : null;
 
-    //const welcomeImagesData = section(pageData, "WelcomeImages").slider[0].slides;
+    const stories =
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.stories, this.state.checked_values);
 
     return (
       <>
-        {/* <MEModal ><h1>Semeeee</h1></MEModal> */}
         {this.renderModal()}
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{
+            minHeight: window.screen.height - 200,
+          }}
+        >
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="row">
-                <div className="col-md-3 phone-vanish">
-                  <MECard
-                    className=" mob-login-white-cleaner z-depth-float me-anime-open-in"
-                    style={{
-                      marginBottom: 10,
-                      marginTop: 48,
-                      padding: "45px 14px",
-                      borderRadius: 15,
-                    }}
-                  >
-                    <h4>Filter by...</h4>
-                    <Funnel
-                      type="testimonial"
-                      boxClick={this.handleBoxClick}
-                      search={() => {}}
-                      foundNumber={0}
-                    />
-                  </MECard>
+              <div style={{ marginBottom: 30 }}>
+                <div className="text-center">
+                  {description ? (
+                    <Tooltip
+                      text={description}
+                      paperStyle={{ maxWidth: "100vh" }}
+                    >
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                        <span
+                          className="fa fa-info-circle"
+                          style={{ color: "#428a36", padding: "5px" }}
+                        ></span>
+                      </PageTitle>
+                    </Tooltip>
+                  ) : (
+                    <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                  )}
+                </div>
+                <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+              </div>
+              <HorizontalFilterBox
+                type="testimonials"
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+              />
+              <div className="row phone-marg-top-90">
+                <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   {this.renderAddTestmonialBtn()}
                 </div>
                 <div className="col-md-9 col-lg-9 col-sm-12 ">
-                  {/* --- SHOW FLOATING BTN IN PHONE VIEW WHEN USER IS SIGNED IN ------------ */}
-                  {this.props.user && (
-                    <MEButton
-                      onClick={this.scrollToForm}
-                      className="float-testimonial-btn pc-vanish"
-                    >
-                      Add Testimonial
-                    </MEButton>
-                  )}
-                  <PageTitle>Testimonials</PageTitle>
-                  {this.state.pageContent.pageCount > 0 ? (
-                    <center>
-                      <small>
-                        When you switch pages, images take a moment to reflect,
-                        please bear with us...
-                      </small>
-                    </center>
-                  ) : null}
-                  {/* {this.renderPaginator()} */}
                   <div
                     className="row"
                     style={{
-                      // maxHeight: 700,
-                      // overflowY: "scroll",
                       position: "relative",
                       paddingBottom: 50,
                     }}
                   >
                     {this.renderStories(stories)}
-                    {/* {this.renderPaginator()} */}
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                   <div>{this.renderTestimonialForm()}</div>
@@ -322,10 +272,11 @@ class StoriesPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    pageData: store.page.homePage,
+    pageData: store.page.testimonialsPage,
     stories: store.page.testimonials,
     user: store.user.info,
     links: store.links,
+    tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
   };
 };
 export default connect(mapStoreToProps, null)(StoriesPage);

@@ -60,19 +60,17 @@ class ContactAdminModal extends React.Component {
     } else {
       modalContent = (
         <p>
-          You must <Link to={links.signin}>sign in or create an account</Link>{" "}
+          You must <Link to={links.signin}>sign in or create a profile</Link>{" "}
           to contact this team's admin
         </p>
       );
     }
-
+ 
     return (
       <>
         <MEModal
         size="md"
           containerClassName="mob-modal-correction modal-force-full-width"
-          // className="mod-modal-correction"
-          // contentStyle={{ width: "100%" }}
           closeModal={() => onClose()}
         >
           <h4>
@@ -93,7 +91,7 @@ class ContactAdminModal extends React.Component {
       },
     });
   }
-
+ 
   doSending(e, data, resetForm) {
     e.preventDefault();
     this.notify("Sending...", "good", "fa fa-spinner fa-spin");

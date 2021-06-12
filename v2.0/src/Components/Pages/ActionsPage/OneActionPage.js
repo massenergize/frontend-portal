@@ -133,7 +133,7 @@ class OneActionPage extends React.Component {
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
               >
-                <div className="col-md-9">
+                <div className="col-md-9" style={{marginBottom:15}}>
                   <div className="single-products-details">
                     {this.renderAction(action)}
                   </div>
@@ -650,7 +650,7 @@ class OneActionPage extends React.Component {
                   </button>
                 </li>
               ) : null}
-              {action.deep_dive && action.deep_dive !== "<p><br></p>" ? (
+              {action.deep_dive && action.deep_dive.length > 12 ? (
                 <li
                   id="deeptab"
                   className={this.state.tab === "deep" ? "active" : ""}

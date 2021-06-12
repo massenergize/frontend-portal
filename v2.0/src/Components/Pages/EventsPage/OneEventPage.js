@@ -2,7 +2,7 @@ import React from "react";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import ErrorPage from "./../Errors/ErrorPage"
+import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
@@ -10,13 +10,12 @@ import ShareButtons from "../../Shared/ShareButtons";
 import { Helmet } from "react-helmet";
 
 class OneEventPage extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       event: null,
-      loading: true
-    }
+      loading: true,
+    };
   }
 
   async fetch(id) {
@@ -40,17 +39,20 @@ class OneEventPage extends React.Component {
   }
 
   render() {
-
     const event = this.state.event;
 
     if (this.state.loading) {
       return <LoadingCircle />;
     }
     if (!event || this.state.error) {
-      return <ErrorPage
-        errorMessage="Unable to load this Event"
-        errorDescription={this.state.error ? this.state.error : "Unknown cause"}
-      />;
+      return (
+        <ErrorPage
+          errorMessage="Unable to load this Event"
+          errorDescription={
+            this.state.error ? this.state.error : "Unknown cause"
+          }
+        />
+      );
     }
 
     return (
@@ -61,11 +63,14 @@ class OneEventPage extends React.Component {
           <meta property="og:description" content={event.featured_summary} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              { name: event ? event.name : "..." }
+              { name: event ? event.name : "..." },
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
@@ -73,7 +78,12 @@ class OneEventPage extends React.Component {
               <div className="single-products-details">
                 {this.renderEvent(event)}
               </div>
-              <ShareButtons label="Share this event!" pageTitle={event.name} pageDescription={event.featured_summary} url={window.location.href} />
+              <ShareButtons
+                label="Share this event!"
+                pageTitle={event.name}
+                pageDescription={event.featured_summary}
+                url={window.location.href}
+              />
             </div>
           </section>
         </div>
@@ -93,70 +103,76 @@ class OneEventPage extends React.Component {
         <div className="container">
           <h3
             className="cool-font text-center"
-            style={{ 
-              //textTransform: "capitalize", 
-            }}
+            style={
+              {
+                //textTransform: "capitalize",
+              }
+            }
           >
             {event.name}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
-              <div className="col-12 col-lg-6">
+              <div className="col-12 col-lg-4">
+                <img
+                  style={{
+                    width: "100%",
+                    maxHeight: "250px",
+                    objectFit: "contain",
+                    borderRadius: 6,
+                  }}
+                  src={event.image ? event.image.url : notFound}
+                  alt=""
+                />
+
                 <div
-                  className="img-box raise"
-                  style={{ height: 340, borderRadius: 10 }}
-                >
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                    src={event.image ? event.image.url : notFound}
-                    alt=""
-                  />
-                </div>
-                <div
-                  className="event-timeline "
+                  // className="event-timeline "
+
                   style={{ margin: "10px 0px", borderRadius: 12 }}
                 >
-                  {/* <div className="section-title style-2">
-                                            <h3>Event Schedule</h3>
-																				</div> */}
                   <ul>
-                    {/* <li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
-												<b> - </b>{endDate.toLocaleString()}
-											</li> */}
-                    <li key="time">
-                      <b>
-                        Date
-                        <br />{" "}
-                      </b>
-                      <div style={{ paddingLeft: 20 }}>
+                    <li
+                      key="time"
+                      style={{ listStyle: "none", color: "rgb(128 177 61)" }}
+                    >
+                      <b>Date</b>
+                      <div style={{ fontSize: 14, display: "block" }}>
                         <span className="make-me-dark">{dateString}</span>
                       </div>
                     </li>
                     {location ? (
-                      <li>
+                      <li
+                        style={{
+                          listStyle: "none",
+                          marginTop: 10,
+                          color: "rgb(128 177 61)",
+                        }}
+                      >
                         {/* House Number, Street Name, Town, State */}
-                        <i className="fa fa-map-marker" />
-                        <b>Venue:</b>{" "}
-                        <span className="make-me-dark">
+                        <i
+                          className="fa fa-map-marker"
+                          style={{ marginRight: 6 }}
+                        />
+                        <b>Venue</b>{" "}
+                        <div
+                          className="make-me-dark"
+                          style={{ fontSize: 14, display: "block" }}
+                        >
                           {locationFormatJSX(location)}
-                        </span>
+                        </div>
                       </li>
                     ) : null}
                   </ul>
                 </div>
                 {/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
               </div>
-              <div className="col-12 col-lg-6">
+              <div className="col-12 col-lg-8">
                 <div className="text">
-                  <h5 className="cool-font" style={{ color: "lightgray" }}>
+                  {/* <h5 className="cool-font" style={{ color: "lightgray" }}>
                     About
-                  </h5>
+                  </h5> */}
                   <p
-                    className="cool-font make-me-dark"
+                    className="cool-font make-me-dark events-about-content"
                     dangerouslySetInnerHTML={{ __html: event.description }}
                   ></p>
                   <br />

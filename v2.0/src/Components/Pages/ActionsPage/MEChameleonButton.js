@@ -34,7 +34,10 @@ class MECameleonButton extends Component {
     props = { ...props, ...passed };
     if (props.hasPopover) {
       return (
-        <CustomTooltip text={props.popoverText}>
+        <CustomTooltip
+          text={props.popoverText}
+          contentStyle={{ marginLeft: "-9vw" }}
+        >
           <MEButton
             className={`cam-btn-defaults ${props.className}`}
             style={props.style}
@@ -46,7 +49,10 @@ class MECameleonButton extends Component {
       );
     }
     return (
-      <MEButton className={`cam-btn-defaults ${props.className}`} style={props.style}>
+      <MEButton
+        className={`cam-btn-defaults ${props.className}`}
+        style={props.style}
+      >
         {props.text}
       </MEButton>
     );

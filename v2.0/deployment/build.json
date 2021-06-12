@@ -1,8 +1,8 @@
 {
-  "dev": "3.1.16",
-  "dev-sandbox": "3.1.16",
-  "prod": "3.1.16",
-  "prod-sandbox": "3.1.16",
-  "canary": "3.0.22",
-  "canary-sandbox": "3.0.22"
+  "dev": "3.3.1",
+  "dev-sandbox": "3.3.1",
+  "prod": "3.1.15",
+  "prod-sandbox": "3.1.15",
+  "canary": "3.3.1",
+  "canary-sandbox": "3.3.1"
 }

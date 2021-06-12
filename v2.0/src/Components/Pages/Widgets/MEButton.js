@@ -62,7 +62,7 @@ class MEButton extends Component {
 
   ejectComponent() {
     const { style, href, to, disabled, type, target } = this.props;
-    var newTab = target ? { target  } : {};
+    var newTab = target ? { target } : {};
     const classes = this.getClasses();
     const styles = style ? { ...style } : null;
     if (!href && !to) {
@@ -81,21 +81,39 @@ class MEButton extends Component {
         </div>
       );
     }
-    return (
-      <div className="put-me-inline">
-        <Link
-          disabled={disabled}
-          className={classes}
-          style={styles}
-          {...newTab}
-          to={href || to}
-          onClick={(e) => this.handleOnClick(e)}
-        >
-          {this.ejectIcon()}
-          {this.props.children}
-        </Link>
-      </div>
-    );
+
+    if (href)
+      return (
+        <div className="put-me-inline">
+          <a
+            disabled={disabled}
+            className={classes}
+            style={styles}
+            {...newTab}
+            href={href}
+            onClick={(e) => this.handleOnClick(e)}
+          >
+            {this.ejectIcon()}
+            {this.props.children}
+          </a>
+        </div>
+      );
+    if (to)
+      return (
+        <div className="put-me-inline">
+          <Link
+            disabled={disabled}
+            className={classes}
+            style={styles}
+            {...newTab}
+            to={to}
+            onClick={(e) => this.handleOnClick(e)}
+          >
+            {this.ejectIcon()}
+            {this.props.children}
+          </Link>
+        </div>
+      );
   }
   render() {
     const { containerStyle } = this.props;
