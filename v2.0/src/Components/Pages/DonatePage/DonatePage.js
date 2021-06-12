@@ -33,7 +33,7 @@ class DonatePage extends React.Component {
         >
           <BreadCrumbBar links={[{ name: "Donate" }]} />
 
-          <div className="container p-5 donate-page-space-fix" >
+          <div className="container p-5 donate-page-space-fix">
             <div className="text-center">
               <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               {sub_title && <p>{sub_title}</p>}
@@ -48,9 +48,11 @@ class DonatePage extends React.Component {
             <br />
 
             <div style={{ display: "flex" }}>
-              <div style={{ flex: "1" }} className="phone-vanish">
-                {this.renderVideo(videoLink)}
-              </div>
+              {videoLink && (
+                <div style={{ flex: "1" }} className="phone-vanish">
+                  {this.renderVideo(videoLink)}
+                </div>
+              )}
               <p
                 dangerouslySetInnerHTML={{ __html: description }}
                 style={{ color: "black", flex: "1", textAlign: "justify" }}

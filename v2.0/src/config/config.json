@@ -3,5 +3,5 @@
   "IS_PROD": false,
   "IS_CANARY": true,
   "IS_SANDBOX": false,
-  "BUILD_VERSION": "3.2.19"
+  "BUILD_VERSION": "3.3.1"
 }
