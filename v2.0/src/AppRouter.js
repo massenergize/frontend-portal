@@ -1,34 +1,34 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Switch, Route } from "react-router-dom";
-import NavBarBurger from "./components/Menu/NavBarBurger";
-import Footer from "./components/Menu/Footer";
-import LoadingCircle from "./components/Shared/LoadingCircle";
+import NavBarBurger from "./Components/Menu/NavBarBurger";
+import Footer from "./Components/Menu/Footer";
+import LoadingCircle from "./Components/Shared/LoadingCircle";
 import "./assets/css/style.css";
 
-import HomePage from "./components/Pages/HomePage/HomePage";
-import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
-import OneActionPage from "./components/Pages/ActionsPage/OneActionPage";
-import AboutUsPage from "./components/Pages/AboutUsPage/AboutUsPage";
-import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
-import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
-import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
-import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
-import LoginPage from "./components/Pages/LoginPage/LoginPage";
-import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
-import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
-import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
-import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
-import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
-import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
-import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
-import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
-import DonatePage from "./components/Pages/DonatePage/DonatePage";
-import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
+import HomePage from "./Components/Pages/HomePage/HomePage";
+import ActionsPage from "./Components/Pages/ActionsPage/ActionsPage";
+import OneActionPage from "./Components/Pages/ActionsPage/OneActionPage";
+import AboutUsPage from "./Components/Pages/AboutUsPage/AboutUsPage";
+import ServicesPage from "./Components/Pages/ServicesPage/ServicesPage";
+import OneServicePage from "./Components/Pages/ServicesPage/OneServicePage";
+import StoriesPage from "./Components/Pages/StoriesPage/StoriesPage";
+import OneTestimonialPage from "./Components/Pages/StoriesPage/OneTestimonialPage";
+import LoginPage from "./Components/Pages/LoginPage/LoginPage";
+import EventsPage from "./Components/Pages/EventsPage/EventsPageReal";
+import OneEventPage from "./Components/Pages/EventsPage/OneEventPage";
+import ProfilePage from "./Components/Pages/ProfilePage/ProfilePage";
+import ImpactPage from "./Components/Pages/ImpactPage/ImpactPage";
+import TeamsPage from "./Components/Pages/TeamsPage/TeamsPage";
+import OneTeamPage from "./Components/Pages/TeamsPage/OneTeamPage";
+import RegisterPage from "./Components/Pages/RegisterPage/RegisterPage";
+import PoliciesPage from "./Components/Pages/PoliciesPage/PoliciesPage";
+import DonatePage from "./Components/Pages/DonatePage/DonatePage";
+import ContactPage from "./Components/Pages/ContactUs/ContactUsPage";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import ErrorPage from "./components/Pages/Errors/ErrorPage";
+import ErrorPage from "./Components/Pages/Errors/ErrorPage";
 
 import {
   reduxLoadCommunity,
@@ -66,7 +66,7 @@ import { reduxLoadLinks } from "./redux/actions/linkActions";
 import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
-import Help from "./components/Pages/Help/Help";
+import Help from "./Components/Pages/Help/Help";
 
 class AppRouter extends Component {
   constructor(props) {

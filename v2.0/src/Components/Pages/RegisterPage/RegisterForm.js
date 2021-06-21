@@ -648,6 +648,7 @@ class RegisterFormBase extends React.Component {
       this.setState({ creating: true });
       apiCall("users.create", body)
         .then((json) => {
+        console.log(body);
           var token = this.props.auth
             ? this.props.auth.stsTokenManager.accessToken
             : null;
