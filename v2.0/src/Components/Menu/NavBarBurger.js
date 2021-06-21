@@ -394,13 +394,13 @@ class NavBarBurger extends React.Component {
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle style={{"background-color":"white", "border-color":"white"}}
           >
-            {!user.info.profile_picture.url ? 
+            {user.info.profile_picture ? 
             <img src={user.info.profile_picture.url}
             style={{
               "height":50,
               "border-radius":"50%"
             }}></img> :
-            <img src={createImagefromInitials(user.info.color, user.info.full_name, 50)}
+            <img src={createImagefromInitials(user.info.preferences.color, user.info.full_name, 50)}
             style={{
               "border-radius":"50%"
             }}></img>}

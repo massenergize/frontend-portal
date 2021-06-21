@@ -22,7 +22,7 @@ class EditingProfileForm extends React.Component {
       are_you_sure: false, 
       //image is the object representing the user's profile picture on the server
       image: props.user.profile_picture && props.user.profile_picture.url ? props.user.profile_picture.url : null,
-      color: props.user.color ? props.user.color : "#135dfe",
+      color: props.user.preferences.color ? props.user.preferences.color : "#135dfe",
       //crop and zoom are for profile picture
       crop: {
         x: 0, 
@@ -30,7 +30,8 @@ class EditingProfileForm extends React.Component {
       }, 
       zoom: 1
     };
-
+    console.log("these are props");
+    console.log(props);
     this.onChange = this.onChange.bind(this);
   }
   
