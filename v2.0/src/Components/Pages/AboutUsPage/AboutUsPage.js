@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 //import Video from './Video'
 import ReactPlayer from "react-player"
-import ErrorPage from "./../Errors/ErrorPage"
+import ErrorPage from "../Errors/ErrorPage"
 import DonateBar from './DonateBar'
 import { connect } from 'react-redux'
 import { reduxLoadCommunityAdmins } from '../../../redux/actions/pageActions'
@@ -27,11 +27,11 @@ class AboutUsPage extends React.Component {
 		//console.log("AboutUs-pageData",pageData)
 		const donatePageData = this.props.donatePageData;
 		const title = pageData.title ? pageData.title : "About Our Community";
-		const subtitle = pageData.sub_title ? pageData.sub_title : "Help support our cause by donating";
+		const subtitle = pageData.sub_title ? pageData.sub_title : null;
 		const videoLink = pageData.featured_video_link ? pageData.featured_video_link : null;
 		//const image = pageData.image ? pageData.image : null;
 		const paragraphContent = pageData.description;
-		const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : "We welcome your support!";
+		const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : null;
 		return (
 			<div className="boxed_wrapper">
 				<BreadCrumbBar links={[{ name: 'About Us' }]} />
@@ -39,7 +39,12 @@ class AboutUsPage extends React.Component {
 					<div style={{ marginTop: 70 }}></div>
 					<div className={paragraphContent ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
 						<center><h2 className="cool-font" style={{ padding: 10 }}>{title}</h2></center>
-						<center><em><h4 className="cool-font" style={{ padding: 10 }}>{subtitle}</h4></em></center>
+						{subtitle ?
+							<div>
+								<center><em><h4 className="cool-font" style={{ padding: 10 }}>{subtitle}</h4></em></center>
+							</div>
+						: null }
+
 						<div className="community-about-text cool-font make-me-dark" style={{fontSize:'large', textAlign:'justify'}} dangerouslySetInnerHTML={{ __html: paragraphContent }}></div>
 					</div>
 
@@ -82,8 +87,11 @@ class AboutUsPage extends React.Component {
 					</div>
 				</div>
 			
-				{/* <TeamMembers data={teamMembersData} /> */}
-				<DonateBar donateMessage={donateMessage} />
+				{donateMessage ?
+					<div>
+						<DonateBar donateMessage={donateMessage} />
+					</div>
+				: null }
 			</div>
 		);
 	}
