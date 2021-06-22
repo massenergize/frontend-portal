@@ -17,19 +17,18 @@ class AboutUsPage extends React.Component {
 		
 		}
 		else if(this.props.pageData ==={} || this.props.community ==={}){
-      return <ErrorPage
-        errorMessage="Data unavailable"
-        errorDescription="Unable to load About Us data"
-      />;
+      		return <ErrorPage
+        		errorMessage="Data unavailable"
+        		errorDescription="Unable to load About Us data"
+      		/>;
 		}
 
 		const pageData = this.props.pageData;
-		//console.log("AboutUs-pageData",pageData)
 		const donatePageData = this.props.donatePageData;
 		const title = pageData.title ? pageData.title : "About Our Community";
 		const subtitle = pageData.sub_title ? pageData.sub_title : null;
 		const videoLink = pageData.featured_video_link ? pageData.featured_video_link : null;
-		//const image = pageData.image ? pageData.image : null;
+		const image = pageData.image ? pageData.image : null;
 		const paragraphContent = pageData.description;
 		const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : null;
 		return (
@@ -58,25 +57,19 @@ class AboutUsPage extends React.Component {
 						: null
 					}
 
-					{/* this image doesn't work yet, will fix later 
-					{image ?
-				  
+					{image ?				  
 						<div className={image ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
 
 							<center>
-							<div className="img-box action-pic-fix">
 								<img
-								  src={image ? image.url : null}
-								  alt=""
-								  data-imagezoom="true"
-								  className="img-responsive z-depth-float me-anime-open-in"
-								  style={{ marginTop: "20px", marginBotton: "20px", borderRadius: 9 }}
-								/>
-							</div>
+								  	src={image ? image.url : null}
+								  	alt="About Us"
+      								style={{ objectFit: "container", maxHeight: 400 }}
+    							/>
 							</center>
 						</div>
 						: null
-					}   */}
+					}   
 
 					<div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
 						<center><h2 className="cool-font" style={{ padding: 10 }}>About MassEnergize</h2></center>
