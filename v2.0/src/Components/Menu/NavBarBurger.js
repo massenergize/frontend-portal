@@ -18,7 +18,7 @@ class NavBarBurger extends React.Component {
     super(props);
     this.state = {
       menuBurgered: window.innerWidth < 992,
-      menuOpen: false,
+      menuOpen: false
     };
     this.handleLinkClick = this.handleLinkClick.bind(this);
   }
