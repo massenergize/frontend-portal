@@ -399,11 +399,13 @@ class NavBarBurger extends React.Component {
             style={{
               "height":50,
               "border-radius":"50%"
-            }}></img> :
+            }}></img> : 
+            user.info.preferences && user.info.preferences.color ? 
             <img src={createImagefromInitials(user.info.preferences.color, user.info.full_name, 50)}
             style={{
               "border-radius":"50%"
-            }}></img>}
+            }}></img> :
+            <></>}
           </Dropdown.Toggle>
           <Dropdown.Menu className="z-depth-1 me-dropdown-theme me-anime-show-up-from-top">
             <Link
