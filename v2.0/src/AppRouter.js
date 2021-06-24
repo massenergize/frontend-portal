@@ -105,6 +105,7 @@ class AppRouter extends Component {
       contactus: `/${subdomain}/contactus`,
     });
 
+
     // for lazy loading: load these first
     Promise.all([
       apiCall("communities.info", body),
@@ -392,6 +393,7 @@ class AppRouter extends Component {
               <Route path={`${links.events}/:id`} component={OneEventPage} />
               <Route path={links.signin} component={LoginPage} />
               <Route path={links.signup} component={RegisterPage} />
+              <Route path="/completeRegistration?" component={RegisterPage}/>
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
