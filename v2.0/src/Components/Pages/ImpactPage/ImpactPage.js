@@ -19,22 +19,23 @@ class ImpactPage extends React.Component {
     var shortWord =  stringArr[0];
     return shortWord.replace(",",""); 
   }
-  // }
 
-   
   render() {
     if (!this.props.comData) {
       return <ErrorPage
-      errorMessage="Data unavailable"
-      errorDescription="Unable to load Impact data"
-    />
-
-
+        errorMessage="Data unavailable"
+        errorDescription="Unable to load Impact data"
+      />
     }
-    const community = this.props.communityData
-      ? this.props.comData.community
-      : null;
-    const goal = this.props.comData ? this.props.comData.goal : null;
+
+    const pageData = this.props.impactPage;
+		if (pageData == null) return <LoadingCircle />
+		const title = pageData && pageData.title ? pageData.title : "Our Community's Impact"
+		//const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null
+		const description = pageData.description ? pageData.description : null;
+
+    const community = this.props.community
+    const goal = this.props.community ? this.props.community.goal : null;
     const completed = this.props.communityData
       ? this.props.communityData.data
       : [];
@@ -164,19 +165,6 @@ class ImpactPage extends React.Component {
                       }}
                       data={createCircleGraphData(goal, "households")}
                     />
-
-                    {/* <CircleGraph
-                      num={
-                        goal
-                          ? goal.attained_number_of_households +
-                            goal.organic_attained_number_of_households
-                          : 0
-                      }
-                      goal={goal ? goal.target_number_of_households : 0}
-                      label={"Households Engaged"}
-                      size={100}
-                      colors={["#428a36"]}
-                    /> */}
                   </div>
                   <div className="imp-desc-box">
                     <center>
@@ -214,18 +202,6 @@ class ImpactPage extends React.Component {
                       }}
                       data={createCircleGraphData(goal, "actions-completed")}
                     />
-                    {/* <CircleGraph
-                      num={
-                        goal
-                          ? goal.attained_number_of_actions +
-                            goal.organic_attained_number_of_actions
-                          : 0
-                      }
-                      goal={goal ? goal.target_number_of_actions : 0}
-                      label={"Actions Completed"}
-                      size={100}
-                      colors={["#FB5521"]}
-                    /> */}
                   </div>
                   <div className="imp-desc-box">
                     <center>
@@ -264,18 +240,6 @@ class ImpactPage extends React.Component {
                       }}
                       data={createCircleGraphData(goal, "carbon-reduction")}
                     />
-                      {/* <CircleGraph
-                        num={
-                          goal
-                            ? goal.attained_carbon_footprint_reduction +
-                              goal.organic_attained_carbon_footprint_reduction
-                            : 0
-                        }
-                        goal={goal ? goal.target_carbon_footprint_reduction : 0}
-                        label={"Carbon Reduction"}
-                        size={100}
-                        colors={["#111111"]}
-                      /> */}
                     </div>
                     <div className="imp-desc-box">
                     <center>
@@ -293,7 +257,15 @@ class ImpactPage extends React.Component {
                 ) : null}
               </div>
               <div className="col-12 col-lg-8">
-                <PageTitle>Our Community's Impact</PageTitle>
+                <PageTitle>{title}</PageTitle>
+                <center>
+						    {
+							        description ?
+							        <p>{description}</p>
+							        :null
+						    }
+    						</center>
+
                 <div className="card rounded-0 mb-4 z-depth-float" style={{ marginTop: 15, border:0 }}>
                   <div
                     className="card-header text-center bg-white "
@@ -356,6 +328,8 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     tagCols: store.page.tagCols,
     comData: store.page.homePage,
+    community: store.page.community,
+    impactPage: store.page.impactPage,
     links: store.links
   };
 };

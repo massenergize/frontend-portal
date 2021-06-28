@@ -3,10 +3,13 @@ import {
 	LOAD_ACTIONS_PAGE,
 	LOAD_SERVICE_PROVIDERS_PAGE,
 	LOAD_TEAMS_PAGE,
+	LOAD_TEAMS,
 	LOAD_ABOUT_US_PAGE,
 	LOAD_COMMUNITIES_STATS,
+	LOAD_CONTACT_US_PAGE,
 	LOAD_DONATE_PAGE,
 	LOAD_EVENTS_PAGE,
+	LOAD_IMPACT_PAGE,
 	LOAD_MENU,
 	LOAD_POLICIES,
 	LOAD_ACTIONS,
@@ -26,7 +29,7 @@ import {
 	LOAD_COMMUNITY,
 	LOAD_TAG_COLS,
 	LOAD_COMMUNITY_DATA,
-	Load_COMMUNITY_ADMINS,
+	LOAD_COMMUNITY_ADMINS,
 	CHANGE_DATA,
 	TEAM_ADD_ACTION,
 	TEAM_REMOVE_ACTION,
@@ -65,7 +68,7 @@ export const reduxLoadCommunityData = (data) => dispatch => {
 
 export const reduxLoadCommunityAdmins = (admins) => dispatch => {
 	return dispatch({
-		type: Load_COMMUNITY_ADMINS,
+		type: LOAD_COMMUNITY_ADMINS,
 		payload: admins
 	})
 }
@@ -118,6 +121,13 @@ export const reduxLoadCommunitiesStats = (page) => dispatch => {
 	})
 }
 
+export const reduxLoadContactUsPage = (page) => dispatch => {
+	return dispatch({
+		type: LOAD_CONTACT_US_PAGE,
+		payload: page
+	})
+}
+
 export const reduxLoadDonatePage = (page) => dispatch => {
 	return dispatch({
 		type: LOAD_DONATE_PAGE,
@@ -128,6 +138,13 @@ export const reduxLoadDonatePage = (page) => dispatch => {
 export const reduxLoadEventsPage = (page) => dispatch => {
 	return dispatch({
 		type: LOAD_EVENTS_PAGE,
+		payload: page
+	})
+}
+
+export const reduxLoadImpactPage = (page) => dispatch => {
+	return dispatch({
+		type: LOAD_IMPACT_PAGE,
 		payload: page
 	})
 }
@@ -157,6 +174,13 @@ export const reduxLoadEvents = (events) => dispatch => {
 	return dispatch({
 		type: LOAD_EVENTS,
 		payload: events
+	})
+}
+
+export const reduxLoadTeams = (teams) => dispatch => {
+	return dispatch({
+		type: LOAD_TEAMS,
+		payload: teams
 	})
 }
 

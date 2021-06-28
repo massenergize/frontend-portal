@@ -10,7 +10,7 @@ export default class Help extends Component {
         <p>In order to clear out all information that have been willingly given by you from the MassEnergize platform, please take note of the 
         following steps </p>
         <ol>
-          <li>Sign in nto your account</li>
+          <li>Sign into your profile</li>
           <li>Toggle the shinny green button on the top left corner of your screen and go to your profile</li>
           <li>Again, toggle the round dropdown button that is displayed beside "Welcome  ....your name..."</li>
           <li>On the dropdown, you will find the option to "delete profile". Go ahead and confirm deletion, and you are good to go.<br/> All your information you have shared with MassEnergize, will be completely deleted</li>

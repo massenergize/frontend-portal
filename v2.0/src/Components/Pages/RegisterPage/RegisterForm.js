@@ -43,6 +43,7 @@ const INITIAL_STATE = {
   error: null,
 };
 
+
 class RegisterFormBase extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +52,7 @@ class RegisterFormBase extends React.Component {
       ...INITIAL_STATE,
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
+      email: null
     };
 
     this.onChange = this.onChange.bind(this);
@@ -58,8 +60,10 @@ class RegisterFormBase extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.setRegProtocol = this.setRegProtocol.bind(this);
+    //const { id } = this.props.match.params; 
+    //console.log(id);
   }
-
+  
   getRegProtocol() {
     return localStorage.getItem("reg_protocol");
   }
@@ -288,7 +292,7 @@ class RegisterFormBase extends React.Component {
               style={{ textDecoration: "underline" }}
               to={this.props.links.signin}
             >
-              I have an account already
+              I have a profile already
             </Link>
           </p>{" "}
         </div>
@@ -303,10 +307,38 @@ class RegisterFormBase extends React.Component {
       city,
       state,
       zip,
+      specialUser
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-
+    console.log('this should be hte users email address')
+    console.log(this.props.auth.email);
+    const body = { email: this.props.auth.email }
+    apiCall("users.checkImported", body)
+    .then((json) => {
+      console.log(json);
+      if (json.success && json.data.imported) {
+        console.log(json);
+        this.setState({
+          firstName: json.data.firstName, 
+          lastName: json.data.lastName, 
+          preferredName: json.data.preferredName,
+          specialUser: true
+        });
+        apiCall("users.completeImported", body)
+          .then((json) => {
+            console.log(json)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log(json.error);
+      }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
@@ -355,6 +387,9 @@ class RegisterFormBase extends React.Component {
                   <p style={{ color: "red" }}>
                     {" "}
                     Please finish creating your profile before you continue
+                    {this.state.specialUser ? 
+                    <p>Welcome! You have been invited by a community admin to this MassEnergize Community.</p> : 
+                    <></>}
                   </p>
                 </center>
                 <div className="form-group">

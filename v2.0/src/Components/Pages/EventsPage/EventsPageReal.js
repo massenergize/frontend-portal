@@ -2,17 +2,24 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import PageTitle from "../../Shared/PageTitle";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import {
+  dateFormatString,
+  filterTagCollections,
+  applyTagsAndGetContent,
+  searchIsActiveFindContent,
+} from "../../Utils";
+import NewEventsCard from "./NewEventsCard";
+import HorizontalFilterBox from "./HorizontalFilterBox";
+import { NONE } from "../Widgets/MELightDropDown";
+import Tooltip from "../Widgets/CustomTooltip";
 // import CONST from '../../Constants'
-import Funnel from "./Funnel";
+// import Funnel from "./Funnel";
 // import notFound from "./not-found.jpg";
-import { dateFormatString } from "../../Utils";
-import MECard from "../Widgets/MECard";
+// import MECard from "../Widgets/MECard";
 // import METextView from "../Widgets/METextView";
-import NewEventsCard from './NewEventsCard';
 
 /**
  * Renders the event page
@@ -20,111 +27,56 @@ import NewEventsCard from './NewEventsCard';
 class EventsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.handleBoxClick = this.handleBoxClick.bind(this);
+    // this.handleBoxClick = this.handleBoxClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       events_search_toggled: false,
       userData: null,
-      check_values: null,
+      checked_values: null,
       mirror_events: [],
+      searchText: null,
     };
+    this.addMeToSelected = this.addMeToSelected.bind(this);
   }
-  /**
-   * check_values is intentionally "null" to help identify (first time loading, and when all boxes have been unselected)
-   * How filtering is done
-   * add the tag Ids to "check_values"(states) array as they are selected,
-   * loop through events and see which events have tags with those Ids,
-   * ( happens in "findCommon")
-   * pass the return values into "renderEvents"
-   */
-
-  addMeToSelected(tagID) {
-    tagID = Number(tagID);
-    const arr = this.state.check_values ? this.state.check_values : [];
-    if (arr.includes(tagID)) {
-      var filtered = arr.filter((item) => item !== tagID);
-      this.setState({ check_values: filtered.length === 0 ? null : filtered });
-    } else {
-      this.setState({ check_values: [tagID, ...arr] });
-    }
+  addMeToSelected(param, reset = false) {
+    if (reset) return this.setState({ checked_values: null });
+    var arr = this.state.checked_values ? this.state.checked_values : [];
+    // remove previously selected tag of selected category and put the new one
+    arr = arr.filter((item) => item.collectionName !== param.collectionName);
+    if (!param || param.value !== NONE) arr.push(param);
+    this.setState({ checked_values: arr });
   }
 
-  handleBoxClick(id) {
-    // var id = event.target.value;
-    this.addMeToSelected(id);
-  }
-  findCommon() {
-    //everytime there is a change in "check_values",
-    //loop through all the events again, and render events
-    //with the tag IDs  in "check_values"
-    //then pass it on to "renderEvents(...)"
-    const events = this.props.events;
-    const values = this.state.check_values ? this.state.check_values : [];
-    const common = [];
-    if (events) {
-      for (let i = 0; i < events.length; i++) {
-        const ev = events[i];
-        for (let i = 0; i < ev.tags.length; i++) {
-          const tag = ev.tags[i];
-          //only push events if they arent there already
-          if (values.includes(tag.id) && !common.includes(ev)) {
-            common.push(ev);
-          }
-        }
-      }
-    }
-    return common;
+  handleSearch(e) {
+    e.preventDefault();
+    this.setState({ searchText: e.target.value });
   }
 
-  handleSearch = (event) => {
-    const value = event.target.value;
-    const events = this.props.events;
-    const common = [];
-    if (value.trim() !== "") {
-      for (let i = 0; i < events.length; i++) {
-        const ev = events[i];
-        if (ev.name.toLowerCase().includes(value.toLowerCase())) {
-          common.push(ev);
-        }
-      }
-      this.setState({ mirror_events: [...common] });
-    } else {
-      this.setState({ mirror_events: [] });
-    }
-  };
-  renderSideBar() {
-    return (
-      <div className="blog-sidebar sec-padd">
-        <MECard
-          className="phone-vanish mob-login-white-cleaner z-depth-float me-anime-open-in"
-          style={{
-            marginBottom: 10,
-            marginTop: 48,
-            padding: "45px 14px",
-            borderRadius: 15,
-          }}
-        >
-          <h4>Filter by...</h4>
-          <Funnel
-            type="event"
-            boxClick={this.handleBoxClick}
-            search={this.handleSearch}
-            foundNumber={this.state.mirror_events.length}
-          />
-        </MECard>
-        {/* <div
-          className="phone-vanish mob-event-white-cleaner z-depth-float"
-          style={{ padding: "45px 13px", borderRadius: 15 }}
-        >
-          <h4>Filter by...</h4>
-        </div> */}
-      </div>
+  searchIsActiveSoFindContentThatMatch() {
+    return searchIsActiveFindContent(
+      this.props.events,
+      this.state.checked_values,
+      this.state.searchText,
+      (event, word) =>
+        event.name.toLowerCase().includes(word) ||
+        event.description.toLowerCase().includes(word) ||
+        event.featured_summary.toLowerCase().includes(word)
     );
   }
+
   render() {
+    const pageData = this.props.pageData;
+    if (pageData == null) return <LoadingCircle />;
+
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
+
+    const title =
+      pageData && pageData.title ? pageData.title : "Events and Campaigns";
+    const sub_title =
+      pageData && pageData.sub_title ? pageData.sub_title : null;
+    const description = pageData.description ? pageData.description : null;
 
     if (!this.props.homePageData)
       return (
@@ -135,12 +87,14 @@ class EventsPage extends React.Component {
       );
 
     const found =
-      this.state.mirror_events.length > 0
-        ? this.state.mirror_events
-        : this.findCommon();
+      this.searchIsActiveSoFindContentThatMatch() ||
+      applyTagsAndGetContent(this.props.events, this.state.checked_values);
     return (
       <>
-        <div className="boxed_wrapper" style={{ marginBottom: 70 }}>
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           {/* renders the sidebar and events columns */}
           <div className="boxed-wrapper">
             <BreadCrumbBar links={[{ name: "Events" }]} />
@@ -148,21 +102,48 @@ class EventsPage extends React.Component {
             <section className="eventlist">
               <div className="container override-container-width">
                 <div className="row">
-                  <div
+                  {/* <div
                     className="col-lg-3 col-md-3 col-12"
                   
                   >
                     {this.renderSideBar()}
-                  </div>
-                  <div className="col-lg-9 col-md-9 col-12">
-                    <PageTitle>Events and Campaigns</PageTitle>
+                  </div> */}
+                  <div className="col-lg-10 col-md-10 col-12 offset-md-1">
+                    <div style={{ marginBottom: 30 }}>
+                      <div className="text-center">
+                        {description ? (
+                          <Tooltip
+                            text={description}
+                            paperStyle={{ maxWidth: "100vh" }}
+                          >
+                            <PageTitle style={{ fontSize: 24 }}>
+                              {title}
+                              <span
+                                className="fa fa-info-circle"
+                                style={{ color: "#428a36", padding: "5px" }}
+                              ></span>
+                            </PageTitle>
+                          </Tooltip>
+                        ) : (
+                          <PageTitle style={{ fontSize: 24 }}>
+                            {title}
+                          </PageTitle>
+                        )}
+                      </div>
+                      <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                    </div>
+                    <HorizontalFilterBox
+                      type="events"
+                      tagCols={this.props.tagCols}
+                      boxClick={this.addMeToSelected}
+                      search={this.handleSearch}
+                    />
+
                     <div
-                      className="mob-event-cards-fix outer-box sec-padd event-style2"
+                      className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
                       style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
                     >
-                      <div className="row">
-                      {this.renderEvents(found)}
-                      </div>
+                      <div className="row">{this.renderEvents(found)}</div>
                     </div>
                   </div>
                 </div>
@@ -187,7 +168,7 @@ class EventsPage extends React.Component {
     }
     if (this.props.events.length === 0) {
       return (
-        <div className="text-center" style={{width:"100%"}}>
+        <div className="text-center" style={{ width: "100%" }}>
           <p className="cool-font">
             {" "}
             Sorry, looks like there are no upcoming events in your community{" "}
@@ -195,6 +176,7 @@ class EventsPage extends React.Component {
         </div>
       );
     }
+
     if (events) {
       return events.map((event) => {
         const dateString = dateFormatString(
@@ -204,7 +186,11 @@ class EventsPage extends React.Component {
 
         return (
           <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
-            <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>
+            <NewEventsCard
+              {...event}
+              dateString={dateString}
+              links={this.props.links}
+            />
           </div>
         );
       });
@@ -229,14 +215,11 @@ const mapStoreToProps = (store) => {
     collection: store.page.collection,
     auth: store.firebase.auth,
     user: store.user.info,
+    pageData: store.page.eventsPage,
     events: store.page.events,
     eventRSVPs: store.page.rsvps,
     links: store.links,
-    tagCols: store.page.tagCols
-      ? store.page.tagCols.filter((col) => {
-          return col.name === "Category";
-        })
-      : null,
+    tagCols: filterTagCollections(store.page.events, store.page.tagCols),
   };
 };
 export default connect(mapStoreToProps, null)(EventsPage);

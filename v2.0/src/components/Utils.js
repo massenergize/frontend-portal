@@ -1,12 +1,109 @@
 import * as moment from "moment";
 import React from "react";
 
+export const getFilterVersionFromURL = (location, paramName) => {
+  if (!location || !location.search) return "";
+  const search = location.search;
+  var broken = search.slice(1, search.length);
+  broken = broken.split("=");
+  var found = broken.filter((item) => item.toLowerCase() === "filter")[0];
+  if (!found) return "";
+  return broken[broken.indexOf(found) + 1];
+};
 
-export const getHumanFriendlyDate = (dateString)=>{
-  if(!dateString) return null; 
+export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
+  if (!word) return null;
+  word = word.toLowerCase();
+  const content = applyTagsAndGetContent(data, activeFilters) || data;
+  if (!func) return null;
+  return content.filter((action) => func(action, word));
+};
+
+export const changeToProperURL = (url) => {
+  if (!url) return "#";
+  if (isAProperURL(url)) return url;
+  return "https://" + url;
+};
+export const isAProperURL = (url) => {
+  if (!url) return false;
+  return url.split("http").length > 1;
+};
+
+export const applyTagsAndGetContent = (content, checkedValues) => {
+  if (!checkedValues || checkedValues.length === 0) return content;
+  //apply AND filter
+  const filters = getPropsArrayFromJsonArray(checkedValues, "value");
+  const rem = (content || []).filter((item) => {
+    const contentTags = getPropsArrayFromJsonArray(item.tags, "name");
+    const combined = new Set([...filters, ...contentTags]);
+    // if the set of unique values of filters and action tags have the same number of elements
+    // as the array of tag names of an action, it means an action qualifies for all the selected filters
+    return combined.size === contentTags.length && item;
+  });
+
+  return rem.sort((a, b) => {
+    return a.rank - b.rank;
+  });
+};
+
+/**
+ * This function takes actions and records only tags and tag categories that are
+ * active
+ * @param {*} actions just normal arr of actions
+ * @param {*} cols original tag collection arr set that is returned by the api
+ * @returns
+ */
+
+//TODO: This whole mech should probably be done in the backend
+export const filterTagCollections = (actions, cols) => {
+  if (!actions) return [];
+  const collections = {};
+  actions.forEach((action) => {
+    action.tags &&
+      action.tags.forEach((tag) => {
+        const name = tag.tag_collection_name;
+        // Collect the rank value from the original tag collection array to be used for sorting later (TODO:backend needs to add this)
+        const original = (cols || []).filter((set) => set.name === name)[0];
+        const rank = original && original.rank;
+        const found = collections[name];
+        if (found) {
+          if (!found.alreadyIn.includes(tag.id)) {
+            collections[name].tags.push(tag);
+            collections[name].alreadyIn.push(tag.id);
+          }
+        } else {
+          collections[name] = {
+            name: name,
+            tags: [tag],
+            alreadyIn: [tag.id],
+            rank,
+          };
+        }
+      });
+  });
+  var arr = [];
+  Object.keys(collections).forEach((key) => {
+    arr.push(collections[key]);
+  });
+  // Now sort array of tag collections based on ranks from lowest -> highest
+  arr = arr.sort((a, b) => a.rank - b.rank);
+  return arr;
+};
+
+export const sumOfCarbonScores = (data) => {
+  if (!data) return 0;
+  return data
+    .map((t) =>
+      t.action && t.action.calculator_action
+        ? t.action.calculator_action.average_points
+        : 0
+    )
+    .reduce((partial_sum, a) => partial_sum + a, 0);
+};
+export const getHumanFriendlyDate = (dateString) => {
+  if (!dateString) return null;
   return moment(dateString).format("MMMM Do YYYY ");
-
-}
+};
 export const getTextArrayAsString = (array, separationKey) => {
   if (!array || !separationKey) return "";
   let text = "";
@@ -63,6 +160,12 @@ export function getPropsArrayFromJsonArray(array, property) {
   if (!array || !property) return [];
   const toGo = [];
   array.forEach((item) => toGo.push(item[property]));
+  return toGo;
+}
+export function getPropsArrayFromJsonArrayAdv(array, modifier) {
+  if (!array || !modifier) return [];
+  const toGo = [];
+  array.forEach((item) => toGo.push(modifier(item)));
   return toGo;
 }
 
