@@ -231,7 +231,7 @@ class ActionsPage extends React.Component {
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
                     className="row scroll-fix"
-                    id="actions-container mob-actions-page-padding-remove"
+                    
                     style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}

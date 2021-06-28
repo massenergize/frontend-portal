@@ -27,7 +27,7 @@
 .stories-sm-vendor img {
   border-radius: 5px;
   max-height: 300px;
-  padding:10px 20px;
+  padding: 10px 20px;
   object-fit: cover;
 }
 
@@ -1567,6 +1567,10 @@
   left: -260px !important;
   width: 160% !important;
 }
+.scroll-fix::-webkit-scrollbar {
+  width: 0px;
+  background: white;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
@@ -1701,8 +1705,8 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .donate-page-space-fix{ 
-    padding:15px !important;
+  .donate-page-space-fix {
+    padding: 15px !important;
   }
   .scroll-fix {
     height: fit-content;
