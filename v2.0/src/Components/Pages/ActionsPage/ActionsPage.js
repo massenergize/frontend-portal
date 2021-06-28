@@ -283,12 +283,13 @@ class ActionsPage extends React.Component {
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
-          // closeHHForm={() => this.setState({ openAddForm: null })}
-          // openHHForm={(aid) => this.setState({ openAddForm: aid })}
+          dontShowTestimonialLinkFxn={() =>
+            this.setState({ testimonialLink: false })
+          }
           showTodoMsg={this.state.showTodoMsg}
-          toggleShowTodoMsg={() => {
-            this.setState({ showTodoMsg: false });
-          }}
+          clearNotificationMsgs={() =>
+            this.setState({ showTodoMsg: false, testimonialLink: false })
+          }
           openModal={this.openModal}
           closeModal={() => this.setState({ openModalForm: null })}
         />
@@ -333,7 +334,10 @@ class ActionsPage extends React.Component {
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
           // this.addToImpact(json.data.action);
-          this.setState({ testimonialLink: actionRel.action.id });
+          this.setState({
+            testimonialLink: actionRel.action.id,
+            showTodoMsg: false,
+          });
         } else {
           console.log(json.error);
         }
