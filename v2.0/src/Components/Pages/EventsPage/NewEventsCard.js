@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import photo from "./not-found.jpg";
 import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
-import METextView from "../Widgets/METextView";
+// import METextView from "../Widgets/METextView";
 import * as moment from "moment";
-import { locationFormatJSX } from "../../Utils";
+// import { locationFormatJSX } from "../../Utils";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 
 export default class NewEventsCard extends Component {
@@ -74,12 +74,14 @@ export default class NewEventsCard extends Component {
   }
 
   getEventTitle() {
-    const { name } = this.props;
-    if (name.length > 48) return name + "...";
+    var { name } = this.props;
+    name += name;
+    if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
-  render() {
-    var { className, location, dateString, id } = this.props;
+
+  renderNewCardDesign() {
+    var { className, dateString, id } = this.props;
     return (
       <div>
         <MECard
@@ -87,56 +89,100 @@ export default class NewEventsCard extends Component {
           style={{ padding: 0, position: "relative", borderRadius: 15 }}
           className={`${MEAnimation.getAnimationClass()} ${className}`}
         >
-          <img src={this.getPhoto()} className="me-testimonial-img" alt="event" />
-          <div className="me-testimonial-content-box">
-            <div className="me-testimonial-about">
-              <small style={{ fontSize: 17 }}>
-                <b>
-                  {this.getEventTitle()}
-                  {/* <br />
-                  <i className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {dateString} */}
-                </b>
-              </small>
-            </div>
-            <div style={{ padding: 15 }}>
-              <METextView
-                className="me-testimonial-content"
-                style={{ fontSize: 15, color: "#282828" }}
-              >
-                {this.getBody()}
-              </METextView>
+          <img
+            src={this.getPhoto()}
+            className="new-me-testimonial-img"
+            alt="event media"
+          />
+          <h1
+            style={{
+              fontSize: 17,
+              fontWeight: "bold",
+              padding: "6px 18px",
+              minHeight: 52,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {this.getEventTitle()}
+            {/* <i
+              className="fa fa-long-arrow-right"
+              style={{ marginLeft: 6, fontSize: 23 }}
+            ></i> */}
+          </h1>
 
-              <div className="testimonial-link-holder">
-                <METextView
-                  mediaType="icon"
-                  icon="fa fa-clock-o"
-                  type="small"
-                  style={{ color: "green" }}
-                >
-                  {dateString}
-                </METextView>
-                <br />
-                <METextView
-                  type="small"
-                  style={{ color: "green" }}
-                  mediaType="icon"
-                  icon="fa fa-map-marker"
-                >
-                  {location ? locationFormatJSX(location) : "No Location"}
-                </METextView>
-              </div>
-            </div>
+          <div className="bottom-date-area">
+            <span>{dateString}</span>
           </div>
         </MECard>
       </div>
     );
   }
+  render() {
+    // var { className, location, dateString, id } = this.props;
+
+    return this.renderNewCardDesign();
+    // ----- Will be removed when the new card design is approved...
+    // return (
+    //   <div>
+    //     <MECard
+    //       to={`${this.props.links.events + "/" + id}`}
+    //       style={{ padding: 0, position: "relative", borderRadius: 15 }}
+    //       className={`${MEAnimation.getAnimationClass()} ${className}`}
+    //     >
+    //       <img
+    //         src={this.getPhoto()}
+    //         className="me-testimonial-img"
+    //         alt="event"
+    //       />
+    //       <div className="me-testimonial-content-box">
+    //         <div className="me-testimonial-about">
+    //           <small style={{ fontSize: 17 }}>
+    //             <b>
+    //               {this.getEventTitle()}
+    //               {/* <br />
+    //               <i className="fa fa-clock-o" style={{ marginRight: 5 }} />
+    //               {dateString} */}
+    //             </b>
+    //           </small>
+    //         </div>
+    //         <div style={{ padding: 15 }}>
+    //           <METextView
+    //             className="me-testimonial-content"
+    //             style={{ fontSize: 15, color: "#282828" }}
+    //           >
+    //             {this.getBody()}
+    //           </METextView>
+
+    //           <div className="testimonial-link-holder">
+    //             <METextView
+    //               mediaType="icon"
+    //               icon="fa fa-clock-o"
+    //               type="small"
+    //               style={{ color: "green" }}
+    //             >
+    //               {dateString}
+    //             </METextView>
+    //             <br />
+    //             <METextView
+    //               type="small"
+    //               style={{ color: "green" }}
+    //               mediaType="icon"
+    //               icon="fa fa-map-marker"
+    //             >
+    //               {location ? locationFormatJSX(location) : "No Location"}
+    //             </METextView>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </MECard>
+    //   </div>
+    // );
+  }
 }
 
 NewEventsCard.defaultProps = {
-  body:
-    "This is some more information about this testimonial. This is the default text...",
+  body: "This is some more information about this testimonial. This is the default text...",
   prefered_name: "Anonymous",
   action: {},
   created_at: "1st January 2020",

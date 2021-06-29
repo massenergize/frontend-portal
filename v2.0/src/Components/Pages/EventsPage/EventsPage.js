@@ -12,6 +12,7 @@ import * as moment from 'moment';
 
 
 /**
+ * @deprecated
  * Renders the event page
  */
 class EventsPage extends React.Component {
