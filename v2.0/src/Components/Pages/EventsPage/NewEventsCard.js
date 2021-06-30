@@ -75,7 +75,7 @@ export default class NewEventsCard extends Component {
 
   getEventTitle() {
     var { name } = this.props;
-    name += name;
+    //name += name;
     if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
