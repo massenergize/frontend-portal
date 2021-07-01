@@ -37,7 +37,7 @@ import {
 	TEAM_REMOVE_HOUSEHOLD
 } from '../actions/types';
 
-import { getTeamData, inSubTeam, inThisTeam } from '../../Components/Pages/TeamsPage/utils';
+import { getTeamData, inSubTeam, inThisTeam } from '../../components/Pages/TeamsPage/utils';
 
 const initialState = {
 	//page data for each page

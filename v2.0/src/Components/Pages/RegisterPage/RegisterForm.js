@@ -311,8 +311,6 @@ class RegisterFormBase extends React.Component {
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-    console.log('this should be hte users email address')
-    console.log(this.props.auth.email);
     const body = { email: this.props.auth.email }
     apiCall("users.checkImported", body)
     .then((json) => {
@@ -325,13 +323,6 @@ class RegisterFormBase extends React.Component {
           preferredName: json.data.preferredName,
           specialUser: true
         });
-        apiCall("users.completeImported", body)
-          .then((json) => {
-            console.log(json)
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       } else {
         console.log(json.error);
       }
