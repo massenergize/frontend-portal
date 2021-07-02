@@ -24,7 +24,7 @@ class EditingProfileForm extends React.Component {
       are_you_sure: false, 
       //image is the object representing the user's profile picture on the server
       image: props.user.profile_picture && props.user.profile_picture.url ? props.user.profile_picture.url : null,
-      color: props.user.preferences.color ? props.user.preferences.color : "#135dfe"
+      color: props.user.preferences && props.user.preferences.color ? props.user.preferences.color : "#135dfe"
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -148,8 +148,15 @@ class EditingProfileForm extends React.Component {
           <small>
             Profile Picture
           </small>
+          {/* this blows up <ReactCrop src={this.state.image}></ReactCrop> */}
           {this.state.image ? 
-          <ReactCrop src={this.state.image}></ReactCrop>
+          <div> 
+            <img src={this.state.image}
+              style={{
+              "height":50,
+              "border-radius":"50%"
+            }}></img>
+          </div>
           :
           <div></div>}
           <input
