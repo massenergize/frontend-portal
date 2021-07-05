@@ -16,6 +16,7 @@ const LARGE = "lg";
  * @prop {object} contentStyle
  * @prop {string} containerClassName
  * @prop {Boolean} showOverlay | Specifies whether or not a translucent overlay should appear behing the modal
+ * @prop {Boolean} showCloseBtn | whether or not to show close button
  *
  *
  */

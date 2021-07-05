@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
 import FormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
-
+import MEButton from "../Widgets/MEButton";
 class ContactAdminModal extends React.Component {
   constructor(props) {
     super(props);
@@ -55,23 +55,38 @@ class ContactAdminModal extends React.Component {
           actionText="Send"
           onSubmit={this.doSending}
           info={this.state.notification}
+          moreActions={
+            <MEButton
+              variation="accent"
+              onClick={(e) => {
+                e.preventDefault();
+                onClose();
+              }}
+              className="pc-vanish"
+              style={{ marginRight: -8 }}
+            >
+              Cancel
+            </MEButton>
+          }
         />
       );
     } else {
       modalContent = (
         <p>
-          You must <Link to={links.signin}>sign in or create a profile</Link>{" "}
-          to contact this team's admin
+          You must <Link to={links.signin}>sign in or create a profile</Link> to
+          contact this team's admin
         </p>
       );
     }
- 
+
     return (
       <>
         <MEModal
-        size="md"
-          containerClassName="mob-modal-correction modal-force-full-width"
+          size="md"
+          containerClassName="mob-modal-correction modal-force-full-width team-contact-admin-modal-mob"
           closeModal={() => onClose()}
+          showCloseBtn={false}
+          className="team-contact-admin-card"
         >
           <h4>
             Contact admin of <b>{team && team.name}</b>
@@ -91,7 +106,7 @@ class ContactAdminModal extends React.Component {
       },
     });
   }
- 
+
   doSending(e, data, resetForm) {
     e.preventDefault();
     this.notify("Sending...", "good", "fa fa-spinner fa-spin");
