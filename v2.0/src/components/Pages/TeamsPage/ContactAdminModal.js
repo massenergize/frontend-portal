@@ -85,7 +85,7 @@ class ContactAdminModal extends React.Component {
           size="md"
           containerClassName="mob-modal-correction modal-force-full-width team-contact-admin-modal-mob"
           closeModal={() => onClose()}
-          showCloseBtn={false}
+          showCloseBtnOnPC={true}
           className="team-contact-admin-card"
         >
           <h4>

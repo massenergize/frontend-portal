@@ -1589,11 +1589,18 @@
   width: 0px;
   background: white;
 }
+/* Teams Page Styles */
+.teams-subheader {
+  color: #c7c7c7;
+  font-size: 1.65rem;
+  margin-bottom: 10px;
+  /* font-style: italic */
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
   .scroll-fix {
-    height: 100vh;
+    /* height: 100vh; */
     overflow-y: scroll;
   }
   .stats-q-box {
@@ -1723,11 +1730,21 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .phone-font-15 {
+    font-size: 15px;
+  }
   h4 {
     font-size: 18px;
   }
+  h3 {
+    font-size: 1.1rem;
+  }
   h2 {
     font-size: 1.2rem;
+  }
+
+  .teams-subheader {
+    font-size: 1.1rem;
   }
   .team-contact-admin-card {
     height: 100vh;

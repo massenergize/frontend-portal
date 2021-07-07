@@ -41,6 +41,8 @@ export default class MEModal extends Component {
       containerClassName,
       showOverlay,
       showCloseBtn,
+      showCloseBtnOnPC,
+      showCloseBtnOnMobile,
     } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     const overlayStyle = showOverlay ? {} : { display: "none" };
@@ -56,7 +58,37 @@ export default class MEModal extends Component {
           className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
         >
-          {showCloseBtn && (
+          {showCloseBtnOnMobile && (
+            <center>
+              <MEButton
+                onClick={closeModal}
+                className="me-close close-mob-padding"
+                style={{
+                  marginBottom: -70,
+                  fontWeight: "bold",
+                  padding: "10px 17px",
+                }}
+              >
+                <span className="fa fa-close" style={{ fontSize: 15 }}></span>
+              </MEButton>
+            </center>
+          )}
+          {showCloseBtnOnPC && (
+            <center className="phone-vanish">
+              <MEButton
+                onClick={closeModal}
+                className="me-close close-mob-padding"
+                style={{
+                  marginBottom: -70,
+                  fontWeight: "bold",
+                  padding: "10px 17px",
+                }}
+              >
+                <span className="fa fa-close" style={{ fontSize: 15 }}></span>
+              </MEButton>
+            </center>
+          )}
+          {showCloseBtn && !showCloseBtnOnPC && !showCloseBtnOnMobile && (
             <center>
               <MEButton
                 onClick={closeModal}
@@ -101,4 +133,6 @@ MEModal.defaultProps = {
   containerClassName: "",
   showOverlay: true,
   showCloseBtn: true,
+  showCloseBtnOnPC: false,
+  showCloseBtnOnMobile: false,
 };
