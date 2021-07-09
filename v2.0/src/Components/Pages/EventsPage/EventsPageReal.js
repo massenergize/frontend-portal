@@ -122,6 +122,7 @@ class EventsPage extends React.Component {
     );
   }
   render() {
+    
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -133,7 +134,7 @@ class EventsPage extends React.Component {
           errorDescription="Unable to load Events data"
         />
       );
-
+      
     const found =
       this.state.mirror_events.length > 0
         ? this.state.mirror_events
@@ -197,14 +198,47 @@ class EventsPage extends React.Component {
     }
     if (events) {
       return events.map((event) => {
+        console.log('singlar event');
+        console.log(event);
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
+        let recurringDetailString = "";
+        if (event.is_recurring) {
+          
+          if (event.recurring_details.day_of_week){
+            
+            console.log('day of week');
+            recurringDetailString = `Every ${event.recurring_details.day_of_week}`;
+            console.log('week of month');
+          } else if (event.recurring_details.week_of_month) {
+            console.log('week of month');
+            let weekNumber = ''; 
+            switch (event.recurring_details.week_of_month) {
+              case 1:
+                weekNumber = 'first';
+                break;
+              case 2:
+                weekNumber = 'second';
+                break;
+              case 3:
+                weekNumber = 'third';
+                break;
+              case 4:
+                weekNumber = 'fourth';
+                break;
+              default: 
+                weekNumber = "";
+            }
+            console.log(recurringDetailString);
+            recurringDetailString = `Every ${weekNumber} ${event.recurring_details.day_of_week}, every `;
+          }
+        }
 
         return (
           <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
-            <NewEventsCard {...event} dateString={dateString} links={this.props.links}/>
+            <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
           </div>
         );
       });

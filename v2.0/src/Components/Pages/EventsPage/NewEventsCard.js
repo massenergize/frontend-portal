@@ -83,7 +83,9 @@ export default class NewEventsCard extends Component {
     return name;
   }
   render() {
-    var { className, location, dateString, id } = this.props;
+    var { className, location, dateString, id, recurringDetailString } = this.props;
+    console.log('hi!!!');
+    console.log(recurringDetailString);
     return (
       <div>
         <MECard
@@ -128,6 +130,13 @@ export default class NewEventsCard extends Component {
                   icon="fa fa-map-marker"
                 >
                   {location ? locationFormatJSX(location) : "No Location"}
+                </METextView>
+                <br />
+                <METextView
+                  type="small"
+                  style={{ color: "green" }}
+                >
+                  {recurringDetailString ? recurringDetailString : recurringDetailString}
                 </METextView>
               </div>
             </div>

@@ -154,6 +154,8 @@ class AppRouter extends Component {
         this.props.reduxLoadTeamsPage(teamResponse.data);
         this.props.reduxLoadDonatePage(donatePageResponse.data);
         this.props.reduxLoadEvents(eventsResponse.data);
+        console.log('EVENTS RESPONSE DATA');
+        console.log(eventsResponse);
         this.props.reduxLoadActions(actionsResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
         this.props.reduxLoadTestimonials(testimonialsResponse.data);
@@ -207,11 +209,14 @@ class AppRouter extends Component {
         apiCall("users.actions.completed.list", { email: user.email }),
         apiCall("users.events.list", { email: user.email }),
       ]);
+      console.log('we pinged the users.events.list endpoint');
 
       if (userActionsTodoResponse && userActionsCompletedResponse) {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
         this.props.reduxLoadDone(userActionsCompletedResponse.data);
         this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
+        console.log('DATA FROM EVENTS LIST PINGING');
+        console.log(eventsRsvpListResponse);
         return true;
       } else {
         console.log(`no user with this email: ${user.email}`);
