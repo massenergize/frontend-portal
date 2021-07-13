@@ -13,7 +13,7 @@ import { dateFormatString } from "../../Utils";
 import MECard from "../Widgets/MECard";
 // import METextView from "../Widgets/METextView";
 import NewEventsCard from './NewEventsCard';
-
+import { apiCall } from "../../../api/functions";
 /**
  * Renders the event page
  */
@@ -179,6 +179,7 @@ class EventsPage extends React.Component {
    * @param events - json list of events
    */
   renderEvents(events) {
+    
     //when mirror_events.length ===0, it means no one is searching,so go on to check if
     //someone if user is using check_values
     //if check_values ===null, then it means it is probably the first time the user
@@ -198,49 +199,64 @@ class EventsPage extends React.Component {
     }
     if (events) {
       return events.map((event) => {
-        console.log('singlar event');
-        console.log(event);
+        const body = {
+          'event_id': event.id
+        }
+        
+        let rescheduledEvent = {endTime: "", startTime: ""};
+        let recurringDetailString = "";
+        apiCall('events.exceptions.list', body)
+        .then((json) => {
+          if (json.success) {
+            console.log(json);
+            recurringDetailString += "Rescheduled to " + json.data[0].rescheduled_start_time + "- " + json.data[0].rescheduled_end_time;
+            rescheduledEvent.startTime = json.data[0].rescheduled_start_time;
+            console.log("TYPE", typeof(rescheduledEvent.startTime));
+            rescheduledEvent.endTime = json.data[0].rescheduled_end_time;
+
+          } else {
+            console.log(json.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        let recurringDetailString = "";
+        
         if (event.is_recurring) {
-          
-          if (event.recurring_details.day_of_week){
-            
-            console.log('day of week');
-            recurringDetailString = `Every ${event.recurring_details.day_of_week}`;
-            console.log('week of month');
-          } else if (event.recurring_details.week_of_month) {
-            console.log('week of month');
-            let weekNumber = ''; 
-            switch (event.recurring_details.week_of_month) {
-              case 1:
-                weekNumber = 'first';
-                break;
-              case 2:
-                weekNumber = 'second';
-                break;
-              case 3:
-                weekNumber = 'third';
-                break;
-              case 4:
-                weekNumber = 'fourth';
-                break;
-              default: 
-                weekNumber = "";
+          if (event.recurring_details.recurring_type == "week") {
+            if (event.recurring_details.separation_count == 1) {
+              recurringDetailString = `Every ${event.recurring_details.day_of_week}`
+            } else {
+              recurringDetailString = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`
             }
-            console.log(recurringDetailString);
-            recurringDetailString = `Every ${weekNumber} ${event.recurring_details.day_of_week}, every `;
+          } else if (event.recurring_details.recurring_type == "month") {
+            if (event.recurring_details.separation_count == 1) {
+              recurringDetailString = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`
+            } else {
+              recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`
+            }
           }
+          //split the datetime strings to format them and display them in the card
+          //startString = rescheduledEvent.event
+          console.log(rescheduledEvent);
+          /*if (rescheduledEvent != {}) {
+            console.log(rescheduledEvent.startTime)
+            recurringDetailString += `\nRescheduled to ${rescheduledEvent.startTime}-${rescheduledEvent.endTime}`;
+          }*/
         }
-
-        return (
-          <div key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
-            <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
-          </div>
-        );
+        //if (event.name)
+        // need to check if event name contains "(rescheduled) at the end; then don't display the card"
+          return (
+            <div style={{opacity: event.recurring_details.is_cancelled ? 0.5 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
+              <p style={{"color":"red"}} >{rescheduledEvent ? "This event has been rescheduled." : ""}</p> 
+              <p style={{"color":"red"}} >{event.recurring_details.is_cancelled ? "This event has been cancelled temporarily." : ""}</p> 
+              <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
+            </div>
+          );
       });
     }
   }
