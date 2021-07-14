@@ -84,8 +84,6 @@ export default class NewEventsCard extends Component {
   }
   render() {
     var { className, location, dateString, id, recurringDetailString } = this.props;
-    console.log('hi!!!');
-    console.log(recurringDetailString);
     return (
       <div>
         <MECard

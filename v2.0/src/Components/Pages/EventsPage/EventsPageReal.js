@@ -122,7 +122,8 @@ class EventsPage extends React.Component {
     );
   }
   render() {
-    
+    console.log("this.props.events", this.props.events);
+    console.log("this.props.tagCols", this.props.tagCols);
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -178,7 +179,7 @@ class EventsPage extends React.Component {
   /**
    * @param events - json list of events
    */
-  renderEvents(events) {
+   renderEvents(events) {
     
     //when mirror_events.length ===0, it means no one is searching,so go on to check if
     //someone if user is using check_values
