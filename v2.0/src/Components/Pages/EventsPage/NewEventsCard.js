@@ -4,7 +4,8 @@ import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
-import { getRandomIntegerInRange, locationFormatJSX } from "../../Utils";
+import { locationFormatJSX } from "../../Utils";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
 
 export default class NewEventsCard extends Component {
   constructor(props) {
@@ -71,11 +72,6 @@ export default class NewEventsCard extends Component {
     const date = moment(created_at).format(format);
     return date;
   }
-  getAnimationClass() {
-    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
-    const index = getRandomIntegerInRange(3);
-    return classes[index];
-  }
 
   getEventTitle() {
     const { name } = this.props;
@@ -89,7 +85,7 @@ export default class NewEventsCard extends Component {
         <MECard
           to={`${this.props.links.events + "/" + id}`}
           style={{ padding: 0, position: "relative", borderRadius: 15 }}
-          className={`${this.getAnimationClass()} ${className}`}
+          className={`${MEAnimation.getAnimationClass()} ${className}`}
         >
           <img src={this.getPhoto()} className="me-testimonial-img" alt="event" />
           <div className="me-testimonial-content-box">
@@ -111,7 +107,7 @@ export default class NewEventsCard extends Component {
                 {this.getBody()}
               </METextView>
 
-              <div className="testimonial-link-holder z-depth-float-half">
+              <div className="testimonial-link-holder">
                 <METextView
                   mediaType="icon"
                   icon="fa fa-clock-o"

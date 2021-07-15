@@ -295,7 +295,7 @@ class RegisterFormBase extends React.Component {
               style={{ textDecoration: "underline" }}
               to={this.props.links.signin}
             >
-              I have an account already
+              I have a profile already
             </Link>
           </p>{" "}
         </div>

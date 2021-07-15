@@ -2,7 +2,7 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { reduxLoadTeamsPage } from "../../../redux/actions/pageActions";
+import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
 // import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
@@ -149,7 +149,7 @@ class TeamInfoModal extends React.Component {
       form = (
         <p>
           You must{" "}
-          <Link to={this.props.links.signin}>Sign In or Create An Account</Link>{" "}
+          <Link to={this.props.links.signin}>Sign In or Create a Profile</Link>{" "}
           to start a team.
         </p>
       );
@@ -259,7 +259,7 @@ class TeamInfoModal extends React.Component {
       team,
       onComplete,
       communityData,
-      reduxLoadTeamsPage,
+      reduxLoadTeams,
       reduxJoinTeam,
     } = this.props;
     var url;
@@ -272,7 +272,7 @@ class TeamInfoModal extends React.Component {
     data = { ...data, community_id: communityData.community.id };
     try {
       // this.setState({ loading: true });
-      const teamResponse = await apiCall(url, data);
+      const teamResponse = await apiCall(url, data);    
       if (teamResponse.success) {
         this.setState({
           notification: {
@@ -288,7 +288,7 @@ class TeamInfoModal extends React.Component {
           community_id: communityData.community.id,
         });
         if (teamsStatsResponse.success) {
-          reduxLoadTeamsPage(teamsStatsResponse.data);
+          reduxLoadTeams(teamsStatsResponse.data);
         }
         onComplete(newTeam.id);
       } else {
@@ -313,12 +313,12 @@ const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
     links: store.links,
-    teamsStats: store.page.teamsPage,
+    teamsStats: store.page.teams,
     communityData: store.page.homePage,
   };
 };
 const mapDispatchToProps = {
-  reduxLoadTeamsPage,
+  reduxLoadTeams,
   reduxJoinTeam,
 };
 

@@ -11,10 +11,10 @@ import {
 } from "../../../redux/actions/userActions";
 import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
-import { getRandomIntegerInRange } from "../../Utils";
 import METextView from "../Widgets/METextView";
 import { DEFAULT_STATE, DONE, IS_DONE, IS_IN_TODO, NO_AUTH, TODO } from "./ActionStateConstants";
 import MECameleonButton from "./MEChameleonButton";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
 // import photo from "./try.png";
 
 /**
@@ -154,17 +154,13 @@ class PhotoSensitiveAction extends React.Component {
     return exists;
   }
 
-  getAnimationClass() {
-    const classes = ["me-open-in", "me-open-in-slower", "me-open-in-slowest"];
-    const index = getRandomIntegerInRange(3);
-    return classes[index];
-  }
+
 
   newRender() {
     const actionStateCase = this.getActionStateCase(); 
     return (
       <div
-        className={`col-lg-6 col-md-12 col-sm-12 col-12 ${this.getAnimationClass()}`}
+        className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()}`}
         style={{ padding: 10 }}
       >
         <div

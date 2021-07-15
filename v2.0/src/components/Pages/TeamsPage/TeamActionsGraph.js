@@ -86,7 +86,7 @@ class TeamActionsGraph extends React.Component {
 
     return (
       <>
-        <div style={{ height: "300px" }}>
+        <div style={{ height: "370px" }}>
           <Bar
             options={{
               plugins: { datalabels: false },

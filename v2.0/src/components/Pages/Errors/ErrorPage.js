@@ -39,7 +39,20 @@ class ErrorPage extends React.Component {
               {" "}
               {errorDescription}
             </h3>
-            {!this.props.invalidCommunity && (
+            {this.props.allowBack && (
+              <p className="text-center">
+                <Link
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.back();
+                  }}
+                  className="mass-domain-link "
+                >
+                  Go Back
+                </Link>
+              </p>
+            )}
+            {!this.props.allowBack && !this.props.invalidCommunity && (
               <p className="text-center">
                 <Link to={this.props.links.home} className="mass-domain-link ">
                   Return to Home Page

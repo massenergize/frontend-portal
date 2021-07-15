@@ -5,9 +5,13 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import notFound from "./green-mat.jpg";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 // import { createFirebaseInstance } from "react-redux-firebase";
-import DefaultClass from "../../Shared/Classes/DefaultClass";
-import { Link } from "react-router-dom";
-import MiniTestimonial from "../StoriesPage/MiniTestimonial";
+// import DefaultClass from "../../Shared/Classes/DefaultClass";
+// import { Link } from "react-router-dom";
+// import MiniTestimonial from "../StoriesPage/MiniTestimonial";
+import ErrorPage from "../Errors/ErrorPage";
+import MECard from "../Widgets/MECard";
+import { getHumanFriendlyDate } from "../../Utils";
+// import MELink from "../Widgets/MELink";
 class OneServicePage extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +30,10 @@ class OneServicePage extends React.Component {
     })[0];
     return (
       <>
-        <div className="boxed_wrapper">
+        <div
+          className="boxed_wrapper"
+          style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
+        >
           <BreadCrumbBar
             links={[
               { name: "Service Providers", link: this.props.links.services },
@@ -42,6 +49,30 @@ class OneServicePage extends React.Component {
     );
   }
 
+  renderTestimonials(stories) {
+    if (!stories) return;
+    return stories.map((story, index) => {
+      const creatorName =
+        story && story.preferred_name ? story.preferred_name : "...";
+      return (
+        <div key={index.toString()}>
+          <MECard
+            to={`${this.props.links.testimonials}/${story.id}`}
+            className="extra-story-cards me-anime-move-from-left-fast"
+          >
+            {story.title}
+            <br />
+            <small style={{ color: "#4a1e04" }}>
+              <b>
+                By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+              </b>
+            </small>
+          </MECard>
+        </div>
+      );
+    });
+  }
+
   changeToAbsoluteURL(string) {
     const prefix = "http://";
     var webbie = string ? string : null;
@@ -53,7 +84,7 @@ class OneServicePage extends React.Component {
       }
       first_letter = webbie[0];
       if (first_letter === "/") {
-        //Now check if website starts with "/"(admin put a relative path of some website)
+        //Now check if website starts with "/"(admin puts a relative path of some website)
         //remove the beginning slash
         temp = webbie.substr(1, webbie.length - 1);
         return prefix + temp;
@@ -66,6 +97,13 @@ class OneServicePage extends React.Component {
     return webbie;
   }
   renderVendor(vendor) {
+    if (!vendor)
+      return (
+        <ErrorPage
+          errorMessage="Sorry, the vendor you are looking for could not be found..."
+          allowBack
+        />
+      );
     const stories = this.props.testimonials.filter((story) => {
       return (
         story.vendor && story.vendor.id === Number(this.props.match.params.id)
@@ -74,29 +112,25 @@ class OneServicePage extends React.Component {
     const phone =
       vendor && vendor.phone_number ? vendor.phone_number : "Not Provided";
     const email = vendor && vendor.email ? vendor.email : "Not Provided";
-    // const key_contact = vendor.key_contact &&
-    //   vendor.key_contact.email && vendor.key_contact.name
-    //     ? `${vendor.key_contact.name}, ${vendor.key_contact.email}`
-    //     : "Not Provided";
+    const name = vendor && vendor.name;
 
     return (
-      <div className="col-12" key={vendor.vendor}>
+      <div className="col-12" key={vendor && vendor.id}>
         <div
           className="card rounded-0 spacing"
           style={{ borderColor: "white" }}
         >
           <div className="card-body mob-zero-padding">
             <div className="row">
-              <div className="col-md-5 col-12 text-center">
+              {/* ------------------------------------------------ VENDOR DETAILS --------------------------------- */}
+              <div className="col-md-4 col-lg-4 col-sm-6 col-12">
                 <img
-                  className="w-100 z-depth-float me-anime-open-in"
+                  className="w-100 me-anime-open-in"
                   style={{
                     marginBottom: 6,
-                    borderRadius: 12,
-                    minHeight: 225,
-                    maxHeight: 225,
+                    borderRadius: 6,
+                    maxHeight: 200,
                     objectFit: "contain",
-                    padding: 10,
                   }}
                   src={vendor.logo ? vendor.logo.url : notFound}
                   alt={vendor.name}
@@ -107,13 +141,18 @@ class OneServicePage extends React.Component {
                     style={{ borderRadius: 5 }}
                   >
                     <span className="fa fa-map-pin fa-m-right"></span>{" "}
-                    {vendor.location.city}, {vendor.location.state}
+                    {vendor.location.city}, {vendor.location.state} 
                   </div>
                 ) : null}
 
                 <MESectionWrapper
                   headerText="Contact Information"
-                  style={{ marginTop: 6 }}
+                  style={{ marginTop: 6, textAlign: "left" }}
+                  headerType="plain"
+                  className="team-s-w-header team-s-w-about-us-h"
+                  containerClassName="team-s-w-body "
+                  containerStyle={{ textAlign: "left" }}
+                  caret
                 >
                   <a
                     style={{ marginBottom: "6px", color: "black" }}
@@ -142,11 +181,11 @@ class OneServicePage extends React.Component {
                         e.preventDefault();
                         window.open(
                           this.changeToAbsoluteURL(vendor.website),
-                          "_blank"  
+                          "_blank"
                         );
                       }}
                       rel="noopener noreferrer"
-                      style={{ color: "#f56d39", cursor: "pointer" }}
+                      style={{ color: "rgb(142 196 67)", cursor: "pointer" }}
                       href="#silent"
                     >
                       <i className="fa fa-globe fa-m-right"></i>{" "}
@@ -155,18 +194,28 @@ class OneServicePage extends React.Component {
                         : vendor.website}
                     </a>
                   ) : null}
-                  {/* {vendor.key_contact.email && vendor.key_contact.name ? (
-                    <a href={`mailto::${vendor.key_contact.email}`} style={{color:'#f56d39'}}>
-                      {key_contact}
-                    </a>
-                  ) : (
-                    <small style={{ color: "gray" }}>{key_contact}</small>
-                  )} */}
                 </MESectionWrapper>
+                <br />
+                {/* ------------------------------------- RENDER VENDOR TESTIMONIALS ---------------------------------------------- */}
+                {stories && stories.length > 0 && (
+                  <p
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      textTransform: "capitalize",
+                      fontSize: 15,
+                    }}
+                  >
+                    Read stories about {name || "..."}
+                  </p>
+                )}
+                {this.renderTestimonials(stories)}
               </div>
+
+              {/* --------------------------------------------------------------- VENDOR DESCRIPTION --------------------------------- */}
               <div
-                className="col-md-6 col-lg-6 col-12 mt-3"
-                style={{ marginLeft: 25, marginRight: 25 }}
+                className="col-md-8 col-lg-8 col-sm-6 col-12"
+                style={{ padding: "0px 25px" }}
               >
                 <h1 className="pt-3 mobile-title">{vendor.name}</h1>
                 <p
@@ -223,157 +272,75 @@ class OneServicePage extends React.Component {
               </div>
             ) : null}
             <br />
-            {this.storyCheck(stories, vendor)}
+            {/* {this.storyCheck(stories, vendor)} */}
             {/* <StoryForm vid={vendor.id} /> */}
           </div>
         </div>
       </div>
     );
   }
-  storyCheck = (stories) => {
-    if (stories.length > 0) {
-      return (
-        <div>
-          <div className="text-center z-depth-float me-anime-open-in">
-            <h4
-              style={{
-                // background: "linear-gradient(45deg, #ff9030, #28a745)",
-                background: "#f3f3f2",
-                color: "black",
-                padding: 26,
-              }}
-              className="phone-vanish"
-            >
-              {" "}
-              Testimonials about this Service Provider{" "}
-            </h4>
-          </div>
-          <div className="phone-vanish">{this.renderStories(stories)}</div>
-          <Link
-            className="pc-vanish"
-            to={this.props.links && this.props.links.testimonials}
-            style={{ textAlign: "center", width: "100%" }}
-          >
-            See Testimonials
-          </Link>
-        </div>
-      );
-    }
-  };
+  // storyCheck = (stories) => {
+  //   if (stories.length > 0) {
+  //     return (
+  //       <div>
+  //         <div className="text-center z-depth-float me-anime-open-in">
+  //           <h4
+  //             style={{
+  //               // background: "linear-gradient(45deg, #ff9030, #28a745)",
+  //               background: "#f3f3f2",
+  //               color: "black",
+  //               padding: 26,
+  //             }}
+  //             className="phone-vanish"
+  //           >
+  //             {" "}
+  //             Testimonials about this Service Provider{" "}
+  //           </h4>
+  //         </div>
+  //         {/* <div className="phone-vanish">{this.renderStories(stories)}</div> */}
+  //         <Link
+  //           className="pc-vanish"
+  //           to={this.props.links && this.props.links.testimonials}
+  //           style={{ textAlign: "center", width: "100%" }}
+  //         >
+  //           See Testimonials
+  //         </Link>
+  //       </div>
+  //     );
+  //   }
+  // };
 
-  storyHasImage(story) {
-    if (story && story.file && story.file.url)
-      return { url: story.file.url, status: true };
-    return { status: true, url: DefaultClass.getTestimonialsDefaultPhoto() };
-  }
-  renderStories = (stories) => {
-    if (stories.length === 0)
-      return (
-        <div className="text-center">
-          <p> No stories about this Service Provider yet </p>
-        </div>
-      );
-    return (
-      <>
-        {/* <div className="tab-title-h4">
-                    <h4>{stories.length} Stories about this Action</h4>
-                </div> */}
-        {Object.keys(stories).map((key) => {
-          const story = stories[key];
-          // const image = this.storyHasImage(story);
-          // const date = new Date(story.created_at);
-          return (
-            <div key={key}>
-              <MiniTestimonial story={story} links={this.props.links} />
-            </div>
-            // className="single-review-box"
-            // <div key={key} style={{ padding: 0 }}>
-            //   <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
-            //     {/* <div className="img-holder">
-            //     <img src="" alt="" />
-            //   </div> */}
-            //     <div>
-            //       <img
-            //         src={image.url}
-            //         className="v-story-img phone-vanish"
-            //         alt="testimonial media"
-            //       />
+  // storyHasImage(story) {
+  //   if (story && story.file && story.file.url)
+  //     return { url: story.file.url, status: true };
+  //   return { status: true, url: DefaultClass.getTestimonialsDefaultPhoto() };
+  // }
+  // renderStories = (stories) => {
+  //   if (stories.length === 0)
+  //     return (
+  //       <div className="text-center">
+  //         <p> No stories about this Service Provider yet </p>
+  //       </div>
+  //     );
+  //   return (
+  //     <>
+  //       {/* <div className="tab-title-h4">
+  //                   <h4>{stories.length} Stories about this Action</h4>
+  //               </div> */}
+  //       {Object.keys(stories).map((key) => {
+  //         const story = stories[key];
+  //         // const image = this.storyHasImage(story);
+  //         // const date = new Date(story.created_at);
+  //         return (
+  //           <div key={key}>
+  //             <MiniTestimonial story={story} links={this.props.links} />
+  //           </div>
 
-            //       <div
-            //         className="text-holder"
-            //         style={{ padding: 20, display: "inline-block", marginLeft:"15%" }}
-            //       >
-            //         {story.user && (
-            //           <div className="top">
-            //             <div className="name pull-left">
-            //               <h4>
-            //                 {story.user.full_name} – {date.toLocaleDateString()}
-            //                 :
-            //               </h4>
-            //             </div>
-            //           </div>
-            //         )}
-            //         <div className="text">
-            //           <METextView
-            //             style={{
-            //               color: "black",
-            //               marginLeft: 15,
-            //               marginRight: 7,
-            //             }}
-            //           >
-            //             {story.title}
-            //             {this.state.expanded &&
-            //             this.state.expanded === story.id ? (
-            //               <button
-            //                 className="as-link"
-            //                 style={{ float: "right", marginLeft: 10 }}
-            //                 onClick={() => {
-            //                   this.setState({ expanded: null });
-            //                 }}
-            //               >
-            //                 See Less
-            //               </button>
-            //             ) : null}
-            //           </METextView>
-            //           <p>
-            //             {this.state.expanded && this.state.expanded === story.id
-            //               ? story.body
-            //               : story.body.substring(0, this.state.limit)}
-            //             {this.state.limit < story.body.length &&
-            //             this.state.expanded !== story.id ? (
-            //               <button
-            //                 className="as-link"
-            //                 style={{ float: "right" }}
-            //                 onClick={() => {
-            //                   this.setState({ expanded: story.id });
-            //                 }}
-            //               >
-            //                 Read More...
-            //               </button>
-            //             ) : null}
-            //           </p>
-            //         </div>
-            //         {story.action ? (
-            //           <div className="text">
-            //             <p>
-            //               Linked Action:{" "}
-            //               <MELink
-            //                 to={`${this.props.links.actions}/${story.action.id}`}
-            //               >
-            //                 {story.action.title}
-            //               </MELink>
-            //             </p>
-            //           </div>
-            //         ) : null}
-            //       </div>
-            //     </div>
-            //   </MECard>
-            // </div>
-          );
-        })}
-      </>
-    );
-  };
+  //         );
+  //       })}
+  //     </>
+  //   );
+  // };
 }
 const mapStoreToProps = (store) => {
   return {

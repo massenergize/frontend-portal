@@ -1,84 +1,96 @@
 
-
-
-.me-anime-move-from-left-normal{
-  opacity: 0;
-  animation:move-from-left-to-scale .4s ease-in .4s forwards;
+.me-anime-slide-from-top {
+  animation: slide-from-top 0.3s forwards;
+  transform-box: fill-box;
 }
-
-.me-anime-move-from-left-fast{
-  opacity: 0;
-  animation:move-from-left-to-scale .3s ease-in .3s forwards;
-}
-.me-anime-move-from-left-fastest{
-  opacity: 0;
-  animation:move-from-left-to-scale .2s ease-in .2s forwards;
-}
-.me-anime-move-from-left{
-  opacity: 0;
-  animation:move-from-left-to-scale .4s ease-in .5s forwards;
-}
-@keyframes move-from-left-to-scale{
-  from{
-    opacity:0; 
-    transform:translate(-100px) scale(0.8)
+@keyframes slide-from-top {
+  from {
+    transform: translate(0px);
+    opacity: 0;
   }
-  to{
-    opacity:1; 
-    transform:translateX(0px) scale(1)
+  to {
+    transform: translate(0px, 40px);
+    opacity: 1;
   }
 }
-.me-open-in-slowest{
+.me-anime-move-from-left-normal {
   opacity: 0;
-  animation:do-show-in .4s ease-in 1s forwards;
+  animation: move-from-left-to-scale 0.4s ease-in 0.4s forwards;
 }
-.me-open-in-slower{
+
+.me-anime-move-from-left-fast {
   opacity: 0;
-  animation:do-show-in .4s ease-in .8s forwards;
+  animation: move-from-left-to-scale 0.3s ease-in 0.3s forwards;
 }
-.me-open-in{
-  opacity:0;
-  animation:do-show-in .4s ease-in .4s forwards;
+.me-anime-move-from-left-fastest {
+  opacity: 0;
+  animation: move-from-left-to-scale 0.2s ease-in 0.2s forwards;
 }
-@keyframes do-show-in{
-  from{
-    opacity:0;
-    transform:scale(.7)
+.me-anime-move-from-left {
+  opacity: 0;
+  animation: move-from-left-to-scale 0.4s ease-in 0.5s forwards;
+}
+@keyframes move-from-left-to-scale {
+  from {
+    opacity: 0;
+    transform: translate(-100px) scale(0.8);
   }
-  to{
-    opacity:1;
-    transform:scale(1)
+  to {
+    opacity: 1;
+    transform: translateX(0px) scale(1);
+  }
+}
+.me-open-in-slowest {
+  opacity: 0;
+  animation: do-show-in 0.4s ease-in 1s forwards;
+}
+.me-open-in-slower {
+  opacity: 0;
+  animation: do-show-in 0.4s ease-in 0.8s forwards;
+}
+.me-open-in {
+  opacity: 0;
+  animation: do-show-in 0.4s ease-in 0.4s forwards;
+}
+@keyframes do-show-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes from-bottom-scale {
-  from{
+  from {
     opacity: 0;
-    transform:translateY(50px);
+    transform: translateY(50px);
   }
-  to{
+  to {
     opacity: 1;
-    transform:translate(0px)
-  }
-} 
-@keyframes do-show-in{
-  from{
-    opacity:0;
-    transform:scale(.7)
-  }
-  to{
-    opacity:1;
-    transform:scale(1)
+    transform: translate(0px);
   }
 }
-@keyframes do-open-in{
-  from{
-    opacity:0;
-    transform:scale(.1)
+@keyframes do-show-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
   }
-  to{
-    opacity:1;
-    transform:scale(1.2)
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes do-open-in {
+  from {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 

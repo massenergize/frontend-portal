@@ -2,6 +2,7 @@ import React from "react";
 import CountUp from "react-countup";
 import Tooltip from "../Widgets/CustomTooltip";
 
+
 class Counter extends React.Component {
   constructor(props) {
     super(props);
