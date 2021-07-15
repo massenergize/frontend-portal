@@ -215,8 +215,6 @@ class AppRouter extends Component {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
         this.props.reduxLoadDone(userActionsCompletedResponse.data);
         this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
-        console.log('DATA FROM EVENTS LIST PINGING');
-        console.log(eventsRsvpListResponse);
         return true;
       } else {
         console.log(`no user with this email: ${user.email}`);
