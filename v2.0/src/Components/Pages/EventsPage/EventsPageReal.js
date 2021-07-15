@@ -20,7 +20,6 @@ import Tooltip from "../Widgets/CustomTooltip";
 // import notFound from "./not-found.jpg";
 // import MECard from "../Widgets/MECard";
 // import METextView from "../Widgets/METextView";
-import NewEventsCard from './NewEventsCard';
 import { apiCall } from "../../../api/functions";
 /**
  * Renders the event page
@@ -36,6 +35,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
+      rescheduledEvents: {}
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -183,34 +183,13 @@ class EventsPage extends React.Component {
 
     if (events) {
       return events.map((event) => {
-        const body = {
-          'event_id': event.id
-        }
-        
-        let rescheduledEvent = {endTime: "", startTime: ""};
         let recurringDetailString = "";
-        apiCall('events.exceptions.list', body)
-        .then((json) => {
-          if (json.success) {
-            console.log(json);
-            recurringDetailString += "Rescheduled to " + json.data[0].rescheduled_start_time + "- " + json.data[0].rescheduled_end_time;
-            rescheduledEvent.startTime = json.data[0].rescheduled_start_time;
-            console.log("TYPE", typeof(rescheduledEvent.startTime));
-            rescheduledEvent.endTime = json.data[0].rescheduled_end_time;
-
-          } else {
-            console.log(json.error);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        
         if (event.is_recurring) {
+          
           if (event.recurring_details.recurring_type == "week") {
             if (event.recurring_details.separation_count == 1) {
               recurringDetailString = `Every ${event.recurring_details.day_of_week}`
@@ -224,23 +203,36 @@ class EventsPage extends React.Component {
               recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`
             }
           }
-          //split the datetime strings to format them and display them in the card
-          //startString = rescheduledEvent.event
-          console.log(rescheduledEvent);
-          /*if (rescheduledEvent != {}) {
-            console.log(rescheduledEvent.startTime)
-            recurringDetailString += `\nRescheduled to ${rescheduledEvent.startTime}-${rescheduledEvent.endTime}`;
-          }*/
         }
+        apiCall('/events.exceptions.list', {'event_id': event.id })
+        .then((json) => {
+          if (json.success) {
+            console.log('rescheduled event in function!', json.data);
+            const id = json.data.event.id;
+            this.setState({ rescheduledEvents: this.state.rescheduledEvents,  id : json.data  });
+            console.log('RESCHEDULED EVENTS BBY', this.state.rescheduledEvents);
+          } else {
+            console.log(json.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        //var rescheduledEvent = this.getRescheduled(event.id);
+        //console.log('rescheduled event', rescheduledEvent);
+        const id = event.id;
         //if (event.name)
-        // need to check if event name contains "(rescheduled) at the end; then don't display the card"
-          return (
-            <div style={{opacity: event.recurring_details.is_cancelled ? 0.5 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
-              <p style={{"color":"red"}} >{rescheduledEvent ? "This event has been rescheduled." : ""}</p> 
-              <p style={{"color":"red"}} >{event.recurring_details.is_cancelled ? "This event has been cancelled temporarily." : ""}</p> 
-              <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
-            </div>
-          );
+        return (
+          // can we format the cancelled message to be an overlay instead of going above?
+          <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(this.state.rescheduledEvents && this.state.rescheduledEvents.id) ? 0.3 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
+            <p style={{"color":"red"}} >{event.recurring_details && event.recurring_details.is_cancelled ? "This event has been cancelled temporarily." : ""}</p> 
+            <p style={{"color":"red"}}>{this.state.rescheduledEvents && this.state.rescheduledEvents.id ? "This event has been rescheduled temporarily. See the rescheduled event.":""} </p>
+            <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
+          </div>
+        );
+          
+          
       });
     }
   }
@@ -254,6 +246,24 @@ class EventsPage extends React.Component {
     });
     if (RSVPs.length < 1) return null;
     return RSVPs[0];
+  }
+
+  getRescheduled(event_id) {
+    apiCall('events.exceptions.list', {'event_id': event_id })
+    .then((json) => {
+      if (json.success) {
+        console.log('rescheduled event in function!', json);
+        return json;
+      } else {
+        console.log(json.error);
+        return json.error;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+    
   }
 }
 

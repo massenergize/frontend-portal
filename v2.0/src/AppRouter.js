@@ -192,8 +192,6 @@ class AppRouter extends Component {
         this.props.reduxLoadEventsPage(eventsPageResponse.data);
         this.props.reduxLoadEvents(eventsResponse.data);
         this.props.reduxLoadImpactPage(impactPageResponse.data);
-        console.log('EVENTS RESPONSE DATA');
-        console.log(eventsResponse);
         this.props.reduxLoadActions(actionsResponse.data);
         this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
         this.props.reduxLoadServiceProviders(vendorsResponse.data);
