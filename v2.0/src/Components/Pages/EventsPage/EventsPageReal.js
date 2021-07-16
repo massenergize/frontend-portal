@@ -35,7 +35,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
-      rescheduledEvents: {}
+      rescheduledEvents: []
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -69,8 +69,7 @@ class EventsPage extends React.Component {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
-    console.log("this.props.events", this.props.events);
-    console.log("this.props.tagCols", this.props.tagCols);
+    
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -92,6 +91,8 @@ class EventsPage extends React.Component {
     const found =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.events, this.state.checked_values);
+    
+    
     return (
       <>
         <div
@@ -182,7 +183,7 @@ class EventsPage extends React.Component {
     }
 
     if (events) {
-      return events.map((event) => {
+      const page = events.map((event) => {
         let recurringDetailString = "";
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
@@ -203,38 +204,58 @@ class EventsPage extends React.Component {
               recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`
             }
           }
+          //can optimize this by only making the api call if the date is before today's date
+          apiCall('events.date.update', {'event_id': event.id })
+          .then((json) => {
+            if (json.success) {
+              console.log(json);
+            }else {
+              console.log(json.error);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          apiCall('events.exceptions.list', {'event_id': event.id })
+          .then((json) => {
+            if (json.success) {
+              //console.log(json);
+              //jsondata[0]returns the event id - since the simple_json() function in the recurring..exception model returns the id
+              if (json.data[0] && json.data[0].event ) {
+                const id = json.data[0].event;
+                if (this.state.rescheduledEvents.indexOf(json.data[0].event) == -1) {
+                  this.setState({ rescheduledEvents: [...this.state.rescheduledEvents, id]});
+                }
+              }              
+            } else {
+              console.log(json.error);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         }
-        apiCall('/events.exceptions.list', {'event_id': event.id })
-        .then((json) => {
-          if (json.success) {
-            console.log('rescheduled event in function!', json.data);
-            const id = json.data.event.id;
-            this.setState({ rescheduledEvents: this.state.rescheduledEvents,  id : json.data  });
-            console.log('RESCHEDULED EVENTS BBY', this.state.rescheduledEvents);
-          } else {
-            console.log(json.error);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
+        
         //var rescheduledEvent = this.getRescheduled(event.id);
         //console.log('rescheduled event', rescheduledEvent);
-        const id = event.id;
+        
+        
         //if (event.name)
         return (
           // can we format the cancelled message to be an overlay instead of going above?
-          <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(this.state.rescheduledEvents && this.state.rescheduledEvents.id) ? 0.3 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
+          <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(this.state.rescheduledEvents && this.state.rescheduledEvents.indexOf(event.id) > -1) ? 0.3 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
             <p style={{"color":"red"}} >{event.recurring_details && event.recurring_details.is_cancelled ? "This event has been cancelled temporarily." : ""}</p> 
-            <p style={{"color":"red"}}>{this.state.rescheduledEvents && this.state.rescheduledEvents.id ? "This event has been rescheduled temporarily. See the rescheduled event.":""} </p>
+            <p style={{"color":"red"}}>{this.state.rescheduledEvents && this.state.rescheduledEvents.indexOf(event.id) > -1 ? "This event has been rescheduled temporarily. See the rescheduled event.":""} </p>
             <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
           </div>
         );
           
           
       });
+      
+      return page; 
     }
+    
   }
 
   userRSVP(event_id) {
