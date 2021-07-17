@@ -219,7 +219,6 @@ class EventsPage extends React.Component {
           apiCall('events.exceptions.list', {'event_id': event.id })
           .then((json) => {
             if (json.success) {
-              //console.log(json);
               //jsondata[0]returns the event id - since the simple_json() function in the recurring..exception model returns the id
               if (json.data[0] && json.data[0].event ) {
                 const id = json.data[0].event;
@@ -236,11 +235,6 @@ class EventsPage extends React.Component {
           });
         }
         
-        //var rescheduledEvent = this.getRescheduled(event.id);
-        //console.log('rescheduled event', rescheduledEvent);
-        
-        
-        //if (event.name)
         return (
           // can we format the cancelled message to be an overlay instead of going above?
           <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(this.state.rescheduledEvents && this.state.rescheduledEvents.indexOf(event.id) > -1) ? 0.3 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
