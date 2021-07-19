@@ -191,14 +191,14 @@ class EventsPage extends React.Component {
         );
         if (event.is_recurring) {
           
-          if (event.recurring_details.recurring_type == "week") {
-            if (event.recurring_details.separation_count == 1) {
+          if (event.recurring_details.recurring_type === "week") {
+            if (event.recurring_details.separation_count === 1) {
               recurringDetailString = `Every ${event.recurring_details.day_of_week}`
             } else {
               recurringDetailString = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`
             }
-          } else if (event.recurring_details.recurring_type == "month") {
-            if (event.recurring_details.separation_count == 1) {
+          } else if (event.recurring_details.recurring_type === "month") {
+            if (event.recurring_details.separation_count === 1) {
               recurringDetailString = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`
             } else {
               recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`
@@ -222,7 +222,7 @@ class EventsPage extends React.Component {
               //jsondata[0]returns the event id - since the simple_json() function in the recurring..exception model returns the id
               if (json.data[0] && json.data[0].event ) {
                 const id = json.data[0].event;
-                if (this.state.rescheduledEvents.indexOf(json.data[0].event) == -1) {
+                if (this.state.rescheduledEvents.indexOf(json.data[0].event) === -1) {
                   this.setState({ rescheduledEvents: [...this.state.rescheduledEvents, id]});
                 }
               }              
