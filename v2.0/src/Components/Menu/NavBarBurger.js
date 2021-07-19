@@ -382,7 +382,12 @@ class NavBarBurger extends React.Component {
           }}
         >
           {/* <i className="fa fa-user" />{'\u00A0'} */}
-          {props.userName}
+          <span className="pc-vanish">
+            {props.userName.length > 6
+              ? props.userName.substr(0, 4) + "..."
+              : props.userName}
+          </span>
+          <span className="phone-vanish">{props.userName}</span>
           <span className="fa fa-angle-down text-white ml-1"></span>
         </button>
       ));

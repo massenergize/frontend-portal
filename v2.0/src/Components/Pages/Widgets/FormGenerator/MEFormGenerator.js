@@ -159,7 +159,7 @@ export default class FormGenerator extends Component {
     this.handleFields(formObject.name, file.croppedFile);
   }
 
-  getFileUploader(formObject, key) { 
+  getFileUploader(formObject, key) {
     const { resetors } = this.state;
     return (
       <div key={key} className="small-form-spacing">
@@ -393,7 +393,7 @@ export default class FormGenerator extends Component {
   }
 
   render() {
-    var { animate, className, style, title, elevate } = this.props;
+    var { animate, className, style, title, elevate, moreActions } = this.props;
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
@@ -412,15 +412,17 @@ export default class FormGenerator extends Component {
             <div>{this.displayInformation()}</div>
             <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
-              <MEButton
-                containerStyle={{
-                  marginLeft: "auto",
-                  padding: "10px 12px",
-                  fontSize: 13,
-                }}
-              >
-                {this.props.actionText}
-              </MEButton>
+              <div style={{ marginLeft: "auto" }}>
+                {moreActions}
+                <MEButton
+                  containerStyle={{
+                    padding: "10px 12px",
+                    fontSize: 13,
+                  }}
+                >
+                  {this.props.actionText}
+                </MEButton>
+              </div>
             </div>
           </form>
         </MECard>
@@ -451,4 +453,5 @@ FormGenerator.defaultProps = {
   title: "",
   elevate: true,
   info: {},
+  moreActions: <></>,
 };

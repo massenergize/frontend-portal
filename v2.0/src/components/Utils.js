@@ -239,8 +239,8 @@ export function dateFormatString(startDate, endDate) {
  */
 export function locationFormatJSX(location) {
   let firstLine = location.unit
-    ? `${location.unit}, ${location.address}`
-    : `${location.address}`;
+    ? `${location.unit || ""}${location.unit || ","} ${location.address || ""}`
+    : `${location.address || ""}`;
 
   return (
     <span>

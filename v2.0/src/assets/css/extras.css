@@ -1589,11 +1589,18 @@
   width: 0px;
   background: white;
 }
+/* Teams Page Styles */
+.teams-subheader {
+  color: #c7c7c7;
+  font-size: 1.65rem;
+  margin-bottom: 10px;
+  /* font-style: italic */
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
   .scroll-fix {
-    height: 100vh;
+    /* height: 100vh; */
     overflow-y: scroll;
   }
   .stats-q-box {
@@ -1723,6 +1730,31 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .phone-font-15 {
+    font-size: 15px;
+  }
+  h4 {
+    font-size: 18px;
+  }
+  h3 {
+    font-size: 1.1rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .teams-subheader {
+    font-size: 1.1rem;
+  }
+  .team-contact-admin-card {
+    height: 100vh;
+    padding: 20px 10px;
+  }
+  .team-contact-admin-modal-mob {
+    padding: 0px !important;
+    top: 0px !important;
+    margin-top: 0px !important;
+  }
   .donate-page-space-fix {
     padding: 15px !important;
   }
@@ -1817,7 +1849,7 @@
     margin-top: -7vh;
   }
   .page-text-phone-mode {
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
   .me-btn-phone-mode {
     font-size: 12px;
@@ -1842,7 +1874,7 @@
   }
   .me-modal-md {
     max-width: 100vw !important;
-    padding: 13px !important;
+    padding: 13px;
   }
   .home-page-graph-tweak {
     margin: 10px !important;
@@ -2417,7 +2449,7 @@
 .new-sign-in {
   border-radius: 200px;
   border: solid 2px #8dc63f;
-  padding: 10px 16px;
+  padding: 10px 15px;
   font-size: 14px;
   cursor: pointer;
   color: white;
