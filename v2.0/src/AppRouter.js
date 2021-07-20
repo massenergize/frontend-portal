@@ -48,6 +48,7 @@ import {
   reduxLoadPolicies,
   reduxLoadActions,
   reduxLoadEvents,
+  reduxLoadEventExceptions,
   reduxLoadServiceProviders,
   reduxLoadTestimonials,
   reduxLoadCommunities,
@@ -143,7 +144,6 @@ class AppRouter extends Component {
         this.setState({ error: err });
         console.log(err);
       });
-
       Promise.all([
         apiCall("about_us_page_settings.info", body),
         apiCall("actions_page_settings.info", body),
@@ -154,6 +154,7 @@ class AppRouter extends Component {
         apiCall("donate_page_settings.info", body),
         apiCall("events_page_settings.info", body),
         apiCall("events.list", body),
+        apiCall("events.exceptions.list", body),
         apiCall("impact_page_settings.info", body),
         apiCall("policies.list", body),
         apiCall("teams_page_settings.info", body),
@@ -175,6 +176,7 @@ class AppRouter extends Component {
           donatePageResponse,
           eventsPageResponse,
           eventsResponse,
+          eventExceptionsResponse,
           impactPageResponse,
           policiesResponse,
           teamsPageResponse,
@@ -191,6 +193,7 @@ class AppRouter extends Component {
         this.props.reduxLoadDonatePage(donatePageResponse.data);
         this.props.reduxLoadEventsPage(eventsPageResponse.data);
         this.props.reduxLoadEvents(eventsResponse.data);
+        this.props.reduxLoadEventExceptions(eventExceptionsResponse);
         this.props.reduxLoadImpactPage(impactPageResponse.data);
         this.props.reduxLoadActions(actionsResponse.data);
         this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
@@ -208,7 +211,9 @@ class AppRouter extends Component {
         this.setState({ error: err });
         console.log(err);
       });
+      
     }
+
   }
 
   setStateAsync(state) {
@@ -250,12 +255,12 @@ class AppRouter extends Component {
         apiCall("users.actions.completed.list", { email: user.email }),
         apiCall("users.events.list", { email: user.email }),
       ]);
-      console.log('we pinged the users.events.list endpoint');
 
       if (userActionsTodoResponse && userActionsCompletedResponse) {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
         this.props.reduxLoadDone(userActionsCompletedResponse.data);
         this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
+        
         return true;
       } else {
         console.log(`no user with this email: ${user.email}`);
@@ -501,6 +506,7 @@ const mapDispatchToProps = {
   reduxLoadContactUsPage,
   reduxLoadDonatePage,
   reduxLoadEventsPage,
+  reduxLoadEventExceptions,
   reduxLoadImpactPage,
   reduxLoadMenu,
   reduxLoadPolicies,

@@ -53,6 +53,7 @@ export const LOAD_COMMUNITY_ADMINS = 'LOAD_COMMUNITY_ADMINS'
 
 /** these actions load data that is not stored in the page data in the database into our redux pages*/
 export const LOAD_ACTIONS = 'LOAD_ACTIONS' //actions_page/actions
+export const LOAD_EVENT_EXCEPTIONS = 'LOAD_EVENT_EXCEPTIONS' 
 export const LOAD_EVENTS = 'LOAD_EVENTS' //events_page/events
 export const LOAD_SERVICE_PROVIDERS= 'LOAD_SERVICE_PROVIDERS' //service_providers_page/service_providers
 export const LOAD_TESTIMONIALS = 'LOAD_TESTIMONIALS' //testimonials_page/testimonials

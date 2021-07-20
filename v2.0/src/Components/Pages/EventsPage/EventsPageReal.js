@@ -34,10 +34,29 @@ class EventsPage extends React.Component {
       userData: null,
       checked_values: null,
       mirror_events: [],
-      searchText: null,
-      rescheduledEvents: []
+      searchText: null
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
+    console.log(this.state.userData);
+    /*apiCall('events.date.update', {
+      'community_id': this.props.user
+    })
+    .then((json) => {
+      if (json.success) {
+        console.log(json);
+      }else {
+        console.log(json.error);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    /*apiCall('events.exceptions.list', {'event_id': event.id })
+    .then((json) => {
+    })
+    .catch((err) => {
+      console.log(err);
+    });*/
   }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });
@@ -69,7 +88,7 @@ class EventsPage extends React.Component {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
-    
+    console.log('props', this.props);
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -183,6 +202,11 @@ class EventsPage extends React.Component {
     }
 
     if (events) {
+      let exceptions = [];
+      if (this.props.eventExceptions) {
+        exceptions = this.props.eventExceptions.data;
+      }
+      console.log('EXCEPTIONSs', exceptions);
       const page = events.map((event) => {
         let recurringDetailString = "";
         const dateString = dateFormatString(
@@ -204,42 +228,14 @@ class EventsPage extends React.Component {
               recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`
             }
           }
-          //can optimize this by only making the api call if the date is before today's date
-          apiCall('events.date.update', {'event_id': event.id })
-          .then((json) => {
-            if (json.success) {
-              console.log(json);
-            }else {
-              console.log(json.error);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          apiCall('events.exceptions.list', {'event_id': event.id })
-          .then((json) => {
-            if (json.success) {
-              //jsondata[0]returns the event id - since the simple_json() function in the recurring..exception model returns the id
-              if (json.data[0] && json.data[0].event ) {
-                const id = json.data[0].event;
-                if (this.state.rescheduledEvents.indexOf(json.data[0].event) === -1) {
-                  this.setState({ rescheduledEvents: [...this.state.rescheduledEvents, id]});
-                }
-              }              
-            } else {
-              console.log(json.error);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+          
         }
         
         return (
           // can we format the cancelled message to be an overlay instead of going above?
-          <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(this.state.rescheduledEvents && this.state.rescheduledEvents.indexOf(event.id) > -1) ? 0.3 : 1}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
+          <div style={{opacity: (event.recurring_details && event.recurring_details.is_cancelled)||(exceptions.includes(event.id) ? 0.3 : 1)}} key={event.id.toString()} className="col-md-6 col-lg-6 col-sm-6">
             <p style={{"color":"red"}} >{event.recurring_details && event.recurring_details.is_cancelled ? "This event has been cancelled temporarily." : ""}</p> 
-            <p style={{"color":"red"}}>{this.state.rescheduledEvents && this.state.rescheduledEvents.indexOf(event.id) > -1 ? "This event has been rescheduled temporarily. See the rescheduled event.":""} </p>
+            <p style={{"color":"red"}}>{exceptions.includes(event.id)   ? "This event has been rescheduled temporarily. See the rescheduled event.":""} </p>
             <NewEventsCard {...event} recurringDetailString={recurringDetailString} dateString={dateString} links={this.props.links}/>
           </div>
         );
@@ -263,32 +259,19 @@ class EventsPage extends React.Component {
     return RSVPs[0];
   }
 
-  getRescheduled(event_id) {
-    apiCall('events.exceptions.list', {'event_id': event_id })
-    .then((json) => {
-      if (json.success) {
-        console.log('rescheduled event in function!', json);
-        return json;
-      } else {
-        console.log(json.error);
-        return json.error;
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-    
-  }
+  
 }
 
+
 const mapStoreToProps = (store) => {
+  console.log('EXCEPTIONS WE ARE TRYING TP ULL', store.page);
   return {
     homePageData: store.page.homePage,
     collection: store.page.collection,
     auth: store.firebase.auth,
     user: store.user.info,
     pageData: store.page.eventsPage,
+    eventExceptions: store.page.eventExceptions,
     events: store.page.events,
     eventRSVPs: store.page.rsvps,
     links: store.links,
