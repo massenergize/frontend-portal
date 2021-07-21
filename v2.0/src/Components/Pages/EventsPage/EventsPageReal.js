@@ -37,7 +37,6 @@ class EventsPage extends React.Component {
       searchText: null
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
-    console.log(this.state.userData);
     /*apiCall('events.date.update', {
       'community_id': this.props.user
     })
@@ -88,7 +87,6 @@ class EventsPage extends React.Component {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
-    console.log('props', this.props);
     if (!this.props.events || !this.props.tagCols) {
       return <LoadingCircle />;
     }
@@ -206,7 +204,6 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      console.log('EXCEPTIONSs', exceptions);
       const page = events.map((event) => {
         let recurringDetailString = "";
         const dateString = dateFormatString(
@@ -264,7 +261,6 @@ class EventsPage extends React.Component {
 
 
 const mapStoreToProps = (store) => {
-  console.log('EXCEPTIONS WE ARE TRYING TP ULL', store.page);
   return {
     homePageData: store.page.homePage,
     collection: store.page.collection,
