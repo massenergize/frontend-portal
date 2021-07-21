@@ -144,6 +144,19 @@ class AppRouter extends Component {
         this.setState({ error: err });
         console.log(err);
       });
+      console.log('bodydyddy', body);
+      apiCall("events.date.update", body)
+      .then((json) => {
+        console.log('dates updated');
+        if (json.success) {
+          console.log('EVENT DATE UPDATE CALL', json);
+        }else {
+          console.log(json.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
       Promise.all([
         apiCall("about_us_page_settings.info", body),
         apiCall("actions_page_settings.info", body),
