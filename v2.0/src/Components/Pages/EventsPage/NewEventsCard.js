@@ -6,14 +6,21 @@ import METextView from "../Widgets/METextView";
 import * as moment from "moment";
 import { locationFormatJSX } from "../../Utils";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-
+import MEButton from "../Widgets/MEButton";
+import Dropdown from "react-bootstrap/Dropdown";
+import { ButtonGroup } from 'react-bootstrap'
 export default class NewEventsCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
+    this.RSVPInterested = this.RSVPInterested.bind(this);
+    this.RSVPGoing = this.RSVPGoing.bind(this);
+    this.RSVPNotGoing = this.RSVPNotGoing.bind(this);
+
     this.state = {
       img: null,
     };
+    console.log('event card props', this.props);
   }
   getPhoto() {
     const { image } = this.props;
@@ -78,8 +85,38 @@ export default class NewEventsCard extends Component {
     if (name.length > 48) return name + "...";
     return name;
   }
+
+  RSVPInterested() {
+    //first, check if the event does not already have an RSVP attached to it
+
+
+    //if not, we create a new RSVP for the user
+
+    //apiCall()
+  }
+
+  RSVPGoing() {
+    //first, check if the event does not already have an RSVP attached to it
+
+    
+    //if not, we create a new RSVP for the user
+  }
+
+  RSVPNotGoing() {
+    //first, check if the event does not already have an RSVP attached to it
+
+    
+    //if not, we create a new RSVP for the user
+  }
+
   render() {
     var { className, location, dateString, id } = this.props;
+    const style = {
+      borderTop: "5px solid #8dc63f",
+      borderRadius: "0",
+      padding: "0",
+      minwidth: "100px",
+    };
     return (
       <div>
         <MECard
@@ -125,11 +162,29 @@ export default class NewEventsCard extends Component {
                 >
                   {location ? locationFormatJSX(location) : "No Location"}
                 </METextView>
+                
               </div>
             </div>
           </div>
         </MECard>
-      </div>
+        <div
+        style={{float:"right"}}>
+          <Dropdown as={ButtonGroup} onSelect={e => this.handleEventRsvpChange(e)}>
+            {//modify the default to be whether the user has RSVPed to the event or not
+            true ? "":"nope"
+            }
+            <Dropdown.Toggle id="dropdown-basic">Dropdown</Dropdown.Toggle>
+            <Dropdown.Menu
+              style={style}
+              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1">
+              <Dropdown.Item onClick={this.RSVPInterested}>Interested</Dropdown.Item>
+              <Dropdown.Item onClick={this.RSVPGoing}>Going</Dropdown.Item>
+              <Dropdown.Item onClick={this.RSVPNotGoing}>Not Going</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+        </div>
+        
+</div>
     );
   }
 }

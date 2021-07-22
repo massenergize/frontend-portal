@@ -249,6 +249,7 @@ class AppRouter extends Component {
         apiCall("users.actions.completed.list", { email: user.email }),
         apiCall("users.events.list", { email: user.email }),
       ]);
+      console.log('EVENTS RSVP LIST RESPONSE :)) ', eventsRsvpListResponse);
 
       if (userActionsTodoResponse && userActionsCompletedResponse) {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
