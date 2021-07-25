@@ -133,7 +133,7 @@ class ProfilePage extends React.Component {
       }
     }
     */
-
+    //capturing the props in a JSON object that represents a user
     const { user } = this.props;
     return (
       <>
@@ -531,6 +531,7 @@ class ProfilePage extends React.Component {
             email={this.props.user.email}
             full_name={this.props.user.full_name}
             preferred_name={this.props.user.preferred_name}
+            image={this.props.user.profile_picture}
             closeForm={(message = "") =>
               this.setState({
                 editingProfileForm: null,

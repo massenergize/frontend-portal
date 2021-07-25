@@ -30,6 +30,7 @@ class EventsPage extends React.Component {
 	}
 
 	render() {
+		
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
 			<>
@@ -110,8 +111,10 @@ class EventsPage extends React.Component {
 			const endDate = new Date(event.end_date_and_time);
 			const textyStart = moment(date).format(format);
 			const textyEnd = moment(endDate).format(format);
-	
+			console.log('event details');
+			console.log(event);
 			if (this.shouldRender(event)) {
+				
 				return ( 
 					<div className="item style-1 clearfix m-action-item" onClick={() => { window.location = `${this.props.links.events + "/" + event.id}` }} key={event.id}>
 						<div className="row no-gutter">
