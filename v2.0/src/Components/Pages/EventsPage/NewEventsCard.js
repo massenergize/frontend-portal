@@ -79,9 +79,8 @@ export default class NewEventsCard extends Component {
     if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
-
   renderNewCardDesign() {
-    var { className, dateString, id } = this.props;
+    var { className, location, dateString, id, recurringDetailString } = this.props;
     return (
       <div>
         <MECard
@@ -113,6 +112,13 @@ export default class NewEventsCard extends Component {
 
           <div className="bottom-date-area">
             <span>{dateString}</span>
+                <br />
+                <METextView
+                  type="small"
+                  style={{ color: "green" }}
+                >
+                  {recurringDetailString ? recurringDetailString : recurringDetailString}
+                </METextView>
           </div>
         </MECard>
       </div>
