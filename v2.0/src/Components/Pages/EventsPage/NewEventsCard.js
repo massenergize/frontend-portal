@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import photo from "./not-found.jpg";
 import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
-// import METextView from "../Widgets/METextView";
+import METextView from "../Widgets/METextView";
 import * as moment from "moment";
 // import { locationFormatJSX } from "../../Utils";
 import MEAnimation from "../../Shared/Classes/MEAnimation";

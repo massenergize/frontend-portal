@@ -358,6 +358,7 @@ class NavBarBurger extends React.Component {
   renderLogin() {
     const { links } = this.props;
     const { user } = this.props;
+    const btnColor = user.preferences && user.preferences.color ? user.preferendes.color : "#135dfe";
     // const style = {
     //   borderColor:"white",
     //   borderTopWidth:5,
@@ -367,8 +368,6 @@ class NavBarBurger extends React.Component {
     //   padding: "0",
     // };
     if (user.info) {
-      console.log("this is the user being passed into props");
-      console.log(user);
       const ProfileBtnDropdown = React.forwardRef((props, ref) => (
         <button
           ref={ref}
@@ -393,7 +392,7 @@ class NavBarBurger extends React.Component {
           <span className="fa fa-angle-down text-white ml-1"></span>
         </button>
       ));
-      console.log(user.info.profile_picture);
+      console.log(user.info)
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle style={{"background-color":"white", "border-color":"white"}}
@@ -405,13 +404,11 @@ class NavBarBurger extends React.Component {
               "height":50,
               "border-radius":"50%"
             }}></img> : 
-            user.info.preferences && user.info.preferences.color ? 
-            <img src={createImagefromInitials(user.info.preferences.color, user.info.full_name, 50)}
+            <img src={createImagefromInitials(btnColor, user.info.full_name, 50)}
             alt="profile picture"
             style={{
               "border-radius":"50%"
-            }}></img> :
-            <></>}
+            }}></img> }
           </Dropdown.Toggle>
           <Dropdown.Menu className="z-depth-1 me-dropdown-theme me-anime-show-up-from-top">
             <Link

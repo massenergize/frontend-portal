@@ -15,12 +15,6 @@ import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-// import CONST from '../../Constants'
-// import Funnel from "./Funnel";
-// import notFound from "./not-found.jpg";
-// import MECard from "../Widgets/MECard";
-// import METextView from "../Widgets/METextView";
-import { apiCall } from "../../../api/functions";
 /**
  * Renders the event page
  */

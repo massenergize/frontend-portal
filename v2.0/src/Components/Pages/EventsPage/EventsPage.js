@@ -112,8 +112,6 @@ class EventsPage extends React.Component {
 			const endDate = new Date(event.end_date_and_time);
 			const textyStart = moment(date).format(format);
 			const textyEnd = moment(endDate).format(format);
-			console.log('event details');
-			console.log(event);
 			if (this.shouldRender(event)) {
 				
 				return ( 
