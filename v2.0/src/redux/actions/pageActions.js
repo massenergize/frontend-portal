@@ -20,6 +20,7 @@ import {
 	LOAD_TESTIMONIALS,
 	LOAD_EVENTS,
 	LOAD_EVENT_RSVPS,
+	LOAD_EVENT_EXCEPTIONS,
 	ADD_RSVP,
 	REMOVE_RSVP,
 	CHANGE_RSVP,
@@ -175,6 +176,13 @@ export const reduxLoadEvents = (events) => dispatch => {
 		type: LOAD_EVENTS,
 		payload: events
 	})
+}
+
+export const reduxLoadEventExceptions = (eventExceptions) => dispatch => {
+	return dispatch({
+		type: LOAD_EVENT_EXCEPTIONS, 
+		payload: eventExceptions
+	});
 }
 
 export const reduxLoadTeams = (teams) => dispatch => {

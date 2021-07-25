@@ -12,7 +12,14 @@ import {
 import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
-import { DEFAULT_STATE, DONE, IS_DONE, IS_IN_TODO, NO_AUTH, TODO } from "./ActionStateConstants";
+import {
+  DEFAULT_STATE,
+  DONE,
+  IS_DONE,
+  IS_IN_TODO,
+  NO_AUTH,
+  TODO,
+} from "./ActionStateConstants";
 import MECameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 // import photo from "./try.png";
@@ -114,7 +121,7 @@ class PhotoSensitiveAction extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
-          this.setState({ showTodoMsg: false });
+          this.props.clearNotificationMsgs();
           return;
         }
       }
@@ -125,7 +132,7 @@ class PhotoSensitiveAction extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
-          this.setState({ showTodoMsg: false });
+          this.props.clearNotificationMsgs();
           return;
         }
       }
@@ -144,7 +151,6 @@ class PhotoSensitiveAction extends React.Component {
     return {};
   }
 
-
   checkDone() {
     var action = this.props.action;
     // var households = this.props.user.households || [];
@@ -154,10 +160,8 @@ class PhotoSensitiveAction extends React.Component {
     return exists;
   }
 
-
-
   newRender() {
-    const actionStateCase = this.getActionStateCase(); 
+    const actionStateCase = this.getActionStateCase();
     return (
       <div
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()}`}
@@ -183,15 +187,15 @@ class PhotoSensitiveAction extends React.Component {
             />
 
             {/* <br /> */}
-            
+
             <MECameleonButton
               _case={actionStateCase}
               type={DONE}
               {...this.getNoAuthParams()}
               onClick={() => this.runActionFunction("DONE")}
             />
-             
-             <MEButton
+
+            <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{
                 padding: "5px 18px ",
@@ -206,7 +210,7 @@ class PhotoSensitiveAction extends React.Component {
             </MEButton>
 
             {/* ----- Show this button in phone mode --------- */}
-             <MEButton
+            <MEButton
               to={this.props.links.actions + "/" + this.props.action.id}
               style={{
                 padding: "5px 22px ",
@@ -218,7 +222,7 @@ class PhotoSensitiveAction extends React.Component {
               className="pc-vanish"
             >
               Info
-            </MEButton> 
+            </MEButton>
             <br />
           </div>
           <Link to={this.props.links.actions + "/" + this.props.action.id}>
@@ -239,7 +243,7 @@ class PhotoSensitiveAction extends React.Component {
                 style={{
                   padding: "0px 10px",
                   marginBottom: 3,
-                  marginLeft:20,
+                  marginLeft: 20,
                   color: "black",
                   fontSize: 18,
                 }}
@@ -321,7 +325,7 @@ class PhotoSensitiveAction extends React.Component {
                 )}
               </>
             ) : null}
-            {this.props.showTodoMsg === this.props.action.id ? (
+            {this.props.showTodoMsg === this.props.action.id && (
               <p
                 style={{
                   color: "#165020",
@@ -332,7 +336,7 @@ class PhotoSensitiveAction extends React.Component {
               >
                 Nicely done! You have now added this action to your todo list.
               </p>
-            ) : null}
+            )}
           </div>
         </div>
       </>

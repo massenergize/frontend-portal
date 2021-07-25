@@ -21,7 +21,6 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 // import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
-
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -38,11 +37,19 @@ const INITIAL_STATE = {
   termsAndServices: false,
   showTOSError: false,
   showTOS: false,
-
   form: 1,
   error: null,
+  color: "#00000000"
 };
 
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 class RegisterFormBase extends React.Component {
   constructor(props) {
@@ -635,6 +642,9 @@ class RegisterFormBase extends React.Component {
           });
       });
   }
+  //for generating the profile picture before the user can upload one when they go back to edit their profile
+  
+  
   onFinalSubmit(event) {
     event.preventDefault();
     //if (!this.state.termsAndServices) {
@@ -650,7 +660,7 @@ class RegisterFormBase extends React.Component {
         preferredName,
         city,
         state,
-        zip,
+        zip
         //serviceProvider,
         //termsAndServices,
       } = this.state;
@@ -669,7 +679,8 @@ class RegisterFormBase extends React.Component {
         is_vendor: false,
         accepts_terms_and_conditions: true,
         //accepts_terms_and_conditions: termsAndServices,
-        subdomain: community && community.subdomain,
+        subdomain: community && community.subdomain, 
+        color: getRandomColor()
       };
       this.setState({ creating: true });
       apiCall("users.create", body)
@@ -830,6 +841,7 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
   };
 };
+
 export default connect(mapStoreToProps, {
   reduxLogin,
   reduxLoadDone,

@@ -170,6 +170,7 @@ class OneTeamPage extends React.Component {
             <ContactAdminModal
               team={team}
               onClose={this.onContactEditModalClose}
+           
             />
           ))}
 

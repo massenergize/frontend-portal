@@ -346,7 +346,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
-          this.setState({ showTodoMsg: false });
+          this.setState({ showTodoMsg: false, showTestimonialLink:false });
           return;
         }
       }
@@ -357,7 +357,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
-          this.setState({ showTodoMsg: false });
+          this.setState({ showTodoMsg: false, showTestimonialLink:false });
           return;
         }
       }
@@ -563,7 +563,7 @@ class OneActionPage extends React.Component {
                     </div>
                   )
                 }
-                {this.state.showTodoMsg ? (
+                {this.state.showTodoMsg && !this.state.showTestimonialLink ? (
                   <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
                     Nicely done! You have now added this action to your todo
                     list.

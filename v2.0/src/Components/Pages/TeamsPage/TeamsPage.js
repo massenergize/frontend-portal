@@ -99,7 +99,7 @@ class TeamsPage extends React.Component {
 
   render() {
     const { teamsStats, communityData, links, pageData } = this.props;
-    if (pageData == null) return <LoadingCircle />
+    if (pageData == null) return <LoadingCircle />;
     if (teamsStats === null) {
       return (
         <div
@@ -110,8 +110,14 @@ class TeamsPage extends React.Component {
         </div>
       );
     }
-    const title = pageData && pageData.title ? pageData.title : 'Teams in ' + communityData.community.name;
-    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : 'Groups collaborating: schools, congregations, neighborhoods, sports teams, and more. Get creative!'
+    const title =
+      pageData && pageData.title
+        ? pageData.title
+        : "Teams in " + communityData.community.name;
+    const sub_title =
+      pageData && pageData.sub_title
+        ? pageData.sub_title
+        : "Groups collaborating: schools, congregations, neighborhoods, sports teams, and more. Get creative!";
     const description = pageData.description ? pageData.description : null;
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
@@ -136,47 +142,25 @@ class TeamsPage extends React.Component {
             className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
             style={{ margin: "auto", minHeight: "100vh" }}
           >
-
             <div className="text-center">
-                      {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
- 
-                        <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                          <span
-                            className="fa fa-info-circle"
-                            style={{ color: "#428a36", padding: "5px" }}
-                          ></span>
+              {description ? (
+                <Tooltip text={description} paperStyle={{ maxWidth: "100vh" }}>
+                  <PageTitle style={{ fontSize: 24 }}>
+                    {title}
+                    <span
+                      className="fa fa-info-circle"
+                      style={{ color: "#428a36", padding: "5px" }}
+                    ></span>
+                  </PageTitle>
+                </Tooltip>
+              ) : (
+                <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+              )}
+            </div>
 
-                        </PageTitle>
-                      </Tooltip>
-                      ) : (
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
-                      </PageTitle>
-                      )}
-                    </div>
-
-
-                    <center>
-						        {
-							        sub_title? 
-							        <p>{sub_title}</p>
-							        :null
-						        }
-						        </center>
-
-            {/*<PageTitle style={{ margin: "0 30px" }}>
-              Teams in {communityData.community.name}
-            </PageTitle>
             <center>
-              <p>
-                Groups collaborating: schools, congregations, neighborhoods,
-                sports teams, and more. Get creative!
-                  </p>*/}
+              {sub_title ? <p className="phone-font-15">{sub_title}</p> : null}
+            </center>
             <center>
               <div className="row no-gutters" style={{ marginBottom: "10px" }}>
                 <div className="col-9">
@@ -185,14 +169,14 @@ class TeamsPage extends React.Component {
                     type="text"
                     // style={{ borderRadius: 7, borderColor:"#eceaea" }}
                     placeholder="Search for a team..."
-                    className="teams-search"
+                    // className="teams-search"
                   />
                 </div>
                 <METextView
+                  icon="fa fa-exclamation"
                   type="small"
                   className="pc-vanish"
                   style={{
-                    fontStyle: "italic",
                     fontSize: 13,
                     color: "#6f3333",
                   }}
@@ -223,10 +207,12 @@ class TeamsPage extends React.Component {
             {teamsData.length > 0 ? (
               <>{this.renderTeams()}</>
             ) : (
-              <p>
-                There are no teams in this community yet. You can start one by
-                clicking the start team button above!
-              </p>
+              <center>
+                <p className="phone-font-15">
+                  There are no teams in this community yet. You can start one by
+                  clicking the start team button above!
+                </p>
+              </center>
             )}
           </div>
           <br />
@@ -406,8 +392,8 @@ class TeamsPage extends React.Component {
                 const thisTeamIndex = teamsData.findIndex(
                   (_teamData) => _teamData.team.id === teamData.team.id
                 );
-                teamsData[thisTeamIndex].collapsed = !teamsData[thisTeamIndex]
-                  .collapsed;
+                teamsData[thisTeamIndex].collapsed =
+                  !teamsData[thisTeamIndex].collapsed;
                 this.setState({ teamsData: teamsData });
               }}
             >
