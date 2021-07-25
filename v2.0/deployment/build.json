@@ -1,13 +1,8 @@
 {
-  "dev": "3.3.3",
-  "dev-sandbox": "3.3.3",
-<<<<<<< HEAD
+  "dev": "3.3.4",
+  "dev-sandbox": "3.3.4",
   "prod": "3.3.1",
   "prod-sandbox": "3.3.1",
-=======
-  "prod": "3.1.15",
-  "prod-sandbox": "3.1.15",
->>>>>>> development
   "canary": "3.3.1",
   "canary-sandbox": "3.3.1"
 }
