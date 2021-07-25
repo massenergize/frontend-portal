@@ -331,6 +331,7 @@ class ActionsPage extends React.Component {
     };
     apiCall("users.actions.completed.add", body)
       .then((json) => {
+        console.log("api called here");
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
           // this.addToImpact(json.data.action);
