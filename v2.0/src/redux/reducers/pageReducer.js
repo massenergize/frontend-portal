@@ -13,6 +13,7 @@ import {
 	LOAD_DONATE_PAGE,
 	LOAD_IMPACT_PAGE,
 	LOAD_EVENTS,
+	LOAD_EVENT_EXCEPTIONS,
 	LOAD_ACTIONS,
 	LOAD_SERVICE_PROVIDERS,
 	LOAD_TESTIMONIALS,
@@ -56,6 +57,7 @@ const initialState = {
 	//objects to be loaded
 	actions: null,
 	events: null,
+	eventExceptions: null,
 	teams: null,
 	serviceProviders: null,
 	testimonials: null,
@@ -186,6 +188,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				events: action.payload
+			}
+		case LOAD_EVENT_EXCEPTIONS:
+			return {
+				...state,
+				eventExceptions: action.payload
 			}
 		case LOAD_TEAMS:
 			return {
