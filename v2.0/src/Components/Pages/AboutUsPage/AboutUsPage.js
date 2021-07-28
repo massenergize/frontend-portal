@@ -11,11 +11,9 @@ import "react-multi-carousel/lib/styles.css";
 import LoadingCircle from "../../Shared/LoadingCircle";
 
 class AboutUsPage extends React.Component {
-  renderImage(images) {
-    if (!images) return;
-    const image = images[0];
+  renderImage(image) {
     if (!image) return;
-    const { url } = image;
+    const { url } = image || {};
     return (
       url && (
         <img
@@ -77,7 +75,7 @@ class AboutUsPage extends React.Component {
               <h4 className="cool-font" style={{ padding: 10 }}>
                 {subtitle}
               </h4>
-              {this.renderImage(pageData && pageData.images)}
+              {this.renderImage(pageData && pageData.image)}
             </center>
             <div
               className="community-about-text cool-font make-me-dark"
