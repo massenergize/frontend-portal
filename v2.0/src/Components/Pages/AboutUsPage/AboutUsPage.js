@@ -44,18 +44,14 @@ class AboutUsPage extends React.Component {
     const pageData = this.props.pageData;
     const donatePageData = this.props.donatePageData;
     const title = pageData.title ? pageData.title : "About Our Community";
-    const subtitle = pageData.sub_title
-      ? pageData.sub_title
-      : "Help support our cause by donating";
+    const subtitle = pageData.sub_title ? pageData.sub_title : null;
     const videoLink = pageData.featured_video_link
       ? pageData.featured_video_link
       : null;
-    //const image = pageData.image ? pageData.image : null;
+    const image = pageData.image ? pageData.image : (pageData.images ? pageData.images[0] : null);
     const paragraphContent = pageData.description;
     const donateMessage =
-      donatePageData && donatePageData.title
-        ? donatePageData.title
-        : "We welcome your support!";
+      donatePageData && donatePageData.title ? donatePageData.title : null;
     return (
       <div className="boxed_wrapper">
         <BreadCrumbBar links={[{ name: "About Us" }]} />
@@ -71,11 +67,17 @@ class AboutUsPage extends React.Component {
                 {title}
               </h2>
             </center>
+            {subtitle ? 
+            <div>
+              <center>
+                <h4 className="cool-font" style={{ padding: 10 }}>
+                  {subtitle}
+                </h4>
+              </center>
+            </div> : null
+            }   
             <center>
-              <h4 className="cool-font" style={{ padding: 10 }}>
-                {subtitle}
-              </h4>
-              {this.renderImage(pageData && pageData.image)}
+              {image && this.renderImage(image)}
             </center>
             <div
               className="community-about-text cool-font make-me-dark"
@@ -96,26 +98,6 @@ class AboutUsPage extends React.Component {
               </center>
             </div>
           ) : null}
-
-          {/* this image doesn't work yet, will fix later 
-					{image ?
-				  
-						<div className={image ? "col-sm-12 col-md-10 offset-md-1" : "d-none"}>
-
-							<center>
-							<div className="img-box action-pic-fix">
-								<img
-								  src={image ? image.url : null}
-								  alt=""
-								  data-imagezoom="true"
-								  className="img-responsive z-depth-float me-anime-open-in"
-								  style={{ marginTop: "20px", marginBotton: "20px", borderRadius: 9 }}
-								/>
-							</div>
-							</center>
-						</div>
-						: null
-					}   */}
 
           <div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
             <center>
