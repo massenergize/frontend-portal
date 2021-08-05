@@ -170,7 +170,6 @@ class OneTeamPage extends React.Component {
             <ContactAdminModal
               team={team}
               onClose={this.onContactEditModalClose}
-           
             />
           ))}
 
@@ -384,7 +383,7 @@ class OneTeamPage extends React.Component {
     return (
       <>
         <div className="row phone-vanish" style={{ minHeight: 142 }}>
-          <center>
+          <center style={{ width: "100%", padding: 4 }}>
             {hasLogo && (
               <img
                 className="one-team-image team-card-content"
