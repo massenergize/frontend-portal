@@ -182,14 +182,17 @@
     background-color: #ffffff;
     min-width: 250px;
     max-width: 300px;
-    border-radius: 5px;
+    border-radius: 15%; 
     -webkit-box-shadow: 0 3px 30px rgba(33, 33, 33, 0.3);
-            box-shadow: 0 3px 30px rgba(33, 33, 33, 0.3);
+            box-shadow: 0 3px 30px rgba(33, 33, 33, 0.8);
     -webkit-transition: opacity 0.1s ease-out;
     -o-transition: opacity 0.1s ease-out;
     transition: opacity 0.1s ease-out; }
   
   .introjs-tooltiptext {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
     padding: 20px; }
   
   .introjs-tooltip-title {
@@ -231,6 +234,7 @@
     display: inline-block;
     padding: 0.5rem 1rem;
     border: 1px solid #bdbdbd;
+    border-radius:20%;
     text-decoration: none;
     text-shadow: 1px 1px 0 #ffffff;
     font-size: 14px;
@@ -286,7 +290,16 @@
     float: left; }
   
   .introjs-nextbutton {
-    float: right; }
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+    color: #ffffff;
+    background-color: #8CC43C;
+    border-radius: 25%;
+    }
+    .introjs-nextbutton:hover {
+        background-color: 
+    }
   
   .introjs-disabled {
     color: #9e9e9e;

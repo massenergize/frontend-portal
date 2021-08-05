@@ -19,6 +19,38 @@ import "./tour.css";
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
+    //first, check if the user has visited the page before - using localStorage
+    /*if (!localStorage.getItem('repeatUser')) {
+      //this is the user's first visit to the portal
+      //change state to include tour
+      this.state = {
+        stepsEnabled: true, 
+        initialStep: 0, 
+        steps: [
+          {
+            element: ".iconBoxTable", 
+            intro: "Icon Box Table", 
+          },
+          {
+            element: ".welcomeImages",
+            intro: "World step"
+          }
+        ],
+        hintsEnabled: true,
+        hints: []
+      };
+      localStorage.setItem('repeatUser', true);
+    } else {
+      //this is not the user's first visit to the website
+      //state is empty - no tour
+      this.state = {
+        stepsEnabled: false,
+        steps:[],
+        hintsEnabled: false, 
+        hints:[]
+      };
+    }*/
+    //testing only
     this.state = {
       stepsEnabled: true, 
       initialStep: 0, 
@@ -46,7 +78,6 @@ class HomePage extends React.Component {
   toggleSteps = () => {
     this.setState(prevState => ({ stepsEnabled: !prevState.stepsEnabled }));
   };
-
   addStep = () => {
     const newStep = {
       element: ".alive",
@@ -54,11 +85,9 @@ class HomePage extends React.Component {
     };
     this.setState(prevState => ({ steps: [...prevState.steps, newStep] }));
   };
-
   toggleHints = () => {
     this.setState(prevState => ({ hintsEnabled: !prevState.hintsEnabled }));
   };
-
   addHint = () => {
     const newHint = {
       element: ".alive",
@@ -157,7 +186,6 @@ class HomePage extends React.Component {
           steps={steps}
           initialStep={initialStep}
           onExit={this.onExit}
-          style="color: red"
         />
         <Hints enabled={hintsEnabled} hints={hints} />
         {welcomeImagesData ? (
