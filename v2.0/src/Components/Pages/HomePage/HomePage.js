@@ -10,15 +10,62 @@ import { IS_SANDBOX } from "../../../config";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
+import { Steps, Hints } from "intro.js-react";
+import "./tour.css";
+
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stepsEnabled: true, 
+      initialStep: 0, 
+      steps: [
+        {
+          element: ".iconBoxTable", 
+          intro: "Icon Box Table", 
+        },
+        {
+          element: ".welcomeImages",
+          intro: "World step"
+        }
+      ],
+      hintsEnabled: true,
+      hints: []
+    };
+  }
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
+  onExit = () => {
+    this.setState(() => ({ stepsEnabled: false }));
+  };
+  toggleSteps = () => {
+    this.setState(prevState => ({ stepsEnabled: !prevState.stepsEnabled }));
+  };
 
+  addStep = () => {
+    const newStep = {
+      element: ".alive",
+      intro: "Alive step"
+    };
+    this.setState(prevState => ({ steps: [...prevState.steps, newStep] }));
+  };
+
+  toggleHints = () => {
+    this.setState(prevState => ({ hintsEnabled: !prevState.hintsEnabled }));
+  };
+
+  addHint = () => {
+    const newHint = {
+      element: ".alive",
+      hint: "Alive hint",
+      hintPosition: "middle-right"
+    };
+  }
   render() {
     if (!this.props.pageData) {
       return (
@@ -96,11 +143,25 @@ class HomePage extends React.Component {
           : null,
       });
     }
-
+    const {
+      stepsEnabled,
+      steps,
+      initialStep, 
+      hintsEnabled, 
+      hints
+    } = this.state;
     return (
       <div className="boxed_wrapper">
+        <Steps
+          enabled={stepsEnabled}
+          steps={steps}
+          initialStep={initialStep}
+          onExit={this.onExit}
+          style="color: red"
+        />
+        <Hints enabled={hintsEnabled} hints={hints} />
         {welcomeImagesData ? (
-          <WelcomeImages data={welcomeImagesData} title={title} />
+          <WelcomeImages  className="welcomeImages" data={welcomeImagesData} title={title} />
         ) : null}
         <div
           className=""
@@ -130,6 +191,7 @@ class HomePage extends React.Component {
 
         {this.props.pageData.show_featured_links ? (
           <IconBoxTable
+            className="iconBoxTable"
             title="Get started - See your local options!"
             boxes={iconQuickLinks}
           />
