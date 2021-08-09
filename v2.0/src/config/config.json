@@ -2,6 +2,6 @@
   "IS_LOCAL": false,
   "IS_PROD": false,
   "IS_CANARY": true,
-  "IS_SANDBOX": true,
+  "IS_SANDBOX": false,
   "BUILD_VERSION": "3.3.6"
 }
