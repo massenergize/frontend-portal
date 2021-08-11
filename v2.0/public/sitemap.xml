@@ -5,606 +5,2839 @@
   
   
    <url>
-      <loc>http://community.massenergize.org/natick</loc>
-      <lastmod>2019-12-13</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/stowe</loc>
-      <lastmod>2019-11-13</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
       <loc>http://community.massenergize.org/wayland</loc>
-      <lastmod>2019-12-13</lastmod>
+      <lastmod>2021-02-05</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity</loc>
-      <lastmod>2019-10-24</lastmod>
+      <loc>http://community.massenergize.org/Demo2</loc>
+      <lastmod>2021-06-04</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/global</loc>
-      <lastmod>2019-12-18</lastmod>
+      <loc>http://community.massenergize.org/GreenfieldMA</loc>
+      <lastmod>2021-04-01</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/bushwick</loc>
-      <lastmod>2019-11-04</lastmod>
+      <loc>http://community.massenergize.org/Springfield</loc>
+      <lastmod>2021-02-22</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/SFDemo</loc>
-      <lastmod>2019-12-09</lastmod>
+      <loc>http://community.massenergize.org/Framingham</loc>
+      <lastmod>2020-01-23</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting</loc>
-      <lastmod>2020-09-15</lastmod>
+      <loc>http://community.massenergize.org/JCAN</loc>
+      <lastmod>2021-06-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/joshtopia</loc>
-      <lastmod>2020-05-28</lastmod>
+      <loc>http://community.massenergize.org/ActonMA</loc>
+      <lastmod>2021-04-30</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/nowhere</loc>
-      <lastmod>2020-09-11</lastmod>
+      <loc>http://community.massenergize.org/SherbornMA</loc>
+      <lastmod>2021-02-12</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1</loc>
-      <lastmod>2020-09-22</lastmod>
+      <loc>http://community.massenergize.org/Coolercommunities</loc>
+      <lastmod>2021-05-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/testingcomm</loc>
-      <lastmod>2020-09-22</lastmod>
+      <loc>http://community.massenergize.org/agawam</loc>
+      <lastmod>2021-02-01</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/pppp</loc>
-      <lastmod>2020-10-13</lastmod>
+      <loc>http://community.massenergize.org/MedfieldMA</loc>
+      <lastmod>2021-07-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA</loc>
+      <lastmod>2020-08-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton</loc>
+      <lastmod>2020-07-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton</loc>
+      <lastmod>2021-04-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington</loc>
+      <lastmod>2021-02-04</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
   
-   <url>
-      <loc>http://community.massenergize.org/natick/aboutus</loc>
-      <lastmod>2019-12-13</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/stowe/aboutus</loc>
-      <lastmod>2019-11-13</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
    <url>
       <loc>http://community.massenergize.org/wayland/aboutus</loc>
-      <lastmod>2019-12-13</lastmod>
+      <lastmod>2021-02-05</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/aboutus</loc>
-      <lastmod>2019-10-24</lastmod>
+      <loc>http://community.massenergize.org/Demo2/aboutus</loc>
+      <lastmod>2021-06-04</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/global/aboutus</loc>
-      <lastmod>2019-12-18</lastmod>
+      <loc>http://community.massenergize.org/GreenfieldMA/aboutus</loc>
+      <lastmod>2021-04-01</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/bushwick/aboutus</loc>
-      <lastmod>2019-11-04</lastmod>
+      <loc>http://community.massenergize.org/Springfield/aboutus</loc>
+      <lastmod>2021-02-22</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/SFDemo/aboutus</loc>
-      <lastmod>2019-12-09</lastmod>
+      <loc>http://community.massenergize.org/Framingham/aboutus</loc>
+      <lastmod>2020-01-23</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting/aboutus</loc>
-      <lastmod>2020-09-15</lastmod>
+      <loc>http://community.massenergize.org/JCAN/aboutus</loc>
+      <lastmod>2021-06-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/joshtopia/aboutus</loc>
-      <lastmod>2020-05-28</lastmod>
+      <loc>http://community.massenergize.org/ActonMA/aboutus</loc>
+      <lastmod>2021-04-30</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/nowhere/aboutus</loc>
-      <lastmod>2020-09-11</lastmod>
+      <loc>http://community.massenergize.org/SherbornMA/aboutus</loc>
+      <lastmod>2021-02-12</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1/aboutus</loc>
-      <lastmod>2020-09-22</lastmod>
+      <loc>http://community.massenergize.org/Coolercommunities/aboutus</loc>
+      <lastmod>2021-05-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/testingcomm/aboutus</loc>
-      <lastmod>2020-09-22</lastmod>
+      <loc>http://community.massenergize.org/agawam/aboutus</loc>
+      <lastmod>2021-02-01</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/pppp/aboutus</loc>
-      <lastmod>2020-10-13</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-  
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/546</loc>
-      <lastmod>2020-08-05</lastmod>
+      <loc>http://community.massenergize.org/MedfieldMA/aboutus</loc>
+      <lastmod>2021-07-01</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting/actions/437</loc>
-      <lastmod>2021-04-16</lastmod>
+      <loc>http://community.massenergize.org/ConcordMA/aboutus</loc>
+      <lastmod>2020-08-12</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/actions/553</loc>
-      <lastmod>2020-08-06</lastmod>
+      <loc>http://community.massenergize.org/greennewton/aboutus</loc>
+      <lastmod>2020-07-31</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/SFDemo/actions/557</loc>
-      <lastmod>2020-09-15</lastmod>
+      <loc>http://community.massenergize.org/sustainablemilton/aboutus</loc>
+      <lastmod>2021-04-02</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/actions/547</loc>
-      <lastmod>2020-07-10</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/277</loc>
-      <lastmod>2019-11-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/360</loc>
-      <lastmod>2020-05-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Ellentest1/actions/345</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/bushwick/actions/328</loc>
-      <lastmod>2019-11-15</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/312</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/245</loc>
-      <lastmod>2020-05-11</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/332</loc>
-      <lastmod>2020-02-07</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/241</loc>
-      <lastmod>2019-10-24</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/stowe/actions/341</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/313</loc>
-      <lastmod>2019-12-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/449</loc>
-      <lastmod>2020-02-11</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/SFDemo/actions/556</loc>
-      <lastmod>2021-04-16</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Ellentest1/actions/446</loc>
-      <lastmod>2020-05-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/308</loc>
-      <lastmod>2019-12-15</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/natick/actions/427</loc>
-      <lastmod>2020-04-22</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/431</loc>
-      <lastmod>2020-02-07</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Ellentest1/actions/337</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/nowhere/actions/554</loc>
-      <lastmod>2021-04-17</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/305</loc>
-      <lastmod>2019-12-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/335</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/429</loc>
-      <lastmod>2020-04-22</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/307</loc>
-      <lastmod>2020-02-07</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Ellentest1/actions/293</loc>
-      <lastmod>2020-04-22</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/AimeeTesting/actions/339</loc>
-      <lastmod>2019-12-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/nowhere/actions/319</loc>
-      <lastmod>2020-05-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/nowhere/actions/243</loc>
-      <lastmod>2020-05-29</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/285</loc>
-      <lastmod>2019-11-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/287</loc>
-      <lastmod>2019-11-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/Kaatstestcommunity/actions/289</loc>
-      <lastmod>2019-11-06</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/nowhere/actions/317</loc>
-      <lastmod>2020-07-02</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/bushwick/actions/452</loc>
-      <lastmod>2020-03-05</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/nowhere/actions/318</loc>
-      <lastmod>2020-07-07</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url>
-   
-   <url>
-      <loc>http://community.massenergize.org/wayland/actions/548</loc>
-      <lastmod>2020-07-10</lastmod>
+      <loc>http://community.massenergize.org/Lexington/aboutus</loc>
+      <lastmod>2021-02-04</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
   
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting/services/60</loc>
-      <lastmod>2019-12-29</lastmod>
+      <loc>http://community.massenergize.org/agawam/actions/2324</loc>
+      <lastmod>2021-03-05</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1/services/60</loc>
-      <lastmod>2019-12-29</lastmod>
+      <loc>http://community.massenergize.org/Springfield/actions/2323</loc>
+      <lastmod>2021-03-17</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/services/61</loc>
-      <lastmod>2020-04-09</lastmod>
+      <loc>http://community.massenergize.org/Demo2/actions/2533</loc>
+      <lastmod>2021-06-07</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/bushwick/services/62</loc>
-      <lastmod>2020-04-20</lastmod>
+      <loc>http://community.massenergize.org/JCAN/actions/1378</loc>
+      <lastmod>2020-11-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/services/62</loc>
-      <lastmod>2020-04-20</lastmod>
+      <loc>http://community.massenergize.org/Lexington/actions/2605</loc>
+      <lastmod>2021-07-17</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/stowe/services/65</loc>
-      <lastmod>2020-04-20</lastmod>
+      <loc>http://community.massenergize.org/Framingham/actions/2550</loc>
+      <lastmod>2021-07-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/services/47</loc>
-      <lastmod>2020-05-01</lastmod>
+      <loc>http://community.massenergize.org/Framingham/actions/1396</loc>
+      <lastmod>2021-07-20</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/bushwick/services/66</loc>
-      <lastmod>2020-06-07</lastmod>
+      <loc>http://community.massenergize.org/Demo2/actions/2530</loc>
+      <lastmod>2021-06-07</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/services/66</loc>
-      <lastmod>2020-06-07</lastmod>
+      <loc>http://community.massenergize.org/Lexington/actions/2607</loc>
+      <lastmod>2021-07-17</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/natick/services/19</loc>
-      <lastmod>2020-08-29</lastmod>
+      <loc>http://community.massenergize.org/JCAN/actions/1377</loc>
+      <lastmod>2020-11-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/nowhere/services/19</loc>
-      <lastmod>2020-08-29</lastmod>
+      <loc>http://community.massenergize.org/Demo2/actions/2534</loc>
+      <lastmod>2021-06-07</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/doesntmatter/services/19</loc>
-      <lastmod>2020-08-29</lastmod>
+      <loc>http://community.massenergize.org/JCAN/actions/1389</loc>
+      <lastmod>2020-11-16</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1/services/19</loc>
-      <lastmod>2020-08-29</lastmod>
+      <loc>http://community.massenergize.org/Demo2/actions/2519</loc>
+      <lastmod>2021-06-07</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/nowhere/services/67</loc>
-      <lastmod>2020-09-11</lastmod>
+      <loc>http://community.massenergize.org/JCAN/actions/1392</loc>
+      <lastmod>2020-11-17</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/SFDemo/services/69</loc>
-      <lastmod>2020-09-21</lastmod>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1418</loc>
+      <lastmod>2021-01-08</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting/services/68</loc>
-      <lastmod>2020-09-21</lastmod>
+      <loc>http://community.massenergize.org/Demo2/actions/2507</loc>
+      <lastmod>2021-06-04</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/None/services/63</loc>
-      <lastmod>2020-05-01</lastmod>
+      <loc>http://community.massenergize.org/Framingham/actions/2155</loc>
+      <lastmod>2021-04-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/7</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2524</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2521</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2520</loc>
+      <lastmod>2021-06-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/398</loc>
+      <lastmod>2021-04-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2495</loc>
+      <lastmod>2021-08-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2159</loc>
+      <lastmod>2021-07-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/82</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/400</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/2408</loc>
+      <lastmod>2021-07-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1370</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2606</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2513</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1387</loc>
+      <lastmod>2020-12-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2539</loc>
+      <lastmod>2021-07-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2535</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/413</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/2087</loc>
+      <lastmod>2020-12-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1394</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/226</loc>
+      <lastmod>2021-07-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2230</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/2325</loc>
+      <lastmod>2021-03-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1384</loc>
+      <lastmod>2020-11-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/88</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2163</loc>
+      <lastmod>2021-05-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/2252</loc>
+      <lastmod>2021-07-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2130</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2307</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2202</loc>
+      <lastmod>2021-03-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2544</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/96</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/1926</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2141</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2089</loc>
+      <lastmod>2021-07-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2144</loc>
+      <lastmod>2021-08-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/408</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/2158</loc>
+      <lastmod>2021-08-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2148</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/45</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2142</loc>
+      <lastmod>2021-08-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1391</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/2404</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/1837</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/222</loc>
+      <lastmod>2021-07-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/231</loc>
+      <lastmod>2021-07-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/89</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2092</loc>
+      <lastmod>2021-01-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2402</loc>
+      <lastmod>2021-03-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2537</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/143</loc>
+      <lastmod>2020-12-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2145</loc>
+      <lastmod>2021-05-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1429</loc>
+      <lastmod>2020-12-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/1932</loc>
+      <lastmod>2021-05-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2498</loc>
+      <lastmod>2021-05-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/87</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/8</loc>
+      <lastmod>2021-07-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1408</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/2075</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2499</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2456</loc>
+      <lastmod>2021-06-18</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1927</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2397</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2226</loc>
+      <lastmod>2021-07-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2137</loc>
+      <lastmod>2021-03-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2538</loc>
+      <lastmod>2021-07-13</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1409</loc>
+      <lastmod>2020-11-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2464</loc>
+      <lastmod>2021-04-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2119</loc>
+      <lastmod>2021-06-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1366</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2504</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2453</loc>
+      <lastmod>2021-04-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2310</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2441</loc>
+      <lastmod>2021-04-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2105</loc>
+      <lastmod>2021-05-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2146</loc>
+      <lastmod>2021-08-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1933</loc>
+      <lastmod>2020-12-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2500</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2046</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2164</loc>
+      <lastmod>2021-01-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2405</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2450</loc>
+      <lastmod>2021-04-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2121</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2298</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2449</loc>
+      <lastmod>2021-04-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2541</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2451</loc>
+      <lastmod>2021-04-27</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2300</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2540</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2122</loc>
+      <lastmod>2021-05-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2106</loc>
+      <lastmod>2021-07-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2532</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2055</loc>
+      <lastmod>2021-05-26</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2302</loc>
+      <lastmod>2021-03-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2110</loc>
+      <lastmod>2021-07-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1404</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2314</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2406</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2461</loc>
+      <lastmod>2021-07-21</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/3</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/actions/1415</loc>
+      <lastmod>2021-03-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2502</loc>
+      <lastmod>2021-06-18</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2292</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2503</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2317</loc>
+      <lastmod>2021-04-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2048</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2044</loc>
+      <lastmod>2021-06-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2375</loc>
+      <lastmod>2021-03-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2377</loc>
+      <lastmod>2021-03-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/4</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2034</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2328</loc>
+      <lastmod>2021-03-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2031</loc>
+      <lastmod>2021-06-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2372</loc>
+      <lastmod>2021-06-13</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2306</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2054</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2395</loc>
+      <lastmod>2021-03-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/actions/2501</loc>
+      <lastmod>2021-07-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2036</loc>
+      <lastmod>2021-06-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2049</loc>
+      <lastmod>2021-06-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2376</loc>
+      <lastmod>2021-03-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/142</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2330</loc>
+      <lastmod>2021-03-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2443</loc>
+      <lastmod>2021-05-05</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1419</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2133</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2399</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2131</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2401</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2129</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/418</loc>
+      <lastmod>2021-05-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/419</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/389</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2134</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2398</loc>
+      <lastmod>2021-03-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2136</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2309</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/9</loc>
+      <lastmod>2020-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2135</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2007</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2308</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2258</loc>
+      <lastmod>2021-03-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2383</loc>
+      <lastmod>2021-03-05</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2542</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/746</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2125</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1402</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/2074</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1424</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2506</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2303</loc>
+      <lastmod>2021-03-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/420</loc>
+      <lastmod>2021-04-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2509</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/415</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/1374</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/17</loc>
+      <lastmod>2020-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2403</loc>
+      <lastmod>2021-03-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2047</loc>
+      <lastmod>2020-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/2090</loc>
+      <lastmod>2020-12-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2201</loc>
+      <lastmod>2021-02-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2511</loc>
+      <lastmod>2021-06-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/35</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2322</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2512</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/743</loc>
+      <lastmod>2021-04-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2304</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2514</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/actions/2516</loc>
+      <lastmod>2021-06-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/2096</loc>
+      <lastmod>2020-12-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/421</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2296</loc>
+      <lastmod>2021-03-30</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/actions/2536</loc>
+      <lastmod>2021-06-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2233</loc>
+      <lastmod>2021-04-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1934</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2318</loc>
+      <lastmod>2021-02-27</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/740</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2295</loc>
+      <lastmod>2021-03-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2381</loc>
+      <lastmod>2021-03-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2452</loc>
+      <lastmod>2021-05-05</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2382</loc>
+      <lastmod>2021-03-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2353</loc>
+      <lastmod>2021-03-08</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2132</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2315</loc>
+      <lastmod>2021-03-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/5</loc>
+      <lastmod>2021-01-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2352</loc>
+      <lastmod>2021-03-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2299</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/86</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1367</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2293</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/2</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/SherbornMA/actions/2312</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/744</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/424</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/425</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/actions/2361</loc>
+      <lastmod>2021-03-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/422</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2255</loc>
+      <lastmod>2021-03-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1382</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2319</loc>
+      <lastmod>2021-02-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/1373</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2128</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/actions/2467</loc>
+      <lastmod>2021-04-20</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2138</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/2150</loc>
+      <lastmod>2021-02-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/1365</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/423</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/388</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/actions/237</loc>
+      <lastmod>2021-06-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/actions/738</loc>
+      <lastmod>2021-03-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/actions/1380</loc>
+      <lastmod>2020-11-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2261</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2126</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2120</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2118</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2172</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2117</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2116</loc>
+      <lastmod>2021-07-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2290</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2115</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2094</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2078</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/actions/2030</loc>
+      <lastmod>2021-06-09</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2321</loc>
+      <lastmod>2021-02-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2263</loc>
+      <lastmod>2021-02-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2123</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2124</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2127</loc>
+      <lastmod>2021-07-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2496</loc>
+      <lastmod>2021-08-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/actions/1431</loc>
+      <lastmod>2020-11-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2289</loc>
+      <lastmod>2021-06-18</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2095</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2259</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2152</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2153</loc>
+      <lastmod>2021-01-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2608</loc>
+      <lastmod>2021-07-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2098</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2112</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2097</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2113</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2114</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/actions/2045</loc>
+      <lastmod>2021-05-16</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2188</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2232</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2050</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/actions/2208</loc>
+      <lastmod>2021-02-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2178</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2256</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2180</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2177</loc>
+      <lastmod>2021-02-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2260</loc>
+      <lastmod>2021-04-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2195</loc>
+      <lastmod>2021-04-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/actions/2189</loc>
+      <lastmod>2021-04-02</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
   
    <url>
-      <loc>http://community.massenergize.org/global/events/119</loc>
+      <loc>http://community.massenergize.org/Framingham/services/51</loc>
+      <lastmod>2020-11-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/services/67</loc>
+      <lastmod>2021-02-10</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/services/66</loc>
+      <lastmod>2021-02-12</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Test-Site/services/61</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/services/61</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/services/74</loc>
+      <lastmod>2021-02-15</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Test-Site/services/15</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/services/37</loc>
+      <lastmod>2020-04-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/services/38</loc>
+      <lastmod>2020-04-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/services/15</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/services/87</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/greennewton/services/47</loc>
+      <lastmod>2020-04-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/56</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/services/56</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/4</loc>
+      <lastmod>2020-04-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/services/4</loc>
+      <lastmod>2020-04-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/pioneervalley/services/56</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/3</loc>
+      <lastmod>2020-04-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/services/3</loc>
+      <lastmod>2020-04-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/54</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/services/54</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/10</loc>
+      <lastmod>2020-04-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/79</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/34</loc>
+      <lastmod>2020-04-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/pioneervalley/services/79</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/services/79</loc>
+      <lastmod>2021-03-25</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/35</loc>
+      <lastmod>2020-04-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/services/5</loc>
+      <lastmod>2020-06-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/5</loc>
+      <lastmod>2020-06-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/services/5</loc>
+      <lastmod>2020-06-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/services/1</loc>
+      <lastmod>2020-06-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/1</loc>
+      <lastmod>2020-06-02</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/81</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/services/52</loc>
+      <lastmod>2020-06-04</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/83</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/85</loc>
+      <lastmod>2021-04-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/7</loc>
+      <lastmod>2020-10-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/84</loc>
+      <lastmod>2021-04-14</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/57</loc>
+      <lastmod>2020-10-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/pioneervalley/services/57</loc>
+      <lastmod>2020-10-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/55</loc>
+      <lastmod>2020-11-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/services/6</loc>
+      <lastmod>2020-11-19</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/services/50</loc>
+      <lastmod>2020-11-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/services/31</loc>
+      <lastmod>2020-11-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/services/30</loc>
+      <lastmod>2020-11-23</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/82</loc>
+      <lastmod>2021-06-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/82</loc>
+      <lastmod>2021-06-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/services/77</loc>
+      <lastmod>2021-06-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/77</loc>
+      <lastmod>2021-06-01</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/services/80</loc>
+      <lastmod>2021-06-04</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/agawam/services/80</loc>
+      <lastmod>2021-06-04</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Test-Site/services/16</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/services/16</loc>
+      <lastmod>2021-06-07</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/None/services/11</loc>
+      <lastmod>2019-12-31</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/None/services/64</loc>
+      <lastmod>2021-01-29</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/None/services/19</loc>
+      <lastmod>2020-01-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/None/services/14</loc>
+      <lastmod>2020-01-06</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+  
+   <url>
+      <loc>http://community.massenergize.org/ActonMA/events/205</loc>
       <lastmod>2021-08-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1/events/35</loc>
+      <loc>http://community.massenergize.org/Framingham/events/212</loc>
       <lastmod>2021-08-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/Ellentest1/events/123</loc>
+      <loc>http://community.massenergize.org/Lexington/events/156</loc>
       <lastmod>2021-08-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/AimeeTesting/events/124</loc>
+      <loc>http://community.massenergize.org/wayland/events/211</loc>
       <lastmod>2021-08-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://community.massenergize.org/wayland/events/84</loc>
+      <loc>http://community.massenergize.org/Demo2/events/181</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/186</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/196</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/190</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/events/191</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/189</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/178</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/events/154</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/events/133</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/events/146</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/events/127</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/events/41</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/events/182</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/151</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Springfield/events/134</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/events/144</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/events/183</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/142</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/155</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Demo2/events/184</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/125</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/events/193</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/172</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/192</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/209</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/163</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/76</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/203</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/sustainablemilton/events/187</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/GreenfieldMA/events/174</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Framingham/events/126</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/204</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Lexington/events/124</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/events/104</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/ConcordMA/events/113</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/139</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/111</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/events/94</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/events/91</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/Coolercommunities/events/81</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/events/140</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/MedfieldMA/events/135</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/events/97</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/JCAN/events/75</loc>
+      <lastmod>2021-08-11</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://community.massenergize.org/wayland/events/90</loc>
       <lastmod>2021-08-11</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
