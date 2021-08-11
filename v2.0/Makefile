@@ -76,3 +76,7 @@ run-canary-sandbox:
 	python deployment/prepare_to_deploy.py canary-sandbox  $(local)
 	npm start
 .PHONY: run-canary-sandbox
+
+sitemap:
+	python deployment/generate-sitemap.py 
+.PHONY: sitemap
