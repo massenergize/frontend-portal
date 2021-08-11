@@ -85,7 +85,7 @@ class TeamActionsGraph extends React.Component {
     });
 
     return (
-      <>
+      <perfect>
         <div style={{ height: "370px" }}>
           <Bar
             options={{
@@ -99,7 +99,7 @@ class TeamActionsGraph extends React.Component {
             data={actions}
           />
         </div>
-      </>
+      </perfect>
     );
   }
 }

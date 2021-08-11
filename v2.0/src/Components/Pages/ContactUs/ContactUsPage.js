@@ -87,7 +87,7 @@ class ContactUsPage extends React.Component {
     const { id, location, admins } = communityInfo;
 
     return (
-      <>
+      <perfect>
         <div className="boxed_wrapper" style={{ marginBottom: 300 }}>
           <BreadCrumbBar links={[{ name: "Contact Us" }]} />
           <div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
@@ -108,7 +108,7 @@ class ContactUsPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 }

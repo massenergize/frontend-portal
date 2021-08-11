@@ -2881,7 +2881,7 @@ var rootjQuery,
 				selector.charAt( selector.length - 1 ) === ">" &&
 				selector.length >= 3 ) {
 
-				// Assume that strings that start and end with <> are HTML and skip the regex check
+				// Assume that strings that start and end with <perfect> are HTML and skip the regex check
 				match = [ null, selector, null ];
 
 			} else {

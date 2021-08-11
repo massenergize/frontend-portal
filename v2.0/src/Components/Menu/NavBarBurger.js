@@ -30,7 +30,7 @@ class NavBarBurger extends React.Component {
   componentWillReceiveProps() {
     this.forceUpdate();
   }
-  handleResize = () => {
+  handleResize () {
     this.setState({
       menuBurgered: window.innerWidth < 992,
     });
@@ -149,10 +149,10 @@ class NavBarBurger extends React.Component {
                       className="header-logo"
                     />
                     {communitylogo ? null : (
-                      <>&nbsp;{header ? header.title : null}</>
+                      <perfect>&nbsp;{header ? header.title : null}</perfect>
                     )}
                     {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
-                                        <>&nbsp;Concord</> */}
+                                        <perfect>&nbsp;Concord</perfect> */}
                   </div>
                 </Link>
               </div>
@@ -512,7 +512,7 @@ class SubMenuItem extends React.Component {
 
   render() {
     return (
-      <>
+      <perfect>
         <MenuItem
           key={this.props.index}
           delay={`${this.props.index * 0.1}s`}
@@ -526,7 +526,7 @@ class SubMenuItem extends React.Component {
             {this.renderSubmenuItems(this.props.navlink.children)}
           </Menu>
         </div>
-      </>
+      </perfect>
     );
   }
 }

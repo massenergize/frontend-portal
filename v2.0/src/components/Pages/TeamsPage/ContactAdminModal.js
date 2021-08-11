@@ -80,7 +80,7 @@ class ContactAdminModal extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <MEModal
           size="md"
           containerClassName="mob-modal-correction modal-force-full-width team-contact-admin-modal-mob"
@@ -93,7 +93,7 @@ class ContactAdminModal extends React.Component {
           </h4>
           {modalContent}
         </MEModal>
-      </>
+      </perfect>
     );
   }
 

@@ -34,7 +34,7 @@ class EventsPage extends React.Component {
 		
 		//avoids trying to render before the promise from the server is fulfilled
 		return (
-			<>
+			<perfect>
 				
 				<div className="boxed_wrapper" >
 					{/* renders the sidebar and events columns */}
@@ -58,7 +58,7 @@ class EventsPage extends React.Component {
 						</section>
 					</div>
 				</div>
-			</>
+			</perfect>
 		);
 	}
 
@@ -140,7 +140,7 @@ class EventsPage extends React.Component {
 										}
 									</div>
 									{(endDate - now > 0) ?
-										<>
+										<perfect>
 											{this.props.user ?
 												<RSVPForm
 													eventid={event.id}
@@ -153,7 +153,7 @@ class EventsPage extends React.Component {
 													<Link className="cool-font" to={this.props.links.signin}>Sign In</Link> to RSVP to events
                                         </p>
 											}
-										</> : null}
+										</perfect> : null}
 								</div>
 							</div>
 							{/* renders the  date time and location of the event */}

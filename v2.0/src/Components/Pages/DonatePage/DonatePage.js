@@ -26,7 +26,7 @@ class DonatePage extends React.Component {
       pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
     return (
-      <>
+      <perfect>
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -74,7 +74,7 @@ class DonatePage extends React.Component {
             </center>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 }

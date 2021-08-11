@@ -303,9 +303,9 @@ class Action extends React.Component {
                   <div className="col-centered">
                     <br></br>
                     {this.props.showTestimonialLink ? (
-                      <>
+                      <perfect>
                         {this.state.showTestimonialForm ? (
-                          <>
+                          <perfect>
                             <button
                               className="as-link"
                               onClick={() =>
@@ -326,9 +326,9 @@ class Action extends React.Component {
                                 })
                               }
                             ></StoryForm>
-                          </>
+                          </perfect>
                         ) : (
-                          <>
+                          <perfect>
                             {this.state.message ? (
                               <p>{this.state.message}</p>
                             ) : (
@@ -358,9 +358,9 @@ class Action extends React.Component {
                                 .
                               </p>
                             )}
-                          </>
+                          </perfect>
                         )}
-                      </>
+                      </perfect>
                     ) : null}
                     <ChooseHHForm
                       aid={this.props.action.id}

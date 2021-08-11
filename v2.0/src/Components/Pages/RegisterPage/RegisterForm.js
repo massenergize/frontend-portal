@@ -105,7 +105,7 @@ class RegisterFormBase extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <div>{this.renderPage(page)}</div>
         <Modal
           show={this.state.showTOS}
@@ -157,7 +157,7 @@ class RegisterFormBase extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-      </>
+      </perfect>
     );
   }
 
@@ -352,7 +352,7 @@ class RegisterFormBase extends React.Component {
           <form onSubmit={this.onFinalSubmit}>
             {this.props.firebase.auth().currentUser &&
             !this.props.firebase.auth().currentUser.emailVerified ? (
-              <>
+              <perfect>
                 <p>
                   {" "}
                   We sent a link to your email address. Please check your email
@@ -378,16 +378,16 @@ class RegisterFormBase extends React.Component {
                     Sign in
                   </Link>
                 </p>
-              </>
+              </perfect>
             ) : (
-              <>
+              <perfect>
                 <center>
                   <p style={{ color: "red" }}>
                     {" "}
                     Please finish creating your profile before you continue
                     {this.state.specialUser ? 
                     <p>Welcome! You have been invited by a community admin to this MassEnergize Community.</p> : 
-                    <></>}
+                    <perfect></perfect>}
                   </p>
                 </center>
                 <div className="form-group">
@@ -540,7 +540,7 @@ class RegisterFormBase extends React.Component {
                     </button>
                  </p>
                 
-              </>
+              </perfect>
             )}
             {this.state.error && (
               <p style={{ color: "red" }}> {this.state.error} </p>

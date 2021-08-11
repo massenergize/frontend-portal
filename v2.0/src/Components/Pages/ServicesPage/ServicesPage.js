@@ -107,7 +107,7 @@ class ServicesPage extends React.Component {
       applyTagsAndGetContent(serviceProviders, this.state.checked_values);
 
     return (
-      <>
+      <perfect>
         <div
           className="boxed_wrapper"
           style={{
@@ -159,7 +159,7 @@ class ServicesPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 

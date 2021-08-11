@@ -96,7 +96,7 @@ class OneTeamPage extends React.Component {
     const isInThisTeam = inThisTeam(user, teamData.team);
 
     const buttonOrInTeam = (
-      <>
+      <perfect>
         {!isInTeam ? (
           <MEButton
             style={{ fontSize: 14 }}
@@ -122,12 +122,12 @@ class OneTeamPage extends React.Component {
             </p>
           </div>
         )}
-      </>
+      </perfect>
     );
 
     const hasLogo = team && team.logo && team.logo.url;
     const teamTitle = (
-      <>
+      <perfect>
         {team.parent && (
           <span style={{ fontSize: "16px" }}>
             <a className="me-link" href={`${links.teams}/${team.parent.id}`}>
@@ -137,7 +137,7 @@ class OneTeamPage extends React.Component {
             <br />
           </span>
         )}
-      </>
+      </perfect>
     );
 
     const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
@@ -151,7 +151,7 @@ class OneTeamPage extends React.Component {
       remountForcer,
     };
     return (
-      <>
+      <perfect>
         <Helmet>
           <meta property="og:title" content={team.name} />
           <meta property="og:image" content={team.image && team.image.url} />
@@ -212,7 +212,7 @@ class OneTeamPage extends React.Component {
               {/* ----------------------------------------- GRAPH AREA, TEAM TITLE, AND OTHER TEAM INFO ------------------------- */}
               <div className="col-md-9 col-12">
                 <div className="team-card-column" style={{ margin: "0 auto" }}>
-                  <>
+                  <perfect>
                     <div className="team-card-column col-12">
                       <h2
                         style={{
@@ -238,14 +238,14 @@ class OneTeamPage extends React.Component {
                             }}
                           ></i>
                         ) : (
-                          <></>
+                          <perfect></perfect>
                         )}
                         <span style={{ margin: "0px 15px" }}>
                           {buttonOrInTeam}
                         </span>
                       </h2>
                     </div>
-                  </>
+                  </perfect>
                 </div>
 
                 <div className="row">
@@ -272,9 +272,9 @@ class OneTeamPage extends React.Component {
                       <b>Actions Completed</b>
                       <br />
                       {subTeams && (
-                        <>
+                        <perfect>
                           <small>Contains actions of sub-teams</small>
-                        </>
+                        </perfect>
                       )}
                     </h5>
                     <TeamActionsGraph key={remountForcer} teamID={team.id} />
@@ -347,13 +347,13 @@ class OneTeamPage extends React.Component {
           </div>
           <br />
         </div>
-      </>
+      </perfect>
     );
   }
 
   renderSocials(team) {
     return (
-      <>
+      <perfect>
         {team.is_published && (
           <div style={{ display: "block" }}>
             <ShareButtons
@@ -366,7 +366,7 @@ class OneTeamPage extends React.Component {
         )}
 
         <br />
-      </>
+      </perfect>
     );
   }
 
@@ -381,7 +381,7 @@ class OneTeamPage extends React.Component {
       remountForcer,
     } = props;
     return (
-      <>
+      <perfect>
         <div className="row phone-vanish" style={{ minHeight: 142 }}>
           <center style={{ width: "100%", padding: 4 }}>
             {hasLogo && (
@@ -426,9 +426,9 @@ class OneTeamPage extends React.Component {
             caret={true}
           >
             {subTeams && (
-              <>
+              <perfect>
                 <small>Contains members of sub-teams</small>
-              </>
+              </perfect>
             )}
 
             <TeamMembersList
@@ -484,7 +484,7 @@ class OneTeamPage extends React.Component {
             </MESectionWrapper>
           </div>
         )}
-      </>
+      </perfect>
     );
   }
   onMembersLoad = (members) => {

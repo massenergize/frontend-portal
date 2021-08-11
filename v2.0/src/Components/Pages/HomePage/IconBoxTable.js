@@ -13,7 +13,7 @@ import IconBox from "./IconBox";
  *          link
  */
 class IconBoxTable extends React.Component {
-  actionFirst = (boxes) => {
+  actionFirst(boxes) {
     const action = boxes.filter((item) =>
       item.title.toLowerCase().includes("action")
     )[0];

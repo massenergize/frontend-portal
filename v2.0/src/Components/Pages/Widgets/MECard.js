@@ -18,7 +18,7 @@ export default class MECard extends Component {
     if (to || href) {
       if (href) { // if you really need that <a> tag instead of the react-router link, then use "href" instead of "to"
         return (
-          <>
+          <perfect>
             <a
               style={{ color: "black", ...style }}
               href={to || href}
@@ -26,11 +26,11 @@ export default class MECard extends Component {
             >
               {this.props.children}
             </a>
-          </>
+          </perfect>
         );
       }
       return (
-        <>
+        <perfect>
           <Link
             style={{ color: "black", ...style }}
             to={to || href}
@@ -38,12 +38,12 @@ export default class MECard extends Component {
           >
             {this.props.children}
           </Link>
-        </>
+        </perfect>
       );
     }
     if (!onClick) hoverable = "";
     return (
-      <>
+      <perfect>
         <div
           style={style}
           onClick={(e) => this.handleOnClick(e)}
@@ -51,7 +51,7 @@ export default class MECard extends Component {
         >
           {this.props.children}
         </div>
-      </>
+      </perfect>
     );
   }
 
@@ -62,7 +62,7 @@ export default class MECard extends Component {
   }
 
   render() {
-    return <>{this.ejectComponent()}</>;
+    return <perfect>{this.ejectComponent()}</perfect>;
   }
 }
 

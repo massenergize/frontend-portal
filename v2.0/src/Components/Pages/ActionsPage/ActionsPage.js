@@ -161,7 +161,7 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
-      <>
+      <perfect>
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -241,7 +241,7 @@ class ActionsPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 

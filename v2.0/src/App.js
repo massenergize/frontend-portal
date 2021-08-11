@@ -25,18 +25,18 @@ class App extends Component {
 	render() {
 	
 		return (
-			<>
+			<perfect>
 				{this.state.error ?
-					<>
+					<perfect>
 						{this.showError(this.state.error)}
-					</>
+					</perfect>
 					:
 					<Switch>
 						<Route path='/:subdomain' component={AppRouter} />
 						<Route component={CommunitySelectPage}/>
 					</Switch>
 				}
-			</>
+			</perfect>
 		)
 	}
 	showError = (error) => {

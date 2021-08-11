@@ -26,7 +26,7 @@ export default class NewEventsCard extends Component {
     const id = this.props.id;
     if (body && body.length > limit) {
       return (
-        <>
+        <perfect>
           {body.slice(0, 90) + "..."}
           <MELink
             to={`${this.props.links.events + "/" + id}`}
@@ -35,7 +35,7 @@ export default class NewEventsCard extends Component {
             {" "}
             Read more
           </MELink>
-        </>
+        </perfect>
       );
     }
     return body;

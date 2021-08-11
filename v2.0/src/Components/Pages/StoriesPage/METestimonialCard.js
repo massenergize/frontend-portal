@@ -20,7 +20,7 @@ export default class METestimonialCard extends Component {
     const { body, id } = this.props;
     if (body.length > 90) {
       return (
-        <>
+        <perfect>
           {body.slice(0, 90) + "..."}
           <MELink
             style={{ marginLeft: 6 }}
@@ -29,7 +29,7 @@ export default class METestimonialCard extends Component {
             {" "}
             Read more
           </MELink>
-        </>
+        </perfect>
       );
     }
     return body;

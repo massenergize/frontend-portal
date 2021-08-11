@@ -14,7 +14,7 @@ function ShareButtons(props) {
 
   const text = `${pageTitle}: ${pageDescription}`;
 
-  return <>
+  return <perfect>
     {label && <h5 style={{ textAlign: 'center' }}>{label}</h5>}
 
     <div className="row justify-content-center">
@@ -28,7 +28,7 @@ function ShareButtons(props) {
         <EmailIcon size={50} round />
       </EmailShareButton>
     </div>
-  </>
+  </perfect>
 }
 
 export default ShareButtons;

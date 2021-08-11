@@ -29,7 +29,7 @@ class OneServicePage extends React.Component {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
     return (
-      <>
+      <perfect>
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -45,7 +45,7 @@ class OneServicePage extends React.Component {
             <div className="row pt-3 pb-3">{this.renderVendor(vendor)}</div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 
@@ -252,7 +252,7 @@ class OneServicePage extends React.Component {
             {vendor.key_contact != null ? (
               <div className="w-100 p-2 text-center">
                 {vendor.user_info ? (
-                  <>
+                  <perfect>
                     <a
                       href={"//" + vendor.key_contact.user_info.website}
                       target="_blank"
@@ -267,7 +267,7 @@ class OneServicePage extends React.Component {
                     >
                       <span className="fa fa-envelope fa-2x"></span>
                     </a>
-                  </>
+                  </perfect>
                 ) : null}
               </div>
             ) : null}
@@ -323,7 +323,7 @@ class OneServicePage extends React.Component {
   //       </div>
   //     );
   //   return (
-  //     <>
+  //     <perfect>
   //       {/* <div className="tab-title-h4">
   //                   <h4>{stories.length} Stories about this Action</h4>
   //               </div> */}
@@ -338,7 +338,7 @@ class OneServicePage extends React.Component {
 
   //         );
   //       })}
-  //     </>
+  //     </perfect>
   //   );
   // };
 }

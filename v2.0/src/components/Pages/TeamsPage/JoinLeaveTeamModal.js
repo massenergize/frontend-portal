@@ -34,7 +34,7 @@ class JoinLeaveTeamModal extends React.Component {
     let modalContent;
     if (user) {
       modalContent = (
-        <>
+        <perfect>
           {this.leaving ? (
             <METextView style={{ color: "#282828" }}>
               Are you sure you want to leave?
@@ -79,7 +79,7 @@ class JoinLeaveTeamModal extends React.Component {
               </p>
             )}
           </div>
-        </>
+        </perfect>
       );
     } else {
       modalContent = (
@@ -91,7 +91,7 @@ class JoinLeaveTeamModal extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <MEModal size="md" contentStyle={{ width: "100%" }} closeModal={() => onClose()}>
           <h4>
             Join or leave the team <b>{team && team.name}</b>
@@ -108,7 +108,7 @@ class JoinLeaveTeamModal extends React.Component {
         </div>
         <div className="desc-modal-container">
         </div> */}
-      </>
+      </perfect>
     );
   }
 

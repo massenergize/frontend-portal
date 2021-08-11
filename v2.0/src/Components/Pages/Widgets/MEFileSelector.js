@@ -252,7 +252,7 @@ class MEFileSelector extends Component {
     var source = src || extSrc;
     if (modal) {
       return (
-        <>
+        <perfect>
           {/* // <MEModal
         //   closeModal={this.toggleCropperModal}
         //   style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
@@ -309,7 +309,7 @@ class MEFileSelector extends Component {
             )}
           </div>
           {/* </MEModal>  */}
-        </>
+        </perfect>
       );
     }
   }

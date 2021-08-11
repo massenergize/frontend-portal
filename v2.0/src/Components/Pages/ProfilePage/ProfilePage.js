@@ -136,7 +136,7 @@ class ProfilePage extends React.Component {
     //capturing the props in a JSON object that represents a user
     const { user } = this.props;
     return (
-      <>
+      <perfect>
         <div
           className="boxed_wrapper"
           onClick={this.clearError}
@@ -145,7 +145,7 @@ class ProfilePage extends React.Component {
           <BreadCrumbBar links={[{ name: "Profile" }]} />
           <div className="container">
             {this.state.printing ? (
-              <>
+              <perfect>
                 <PrintCart />
                 <center>
                   <MEButton
@@ -157,7 +157,7 @@ class ProfilePage extends React.Component {
                     Cancel
                   </MEButton>
                 </center>
-              </>
+              </perfect>
             ) : (
               <div
                 className="row"
@@ -329,7 +329,7 @@ class ProfilePage extends React.Component {
                         <tr>
                           <td colSpan={3} style={{ textAlign: "center" }}>
                             {this.state.addingHH ? (
-                              <>
+                              <perfect>
                                 <AddingHouseholdForm
                                   user={this.props.user}
                                   addHousehold={this.addHousehold}
@@ -345,7 +345,7 @@ class ProfilePage extends React.Component {
                                 >
                                   Cancel
                                 </MEButton>
-                              </>
+                              </perfect>
                             ) : (
                               <MEButton
                                 onClick={() =>
@@ -458,13 +458,13 @@ class ProfilePage extends React.Component {
             )}
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 
   renderForm = (form) => {
     return (
-      <>
+      <perfect>
         <h4>
           {this.props.user ? (
             <div style={{ display: "inline-block" }}>
@@ -496,7 +496,7 @@ class ProfilePage extends React.Component {
               {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
               this.props.auth.providerData[0].providerId === "password" ? (
-                <>
+                <perfect>
                   <Dropdown.Item
                     onClick={() =>
                       this.setState({ editingProfileForm: "password" })
@@ -513,7 +513,7 @@ class ProfilePage extends React.Component {
                   >
                     Change Email
                   </Dropdown.Item>
-                </>
+                </perfect>
               ) : null}
               <Dropdown.Item
                 onClick={() => this.setState({ editingProfileForm: "delete" })}
@@ -571,7 +571,7 @@ class ProfilePage extends React.Component {
             email={this.props.user.email}
           />
         ) : null}
-      </>
+      </perfect>
     );
   };
   renderCommunities(communities) {

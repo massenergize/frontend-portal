@@ -156,7 +156,7 @@ class TeamInfoModal extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <MEModal
           size="lg"
           closeModal={() => onClose()}
@@ -176,7 +176,7 @@ class TeamInfoModal extends React.Component {
             <div>{form}</div>
           </div>
         </MEModal>
-      </>
+      </perfect>
     );
   }
 

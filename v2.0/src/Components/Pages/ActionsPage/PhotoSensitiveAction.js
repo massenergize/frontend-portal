@@ -261,13 +261,13 @@ class PhotoSensitiveAction extends React.Component {
 
   showNotifications() {
     return (
-      <>
+      <perfect>
         <div className="col-12">
           <div className="col-centered">
             {this.props.showTestimonialLink ? (
-              <>
+              <perfect>
                 {this.state.showTestimonialForm ? (
-                  <>
+                  <perfect>
                     <button
                       className="as-link"
                       onClick={() =>
@@ -288,9 +288,9 @@ class PhotoSensitiveAction extends React.Component {
                         })
                       }
                     ></StoryForm>
-                  </>
+                  </perfect>
                 ) : (
-                  <>
+                  <perfect>
                     {this.state.message ? (
                       <p>{this.state.message}</p>
                     ) : (
@@ -321,9 +321,9 @@ class PhotoSensitiveAction extends React.Component {
                         .
                       </p>
                     )}
-                  </>
+                  </perfect>
                 )}
-              </>
+              </perfect>
             ) : null}
             {this.props.showTodoMsg === this.props.action.id && (
               <p
@@ -339,14 +339,14 @@ class PhotoSensitiveAction extends React.Component {
             )}
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
     if (this.shouldRender()) return this.newRender();
-    return <></>;
+    return <perfect></perfect>;
   }
 
   openForm = (status) => {

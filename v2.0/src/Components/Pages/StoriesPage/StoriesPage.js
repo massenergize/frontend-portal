@@ -155,7 +155,7 @@ class StoriesPage extends React.Component {
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
 
     return (
-      <>
+      <perfect>
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -228,7 +228,7 @@ class StoriesPage extends React.Component {
             </div>
           </section>
         </div>
-      </>
+      </perfect>
     );
   }
 

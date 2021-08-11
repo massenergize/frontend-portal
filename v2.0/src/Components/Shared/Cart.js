@@ -95,7 +95,7 @@ class Cart extends React.Component {
               </MELink>
               <div className="">
                 {actionRel.status.toLowerCase() === "todo" ? (
-                  <>
+                  <perfect>
                     <a
                       href="##"
                       onClick={(e) => {
@@ -116,7 +116,7 @@ class Cart extends React.Component {
                     >
                       Remove
                     </a>
-                  </>
+                  </perfect>
                 ) : (
                   <a
                     href="##"

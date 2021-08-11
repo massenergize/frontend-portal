@@ -156,7 +156,7 @@ class OneTestimonialPage extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <Helmet>
           <meta property="og:title" content={story.name} />
           <meta property="og:image" content={story.image && story.image.url} />
@@ -187,7 +187,7 @@ class OneTestimonialPage extends React.Component {
             </div>
           </section>
         </div>
-      </>
+      </perfect>
     );
   }
 
@@ -310,7 +310,7 @@ class OneTestimonialPage extends React.Component {
     if (!vendor) return;
     if (logo)
       return (
-        <>
+        <perfect>
           {title}
 
           <Link to={`${link}/${vendor.id}`}>
@@ -319,14 +319,14 @@ class OneTestimonialPage extends React.Component {
               <small>{vendor.name}</small>
             </div>
           </Link>
-        </>
+        </perfect>
       );
 
     return (
-      <>
+      <perfect>
         {title}
         <MELink to={`${link}/${vendor.id}`}>{vendor.name}</MELink>
-      </>
+      </perfect>
     );
   }
   renderDetails(details) {

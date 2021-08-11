@@ -75,10 +75,10 @@ class HorizontalFilterBox extends Component {
     });
   }
 
-  renderTagComponent = (style = { padding: 10, background: "#fffbf1" }) => {
+  renderTagComponent (style = { padding: 10, background: "#fffbf1" }) {
     const version = this.getVersionToShow();
 
-    if (!version || version !== 2) return <></>;
+    if (!version || version !== 2) return <perfect></perfect>;
     return <div style={style}>{this.renderActiveTags()}</div>;
   };
   /**
@@ -245,7 +245,7 @@ class HorizontalFilterBox extends Component {
   render() {
     const { longHeight } = this.state;
     return (
-      <>
+      <perfect>
         {this.renderMoreModal()}
         <div className="hori-filter-container phone-vanish">
           {this.renderClearFilter()}
@@ -299,7 +299,7 @@ class HorizontalFilterBox extends Component {
             ></div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 }

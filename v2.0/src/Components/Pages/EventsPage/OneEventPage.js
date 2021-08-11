@@ -56,7 +56,7 @@ class OneEventPage extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         <Helmet>
           <meta property="og:title" content={event.name} />
           <meta property="og:image" content={event.image && event.image.url} />
@@ -87,7 +87,7 @@ class OneEventPage extends React.Component {
             </div>
           </section>
         </div>
-      </>
+      </perfect>
     );
   }
 

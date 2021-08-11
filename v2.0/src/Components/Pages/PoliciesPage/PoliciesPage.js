@@ -10,7 +10,7 @@ class PoliciesPage extends React.Component {
 	render() {
 		if (!this.props.policies) return <LoadingCircle />;
 		return (
-			<>
+			<perfect>
 
 				<div className='boxed_wrapper'>
 					<BreadCrumbBar links={[{ name: 'Policies' }]} />
@@ -20,7 +20,7 @@ class PoliciesPage extends React.Component {
 						</Accordion>
 					</div>
 				</div>
-			</>
+			</perfect>
 		);
 	}
 

@@ -126,7 +126,7 @@ class ImpactPage extends React.Component {
     });
 
     return (
-      <>
+      <perfect>
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -317,7 +317,7 @@ class ImpactPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 }

@@ -540,3 +540,4 @@ const mapDispatchToProps = {
   reduxLoadCommunityAdmins,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);
+module.exports.LLL = AppRouter;

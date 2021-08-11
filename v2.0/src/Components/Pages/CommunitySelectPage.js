@@ -73,7 +73,7 @@ class CommunitySelectPage extends React.Component {
       (obj) => obj.community.id
     );
     return (
-      <>
+      <perfect>
         <MEAutoComplete
           textStyle={{ textTransform: "capitalize" }}
           useCaret={true}
@@ -88,7 +88,7 @@ class CommunitySelectPage extends React.Component {
           placeholder="Choose your community"
           onItemSelected={this.handleCommunitySelected}
         />
-      </>
+      </perfect>
     );
   }
 

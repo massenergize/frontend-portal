@@ -22,7 +22,7 @@ class IconBox extends React.Component {
 
   renderBoxStuff() {
     return (
-      <>
+      <perfect>
         <div className="icon-box text-center">
           <span className={this.props.icon}></span>
         </div>
@@ -37,7 +37,7 @@ class IconBox extends React.Component {
           <br />
           {this.props.description}
         </p>
-      </>
+      </perfect>
     );
   }
 

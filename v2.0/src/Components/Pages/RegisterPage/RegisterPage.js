@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 class RegisterPage extends React.Component {
 	render() { //avoids trying to render before the promise from the server is fulfilled  
 		return (
-			<>
+			<perfect>
 
 				<div className="boxed_wrapper">
 					<BreadCrumbBar links={[{ name: 'Sign Up' }]} />
@@ -21,7 +21,7 @@ class RegisterPage extends React.Component {
 						</div>
 					</section>
 				</div>
-			</>
+			</perfect>
 		);
 	}
 }

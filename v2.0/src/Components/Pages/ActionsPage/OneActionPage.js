@@ -108,7 +108,7 @@ class OneActionPage extends React.Component {
     }
     this.chooseFontSize();
     return (
-      <>
+      <perfect>
         {this.renderModal()}
         <Helmet>
           <meta property="og:title" content={action.title} />
@@ -179,7 +179,7 @@ class OneActionPage extends React.Component {
             </div>
           </section>
         </div>
-      </>
+      </perfect>
     );
   }
 
@@ -453,7 +453,7 @@ class OneActionPage extends React.Component {
       : true;
     const actionStateCase = this.getActionStateCase();
     return (
-      <>
+      <perfect>
         <div>
           <div className="product-content-box">
             <div className="row">
@@ -501,7 +501,7 @@ class OneActionPage extends React.Component {
                       }}
                     >
                       <div className="btn-envelope">
-                        <>
+                        <perfect>
                           <MECameleonButton
                             _case={actionStateCase}
                             type={TODO}
@@ -516,7 +516,7 @@ class OneActionPage extends React.Component {
                             {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("DONE")}
                           />
-                        </>
+                        </perfect>
                       </div>
 
                       {this.state.showTestimonialLink ? (
@@ -799,7 +799,7 @@ class OneActionPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
   chooseFontSize = () => {
@@ -832,7 +832,7 @@ class OneActionPage extends React.Component {
   renderStories = (stories) => {
     if (stories.length === 0) return <p> No stories about this action yet </p>;
     return (
-      <>
+      <perfect>
         {/* <div className="tab-title-h4">
                     <h4>{stories.length} Stories about this Action</h4>
                 </div> */}
@@ -844,7 +844,7 @@ class OneActionPage extends React.Component {
             </div>
           );
         })}
-      </>
+      </perfect>
     );
   };
   // on change in any category or tag checkbox update the actionsPage

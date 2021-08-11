@@ -105,7 +105,7 @@ class EventsPage extends React.Component {
     
     
     return (
-      <>
+      <perfect>
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -166,7 +166,7 @@ class EventsPage extends React.Component {
             </section>
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 

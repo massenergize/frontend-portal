@@ -123,7 +123,7 @@ class TeamsPage extends React.Component {
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
     return (
-      <>
+      <perfect>
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
 
         {createTeamModalOpen && (
@@ -205,7 +205,7 @@ class TeamsPage extends React.Component {
             <br />
 
             {teamsData.length > 0 ? (
-              <>{this.renderTeams()}</>
+              <perfect>{this.renderTeams()}</perfect>
             ) : (
               <center>
                 <p className="phone-font-15">
@@ -217,7 +217,7 @@ class TeamsPage extends React.Component {
           </div>
           <br />
         </div>
-      </>
+      </perfect>
     );
   }
 
@@ -227,21 +227,21 @@ class TeamsPage extends React.Component {
 
     if (searching) {
       return (
-        <>
+        <perfect>
           {searchedTeamsData.length > 0 ? (
             searchedTeamsData.map((teamData) => this.renderTeam(teamData))
           ) : (
             <p>No teams match your search.</p>
           )}
-        </>
+        </perfect>
       );
     } else {
       if (!user) {
         return (
-          <>
+          <perfect>
             <p>Click on a team below to join</p>
             {teamsData.map((teamData) => this.renderTeam(teamData))}
-          </>
+          </perfect>
         );
       } else {
         const [myTeams, otherTeams] = teamsData.reduce(
@@ -361,7 +361,7 @@ class TeamsPage extends React.Component {
               <div className="col-sm-9">
                 <div className="row" style={{ margin: "0 auto" }}>
                   {teamObj.logo ? (
-                    <>
+                    <perfect>
                       <div className="col-8 team-card-column">
                         <TeamStatsBars teamStats={teamData} />
                       </div>
@@ -372,7 +372,7 @@ class TeamsPage extends React.Component {
                           alt=""
                         />
                       </div>
-                    </>
+                    </perfect>
                   ) : (
                     <div className="team-card-column">
                       <TeamStatsBars teamStats={teamData} />
@@ -384,7 +384,7 @@ class TeamsPage extends React.Component {
           </Link>
         </div>
         {teamData.subTeams && teamData.subTeams.length > 0 && (
-          <>
+          <perfect>
             <button
               className="btn round-me collapse-team-btn bottom-right z-depth-float"
               onClick={() => {
@@ -408,7 +408,7 @@ class TeamsPage extends React.Component {
                 {teamData.subTeams.map((subTeam) => this.renderTeam(subTeam))}
               </div>
             )}
-          </>
+          </perfect>
         )}
       </div>
     );

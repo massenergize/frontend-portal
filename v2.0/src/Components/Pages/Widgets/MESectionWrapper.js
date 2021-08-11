@@ -30,7 +30,7 @@ export default class MESectionWrapper extends Component {
     // }
     if (!rightExtras && caret)
       return <i className="me-sect-w-right fa fa-caret-down"></i>;
-    return rightExtras && <>{rightExtras}</>;
+    return rightExtras && <perfect>{rightExtras}</perfect>;
   }
 
   showBody() {

@@ -2,7 +2,7 @@ export default class MEAnimation {
 
 
   
-  static getRandomIntegerInRange = (range) => {
+  static getRandomIntegerInRange (range) {
     return Math.floor(Math.random() * Math.floor(range));
   };
   static getAnimationClass() {

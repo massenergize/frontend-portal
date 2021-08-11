@@ -62,7 +62,7 @@ class DeleteAccountFormBase extends React.Component {
               No
             </label>
             {this.getProvider() === "email_and_password" ? (
-              <>
+              <perfect>
                 <br />
                 <small>
                   Password <span className="text-danger">*</span>
@@ -75,7 +75,7 @@ class DeleteAccountFormBase extends React.Component {
                   placeholder="Enter Password..."
                   required
                 />
-              </>
+              </perfect>
             ) : null}
           </div>
           <MEButton type="submit">{"Submit"}</MEButton>

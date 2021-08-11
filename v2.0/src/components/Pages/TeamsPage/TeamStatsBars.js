@@ -99,7 +99,7 @@ class TeamStatsBars extends React.Component {
     }
 
     return (
-      <>
+      <perfect>
         {type === DEFAULT && (
           <div className="team-card-content">
             <div className="info-section members">{membersJSX}</div>
@@ -145,7 +145,7 @@ class TeamStatsBars extends React.Component {
             </div>
           </div>
         )}
-      </>
+      </perfect>
     );
   }
 }

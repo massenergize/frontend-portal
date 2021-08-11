@@ -453,5 +453,5 @@ FormGenerator.defaultProps = {
   title: "",
   elevate: true,
   info: {},
-  moreActions: <></>,
+  moreActions: <perfect></perfect>,
 };

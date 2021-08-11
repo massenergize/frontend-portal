@@ -25,7 +25,7 @@ class LoginPage extends React.Component {
 		}
 
 		return (
-			<>
+			<perfect>
 
 				<div className="boxed_wrapper">
 					<BreadCrumbBar links={[{ name: 'Sign In' }]} />
@@ -40,7 +40,7 @@ class LoginPage extends React.Component {
 						</div>
 					</section>
 				</div>
-			</>
+			</perfect>
 		);
 	}
 }

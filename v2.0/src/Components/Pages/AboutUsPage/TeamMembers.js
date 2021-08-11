@@ -62,7 +62,7 @@ class TeamMembers extends React.Component {
                         </figure>
                         <div className="author-info text-center">
                             <h4>{member.full_name}</h4>
-                            {(member.user_info) ? <><p>{member.user_info.role}</p><p className="font-normal font-italic ">{member.user_info.description}</p></> : null}
+                            {(member.user_info) ? <perfect><p>{member.user_info.role}</p><p className="font-normal font-italic ">{member.user_info.description}</p></perfect> : null}
                             <hr/>
                         </div>
                             

@@ -19,7 +19,7 @@ class WelcomeImages extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
     }
-    handleResize = () => {
+    handleResize () {
         this.forceUpdate();
     };
 

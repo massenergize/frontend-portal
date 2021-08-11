@@ -28,12 +28,12 @@ class RSVPForm extends React.Component {
 
   render() {
     return (
-      <>
+      <perfect>
         {this.props.noText ? null : (
-          <>
+          <perfect>
             <h6 style={{ display: "inline-block" }}> RSVP </h6>
             {"\u00A0"}
-          </>
+          </perfect>
         )}
         <select value={this.state.value} onChange={this.onChange}>
           <option value="--">--</option>
@@ -47,7 +47,7 @@ class RSVPForm extends React.Component {
             Submit
           </button>
         ) : null}
-      </>
+      </perfect>
     );
   }
 

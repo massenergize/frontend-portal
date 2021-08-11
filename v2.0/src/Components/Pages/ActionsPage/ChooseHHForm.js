@@ -41,7 +41,7 @@ class ChooseHHForm extends React.Component {
     }
     this.checkHouseholds();
     return (
-      <>
+      <perfect>
         <div className="act-modal-whole">
           <div className="act-title-bar">
             <h3>{this.props.action.title}</h3>
@@ -103,7 +103,7 @@ class ChooseHHForm extends React.Component {
             ) : null}
           </div>
         </div>
-      </>
+      </perfect>
     );
   }
 
