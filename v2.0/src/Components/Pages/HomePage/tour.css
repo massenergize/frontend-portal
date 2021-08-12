@@ -57,7 +57,8 @@
     transition: all 0.3s ease-out; }
   
   .introjs-showElement {
-    z-index: 9999999 !important; }
+    z-index: 9999999 !important; 
+  position: relative;}
   
   tr.introjs-showElement > td {
     z-index: 9999999 !important;
@@ -65,7 +66,8 @@
   
   tr.introjs-showElement > th {
     z-index: 9999999 !important;
-    position: relative; }
+    position: relative; 
+  }
   
   .introjs-disableInteraction {
     z-index: 99999999 !important;
@@ -78,14 +80,28 @@
     position: relative; }
   
   .introjs-helperLayer {
-    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    position: absolute;
+    z-index: 9999998;
+    background-color: #FFF;
+    background-color: rgba(255,255,255,.9);
+    border: 1px solid #777;
+    border: 1px solid rgba(0,0,0,.5);
+    border-radius: 4px;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 40%);
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    /*-webkit-box-sizing: content-box;
             box-sizing: content-box;
     position: absolute;
     z-index: 9999998;
     border-radius: 4px;
     -webkit-transition: all 0.3s ease-out;
     -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out; }
+    transition: all 0.3s ease-out; */}
     .introjs-helperLayer * {
       -webkit-box-sizing: content-box;
               box-sizing: content-box; }
@@ -298,7 +314,7 @@
     border-radius: 25%;
     }
     .introjs-nextbutton:hover {
-        background-color: 
+        background-color: #8CC43C;
     }
   
   .introjs-disabled {

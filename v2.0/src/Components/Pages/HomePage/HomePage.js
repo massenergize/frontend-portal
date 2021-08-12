@@ -56,7 +56,7 @@ class HomePage extends React.Component {
       initialStep: 0, 
       steps: [
         {
-          element: ".iconBoxTable", 
+          element: '.welcomeImages',
           intro: "Icon Box Table", 
         },
         {
