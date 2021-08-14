@@ -27,7 +27,9 @@ import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-
+import DefaultClass from "../../Shared/Classes/DefaultClass";
+import MECameleonButton from "./MEChameleonButton";
+import MEChameleonButton from "./MEChameleonButton";
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
  * @props none - fetch data from api instead of getting data passed to you from props
@@ -231,7 +233,6 @@ class ActionsPage extends React.Component {
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
                     className="row scroll-fix"
-                    
                     style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}
@@ -253,6 +254,52 @@ class ActionsPage extends React.Component {
   // };
   // renders all the actions
   renderActions(actions) {
+    return (
+      <div className="col-lg-6 col-md-12 col-sm-12 col-12">
+        <div
+          className="every-day-flex z-depth-1"
+          style={{
+            flexDirection: "column",
+            borderRadius: 10,
+            marginBottom: 10,
+          }}
+        >
+          <div className="img-and-btns-container every-day-flex" style={{}}>
+            <img
+              className="sensitive-photo"
+              src={DefaultClass.getTestimonialsDefaultPhoto()}
+              style={{ flex: "9" }}
+              alt="dummy media"
+            />
+            <div
+              className="btn-sidebar-container every-day-flex"
+              style={{ flex: "3" }}
+            >
+              <div
+                className="every-day-flex"
+                style={{ flexDirection: "column", flex: "12" }}
+              >
+                <MEChameleonButton
+                  style={{ flex: "3" }}
+                  className="cameleon-correct"
+                />
+                <MEChameleonButton
+                  style={{ flex: "3" }}
+                  className="cameleon-correct"
+                />
+                <MEChameleonButton
+                  style={{ flex: "3" }}
+                  className="cameleon-correct"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="text-footer">
+            <p> This is teh footer bro</p>
+          </div>
+        </div>
+      </div>
+    );
     if (!actions) {
       return (
         <p style={{ width: "100%", textAlign: "center" }}>

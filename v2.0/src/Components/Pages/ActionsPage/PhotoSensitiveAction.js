@@ -1,10 +1,8 @@
 import React from "react";
+import "./../../../assets/css/PhotosensitiveCard/PhotosensitiveCard.css";
 import { Link } from "react-router-dom";
-// import Tooltip from "../../Shared/Tooltip";
-// import ChooseHHForm from "./ChooseHHForm";
 import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
-// import Tooltip from "../Widgets/CustomTooltip";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
@@ -22,7 +20,7 @@ import {
 } from "./ActionStateConstants";
 import MECameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-// import photo from "./try.png";
+
 
 /**
  * Action Component is a single action for the action page,
@@ -153,7 +151,6 @@ class PhotoSensitiveAction extends React.Component {
 
   checkDone() {
     var action = this.props.action;
-    // var households = this.props.user.households || [];
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
@@ -171,12 +168,11 @@ class PhotoSensitiveAction extends React.Component {
           style={{
             minHeight: 160,
             borderRadius: 10,
-            // border: "solid 2px #8dc343",
           }}
           className="z-depth-1"
         >
           <div className="new-action-btns-div me-anime-move-from-left-normal">
-            {/* {this.checkDoneAndReturn()} */}
+      
 
             <MECameleonButton
               _case={actionStateCase}
@@ -229,13 +225,11 @@ class PhotoSensitiveAction extends React.Component {
             <img
               className="action-img-correction"
               src={this.props.action.image ? this.props.action.image.url : null}
-              // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
               alt="action"
             />
           </Link>
           <div
             className="new-action-title-container"
-            // style={{ textAlign: "center" }}
           >
             <Link to={this.props.links.actions + "/" + this.props.action.id}>
               <METextView

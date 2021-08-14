@@ -188,7 +188,7 @@ class EditingProfileForm extends React.Component {
             Profile Picture
           </small>
           {this.state.image ?
-          <img src={this.state.image}></img>
+          <img src={this.state.image} alt="user media"></img>
           :
           <div>None</div>}
           <input

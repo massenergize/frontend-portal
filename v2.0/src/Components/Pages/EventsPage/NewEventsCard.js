@@ -80,7 +80,7 @@ export default class NewEventsCard extends Component {
     return name;
   }
   renderNewCardDesign() {
-    var { className, location, dateString, id, recurringDetailString } = this.props;
+    var { className, dateString, id, recurringDetailString } = this.props;
     return (
       <div>
         <MECard
