@@ -360,7 +360,7 @@ class NavBarBurger extends React.Component {
     const { user } = this.props;
     const btnColor =
       user.preferences && user.preferences.color
-        ? user.preferendes.color
+        ? user.preferences.color
         : "#135dfe";
     // const style = {
     //   borderColor:"white",
