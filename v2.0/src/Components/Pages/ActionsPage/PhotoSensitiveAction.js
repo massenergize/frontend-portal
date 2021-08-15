@@ -1,17 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
-// import Tooltip from "../../Shared/Tooltip";
-// import ChooseHHForm from "./ChooseHHForm";
+import "./../../../assets/css/PhotosensitiveCard/PhotosensitiveCard.css";
+import { Link, withRouter } from "react-router-dom";
 import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
-// import Tooltip from "../Widgets/CustomTooltip";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
 } from "../../../redux/actions/userActions";
 import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
-import METextView from "../Widgets/METextView";
+// import METextView from "../Widgets/METextView";
 import {
   DEFAULT_STATE,
   DONE,
@@ -20,9 +18,8 @@ import {
   NO_AUTH,
   TODO,
 } from "./ActionStateConstants";
-import MECameleonButton from "./MEChameleonButton";
+import MEChameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-// import photo from "./try.png";
 
 /**
  * Action Component is a single action for the action page,
@@ -153,105 +150,97 @@ class PhotoSensitiveAction extends React.Component {
 
   checkDone() {
     var action = this.props.action;
-    // var households = this.props.user.households || [];
     var done = this.props.done ? this.props.done : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
     return exists;
   }
 
-  newRender() {
+  newFlexRender() {
     const actionStateCase = this.getActionStateCase();
     return (
       <div
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()}`}
-        style={{ padding: 10 }}
+        key={this.props.key?.toString()}
       >
         <div
+          className="every-day-flex z-depth-1"
           style={{
-            minHeight: 160,
+            flexDirection: "column",
             borderRadius: 10,
-            // border: "solid 2px #8dc343",
+            marginBottom: 10,
           }}
-          className="z-depth-1"
         >
-          <div className="new-action-btns-div me-anime-move-from-left-normal">
-            {/* {this.checkDoneAndReturn()} */}
-
-            <MECameleonButton
-              _case={actionStateCase}
-              type={TODO}
-              {...this.getNoAuthParams()}
-              onClick={() => this.runActionFunction("TODO")}
-              {...this.getTodoPopoverInfo()}
-            />
-
-            {/* <br /> */}
-
-            <MECameleonButton
-              _case={actionStateCase}
-              type={DONE}
-              {...this.getNoAuthParams()}
-              onClick={() => this.runActionFunction("DONE")}
-            />
-
-            <MEButton
-              to={this.props.links.actions + "/" + this.props.action.id}
-              style={{
-                padding: "5px 18px ",
-                fontSize: "14px",
-                minWidth: 76,
-                textAlign: "center",
-                marginLeft: 5,
-              }}
-              className="phone-vanish"
-            >
-              Info
-            </MEButton>
-
-            {/* ----- Show this button in phone mode --------- */}
-            <MEButton
-              to={this.props.links.actions + "/" + this.props.action.id}
-              style={{
-                padding: "5px 22px ",
-                fontSize: "small",
-                minWidth: 67,
-                textAlign: "center",
-                marginLeft: 5,
-              }}
-              className="pc-vanish"
-            >
-              Info
-            </MEButton>
-            <br />
-          </div>
-          <Link to={this.props.links.actions + "/" + this.props.action.id}>
+          <div className="img-and-btns-container every-day-flex" style={{}}>
             <img
-              className="action-img-correction"
+              onClick={() =>
+                this.props.history.push(
+                  this.props.links.actions + "/" + this.props.action.id
+                )
+              }
+              className="sensitive-photo"
               src={this.props.action.image ? this.props.action.image.url : null}
-              // style={{ width: "100%", objectFit: "contain", borderRadius: 10, height:160 }}
               alt="action"
+              style={{ flex: "9" }}
             />
-          </Link>
-          <div
-            className="new-action-title-container"
-            // style={{ textAlign: "center" }}
-          >
-            <Link to={this.props.links.actions + "/" + this.props.action.id}>
-              <METextView
-                containerStyle={{ display: "block" }}
-                style={{
-                  padding: "0px 10px",
-                  marginBottom: 3,
-                  marginLeft: 20,
-                  color: "black",
-                  fontSize: 18,
-                }}
+            <div
+              className="btn-sidebar-container every-day-flex"
+              style={{ flex: "3" }}
+            >
+              <div
+                className="every-day-flex"
+                style={{ flexDirection: "column", flex: "12" }}
               >
-                {this.props.action.title}
-                <br />
-              </METextView>
-            </Link>
+                <MEChameleonButton
+                  style={{ flex: "3" }}
+                  className="cameleon-correct"
+                  _case={actionStateCase}
+                  type={TODO}
+                  {...this.getNoAuthParams()}
+                  onClick={() => this.runActionFunction("TODO")}
+                  {...this.getTodoPopoverInfo()}
+                />
+                <MEChameleonButton
+                  style={{ flex: "3" }}
+                  className="cameleon-correct"
+                  _case={actionStateCase}
+                  type={DONE}
+                  {...this.getNoAuthParams()}
+                  onClick={() => this.runActionFunction("DONE")}
+                />
+                {/* ----- Show this button in phone mode --------- */}
+                <MEButton
+                  to={this.props.links.actions + "/" + this.props.action.id}
+                  style={{
+                    padding: "4px 17px ",
+                    fontSize: "0.8rem",
+                    minWidth: 60,
+                    textAlign: "center",
+                    marginLeft: 5,
+                  }}
+                  containerClassName="pc-vanish"
+                >
+                  Info
+                </MEButton>
+                <MEButton
+                  to={this.props.links.actions + "/" + this.props.action.id}
+                  style={{
+                    padding: "5px 18px ",
+                    fontSize: "14px",
+                    minWidth: 76,
+                    textAlign: "center",
+                    marginLeft: 5,
+                  }}
+                  containerClassName="phone-vanish"
+                >
+                  Info
+                </MEButton>
+              </div>
+            </div>
+          </div>
+          <div className="text-footer">
+            {this.props.action.title}
+            <br />
             {this.showNotifications()}
           </div>
         </div>
@@ -345,7 +334,7 @@ class PhotoSensitiveAction extends React.Component {
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
-    if (this.shouldRender()) return this.newRender();
+    if (this.shouldRender()) return this.newFlexRender();
     return <></>;
   }
 
@@ -487,4 +476,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(PhotoSensitiveAction);
+)(withRouter(PhotoSensitiveAction));

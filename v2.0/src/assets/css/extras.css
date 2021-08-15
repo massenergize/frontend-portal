@@ -1,10 +1,10 @@
-/* .stories-side-vendors-container {
+.every-day-flex {
   display: flex;
-  align-items: flex-start;
   flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-} */
+  align-items: center;
+  justify-content: center;
+  flex: 12;
+}
 
 .stories-sm-vendor {
   /* text-align: center; */
@@ -1599,6 +1599,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .cameleon-correct {
+    padding: 4px 15px !important;
+    font-size: 0.9rem;
+  }
   .scroll-fix {
     /* height: 100vh; */
     overflow-y: scroll;
@@ -1730,6 +1734,13 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .sensitive-photo {
+    height: 120px !important;
+  }
+  .cameleon-correct {
+    font-size: 0.8rem !important;
+    padding: 4px 10px !important;
+  }
   .phone-font-15 {
     font-size: 15px;
   }
