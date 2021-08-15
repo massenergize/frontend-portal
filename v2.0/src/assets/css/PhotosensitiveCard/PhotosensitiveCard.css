@@ -14,16 +14,16 @@
 
 .sensitive-photo {
   height: 150px;
-  width: 100%;
+  width: 60%;
+  object-fit: contain;
+  border-top-left-radius: 10px;
+  cursor: pointer;
 }
 
 .btn-sidebar-container {
   padding: 10px;
 }
 
-.sensitive-photo {
-  /* border-top-right-radius: 10px; */
-  border-top-left-radius: 10px;
+.img-and-btns-container {
+  width: 100%;
 }
-
-
