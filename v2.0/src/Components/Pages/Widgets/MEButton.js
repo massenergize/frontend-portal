@@ -67,7 +67,7 @@ class MEButton extends Component {
     const styles = style ? { ...style } : null;
     if (!href && !to) {
       return (
-        <div className="put-me-inline">
+        <div className={"put-me-inline"}>
           <button
             type={type}
             disabled={disabled}
@@ -116,9 +116,12 @@ class MEButton extends Component {
       );
   }
   render() {
-    const { containerStyle } = this.props;
+    const { containerStyle, containerClassName } = this.props;
     return (
-      <div className="put-me-inline" style={containerStyle}>
+      <div
+        className={`put-me-inline ${containerClassName}`}
+        style={containerStyle}
+      >
         {this.ejectComponent()}
       </div>
     );
@@ -135,6 +138,7 @@ MEButton.defaultProps = {
   iconSize: "small",
   iconColor: "#282828",
   containerStyle: {},
+  containerClassName: "",
   target: null,
 };
 

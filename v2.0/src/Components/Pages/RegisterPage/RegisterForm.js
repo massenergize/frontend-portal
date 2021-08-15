@@ -314,7 +314,6 @@ class RegisterFormBase extends React.Component {
       city,
       state,
       zip,
-      specialUser
       //serviceProvider,
       //termsAndServices,
     } = this.state;
