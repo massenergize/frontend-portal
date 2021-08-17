@@ -80,6 +80,7 @@ class AppRouter extends Component {
       community: null,
       error: null,
       loading: true,
+      pagesEnabled: {},
     };
 
     this.userHasAnIncompleteRegistration =
@@ -211,6 +212,18 @@ class AppRouter extends Component {
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
+
+          this.setState({ pagesEnabled: {
+            aboutUsPage: aboutUsPageResponse.data.is_published,
+            actionsPage: actionsPageResponse.data.is_published,
+            contactUsPage: contactUsPageResponse.data.is_published,
+            donatePage: donatePageResponse.data.is_published,
+            eventsPage: eventsPageResponse.data.is_published,
+            impactPage: impactPageResponse.data.is_published,
+            vendorsPage: vendorsPageResponse.data.is_published,
+            testimonialsPage: testimonialsPageResponse.data.is_published,
+            teamsPage: teamsPageResponse.data.is_published,
+          }})
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -292,8 +305,24 @@ class AppRouter extends Component {
       if (menu[4]) {
         newAbout.children = [...newAbout.children, menu.pop()];
       }
+      // remove menu items for pages which cadmins have selected as not enabled
+      newAbout.children = newAbout.children.filter((item) => {
+        switch(item.link) {
+          case "/impact":
+            return this.state.pagesEnabled.impactPage;
+          case "/aboutus":
+            return this.state.pagesEnabled.aboutUsPage;
+          case "/donate":
+              return this.state.pagesEnabled.donatePage;
+          case "/contactus":
+            return this.state.pagesEnabled.contactUsPage;
+          default:
+            return true;
+        }
+      })
       menu[3] = newAbout;
     }
+
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
       actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
@@ -301,8 +330,22 @@ class AppRouter extends Component {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
+      // remove menu items for pages which cadmins have selected as not enabled
+      newAction.children = newAction.children.filter((item) => {
+        switch(item.link) {
+          case "/actions":
+            return this.state.pagesEnabled.actionsPage;
+          case "/services":
+            return this.state.pagesEnabled.vendorsPage;
+          case "/testimonials":
+            return this.state.pagesEnabled.testimonialsPage;
+          default:
+            return true;
+        }
+      })
       menu[1] = newAction;
     }
+
     const actionsIndex = menu.findIndex((item) => item.name === "Actions");
     const menuPostActions = menu.splice(actionsIndex + 1);
     menu = [
@@ -310,6 +353,20 @@ class AppRouter extends Component {
       { link: "/teams", name: "Teams" },
       ...menuPostActions,
     ];
+
+    // remove menu items for pages which cadmins have selected as not enabled
+    menu = menu.filter((item) => {
+      switch(item.link) {
+        case "/teams":
+          return this.state.pagesEnabled.teamsPage;
+        case "/events":
+          return this.state.pagesEnabled.eventsPage;
+        case "/home":
+          return true;
+        default:
+          return item.children ? item.children.length > 0 : true;
+      }
+    })
     return menu;
   }
 
@@ -383,22 +440,24 @@ class AppRouter extends Component {
       finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const communitiesLink = {
-      name: "All MassEnergize Community Sites",
-      link: "http://" + window.location.host,
-      special: true,
-    };
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
     const communityInfo = this.state.community || {};
+
+    const communitiesLink = {
+      name: "All MassEnergize Community Sites",
+      link: "http://" + window.location.host,
+      special: true,
+    };
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
       allCommunities: communitiesLink,
     };
+
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
