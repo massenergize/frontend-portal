@@ -239,6 +239,7 @@ class ChooseHHForm extends React.Component {
         <div
           className={`act-item`}
           onClick={() => this.onChange(values[index])}
+          key={index.toString()}
         >
           <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
           <p>{name}</p>
