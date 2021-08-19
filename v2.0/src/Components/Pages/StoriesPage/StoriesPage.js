@@ -1,6 +1,4 @@
 import React from "react";
-// import LoadingCircle from "../../Shared/LoadingCircle";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import StoryForm from "../ActionsPage/StoryForm";
@@ -19,14 +17,7 @@ import {
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-//import ErrorPage from "./../Errors/ErrorPage";
-// import Funnel from "./../EventsPage/Funnel";
-// import leafy from "./leafy.png";
-// import * as moment from "moment";
-// import MECard from "../Widgets/MECard";
-// import Paginator from "../Widgets/Paginator";
-// import { inThisTeam } from "../TeamsPage/utils";
-// import MEFileSelector from "../Widgets/MEFileSelector";
+import StorySheet from "./Story Sheet/StorySheet";
 
 class StoriesPage extends React.Component {
   constructor(props) {
@@ -132,18 +123,9 @@ class StoriesPage extends React.Component {
 
     if (pageData == null) return <LoadingCircle />;
 
-    //if (!this.props.events || !this.props.tagCols) {
     if (!this.props.tagCols) {
       return <LoadingCircle />;
     }
-
-    //if (!this.props.pageData)
-    //return (
-    //  <ErrorPage
-    //    errorMessage="Data unavailable"
-    //    errorDescription="Unable to load Testimonials data"
-    //  />
-    //);
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
@@ -195,9 +177,9 @@ class StoriesPage extends React.Component {
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
-                  {this.renderAddTestmonialBtn()}
+                  {/* {this.renderAddTestmonialBtn()} */}
                 </div>
-                <div className="col-md-9 col-lg-9 col-sm-12 ">
+                <div className="col-md-10 col-lg-10 offset-md-1 col-sm-12 ">
                   <div
                     className="row"
                     style={{
@@ -205,7 +187,8 @@ class StoriesPage extends React.Component {
                       paddingBottom: 50,
                     }}
                   >
-                    {this.renderStories(stories)}
+                    {/* {this.renderStories(stories)} */}
+                    <StorySheet />
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                   <div>{this.renderTestimonialForm()}</div>

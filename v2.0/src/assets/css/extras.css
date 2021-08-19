@@ -1,3 +1,8 @@
+:root {
+  --app-theme-orange: #f57b34;
+  --app-theme-green: #8dc443;
+}
+
 .every-day-flex {
   display: flex;
   flex-direction: row;
