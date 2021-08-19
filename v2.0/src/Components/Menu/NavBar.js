@@ -37,7 +37,7 @@ class NavBar extends React.Component {
 	render() {
 		const { links } = this.props
 		return (
-			<div>
+			<div className="navMenu">
 				<nav className="theme_menu navbar stricky">
 					<div className="container">
 						<div className="row">

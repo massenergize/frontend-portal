@@ -41,10 +41,12 @@
     "react-scripts": "^3.4.3",
     "react-share": "^4.2.1",
     "react-to-print": "^2.9.0",
+    "reactour": "^1.18.6",
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -10,9 +10,7 @@ import { IS_SANDBOX } from "../../../config";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
-import { Steps, Hints } from "intro.js-react";
-import "./tour.css";
-
+import Tour from 'reactour';
 /*'
  * The Home Page of the MassEnergize
  */
@@ -20,82 +18,49 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     //first, check if the user has visited the page before - using localStorage
-    /*if (!localStorage.getItem('repeatUser')) {
+    //if (!localStorage.getItem('repeatUser')) {
+    //CONDITION IS FOR TESTING ONLY
+    if (1 === 1) {
       //this is the user's first visit to the portal
       //change state to include tour
+      console.log('not repeat user');
       this.state = {
-        stepsEnabled: true, 
-        initialStep: 0, 
-        steps: [
-          {
-            element: ".iconBoxTable", 
-            intro: "Icon Box Table", 
-          },
-          {
-            element: ".welcomeImages",
-            intro: "World step"
-          }
-        ],
-        hintsEnabled: true,
-        hints: []
+        tourIsOpen: true
       };
+      console.log('state', this.state);
       localStorage.setItem('repeatUser', true);
-    } else {
-      //this is not the user's first visit to the website
-      //state is empty - no tour
+    }
+    else {
       this.state = {
-        stepsEnabled: false,
-        steps:[],
-        hintsEnabled: false, 
-        hints:[]
+        tourIsOpen: false
       };
-    }*/
-    //testing only
-    this.state = {
-      stepsEnabled: true, 
-      initialStep: 0, 
-      steps: [
-        {
-          element: '.welcomeImages',
-          intro: "Icon Box Table", 
-        },
-        {
-          element: ".welcomeImages",
-          intro: "World step"
-        }
-      ],
-      hintsEnabled: true,
-      hints: []
-    };
+    }
+      
+    
   }
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
-  onExit = () => {
-    this.setState(() => ({ stepsEnabled: false }));
-  };
-  toggleSteps = () => {
-    this.setState(prevState => ({ stepsEnabled: !prevState.stepsEnabled }));
-  };
-  addStep = () => {
-    const newStep = {
-      element: ".alive",
-      intro: "Alive step"
-    };
-    this.setState(prevState => ({ steps: [...prevState.steps, newStep] }));
-  };
-  toggleHints = () => {
-    this.setState(prevState => ({ hintsEnabled: !prevState.hintsEnabled }));
-  };
-  addHint = () => {
-    const newHint = {
-      element: ".alive",
-      hint: "Alive hint",
-      hintPosition: "middle-right"
-    };
-  }
+  
+  
   render() {
+
+    const steps = [
+      {
+        selector: '#welcome',
+        content: 'Welcome to this MassEnergize community! We are a group of people dedicated to addressing climate change by reducing our greenhouse gas emissions. This portal exists to empower you and your family to fight climate change by providing you with tools, strategies, and resources. By creating an account, you can track how much CO2 you save and participate in community initiatives and events.',
+      },
+      {
+        selector: '#panel', 
+        content: "These buttons allow you to engage with the community and take you to different pages of the website."
+      }, 
+      {
+        selector: '#nav-bar', 
+        content: "Here is the navigation menu. Let's go to the Actions page. Close out of this popup and click on Actions. (If you're on mobile, click the horizontal bars and then Actions.)"
+      }
+      // ...
+    ];
     if (!this.props.pageData) {
       return (
         <ErrorPage
@@ -172,27 +137,24 @@ class HomePage extends React.Component {
           : null,
       });
     }
-    const {
-      stepsEnabled,
-      steps,
-      initialStep, 
-      hintsEnabled, 
-      hints
-    } = this.state;
+    console.log('STATE IN RENDER', this.state);
     return (
       <div className="boxed_wrapper">
-        <Steps
-          enabled={stepsEnabled}
+        <Tour
+          accentColor="#8CC43C"
           steps={steps}
-          initialStep={initialStep}
-          onExit={this.onExit}
+          isOpen={this.state.tourIsOpen}
+          rounded="20"
+          onRequestClose={() => {
+            this.setState({
+              tourIsOpen: false
+            });
+          }}
         />
-        <Hints enabled={hintsEnabled} hints={hints} />
         {welcomeImagesData ? (
           <WelcomeImages  className="welcomeImages" data={welcomeImagesData} title={title} />
         ) : null}
         <div
-          className=""
           style={{ padding: 30, background: "white", color: "#383838" }}
         >
           <div className="text-center">
@@ -218,11 +180,13 @@ class HomePage extends React.Component {
         </div>
 
         {this.props.pageData.show_featured_links ? (
-          <IconBoxTable
-            className="iconBoxTable"
-            title="Get started - See your local options!"
-            boxes={iconQuickLinks}
-          />
+          <div id="panel"> 
+            <IconBoxTable
+              className="iconBoxTable"
+              title="Get started - See your local options!"
+              boxes={iconQuickLinks}
+            />
+          </div>
         ) : null}
         {this.props.pageData.show_featured_stats ? (
           <Graphs
