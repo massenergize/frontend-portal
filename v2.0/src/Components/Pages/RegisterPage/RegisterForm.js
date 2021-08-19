@@ -50,6 +50,7 @@ function getRandomColor() {
   }
   return color;
 }
+
 class RegisterFormBase extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +59,7 @@ class RegisterFormBase extends React.Component {
       ...INITIAL_STATE,
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
+      email: null
     };
 
     this.onChange = this.onChange.bind(this);
@@ -65,8 +67,10 @@ class RegisterFormBase extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.setRegProtocol = this.setRegProtocol.bind(this);
+    //const { id } = this.props.match.params; 
+    //console.log(id);
   }
-
+  
   getRegProtocol() {
     return localStorage.getItem("reg_protocol");
   }
@@ -309,11 +313,29 @@ class RegisterFormBase extends React.Component {
       preferredName,
       city,
       state,
-      zip
+      zip,
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-
+    const body = { email: this.props.auth.email }
+    apiCall("users.checkImported", body)
+    .then((json) => {
+      console.log(json);
+      if (json.success && json.data.imported) {
+        console.log(json);
+        this.setState({
+          firstName: json.data.firstName, 
+          lastName: json.data.lastName, 
+          preferredName: json.data.preferredName,
+          specialUser: true
+        });
+      } else {
+        console.log(json.error);
+      }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
@@ -362,6 +384,9 @@ class RegisterFormBase extends React.Component {
                   <p style={{ color: "red" }}>
                     {" "}
                     Please finish creating your profile before you continue
+                    {this.state.specialUser ? 
+                    <p>Welcome! You have been invited by a community admin to this MassEnergize Community.</p> : 
+                    <></>}
                   </p>
                 </center>
                 <div className="form-group">
@@ -659,6 +684,7 @@ class RegisterFormBase extends React.Component {
       this.setState({ creating: true });
       apiCall("users.create", body)
         .then((json) => {
+        console.log(body);
           var token = this.props.auth
             ? this.props.auth.stsTokenManager.accessToken
             : null;

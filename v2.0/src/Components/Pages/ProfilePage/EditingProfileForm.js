@@ -33,25 +33,24 @@ class EditingProfileForm extends React.Component {
     this.setState({
       image: e.target.files[0]
     });
-    //upload image to server
+    //upload image to server ON SUBMIT
     //other fields are probably unnecessary?
-    const body = {
-      user_id: this.props.user.id,
-      full_name: this.state.full_name,
-      profile_picture: this.state.image,
-      preferred_name: this.state.preferred_name
-    };
-     apiCall("users.update", body)
-    .then((json) => {
-      console.log('apiCall');
-      if (json.success && json.data) {
-        this.props.reduxLogin(json.data);
-        this.props.closeForm();
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    //const body = {
+    //  user_id: this.props.user.id,
+    //  full_name: this.state.full_name,
+    //  profile_picture: this.state.image,
+    //  preferred_name: this.state.preferred_name
+    //};
+    // apiCall("users.update", body)
+    //.then((json) => {
+    //  if (json.success && json.data) {
+    //    this.props.reduxLogin(json.data);
+    //    this.props.closeForm();
+    //  }
+    //})
+    //.catch((error) => {
+    //  console.log(error);
+    //});
 
     //crop the image to the aspect ratio we want: in this case, 1:1
     const outputImageAspectRatio = 1;
@@ -120,7 +119,6 @@ class EditingProfileForm extends React.Component {
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
         .then((json) => {
-          console.log('apiCall');
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
@@ -190,9 +188,9 @@ class EditingProfileForm extends React.Component {
             Profile Picture
           </small>
           {this.state.image ?
-          <img src={this.state.image}></img>
+          <img src={this.state.image} alt="user media"></img>
           :
-          <div></div>}
+          <div>None</div>}
           <input
             type="file"
             accept="image/png, image/jpeg"

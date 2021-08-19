@@ -280,7 +280,6 @@ class ActionsPage extends React.Component {
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
                     className="row scroll-fix"
-                    id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}
@@ -321,26 +320,28 @@ class ActionsPage extends React.Component {
     return Object.keys(actions).map((key) => {
       var action = actions[key];
       return (
-        <Action
-          key={key}
-          action={action}
-          tagCols={this.props.tagCols}
-          match={this.props.match} //passed from the Route, need to forward to the action for url matching
-          user={this.props.user}
-          addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
-          inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
-          moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
-          modalIsOpen={this.state.openModalForm === action.id}
-          showTestimonialLink={this.state.testimonialLink === action.id}
-          // closeHHForm={() => this.setState({ openAddForm: null })}
-          // openHHForm={(aid) => this.setState({ openAddForm: aid })}
-          showTodoMsg={this.state.showTodoMsg}
-          toggleShowTodoMsg={() => {
-            this.setState({ showTodoMsg: false });
-          }}
-          openModal={this.openModal}
-          closeModal={() => this.setState({ openModalForm: null })}
-        />
+          <Action
+            key={key}
+            action={action}
+            tagCols={this.props.tagCols}
+            match={this.props.match} //passed from the Route, need to forward to the action for url matching
+            user={this.props.user}
+            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+            moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
+            modalIsOpen={this.state.openModalForm === action.id}
+            showTestimonialLink={this.state.testimonialLink === action.id}
+            dontShowTestimonialLinkFxn={() =>
+              this.setState({ testimonialLink: false })
+            }
+            showTodoMsg={this.state.showTodoMsg}
+            clearNotificationMsgs={() =>
+              this.setState({ showTodoMsg: false, testimonialLink: false })
+            }
+            openModal={this.openModal}
+            closeModal={() => this.setState({ openModalForm: null })}
+          />
+      
       );
     });
   }
@@ -379,10 +380,14 @@ class ActionsPage extends React.Component {
     };
     apiCall("users.actions.completed.add", body)
       .then((json) => {
+        console.log("api called here");
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
           // this.addToImpact(json.data.action);
-          this.setState({ testimonialLink: actionRel.action.id });
+          this.setState({
+            testimonialLink: actionRel.action.id,
+            showTodoMsg: false,
+          });
         } else {
           console.log(json.error);
         }

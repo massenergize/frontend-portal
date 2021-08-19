@@ -80,11 +80,11 @@ class AppRouter extends Component {
       community: null,
       error: null,
       loading: true,
+      pagesEnabled: {},
     };
 
-    this.userHasAnIncompleteRegistration = this.userHasAnIncompleteRegistration.bind(
-      this
-    );
+    this.userHasAnIncompleteRegistration =
+      this.userHasAnIncompleteRegistration.bind(this);
   }
 
   componentDidMount() {
@@ -117,16 +117,11 @@ class AppRouter extends Component {
 
     /* first see if the community exists and is published (if not sandbox) */
     const json = await apiCall("communities.info", body);
-		if (json.success) {
-				this.props.reduxLoadCommunityInformation(json.data);
-        this.setState({ community: json.data, 
-                        loading: false ,
-                        error: null });
-		}
-    else {
-      this.setState({ community: null,
-        loading: false ,        
-        error: json.error });        
+    if (json.success) {
+      this.props.reduxLoadCommunityInformation(json.data);
+      this.setState({ community: json.data, loading: false, error: null });
+    } else {
+      this.setState({ community: null, loading: false, error: json.error });
     }
 
     if (this.state.community) {
@@ -135,35 +130,33 @@ class AppRouter extends Component {
         apiCall("home_page_settings.info", body),
         apiCall("menus.list", body), //should add all communities to the menus.list
       ])
-      .then((res) => {
-        const [homePageResponse, mainMenuResponse] = res;
-        this.props.reduxLoadHomePage(homePageResponse.data);
-        this.props.reduxLoadMenu(mainMenuResponse.data);
-      })
-      .catch((err) => {
-        this.setState({ error: err });
-        console.log(err);
-      });
-      console.log('bodydyddy', body);
+        .then((res) => {
+          const [homePageResponse, mainMenuResponse] = res;
+          this.props.reduxLoadHomePage(homePageResponse.data);
+          this.props.reduxLoadMenu(mainMenuResponse.data);
+        })
+        .catch((err) => {
+          this.setState({ error: err });
+          console.log(err);
+        });
       apiCall("events.date.update", body)
-      .then((json) => {
-        console.log('dates updated');
-        if (json.success) {
-          console.log('EVENT DATE UPDATE CALL', json);
-        }else {
-          console.log(json.error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+        .then((json) => {
+          if (json.success) {
+            // console.log('EVENT DATE UPDATE CALL', json);
+          } else {
+            console.log(json.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       Promise.all([
         apiCall("about_us_page_settings.info", body),
         apiCall("actions_page_settings.info", body),
         apiCall("actions.list", body),
         apiCall("graphs.actions.completed", body),
         apiCall("graphs.communities.impact", body),
-        apiCall("contact_us_page_settings.info", body),        
+        apiCall("contact_us_page_settings.info", body),
         apiCall("donate_page_settings.info", body),
         apiCall("events_page_settings.info", body),
         apiCall("events.list", body),
@@ -178,55 +171,65 @@ class AppRouter extends Component {
         apiCall("vendors_page_settings.info", body),
         apiCall("vendors.list", body),
       ])
-      .then((res) => {
-        const [
-          aboutUsPageResponse,
-          actionsPageResponse,
-          actionsResponse,
-          actionsCompletedResponse,
-          communityStatsResponse,
-          contactUsPageResponse,
-          donatePageResponse,
-          eventsPageResponse,
-          eventsResponse,
-          eventExceptionsResponse,
-          impactPageResponse,
-          policiesResponse,
-          teamsPageResponse,
-          teamResponse,
-          tagCollectionsResponse,
-          testimonialsPageResponse,
-          testimonialsResponse,
-          vendorsPageResponse,
-          vendorsResponse,
-        ] = res;
-        this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
-        this.props.reduxLoadActionsPage(actionsPageResponse.data);
-        this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
-        this.props.reduxLoadDonatePage(donatePageResponse.data);
-        this.props.reduxLoadEventsPage(eventsPageResponse.data);
-        this.props.reduxLoadEvents(eventsResponse.data);
-        this.props.reduxLoadEventExceptions(eventExceptionsResponse);
-        this.props.reduxLoadImpactPage(impactPageResponse.data);
-        this.props.reduxLoadActions(actionsResponse.data);
-        this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
-        this.props.reduxLoadServiceProviders(vendorsResponse.data);
-        this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
-        this.props.reduxLoadTestimonials(testimonialsResponse.data);
-        this.props.reduxLoadPolicies(policiesResponse.data);
-        this.props.reduxLoadTeamsPage(teamsPageResponse.data);
-        this.props.reduxLoadTeams(teamResponse.data);
-        this.props.reduxLoadTagCols(tagCollectionsResponse.data);
-        this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
-        this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
-      })
-      .catch((err) => {
-        this.setState({ error: err });
-        console.log(err);
-      });
-      
-    }
+        .then((res) => {
+          const [
+            aboutUsPageResponse,
+            actionsPageResponse,
+            actionsResponse,
+            actionsCompletedResponse,
+            communityStatsResponse,
+            contactUsPageResponse,
+            donatePageResponse,
+            eventsPageResponse,
+            eventsResponse,
+            eventExceptionsResponse,
+            impactPageResponse,
+            policiesResponse,
+            teamsPageResponse,
+            teamResponse,
+            tagCollectionsResponse,
+            testimonialsPageResponse,
+            testimonialsResponse,
+            vendorsPageResponse,
+            vendorsResponse,
+          ] = res;
+          this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
+          this.props.reduxLoadActionsPage(actionsPageResponse.data);
+          this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
+          this.props.reduxLoadDonatePage(donatePageResponse.data);
+          this.props.reduxLoadEventsPage(eventsPageResponse.data);
+          this.props.reduxLoadEvents(eventsResponse.data);
+          this.props.reduxLoadEventExceptions(eventExceptionsResponse);
+          this.props.reduxLoadImpactPage(impactPageResponse.data);
+          this.props.reduxLoadActions(actionsResponse.data);
+          this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
+          this.props.reduxLoadServiceProviders(vendorsResponse.data);
+          this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
+          this.props.reduxLoadTestimonials(testimonialsResponse.data);
+          this.props.reduxLoadPolicies(policiesResponse.data);
+          this.props.reduxLoadTeamsPage(teamsPageResponse.data);
+          this.props.reduxLoadTeams(teamResponse.data);
+          this.props.reduxLoadTagCols(tagCollectionsResponse.data);
+          this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
+          this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
 
+          this.setState({ pagesEnabled: {
+            aboutUsPage: aboutUsPageResponse.data.is_published,
+            actionsPage: actionsPageResponse.data.is_published,
+            contactUsPage: contactUsPageResponse.data.is_published,
+            donatePage: donatePageResponse.data.is_published,
+            eventsPage: eventsPageResponse.data.is_published,
+            impactPage: impactPageResponse.data.is_published,
+            vendorsPage: vendorsPageResponse.data.is_published,
+            testimonialsPage: testimonialsPageResponse.data.is_published,
+            teamsPage: teamsPageResponse.data.is_published,
+          }})
+        })
+        .catch((err) => {
+          this.setState({ error: err });
+          console.log(err);
+        });
+    }
   }
 
   setStateAsync(state) {
@@ -239,7 +242,7 @@ class AppRouter extends Component {
     await this.setStateAsync({ triedLogin: true });
     let { data } = await apiCall("auth.whoami");
     let user = null;
-    
+
     if (data) {
       user = data;
     } else {
@@ -273,7 +276,7 @@ class AppRouter extends Component {
         this.props.reduxLoadTodo(userActionsTodoResponse.data);
         this.props.reduxLoadDone(userActionsCompletedResponse.data);
         this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
-        
+
         return true;
       } else {
         console.log(`no user with this email: ${user.email}`);
@@ -302,8 +305,24 @@ class AppRouter extends Component {
       if (menu[4]) {
         newAbout.children = [...newAbout.children, menu.pop()];
       }
+      // remove menu items for pages which cadmins have selected as not enabled
+      newAbout.children = newAbout.children.filter((item) => {
+        switch(item.link) {
+          case "/impact":
+            return this.state.pagesEnabled.impactPage;
+          case "/aboutus":
+            return this.state.pagesEnabled.aboutUsPage;
+          case "/donate":
+              return this.state.pagesEnabled.donatePage;
+          case "/contactus":
+            return this.state.pagesEnabled.contactUsPage;
+          default:
+            return true;
+        }
+      })
       menu[3] = newAbout;
     }
+
     if (oldActions) {
       var actionsSliced = oldActions.children.slice(1);
       actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
@@ -311,8 +330,22 @@ class AppRouter extends Component {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
+      // remove menu items for pages which cadmins have selected as not enabled
+      newAction.children = newAction.children.filter((item) => {
+        switch(item.link) {
+          case "/actions":
+            return this.state.pagesEnabled.actionsPage;
+          case "/services":
+            return this.state.pagesEnabled.vendorsPage;
+          case "/testimonials":
+            return this.state.pagesEnabled.testimonialsPage;
+          default:
+            return true;
+        }
+      })
       menu[1] = newAction;
     }
+
     const actionsIndex = menu.findIndex((item) => item.name === "Actions");
     const menuPostActions = menu.splice(actionsIndex + 1);
     menu = [
@@ -320,6 +353,20 @@ class AppRouter extends Component {
       { link: "/teams", name: "Teams" },
       ...menuPostActions,
     ];
+
+    // remove menu items for pages which cadmins have selected as not enabled
+    menu = menu.filter((item) => {
+      switch(item.link) {
+        case "/teams":
+          return this.state.pagesEnabled.teamsPage;
+        case "/events":
+          return this.state.pagesEnabled.eventsPage;
+        case "/home":
+          return true;
+        default:
+          return item.children ? item.children.length > 0 : true;
+      }
+    })
     return menu;
   }
 
@@ -366,10 +413,12 @@ class AppRouter extends Component {
 
     /* error page if community isn't published */
     if (!this.state.community) {
-      return (<ErrorPage
-        errorMessage="Page not found"
-        errorDescription="This community page is not accessible.  Please contact the community administrator to resolve the problem."
-      />)
+      return (
+        <ErrorPage
+          errorMessage="Page not found"
+          errorDescription="This community page is not accessible.  Please contact the community administrator to resolve the problem."
+        />
+      );
     }
 
     if (!this.state.triedLogin && !this.props.user) {
@@ -391,22 +440,24 @@ class AppRouter extends Component {
       finalMenu = [...navMenus];
     }
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const communitiesLink = {
-      name: "All MassEnergize Community Sites",
-      link: "http://" + window.location.host,
-      special: true,
-    };
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
     const communityInfo = this.state.community || {};
+
+    const communitiesLink = {
+      name: "All MassEnergize Community Sites",
+      link: "http://" + window.location.host,
+      special: true,
+    };
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
       allCommunities: communitiesLink,
     };
+
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
@@ -468,6 +519,7 @@ class AppRouter extends Component {
               <Route path={`${links.events}/:id`} component={OneEventPage} />
               <Route path={links.signin} component={LoginPage} />
               <Route path={links.signup} component={RegisterPage} />
+              <Route path="/completeRegistration?" component={RegisterPage} />
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
