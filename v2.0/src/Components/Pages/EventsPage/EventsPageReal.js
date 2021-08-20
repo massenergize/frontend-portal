@@ -15,7 +15,6 @@ import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-import { apiCall } from "../../../api/functions";
 /**
  * Renders the event page
  */
