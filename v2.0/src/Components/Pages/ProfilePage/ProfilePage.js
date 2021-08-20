@@ -57,6 +57,7 @@ class ProfilePage extends React.Component {
       printing: false,
       message: "",
     };
+    console.log('props bby', this.props);
   }
 
   componentDidMount() {
