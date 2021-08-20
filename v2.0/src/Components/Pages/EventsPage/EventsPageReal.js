@@ -21,7 +21,6 @@ import Tooltip from "../Widgets/CustomTooltip";
 class EventsPage extends React.Component {
   constructor(props) {
     super(props);
-    // this.handleBoxClick = this.handleBoxClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       events_search_toggled: false,
@@ -31,7 +30,6 @@ class EventsPage extends React.Component {
       searchText: null
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
-    console.log('checking if the list of event rsvps is here', this.props);
     
   }
   addMeToSelected(param, reset = false) {
