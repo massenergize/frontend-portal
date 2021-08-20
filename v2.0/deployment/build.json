@@ -3,6 +3,6 @@
   "dev-sandbox": "3.3.9",
   "prod": "3.3.1",
   "prod-sandbox": "3.3.1",
-  "canary": "3.3.8",
-  "canary-sandbox": "3.3.8"
+  "canary": "3.3.9",
+  "canary-sandbox": "3.3.9"
 }
