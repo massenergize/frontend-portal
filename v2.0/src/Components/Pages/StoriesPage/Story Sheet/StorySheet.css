@@ -5,6 +5,9 @@
   padding: 20px;
   border-radius: 6px;
   gap: 10px;
+  margin-bottom: 20px;
+  height: var(--sheet-height-state);
+  overflow-y: hidden;
 }
 
 .sheet-image {
@@ -50,4 +53,28 @@
 .sheet-link:hover {
   color: var(--app-theme-green);
   transition: 0.3s ease-out;
+}
+
+.sheet-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  opacity: 0.8;
+  z-index: 10;
+  height: 100vh;
+}
+
+.phone-img-view-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 11;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }

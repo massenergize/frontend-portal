@@ -5,7 +5,7 @@ import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
 import StoryModal from "./StoryModal";
-import METestimonialCard from "./METestimonialCard";
+// import METestimonialCard from "./METestimonialCard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
@@ -179,7 +179,7 @@ class StoriesPage extends React.Component {
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   {/* {this.renderAddTestmonialBtn()} */}
                 </div>
-                <div className="col-md-10 col-lg-10 offset-md-1 col-sm-12 ">
+                <div className="col-md-9 col-lg-9  col-sm-12 ">
                   <div
                     className="row"
                     style={{
@@ -187,7 +187,7 @@ class StoriesPage extends React.Component {
                       paddingBottom: 50,
                     }}
                   >
-                    {/* {this.renderStories(stories)} */}
+                    {this.renderStories(stories)}
                     <StorySheet />
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
@@ -238,19 +238,12 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-    return stories.map((story, index) => {
-      var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12 mob-testy-card-fix";
 
-      return (
-        <div key={index} className={cn} style={{ marginBottom: 10 }}>
-          <METestimonialCard
-            {...story}
-            links={this.props.links}
-            readMore={this.readMore}
-          />
-        </div>
-      );
-    });
+    return stories.map((story, index) => (
+      <div key={index.toString()}>
+        <StorySheet {...story} />
+      </div>
+    ));
   }
 }
 const mapStoreToProps = (store) => {

@@ -910,6 +910,9 @@
   color: white;
 }
 
+.me-drop-item p {
+  color: black;
+}
 .me-drop-item {
   cursor: pointer;
   color: black;
@@ -1739,6 +1742,14 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .root-story-sheet {
+    grid-template-columns: 1fr !important;
+    padding: 10px 6px !important;
+  }
+
+  .sheet-text {
+    font-size: 0.9rem !important;
+  }
   .sensitive-photo {
     height: 120px !important;
   }
