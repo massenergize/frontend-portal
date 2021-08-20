@@ -4,22 +4,31 @@ import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
-// import { locationFormatJSX } from "../../Utils";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-
+import Dropdown from "react-bootstrap/Dropdown";
+import { ButtonGroup } from 'react-bootstrap'
+import { apiCall } from "../../../api/functions";
 export default class NewEventsCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
+    this.RSVPInterested = this.RSVPInterested.bind(this);
+    this.RSVPGoing = this.RSVPGoing.bind(this);
+    this.RSVPNotGoing = this.RSVPNotGoing.bind(this);
+
     this.state = {
       img: null,
+      rsvpStatus: null,
     };
+    console.log('event card props', this.props);
   }
+
   getPhoto() {
     const { image } = this.props;
     if (image && image.url) return image.url;
     return photo;
   }
+
   getBody() {
     var body = this.props.featured_summary;
     var limit = this.props.body_limit;
@@ -40,6 +49,62 @@ export default class NewEventsCard extends Component {
     }
     return body;
   }
+
+  RSVPGoing() {
+    apiCall('events.rsvp.update',{ event_id: this.props.id, status: "RSVP" }).then(json => {
+      if (json.success) {
+        this.getRSVPStatus();
+      } 
+      else {
+//          TODO: notify about error?
+      }
+    })
+  }
+
+  RSVPInterested() {
+    apiCall('events.rsvp.update',{ event_id: this.props.id, status: "Interested" }).then(json => {
+      if (json.success) {
+        this.getRSVPStatus();
+      } 
+      else {
+//          TODO: notify about error
+      }
+    })
+  }
+
+  RSVPNotGoing() {
+    apiCall('events.rsvp.remove',{ event_id: this.props.id }).then(json => {
+      if (json.success) {
+        this.getRSVPStatus();
+      } 
+      else {
+//          TODO: notify about error
+      }
+    })
+  }
+
+  handleEventRsvpChange() {
+ // nothing happening here for now
+  }
+
+  getRSVPStatus() {
+    apiCall('events.rsvp.get',{ event_id: this.props.id }).then(json => {
+      if (json.success) {
+        const rsvp_status = json.data;
+        if (rsvp_status){
+          const rsvpStatus = (rsvp_status.status === 'RSVP') ? "Going" : rsvp_status.status;
+          this.setState({rsvpStatus: rsvpStatus})
+        }
+        else {
+          this.setState({rsvpStatus: null})
+        }
+      } 
+      else {
+        console.log("failed to get event rsvp status")
+      }
+    })
+  }
+  
   componentDidMount() {
     document.addEventListener(
       "error",
@@ -50,6 +115,7 @@ export default class NewEventsCard extends Component {
       },
       true
     );
+    this.getRSVPStatus();
   }
 
   handleReadMore(e) {
@@ -75,12 +141,17 @@ export default class NewEventsCard extends Component {
 
   getEventTitle() {
     var { name } = this.props;
-    //name += name;
     if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
   renderNewCardDesign() {
     var { className, dateString, id, recurringDetailString } = this.props;
+    const style = {
+      borderTop: "5px solid #8dc63f",
+      borderRadius: "0",
+      padding: "0",
+      minwidth: "100px",
+    };
     return (
       <div>
         <MECard
@@ -121,7 +192,24 @@ export default class NewEventsCard extends Component {
                 </METextView>
           </div>
         </MECard>
-      </div>
+        <div
+        style={{float:"right"}}>
+          <Dropdown as={ButtonGroup} onSelect={e => this.handleEventRsvpChange(e)}>
+            {//modify the default to be whether the user has RSVPed to the event or not
+            true ? "":"nope"
+            }
+            <Dropdown.Toggle id="dropdown-basic">{this.state.rsvpStatus || "RSVP?"}</Dropdown.Toggle>
+            <Dropdown.Menu
+              style={style}
+              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1">
+              <Dropdown.Item onClick={this.RSVPInterested}>Interested</Dropdown.Item>
+              <Dropdown.Item onClick={this.RSVPGoing}>Going</Dropdown.Item>
+              <Dropdown.Item onClick={this.RSVPNotGoing}>Not Going</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+        </div>
+        
+</div>
     );
   }
   render() {
@@ -188,8 +276,8 @@ export default class NewEventsCard extends Component {
 }
 
 NewEventsCard.defaultProps = {
-  body: "This is some more information about this testimonial. This is the default text...",
-  prefered_name: "Anonymous",
+  body: "This is some more information about this event. This is the default text...",
+  preferred_name: "Anonymous",
   action: {},
   created_at: "1st January 2020",
   links: {},

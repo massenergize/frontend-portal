@@ -21,7 +21,6 @@ import Tooltip from "../Widgets/CustomTooltip";
 class EventsPage extends React.Component {
   constructor(props) {
     super(props);
-    // this.handleBoxClick = this.handleBoxClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       events_search_toggled: false,
@@ -31,25 +30,7 @@ class EventsPage extends React.Component {
       searchText: null
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
-    /*apiCall('events.date.update', {
-      'community_id': this.props.user
-    })
-    .then((json) => {
-      if (json.success) {
-        console.log(json);
-      }else {
-        console.log(json.error);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    /*apiCall('events.exceptions.list', {'event_id': event.id })
-    .then((json) => {
-    })
-    .catch((err) => {
-      console.log(err);
-    });*/
+    
   }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });

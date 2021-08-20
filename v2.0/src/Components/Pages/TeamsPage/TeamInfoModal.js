@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import { reduxJoinTeam } from "../../../redux/actions/userActions";
-// import loader from "../../../assets/images/other/loader.gif";
 import MEModal from "../Widgets/MEModal";
 import MEFormGenerator, {
   BAD,
@@ -224,7 +223,7 @@ class TeamInfoModal extends React.Component {
 
         if (value) data[field] = value;
       });
-      data["community_id"] = communityData.community.id;
+      data["primary_community_id"] = communityData.community.id;
       const adminEmails = data["admin_emails"];
       if (adminEmails) data["admin_emails"] = adminEmails + `, ${user.email}`;
       else data["admin_emails"] = user.email;
@@ -271,7 +270,6 @@ class TeamInfoModal extends React.Component {
     }
     data = { ...data, community_id: communityData.community.id };
     try {
-      // this.setState({ loading: true });
       const teamResponse = await apiCall(url, data);    
       if (teamResponse.success) {
         this.setState({
@@ -295,7 +293,6 @@ class TeamInfoModal extends React.Component {
         this.setError(teamResponse.error);
       }
     } catch (err) {
-      // this.setState({ error: err.toString() });
       this.setError(err.toString());
     } finally {
       this.setState({ loading: false });
