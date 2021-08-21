@@ -79,7 +79,7 @@ export default class StorySheet extends Component {
     const { user, anonymous } = this.props;
     if (anonymous) return "Anonymous";
 
-    return user?.full_name || user?.preferred_name || "...";
+    return user?.preferred_name || user?.full_name || "...";
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -106,11 +106,11 @@ export default class StorySheet extends Component {
     this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
   }
   render() {
-    const { created_at, title, file } = this.props;
+    const { created_at, title, file, id } = this.props;
     const date = getHumanFriendlyDate(created_at);
     const noImageProps = !file ? { display: "block", width: "100%" } : {};
     return (
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%" }} id={`sheet-content-${id}`}>
         {/* --------- FULL - IMAGE DISPLAY IN PHONE MODE ---------------- */}
         {this.state.showImage && (
           <>
@@ -209,6 +209,7 @@ export default class StorySheet extends Component {
                 style={{
                   textTransform: "uppercase",
                   color: "var(--app-theme-orange)",
+                  fontSize: "0.85rem",
                 }}
               >
                 {title}

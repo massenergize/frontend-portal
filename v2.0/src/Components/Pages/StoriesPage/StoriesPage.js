@@ -122,18 +122,20 @@ class StoriesPage extends React.Component {
 
   renderSideViewStories(stories = []) {
     return (stories || []).map((story, index) => {
-      const creatorName =
+      var creatorName =
         story && story.preferred_name ? story.preferred_name : "...";
+      if (story?.anonymous) creatorName = "Anonymous";
       return (
         <div key={index.toString()}>
           <div key={index.toString()}>
             <MECard
-              href={`${this.props.links.testimonials}/${story.id}`}
+              href={`${this.props.links.testimonials}#sheet-content-${story.id}`}
               className="extra-story-cards me-anime-move-from-left-fast"
+              style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
             >
               {story.title}
               <br />
-              <small style={{ color: "#4a1e04" }}>
+              <small style={{ color: "green" }}>
                 <b>
                   By {creatorName}, {getHumanFriendlyDate(story.created_at)}
                 </b>
