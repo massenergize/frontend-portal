@@ -16,11 +16,18 @@ const hasLargeText = (body) => {
 export default class StorySheet extends Component {
   constructor(props) {
     super(props);
+    this.pcImageRef = React.createRef();
     this.state = {
       showImage: false,
       readMore: false,
       textIsShort: true,
+      fallbackImg: null,
     };
+    this.setDefaultImage = this.setDefaultImage.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.pcImageRef) return;
   }
 
   getText() {
@@ -94,13 +101,16 @@ export default class StorySheet extends Component {
     if (textIsShort || (!textIsShort && readMore)) return "auto";
     return "400px";
   }
+
+  setDefaultImage(e) {
+    this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
+  }
   render() {
     const { created_at, title, file } = this.props;
-    console.log("I dont know what yu are talking about", this.props);
-
     const date = getHumanFriendlyDate(created_at);
+    const noImageProps = !file ? { display: "block", width: "100%" } : {};
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         {/* --------- FULL - IMAGE DISPLAY IN PHONE MODE ---------------- */}
         {this.state.showImage && (
           <>
@@ -110,9 +120,14 @@ export default class StorySheet extends Component {
             ></div>
             <div className="phone-img-view-container">
               <img
-                src={file?.url || DefaultClass.getTestimonialsDefaultPhoto()}
+                src={
+                  this.state.fallbackImg ||
+                  file?.url ||
+                  DefaultClass.getTestimonialsDefaultPhoto()
+                }
                 className="sheet-image"
                 alt="sheet media"
+                onError={this.setDefaultImage}
               />
             </div>
           </>
@@ -122,13 +137,23 @@ export default class StorySheet extends Component {
           className="root-story-sheet z-depth-float"
           style={{
             "--sheet-height-state": this.getProperHeight(),
+            ...noImageProps,
           }}
         >
-          <img
-            src={file?.url || DefaultClass.getTestimonialsDefaultPhoto()}
-            className="sheet-image phone-vanish"
-            alt="sheet media"
-          />
+          {file && (
+            <img
+              ref={this.pcImageRef}
+              src={
+                this.state.fallbackImg ||
+                file?.url ||
+                DefaultClass.getTestimonialsDefaultPhoto()
+              }
+              className="sheet-image phone-vanish"
+              alt="sheet media"
+              onError={this.setDefaultImage}
+            />
+          )}
+
           <div className="sheet-content-area">
             <h4>{this.getUser()}</h4>
             <div className="sheet-details">
@@ -147,31 +172,39 @@ export default class StorySheet extends Component {
               </p>
             </div>
             <div>
-              <div
-                onClick={() => this.setState({ showImage: true })}
-                className="every-day-flex pc-vanish"
-                style={{
-                  justifyContent: "flex-start",
-                  marginBottom: 10,
-                  padding: 10,
-                  background: "#fff1f1",
-                  borderRadius: 6,
-                }}
-              >
-                <img
-                  className="sheet-media"
-                  alt="mobile story media"
+              {file && (
+                <div
+                  onClick={() => this.setState({ showImage: true })}
+                  className="every-day-flex pc-vanish"
                   style={{
-                    marginRight: 7,
-                    height: 35,
-                    width: 45,
-                    objectFit: "cover",
-                    borderRadius: 5,
+                    justifyContent: "flex-start",
+                    marginBottom: 10,
+                    padding: 10,
+                    background: "#fff1f1",
+                    borderRadius: 6,
                   }}
-                  src={file?.url || DefaultClass.getTestimonialsDefaultPhoto()}
-                />
-                <small>See full attached image</small>
-              </div>
+                >
+                  <img
+                    className="sheet-media"
+                    alt="mobile story media"
+                    style={{
+                      marginRight: 7,
+                      height: 35,
+                      width: 45,
+                      objectFit: "cover",
+                      borderRadius: 5,
+                    }}
+                    src={
+                      this.state.fallbackImg ||
+                      file?.url ||
+                      DefaultClass.getTestimonialsDefaultPhoto()
+                    }
+                    onError={this.setDefaultImage}
+                  />
+
+                  <small>See full attached image</small>
+                </div>
+              )}
               <h6
                 style={{
                   textTransform: "uppercase",

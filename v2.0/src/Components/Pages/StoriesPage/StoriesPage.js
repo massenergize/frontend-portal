@@ -12,12 +12,14 @@ import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
   filterTagCollections,
+  getHumanFriendlyDate,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import StorySheet from "./Story Sheet/StorySheet";
+import MECard from "../Widgets/MECard";
 
 class StoriesPage extends React.Component {
   constructor(props) {
@@ -118,6 +120,30 @@ class StoriesPage extends React.Component {
     );
   }
 
+  renderSideViewStories(stories = []) {
+    return (stories || []).map((story, index) => {
+      const creatorName =
+        story && story.preferred_name ? story.preferred_name : "...";
+      return (
+        <div key={index.toString()}>
+          <div key={index.toString()}>
+            <MECard
+              href={`${this.props.links.testimonials}/${story.id}`}
+              className="extra-story-cards me-anime-move-from-left-fast"
+            >
+              {story.title}
+              <br />
+              <small style={{ color: "#4a1e04" }}>
+                <b>
+                  By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+                </b>
+              </small>
+            </MECard>
+          </div>
+        </div>
+      );
+    });
+  }
   render() {
     const pageData = this.props.pageData;
 
@@ -177,7 +203,11 @@ class StoriesPage extends React.Component {
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
-                  {/* {this.renderAddTestmonialBtn()} */}
+                  <center>
+                    <h5>Jump to story</h5>
+                  </center>
+
+                  {this.renderSideViewStories(stories)}
                 </div>
                 <div className="col-md-9 col-lg-9  col-sm-12 ">
                   <div
@@ -240,7 +270,7 @@ class StoriesPage extends React.Component {
     }
 
     return stories.map((story, index) => (
-      <div key={index.toString()}>
+      <div key={index.toString()} style={{ width: "100%" }}>
         <StorySheet {...story} />
       </div>
     ));
