@@ -13,6 +13,7 @@ import {
   applyTagsAndGetContent,
   filterTagCollections,
   getHumanFriendlyDate,
+  getRandomIntegerInRange,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -220,7 +221,6 @@ class StoriesPage extends React.Component {
                     }}
                   >
                     {this.renderStories(stories)}
-                    <StorySheet />
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                   <div>{this.renderTestimonialForm()}</div>
@@ -272,8 +272,16 @@ class StoriesPage extends React.Component {
     }
 
     return stories.map((story, index) => (
-      <div key={index.toString()} style={{ width: "100%" }}>
-        <StorySheet {...story} />
+      <div
+        key={index.toString()}
+        style={{
+          width: "100%",
+          "--sheet-anime-delay": getRandomIntegerInRange(500),
+          "--sheet-anime-duration": getRandomIntegerInRange(500),
+        }}
+        className="animate-testimonial-sheet"
+      >
+        <StorySheet {...story} links = {this.props.links}/>
       </div>
     ));
   }

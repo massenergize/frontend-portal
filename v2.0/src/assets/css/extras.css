@@ -3,8 +3,6 @@
   --app-theme-green: #8dc443;
 }
 
-
-
 .every-day-flex {
   display: flex;
   flex-direction: row;
@@ -1747,10 +1745,12 @@
   .root-story-sheet {
     grid-template-columns: 1fr !important;
     padding: 10px 6px !important;
+    height: var(--sheet-height-state-mobile) !important;
+    box-shadow: 0 0 0 !important;
   }
 
   .sheet-text {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   .sensitive-photo {
     height: 120px !important;

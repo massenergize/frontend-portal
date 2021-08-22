@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
+import { Link } from "react-router-dom";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -30,51 +31,6 @@ export default class StorySheet extends Component {
     if (!this.pcImageRef) return;
   }
 
-  getText() {
-    const { readMore } = this.state;
-
-    // console.log(
-    //   `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-    // mollitia, molestiae quas vel sint commodi repudiandae
-    // consequuntur voluptatum laborum numquam blanditiis harum
-    // quisquam eius sed odit fugiat iusto fuga praesentium optio,
-    // eaque rerum! Provident similique accusantium nemo autem.
-    // Veritatis obcaecati tenetur iure eius earum ut molestias
-    // architecto voluptate aliquam nihil, eveniet aliquid culpa
-    // officia aut! Impedit sit sunt quaerat, odit, tenetur error,
-    // harum nesciunt ipsum debitis quas aliquid.`.length
-    // );
-    if (!readMore)
-      return `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-    mollitia, molestiae quas vel sint commodi repudiandae
-    consequuntur voluptatum laborum numquam blanditiis harum
-    quisquam eius sed odit fugiat iusto fuga praesentium optio,
-    eaque rerum! Provident similique accusantium nemo autem.
-    Veritatis obcaecati tenetur iure eius earum ut molestias
-    architecto voluptate aliquam nihil, eveniet aliquid culpa
-    officia aut! Impedit sit sunt quaerat, odit, tenetur error,
-    harum nesciunt ipsum debitis quas aliquid.`;
-
-    return `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-    mollitia, molestiae quas vel sint commodi repudiandae
-    consequuntur voluptatum laborum numquam blanditiis harum
-    quisquam eius sed odit fugiat iusto fuga praesentium optio,
-    eaque rerum! Provident similique accusantium nemo autem.
-    Veritatis obcaecati tenetur iure eius earum ut molestias
-    architecto voluptate aliquam nihil, eveniet aliquid culpa
-    officia aut! Impedit sit sunt quaerat, odit, tenetur error,
-    harum nesciunt ipsum debitis quas aliquid.
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-    mollitia, molestiae quas vel sint commodi repudiandae
-    consequuntur voluptatum laborum numquam blanditiis harum
-    quisquam eius sed odit fugiat iusto fuga praesentium optio,
-    eaque rerum! Provident similique accusantium nemo autem.
-    Veritatis obcaecati tenetur iure eius earum ut molestias
-    architecto voluptate aliquam nihil, eveniet aliquid culpa
-    officia aut! Impedit sit sunt quaerat, odit, tenetur error,
-    harum nesciunt ipsum debitis quas aliquid.`;
-  }
-
   getUser() {
     const { user, anonymous } = this.props;
     if (anonymous) return "Anonymous";
@@ -98,8 +54,8 @@ export default class StorySheet extends Component {
 
   getProperHeight() {
     const { textIsShort, readMore } = this.state;
-    if (textIsShort || (!textIsShort && readMore)) return "auto";
-    return "400px";
+    if (textIsShort || (!textIsShort && readMore)) return ["auto", "auto"];
+    return ["400px", "530px"];
   }
 
   setDefaultImage(e) {
@@ -109,16 +65,22 @@ export default class StorySheet extends Component {
     const { created_at, title, file, id } = this.props;
     const date = getHumanFriendlyDate(created_at);
     const noImageProps = !file ? { display: "block", width: "100%" } : {};
+    const [pcHeight, mobileHeight] = this.getProperHeight();
     return (
-      <div style={{ width: "100%" }} id={`sheet-content-${id}`}>
+      <div
+        style={{
+          width: "100%",
+        }}
+        id={`sheet-content-${id}`}
+      >
         {/* --------- FULL - IMAGE DISPLAY IN PHONE MODE ---------------- */}
         {this.state.showImage && (
           <>
+            <div className="sheet-ghost"></div>
             <div
-              className="sheet-ghost"
+              className="phone-img-view-container"
               onClick={() => this.setState({ showImage: false })}
-            ></div>
-            <div className="phone-img-view-container">
+            >
               <img
                 src={
                   this.state.fallbackImg ||
@@ -136,7 +98,8 @@ export default class StorySheet extends Component {
         <div
           className="root-story-sheet z-depth-float"
           style={{
-            "--sheet-height-state": this.getProperHeight(),
+            "--sheet-height-state": pcHeight,
+            "--sheet-height-state-mobile": mobileHeight,
             ...noImageProps,
           }}
         >
@@ -159,7 +122,12 @@ export default class StorySheet extends Component {
             <div className="sheet-details">
               <p>{date}</p>
 
-              <p style={{ marginLeft: "auto" }} className="sheet-link">
+              <Link
+                style={{ marginLeft: "auto" }}
+                className="sheet-link"
+                to={`${this.props.links.testimonials}/${id}`}
+                target="_blank"
+              >
                 {" "}
                 <i
                   className="fa fa-copy"
@@ -168,8 +136,8 @@ export default class StorySheet extends Component {
                     document.execCommand("copy");
                   }}
                 ></i>{" "}
-                Copy Link To Share
-              </p>
+                Full View
+              </Link>
             </div>
             <div>
               {file && (
