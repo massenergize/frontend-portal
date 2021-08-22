@@ -69,6 +69,7 @@
 
 html {
   font-family: "Google Sans", "Open Sans", sans-serif;
+  scroll-behavior: smooth !important;
 }
 
 body {
@@ -9624,7 +9625,6 @@ button.as-link:hover {
   background: #003000;
   color: white;
 }
-
 
 .me-sub-teams-box {
   padding-left: 10%;

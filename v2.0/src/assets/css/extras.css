@@ -1,3 +1,8 @@
+:root {
+  --app-theme-orange: #f57b34;
+  --app-theme-green: #8dc443;
+}
+
 .every-day-flex {
   display: flex;
   flex-direction: row;
@@ -905,6 +910,9 @@
   color: white;
 }
 
+.me-drop-item p {
+  color: black;
+}
 .me-drop-item {
   cursor: pointer;
   color: black;
@@ -1734,6 +1742,16 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .root-story-sheet {
+    grid-template-columns: 1fr !important;
+    padding: 10px 6px !important;
+    height: var(--sheet-height-state-mobile) !important;
+    box-shadow: 0 0 0 !important;
+  }
+
+  .sheet-text {
+    font-size: 0.8rem !important;
+  }
   .sensitive-photo {
     height: 120px !important;
   }

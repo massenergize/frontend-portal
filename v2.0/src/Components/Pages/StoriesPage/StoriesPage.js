@@ -1,32 +1,26 @@
 import React from "react";
-// import LoadingCircle from "../../Shared/LoadingCircle";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
 import StoryModal from "./StoryModal";
-import METestimonialCard from "./METestimonialCard";
+// import METestimonialCard from "./METestimonialCard";
 import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
   filterTagCollections,
+  getHumanFriendlyDate,
+  getRandomIntegerInRange,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-//import ErrorPage from "./../Errors/ErrorPage";
-// import Funnel from "./../EventsPage/Funnel";
-// import leafy from "./leafy.png";
-// import * as moment from "moment";
-// import MECard from "../Widgets/MECard";
-// import Paginator from "../Widgets/Paginator";
-// import { inThisTeam } from "../TeamsPage/utils";
-// import MEFileSelector from "../Widgets/MEFileSelector";
+import StorySheet from "./Story Sheet/StorySheet";
+import MECard from "../Widgets/MECard";
 
 class StoriesPage extends React.Component {
   constructor(props) {
@@ -127,23 +121,40 @@ class StoriesPage extends React.Component {
     );
   }
 
+  renderSideViewStories(stories = []) {
+    return (stories || []).map((story, index) => {
+      var creatorName =
+        story && story.preferred_name ? story.preferred_name : "...";
+      if (story?.anonymous) creatorName = "Anonymous";
+      return (
+        <div key={index.toString()}>
+          <div key={index.toString()}>
+            <MECard
+              href={`${this.props.links.testimonials}#sheet-content-${story.id}`}
+              className="extra-story-cards me-anime-move-from-left-fast"
+              style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
+            >
+              {story.title}
+              <br />
+              <small style={{ color: "green" }}>
+                <b>
+                  By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+                </b>
+              </small>
+            </MECard>
+          </div>
+        </div>
+      );
+    });
+  }
   render() {
     const pageData = this.props.pageData;
 
     if (pageData == null) return <LoadingCircle />;
 
-    //if (!this.props.events || !this.props.tagCols) {
     if (!this.props.tagCols) {
       return <LoadingCircle />;
     }
-
-    //if (!this.props.pageData)
-    //return (
-    //  <ErrorPage
-    //    errorMessage="Data unavailable"
-    //    errorDescription="Unable to load Testimonials data"
-    //  />
-    //);
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
@@ -195,9 +206,13 @@ class StoriesPage extends React.Component {
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
-                  {this.renderAddTestmonialBtn()}
+                  <center>
+                    <h5>Jump to story</h5>
+                  </center>
+
+                  {this.renderSideViewStories(stories)}
                 </div>
-                <div className="col-md-9 col-lg-9 col-sm-12 ">
+                <div className="col-md-9 col-lg-9  col-sm-12 ">
                   <div
                     className="row"
                     style={{
@@ -255,19 +270,20 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-    return stories.map((story, index) => {
-      var cn = "col-md-6 col-lg-6 col-sm-6 col-xs-12 mob-testy-card-fix";
 
-      return (
-        <div key={index} className={cn} style={{ marginBottom: 10 }}>
-          <METestimonialCard
-            {...story}
-            links={this.props.links}
-            readMore={this.readMore}
-          />
-        </div>
-      );
-    });
+    return stories.map((story, index) => (
+      <div
+        key={index.toString()}
+        style={{
+          width: "100%",
+          "--sheet-anime-delay": getRandomIntegerInRange(500),
+          "--sheet-anime-duration": getRandomIntegerInRange(500),
+        }}
+        className="animate-testimonial-sheet"
+      >
+        <StorySheet {...story} links = {this.props.links}/>
+      </div>
+    ));
   }
 }
 const mapStoreToProps = (store) => {
