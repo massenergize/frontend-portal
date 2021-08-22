@@ -1,15 +1,14 @@
 import React from "react";
-import "./../../../assets/css/PhotosensitiveCard/PhotosensitiveCard.css";
+import "./PhotosensitiveCard.css";
 import { Link, withRouter } from "react-router-dom";
-import StoryForm from "./StoryForm";
+import StoryForm from "../StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
-} from "../../../redux/actions/userActions";
-import { apiCall } from "../../../api/functions";
-import MEButton from "../Widgets/MEButton";
-// import METextView from "../Widgets/METextView";
+} from "../../../../redux/actions/userActions";
+import { apiCall } from "../../../../api/functions";
+import MEButton from "../../Widgets/MEButton";
 import {
   DEFAULT_STATE,
   DONE,
@@ -17,9 +16,9 @@ import {
   IS_IN_TODO,
   NO_AUTH,
   TODO,
-} from "./ActionStateConstants";
-import MEChameleonButton from "./MEChameleonButton";
-import MEAnimation from "../../Shared/Classes/MEAnimation";
+} from "../ActionStateConstants";
+import MEChameleonButton from "../MEChameleonButton";
+import MEAnimation from "../../../Shared/Classes/MEAnimation";
 
 /**
  * Action Component is a single action for the action page,
