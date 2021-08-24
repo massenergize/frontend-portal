@@ -185,7 +185,7 @@ class EventsPage extends React.Component {
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        if (event.is_recurring) {
+        if (event.is_recurring && event.recurring_details) {
           
           if (event.recurring_details.recurring_type === "week") {
             if (event.recurring_details.separation_count === 1) {
@@ -201,6 +201,9 @@ class EventsPage extends React.Component {
             }
           }
           
+        }
+        else {
+          recurringDetailString = "Event recurring details not specified"
         }
         
         return (
