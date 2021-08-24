@@ -322,7 +322,6 @@ class RegisterFormBase extends React.Component {
     .then((json) => {
       console.log(json);
       if (json.success && json.data.imported) {
-        console.log(json);
         this.setState({
           firstName: json.data.firstName, 
           lastName: json.data.lastName, 

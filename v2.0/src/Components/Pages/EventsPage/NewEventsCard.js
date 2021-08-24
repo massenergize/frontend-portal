@@ -20,7 +20,6 @@ export default class NewEventsCard extends Component {
       img: null,
       rsvpStatus: null,
     };
-    console.log('event card props', this.props);
   }
 
   getPhoto() {
