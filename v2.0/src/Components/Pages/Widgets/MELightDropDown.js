@@ -3,6 +3,11 @@ import Dropdown from "react-bootstrap/esm/Dropdown";
 // import PropTypes from "prop-types";
 export const NONE = "------";
 export default class MELightDropDown extends Component {
+  static NONE = NONE;
+  constructor(props) {
+    super(props);
+    this.onItemSelected = this.onItemSelected.bind(this);
+  }
   onItemSelected(e, child) {
     e.preventDefault();
     const { onItemSelected, dataValues, data } = this.props;
@@ -56,7 +61,6 @@ export default class MELightDropDown extends Component {
         >
           <Dropdown.Toggle style={{ ...style }} className={toggleClassNames}>
             <span
-              // className={labelClassNames}
               onClick={() => {
                 if (menuTextClick) menuTextClick();
               }}

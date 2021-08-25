@@ -10,17 +10,24 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { apiCall } from "../../../api/functions";
 import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
+const RSVP_STATUS = {
+  GOING: "Going",
+  INTERESTED: "Interested",
+  NOT_GOING: "Not Going",
+  RSVP: "RSVP",
+};
 export default class NewEventsCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
-    this.RSVPInterested = this.RSVPInterested.bind(this);
-    this.RSVPGoing = this.RSVPGoing.bind(this);
-    this.RSVPNotGoing = this.RSVPNotGoing.bind(this);
+    this.itemSelected = this.itemSelected.bind(this);
+    this.getRSVPStatus = this.getRSVPStatus.bind(this);
 
     this.state = {
       img: null,
       rsvpStatus: null,
+      loading: false,
+      error: null,
     };
   }
 
@@ -51,44 +58,28 @@ export default class NewEventsCard extends Component {
     return body;
   }
 
-  RSVPGoing() {
-    apiCall("events.rsvp.update", {
+  updateRSVP(status) {
+    if (status === MELightDropDown.NONE) return;
+    const LINK =
+      status === RSVP_STATUS.NOT_GOING
+        ? "events.rsvp.remove"
+        : "events.rsvp.update";
+    this.setState({ loading: true });
+    apiCall(LINK, {
       event_id: this.props.id,
-      status: "RSVP",
+      status: status,
     }).then((json) => {
       if (json.success) {
-        this.getRSVPStatus();
+        this.setState({
+          rsvpStatus: json.data?.status,
+          loading: false,
+          error: null,
+        });
       } else {
-        //          TODO: notify about error?
+        console.log("RSVP Error::", json.error);
+        this.setState({ error: json.error?.toString(), loading: false });
       }
     });
-  }
-
-  RSVPInterested() {
-    apiCall("events.rsvp.update", {
-      event_id: this.props.id,
-      status: "Interested",
-    }).then((json) => {
-      if (json.success) {
-        this.getRSVPStatus();
-      } else {
-        //          TODO: notify about error
-      }
-    });
-  }
-
-  RSVPNotGoing() {
-    apiCall("events.rsvp.remove", { event_id: this.props.id }).then((json) => {
-      if (json.success) {
-        this.getRSVPStatus();
-      } else {
-        //          TODO: notify about error
-      }
-    });
-  }
-
-  handleEventRsvpChange() {
-    // nothing happening here for now
   }
 
   getRSVPStatus() {
@@ -147,14 +138,13 @@ export default class NewEventsCard extends Component {
     if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
+
+  itemSelected(status) {
+    this.updateRSVP(status);
+  }
   renderNewCardDesign() {
     var { className, dateString, id, recurringDetailString } = this.props;
-    // const style = {
-    //   borderTop: "5px solid #8dc63f",
-    //   borderRadius: "0",
-    //   padding: "0",
-    //   minwidth: "100px",
-    // };
+    const { rsvpStatus, loading, error } = this.state;
     return (
       <div>
         <MECard
@@ -186,10 +176,6 @@ export default class NewEventsCard extends Component {
               }}
             >
               {this.getEventTitle()}
-              {/* <i
-              className="fa fa-long-arrow-right"
-              style={{ marginLeft: 6, fontSize: 23 }}
-            ></i> */}
             </h1>
           </Link>
 
@@ -206,44 +192,30 @@ export default class NewEventsCard extends Component {
 
             <div style={{ marginLeft: "auto" }}>
               <MELightDropDown
+                onItemSelected={this.itemSelected}
                 animate={false}
                 customAnimation="rsvp-drop-anime"
                 controlLabel={true}
-                label="RSVP"
+                label={
+                  (loading && <i className="fa fa-spinner fa-spin"></i>) ||
+                  rsvpStatus ||
+                  "RSVP"
+                }
                 labelClassNames="me-rsvp-btn z-depth-float"
+                data={[
+                  RSVP_STATUS.INTERESTED,
+                  RSVP_STATUS.GOING,
+                  RSVP_STATUS.NOT_GOING,
+                ]}
               />
             </div>
-            {/* <div className="me-rsvp-btn z-depth-float">
-              RSVP <i className="fa fa-caret-down"></i>
-            </div> */}
           </div>
         </MECard>
-        {/* <div style={{ float: "right" }}>
-          <Dropdown
-            as={ButtonGroup}
-            onSelect={(e) => this.handleEventRsvpChange(e)}
-          >
-            {
-              //modify the default to be whether the user has RSVPed to the event or not
-              true ? "" : "nope"
-            }
-            <Dropdown.Toggle id="dropdown-basic">
-              {this.state.rsvpStatus || "RSVP?"}
-            </Dropdown.Toggle>
-            <Dropdown.Menu
-              style={style}
-              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
-            >
-              <Dropdown.Item onClick={this.RSVPInterested}>
-                Interested
-              </Dropdown.Item>
-              <Dropdown.Item onClick={this.RSVPGoing}>Going</Dropdown.Item>
-              <Dropdown.Item onClick={this.RSVPNotGoing}>
-                Not Going
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div> */}
+        {error && (
+          <small style={{ color: "red" }}>
+            Sorry, couldnt perform task: {error}
+          </small>
+        )}
       </div>
     );
   }
