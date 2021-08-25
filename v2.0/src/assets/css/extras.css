@@ -3,6 +3,27 @@
   --app-theme-green: #8dc443;
 }
 
+.date-string {
+  font-size: 0.85rem;
+}
+.me-rsvp-btn {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  background: var(--app-theme-orange);
+  color: white;
+  height: 100%;
+  margin-right: -20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0px;
+  font-weight: bold;
+}
+
+.me-rsvp-btn:hover {
+  background: var(--app-theme-green);
+  transition: 0.2s ease-out;
+}
+
 .every-day-flex {
   display: flex;
   flex-direction: row;
@@ -753,7 +774,7 @@
   padding: 10px;
 }
 .bottom-date-area {
-  padding: 13px;
+  /* padding: 13px; */
   background-color: #f9f9f9;
   display: flex;
   flex-direction: row;
@@ -761,6 +782,7 @@
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
+  font-size: 0.9rem !important;
 }
 
 .me-testimonial-img {

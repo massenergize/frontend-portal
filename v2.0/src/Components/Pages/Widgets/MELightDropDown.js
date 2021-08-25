@@ -34,18 +34,29 @@ export default class MELightDropDown extends Component {
     });
   }
   render() {
-    const { label, data, style, labelIcon, menuTextClick } = this.props;
+    const {
+      label,
+      data,
+      style,
+      labelIcon,
+      menuTextClick,
+      labelClassNames,
+      controlLabel,
+      animate,
+      customAnimation,
+    } = this.props;
+    const toggleClassNames = controlLabel
+      ? labelClassNames
+      : `me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after me-light-drop-fine-tune ${labelClassNames}`;
     return (
       <div>
         <Dropdown
           onSelect={() => null}
           style={{ display: "inline-block", padding: "0px 10px" }}
         >
-          <Dropdown.Toggle
-            style={{ ...style }}
-            className="me-undefault-btn me-light-drop-clickable undo-dropdown-active clear-drop-after me-light-drop-fine-tune"
-          >
+          <Dropdown.Toggle style={{ ...style }} className={toggleClassNames}>
             <span
+              // className={labelClassNames}
               onClick={() => {
                 if (menuTextClick) menuTextClick();
               }}
@@ -61,7 +72,9 @@ export default class MELightDropDown extends Component {
               borderRadius: "0",
               padding: "0",
             }}
-            className="me-dropdown-theme me-anime-slide-from-top z-depth-1"
+            className={`me-dropdown-theme ${
+              animate && "me-anime-slide-from-top"
+            } z-depth-1 ${customAnimation}`}
           >
             {this.renderChildren(data)}
           </Dropdown.Menu>
@@ -72,8 +85,11 @@ export default class MELightDropDown extends Component {
 }
 
 MELightDropDown.defaultProps = {
+  controlLabel: false,
   label: "Clickable Header",
   data: ["Data", "Data Name", "Data Age"],
   dataValues: [],
   style: {},
+  animate: true,
+  customAnimation: "",
 };
