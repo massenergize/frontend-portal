@@ -176,7 +176,7 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      const page = [...events, ...events].map((event) => {
+      const page = events.map((event) => {
         let recurringDetailString = "";
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
