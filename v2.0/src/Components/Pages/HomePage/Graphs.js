@@ -99,38 +99,37 @@ class Graphs extends React.Component {
     return (
       <section className="fact-counter style-2 no-padd">
         <div className="text-center">
-        {this.props.info ? (
-          <Tooltip 
-            title={this.props.subtitle || "Help Us Meet Our Goals"} 
-            text={this.props.info}
-            dir="right"
-          >
+          {this.props.info ? (
+            <Tooltip
+              title={this.props.subtitle || "Help Us Meet Our Goals"}
+              text={this.props.info}
+              dir="right"
+            >
+              <h4
+                className="section-title text-center mob-cancel-title-white"
+                style={{ fontSize: 20 }}
+              >
+                {this.props.subtitle || "Help Us Meet Our Goals"}
+                <span
+                  className="fa fa-info-circle"
+                  style={{ color: "#428a36", padding: "5px" }}
+                ></span>
+              </h4>
+            </Tooltip>
+          ) : (
             <h4
               className="section-title text-center mob-cancel-title-white"
               style={{ fontSize: 20 }}
             >
               {this.props.subtitle || "Help Us Meet Our Goals"}
-              <span
-                className="fa fa-info-circle"
-                style={{ color: "#428a36", padding: "5px" }}
-              ></span>
             </h4>
-          </Tooltip>
-        ) : (
-          <h4
-            className="section-title text-center mob-cancel-title-white"
-            style={{ fontSize: 20 }}
-          >
-            {this.props.subtitle || "Help Us Meet Our Goals"}
-          </h4>
-        )}
+          )}
         </div>
 
         <div className="container">
           <div className="row no-gutter clearfix">
             {/* {dumbycol} */}
             {this.renderGraphs(this.props.graphs)}
-            }
 
             {/* <article
               className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
@@ -153,12 +152,12 @@ class Graphs extends React.Component {
           <Link
             to={this.props.links.impact}
             className="homepage-all-events-btn round-me z-depth-1"
-            style={{marginTop:20}}
+            style={{ marginTop: 20 }}
           >
             Our Impact
           </Link>
         </center>
-      </section> 
+      </section>
     );
   }
 }
