@@ -109,7 +109,7 @@ export default class NewEventsCard extends Component {
       },
       true
     );
-    this.getRSVPStatus();
+    if (this.props.user) this.getRSVPStatus();
   }
 
   handleReadMore(e) {
@@ -143,8 +143,18 @@ export default class NewEventsCard extends Component {
     this.updateRSVP(status);
   }
   renderNewCardDesign() {
-    var { className, dateString, id, recurringDetailString } = this.props;
+    var {
+      className,
+      dateString,
+      id,
+      recurringDetailString,
+      user,
+      links,
+      customDropAnimation,
+      dropDirection,
+    } = this.props;
     const { rsvpStatus, loading, error } = this.state;
+
     return (
       <div>
         <MECard
@@ -156,10 +166,7 @@ export default class NewEventsCard extends Component {
           }}
           className={`${MEAnimation.getAnimationClass()} ${className}`}
         >
-          <Link
-            to={`${this.props.links.events + "/" + id}`}
-            style={{ width: "100%" }}
-          >
+          <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }}>
             <img
               src={this.getPhoto()}
               className="new-me-testimonial-img"
@@ -183,6 +190,15 @@ export default class NewEventsCard extends Component {
             <div style={{ padding: 13 }}>
               <span className="date-string">{dateString}</span>
               <br />
+              {!user && (
+                <>
+                  <small style={{ fontSize: "90%" }}>
+                    <Link to={links.signin}>Sign In to RSVP</Link>
+                  </small>
+                  <br />
+                </>
+              )}
+
               {recurringDetailString && (
                 <METextView type="small" style={{ color: "green" }}>
                   {recurringDetailString}
@@ -190,25 +206,28 @@ export default class NewEventsCard extends Component {
               )}
             </div>
 
-            <div style={{ marginLeft: "auto" }}>
-              <MELightDropDown
-                onItemSelected={this.itemSelected}
-                animate={false}
-                customAnimation="rsvp-drop-anime"
-                controlLabel={true}
-                label={
-                  (loading && <i className="fa fa-spinner fa-spin"></i>) ||
-                  rsvpStatus ||
-                  "RSVP"
-                }
-                labelClassNames="me-rsvp-btn z-depth-float"
-                data={[
-                  RSVP_STATUS.INTERESTED,
-                  RSVP_STATUS.GOING,
-                  RSVP_STATUS.NOT_GOING,
-                ]}
-              />
-            </div>
+            {user && (
+              <div style={{ marginLeft: "auto" }}>
+                <MELightDropDown
+                  direction={dropDirection}
+                  onItemSelected={this.itemSelected}
+                  animate={false}
+                  customAnimation={customDropAnimation || "rsvp-drop-anime"}
+                  controlLabel={true}
+                  label={
+                    (loading && <i className="fa fa-spinner fa-spin"></i>) ||
+                    rsvpStatus ||
+                    "RSVP"
+                  }
+                  labelClassNames="me-rsvp-btn z-depth-float"
+                  data={[
+                    RSVP_STATUS.INTERESTED,
+                    RSVP_STATUS.GOING,
+                    RSVP_STATUS.NOT_GOING,
+                  ]}
+                />
+              </div>
+            )}
           </div>
         </MECard>
         {error && (
@@ -232,4 +251,5 @@ NewEventsCard.defaultProps = {
   links: {},
   name: "New Event",
   body_limit: 150,
+  dropDirection: "down",
 };

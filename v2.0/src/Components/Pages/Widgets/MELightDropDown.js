@@ -49,6 +49,7 @@ export default class MELightDropDown extends Component {
       controlLabel,
       animate,
       customAnimation,
+      direction,
     } = this.props;
     const toggleClassNames = controlLabel
       ? labelClassNames
@@ -56,6 +57,7 @@ export default class MELightDropDown extends Component {
     return (
       <div>
         <Dropdown
+          drop={direction}
           onSelect={() => null}
           style={{ display: "inline-block", padding: "0px 10px" }}
         >
@@ -96,4 +98,5 @@ MELightDropDown.defaultProps = {
   style: {},
   animate: true,
   customAnimation: "",
+  direction: "down",
 };

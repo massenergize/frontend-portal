@@ -37,18 +37,10 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
-        // const ev_name =
-        //   event.name.length > 40
-        //     ? event.name.substring(0, 35) + "..."
-        //     : event.name;
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-
-        // const location = event.location;
-        // const img = event.image && event.image.url ? event.image.url : defaultImg;
-
         return (
           <div
             key={event.id.toString()}
@@ -59,6 +51,7 @@ class Events extends React.Component {
               dateString={dateString}
               links={this.props.links}
               body_limit={95}
+              user={this.props.user}
             />
           </div>
         );
@@ -83,45 +76,38 @@ class Events extends React.Component {
         style={{ background: "white" }}
       >
         <div className="container">
-        {this.props.info ? (
-          <Tooltip 
-            title={this.props.subtitle || "Upcoming Events and Campaigns"} 
-            text={this.props.info}
-            dir="right"
-          >
-          <h3
-            className="cool-font text-center"
-            style={{ fontSize: 20, marginBottom: 30 }}
-          >
-            {this.props.subtitle || "Upcoming Events and Campaigns"}
-            <span
-                className="fa fa-info-circle"
-                style={{ color: "#428a36", padding: "5px" }}
-              ></span>
-          </h3>
-          </Tooltip>
-        ) : (
-          <h3
-            className="section-title text-center mob-cancel-title-white"
-            style={{ fontSize: 20 }}
-          >
-            {this.props.subtitle || "Upcoming Events and Campaigns"}
-          </h3>
-        )}
+          {this.props.info ? (
+            <Tooltip
+              title={this.props.subtitle || "Upcoming Events and Campaigns"}
+              text={this.props.info}
+              dir="right"
+            >
+              <h3
+                className="cool-font text-center"
+                style={{ fontSize: 20, marginBottom: 30 }}
+              >
+                {this.props.subtitle || "Upcoming Events and Campaigns"}
+                <span
+                  className="fa fa-info-circle"
+                  style={{ color: "#428a36", padding: "5px" }}
+                ></span>
+              </h3>
+            </Tooltip>
+          ) : (
+            <h3
+              className="section-title text-center mob-cancel-title-white"
+              style={{ fontSize: 20 }}
+            >
+              {this.props.subtitle || "Upcoming Events and Campaigns"}
+            </h3>
+          )}
 
           <div className="row">
-            <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left">
-              {/* <div className="section-title m-0">
-                <h3 className="cool-font">Upcoming Events</h3>
-              </div> */}
-            </div>
+            <div className="col-md-9 col-sm-10 col-xs-12 text-center text-sm-left"></div>
             <div
               style={{ marginLeft: -64 }}
               className="col-md-3 col-sm-2 col-xs-12 text-sm-right"
-            >
-              {/* <div className="pull-right">  */}
-              {/* <Link to={`${this.props.links.events}`} className="cool-font thm-btn mb-4 btn-finishing raise pull-right float-right mob-btn-left-fix">All Events</Link> */}
-            </div>
+            ></div>
           </div>
           <div className="row mob-helper center-content">
             {this.renderEvents()}
@@ -144,6 +130,7 @@ class Events extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     links: store.links,
+    user: store.user.info,
   };
 };
 export default connect(mapStoreToProps)(Events);
