@@ -26,4 +26,4 @@
 
 /.vscode
 
-/*/config.json
+/v2/src/config/config.json
