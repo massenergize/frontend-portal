@@ -191,8 +191,24 @@
 .animate-testimonial-sheet {
   opacity: 0;
   animation: sheet-animation;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
   animation-delay: var(--sheet-anime-delay);
   /* animation-duration: var(--sheet-anime-duration); */
   animation-fill-mode: forwards;
+}
+
+@keyframes rsvp-drop-anime {
+  from {
+    transform: translate(0px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-70px, -10px);
+    opacity: 1;
+  }
+}
+
+.rsvp-drop-anime {
+  opacity: 0;
+  animation: rsvp-drop-anime 0.2s forwards;
 }
