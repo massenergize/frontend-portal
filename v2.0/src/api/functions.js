@@ -28,7 +28,7 @@ export async function apiCall(
   const formData = new FormData();
   Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
 
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, {
     credentials: 'include',
     method: 'POST',
     body: formData
