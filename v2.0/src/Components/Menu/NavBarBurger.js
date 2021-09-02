@@ -361,7 +361,7 @@ class NavBarBurger extends React.Component {
     const btnColor =
       user.preferences && user.preferences.color
         ? user.preferences.color
-        : "#135dfe";
+        : "#fd7e14";
     // const style = {
     //   borderColor:"white",
     //   borderTopWidth:5,
@@ -400,22 +400,25 @@ class NavBarBurger extends React.Component {
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle
             style={{ "background-color": "white", "border-color": "white" }}
+            className="remove-toggle-outline"
           >
             {user.info.profile_picture ? (
               <img
                 src={user.info.profile_picture.url}
                 alt="profile media"
+                className="me-nav-profile-pic z-depth-1`"
                 style={{
-                  height: 50,
-                  "border-radius": "50%",
+                  "--user-pref-color": btnColor,
                 }}
               ></img>
             ) : (
               <img
-                src={createImagefromInitials(btnColor, user.info.full_name, 50)}
+                // src={createImagefromInitials(btnColor, user.info.full_name, 50)}
+                src={createImagefromInitials(btnColor, user.info.full_name, 35)}
                 alt="profile media"
+                className="me-nav-profile-pic z-depth-1`"
                 style={{
-                  "border-radius": "50%",
+                  "--user-pref-color": btnColor,
                 }}
               ></img>
             )}

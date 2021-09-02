@@ -314,14 +314,9 @@ class MEFileSelector extends Component {
     }
   }
   switchStates() {
-    const {
-      file,
-      croppedImageUrl,
-      showPrev,
-      modal,
-      defaultRemoved,
-    } = this.state;
-    const { previewStyle, defaultValue, name } = this.props;
+    const { file, croppedImageUrl, showPrev, modal, defaultRemoved } =
+      this.state;
+    const { previewStyle, defaultValue, name, allowCrop } = this.props;
 
     if (!file && defaultValue && !defaultRemoved) {
       return (
@@ -378,13 +373,15 @@ class MEFileSelector extends Component {
               Remove Image
             </a>
             <br />
-            <a
-              style={{ marginTop: 6 }}
-              href="##"
-              onClick={this.initiateCropping}
-            >
-              Crop Image
-            </a>
+            {allowCrop && (
+              <a
+                style={{ marginTop: 6 }}
+                href="##"
+                onClick={this.initiateCropping}
+              >
+                Crop Image
+              </a>
+            )}
             <p style={{ margin: 15, color: "#d2cfcf" }}>{file.name}</p>
 
             <MEButton
@@ -401,9 +398,7 @@ class MEFileSelector extends Component {
     return (
       <center>
         <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
-        <p style={{ margin: 15, color: "#d2cfcf" }}>
-          Choose an image from you device
-        </p>
+        <p style={{ margin: 15, color: "#d2cfcf" }}>{this.props.placeholder}</p>
         <MEButton
           className="g-uploader-btn-class"
           onClick={(e) => this.searchForImage(e)}
@@ -455,5 +450,7 @@ MEFileSelector.defaultProps = {
   previewStyle: {},
   modalContainerClassName: "",
   showOverlay: true,
+  placeholder: "Choose an image from your device",
+  allowCrop: true,
 };
 export default MEFileSelector;

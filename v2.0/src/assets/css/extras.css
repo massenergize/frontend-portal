@@ -3,6 +3,18 @@
   --app-theme-green: #8dc443;
 }
 
+.me-nav-profile-pic {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+  padding: 2px;
+  border: solid 2px var(--user-pref-color);
+}
+.remove-toggle-outline:focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 !important;
+}
 .date-string {
   font-size: 0.85rem;
 }
