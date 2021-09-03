@@ -66,6 +66,13 @@ class MEFileSelector extends Component {
       croppedFile: processedFile,
       croppedSize: { size: processedFile.size, text: newSize },
       originalFileName: original.name,
+      file: {
+        data: processedFile || original,
+        info: {
+          size: processedFile?.size || original?.size,
+          text: newSize || originalSize,
+        },
+      },
     };
     onFileSelected(toBeSent, this.removeImage);
     return;
@@ -218,18 +225,19 @@ class MEFileSelector extends Component {
     this.toggleCropperModal();
     if (!onFileSelected) return;
     const { file, croppedVersionOfFile } = this.state;
-    const originalSize = this.getFileSize(file);
-    const newSize = this.getFileSize(croppedVersionOfFile);
-    const toBeSent = {
-      originalFile: file,
-      originalSize: { size: file.size, text: originalSize },
-      croppedFile: croppedVersionOfFile,
-      croppedSize: { size: croppedVersionOfFile.size, text: newSize },
-      originalFileName: file.name,
-    };
+    // const originalSize = this.getFileSize(file);
+    // const newSize = this.getFileSize(croppedVersionOfFile);
+    return this.shipProcessedFile(file, croppedVersionOfFile);
+    // const toBeSent = {
+    //   originalFile: file,
+    //   originalSize: { size: file.size, text: originalSize },
+    //   croppedFile: croppedVersionOfFile,
+    //   croppedSize: { size: croppedVersionOfFile.size, text: newSize },
+    //   originalFileName: file.name,
+    // };
 
-    onFileSelected(toBeSent, this.removeImage); // the remove function is sent to allow the uploader to be rest outside of the component
-    return;
+    // onFileSelected(toBeSent, this.removeImage); // the remove function is sent to allow the uploader to be rest outside of the component
+    // return;
   }
 
   initiateCropping(e) {
@@ -253,13 +261,6 @@ class MEFileSelector extends Component {
     if (modal) {
       return (
         <>
-          {/* // <MEModal
-        //   closeModal={this.toggleCropperModal}
-        //   style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-        //   contentStyle={{ top: "20vh", width: "100%", left: 0 }}
-        //   containerClassName={modalContainerClassName}
-        //   showOverlay={showOverlay}
-        // > */}
           <div className="me-anime-open-in">
             <center>
               <MEButton

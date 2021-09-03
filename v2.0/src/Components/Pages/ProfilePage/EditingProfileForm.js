@@ -30,73 +30,6 @@ class EditingProfileForm extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  //updates image in state when it is changed in form
-  handleImageChange = (e) => {
-    this.setState({
-      image: e.target.files[0],
-    });
-    //upload image to server ON SUBMIT
-    //other fields are probably unnecessary?
-    //const body = {
-    //  user_id: this.props.user.id,
-    //  full_name: this.state.full_name,
-    //  profile_picture: this.state.image,
-    //  preferred_name: this.state.preferred_name
-    //};
-    // apiCall("users.update", body)
-    //.then((json) => {
-    //  if (json.success && json.data) {
-    //    this.props.reduxLogin(json.data);
-    //    this.props.closeForm();
-    //  }
-    //})
-    //.catch((error) => {
-    //  console.log(error);
-    //});
-
-    //crop the image to the aspect ratio we want: in this case, 1:1
-    const outputImageAspectRatio = 1;
-    const inputImage = new Image();
-    if (this.state.image && this.state.image.url) {
-      inputImage.src =
-        "https://massenergize-files.s3.amazonaws.com/media/linkedin_photo.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAS6NKUZRIBLQKY5VX%2F20210702%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210702T224855Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2b7ad9d6eeadb882bde1e4327131d302725444f0c81cc84f896d471f675a1f4c";
-    }
-    inputImage.onload = () => {
-      // let's store the width and height of our image
-      const inputWidth = inputImage.naturalWidth;
-      console.log("input width", inputWidth);
-      const inputHeight = inputImage.naturalHeight;
-      // get the aspect ratio of the input image
-      const inputImageAspectRatio = inputWidth / inputHeight;
-
-      // if it's bigger than our target aspect ratio
-      let outputWidth = inputWidth;
-      let outputHeight = inputHeight;
-      if (inputImageAspectRatio > outputImageAspectRatio) {
-        outputWidth = inputHeight * outputImageAspectRatio;
-      } else if (inputImageAspectRatio < outputImageAspectRatio) {
-        outputHeight = inputWidth / outputImageAspectRatio;
-      }
-
-      // create a canvas that will present the output image
-      const outputImage = document.createElement("canvas");
-
-      // set it to the same size as the image
-      outputImage.width = outputWidth;
-      outputImage.height = outputHeight;
-
-      // draw our image at position 0, 0 on the canvas
-      const ctx = outputImage.getContext("2d");
-      ctx.drawImage(inputImage, 0, 0);
-
-      //show the canvas
-      document.body.appendChild(inputImage);
-      document.body.appendChild(outputImage);
-      console.log("no exceptions, we got here");
-      console.log(outputImage);
-    };
-  };
-
   //updates the state when form elements are changed (not including image)
   onChange(event) {
     this.setState({
@@ -138,7 +71,6 @@ class EditingProfileForm extends React.Component {
 
   render() {
     const { loading } = this.state;
-    console.log("content here", this.state);
     return (
       <form onSubmit={this.onSubmit}>
         <div
@@ -164,18 +96,6 @@ class EditingProfileForm extends React.Component {
             required={true}
           />
 
-          {/* <small>
-            Email ( Not Editable ) <span className="text-default">*</span>
-          </small>
-          <METextField
-            type="email"
-            name="email"
-            defaultValue={this.state.email}
-            onChange={this.onChange}
-            required={true}
-            readonly="true"
-          /> */}
-
           <small>
             Preferred Name <span className="text-danger">*</span>
           </small>
@@ -192,24 +112,14 @@ class EditingProfileForm extends React.Component {
             placeholder="Choose a profile picture"
             onFileSelected={(data, reset) =>
               this.setState({
-                image: data?.originalFile || "reset",
+                image: data?.file?.data || "reset",
                 imageReset: reset,
               })
             }
-            allowCrop={false}
+            allowCrop
             defaultValue={this.state.image}
           />
-          {/* {this.state.image ? (
-            <img src={this.state.image} alt="user media"></img>
-          ) : (
-            <div>None</div>
-          )}
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={this.handleImageChange}
-          ></input> */}
-          <br />
+
           <MEButton type="submit">
             {loading ? "Updating... " : "Submit"}{" "}
             {loading && <i className="fa fa-spinner fa-spin"></i>}
