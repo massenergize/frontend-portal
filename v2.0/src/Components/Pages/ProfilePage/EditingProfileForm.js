@@ -15,6 +15,7 @@ class EditingProfileForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       full_name: props.full_name ? props.full_name : "",
       preferred_name: props.preferred_name ? props.preferred_name : "",
       email: props.email ? props.email : "",
@@ -115,6 +116,7 @@ class EditingProfileForm extends React.Component {
         profile_picture: this.state.image,
         preferred_name: this.state.preferred_name,
       };
+      this.setState({ loading: true });
 
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
@@ -122,7 +124,7 @@ class EditingProfileForm extends React.Component {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            if (this.state.imageReset) this.state.imageReset();
+            this.setState({ loading: false });
           }
         })
         .catch((error) => {
@@ -135,8 +137,8 @@ class EditingProfileForm extends React.Component {
   }
 
   render() {
-    console.log("state.image");
-    console.log(this.state.image);
+    const { loading } = this.state;
+    console.log("content here", this.state);
     return (
       <form onSubmit={this.onSubmit}>
         <div
@@ -189,7 +191,10 @@ class EditingProfileForm extends React.Component {
           <MEFileSelector
             placeholder="Choose a profile picture"
             onFileSelected={(data, reset) =>
-              this.setState({ image: data?.originalFile, imageReset: reset })
+              this.setState({
+                image: data?.originalFile || "reset",
+                imageReset: reset,
+              })
             }
             allowCrop={false}
             defaultValue={this.state.image}
@@ -205,7 +210,10 @@ class EditingProfileForm extends React.Component {
             onChange={this.handleImageChange}
           ></input> */}
           <br />
-          <MEButton type="submit">{"Submit"}</MEButton>
+          <MEButton type="submit">
+            {loading ? "Updating... " : "Submit"}{" "}
+            {loading && <i className="fa fa-spinner fa-spin"></i>}
+          </MEButton>
           <MEButton
             variation="accent"
             type="button"
