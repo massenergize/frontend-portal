@@ -170,6 +170,7 @@ class AppRouter extends Component {
         apiCall("testimonials.list", body),
         apiCall("vendors_page_settings.info", body),
         apiCall("vendors.list", body),
+        apiCall("data.carbonEquivalency.get", body),
       ])
         .then((res) => {
           const [
@@ -192,6 +193,7 @@ class AppRouter extends Component {
             testimonialsResponse,
             vendorsPageResponse,
             vendorsResponse,
+            eqResponse,
           ] = res;
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
           this.props.reduxLoadActionsPage(actionsPageResponse.data);
@@ -212,18 +214,21 @@ class AppRouter extends Component {
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
+          console.log("I am the EG Response", eqResponse.data);
 
-          this.setState({ pagesEnabled: {
-            aboutUsPage: aboutUsPageResponse.data.is_published,
-            actionsPage: actionsPageResponse.data.is_published,
-            contactUsPage: contactUsPageResponse.data.is_published,
-            donatePage: donatePageResponse.data.is_published,
-            eventsPage: eventsPageResponse.data.is_published,
-            impactPage: impactPageResponse.data.is_published,
-            vendorsPage: vendorsPageResponse.data.is_published,
-            testimonialsPage: testimonialsPageResponse.data.is_published,
-            teamsPage: teamsPageResponse.data.is_published,
-          }})
+          this.setState({
+            pagesEnabled: {
+              aboutUsPage: aboutUsPageResponse.data.is_published,
+              actionsPage: actionsPageResponse.data.is_published,
+              contactUsPage: contactUsPageResponse.data.is_published,
+              donatePage: donatePageResponse.data.is_published,
+              eventsPage: eventsPageResponse.data.is_published,
+              impactPage: impactPageResponse.data.is_published,
+              vendorsPage: vendorsPageResponse.data.is_published,
+              testimonialsPage: testimonialsPageResponse.data.is_published,
+              teamsPage: teamsPageResponse.data.is_published,
+            },
+          });
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -307,19 +312,19 @@ class AppRouter extends Component {
       }
       // remove menu items for pages which cadmins have selected as not enabled
       newAbout.children = newAbout.children.filter((item) => {
-        switch(item.link) {
+        switch (item.link) {
           case "/impact":
             return this.state.pagesEnabled.impactPage;
           case "/aboutus":
             return this.state.pagesEnabled.aboutUsPage;
           case "/donate":
-              return this.state.pagesEnabled.donatePage;
+            return this.state.pagesEnabled.donatePage;
           case "/contactus":
             return this.state.pagesEnabled.contactUsPage;
           default:
             return true;
         }
-      })
+      });
       menu[3] = newAbout;
     }
 
@@ -332,7 +337,7 @@ class AppRouter extends Component {
       };
       // remove menu items for pages which cadmins have selected as not enabled
       newAction.children = newAction.children.filter((item) => {
-        switch(item.link) {
+        switch (item.link) {
           case "/actions":
             return this.state.pagesEnabled.actionsPage;
           case "/services":
@@ -342,7 +347,7 @@ class AppRouter extends Component {
           default:
             return true;
         }
-      })
+      });
       menu[1] = newAction;
     }
 
@@ -356,7 +361,7 @@ class AppRouter extends Component {
 
     // remove menu items for pages which cadmins have selected as not enabled
     menu = menu.filter((item) => {
-      switch(item.link) {
+      switch (item.link) {
         case "/teams":
           return this.state.pagesEnabled.teamsPage;
         case "/events":
@@ -366,7 +371,7 @@ class AppRouter extends Component {
         default:
           return item.children ? item.children.length > 0 : true;
       }
-    })
+    });
     return menu;
   }
 
