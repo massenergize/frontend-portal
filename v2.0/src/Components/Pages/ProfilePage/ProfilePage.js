@@ -57,7 +57,6 @@ class ProfilePage extends React.Component {
       printing: false,
       message: "",
     };
-    console.log('props bby', this.props);
   }
 
   componentDidMount() {
@@ -624,8 +623,9 @@ class ProfilePage extends React.Component {
   }
   renderTeams(teams) {
     if (!teams) return null;
-    const currentCommunityTeamIDs =
-        this.props.teams.map((team) => team.team.id);
+    const currentCommunityTeamIDs = this.props.teams.map(
+      (team) => team.team.id
+    );
 
     //console.log("currentCommunityTeamIDs",currentCommunityTeamIDs)
     const inThisCommunity = (team) =>
@@ -656,7 +656,6 @@ class ProfilePage extends React.Component {
               </METextView>
             ) : (
               <METextView
-
                 style={{ color: "black" }}
                 icon="fa fa-users"
                 mediaType="icon"
@@ -666,7 +665,7 @@ class ProfilePage extends React.Component {
             )}
             {team.tagline && (
               <METextView
-                type="small"                
+                type="small"
                 containerStyle={{ display: "block" }}
                 style={{ color: "black" }}
               >
