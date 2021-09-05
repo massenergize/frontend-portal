@@ -58,6 +58,7 @@ import {
   reduxLoadCollection,
   reduxLoadCommunityInformation,
   reduxLoadCommunityAdmins,
+  reduxLoadEquivalences,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -214,7 +215,7 @@ class AppRouter extends Component {
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
-          console.log("I am the EG Response", eqResponse.data);
+          this.props.reduxLoadEquivalences(eqResponse.data);
 
           this.setState({
             pagesEnabled: {
@@ -596,5 +597,6 @@ const mapDispatchToProps = {
   reduxLoadCollection,
   reduxLoadCommunityInformation,
   reduxLoadCommunityAdmins,
+  reduxLoadEquivalences,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

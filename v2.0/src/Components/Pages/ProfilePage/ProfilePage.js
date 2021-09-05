@@ -20,6 +20,7 @@ import {
   reduxLoadUserCommunities,
   reduxLeaveTeam,
   reduxLogout,
+  reduxSetPreferredEquivalence,
 } from "../../../redux/actions/userActions";
 import {
   reduxChangeData,
@@ -28,8 +29,6 @@ import {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
 } from "../../../redux/actions/pageActions";
-// import { watchFile } from 'fs';
-// import Tooltip from "../../Shared/Tooltip";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
@@ -40,8 +39,9 @@ import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
-import { sumOfCarbonScores } from "../../Utils";
-
+import { getPropsArrayFromJsonArray, sumOfCarbonScores } from "../../Utils";
+import MEDropdown from "../Widgets/MEDropdown";
+const PREFERRED_EQ = "PREFERRED_EQ";
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -57,12 +57,29 @@ class ProfilePage extends React.Component {
       printing: false,
       message: "",
     };
-    console.log('props bby', this.props);
+    this.handleEQSelection = this.handleEQSelection.bind(this);
   }
 
   componentDidMount() {
     // disable the registration protocol to prevent the form from ever showing again, until enabled
     localStorage.removeItem("reg_protocol");
+  }
+
+  getEqData() {
+    const { eq } = this.props;
+    const labels = getPropsArrayFromJsonArray(eq || [], "name");
+    const values = getPropsArrayFromJsonArray(eq || [], "id");
+    return [labels, values];
+  }
+  handleEQSelection(id) {
+    const { eq, reduxSetPreferredEquivalence } = this.props;
+    var found;
+    if (id) found = eq?.find((item) => item.id === id);
+    // Send EQ to redux,
+    reduxSetPreferredEquivalence(found);
+    // Save EQ to local storage
+    const parsed = JSON.stringify(found || {});
+    localStorage.setItem(PREFERRED_EQ, parsed);
   }
 
   showJoiningForm() {
@@ -100,7 +117,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    //console.log("I am the props", this.props.teams);
+    console.log("I am the pref", this.props.pref_eq);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -112,7 +129,6 @@ class ProfilePage extends React.Component {
     }
 
     const myHouseholds = this.props.user.households || [];
-    // const myCommunities = this.props.user.communities || [];
 
     if (!this.props.teams) {
       return <LoadingCircle />;
@@ -122,20 +138,8 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
-
-    /* This is not where communities get automatically added!
-    if (this.props.community) {
-      if (
-        myCommunities.filter((com) => {
-          return com.id === this.props.community.id;
-        }).length === 0
-      ) {
-        this.addDefaultCommunity();
-      }
-    }
-    */
-    //capturing the props in a JSON object that represents a user
     const { user } = this.props;
+    const [eqLabels, eqValues] = this.getEqData();
     return (
       <>
         <div
@@ -257,6 +261,18 @@ class ProfilePage extends React.Component {
                       </div>
                     </div>
                   </section>
+                  <div>
+                    <p style={{ color: "black" }}>
+                      What would you like your impact to be measured in?
+                    </p>
+                    <MEDropdown
+                      data={[MEDropdown.NONE, ...eqLabels]}
+                      dataValues={[null, ...eqValues]}
+                      onItemSelected={this.handleEQSelection}
+                    />
+                  </div>
+                  <br />
+                  <br />
                   <MESectionWrapper headerText="Your Teams ( * Outside This Community )">
                     {this.renderTeams(user.teams)}
                   </MESectionWrapper>
@@ -318,52 +334,7 @@ class ProfilePage extends React.Component {
                       </MEButton>
                     </MECard>
                   )}
-                  {/* <table className="profile-table" style={{ width: "100%" }}>
-                    <tbody>
-                      <tr>
-                        <th> Your Households </th>
-                        <th />
-                        <th />
-                      </tr>
-                      {this.renderHouseholds(user.households)}
-                      {!this.state.editingHH ? (
-                        <tr>
-                          <td colSpan={3} style={{ textAlign: "center" }}>
-                            {this.state.addingHH ? (
-                              <>
-                                <AddingHouseholdForm
-                                  user={this.props.user}
-                                  addHousehold={this.addHousehold}
-                                  closeForm={() =>
-                                    this.setState({ addingHH: false })
-                                  }
-                                />
-                                <MEButton
-                                  variation="accent"
-                                  onClick={() =>
-                                    this.setState({ addingHH: false })
-                                  }
-                                >
-                                  Cancel
-                                </MEButton>
-                              </>
-                            ) : (
-                              <MEButton
-                                onClick={() =>
-                                  this.setState({
-                                    addingHH: true,
-                                    editingHH: null,
-                                  })
-                                }
-                              >
-                                If you have another household, let us know
-                              </MEButton>
-                            )}
-                          </td>
-                        </tr>
-                      ) : null}
-                    </tbody>
-                  </table> */}
+
                   {this.state.deletingHHError ? (
                     <p className="text-danger"> {this.state.deletingHHError}</p>
                   ) : null}
@@ -372,37 +343,6 @@ class ProfilePage extends React.Component {
                   {/* --------------- Dont display communities part when a user is editing -------- */}
                   {!this.state.editingHH && this.showCommunitiesSection()}
 
-                  {/* 
-                  <table className="profile-table" style={{ width: "100%" }}>
-                    <tbody>
-                      <tr>
-                        <th> Your Communities </th>
-                        <th></th>
-                      </tr>
-                      {this.renderCommunities(user.communities)}
-                      <tr>
-                        {this.state.joiningCom ? (
-                          <td colSpan={2}>
-                            <JoiningCommunityForm
-                              closeForm={() =>
-                                this.setState({ joiningCom: false })
-                              }
-                            />
-                          </td>
-                        ) : (
-                          <td colSpan={2} style={{ textAlign: "center" }}>
-                            <MEButton
-                              onClick={() =>
-                                this.setState({ joiningCom: true })
-                              }
-                            >
-                              Join another Community
-                            </MEButton>
-                          </td>
-                        )}
-                      </tr>
-                    </tbody>
-                  </table> */}
                   {this.state.leaveComError ? (
                     <p className="text-danger"> {this.state.leaveComError}</p>
                   ) : null}
@@ -434,26 +374,6 @@ class ProfilePage extends React.Component {
                       status="TODO"
                     />
                   ) : null}
-
-                  {/* {this.props.rsvps ? (
-                    <EventCart
-                      title="Event RSVPs"
-                      eventRSVPs={this.props.rsvps.filter(
-                        (rsvp) =>
-                          rsvp.attendee &&
-                          rsvp.attendee.id === this.props.user.id
-                      )}
-                    />
-                  ) : null} */}
-                  <center>
-                    {/* <MEButton
-                      onClick={() => this.setState({ printing: true })}
-                      variation="union"
-                      style={{ fontSize: 14 }}
-                    >
-                      Summary Of Your Actions
-                    </MEButton> */}
-                  </center>
                 </div>
               </div>
             )}
@@ -624,8 +544,9 @@ class ProfilePage extends React.Component {
   }
   renderTeams(teams) {
     if (!teams) return null;
-    const currentCommunityTeamIDs =
-        this.props.teams.map((team) => team.team.id);
+    const currentCommunityTeamIDs = this.props.teams.map(
+      (team) => team.team.id
+    );
 
     //console.log("currentCommunityTeamIDs",currentCommunityTeamIDs)
     const inThisCommunity = (team) =>
@@ -656,7 +577,6 @@ class ProfilePage extends React.Component {
               </METextView>
             ) : (
               <METextView
-
                 style={{ color: "black" }}
                 icon="fa fa-users"
                 mediaType="icon"
@@ -666,7 +586,7 @@ class ProfilePage extends React.Component {
             )}
             {team.tagline && (
               <METextView
-                type="small"                
+                type="small"
                 containerStyle={{ display: "block" }}
                 style={{ color: "black" }}
               >
@@ -917,6 +837,8 @@ const mapStoreToProps = (store) => {
     households: store.user.info ? store.user.info.households : null,
     rsvps: store.page.rsvps,
     links: store.links,
+    eq: store.page.equivalences,
+    pref_eq: store.user.pref_equivalence,
   };
 };
 const mapDispatchToProps = {
@@ -933,6 +855,7 @@ const mapDispatchToProps = {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  reduxSetPreferredEquivalence,
 };
 export default connect(
   mapStoreToProps,

@@ -18,6 +18,7 @@ import {
   JOIN_TEAM,
   LEAVE_TEAM,
   SHOW_REG,
+  SET_PREFERRED_EQUIVALENCE,
 } from "../actions/types";
 
 const initialState = {
@@ -29,6 +30,12 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+
+    case SET_PREFERRED_EQUIVALENCE:
+      return {
+        ...state,
+        pref_equivalence: action.payload,
+      };
     /**************************/
     case SHOW_REG:
       return {
