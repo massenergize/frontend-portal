@@ -39,9 +39,13 @@ import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
-import { getPropsArrayFromJsonArray, sumOfCarbonScores } from "../../Utils";
+import {
+  getPropsArrayFromJsonArray,
+  PREFERRED_EQ,
+  sumOfCarbonScores,
+} from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
-const PREFERRED_EQ = "PREFERRED_EQ";
+
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -117,7 +121,6 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    console.log("I am the pref", this.props.pref_eq);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -269,6 +272,7 @@ class ProfilePage extends React.Component {
                       data={[MEDropdown.NONE, ...eqLabels]}
                       dataValues={[null, ...eqValues]}
                       onItemSelected={this.handleEQSelection}
+                      value={this.props.pref_eq?.name}
                     />
                   </div>
                   <br />

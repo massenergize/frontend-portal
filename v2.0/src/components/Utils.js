@@ -1,6 +1,16 @@
 import * as moment from "moment";
 import React from "react";
+export const PREFERRED_EQ = "PREFERRED_EQ";
 
+export const fetchAndParseStorageContent = (key, isJson = true) => {
+  var item = localStorage.getItem(key);
+  if (!isJson) return item;
+  if (item) {
+    item = JSON.parse(item || "{}");
+    return item;
+  }
+  return null;
+};
 export const getFilterVersionFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
   const search = location.search;
