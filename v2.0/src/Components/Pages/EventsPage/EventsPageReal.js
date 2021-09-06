@@ -15,6 +15,7 @@ import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+import Slider from "../Widgets/Slider/Slider";
 /**
  * Renders the event page
  */
@@ -102,6 +103,7 @@ class EventsPage extends React.Component {
                   >
                     {this.renderSideBar()}
                   </div> */}
+                  <Slider data={[1, 2, 3, 4, 5]} />
                   <div className="col-lg-10 col-md-10 col-12 offset-md-1">
                     <div style={{ marginBottom: 30 }}>
                       <div className="text-center">
