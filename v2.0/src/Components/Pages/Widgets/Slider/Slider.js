@@ -1,30 +1,11 @@
-// import React, { useState, useEffect } from "react";
-import "./Slider.css";
-// export default function Slider({ data }) {
-//   const [itemInView, setItemInView] = useState(0);
-//   const [indexOfItem, setIndexOfCurrentItem] = useState(0);
-
-//   const countAndLoadItem = () => {
-//     setInterval(() => {
-//       (data || []).forEach((item, index) => {
-//         console.log("I am the index", index);
-//         setItemInView(item);
-//         setIndexOfCurrentItem(index);
-//       });
-//     }, 2500);
-//   };
-
-//   // useEffect(() => countAndLoadItem());
-//   // countAndLoadItem();
-//   return <div>{itemInView}</div>;
-// }
-
 import React, { Component } from "react";
+import { getRandomIntegerInRange } from "../../../Utils";
+import "./Slider.css";
 
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    this.state = { itemInView: null, index: 0 };
+    this.state = { itemInView: null, index: 0, key: "33ui-2893" };
   }
 
   componentDidMount() {
@@ -35,6 +16,7 @@ export default class Slider extends Component {
 
   countAndLoadItem() {
     const _this = this;
+    const interval = this.props.interval;
     setInterval(() => {
       var data = _this.props.data || [];
       var i = Number(_this.state.index) + 1;
@@ -42,11 +24,22 @@ export default class Slider extends Component {
       _this.setState({
         itemInView: data[i],
         index: i,
+        key: getRandomIntegerInRange().toString(),
       });
-    }, 1500);
+    }, interval);
   }
 
   render() {
-    return <div>{this.state.itemInView}</div>;
+    const { key } = this.state;
+    return (
+      <div className="fadeItemIn" key={key}>
+        {this.state.itemInView}
+      </div>
+    );
   }
 }
+
+Slider.defaultProps = {
+  data: [1, 2, 3, 4, 5],
+  interval: 2000,
+};

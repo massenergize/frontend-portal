@@ -163,7 +163,7 @@ export const moveToPage = (data, pageNumber, perPage) => {
   };
 };
 
-export const getRandomIntegerInRange = (range) => {
+export const getRandomIntegerInRange = (range = 99999999) => {
   return Math.floor(Math.random() * Math.floor(range));
 };
 export function getPropsArrayFromJsonArray(array, property) {

@@ -103,7 +103,13 @@ class EventsPage extends React.Component {
                   >
                     {this.renderSideBar()}
                   </div> */}
-                  <Slider data={[1, 2, 3, 4, 5]} />
+                  <Slider
+                    data={[
+                      <small>THe frog is playing</small>,
+                      <small>Piano, and the lizard</small>,
+                      <small>Is playing guitar...</small>,
+                    ]}
+                  />
                   <div className="col-lg-10 col-md-10 col-12 offset-md-1">
                     <div style={{ marginBottom: 30 }}>
                       <div className="text-center">
