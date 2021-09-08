@@ -9,7 +9,6 @@ export const PREFERRED_EQ = "PREFERRED_EQ";
  * @returns
  */
 export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
-  console.log("here it is bana", carbonFootprint, constantPerYearInPounds);
   carbonFootprint = Number(carbonFootprint) || 0;
   constantPerYearInPounds = Number(constantPerYearInPounds) || 0;
   return (carbonFootprint / constantPerYearInPounds).toFixed(1);
@@ -25,9 +24,11 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   var item = localStorage.getItem(key);
   if (!isJson) return item;
   if (item) {
+    console.log("I CAME HERE BRUH", item);
     item = JSON.parse(item || "{}");
     return item;
   }
+  console.log("OUTSIDE OF ALL", item);
   return null;
 };
 export const getFilterVersionFromURL = (location, paramName) => {

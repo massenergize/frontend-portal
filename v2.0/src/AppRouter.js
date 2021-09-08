@@ -73,7 +73,6 @@ import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
-import { fetchAndParseStorageContent, PREFERRED_EQ } from "./components/Utils";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -92,17 +91,11 @@ class AppRouter extends Component {
 
   componentDidMount() {
     this.fetch();
-    // --------- set already saved preferred EQ if it exists ----------
-    this.props.reduxSetPreferredEquivalence(
-      fetchAndParseStorageContent(PREFERRED_EQ)
-    );
-    // ----------------------------------------------------------------
   }
 
   async fetch() {
     const { subdomain } = this.props.match.params;
     const body = { subdomain: subdomain };
-    this.props.reduxSetPreferredEquivalence(localStorage.getItem);
     // first set the domain for the current community
     this.props.reduxLoadCommunity({ subdomain });
 

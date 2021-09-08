@@ -28,7 +28,10 @@ import {
 import { apiCall } from "../../api/functions";
 
 export const reduxSetPreferredEquivalence = (value) => {
-  return { type: SET_PREFERRED_EQUIVALENCE, payload: value };
+  return {
+    type: SET_PREFERRED_EQUIVALENCE,
+    payload: value,
+  };
 };
 /** used to identify weather or not the registration page should be shown or not */
 export const reduxShowReg = (value) => (dispatch) => {

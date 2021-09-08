@@ -126,7 +126,6 @@ class ProfilePage extends React.Component {
     const { pref_eq } = this.props;
     var score = sumOfCarbonScores(this.props.done || []);
     if (pref_eq) score = calcEQ(score, pref_eq?.value || 0);
-    console.log("I am the core bro", score);
     return (
       <Counter
         end={score}
@@ -141,7 +140,6 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    console.log("I am the values okay", this.props.eq);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
@@ -382,20 +380,17 @@ class ProfilePage extends React.Component {
                     height: "fit-content",
                   }}
                 >
-                  {true ? (
-                    <Cart
-                      title="Completed Actions"
-                      actionRels={this.props.done ? this.props.done : []}
-                      status="DONE"
-                    />
-                  ) : null}
-                  {true ? (
-                    <Cart
-                      title="To Do List"
-                      actionRels={this.props.todo ? this.props.todo : []}
-                      status="TODO"
-                    />
-                  ) : null}
+                  <Cart
+                    title="To Do List"
+                    actionRels={this.props.todo ? this.props.todo : []}
+                    status="TODO"
+                  />
+
+                  <Cart
+                    title="Completed Actions"
+                    actionRels={this.props.done ? this.props.done : []}
+                    status="DONE"
+                  />
                 </div>
               </div>
             )}

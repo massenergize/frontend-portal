@@ -1,4 +1,8 @@
 import {
+  fetchAndParseStorageContent,
+  PREFERRED_EQ,
+} from "../../components/Utils";
+import {
   LOAD_HOME_PAGE,
   LOAD_ACTIONS_PAGE,
   LOAD_SERVICE_PROVIDERS_PAGE,
@@ -38,9 +42,19 @@ import {
   TEAM_REMOVE_HOUSEHOLD,
   LOAD_EQUIVALENCES,
 } from "./types";
+import { reduxSetPreferredEquivalence } from "./userActions";
 
 export const reduxLoadEquivalences = (data) => {
-  return { type: LOAD_EQUIVALENCES, payload: data };
+  return (dispatch) => {
+    data = data || [];
+    const pref_eq = fetchAndParseStorageContent(PREFERRED_EQ);
+    const found = data.find(
+      (item) => item.id === pref_eq?.id && item.name === pref_eq?.name
+    );
+    if (found) dispatch(reduxSetPreferredEquivalence(found));
+    // else localStorage.removeItem(PREFERRED_EQ);
+    return dispatch({ type: LOAD_EQUIVALENCES, payload: data });
+  };
 };
 
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
