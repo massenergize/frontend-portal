@@ -94,7 +94,7 @@ class AppRouter extends Component {
     this.fetch();
     // --------- set already saved preferred EQ if it exists ----------
     this.props.reduxSetPreferredEquivalence(
-      fetchAndParseStorageContent(PREFERRED_EQ),this.props.equivalences
+      fetchAndParseStorageContent(PREFERRED_EQ)
     );
     // ----------------------------------------------------------------
   }
@@ -568,7 +568,7 @@ const mapStoreToProps = (store) => {
     auth: store.firebase.auth,
     menu: store.page.menu,
     links: store.links,
-    eq: store.equivalences
+    eq: store.page.equivalences,
   };
 };
 const mapDispatchToProps = {

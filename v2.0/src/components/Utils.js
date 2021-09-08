@@ -4,21 +4,22 @@ export const PREFERRED_EQ = "PREFERRED_EQ";
 
 /**
  * For equivalences with a common formular, this function is used to determine the value
- * @param {*} carbonFootprint 
+ * @param {*} carbonFootprint
  * @param {*} constantPerYearInPounds  predetermined constant the represents how much carbon is represented
- * @returns 
+ * @returns
  */
 export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
+  console.log("here it is bana", carbonFootprint, constantPerYearInPounds);
   carbonFootprint = Number(carbonFootprint) || 0;
   constantPerYearInPounds = Number(constantPerYearInPounds) || 0;
-  return parseFloat(carbonFootprint / constantPerYearInPounds).toFixed(1);
+  return (carbonFootprint / constantPerYearInPounds).toFixed(1);
 };
 
 /**
  * Collects saved content from local storage and parses it into json, or string
- * @param {*} key 
- * @param {*} isJson 
- * @returns 
+ * @param {*} key
+ * @param {*} isJson
+ * @returns
  */
 export const fetchAndParseStorageContent = (key, isJson = true) => {
   var item = localStorage.getItem(key);

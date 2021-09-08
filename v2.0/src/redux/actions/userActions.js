@@ -26,16 +26,9 @@ import {
 } from "./types";
 
 import { apiCall } from "../../api/functions";
-import { PREFERRED_EQ } from "../../components/Utils";
 
-export const reduxSetPreferredEquivalence = (value, available) => {
-  // This check is just to make sure the value that is saved locally still exists.
-  // if it doesnt exists, set preferred to null, and delete choice from localstorage. (They would have to choose a new one from the list admins have provided)
-  const found = (available || []).find(
-    (item) => item.name === value?.name && item.id === value?.id
-  );
-  if (!found) localStorage.removeItem(PREFERRED_EQ);
-  return { type: SET_PREFERRED_EQUIVALENCE, payload: found ? value : null };
+export const reduxSetPreferredEquivalence = (value) => {
+  return { type: SET_PREFERRED_EQUIVALENCE, payload: value };
 };
 /** used to identify weather or not the registration page should be shown or not */
 export const reduxShowReg = (value) => (dispatch) => {

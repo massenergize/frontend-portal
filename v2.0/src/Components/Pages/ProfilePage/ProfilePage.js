@@ -40,6 +40,7 @@ import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
 import {
+  calcEQ,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
   sumOfCarbonScores,
@@ -120,6 +121,25 @@ class ProfilePage extends React.Component {
       </div>
     );
   }
+
+  renderCarbonCounterBox() {
+    const { pref_eq } = this.props;
+    var score = sumOfCarbonScores(this.props.done || []);
+    if (pref_eq) score = calcEQ(score, pref_eq?.value || 0);
+    console.log("I am the core bro", score);
+    return (
+      <Counter
+        end={score}
+        unit={!pref_eq ? "lbs CO2" : ""}
+        icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
+        title={pref_eq ? `Number of ${pref_eq?.name}` : "Impact"}
+        info={
+          pref_eq?.explanation ||
+          "Amount your yearly carbon footprint is reduced through the actions you've taken."
+        }
+      />
+    );
+  }
   render() {
     console.log("I am the values okay", this.props.eq);
     if (!this.props.user) {
@@ -197,7 +217,8 @@ class ProfilePage extends React.Component {
                             />
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
-                            <Counter
+                            {this.renderCarbonCounterBox()}
+                            {/* <Counter
                               end={sumOfCarbonScores(this.props.done || [])}
                               unit={"lbs CO2"}
                               icon={"fa fa-leaf"}
@@ -205,7 +226,7 @@ class ProfilePage extends React.Component {
                               info={
                                 "Amount your yearly carbon footprint is reduced through the actions you've taken."
                               }
-                            />
+                            /> */}
                           </div>
                         </div>
                       </div>
@@ -245,21 +266,17 @@ class ProfilePage extends React.Component {
                           </div>
                           {/* <div className="column counter-column col-lg-4 col-6"  > */}
                           <div className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2">
-                            <Counter
-                              end={(this.props.done || [])
-                                .map((t) =>
-                                  t.action && t.action.calculator_action
-                                    ? t.action.calculator_action.average_points
-                                    : 0
-                                )
-                                .reduce((partial_sum, a) => partial_sum + a, 0)}
-                              unit={"lbs CO2"}
-                              icon={"fa fa-leaf"}
-                              title={"Impact"}
+                            {this.renderCarbonCounterBox()}
+                            {/* <Counter
+                              end={sumOfCarbonScores(this.props.done || [])}
+                              unit={!pref_eq ?? "lbs CO2"}
+                              icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
+                              title={`Number of ${pref_eq?.name}`}
                               info={
+                                pref_eq?.explanation ||
                                 "Amount your yearly carbon footprint is reduced through the actions you've taken."
                               }
-                            />
+                            /> */}
                           </div>
                         </div>
                       </div>
