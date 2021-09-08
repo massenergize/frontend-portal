@@ -121,6 +121,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
+    console.log("I am the values okay", this.props.eq);
     if (!this.props.user) {
       return <Redirect to={this.props.links.signin}> </Redirect>;
     }
