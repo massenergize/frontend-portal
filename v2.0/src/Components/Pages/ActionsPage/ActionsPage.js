@@ -217,6 +217,8 @@ class ActionsPage extends React.Component {
                         done={this.props.done}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
+                        pref_eq={this.props.pref_eq}
+                        eq={this.props.eq}
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -224,6 +226,8 @@ class ActionsPage extends React.Component {
                         todo={this.props.todo}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
+                        pref_eq={this.props.pref_eq}
+                        eq={this.props.eq}
                       />
                     </div>
                   </div>
@@ -458,6 +462,8 @@ const mapStoreToProps = (store) => {
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
+    pref_eq: store.user.pref_equivalence,
+    eq: store.page.equivalences,
   };
 };
 

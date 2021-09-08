@@ -3,6 +3,16 @@
   --app-theme-green: #8dc443;
 }
 
+.equivalence-small {
+  color: var(--app-theme-green);
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.equivalence-small:hover {
+  color: var(--app-theme-orange);
+  transition: 0.3s ease-out;
+}
 .me-nav-profile-pic {
   height: 48px;
   width: 48px;

@@ -131,7 +131,9 @@ class ProfilePage extends React.Component {
         end={score}
         unit={!pref_eq ? "lbs CO2" : ""}
         icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
-        title={pref_eq ? `Number of ${pref_eq?.name}` : "Impact"}
+        title={
+          pref_eq ? pref_eq?.title || `Number of ${pref_eq?.name}` : "Impact"
+        }
         info={
           pref_eq?.explanation ||
           "Amount your yearly carbon footprint is reduced through the actions you've taken."

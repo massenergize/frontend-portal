@@ -20,11 +20,7 @@ class Counter extends React.Component {
           <i className={this.props.icon}></i>
         </div>
         <div className="count-outer">
-          {this.props.end < 1 ? (
-            <h1>{this.props.end}</h1>
-          ) : (
-            <CountUp end={this.props.end} duration={3} />
-          )}
+          <CountUp end={this.props.end} decimals={1} duration={3} />
         </div>
         {this.props.info ? (
           <Tooltip
