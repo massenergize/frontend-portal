@@ -8,6 +8,7 @@ import {
   reduxAddToDone,
   reduxAddToTodo,
   reduxMoveToDone,
+  reduxSetPreferredEquivalence,
 } from "../../../redux/actions/userActions";
 import {
   reduxChangeData,
@@ -21,6 +22,7 @@ import {
   applyTagsAndGetContent,
   filterTagCollections,
   searchIsActiveFindContent,
+  sumOfCarbonScores,
 } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
@@ -28,6 +30,7 @@ import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+import EquivalenceModal from "./EquivalenceModal";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -62,9 +65,29 @@ class ActionsPage extends React.Component {
       showTodoMsg: false,
       actions: [],
       status: null,
+      showEqModal: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
+    this.toggleEQModal = this.toggleEQModal.bind(this);
+  }
+
+  renderEQModal() {
+    const { showEqModal } = this.state;
+    if (showEqModal)
+      return (
+        <EquivalenceModal
+          eqs={this.props.eq}
+          pref_eq={this.props.pref_eq}
+          toggleModal={this.toggleEQModal}
+          carbonScore={sumOfCarbonScores(this.props.done || [])}
+          reduxSetPreference={this.props.reduxSetPreferredEquivalence}
+        />
+      );
+  }
+
+  toggleEQModal(value) {
+    this.setState({ showEqModal: value });
   }
 
   addMeToSelected(param, reset = false) {
@@ -163,6 +186,7 @@ class ActionsPage extends React.Component {
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
     return (
       <>
+        {this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -219,6 +243,7 @@ class ActionsPage extends React.Component {
                         user={this.props.user}
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
+                        toggleEQModal={this.toggleEQModal}
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -228,6 +253,7 @@ class ActionsPage extends React.Component {
                         user={this.props.user}
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
+                        toggleEQModal={this.toggleEQModal}
                       />
                     </div>
                   </div>
@@ -473,5 +499,6 @@ const mapDispatchToProps = {
   reduxMoveToDone,
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetPreferredEquivalence,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);

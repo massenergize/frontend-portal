@@ -5,13 +5,17 @@ import "./Slider.css";
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    this.state = { itemInView: null, index: 0, key: "33ui-2893" };
+    this.state = { itemInView: undefined, index: 0, key: "33ui-2893" };
   }
 
   componentDidMount() {
-    const { data } = this.props;
-    this.setState({ itemInView: data[0] });
     this.countAndLoadItem();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    // first time its mounting
+    if (state.itemInView === undefined && props.data)
+      return { itemInView: props.data[0] };
   }
 
   countAndLoadItem() {

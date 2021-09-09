@@ -10,7 +10,6 @@ export default class ActionBoxCounter extends Component {
     const { user } = this.props;
     return (
       <>
-        <br />
         {useCounter ? (
           <CountUp
             end={end}
@@ -21,6 +20,8 @@ export default class ActionBoxCounter extends Component {
               margin: 10,
               fontSize: 26,
               color: "black",
+              display: "block",
+              marginBottom: 0,
             }}
           />
         ) : (
@@ -35,7 +36,6 @@ export default class ActionBoxCounter extends Component {
             {end}
           </h1>
         )}
-        <br />
         <small style={{ color: "black" }}>
           <b>
             {!user
@@ -46,18 +46,30 @@ export default class ActionBoxCounter extends Component {
       </>
     );
   }
+  /**
+   * Data generated from here is used to make slider content when user has not chosen a default
+   * equivalence yet
+   * @param {*} carbonScore
+   * @returns
+   */
   createSliderData(carbonScore) {
     let { eq } = this.props;
-    return (eq || []).map((item) => {
+    const data = (eq || []).map((item) => {
       const value = calcEQ(carbonScore, item.value);
       return this.makeCounterWithCustomValue(value, item);
     });
+    // Append default carbon value / year
+    return [
+      this.makeCounterWithCustomValue(carbonScore / 2200, {
+        title: "Ton of CO2/year",
+      }),
+      ...data,
+    ];
   }
   render() {
     const { type, style, todo, done, user, pref_eq } = this.props;
     const data = type === DONE ? done : todo;
     const carbonScore = sumOfCarbonScores(data);
-    console.log("I am the prefEG bana", pref_eq);
     return (
       <div className="action-box-counter z-depth-float" style={style}>
         <div style={{ padding: 15 }}>
@@ -65,7 +77,7 @@ export default class ActionBoxCounter extends Component {
             <CountUp
               end={data ? data.length : 0}
               duration={3}
-              style={{ fontSize: 60, fontWeight: "700", color: "black" }}
+              style={{ fontSize: 55, fontWeight: "700", color: "black" }}
             />
             <br />
             <small style={{ fontWeight: "600", fontSize: 21, color: "black" }}>
@@ -78,13 +90,20 @@ export default class ActionBoxCounter extends Component {
                 true
               )
             ) : (
-              <Slider data={this.createSliderData(carbonScore)} />
+              <Slider
+                data={this.createSliderData(carbonScore)}
+                interval={3000}
+              />
             )}
-
             {user && (
               <>
-                <br />
-                <small className="equivalence-small">More Equivalences</small>
+                {pref_eq && <br />}
+                <small
+                  className="equivalence-small"
+                  onClick={() => this.props.toggleEQModal(true)}
+                >
+                  More Equivalences
+                </small>
               </>
             )}
             <br />
