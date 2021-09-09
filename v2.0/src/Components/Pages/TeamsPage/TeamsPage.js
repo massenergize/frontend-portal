@@ -167,9 +167,7 @@ class TeamsPage extends React.Component {
                   <METextField
                     onChange={(event) => this.handleSearch(event)}
                     type="text"
-                    // style={{ borderRadius: 7, borderColor:"#eceaea" }}
                     placeholder="Search for a team..."
-                    // className="teams-search"
                   />
                 </div>
                 <METextView
@@ -190,7 +188,6 @@ class TeamsPage extends React.Component {
                 >
                   <MEButton
                     style={{ width: "100%", margin: 0 }}
-                    // className=" round-only-right-side"
                     onClick={() => {
                       this.setState({ createTeamModalOpen: true });
                     }}
@@ -363,7 +360,10 @@ class TeamsPage extends React.Component {
                   {teamObj.logo ? (
                     <>
                       <div className="col-8 team-card-column">
-                        <TeamStatsBars teamStats={teamData} />
+                        <TeamStatsBars
+                          teamStats={teamData}
+                          pref_eq={this.props.pref_eq}
+                        />
                       </div>
                       <div className="col-4 team-card-column">
                         <img
@@ -375,7 +375,10 @@ class TeamsPage extends React.Component {
                     </>
                   ) : (
                     <div className="team-card-column">
-                      <TeamStatsBars teamStats={teamData} />
+                      <TeamStatsBars
+                        teamStats={teamData}
+                        pref_eq={this.props.pref_eq}
+                      />
                     </div>
                   )}
                 </div>
@@ -430,6 +433,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
+    pref_eq: store.user.pref_equivalence,
   };
 };
 const mapDispatchToProps = {
