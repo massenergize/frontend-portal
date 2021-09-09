@@ -265,6 +265,7 @@ class OneTeamPage extends React.Component {
                 <TeamStatsBars
                   teamStats={team.is_published && teamData}
                   type={PACKED}
+                  pref_eq={this.props.pref_eq}
                 />
                 <div className="row" style={{ margin: 0 }}>
                   <div className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless">
@@ -520,6 +521,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     links: store.links,
     teamsStats: store.page.teams,
+    pref_eq: store.user.pref_equivalence,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);

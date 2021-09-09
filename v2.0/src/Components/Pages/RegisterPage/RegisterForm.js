@@ -320,7 +320,6 @@ class RegisterFormBase extends React.Component {
     const body = { email: this.props.auth.email }
     apiCall("users.checkImported", body)
     .then((json) => {
-      console.log(json);
       if (json.success && json.data.imported) {
         this.setState({
           firstName: json.data.firstName, 
