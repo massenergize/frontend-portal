@@ -34,14 +34,36 @@ describe("User trying to set equivalence", function () {
   });
 
   // The idea is that user is able to choose an item from the dropdown,
-  // that saves the selected item to local storage, and removes the dropdown list
+  // then saves the selected item to local storage, and removes the dropdown list blanket
   // from the DOM on selection
-  it("Chooses an EQ item from dropdown, and dropdown closes successfully", function () {
-    cy.get(".eq-list-dropdown-item")
-      .eq(1)
-      .then(function ($eqItem) {
-        $eqItem.click();
-      })
-      .should("not.exist");
+  it("Clicks dropdown and closses dropdown successfully", function () {
+    clickDropdownItem().should("not.exist");
+  });
+
+  it("Chosen dropdown item is available in local storage", function () {
+    clickDropdownItem(true).then(function () {
+      cy.getLocalStorage("PREFERRED_EQ").should("exist");
+    });
+  });
+
+  it("Carbon box reflects choice after selection right away!", function () {
+    clickDropdownItem(true).then(function () {
+      cy.getLocalStorage("PREFERRED_EQ").then(function ($eq) {
+        const json = JSON.parse($eq);
+        cy.get("#carbon-counter-box")
+          .invoke("attr", "data-pref-eq-name")
+          .should("equal", json.name);
+      });
+    });
   });
 });
+
+function clickDropdownItem(toggleDropdownFirst = false) {
+  if (toggleDropdownFirst) cy.get("#eq-list-dropdown").click();
+  return cy
+    .get(".eq-list-dropdown-item")
+    .eq(1)
+    .then(function ($eqItem) {
+      $eqItem.click();
+    });
+}
