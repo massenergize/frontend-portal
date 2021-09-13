@@ -56,7 +56,7 @@ class MEDropdown extends Component {
     }
   }
   ejectChildren = () => {
-    var { data, dataValues } = this.props;
+    var { data, dataValues, childClassName } = this.props;
     dataValues = dataValues.length === 0 ? data : dataValues;
     if (!data) return;
     if (data.length !== dataValues.length) {
@@ -79,7 +79,7 @@ class MEDropdown extends Component {
           }}
         >
           <METextView
-            className={childActiveClass}
+            className={` ${childActiveClass} ${childClassName}`}
             type="p"
             style={{
               padding: 15,

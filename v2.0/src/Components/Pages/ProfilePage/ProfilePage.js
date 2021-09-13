@@ -283,7 +283,10 @@ class ProfilePage extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <div>
+                  <div
+                    id="eq-list-dropdown-wrapper"
+                    data-number-of-eq-items={this.props.eq?.length}
+                  >
                     <p style={{ color: "black" }}>
                       What would you like your impact to be measured in?
                     </p>
@@ -293,6 +296,7 @@ class ProfilePage extends React.Component {
                       dataValues={[null, ...eqValues]}
                       onItemSelected={this.handleEQSelection}
                       value={this.props.pref_eq?.name}
+                      childClassName="eq-list-dropdown-item"
                     />
                   </div>
                   <br />
