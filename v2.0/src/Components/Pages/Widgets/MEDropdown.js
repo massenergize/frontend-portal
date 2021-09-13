@@ -9,17 +9,16 @@ import METextView from "./METextView";
  * @props placeholder
  *
  */
+
+const NONE = "------";
 class MEDropdown extends Component {
+  static NONE = NONE;
   constructor(props) {
     super(props);
     this.state = {
       activeItem: this.props.value,
       drop: false,
       placeholder: this.props.placeholder,
-      // dataValues: this.props.dataValues
-      //   ? this.props.dataValues
-      //   : this.props.data,
-      // data: this.props.data,
     };
     this.toggleDrop = this.toggleDrop.bind(this);
   }
@@ -39,7 +38,7 @@ class MEDropdown extends Component {
   };
 
   onItemClick = (item, index) => {
-    var { onItemSelected, dataValues,data } = this.props;
+    var { onItemSelected, dataValues, data } = this.props;
     dataValues = dataValues.length === 0 ? data : dataValues;
     this.setState({ activeItem: item });
     this.toggleDrop();
@@ -62,9 +61,8 @@ class MEDropdown extends Component {
     if (data.length !== dataValues.length) {
       console.log("Warning: Your data list does not match your value list!!!!");
     }
-  
+
     return data.map((item, index) => {
-      // const relatedValue = dataValues[index];
       var activeClass = "",
         childActiveClass = "";
       if (item === this.state.activeItem) {

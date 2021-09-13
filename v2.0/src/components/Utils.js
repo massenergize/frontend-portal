@@ -1,6 +1,36 @@
 import * as moment from "moment";
 import React from "react";
+export const PREFERRED_EQ = "PREFERRED_EQ";
 
+/**
+ * For equivalences with a common formular, this function is used to determine the value
+ * @param {*} carbonFootprint
+ * @param {*} constantPerYearInPounds  predetermined constant the represents how much carbon is represented
+ * @returns
+ */
+export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
+  carbonFootprint = Number(carbonFootprint) || 0;
+  constantPerYearInPounds = Number(constantPerYearInPounds) || 0;
+  return (carbonFootprint / constantPerYearInPounds).toFixed(1);
+};
+
+/**
+ * Collects saved content from local storage and parses it into json, or string
+ * @param {*} key
+ * @param {*} isJson
+ * @returns
+ */
+export const fetchAndParseStorageContent = (key, isJson = true) => {
+  var item = localStorage.getItem(key);
+  if (!isJson) return item;
+  if (item) {
+    console.log("I CAME HERE BRUH", item);
+    item = JSON.parse(item || "{}");
+    return item;
+  }
+  console.log("OUTSIDE OF ALL", item);
+  return null;
+};
 export const getFilterVersionFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
   const search = location.search;
@@ -153,7 +183,7 @@ export const moveToPage = (data, pageNumber, perPage) => {
   };
 };
 
-export const getRandomIntegerInRange = (range) => {
+export const getRandomIntegerInRange = (range = 99999999) => {
   return Math.floor(Math.random() * Math.floor(range));
 };
 export function getPropsArrayFromJsonArray(array, property) {

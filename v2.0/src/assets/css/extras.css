@@ -3,6 +3,33 @@
   --app-theme-green: #8dc443;
 }
 
+.equivalence-small {
+  color: var(--app-theme-green);
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.equivalence-small:hover {
+  color: var(--app-theme-orange);
+  transition: 0.3s ease-out;
+}
+.me-nav-profile-pic {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+  padding: 2px;
+  border: solid 2px var(--user-pref-color);
+}
+.me-nav-profile-pic:hover {
+  transform: scale(0.9) translateY(-6px);
+  border-color: var(--app-theme-green);
+  transition: 0.3s ease-out;
+}
+.remove-toggle-outline:focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 !important;
+}
 .date-string {
   font-size: 0.85rem;
 }
