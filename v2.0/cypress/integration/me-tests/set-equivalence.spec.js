@@ -1,3 +1,5 @@
+import "cypress-localstorage-commands";
+
 describe("User trying to set equivalence", function () {
   it("Renders login page", function () {
     cy.visit("http://localhost:3000/wayland/signin");
@@ -31,5 +33,15 @@ describe("User trying to set equivalence", function () {
     });
   });
 
-
+  // The idea is that user is able to choose an item from the dropdown,
+  // that saves the selected item to local storage, and removes the dropdown list
+  // from the DOM on selection
+  it("Chooses an EQ item from dropdown, and dropdown closes successfully", function () {
+    cy.get(".eq-list-dropdown-item")
+      .eq(1)
+      .then(function ($eqItem) {
+        $eqItem.click();
+      })
+      .should("not.exist");
+  });
 });
