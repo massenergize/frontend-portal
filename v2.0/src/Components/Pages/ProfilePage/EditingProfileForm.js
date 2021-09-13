@@ -116,8 +116,18 @@ class EditingProfileForm extends React.Component {
                 imageReset: reset,
               })
             }
+            name="Your profile pic..."
             allowCrop
-            defaultValue={this.state.image}
+            circleCrop
+            ratioWidth={1}
+            ratioHeight={1}
+            previewStyle={{
+              borderRadius: "100%",
+              width: 200,
+              height: 200,
+              objectFit: "cover",
+            }}
+            defaultValue={this.state.image !== "reset" && this.state.image}
           />
 
           <MEButton type="submit">
