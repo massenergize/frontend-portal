@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import METextView from "./METextView";
+import { getRandomIntegerInRange } from "../../Utils";
 /**
  * DATA CONTENT MUST BE AN ARRAY OF ONLY TEXT, ONLY TEXT!
  * @props data | Array of text content to display
@@ -107,11 +108,13 @@ class MEDropdown extends Component {
   render() {
     const { activeItem, placeholder } = this.state;
     const defaultText = placeholder ? placeholder : "Select Item";
+    const { id } = this.props;
     return (
       <div>
         {this.activateGhostCurtain()}
         <div style={{ position: "relative" }}>
           <div
+            id={id ? id : getRandomIntegerInRange().toString()}
             className="me-select-head"
             style={{ position: "relative" }}
             onClick={(e) => this.toggleDrop(e)}

@@ -170,6 +170,7 @@ class ProfilePage extends React.Component {
           className="boxed_wrapper"
           onClick={this.clearError}
           style={{ minHeight: 1950 }}
+          id="profile-page-component"
         >
           <BreadCrumbBar links={[{ name: "Profile" }]} />
           <div className="container">
@@ -287,6 +288,7 @@ class ProfilePage extends React.Component {
                       What would you like your impact to be measured in?
                     </p>
                     <MEDropdown
+                      id="eq-list-dropdown"
                       data={[MEDropdown.NONE, ...eqLabels]}
                       dataValues={[null, ...eqValues]}
                       onItemSelected={this.handleEQSelection}
