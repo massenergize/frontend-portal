@@ -108,14 +108,14 @@ class MEDropdown extends Component {
   render() {
     const { activeItem, placeholder } = this.state;
     const defaultText = placeholder ? placeholder : "Select Item";
-    const { id } = this.props;
+    const { id, togglerClassName } = this.props;
     return (
       <div>
         {this.activateGhostCurtain()}
         <div style={{ position: "relative" }}>
           <div
             id={id ? id : getRandomIntegerInRange().toString()}
-            className="me-select-head"
+            className={`me-select-head ${togglerClassName}`}
             style={{ position: "relative" }}
             onClick={(e) => this.toggleDrop(e)}
           >
