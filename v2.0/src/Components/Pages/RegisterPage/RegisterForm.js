@@ -39,12 +39,12 @@ const INITIAL_STATE = {
   showTOS: false,
   form: 1,
   error: null,
-  color: "#00000000"
+  color: "#00000000",
 };
 
 function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
+  var letters = "0123456789ABCDEF";
+  var color = "#";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -59,7 +59,7 @@ class RegisterFormBase extends React.Component {
       ...INITIAL_STATE,
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
-      email: null
+      email: null,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -67,10 +67,10 @@ class RegisterFormBase extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.setRegProtocol = this.setRegProtocol.bind(this);
-    //const { id } = this.props.match.params; 
+    //const { id } = this.props.match.params;
     //console.log(id);
   }
-  
+
   getRegProtocol() {
     return localStorage.getItem("reg_protocol");
   }
@@ -184,7 +184,11 @@ class RegisterFormBase extends React.Component {
         >
           <div className="section-title style-2">
             <h3>Enter your E-mail and a Password</h3>
-            <p>This helps us count your impact correctly, and avoid double counting.  We collect no sensitive personal data, and do not share data.</p>
+            <p>
+              This helps us count your impact correctly, and avoid double
+              counting. We collect no sensitive personal data, and do not share
+              data.
+            </p>
           </div>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -192,6 +196,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-envelope-o"></span>
               </span>
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={email}
@@ -205,6 +210,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-unlock-alt"></span>
               </span>
               <input
+                id="password"
                 type="password"
                 name="passwordOne"
                 value={passwordOne}
@@ -218,6 +224,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-unlock-alt"></span>
               </span>
               <input
+                id="confirm-password"
                 type="password"
                 name="passwordTwo"
                 value={passwordTwo}
@@ -230,7 +237,11 @@ class RegisterFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                <MEButton type="submit" disabled={this.isInvalid()}>
+                <MEButton
+                  type="submit"
+                  disabled={this.isInvalid()}
+                  id="create-profile-btn"
+                >
                   Create Profile
                 </MEButton>
                 <small style={{ margin: "0px 15px" }}>
@@ -289,8 +300,9 @@ class RegisterFormBase extends React.Component {
           </div> */}
           {this.state.is_using_facebook && (
             <METextView style={{ color: "darkorange", fontSize: 16 }}>
-              <strong>Note</strong>: If you are using facebook, please make sure the facebook account
-              you intend to register with has a dedicated primary email.
+              <strong>Note</strong>: If you are using facebook, please make sure
+              the facebook account you intend to register with has a dedicated
+              primary email.
             </METextView>
           )}
           <p>
@@ -317,23 +329,23 @@ class RegisterFormBase extends React.Component {
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-    const body = { email: this.props.auth.email }
+    const body = { email: this.props.auth.email };
     apiCall("users.checkImported", body)
-    .then((json) => {
-      if (json.success && json.data.imported) {
-        this.setState({
-          firstName: json.data.firstName, 
-          lastName: json.data.lastName, 
-          preferredName: json.data.preferredName,
-          specialUser: true
-        });
-      } else {
-        console.log(json.error);
-      }
-    })
-    .catch((err) => {
+      .then((json) => {
+        if (json.success && json.data.imported) {
+          this.setState({
+            firstName: json.data.firstName,
+            lastName: json.data.lastName,
+            preferredName: json.data.preferredName,
+            specialUser: true,
+          });
+        } else {
+          console.log(json.error);
+        }
+      })
+      .catch((err) => {
         console.log(err);
-    });
+      });
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
@@ -350,7 +362,7 @@ class RegisterFormBase extends React.Component {
             {this.props.firebase.auth().currentUser &&
             !this.props.firebase.auth().currentUser.emailVerified ? (
               <>
-                <p>
+                <p id="verify-email-area">
                   {" "}
                   We sent a link to your email address. Please check your email
                   and follow the link to continue. If you don't see a message,
@@ -364,10 +376,12 @@ class RegisterFormBase extends React.Component {
                     onClick={this.sendVerificationEmail}
                   >
                     {" "}
-                    Didnt receive any verification email? Resend Verification Email{" "}
+                    Didnt receive any verification email? Resend Verification
+                    Email{" "}
                   </button>
                   <br />
                   <Link
+                  id="sign-in-anchor"
                     to={this.props.links.signin}
                     onClick={() => this.props.firebase.auth().signOut()}
                   >
@@ -382,9 +396,14 @@ class RegisterFormBase extends React.Component {
                   <p style={{ color: "red" }}>
                     {" "}
                     Please finish creating your profile before you continue
-                    {this.state.specialUser ? 
-                    <p>Welcome! You have been invited by a community admin to this MassEnergize Community.</p> : 
-                    <></>}
+                    {this.state.specialUser ? (
+                      <p>
+                        Welcome! You have been invited by a community admin to
+                        this MassEnergize Community.
+                      </p>
+                    ) : (
+                      <></>
+                    )}
                   </p>
                 </center>
                 <div className="form-group">
@@ -514,29 +533,28 @@ class RegisterFormBase extends React.Component {
                   sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
                   onChange={this.onReCaptchaChange}
                 />
-                <br/>
+                <br />
                 <p style={{ marginLeft: "25px" }}>
-                    By continuing, I accept the{" "}
-                    <button
-                      type="button"
-                      onClick={() => this.setState({ showPP: true })}
-                      className="as-link"
-                      style={{ display: "inline-block" }}
-                    >
-                      Privacy Policy
-                    </button>
-                    {" "} (in short, MassEnergize or host organization won't share my data) 
-                    and agree to comply with the{" "} 
-                    <button
-                      type="button"
-                      onClick={() => this.setState({ showTOS: true })}
-                      className="as-link"
-                      style={{ display: "inline-block" }}
-                    >
-                      Terms of Service
-                    </button>
-                 </p>
-                
+                  By continuing, I accept the{" "}
+                  <button
+                    type="button"
+                    onClick={() => this.setState({ showPP: true })}
+                    className="as-link"
+                    style={{ display: "inline-block" }}
+                  >
+                    Privacy Policy
+                  </button>{" "}
+                  (in short, MassEnergize or host organization won't share my
+                  data) and agree to comply with the{" "}
+                  <button
+                    type="button"
+                    onClick={() => this.setState({ showTOS: true })}
+                    className="as-link"
+                    style={{ display: "inline-block" }}
+                  >
+                    Terms of Service
+                  </button>
+                </p>
               </>
             )}
             {this.state.error && (
@@ -640,13 +658,12 @@ class RegisterFormBase extends React.Component {
       });
   }
   //for generating the profile picture before the user can upload one when they go back to edit their profile
-  
-  
+
   onFinalSubmit(event) {
     event.preventDefault();
     //if (!this.state.termsAndServices) {
     //  this.setState({ error: "You need to agree to the terms and services" });
-    //} else 
+    //} else
     if (!this.state.captchaConfirmed) {
       this.setState({ error: "Invalid reCAPTCHA, please try again" });
     } else {
@@ -657,7 +674,7 @@ class RegisterFormBase extends React.Component {
         preferredName,
         city,
         state,
-        zip
+        zip,
         //serviceProvider,
         //termsAndServices,
       } = this.state;
@@ -676,13 +693,13 @@ class RegisterFormBase extends React.Component {
         is_vendor: false,
         accepts_terms_and_conditions: true,
         //accepts_terms_and_conditions: termsAndServices,
-        subdomain: community && community.subdomain, 
-        color: getRandomColor()
+        subdomain: community && community.subdomain,
+        color: getRandomColor(),
       };
       this.setState({ creating: true });
       apiCall("users.create", body)
         .then((json) => {
-        console.log(body);
+          console.log(body);
           var token = this.props.auth
             ? this.props.auth.stsTokenManager.accessToken
             : null;
