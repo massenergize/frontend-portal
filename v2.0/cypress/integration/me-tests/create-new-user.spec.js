@@ -1,4 +1,4 @@
-import { loginWithDetails } from "./common.spec";
+import "./common.spec";
 import "cypress-localstorage-commands";
 const emailToUse = "frimpong@kehillahglobal.com";
 const passwordToUse = "Pongo123";
