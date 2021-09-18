@@ -27,7 +27,6 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
     item = JSON.parse(item || "{}");
     return item;
   }
-  console.log("OUTSIDE OF ALL", item);
   return null;
 };
 export const getFilterVersionFromURL = (location, paramName) => {

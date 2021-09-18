@@ -117,7 +117,9 @@ class StoriesPage extends React.Component {
       this.state.searchText,
       (story, word) =>
         story.title.toLowerCase().includes(word) ||
-        story.body.toLowerCase().includes(word)
+        story.body.toLowerCase().includes(word) ||
+        story?.user?.preferred_name.toLowerCase().includes(word) ||
+        story?.user?.full_name.toLowerCase().includes(word)
     );
   }
 
