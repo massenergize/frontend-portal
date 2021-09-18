@@ -281,7 +281,7 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet"
       >
-        <StorySheet {...story} links = {this.props.links}/>
+        <StorySheet {...story} links={this.props.links} />
       </div>
     ));
   }
