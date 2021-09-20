@@ -24,7 +24,6 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   var item = localStorage.getItem(key);
   if (!isJson) return item;
   if (item) {
-    console.log("I CAME HERE BRUH", item);
     item = JSON.parse(item || "{}");
     return item;
   }
