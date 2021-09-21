@@ -184,6 +184,7 @@ class ActionsPage extends React.Component {
     var actions =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
+
     return (
       <>
         {this.renderEQModal()}

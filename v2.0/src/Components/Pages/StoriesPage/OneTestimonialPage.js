@@ -66,7 +66,7 @@ class OneTestimonialPage extends React.Component {
     const otherStories = this.getSomeOtherTestimonials();
     const content = otherStories.map((story, index) => {
       const creatorName =
-        story && story.preferred_name ? story.preferred_name : "...";
+        story?.user?.preferred_name || story.user?.full_name || "...";
       return (
         <div key={index.toString()}>
           <MECard
@@ -77,7 +77,8 @@ class OneTestimonialPage extends React.Component {
             <br />
             <small style={{ color: "#4a1e04" }}>
               <b>
-                By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+                By {(story?.anonymous && "Anonymous") || creatorName},{" "}
+                {getHumanFriendlyDate(story.created_at)}
               </b>
             </small>
           </MECard>
@@ -193,7 +194,8 @@ class OneTestimonialPage extends React.Component {
 
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
-
+    const creatorName =
+      story?.user?.preferred_name || story?.user?.full_name || "...";
     return (
       <section className="event-section style-3">
         <div className="container">
@@ -240,10 +242,7 @@ class OneTestimonialPage extends React.Component {
                       fontSize: "medium",
                     }}
                   >
-                    By{" "}
-                    {story.user && story.preferred_name
-                      ? story.preferred_name
-                      : "..."}
+                    By {(story?.anonymous && "Anonymous") || creatorName}
                   </METextView>
                   <METextView
                     mediaType="icon"

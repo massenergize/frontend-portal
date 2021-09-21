@@ -12,6 +12,7 @@ class Counter extends React.Component {
   }
 
   render() {
+    const { decimals = 0 } = this.props;
     return (
       <div className="item count-cardy z-depth-float mob-profile-card-fix me-anime-open-in">
         <br className="phone-vanish" />
@@ -20,7 +21,7 @@ class Counter extends React.Component {
           <i className={this.props.icon}></i>
         </div>
         <div className="count-outer">
-          <CountUp end={this.props.end} decimals={1} duration={3} />
+          <CountUp end={this.props.end} decimals={decimals} duration={3} />
         </div>
         {this.props.info ? (
           <Tooltip

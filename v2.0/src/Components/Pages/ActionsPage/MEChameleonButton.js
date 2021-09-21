@@ -31,7 +31,8 @@ class MECameleonButton extends Component {
   renderButton(props) {
     const passed = this.props;
     if (!props) return <small>Dont have any props</small>;
-    props = { ...props, ...passed };
+    const classes = `${passed.className || ""} ${props.className || ""} `;
+    props = { ...props, ...passed, className: classes };
     if (props.hasPopover) {
       return (
         <CustomTooltip
@@ -60,6 +61,7 @@ class MECameleonButton extends Component {
   render() {
     const { _case, type } = this.props;
     const props = CASE_PROPS[_case][type];
+
     return this.renderButton(props);
   }
 }

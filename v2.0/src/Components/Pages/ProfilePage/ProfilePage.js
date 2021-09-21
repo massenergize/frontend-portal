@@ -128,6 +128,7 @@ class ProfilePage extends React.Component {
     if (pref_eq) score = calcEQ(score, pref_eq?.value || 0);
     return (
       <Counter
+        decimals={1}
         end={score}
         unit={!pref_eq ? "lbs CO2" : ""}
         icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
