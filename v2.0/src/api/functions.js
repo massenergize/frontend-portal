@@ -1,5 +1,5 @@
 import URLS from "./urls";
-import { IS_SANDBOX, IS_PROD, IS_CANARY } from "../config/config";
+import { IS_SANDBOX, IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from '../redux/store';
 
 
