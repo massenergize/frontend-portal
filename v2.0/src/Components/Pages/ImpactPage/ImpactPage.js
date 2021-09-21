@@ -7,7 +7,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import { reduxLoadCommunitiesStats } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import 'chartjs-plugin-datalabels';
-import { Bar, Doughnut } from "react-chartjs-2";
+import { HorizontalBar, Doughnut } from "react-chartjs-2";
 import {createCircleGraphData} from "./../../Utils";
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -77,7 +77,7 @@ class ImpactPage extends React.Component {
           backgroundColor: "rgba(251, 85, 33, 0.85)",
         },
         {
-          label: "Additional State or Partner Reported",
+          label: "State or Partner Reported",
           data: [],
           backgroundColor: "#ff9a9a",
         },
@@ -109,7 +109,7 @@ class ImpactPage extends React.Component {
         data: [],
       },
       {
-        name: "Additional State or Partner Reported",
+        name: "State or Partner Reported",
         data: [],
       },
     ];
@@ -280,7 +280,7 @@ class ImpactPage extends React.Component {
                     <BarGraph
                       categories={graph2Categories}
                       series={graph2Series}
-                      stacked={true}
+                      stacked={false}
                       colors={["rgba(251, 85, 33, 0.85)", "#ff9a9a"]}
                       // 86bd7d
                     />
@@ -298,7 +298,7 @@ class ImpactPage extends React.Component {
                   }}
                   className=" pc-vanish"
                 >
-                  <Bar
+                  <HorizontalBar
                     options={{
                       plugins:{
                         datalabels:false,
@@ -306,8 +306,8 @@ class ImpactPage extends React.Component {
                       },
                       maintainAspectRatio: false,
                       scales: {
-                        xAxes: [{ stacked: true }],
-                        yAxes: [{ stacked: true }],
+                        xAxes: [{ stacked: false }],
+                        yAxes: [{ stacked: false }],
                       },
                     }}
                     data={phoneImpact}
