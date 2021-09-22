@@ -133,7 +133,7 @@ class LoginFormBase extends React.Component {
         .auth()
         .sendPasswordResetEmail(this.state.email, actionCodeSettings)
         .then(function (user) {
-          alert("Please check your email...");
+          alert("Please check your email for a new message with a reset link");
         })
         .catch(function (e) {
           /* could check that e.code == "auth/user-not-found" */

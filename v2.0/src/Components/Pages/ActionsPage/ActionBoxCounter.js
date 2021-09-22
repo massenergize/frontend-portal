@@ -60,7 +60,7 @@ export default class ActionBoxCounter extends Component {
     });
     // Append default carbon value / year
     return [
-      this.makeCounterWithCustomValue(carbonScore / 2200, {
+      this.makeCounterWithCustomValue((carbonScore / 2200)?.toFixed(1), {
         title: "Ton of CO2/year",
       }),
       ...data,

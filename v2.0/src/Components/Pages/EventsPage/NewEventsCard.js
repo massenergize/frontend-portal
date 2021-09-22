@@ -5,8 +5,6 @@ import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-// import Dropdown from "react-bootstrap/Dropdown";
-// import { ButtonGroup } from "react-bootstrap";
 import { apiCall } from "../../../api/functions";
 import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
@@ -100,15 +98,6 @@ export default class NewEventsCard extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener(
-      "error",
-      (e) => {
-        if (e.target.tagName.toLowerCase() !== "img") return;
-        e.target.src = photo;
-        e.target.alt = "The real img is missing, this is a default image";
-      },
-      true
-    );
     if (this.props.user) this.getRSVPStatus();
   }
 
@@ -171,6 +160,7 @@ export default class NewEventsCard extends Component {
               src={this.getPhoto()}
               className="new-me-testimonial-img"
               alt="event media"
+              onError={() => photo}
             />
             <h1
               style={{
