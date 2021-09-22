@@ -6,9 +6,10 @@ describe("User trying to set equivalence", function () {
   });
 
   it("Types login details and signs in", function () {
-    cy.get("#login-email").type("pongofrimi@gmail.com");
-    cy.get("#login-password").type("Pongo123");
-    cy.get("#sign-in-btn").click();
+    cy.loginWithDetails();
+    // cy.get("#login-email").type("pongofrimi@gmail.com");
+    // cy.get("#login-password").type("Pongo123");
+    // cy.get("#sign-in-btn").click();
   });
 
   it("Renders profile page", function () {

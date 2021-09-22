@@ -1,10 +1,8 @@
-import "./common.spec";
 import "cypress-localstorage-commands";
-const emailToUse = "frimpong@kehillahglobal.com";
-const passwordToUse = "Pongo123";
-const loginURL = "http://localhost:3000/wayland/signin";
-const registrationURL = "http://localhost:3000/wayland/signup";
-describe("Creating new ME User", function () {
+import fields from "./json/fields";
+const { emailToUse, passwordToUse, urls } = fields;
+
+describe("Creating new ME user with email and password", function () {
   /**
    * Visit sign up page
    * Type email and password, password confirmation
@@ -20,7 +18,7 @@ describe("Creating new ME User", function () {
 
   it("Visits registration page", function () {
     cy.restoreLocalStorage();
-    cy.visit(registrationURL);
+    cy.visit(urls.registration);
   });
 
   afterEach(function () {
@@ -52,13 +50,16 @@ describe("Creating new ME User", function () {
 
   // between this step  and the next, the testor has 50 seconds to access the activation link and activate
   // email before the next commands continue
-  // it("Waiting for 50 seconds for you to activate the email before continuing...", function () {
-  //   cy.wait(20000);
-  // });
+  it("Waiting for 50 seconds for you to activate the email before continuing...", function () {
+    cy.wait(20000);
+  });
   it("Clicks on sign in anchor and visits sign in page successfully", () => {
     cy.get("#sign-in-anchor").click();
   });
 
+  it("Signs in with newly created account info", function () {
+    cy.loginWithDetails(emailToUse, passwordToUse);
+  });
   // it("Logs in with email that was just registered", function () {
   //   loginWithDetails(emailToUse, passwordToUse);
   // });
