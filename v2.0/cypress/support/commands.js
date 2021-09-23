@@ -38,3 +38,5 @@ Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
   cy.visit(pageURL);
   cy.get(`#${successComponentID}`);
 });
+
+

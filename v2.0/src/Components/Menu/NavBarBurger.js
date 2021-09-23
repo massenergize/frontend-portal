@@ -290,7 +290,7 @@ class NavBarBurger extends React.Component {
 
         return (
           <li
-            className="d-flex flex-column justify-content-center"
+            className="d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop"
             key={navLink.name}
           >
             <Dropdown onSelect={() => null}>
@@ -311,7 +311,7 @@ class NavBarBurger extends React.Component {
       }
       return (
         <li
-          className="d-flex flex-column justify-content-center"
+          className="d-flex flex-column justify-content-center test-me-nav-menu-item"
           key={navLink.name}
         >
           <Link className="cool-font" to={`${links.home}${navLink.link}`}>
@@ -333,7 +333,7 @@ class NavBarBurger extends React.Component {
         return (
           <Link
             key={key}
-            className=" cool-font p-3 small dropdown-item me-dropdown-theme-item"
+            className=" cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => {
               window.location = child.link;
             }}
@@ -346,7 +346,7 @@ class NavBarBurger extends React.Component {
           <Link
             key={key}
             to={`${links.home}${child.link}`}
-            className="cool-font  p-3 small dropdown-item me-dropdown-theme-item "
+            className="cool-font  p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => document.dispatchEvent(new MouseEvent("click"))}
           >
             {child.name === "current-home" ? comm.name : child.name}
