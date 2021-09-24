@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { createCircleGraphData } from "./../../Utils";
+import { createCircleGraphData, getCircleGraphData, calcEQ } from "./../../Utils";
 import { Doughnut } from "react-chartjs-2";
 import Tooltip from "../Widgets/CustomTooltip";
 //import Tooltip from "../../Shared/Tooltip";
@@ -32,62 +32,65 @@ class Graphs extends React.Component {
     return Object.keys(graphs).map((key) => {
       let list = [
         {
-          text: "Households Engaged",
           key: "households",
-          value:
-            this.props.goals.attained_number_of_households +
-            this.props.goals.organic_attained_number_of_households,
+          unit: "Households",
+          heading: "Households Taking Action",
+          target: this.props.goals.target_number_of_households,
         },
         {
           key: "actions-completed",
-          text: "Actions Completed",
-          value:
-            this.props.goals.attained_number_of_actions +
-            this.props.goals.organic_attained_number_of_actions,
+          unit: "Actions",
+          heading: "Individual Actions Completed",
+          target: this.props.goals.target_number_of_actions,
         },
         {
           key: "carbon-reduction",
-          text: "Carbon Reduction",
-          value:
-            this.props.goals.attained_carbon_footprint_reduction +
-            this.props.goals.organic_attained_carbon_footprint_reduction,
+          unit: this.props.pref_eq?.name || "Trees",
+          heading: "Carbon Reduction Impact",
+          target: calcEQ(this.props.goals.target_carbon_footprint_reduction, this.props.pref_eq?.value),
         },
       ];
-      var graph = graphs[key];
-      if (graph.data == null) {
-        return <div>No Graphs to Display</div>;
-      } else {
-        return (
-          <div key={key} className={classes} data-wow-duration="0ms">
-            <center>
-              <Doughnut
-                width={180}
-                height={180}
-                options={{
-                  plugins: { datalabels: false },
-                  responsive: false,
-                  maintainAspectRatio: false,
-                  legend: false,
-                  animation: {
-                    duration: 2000,
-                  },
-                }}
-                data={createCircleGraphData(this.props.goals, list[key].key)}
-              />
+      const pref_eq = this.props.pref_eq;      
+      const value = getCircleGraphData(this.props.goals, list[key].key, pref_eq);
+      const percent = parseInt(100.0*value/list[key].target);
 
-              <p className="impact-graph-title home-page-graph-tweak">
-                <span
-                  style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
-                >
-                  <b>{list[key].value}</b>
-                </span>
-                {list[key].text}
-              </p>
-            </center>
-            {/* <CircleGraph num={graph.data.attained} goal={graph.data.target} label={graph.title} size={this.props.size} /> */}
-          </div>
-        );
-      }
+      return (
+        <div key={key} className={classes} data-wow-duration="0ms">
+          <center>
+
+          <h4 className="impact-graph-heading">
+              {list[key].heading}
+            </h4>
+
+
+            <Doughnut
+              width={180}
+              height={180}
+              options={{
+                plugins: { datalabels: false },
+                responsive: false,
+                maintainAspectRatio: false,
+                legend: false,
+                animation: {
+                  duration: 2000,
+                },
+              }}
+              data={createCircleGraphData(this.props.goals, list[key].key, pref_eq)}
+            />
+
+            <p className="impact-graph-title home-page-graph-tweak">
+              <span
+                style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
+              >
+                <b>{value}</b>
+              </span>
+              {list[key].unit} 
+              &nbsp;
+              ({percent}% of goal)
+            </p>
+          </center>
+        </div>
+      );
     });
   }
 
@@ -107,7 +110,7 @@ class Graphs extends React.Component {
             >
               <h4
                 className="section-title text-center mob-cancel-title-white"
-                style={{ fontSize: 20 }}
+                style={{ fontSize: 24}}
               >
                 {this.props.subtitle || "Help Us Meet Our Goals"}
                 <span
@@ -119,11 +122,12 @@ class Graphs extends React.Component {
           ) : (
             <h4
               className="section-title text-center mob-cancel-title-white"
-              style={{ fontSize: 20 }}
+              style={{ fontSize: 24}}
             >
               {this.props.subtitle || "Help Us Meet Our Goals"}
             </h4>
-          )}
+
+        )}
         </div>
 
         <div className="container">
@@ -164,6 +168,7 @@ class Graphs extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     links: store.links,
+    pref_eq: store.user.pref_equivalence,
   };
 };
 export default connect(mapStoreToProps)(Graphs);
