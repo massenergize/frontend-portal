@@ -59,41 +59,18 @@ class HomePage extends React.Component {
     //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
+    // Note: these titles aren't used - defined in Graphs
     const graphs = [
       {
         title: "Actions Completed",
-        data: goals
-          ? {
-              target: goals.target_number_of_actions,
-              attained:
-                goals.attained_number_of_actions +
-                goals.organic_attained_number_of_actions,
-            }
-          : null,
       },
       {
         title: "Households Engaged",
-        data: goals
-          ? {
-              target: goals.target_number_of_households,
-              attained:
-                goals.attained_number_of_households +
-                goals.organic_attained_number_of_households,
-            }
-          : null,
       },
     ];
     if (goals && goals.target_carbon_footprint_reduction > 0) {
       graphs.push({
         title: "Carbon Reduction",
-        data: goals
-          ? {
-              target: goals.target_carbon_footprint_reduction,
-              attained:
-                goals.attained_carbon_footprint_reduction +
-                goals.organic_attained_carbon_footprint_reduction,
-            }
-          : null,
       });
     }
 

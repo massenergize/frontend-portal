@@ -1494,8 +1494,12 @@
   object-fit: contain !important;
 }
 
+.impact-graph-heading {
+  font-size: 1.0rem !important;
+}
 .impact-graph-title {
   font-size: 0.8rem !important;
+  color: "black";
 }
 .imp-desc-box {
   padding: 10px;
