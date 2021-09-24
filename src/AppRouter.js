@@ -94,36 +94,30 @@ class AppRouter extends Component {
   }
 
   async fetch() {
-    const { subdomain } = this.props.match.params;
+    const { community } = this.props;
+    const { subdomain } = community || {};
     const body = { subdomain: subdomain };
-    // first set the domain for the current community
-    this.props.reduxLoadCommunity({ subdomain });
+
+    // // first set the domain for the current community
+    this.props.reduxLoadCommunity(community);
 
     this.props.reduxLoadLinks({
-      home: `/${subdomain}`,
-      actions: `/${subdomain}/actions`,
-      aboutus: `/${subdomain}/aboutus`,
-      services: `/${subdomain}/services`,
-      testimonials: `/${subdomain}/testimonials`,
-      teams: `/${subdomain}/teams`,
-      impact: `/${subdomain}/impact`,
-      donate: `/${subdomain}/donate`,
-      events: `/${subdomain}/events`,
-      signin: `/${subdomain}/signin`,
-      signup: `/${subdomain}/signup`,
-      profile: `/${subdomain}/profile`,
-      policies: `/${subdomain}/policies`,
-      contactus: `/${subdomain}/contactus`,
+      home: `/`,
+      actions: `/actions`,
+      aboutus: `/aboutus`,
+      services: `/services`,
+      testimonials: `/testimonials`,
+      teams: `/teams`,
+      impact: `/impact`,
+      donate: `/donate`,
+      events: `/events`,
+      signin: `/signin`,
+      signup: `/signup`,
+      profile: `/profile`,
+      policies: `/policies`,
+      contactus: `/contactus`,
     });
 
-    /* first see if the community exists and is published (if not sandbox) */
-    const json = await apiCall("communities.info", body);
-    if (json.success) {
-      this.props.reduxLoadCommunityInformation(json.data);
-      this.setState({ community: json.data, loading: false, error: null });
-    } else {
-      this.setState({ community: null, loading: false, error: json.error });
-    }
 
     if (this.state.community) {
       // for lazy loading: load these first
@@ -405,7 +399,6 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { subdomain } = this.props.match.params;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
     if (!isLoaded(this.props.auth)) {
@@ -492,7 +485,7 @@ class AppRouter extends Component {
             <Switch>
               {/* ---- This route is a facebook app requirement. -------- */}
               <Route
-                path={`/${subdomain}/how-to-delete-my-data`}
+                path={`/how-to-delete-my-data`}
                 component={Help}
               />
               <Route exact path={links.home} component={HomePage} />
@@ -558,6 +551,7 @@ class AppRouter extends Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
+    community: store.page.community,
     auth: store.firebase.auth,
     menu: store.page.menu,
     links: store.links,
