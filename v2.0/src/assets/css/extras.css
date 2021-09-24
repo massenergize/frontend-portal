@@ -3,6 +3,9 @@
   --app-theme-green: #8dc443;
 }
 
+.team-about-richtext-wrapper p {
+  color: black;
+}
 .equivalence-small {
   color: var(--app-theme-green);
   cursor: pointer;

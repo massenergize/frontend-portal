@@ -39,7 +39,11 @@ export default class MESectionWrapper extends Component {
     const moveUp = "move-up-and-vanish";
     const moveDown = "move-down-and-appear";
     var anime = collapsed ? moveUp : moveDown;
-    containerStyle = { ...containerStyle, zIndex: -1 };
+    containerStyle = {
+      overflowWrap: "break-word",
+      ...containerStyle,
+      zIndex: -1,
+    };
     return (
       <div
         style={containerStyle}
