@@ -81,7 +81,6 @@ class AppRouter extends Component {
       triedLogin: false,
       community: null,
       error: null,
-      loading: true,
       pagesEnabled: {},
     };
 
@@ -102,7 +101,7 @@ class AppRouter extends Component {
     this.props.reduxLoadCommunity(community);
 
     this.props.reduxLoadLinks({
-      home: `/`,
+      home: '/home',
       actions: `/actions`,
       aboutus: `/aboutus`,
       services: `/services`,
@@ -118,8 +117,8 @@ class AppRouter extends Component {
       contactus: `/contactus`,
     });
 
-
-    if (this.state.community) {
+    
+    if (community) {
       // for lazy loading: load these first
       Promise.all([
         apiCall("home_page_settings.info", body),
@@ -399,18 +398,18 @@ class AppRouter extends Component {
   }
 
   render() {
+    const { community } = this.props;
+
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
+
     if (!isLoaded(this.props.auth)) {
       return <LoadingCircle />;
     }
 
-    if (this.state.loading) {
-      return <LoadingCircle />;
-    }
 
     /* error page if community isn't published */
-    if (!this.state.community) {
+    if (!community) {
       return (
         <ErrorPage
           errorMessage="Page not found"
@@ -442,7 +441,7 @@ class AppRouter extends Component {
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
-    const communityInfo = this.state.community || {};
+    const communityInfo = community || {};
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -488,8 +487,9 @@ class AppRouter extends Component {
                 path={`/how-to-delete-my-data`}
                 component={Help}
               />
+              <Route exact path="/" component={HomePage} />
               <Route exact path={links.home} component={HomePage} />
-              <Route exact path={`${links.home}/home`} component={HomePage} />
+              <Route exact path={`${links.home}home`} component={HomePage} />
               <Route exact path={links.actions} component={ActionsPage} />
               <Route
                 exact
@@ -529,6 +529,7 @@ class AppRouter extends Component {
                   />
                 )}
               />
+
             </Switch>
           )
         }
