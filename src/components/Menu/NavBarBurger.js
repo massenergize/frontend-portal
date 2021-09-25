@@ -97,7 +97,7 @@ class NavBarBurger extends React.Component {
           onClick={() => {
             this.handleLinkClick();
           }}
-          href={links.home + val.link}
+          href={val.link}
         >
           {val.name}
         </MenuItem>
@@ -489,7 +489,6 @@ class SubMenuItem extends React.Component {
 
   //---------WHERE TO SETUP WEIRD SPECIAL MENU ITEMS IN BURGERED MENU ---------
   renderSubmenuItems(items) {
-    const { links } = this.props;
     //const comm = this.props.pageData ? this.props.pageData.community : { name: "My Community 1" }
     return items.map((item, key) => {
       if (item.special) {
@@ -512,7 +511,7 @@ class SubMenuItem extends React.Component {
         return (
           <MenuItem
             key={key}
-            href={links.home + item.link}
+            href={item.link}
             onClick={this.props.clickHandler}
           >
             {item.name === "current-home" ? name : item.name}

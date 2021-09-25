@@ -18,7 +18,7 @@ class FooterLinks extends React.Component {
 			var link = links[key];
 			return (
 				<li key={link.name}>
-					<Link className="cool-font" to={`${this.props.reduxLinks.home}/${link.link}`}>{link.name}</Link>
+					<Link className="cool-font" to={`${link.link}`}>{link.name}</Link>
 				</li>
 			);
 		});

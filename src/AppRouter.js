@@ -101,7 +101,7 @@ class AppRouter extends Component {
     this.props.reduxLoadCommunity(community);
 
     this.props.reduxLoadLinks({
-      home: '/home',
+      home: '/',
       actions: `/actions`,
       aboutus: `/aboutus`,
       services: `/services`,

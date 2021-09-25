@@ -58,7 +58,7 @@ class IconBox extends React.Component {
           </a>
         ) : (
           <Link
-            to={`${this.props.links.home}${this.props.link}`}
+            to={`${this.props.link}`}
             style={{ width: "100%", height: "100%" }}
           >
             {this.renderBoxStuff()}

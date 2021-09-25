@@ -28,10 +28,9 @@ class NavBar extends React.Component {
 		if (!navLinks) {
 			return <li>No PageLinks to Display</li>
 		}
-		const { links } = this.props
 		return Object.keys(navLinks).map(key => {
 			var navLink = navLinks[key];
-			return <li key={navLink.name}><Link to={`${links.home}/${navLink.link}`}>{navLink.name}</Link></li>
+			return <li key={navLink.name}><Link to={`${navLink.link}`}>{navLink.name}</Link></li>
 		});
 	}
 	render() {
