@@ -5,6 +5,7 @@ import "./assets/css/style.css";
 import AppRouter from "./AppRouter";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { apiCall } from "./api/functions";
+import LoadingCircle from "./components/Shared/LoadingCircle";
 // import { reduxLogout } from "./redux/actions/userActions";
 // import { reduxLoadCommunityInformation } from "./redux/actions/pageActions";
 
@@ -35,7 +36,7 @@ function App() {
   }
 
 	if(!community){
-		return <div><p>Loading...</p></div>
+		return <LoadingCircle /> 
 	}
 
   return (
