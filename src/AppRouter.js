@@ -455,7 +455,6 @@ class AppRouter extends Component {
       allCommunities: communitiesLink,
     };
 
-    console.log(community)
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>

@@ -113,6 +113,7 @@ class OneActionPage extends React.Component {
       <>
         {this.renderModal()}
         <Helmet>
+          <title> { action.title } </title>
           <meta property="og:title" content={action.title} />
           <meta
             property="og:image"
