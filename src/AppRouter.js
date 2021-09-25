@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Helmet from "react-helmet";
 import { Switch, Route } from "react-router-dom";
 import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
@@ -73,6 +72,7 @@ import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
+import Seo from "./components/Shared/Seo";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -101,7 +101,7 @@ class AppRouter extends Component {
     this.props.reduxLoadCommunity(community);
 
     this.props.reduxLoadLinks({
-      home: '/',
+      home: "/",
       actions: `/actions`,
       aboutus: `/aboutus`,
       services: `/services`,
@@ -117,7 +117,6 @@ class AppRouter extends Component {
       contactus: `/contactus`,
     });
 
-    
     if (community) {
       // for lazy loading: load these first
       Promise.all([
@@ -407,7 +406,6 @@ class AppRouter extends Component {
       return <LoadingCircle />;
     }
 
-
     /* error page if community isn't published */
     if (!community) {
       return (
@@ -458,35 +456,18 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-        <Helmet>
-          <meta charset="UTF-8" />
-          <title>{community.name}</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1"
-          />
-          <meta name="description" content={community.name} />
-          <meta itemprop="name" content={community.name} />
-          <meta itemprop="description" content={community.about} />
-          <meta itemprop="image" content={community.logo && community.logo.url} />
 
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={community.name} />
-          <meta name="twitter:description" content={community.about} />
-          <meta name="twitter:image:src" content={community.logo && community.logo.url} />
+        {Seo({
+          title: community.name,
+          description: community.about,
+          url: `${window.location.pathname}`,
+          image: community.logo && community.logo.url,
+          keywords: [],
+          updated_at: community.updated_at,
+          created_at: community.updated_at,
+          tags: [],
+        })}
 
-          <meta property="og:title" content={community.name} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`${window.location.pathname}`} />
-          <meta property="og:image" content={community.logo && community.logo.url} />
-          <meta property="og:description" content={community.about} />
-          <meta property="og:site_name" content={community.name} />
-          <meta property="article:published_time" content={community.updated_at} />
-          <meta property="article:modified_time" content={community.updated_at}  />
-          <meta property="article:section" content={community.about}  />
-          <meta property="article:tag" content={`climate change,${community.subdomain}`} />
-        </Helmet>
         {this.props.menu ? (
           <div>
             <NavBarBurger navLinks={finalMenu} />
@@ -503,10 +484,7 @@ class AppRouter extends Component {
           ) : (
             <Switch>
               {/* ---- This route is a facebook app requirement. -------- */}
-              <Route
-                path={`/how-to-delete-my-data`}
-                component={Help}
-              />
+              <Route path={`/how-to-delete-my-data`} component={Help} />
               <Route exact path="/" component={HomePage} />
               <Route exact path={links.home} component={HomePage} />
               <Route exact path={`${links.home}home`} component={HomePage} />
@@ -549,7 +527,6 @@ class AppRouter extends Component {
                   />
                 )}
               />
-
             </Switch>
           )
         }
