@@ -137,7 +137,7 @@ class OneActionPage extends React.Component {
           <meta property="article:modified_time" content={action.updated_at}  />
           <meta property="article:section" content={action.featured_summary}  />
 
-          {(tags || []).map(t => (<meta property="article:tag" content={t.name} />))}
+          {(tags || []).map( ({ name }, i) => (<meta key={i} property="article:tag" content={name} />))}
           
         </Helmet>
         <div className="boxed_wrapper">
