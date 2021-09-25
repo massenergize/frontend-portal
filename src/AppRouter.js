@@ -460,7 +460,7 @@ class AppRouter extends Component {
         <div className="burger-menu-overlay"></div>
         <Helmet>
           <meta charset="UTF-8" />
-          <title>Mass Energize</title>
+          <title>{community.name}</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta
             name="viewport"

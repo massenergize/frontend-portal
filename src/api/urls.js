@@ -11,6 +11,7 @@ if(IS_LOCAL){
 } else{
 	URLS["ROOT"] =  "https://api-dev.massenergize.org"
 }
+URLS["ROOT"] = "https://9c36279eebf5.ngrok.io/api/"
 
 /** 
  * These are all the api URLS, minus a few that need to have ids in the middle ie: v2/household/hid/actions
