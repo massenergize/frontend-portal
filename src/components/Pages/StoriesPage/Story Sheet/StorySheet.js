@@ -126,7 +126,6 @@ export default class StorySheet extends Component {
                 style={{ marginLeft: "auto" }}
                 className="sheet-link"
                 to={`${this.props.links.testimonials}/${id}`}
-                target="_blank"
               >
                 {" "}
                 <i

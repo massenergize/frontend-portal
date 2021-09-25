@@ -268,7 +268,7 @@ class NavBarBurger extends React.Component {
       padding: "0",
       minwidth: "100px",
     };
-    const { links } = this.props;
+
     return Object.keys(navLinks).map((key) => {
       var navLink = navLinks[key];
       if (navLink.children) {
@@ -314,7 +314,7 @@ class NavBarBurger extends React.Component {
           className="d-flex flex-column justify-content-center"
           key={navLink.name}
         >
-          <Link className="cool-font" to={`${links.home}${navLink.link}`}>
+          <Link className="cool-font" to={`${navLink.link}`}>
             {navLink.name}
           </Link>
         </li>
@@ -324,7 +324,6 @@ class NavBarBurger extends React.Component {
   //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
   renderDropdownItems(children) {
     if (!this.props.links) return;
-    const { links } = this.props;
     const comm = this.props.pageData
       ? this.props.pageData.community
       : { name: "My Community" };
@@ -345,7 +344,7 @@ class NavBarBurger extends React.Component {
         return (
           <Link
             key={key}
-            to={`${links.home}${child.link}`}
+            to={`${child.link}`}
             className="cool-font  p-3 small dropdown-item me-dropdown-theme-item "
             onClick={() => document.dispatchEvent(new MouseEvent("click"))}
           >
