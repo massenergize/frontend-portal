@@ -11,7 +11,7 @@ if(IS_LOCAL){
 } else{
 	URLS["ROOT"] =  "https://api-dev.massenergize.org"
 }
-URLS["ROOT"] = "https://9c36279eebf5.ngrok.io"
+URLS["ROOT"] = "https://6a6126d5f08b.ngrok.io"
 
 
 export default URLS;

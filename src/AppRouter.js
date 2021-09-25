@@ -465,7 +465,7 @@ class AppRouter extends Component {
           keywords: [],
           updated_at: community.updated_at,
           created_at: community.updated_at,
-          tags: [],
+          tags: [community.name, community.subdomain],
         })}
 
         {this.props.menu ? (

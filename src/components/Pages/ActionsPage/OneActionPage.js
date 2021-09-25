@@ -117,10 +117,10 @@ class OneActionPage extends React.Component {
           site_name: action.community && action.community.name,
           url: `${window.location.pathname}`,
           image:action.image && action.image.url ,
-          keywords: [],
+          keywords: action.title && action.title.split(' ') ,
           updated_at: action.updated_at,
           created_at: action.updated_at,
-          tags: (tags || []).map( ({ name }, i) => name) || [],
+          tags: (tags || []).map( ({ name }) => name) || [],
         })}
 
 

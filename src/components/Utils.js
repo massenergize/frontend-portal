@@ -364,3 +364,12 @@ export function createCircleGraphData(goalObj, which) {
       };
   }
 }
+
+/**
+ * 
+ * @param {String} htmlText 
+ * @returns the text from an html string
+ */
+export function extractTextFromHTML(htmlText){
+  return htmlText && htmlText.replace(/<[^>]+>/g, '')
+}
