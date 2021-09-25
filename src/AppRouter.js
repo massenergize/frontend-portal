@@ -455,6 +455,7 @@ class AppRouter extends Component {
       allCommunities: communitiesLink,
     };
 
+    console.log(community)
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
@@ -466,6 +467,26 @@ class AppRouter extends Component {
             name="viewport"
             content="width=device-width, initial-scale=1, maximum-scale=1"
           />
+          <meta name="description" content={community.name} />
+          <meta itemprop="name" content={community.name} />
+          <meta itemprop="description" content={community.about} />
+          <meta itemprop="image" content={community.logo && community.logo.url} />
+
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={community.name} />
+          <meta name="twitter:description" content={community.about} />
+          <meta name="twitter:image:src" content={community.logo && community.logo.url} />
+
+          <meta property="og:title" content={community.name} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`${window.location.pathname}`} />
+          <meta property="og:image" content={community.logo && community.logo.url} />
+          <meta property="og:description" content={community.about} />
+          <meta property="og:site_name" content={community.name} />
+          <meta property="article:published_time" content={community.updated_at} />
+          <meta property="article:modified_time" content={community.updated_at}  />
+          <meta property="article:section" content={community.about}  />
+          <meta property="article:tag" content={`climate change,${community.subdomain}`} />
         </Helmet>
         {this.props.menu ? (
           <div>

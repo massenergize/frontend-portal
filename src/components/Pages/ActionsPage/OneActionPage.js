@@ -107,6 +107,8 @@ class OneActionPage extends React.Component {
       );
     }
     this.chooseFontSize();
+
+    const { tags } = action;
     return (
       <>
         {this.renderModal()}
@@ -118,6 +120,25 @@ class OneActionPage extends React.Component {
           />
           <meta property="og:description" content={action.featured_summary} />
           <meta property="og:url" content={window.location.href} />
+          <meta property="og:type" content="article" />
+          <meta property="og:site_name" content={action.community && action.community.name} />
+
+          <meta name="description" content={action.title} />
+          <meta itemprop="name" content={action.featured_summary} />
+          <meta itemprop="description" content={action.featured_summary} />
+          <meta itemprop="image" content={action.image && action.image.url} />
+
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={action.title} />
+          <meta name="twitter:description" content={action.featured_summary} />
+          <meta name="twitter:image:src" content={action.image && action.image.url} />
+
+          <meta property="article:published_time" content={action.updated_at} />
+          <meta property="article:modified_time" content={action.updated_at}  />
+          <meta property="article:section" content={action.featured_summary}  />
+
+          {(tags || []).map(t => (<meta property="article:tag" content={t.name} />))}
+          
         </Helmet>
         <div className="boxed_wrapper">
           <BreadCrumbBar
