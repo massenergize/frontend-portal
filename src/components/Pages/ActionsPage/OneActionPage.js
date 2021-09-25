@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
-// import ChooseHHForm from "./ChooseHHForm";
 import MEModal from "./../Widgets/MEModal";
 import ActionModal from "./ActionModal";
 import {
@@ -23,7 +22,6 @@ import {
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ShareButtons from "../../Shared/ShareButtons";
-import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
@@ -36,6 +34,7 @@ import {
   NO_AUTH,
   TODO,
 } from "./ActionStateConstants";
+import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -112,35 +111,19 @@ class OneActionPage extends React.Component {
     return (
       <>
         {this.renderModal()}
-        <Helmet>
-          <title> { action.title } </title>
-          <meta property="og:title" content={action.title} />
-          <meta
-            property="og:image"
-            content={action.image && action.image.url}
-          />
-          <meta property="og:description" content={action.featured_summary} />
-          <meta property="og:url" content={window.location.href} />
-          <meta property="og:type" content="article" />
-          <meta property="og:site_name" content={action.community && action.community.name} />
+        {Seo({
+          title: action.title,
+          description: action.featured_summary,
+          site_name: action.community && action.community.name,
+          url: `${window.location.pathname}`,
+          image:action.image && action.image.url ,
+          keywords: [],
+          updated_at: action.updated_at,
+          created_at: action.updated_at,
+          tags: (tags || []).map( ({ name }, i) => name) || [],
+        })}
 
-          <meta name="description" content={action.title} />
-          <meta itemprop="name" content={action.featured_summary} />
-          <meta itemprop="description" content={action.featured_summary} />
-          <meta itemprop="image" content={action.image && action.image.url} />
 
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={action.title} />
-          <meta name="twitter:description" content={action.featured_summary} />
-          <meta name="twitter:image:src" content={action.image && action.image.url} />
-
-          <meta property="article:published_time" content={action.updated_at} />
-          <meta property="article:modified_time" content={action.updated_at}  />
-          <meta property="article:section" content={action.featured_summary}  />
-
-          {(tags || []).map( ({ name }, i) => (<meta key={i} property="article:tag" content={name} />))}
-          
-        </Helmet>
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
