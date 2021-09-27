@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { createCircleGraphData, getCircleGraphData, calcEQ } from "./../../Utils";
+import {
+  createCircleGraphData,
+  getCircleGraphData,
+  calcEQ,
+} from "./../../Utils";
 import { Doughnut } from "react-chartjs-2";
 import Tooltip from "../Widgets/CustomTooltip";
 //import Tooltip from "../../Shared/Tooltip";
@@ -47,21 +51,27 @@ class Graphs extends React.Component {
           key: "carbon-reduction",
           unit: this.props.pref_eq?.name || "Trees",
           heading: "Carbon Reduction Impact",
-          target: calcEQ(this.props.goals.target_carbon_footprint_reduction, this.props.pref_eq?.value),
+          target: calcEQ(
+            this.props.goals.target_carbon_footprint_reduction,
+            this.props.pref_eq?.value
+          ),
         },
       ];
-      const pref_eq = this.props.pref_eq;      
-      const value = getCircleGraphData(this.props.goals, list[key].key, pref_eq);
-      const percent = parseInt(100.0*value/list[key].target);
+      console.log("I am the list bro", list);
+      const pref_eq = this.props.pref_eq;
+      const value = getCircleGraphData(
+        this.props.goals,
+        list[key].key,
+        pref_eq
+      );
+
+      const target = list[key].target;
+      const percent = target !== 0 ? parseInt((100.0 * value) / target) : 0; // to avoid "NaN%"
 
       return (
         <div key={key} className={classes} data-wow-duration="0ms">
           <center>
-
-          <h4 className="impact-graph-heading">
-              {list[key].heading}
-            </h4>
-
+            <h4 className="impact-graph-heading">{list[key].heading}</h4>
 
             <Doughnut
               width={180}
@@ -75,7 +85,11 @@ class Graphs extends React.Component {
                   duration: 2000,
                 },
               }}
-              data={createCircleGraphData(this.props.goals, list[key].key, pref_eq)}
+              data={createCircleGraphData(
+                this.props.goals,
+                list[key].key,
+                pref_eq
+              )}
             />
 
             <p className="impact-graph-title home-page-graph-tweak">
@@ -84,9 +98,8 @@ class Graphs extends React.Component {
               >
                 <b>{value}</b>
               </span>
-              {list[key].unit} 
-              &nbsp;
-              ({percent}% of goal)
+              {list[key].unit}
+              &nbsp; ({percent}% of goal)
             </p>
           </center>
         </div>
@@ -110,7 +123,7 @@ class Graphs extends React.Component {
             >
               <h4
                 className="section-title text-center mob-cancel-title-white"
-                style={{ fontSize: 24}}
+                style={{ fontSize: 24 }}
               >
                 {this.props.subtitle || "Help Us Meet Our Goals"}
                 <span
@@ -122,12 +135,11 @@ class Graphs extends React.Component {
           ) : (
             <h4
               className="section-title text-center mob-cancel-title-white"
-              style={{ fontSize: 24}}
+              style={{ fontSize: 20, marginBottom: 30 }}
             >
               {this.props.subtitle || "Help Us Meet Our Goals"}
             </h4>
-
-        )}
+          )}
         </div>
 
         <div className="container">
