@@ -64,6 +64,9 @@ class BarGraph extends React.Component {
 					}
 				}
 			}],
+			dataLabels: {
+				enabled: false
+			},
 			plotOptions: {
 				bar: {
 					horizontal: false,

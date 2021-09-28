@@ -1,9 +1,10 @@
 import React from "react";
+import { calcEQ } from "../../Utils";
 export const DEFAULT = "DEFAULT";
 export const PACKED = "PACKED";
 class TeamStatsBars extends React.Component {
   render() {
-    const { teamStats, type } = this.props;
+    const { teamStats, type, pref_eq } = this.props;
 
     let membersJSX, actionsJSX, carbonJSX;
 
@@ -71,26 +72,54 @@ class TeamStatsBars extends React.Component {
         </p>
       );
 
+      const eqValue = {
+        saved: calcEQ(carbonSaved, pref_eq?.value),
+        perMember: calcEQ(carbonSavedPerMember, pref_eq?.value),
+      };
       carbonJSX = (
         <p>
           <span className="phone-vanish">
-            {" "}
-            <b>{carbonSaved.toLocaleString()}</b> lb{carbonSaved !== 1 && "s"}.
-            carbon saved
+            <b>{(pref_eq && eqValue.saved) || carbonSaved.toLocaleString()}</b>{" "}
+            {(pref_eq && (pref_eq?.title || `Number of ${pref_eq?.name}`)) || (
+              <>
+                lb{carbonSaved !== 1 && "s"}.<b> C</b>.
+              </>
+            )}
             {carbonSavedPerMember && (
               <span>
                 {" "}
-                (<b>{carbonSavedPerMember.toLocaleString()}</b> / member)
+                (
+                <b>
+                  {(pref_eq && eqValue.perMember) ||
+                    carbonSavedPerMember.toLocaleString()}
+                </b>{" "}
+                / member)
               </span>
             )}
           </span>
           <span className="pc-vanish" style={{ fontSize: 10 }}>
             {" "}
-            <b>{carbonSaved.toLocaleString()}</b> lb{carbonSaved !== 1 && "s"}.
-            <b> C</b>. saved
-             {carbonSavedPerMember && (
+            <b>
+              {(pref_eq && eqValue.saved) || carbonSaved.toLocaleString()}
+            </b>{" "}
+            {(pref_eq && (
+              <i
+                className={` fa ${pref_eq?.icon}`}
+                style={{ marginRight: 3 }}
+              ></i>
+            )) || (
+              <>
+                lb{carbonSaved !== 1 && "s"}.<b> C</b>. saved
+              </>
+            )}
+            {carbonSavedPerMember && (
               <span>
-                (<b>{carbonSavedPerMember.toLocaleString()}</b>/mem)
+                (
+                <b>
+                  {(pref_eq && eqValue.perMember) ||
+                    carbonSavedPerMember.toLocaleString()}
+                </b>
+                /mem)
               </span>
             )}
           </span>

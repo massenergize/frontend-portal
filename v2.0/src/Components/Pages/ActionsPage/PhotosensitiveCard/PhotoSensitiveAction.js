@@ -1,15 +1,14 @@
 import React from "react";
-import "./../../../assets/css/PhotosensitiveCard/PhotosensitiveCard.css";
+import "./PhotosensitiveCard.css";
 import { Link, withRouter } from "react-router-dom";
-import StoryForm from "./StoryForm";
+import StoryForm from "../StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
-} from "../../../redux/actions/userActions";
-import { apiCall } from "../../../api/functions";
-import MEButton from "../Widgets/MEButton";
-// import METextView from "../Widgets/METextView";
+} from "../../../../redux/actions/userActions";
+import { apiCall } from "../../../../api/functions";
+import MEButton from "../../Widgets/MEButton";
 import {
   DEFAULT_STATE,
   DONE,
@@ -17,9 +16,9 @@ import {
   IS_IN_TODO,
   NO_AUTH,
   TODO,
-} from "./ActionStateConstants";
-import MEChameleonButton from "./MEChameleonButton";
-import MEAnimation from "../../Shared/Classes/MEAnimation";
+} from "../ActionStateConstants";
+import MEChameleonButton from "../MEChameleonButton";
+import MEAnimation from "../../../Shared/Classes/MEAnimation";
 
 /**
  * Action Component is a single action for the action page,
@@ -66,29 +65,17 @@ class PhotoSensitiveAction extends React.Component {
   actionIsInTodo() {
     var action = this.props.action;
     var todo = this.props.todo ? this.props.todo : [];
-    var data = todo.filter((t) => t.action.id === action.id);
-    if (data.length > 0) {
-      return data[0];
-    }
-
-    return null;
+    return todo.find((t) => t.action.id === action.id);
   }
   actionIsDone() {
     var action = this.props.action;
     var done = this.props.done ? this.props.done : [];
-    var data = done.filter((t) => t.action.id === action.id);
-    if (data.length > 0) {
-      return data[0];
-    }
-    return null;
+    return done.find((t) => t.action.id === action.id);
   }
   checkTodo() {
     var action = this.props.action;
-    // var households = this.props.user.households || [];
     var todo = this.props.todo ? this.props.todo : [];
-    var exists =
-      todo.filter((t) => t.action.id === action.id).length > 0 ? true : false;
-    return exists;
+    return todo.find((t) => t.action.id === action.id);
   }
 
   getActionStateCase() {
@@ -216,6 +203,7 @@ class PhotoSensitiveAction extends React.Component {
                     fontSize: "0.8rem",
                     minWidth: 60,
                     textAlign: "center",
+                    fontWeight: "bold",
                     marginLeft: 5,
                   }}
                   containerClassName="pc-vanish"
@@ -229,6 +217,7 @@ class PhotoSensitiveAction extends React.Component {
                     fontSize: "14px",
                     minWidth: 76,
                     textAlign: "center",
+                    fontWeight: "bold",
                     marginLeft: 5,
                   }}
                   containerClassName="phone-vanish"

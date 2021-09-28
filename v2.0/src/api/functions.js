@@ -1,5 +1,5 @@
 import URLS from "./urls";
-import { IS_SANDBOX, IS_PROD, IS_CANARY } from "../config/config";
+import { IS_SANDBOX, IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from '../redux/store';
 
 
@@ -25,10 +25,19 @@ export async function apiCall(
     ...dataToSend 
   };
 
+  // make leading '/' optional
+  if (destinationUrl.charAt(0) === '/') {
+    destinationUrl = destinationUrl.substring(1);
+  }
+    
+  if (IS_LOCAL) {
+    destinationUrl = "api/" + destinationUrl;
+  }
+  
   const formData = new FormData();
   Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
 
-  const response = await fetch(`${URLS.ROOT}/v3/${destinationUrl}`, {
+  const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, {
     credentials: 'include',
     method: 'POST',
     body: formData

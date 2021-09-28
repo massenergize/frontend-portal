@@ -1,3 +1,59 @@
+:root {
+  --app-theme-orange: #f57b34;
+  --app-theme-green: #8dc443;
+}
+
+.team-about-richtext-wrapper p {
+  color: black;
+}
+.equivalence-small {
+  color: var(--app-theme-green);
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.equivalence-small:hover {
+  color: var(--app-theme-orange);
+  transition: 0.3s ease-out;
+}
+.me-nav-profile-pic {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+  padding: 2px;
+  border: solid 2px var(--user-pref-color);
+}
+.me-nav-profile-pic:hover {
+  transform: scale(0.9) translateY(-6px);
+  border-color: var(--app-theme-green);
+  transition: 0.3s ease-out;
+}
+.remove-toggle-outline:focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 !important;
+}
+.date-string {
+  font-size: 0.85rem;
+}
+.me-rsvp-btn {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  background: var(--app-theme-orange);
+  color: white;
+  height: 100%;
+  /* margin-right: -20px; */
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0px;
+  font-weight: bold;
+}
+
+.me-rsvp-btn:hover {
+  background: var(--app-theme-green);
+  transition: 0.2s ease-out;
+}
+
 .every-day-flex {
   display: flex;
   flex-direction: row;
@@ -550,7 +606,8 @@
 
 .cam-btn-defaults {
   /* padding:6px 22px  !important; */
-  padding: 5px 18px !important;
+  font-weight: bold;
+  padding: 5px 15px !important;
   font-size: 14px;
   transition: box-shadow 0.2s ease-in-out !important ;
 }
@@ -748,7 +805,7 @@
   padding: 10px;
 }
 .bottom-date-area {
-  padding: 13px;
+  /* padding: 13px; */
   background-color: #f9f9f9;
   display: flex;
   flex-direction: row;
@@ -756,6 +813,7 @@
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
+  font-size: 0.9rem !important;
 }
 
 .me-testimonial-img {
@@ -905,6 +963,9 @@
   color: white;
 }
 
+.me-drop-item p {
+  color: black;
+}
 .me-drop-item {
   cursor: pointer;
   color: black;
@@ -1433,8 +1494,13 @@
   object-fit: contain !important;
 }
 
+.impact-graph-heading {
+  font-size: 1rem !important;
+  margin-bottom: 30px;
+}
 .impact-graph-title {
   font-size: 0.8rem !important;
+  color: "black";
 }
 .imp-desc-box {
   padding: 10px;
@@ -1600,6 +1666,7 @@
 
 @media only screen and (min-width: 768px) {
   .cameleon-correct {
+    font-weight: bold;
     padding: 4px 15px !important;
     font-size: 0.9rem;
   }
@@ -1734,10 +1801,24 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .cam-btn-defaults {
+    padding: 5px 13px !important;
+  }
+  .root-story-sheet {
+    grid-template-columns: 1fr !important;
+    padding: 10px 6px !important;
+    height: var(--sheet-height-state-mobile) !important;
+    box-shadow: 0 0 0 !important;
+  }
+
+  .sheet-text {
+    font-size: 0.8rem !important;
+  }
   .sensitive-photo {
     height: 120px !important;
   }
   .cameleon-correct {
+    font-weight: bold;
     font-size: 0.8rem !important;
     padding: 4px 10px !important;
   }
