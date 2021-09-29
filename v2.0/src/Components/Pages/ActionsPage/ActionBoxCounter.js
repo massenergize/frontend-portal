@@ -66,6 +66,42 @@ export default class ActionBoxCounter extends Component {
       ...data,
     ];
   }
+
+  renderCounter({ data, carbonScore }) {
+    const { user, pref_eq } = this.props;
+    if (!user)
+      return (
+        <>
+          <h1
+            style={{
+              fontWeight: "600",
+              margin: 10,
+              fontSize: 26,
+              color: "black",
+            }}
+          >
+            0.0
+          </h1>
+          <small style={{ color: "black" }}>
+            <b>Sign in to see your CO2 / yr</b>
+          </small>
+        </>
+      );
+    return (
+      <>
+        {" "}
+        {pref_eq ? (
+          this.makeCounterWithCustomValue(
+            calcEQ(sumOfCarbonScores(data), pref_eq?.value),
+            pref_eq,
+            true
+          )
+        ) : (
+          <Slider data={this.createSliderData(carbonScore)} interval={3000} />
+        )}
+      </>
+    );
+  }
   render() {
     const { type, style, todo, done, user, pref_eq } = this.props;
     const data = type === DONE ? done : todo;
@@ -83,18 +119,7 @@ export default class ActionBoxCounter extends Component {
             <small style={{ fontWeight: "600", fontSize: 21, color: "black" }}>
               {type === DONE ? "Done!" : "To Do"}
             </small>
-            {pref_eq ? (
-              this.makeCounterWithCustomValue(
-                calcEQ(sumOfCarbonScores(data), pref_eq?.value),
-                pref_eq,
-                true
-              )
-            ) : (
-              <Slider
-                data={this.createSliderData(carbonScore)}
-                interval={3000}
-              />
-            )}
+            {this.renderCounter({ data, carbonScore })}
             {user && (
               <>
                 {pref_eq && <br />}
