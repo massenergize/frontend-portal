@@ -164,7 +164,7 @@ class Graphs extends React.Component {
             </article> */}
           </div>
         </div>
-        <center>
+        <center style={{ marginTop: 20 }}>
           <Link
             to={this.props.links.impact}
             className="homepage-all-events-btn round-me z-depth-1"
