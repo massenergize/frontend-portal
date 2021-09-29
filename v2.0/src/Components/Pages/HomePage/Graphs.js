@@ -5,6 +5,7 @@ import {
   createCircleGraphData,
   getCircleGraphData,
   calcEQ,
+  PREF_EQ_DEFAULT,
 } from "./../../Utils";
 import { Doughnut } from "react-chartjs-2";
 import Tooltip from "../Widgets/CustomTooltip";
@@ -29,6 +30,9 @@ class Graphs extends React.Component {
       "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
     const threeGraphClasses =
       "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+
+    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;
+
     var classes;
     if (graphs.length === 1) classes = oneGraphClasses;
     if (graphs.length === 2) classes = twoGraphClasses;
@@ -49,16 +53,15 @@ class Graphs extends React.Component {
         },
         {
           key: "carbon-reduction",
-          unit: this.props.pref_eq?.name || "Trees",
+          unit: pref_eq.name,
           heading: "Carbon Reduction Impact",
           target: calcEQ(
             this.props.goals.target_carbon_footprint_reduction,
-            this.props.pref_eq?.value
+            pref_eq.value
           ),
         },
       ];
-      console.log("I am the list bro", list);
-      const pref_eq = this.props.pref_eq;
+
       const value = getCircleGraphData(
         this.props.goals,
         list[key].key,

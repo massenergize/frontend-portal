@@ -12,6 +12,7 @@ import {
   createCircleGraphData,
   getCircleGraphData,
   calcEQ,
+  PREF_EQ_DEFAULT,
 } from "./../../Utils";
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -133,7 +134,10 @@ class ImpactPage extends React.Component {
       }
     });
 
-    const pref_eq = this.props.pref_eq;
+    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;  // hardcode Tree equivalence if none chosen
+    const carbon_units = pref_eq.name; 
+
+
     const data = [
       createCircleGraphData(goal, "households"),
       createCircleGraphData(goal, "actions-completed"),
@@ -149,10 +153,10 @@ class ImpactPage extends React.Component {
       parseInt((100 * values[1]) / goal.target_number_of_actions),
       parseInt(
         (100 * values[2]) /
-          calcEQ(goal.target_carbon_footprint_reduction, pref_eq?.value)
+          calcEQ(goal.target_carbon_footprint_reduction, pref_eq.value)
       ),
     ];
-    const carbon_units = pref_eq?.name || "Trees"; // hardcode Tree equivalence if none chosen
+
 
     return (
       <>
