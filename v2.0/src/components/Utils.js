@@ -14,6 +14,12 @@ export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
   return (carbonFootprint / constantPerYearInPounds).toFixed(1);
 };
 
+export const PREF_EQ_DEFAULT = {
+  name: "Trees",
+  icon: "fa-tree",
+  value: 2200./16.535,
+}
+
 /**
  * Collects saved content from local storage and parses it into json, or string
  * @param {*} key
@@ -297,7 +303,7 @@ export function getCircleGraphData(goalObj, which, pref_eq=null ) {
       return value;
     }
     case "carbon-reduction": {
-      const factor = pref_eq?.value || 2200./16.535     // hard coding tree equivalence if none chosen
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;     // hard coding tree equivalence if none chosen
       let value =
         goalObj.initial_carbon_footprint_reduction +
         goalObj.attained_carbon_footprint_reduction +
@@ -343,9 +349,9 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
       };
     }
     case "carbon-reduction": {
-      const factor = pref_eq?.value || 2200./16.535     // hard coding tree equivalence if none chosen
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
       const target = calcEQ(goalObj.target_carbon_footprint_reduction, factor);
-      const unit = pref_eq?.name || "Trees"   // hardcode Tree equivalence if none chosen
+      const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
       const rest = (value === 0) ? 100 : target - value;
       return {
         labels: [unit, "Remaining"],

@@ -37,7 +37,7 @@ export default class Slider extends Component {
     const { key } = this.state;
     return (
       <div className="fadeItemIn" key={key}>
-        {this.state.itemInView}
+        {this.state.itemInView || null}
       </div>
     );
   }
