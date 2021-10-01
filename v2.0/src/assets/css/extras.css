@@ -1666,7 +1666,6 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
-  
   .cameleon-correct {
     font-weight: bold;
     padding: 4px 15px !important;
@@ -1803,6 +1802,15 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .imp-title {
+    font-weight: bold;
+    padding: 4px 27px;
+    font-size: 16px;
+  }
+  .imp-phone-desc {
+    padding: 15px;
+    font-size: 16px;
+  }
   .me-section-title {
     font-size: 16px !important;
     padding: 5px 13px;

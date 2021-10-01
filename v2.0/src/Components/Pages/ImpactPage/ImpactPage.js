@@ -25,6 +25,195 @@ class ImpactPage extends React.Component {
     return shortWord.replace(",", "");
   }
 
+  makeDoughnut(data, options = {}) {
+    const _options = {
+      plugins: { datalabels: false },
+      // responsive: true,
+      // maintainAspectRatio: true,
+      legend: false,
+      animation: {
+        duration: 2000,
+      },
+      ...options,
+    };
+    return (
+      <Doughnut
+        options={_options}
+        data={(canvas) => {
+          canvas.height = 1000;
+          canvas.width = 1000;
+          canvas.style.height = "600px";
+          canvas.style.width = "600px";
+          canvas.style.marginLeft = "40px";
+          return data;
+        }}
+      />
+    );
+  }
+  renderGraphs({
+    goal,
+    data,
+    community,
+    percents,
+    carbon_units,
+    values,
+    maintainAspectRatio = false,
+  }) {
+    return (
+      <>
+        <h5 className="text-center" style={{ color: "#888", margin: 19 }}>
+          {community ? community.name : null}
+        </h5>
+        <div
+          className="card  mb-4 z-depth-float me-anime-open-in"
+          style={{
+            borderRadius: 10,
+            background: "transparent",
+            borderColor: "#ecf3ee",
+          }}
+        >
+          <div className="card-body imp-chart-h">
+            <center>
+              <h4 className="impact-graph-heading">Households Taking Action</h4>
+            </center>
+            {this.makeDoughnut(data[0])}
+
+            {/* <Doughnut
+              width={250}
+              height={250}
+              options={{
+                plugins: { datalabels: false },
+                responsive: false,
+                maintainAspectRatio: false,
+                legend: false,
+                animation: {
+                  duration: 2000,
+                },
+              }}
+              data={(canvas) => {
+                canvas.height = 150;
+                canvas.width = 150;
+                return data[0];
+              }}
+            /> */}
+          </div>
+          <div className="imp-desc-box">
+            <center>
+              <p className="impact-graph-title">
+                <span
+                  style={{
+                    fontSize: "1rem",
+                    color: "black",
+                    marginRight: 7,
+                  }}
+                >
+                  <b> {values[0]}</b>
+                </span>
+                Households &nbsp; ({percents[0]}% of goal)
+              </p>
+            </center>
+          </div>
+        </div>
+        <div
+          className="card z-depth-float mb-4 me-anime-open-in"
+          style={{
+            borderRadius: 10,
+            background: "transparent",
+            borderColor: "#ecf3ee",
+          }}
+        >
+          <div className="card-body imp-chart-h">
+            <center>
+              <h4 className="impact-graph-heading">
+                Individual Actions Completed
+              </h4>
+            </center>
+
+            <Doughnut
+              width={250}
+              height={250}
+              options={{
+                plugins: { datalabels: false },
+                responsive: false,
+                maintainAspectRatio: false,
+                legend: false,
+                animation: {
+                  duration: 2000,
+                },
+              }}
+              data={data[1]}
+            />
+          </div>
+          <div className="imp-desc-box">
+            <center>
+              <p className="impact-graph-title">
+                <span
+                  style={{
+                    fontSize: "1rem",
+                    color: "black",
+                    marginRight: 7,
+                  }}
+                >
+                  <b> {values[1]}</b>
+                </span>
+                Actions &nbsp; ({percents[1]}% of goal)
+              </p>
+            </center>
+          </div>
+        </div>
+        {goal && goal.target_carbon_footprint_reduction > 0 ? (
+          <div
+            className="card z-depth-float mb-4 me-anime-open-in"
+            style={{
+              borderRadius: 10,
+              background: "transparent",
+              borderColor: "#ecf3ee",
+            }}
+          >
+            <div className="card-body imp-chart-h">
+              <center>
+                <h4 className="impact-graph-heading">
+                  Carbon Reduction Impact
+                </h4>
+              </center>
+
+              <Doughnut
+                width={250}
+                height={250}
+                options={{
+                  plugins: { datalabels: false },
+                  responsive: false,
+                  maintainAspectRatio: false,
+                  legend: false,
+                  animation: {
+                    duration: 2000,
+                  },
+                }}
+                data={data[2]}
+              />
+            </div>
+            <div className="imp-desc-box">
+              <center>
+                <p className="impact-graph-title">
+                  <span
+                    style={{
+                      fontSize: "1rem",
+                      color: "black",
+                      marginRight: 7,
+                    }}
+                  >
+                    <b> {values[2]}</b>
+                  </span>
+                  {carbon_units}
+                  &nbsp; ({percents[2]}% of goal)
+                </p>
+              </center>
+            </div>
+          </div>
+        ) : null}
+      </>
+    );
+  }
   render() {
     if (!this.props.comData) {
       return (
@@ -69,13 +258,6 @@ class ImpactPage extends React.Component {
       );
     }
 
-    //let stats = this.props.communitiesStats
-    //  ? this.props.communitiesStats.data.slice(0)
-    //  : [];
-    //stats = stats.sort((a, b) => {
-    //  return b.actions_completed - a.actions_completed;
-    //});
-
     let phoneImpact = {
       labels: [],
       datasets: [
@@ -91,25 +273,6 @@ class ImpactPage extends React.Component {
         },
       ],
     };
-
-    //let communityImpact = {
-    //  categories: [],
-    //  series: [
-    //    {
-    //      name: "Households Engaged",
-    //      data: [],
-    //    },
-    //    {
-    //      name: "Actions Completed",
-    //      data: [],
-    //    },
-    //  ],
-    //};
-    //stats.forEach((comm) => {
-    //  communityImpact.categories.push(comm.community.name);
-    //  communityImpact.series[0].data.push(comm.households_engaged);
-    //  communityImpact.series[1].data.push(comm.actions_completed);
-    //});
 
     var graph2Categories = [];
     var graph2Series = [
@@ -134,9 +297,8 @@ class ImpactPage extends React.Component {
       }
     });
 
-    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;  // hardcode Tree equivalence if none chosen
-    const carbon_units = pref_eq.name; 
-
+    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT; // hardcode Tree equivalence if none chosen
+    const carbon_units = pref_eq.name;
 
     const data = [
       createCircleGraphData(goal, "households"),
@@ -157,7 +319,6 @@ class ImpactPage extends React.Component {
       ),
     ];
 
-
     return (
       <>
         <div className="boxed_wrapper">
@@ -167,8 +328,17 @@ class ImpactPage extends React.Component {
             style={{ background: "white" }}
           >
             <div className="row">
-              <div className="col-12 col-lg-4 mob-impact-pad-fix">
-                <h5
+              <div className="col-12 col-lg-4 mob-impact-pad-fix phone-vanish">
+                {this.renderGraphs({
+                  goal,
+                  data,
+                  community,
+                  values,
+                  percents,
+                  carbon_units,
+                  maintainAspectRatio: true,
+                })}
+                {/* <h5
                   className="text-center"
                   style={{ color: "#888", margin: 19 }}
                 >
@@ -179,7 +349,7 @@ class ImpactPage extends React.Component {
                   style={{
                     borderRadius: 10,
                     background: "transparent",
-                    borderColor: "#ecf3ee", 
+                    borderColor: "#ecf3ee",
                   }}
                 >
                   <div className="card-body imp-chart-h">
@@ -195,7 +365,6 @@ class ImpactPage extends React.Component {
                       options={{
                         plugins: { datalabels: false },
                         responsive: true,
-                        maintainAspectRatio: false,
                         legend: false,
                         animation: {
                           duration: 2000,
@@ -242,7 +411,6 @@ class ImpactPage extends React.Component {
                       options={{
                         plugins: { datalabels: false },
                         responsive: true,
-                        maintainAspectRatio: false,
                         legend: false,
                         animation: {
                           duration: 2000,
@@ -285,15 +453,14 @@ class ImpactPage extends React.Component {
                       </center>
 
                       <Doughnut
-                        width={250}
-                        height={250}
+                        width={150}
+                        height={150}
                         options={{
                           plugins: { datalabels: false },
                           responsive: true,
-                          maintainAspectRatio: false,
                           legend: false,
                           animation: {
-                            duration: 0,
+                            duration: 2000,
                           },
                         }}
                         data={data[2]}
@@ -317,20 +484,23 @@ class ImpactPage extends React.Component {
                       </center>
                     </div>
                   </div>
-                ) : null}
+                ) : null} */}
               </div>
               <div className="col-12 col-lg-8">
-                <PageTitle>{title}</PageTitle>
+                <PageTitle className="imp-title">{title}</PageTitle>
                 <center>
                   {description ? (
-                    <p style={{ color: "black", textAlign: "justify" }}>
+                    <p
+                      style={{ color: "black", textAlign: "justify" }}
+                      className="imp-phone-desc"
+                    >
                       {description}
                     </p>
                   ) : null}
                 </center>
 
                 <div
-                  className="card rounded-0 mb-4 z-depth-float"
+                  className="card rounded-0 mb-4 z-depth-float mob-shadow-cancel"
                   style={{ marginTop: 15, border: 0 }}
                 >
                   <div
@@ -340,7 +510,6 @@ class ImpactPage extends React.Component {
                     <h4 className="cool-font phone-medium-title">
                       Number Of Actions Completed
                     </h4>
-                    {/* <p style={{top:240,position:'absolute',fontSize:16, transform:'rotateZ(-90deg',left:-100}}>Number Of Actions Completed</p> */}
                   </div>
                   <div className="card-body phone-vanish  me-anime-open-in">
                     <BarGraph
@@ -350,7 +519,6 @@ class ImpactPage extends React.Component {
                       colors={["rgba(251, 85, 33, 0.85)", "#ff9a9a"]}
                       // 86bd7d
                     />
-                    {/* <center><p style={{fontSize:16,margin:0}} className="cool-font">Community Goals</p></center> */}
                   </div>
                 </div>
 
@@ -379,6 +547,17 @@ class ImpactPage extends React.Component {
                     data={phoneImpact}
                   />
                 </div>
+              </div>
+              {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
+              <div className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish">
+                {this.renderGraphs({
+                  goal,
+                  data,
+                  community,
+                  values,
+                  percents,
+                  carbon_units,
+                })}
               </div>
             </div>
           </div>
