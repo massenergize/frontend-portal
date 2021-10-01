@@ -125,7 +125,7 @@ class Graphs extends React.Component {
               dir="right"
             >
               <h4
-                className="section-title text-center mob-cancel-title-white"
+                className="section-title text-center mob-cancel-title-white me-section-title"
                 style={{ fontSize: 24 }}
               >
                 {this.props.subtitle || "Help Us Meet Our Goals"}
@@ -137,7 +137,7 @@ class Graphs extends React.Component {
             </Tooltip>
           ) : (
             <h4
-              className="section-title text-center mob-cancel-title-white"
+              className="section-title text-center mob-cancel-title-white me-section-title"
               style={{ fontSize: 20, marginBottom: 30 }}
             >
               {this.props.subtitle || "Help Us Meet Our Goals"}

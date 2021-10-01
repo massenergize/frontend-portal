@@ -179,7 +179,7 @@ class ImpactPage extends React.Component {
                   style={{
                     borderRadius: 10,
                     background: "transparent",
-                    borderColor: "#ecf3ee",
+                    borderColor: "#ecf3ee", 
                   }}
                 >
                   <div className="card-body imp-chart-h">
@@ -293,7 +293,7 @@ class ImpactPage extends React.Component {
                           maintainAspectRatio: false,
                           legend: false,
                           animation: {
-                            duration: 2000,
+                            duration: 0,
                           },
                         }}
                         data={data[2]}

@@ -1,7 +1,7 @@
 {
-  "IS_LOCAL": false,
+  "IS_LOCAL": true,
   "IS_PROD": false,
-  "IS_CANARY": true,
+  "IS_CANARY": false,
   "IS_SANDBOX": false,
   "BUILD_VERSION": "3.3.21"
 }

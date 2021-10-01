@@ -89,7 +89,10 @@ class HomePage extends React.Component {
                 text={communityDescription}
                 paperStyle={{ maxWidth: "100vh" }}
               >
-                <h4 align="center" className="cool-font mob-font-lg">
+                <h4
+                  align="center"
+                  className="cool-font mob-font-lg me-section-title"
+                >
                   {communityTagline}
                   <span
                     className="fa fa-info-circle"
@@ -98,7 +101,10 @@ class HomePage extends React.Component {
                 </h4>
               </Tooltip>
             ) : (
-              <h4 align="center" className="cool-font mob-font-lg">
+              <h4
+                align="center"
+                className="cool-font mob-font-lg me-section-title"
+              >
                 {communityTagline}
               </h4>
             )}

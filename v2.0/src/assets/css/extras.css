@@ -1666,6 +1666,7 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  
   .cameleon-correct {
     font-weight: bold;
     padding: 4px 15px !important;
@@ -1802,6 +1803,16 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-section-title {
+    font-size: 16px !important;
+    padding: 5px 13px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    /* font-weight: bold; */
+  }
+  /* .home-d-fixes{ 
+    margin-top:60
+  } */
   .cam-btn-defaults {
     padding: 5px 13px !important;
   }
@@ -2175,7 +2186,7 @@
     padding-top: 10px !important;
   }
   .mob-homepage-chart-h {
-    height: 200px !important;
+    height: 280px !important;
   }
   .mob-pad-0 {
     padding: 0px !important;
