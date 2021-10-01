@@ -3,6 +3,9 @@
   --app-theme-green: #8dc443;
 }
 
+.team-about-richtext-wrapper p {
+  color: black;
+}
 .equivalence-small {
   color: var(--app-theme-green);
   cursor: pointer;
@@ -1491,14 +1494,20 @@
   object-fit: contain !important;
 }
 
+.impact-graph-heading {
+  font-size: 1rem !important;
+  margin-bottom: 30px;
+}
 .impact-graph-title {
-  font-size: 0.8rem !important;
+  font-size: 1rem !important;
+  color: "black";
 }
 .imp-desc-box {
   padding: 10px;
   border: solid 1px white;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+  margin-top: 35px;
 }
 .homepage-all-events-btn {
   background: #8dc63f;

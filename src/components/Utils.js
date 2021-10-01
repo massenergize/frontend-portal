@@ -14,6 +14,12 @@ export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
   return (carbonFootprint / constantPerYearInPounds).toFixed(1);
 };
 
+export const PREF_EQ_DEFAULT = {
+  name: "Trees",
+  icon: "fa-tree",
+  value: 2200./16.535,
+}
+
 /**
  * Collects saved content from local storage and parses it into json, or string
  * @param {*} key
@@ -279,25 +285,47 @@ export function locationFormatJSX(location) {
   );
 }
 
-export function createCircleGraphData(goalObj, which) {
-  if (goalObj === null) return {};
+export function getCircleGraphData(goalObj, which, pref_eq=null ) {
+  if (goalObj === null) return 0;
   switch (which) {
     case "households": {
       let value =
+        goalObj.initial_number_of_households +
         goalObj.attained_number_of_households +
         goalObj.organic_attained_number_of_households;
-      let rest;
-      if (
-        goalObj.attained_number_of_households +
-          goalObj.organic_attained_number_of_households ===
-        0
-      ) {
-        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
-      } else {
-        rest = goalObj.target_number_of_households - value;
-      }
+      return value;
+    }
+    case "actions-completed": {
+      let value =
+        goalObj.initial_number_of_actions +
+        goalObj.attained_number_of_actions +
+        goalObj.organic_attained_number_of_actions;
+      return value;
+    }
+    case "carbon-reduction": {
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;     // hard coding tree equivalence if none chosen
+      let value =
+        goalObj.initial_carbon_footprint_reduction +
+        goalObj.attained_carbon_footprint_reduction +
+        goalObj.organic_attained_carbon_footprint_reduction;
+      value = calcEQ(value, factor);
+      return value;
+    }
+    default:
+      return 0;
+  }
+}
+
+export function createCircleGraphData(goalObj, which, pref_eq=null) {
+  if (goalObj === null) return {};
+
+  const value = getCircleGraphData(goalObj, which, pref_eq);  
+  switch (which) {
+    case "households": {
+      // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
+      const rest = (value === 0) ? 100 : goalObj.target_number_of_households - value;
       return {
-        labels: ["Households Engaged", ""],
+        labels: ["Households Engaged", "Remaining"],
         datasets: [
           {
             data: [value, rest],
@@ -308,21 +336,9 @@ export function createCircleGraphData(goalObj, which) {
       };
     }
     case "actions-completed": {
-      let value =
-        goalObj.attained_number_of_actions +
-        goalObj.organic_attained_number_of_actions;
-      let rest;
-      if (
-        goalObj.attained_number_of_actions +
-          goalObj.organic_attained_number_of_actions ===
-        0
-      ) {
-        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
-      } else {
-        rest = goalObj.target_number_of_actions - value;
-      }
+      const rest = (value === 0) ? 100 : goalObj.target_number_of_actions - value;
       return {
-        labels: ["Actions Completed", ""],
+        labels: ["Actions Completed", "Remaining"],
         datasets: [
           {
             data: [value, rest],
@@ -333,21 +349,12 @@ export function createCircleGraphData(goalObj, which) {
       };
     }
     case "carbon-reduction": {
-      let value =
-        goalObj.attained_carbon_footprint_reduction +
-        goalObj.organic_attained_carbon_footprint_reduction;
-      let rest;
-      if (
-        goalObj.attained_carbon_footprint_reduction +
-          goalObj.organic_attained_carbon_footprint_reduction ===
-        0
-      ) {
-        rest = 100; // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
-      } else {
-        rest = goalObj.target_carbon_footprint_reduction - value;
-      }
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
+      const target = calcEQ(goalObj.target_carbon_footprint_reduction, factor);
+      const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
+      const rest = (value === 0) ? 100 : target - value;
       return {
-        labels: ["Carbon Reduction", ""],
+        labels: [unit, "Remaining"],
         datasets: [
           {
             data: [value, rest],
