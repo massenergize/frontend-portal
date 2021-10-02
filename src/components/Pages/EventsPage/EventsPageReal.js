@@ -176,22 +176,25 @@ class EventsPage extends React.Component {
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        if (event.is_recurring && event.recurring_details) {
-          if (event.recurring_details.recurring_type === "week") {
-            if (event.recurring_details.separation_count === 1) {
-              recurringDetailString = `Every ${event.recurring_details.day_of_week}`;
-            } else {
-              recurringDetailString = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`;
+        if (event.is_recurring) {
+
+          if (event.recurring_details) {
+            if (event.recurring_details.recurring_type === "week") {
+              if (event.recurring_details.separation_count === 1) {
+                recurringDetailString = `Every ${event.recurring_details.day_of_week}`;
+              } else {
+                recurringDetailString = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`;
+              }
+            } else if (event.recurring_details.recurring_type === "month") {
+              if (event.recurring_details.separation_count === 1) {
+                recurringDetailString = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`;
+              } else {
+                recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`;
+              }
             }
-          } else if (event.recurring_details.recurring_type === "month") {
-            if (event.recurring_details.separation_count === 1) {
-              recurringDetailString = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`;
-            } else {
-              recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`;
-            }
+          } else {
+            recurringDetailString = "Event recurring details not specified";
           }
-        } else {
-          recurringDetailString = "Event recurring details not specified";
         }
 
         return (
