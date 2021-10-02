@@ -192,6 +192,9 @@ class EventsPage extends React.Component {
                 recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`;
               }
             }
+            if (event.recurring_details.final_date) {
+              recurringDetailString += ` through ${event.recurring_details.final_date}`
+            }
           } else {
             recurringDetailString = "Event recurring details not specified";
           }
