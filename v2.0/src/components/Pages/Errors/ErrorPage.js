@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 
 class ErrorPage extends React.Component {
   render() {
+    const homeURL = window.location.origin + this.props.links.home;
+    const currentlyOnHomePage = window.location.href === homeURL;
     const errorMessage = this.props.errorMessage
       ? "Error: " + this.props.errorMessage
       : "An error occured.";
@@ -54,8 +56,13 @@ class ErrorPage extends React.Component {
             )}
             {!this.props.allowBack && !this.props.invalidCommunity && (
               <p className="text-center">
-                <Link to={this.props.links.home} className="mass-domain-link ">
-                  Return to Home Page
+                <Link
+                  to={currentlyOnHomePage ? "/" : this.props.links.home}
+                  className="mass-domain-link "
+                >
+                  {currentlyOnHomePage
+                    ? "Reselect My Community"
+                    : " Return to Home Page"}
                 </Link>
               </p>
             )}

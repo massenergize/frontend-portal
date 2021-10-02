@@ -3,6 +3,14 @@
   --app-theme-green: #8dc443;
 }
 
+.word-wrap {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+}
 .team-about-richtext-wrapper p {
   color: black;
 }
@@ -1663,6 +1671,18 @@
   margin-bottom: 10px;
   /* font-style: italic */
 }
+
+.data-explanation-dialog {
+  padding: 20px;
+  border: solid 4px green;
+  border-radius: 10px;
+  margin-bottom: 35px;
+}
+
+.exp-title {
+  color: green;
+  font-weight: bold;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
@@ -1802,6 +1822,24 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .data-explanation-dialog {
+    border: solid 1px green;
+    margin: 5px;
+    padding: 10px 10px;
+  }
+  .exp-title {
+    font-size: 14px;
+  }
+
+  .data-explanation-dialog li {
+    font-size: 14px;
+  }
+  .mob-padding-zero {
+    padding: 0px;
+  }
+  .imp-desc-box {
+    margin-top: 0px;
+  }
   .imp-title {
     font-weight: bold;
     padding: 4px 27px;
