@@ -398,7 +398,7 @@ class NavBarBurger extends React.Component {
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle
-            style={{ "background-color": "white", "border-color": "white" }}
+            style={{ "backgroundColor": "white", "borderColor": "white" }}
             className="remove-toggle-outline"
           >
             {user.info.profile_picture ? (

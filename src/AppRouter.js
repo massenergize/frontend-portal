@@ -122,11 +122,55 @@ class AppRouter extends Component {
       Promise.all([
         apiCall("home_page_settings.info", body),
         apiCall("menus.list", body), //should add all communities to the menus.list
+        apiCall("about_us_page_settings.info", body),
+        apiCall("actions_page_settings.info", body),
+        apiCall("contact_us_page_settings.info", body),
+        apiCall("donate_page_settings.info", body),
+        apiCall("events_page_settings.info", body),
+        apiCall("impact_page_settings.info", body),
+        apiCall("teams_page_settings.info", body),
+        apiCall("testimonials_page_settings.info", body),
+        apiCall("vendors_page_settings.info", body),
       ])
         .then((res) => {
-          const [homePageResponse, mainMenuResponse] = res;
+          const [            
+            homePageResponse, 
+            mainMenuResponse,
+            aboutUsPageResponse,
+            actionsPageResponse,
+            contactUsPageResponse,
+            donatePageResponse,
+            eventsPageResponse,
+            impactPageResponse,
+            teamsPageResponse,
+            testimonialsPageResponse,
+            vendorsPageResponse,
+
+          ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
+          this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
+          this.props.reduxLoadActionsPage(actionsPageResponse.data);
+          this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
+          this.props.reduxLoadDonatePage(donatePageResponse.data);
+          this.props.reduxLoadEventsPage(eventsPageResponse.data);
+          this.props.reduxLoadImpactPage(impactPageResponse.data);
+          this.props.reduxLoadTeamsPage(teamsPageResponse.data);
+          this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
+          this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
+          this.setState({
+            pagesEnabled: {
+              aboutUsPage: aboutUsPageResponse.data.is_published,
+              actionsPage: actionsPageResponse.data.is_published,
+              contactUsPage: contactUsPageResponse.data.is_published,
+              donatePage: donatePageResponse.data.is_published,
+              eventsPage: eventsPageResponse.data.is_published,
+              impactPage: impactPageResponse.data.is_published,
+              vendorsPage: vendorsPageResponse.data.is_published,
+              testimonialsPage: testimonialsPageResponse.data.is_published,
+              teamsPage: teamsPageResponse.data.is_published,
+            },
+          });
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -144,83 +188,43 @@ class AppRouter extends Component {
           console.log(err);
         });
       Promise.all([
-        apiCall("about_us_page_settings.info", body),
-        apiCall("actions_page_settings.info", body),
         apiCall("actions.list", body),
         apiCall("graphs.actions.completed", body),
         apiCall("graphs.communities.impact", body),
-        apiCall("contact_us_page_settings.info", body),
-        apiCall("donate_page_settings.info", body),
-        apiCall("events_page_settings.info", body),
         apiCall("events.list", body),
         apiCall("events.exceptions.list", body),
-        apiCall("impact_page_settings.info", body),
         apiCall("policies.list", body),
-        apiCall("teams_page_settings.info", body),
         apiCall("teams.stats", body),
         apiCall("tag_collections.list", body),
-        apiCall("testimonials_page_settings.info", body),
         apiCall("testimonials.list", body),
-        apiCall("vendors_page_settings.info", body),
         apiCall("vendors.list", body),
         apiCall("data.carbonEquivalency.get", body),
       ])
         .then((res) => {
           const [
-            aboutUsPageResponse,
-            actionsPageResponse,
             actionsResponse,
             actionsCompletedResponse,
             communityStatsResponse,
-            contactUsPageResponse,
-            donatePageResponse,
-            eventsPageResponse,
             eventsResponse,
             eventExceptionsResponse,
-            impactPageResponse,
             policiesResponse,
-            teamsPageResponse,
             teamResponse,
             tagCollectionsResponse,
-            testimonialsPageResponse,
             testimonialsResponse,
-            vendorsPageResponse,
             vendorsResponse,
             eqResponse,
           ] = res;
-          this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
-          this.props.reduxLoadActionsPage(actionsPageResponse.data);
-          this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
-          this.props.reduxLoadDonatePage(donatePageResponse.data);
-          this.props.reduxLoadEventsPage(eventsPageResponse.data);
           this.props.reduxLoadEvents(eventsResponse.data);
           this.props.reduxLoadEventExceptions(eventExceptionsResponse);
-          this.props.reduxLoadImpactPage(impactPageResponse.data);
           this.props.reduxLoadActions(actionsResponse.data);
-          this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
           this.props.reduxLoadServiceProviders(vendorsResponse.data);
-          this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadTestimonials(testimonialsResponse.data);
           this.props.reduxLoadPolicies(policiesResponse.data);
-          this.props.reduxLoadTeamsPage(teamsPageResponse.data);
           this.props.reduxLoadTeams(teamResponse.data);
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
           this.props.reduxLoadEquivalences(eqResponse.data);
-          this.setState({
-            pagesEnabled: {
-              aboutUsPage: aboutUsPageResponse.data.is_published,
-              actionsPage: actionsPageResponse.data.is_published,
-              contactUsPage: contactUsPageResponse.data.is_published,
-              donatePage: donatePageResponse.data.is_published,
-              eventsPage: eventsPageResponse.data.is_published,
-              impactPage: impactPageResponse.data.is_published,
-              vendorsPage: vendorsPageResponse.data.is_published,
-              testimonialsPage: testimonialsPageResponse.data.is_published,
-              teamsPage: teamsPageResponse.data.is_published,
-            },
-          });
         })
         .catch((err) => {
           this.setState({ error: err });
