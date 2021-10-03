@@ -60,9 +60,7 @@ class ErrorPage extends React.Component {
                   to={currentlyOnHomePage ? "/" : this.props.links.home}
                   className="mass-domain-link "
                 >
-                  {currentlyOnHomePage
-                    ? "Reselect My Community"
-                    : " Return to Home Page"}
+                  {currentlyOnHomePage ? "Reload Page" : " Return to Home Page"}
                 </Link>
               </p>
             )}
