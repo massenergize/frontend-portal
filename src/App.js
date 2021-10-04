@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     // Update the document title using the browser API
     if (!community) {
-      apiCall("communities.info", { subdomain: "JCAN" })
+      apiCall("communities.info")
         .then((json) => {
           if (json.success) {
             dispatch({

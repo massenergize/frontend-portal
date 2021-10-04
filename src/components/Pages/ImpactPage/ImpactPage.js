@@ -466,7 +466,7 @@ const ExplanationDialog = () => {
               campaign efforts)
             </li>
             <li>
-              The Caron Reduction graph (if shown) shows the estimated reduction
+              The Carbon Reduction graph (if shown) shows the estimated reduction
               for actions taken on the platform, which currently use
               Massachusetts averages for those actions. It may also include
               estimated carbon reduction from reported State/Partner data or
