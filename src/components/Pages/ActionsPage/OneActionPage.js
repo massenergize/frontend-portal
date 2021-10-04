@@ -138,7 +138,10 @@ class OneActionPage extends React.Component {
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
               >
-                <div className="col-md-9" style={{marginBottom:15}}>
+                <div
+                  className="col-md-9 mob-padding-zero"
+                  style={{ marginBottom: 15 }}
+                >
                   <div className="single-products-details">
                     {this.renderAction(action)}
                   </div>
@@ -351,7 +354,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
-          this.setState({ showTodoMsg: false, showTestimonialLink:false });
+          this.setState({ showTodoMsg: false, showTestimonialLink: false });
           return;
         }
       }
@@ -362,7 +365,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
-          this.setState({ showTodoMsg: false, showTestimonialLink:false });
+          this.setState({ showTodoMsg: false, showTestimonialLink: false });
           return;
         }
       }
@@ -589,6 +592,8 @@ class OneActionPage extends React.Component {
               </div>
             </div>
           </div>
+
+          {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
           <div className="product-tab-box">
             <ul className="nav nav-tabs tab-menu">
@@ -686,7 +691,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.about),
                       }}
@@ -706,7 +711,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.steps_to_take),
                       }}
@@ -726,7 +731,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.deep_dive),
                       }}
@@ -768,7 +773,7 @@ class OneActionPage extends React.Component {
                   See Testimonials
                 </MELink>
                 <div className="phone-vanish">
-                  <div className="review-box make-me-dark">
+                  <div className="review-box make-me-dark word-wrap">
                     {/* Reviews */}
                     {this.renderStories(stories)}
                     {this.state.numberToShow < stories.length ? (
