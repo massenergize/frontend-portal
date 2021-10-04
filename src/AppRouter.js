@@ -135,7 +135,6 @@ class AppRouter extends Component {
       apiCall("events.date.update", body)
         .then((json) => {
           if (json.success) {
-            // console.log('EVENT DATE UPDATE CALL', json);
           } else {
             console.log(json.error);
           }
@@ -398,7 +397,7 @@ class AppRouter extends Component {
 
   render() {
     const { community } = this.props;
-
+    
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -519,14 +518,14 @@ class AppRouter extends Component {
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
-              <Route
-                component={() => (
+              <Route  component={HomePage} />
+              {/* component={() => (
                   <ErrorPage
                     errorMessage="Page not found"
                     errorDescription="The page you are trying to access does not exist"
                   />
                 )}
-              />
+              /> */}
             </Switch>
           )
         }

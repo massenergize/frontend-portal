@@ -15,7 +15,12 @@ function App() {
   useEffect(() => {
     // Update the document title using the browser API
     if (!community) {
-      apiCall("communities.info")
+      const pathname = window.location.pathname; 
+      const slash = pathname.indexOf('/',1);
+      const subdomain = (slash > 0) ? pathname.substring(1, slash-1) : pathname.substring(1);
+      const body = subdomain ? { subdomain: subdomain } : {}
+        
+      apiCall("communities.info", body)
         .then((json) => {
           if (json.success) {
             dispatch({
