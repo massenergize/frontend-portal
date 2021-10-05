@@ -9,7 +9,7 @@ if(IS_LOCAL){
 }else if(IS_PROD) {
 	URLS["ROOT"] =  "https://api.massenergize.org"
 } else{
-	URLS["ROOT"] =  "https://api-dev.massenergize.org"
+	URLS["ROOT"] =  "https://api.massenergize.dev"
 }
 
 
