@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 class RegisterPage extends React.Component {
   render() {
     //avoids trying to render before the promise from the server is fulfilled
-    console.log("this is whwere it all happens", this.props.auth);
     const { auth } = this.props;
     return (
       <>
