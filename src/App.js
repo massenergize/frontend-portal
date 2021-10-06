@@ -21,6 +21,7 @@ function App() {
         'communities.massenergize.org',
         'community.massenergize.dev',
         'communities.massenergize.dev',
+        'community-dev.massenergize.org',
         'community-canary.massenergize.org',
         'localhost',
       ];
