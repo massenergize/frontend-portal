@@ -99,7 +99,7 @@ class Graphs extends React.Component {
               <span
                 style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
               >
-                <b>{value}</b>
+                <b>{Number(value).toLocaleString()}</b>
               </span>
               {list[key].unit}
               &nbsp; ({percent}% of goal)
