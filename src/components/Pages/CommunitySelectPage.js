@@ -73,8 +73,9 @@ class CommunitySelectPage extends React.Component {
       (obj) => obj.community.id
     );
     return (
-      <>
+      <div id="communities-dropdown-test-id">
         <MEAutoComplete
+          id="test-auto-complete-textbox"
           textStyle={{ textTransform: "capitalize" }}
           useCaret={true}
           data={data}
@@ -85,10 +86,11 @@ class CommunitySelectPage extends React.Component {
             paddingLeft: 25,
           }}
           containerClassName="com-select-auto-edits"
+          childClassName="test-dropdown-child-class"
           placeholder="Choose your community"
           onItemSelected={this.handleCommunitySelected}
         />
-      </>
+      </div>
     );
   }
 
