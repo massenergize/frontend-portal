@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add(
+  "loginWithDetails",
+  function (email = "frimpong@kehillahglobal.com", password = "Pongo123") {
+    cy.get("#login-email").type("pongofrimi@gmail.com");
+    cy.get("#login-password").type("Pongo123");
+    cy.get("#sign-in-btn").click();
+  }
+);
+
+Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
+  cy.visit(pageURL);
+  cy.get(`#${successComponentID}`);
+});
