@@ -9,6 +9,8 @@ export default {
     login: BASE_URL + "signin",
     registration: BASE_URL + "signup",
     landing: DOMAIN,
+    homepage: BASE_URL,
+    actions: BASE_URL + "actions",
   },
   community: COMMUNITY,
 };
