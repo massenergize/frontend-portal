@@ -46,7 +46,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -59,6 +59,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "cypress": "^8.5.0",
     "immutable": "^4.0.0-rc.12",
     "style-loader": "^0.23.1"
   }
