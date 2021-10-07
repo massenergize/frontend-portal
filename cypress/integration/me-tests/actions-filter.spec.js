@@ -1,7 +1,7 @@
 import fields from "./json/fields";
 
 /**
- * Proc:
+ * Proc: 
  * Get the first action of the list, copy the text
  * type the text into the filter box
  * Check the current action cards that are showing and verify if their titles

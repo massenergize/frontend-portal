@@ -304,6 +304,7 @@ class ActionsPage extends React.Component {
       var action = actions[key];
       return (
         <Action
+          className="test-action-card-item"
           key={key}
           action={action}
           tagCols={this.props.tagCols}
