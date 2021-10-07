@@ -344,7 +344,7 @@ class NavBarBurger extends React.Component {
         return (
           <Link
             key={key}
-            to={`${links.home}${child.link}`}
+            to={`${child.link}`}
             className="cool-font  p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => document.dispatchEvent(new MouseEvent("click"))}
           >
@@ -398,7 +398,7 @@ class NavBarBurger extends React.Component {
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle
-            style={{ "backgroundColor": "white", "borderColor": "white" }}
+            style={{ backgroundColor: "white", borderColor: "white" }}
             className="remove-toggle-outline"
           >
             {user.info.profile_picture ? (
