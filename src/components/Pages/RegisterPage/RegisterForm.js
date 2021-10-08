@@ -196,6 +196,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-envelope-o"></span>
               </span>
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={email}
@@ -209,6 +210,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-unlock-alt"></span>
               </span>
               <input
+                id="password"
                 type="password"
                 name="passwordOne"
                 value={passwordOne}
@@ -222,6 +224,7 @@ class RegisterFormBase extends React.Component {
                 <span className="fa fa-unlock-alt"></span>
               </span>
               <input
+                id="confirm-password"
                 type="password"
                 name="passwordTwo"
                 value={passwordTwo}
@@ -234,7 +237,11 @@ class RegisterFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                <MEButton type="submit" disabled={this.isInvalid()}>
+                <MEButton
+                  type="submit"
+                  disabled={this.isInvalid()}
+                  id="create-profile-btn"
+                >
                   Create Profile
                 </MEButton>
                 <small style={{ margin: "0px 15px" }}>
@@ -355,7 +362,7 @@ class RegisterFormBase extends React.Component {
             {this.props.firebase.auth().currentUser &&
             !this.props.firebase.auth().currentUser.emailVerified ? (
               <>
-                <p>
+                <p id="verify-email-area">
                   {" "}
                   We sent a link to your email address. Please check your email
                   and follow the link to continue. If you don't see a message,
@@ -374,6 +381,7 @@ class RegisterFormBase extends React.Component {
                   </button>
                   <br />
                   <Link
+                  id="sign-in-anchor"
                     to={this.props.links.signin}
                     onClick={() => this.props.firebase.auth().signOut()}
                   >

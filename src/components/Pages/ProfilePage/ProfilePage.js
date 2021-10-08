@@ -171,6 +171,7 @@ class ProfilePage extends React.Component {
           className="boxed_wrapper"
           onClick={this.clearError}
           style={{ minHeight: 1950 }}
+          id="profile-page-component"
         >
           <BreadCrumbBar links={[{ name: "Profile" }]} />
           <div className="container">
@@ -266,7 +267,11 @@ class ProfilePage extends React.Component {
                             />
                           </div>
                           {/* <div className="column counter-column col-lg-4 col-6"  > */}
-                          <div className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2">
+                          <div
+                            id="carbon-counter-box"
+                            data-pref-eq-name={this.props.pref_eq?.name}
+                            className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2"
+                          >
                             {this.renderCarbonCounterBox()}
                             {/* <Counter
                               end={sumOfCarbonScores(this.props.done || [])}
@@ -283,15 +288,21 @@ class ProfilePage extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <div>
+                  <div
+                    id="eq-list-dropdown-wrapper"
+                    data-number-of-eq-items={this.props.eq?.length}
+                  >
                     <p style={{ color: "black" }}>
                       What would you like your impact to be measured in?
                     </p>
                     <MEDropdown
+                      id="eq-list-dropdown"
+                      togglerClassName="eq-list-dropdown"
                       data={[MEDropdown.NONE, ...eqLabels]}
                       dataValues={[null, ...eqValues]}
                       onItemSelected={this.handleEQSelection}
                       value={this.props.pref_eq?.name}
+                      childClassName="eq-list-dropdown-item"
                     />
                   </div>
                   <br />

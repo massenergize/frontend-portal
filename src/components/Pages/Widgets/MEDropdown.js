@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import METextView from "./METextView";
+import { getRandomIntegerInRange } from "../../Utils";
 /**
  * DATA CONTENT MUST BE AN ARRAY OF ONLY TEXT, ONLY TEXT!
  * @props data | Array of text content to display
@@ -55,7 +56,7 @@ class MEDropdown extends Component {
     }
   }
   ejectChildren = () => {
-    var { data, dataValues } = this.props;
+    var { data, dataValues, childClassName } = this.props;
     dataValues = dataValues.length === 0 ? data : dataValues;
     if (!data) return;
     if (data.length !== dataValues.length) {
@@ -78,7 +79,7 @@ class MEDropdown extends Component {
           }}
         >
           <METextView
-            className={childActiveClass}
+            className={` ${childActiveClass} ${childClassName}`}
             type="p"
             style={{
               padding: 15,
@@ -107,12 +108,14 @@ class MEDropdown extends Component {
   render() {
     const { activeItem, placeholder } = this.state;
     const defaultText = placeholder ? placeholder : "Select Item";
+    const { id, togglerClassName } = this.props;
     return (
       <div>
         {this.activateGhostCurtain()}
         <div style={{ position: "relative" }}>
           <div
-            className="me-select-head"
+            id={id ? id : getRandomIntegerInRange().toString()}
+            className={`me-select-head ${togglerClassName}`}
             style={{ position: "relative" }}
             onClick={(e) => this.toggleDrop(e)}
           >

@@ -251,6 +251,7 @@ class HorizontalFilterBox extends Component {
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
           <METextField
+            id="test-filter-box-id"
             iconStyle={{
               position: "absolute",
               top: 10,
@@ -272,6 +273,7 @@ class HorizontalFilterBox extends Component {
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
           <input
+            id="test-filter-box-id"
             className="phone-search-input "
             placeholder="Search..."
             onChange={(event) => {

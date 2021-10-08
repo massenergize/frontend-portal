@@ -147,7 +147,7 @@ class PhotoSensitiveAction extends React.Component {
     const actionStateCase = this.getActionStateCase();
     return (
       <div
-        className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()}`}
+        className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()} test-action-card-item`}
         key={this.props.key?.toString()}
       >
         <div
@@ -228,7 +228,7 @@ class PhotoSensitiveAction extends React.Component {
             </div>
           </div>
           <div className="text-footer">
-            {this.props.action.title}
+            <span className="test-action-title">{this.props.action.title}</span>
             <br />
             {this.showNotifications()}
           </div>

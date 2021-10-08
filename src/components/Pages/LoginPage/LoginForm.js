@@ -57,6 +57,7 @@ class LoginFormBase extends React.Component {
                 <span className="fa fa-envelope-o"></span>
               </span>
               <input
+                id="login-email"
                 type="email"
                 name="email"
                 value={email}
@@ -69,6 +70,7 @@ class LoginFormBase extends React.Component {
                 <span className="fa fa-unlock-alt"></span>
               </span>
               <input
+                id="login-password"
                 type="password"
                 name="password"
                 value={password}
@@ -79,7 +81,7 @@ class LoginFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                <MEButton type="submit" disabled={this.isInvalid()}>
+                <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
                   Sign In
                 </MEButton>
               </div>
@@ -241,7 +243,7 @@ class LoginFormBase extends React.Component {
     console.log(json.error);
     this.props.tryingToLogin(false);
     window.localStorage.setItem("reg_protocol", "show");
-    window.location.reload()
+    window.location.reload();
     return false;
   };
 }
