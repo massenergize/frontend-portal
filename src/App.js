@@ -30,7 +30,7 @@ function App() {
         const pathname = window.location.pathname; 
         // pathname is like '/Wayland/Events/222/etc'
         const slash = pathname.indexOf('/',1);
-        const subdomain = (slash > 0) ? pathname.substring(1, slash-1) : pathname.substring(1);
+        const subdomain = (slash > 0) ? pathname.substring(1, slash) : pathname.substring(1);
         body = subdomain ? { subdomain: subdomain } : {}
       }
             

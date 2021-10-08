@@ -84,6 +84,7 @@ class MEAutoComplete extends Component {
   };
   ejectChildren = () => {
     const data = this.getContentToSearch();
+    const childClassName = this.props.childClassName || "";
     if (!data) return;
     return data.map((item, index) => {
       const activeClass =
@@ -99,7 +100,7 @@ class MEAutoComplete extends Component {
               zIndex: 101,
               marginBottom: 0,
             }}
-            className={`me-drop-item ${activeClass}`}
+            className={`me-drop-item ${activeClass} ${childClassName}`}
             containerStyle={{ display: "block" }}
             onClick={() => {
               this.onItemClick(item);
