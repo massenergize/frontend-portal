@@ -4,6 +4,7 @@ import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
+import URLS from "./urls";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -446,7 +447,7 @@ class AppRouter extends Component {
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
-      link: "http://" + window.location.host,
+      link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
     const footerInfo = {
