@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import React from "react";
 export const PREFERRED_EQ = "PREFERRED_EQ";
+export const IS_SANDBOX = 'is_sandbox';
 
 /**
  * For equivalences with a common formular, this function is used to determine the value
@@ -35,12 +36,23 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   }
   return null;
 };
+
 export const getFilterVersionFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
   const search = location.search;
   var broken = search.slice(1, search.length);
   broken = broken.split("=");
   var found = broken.filter((item) => item.toLowerCase() === "filter")[0];
+  if (!found) return "";
+  return broken[broken.indexOf(found) + 1];
+};
+
+export const getIsSandboxFromURL = (location, paramName) => {
+  if (!location || !location.search) return "";
+  const search = location.search;
+  var broken = search.slice(1, search.length);
+  broken = broken.split("=");
+  var found = broken.filter((item) => item.toLowerCase() === "sandbox")[0];
   if (!found) return "";
   return broken[broken.indexOf(found) + 1];
 };

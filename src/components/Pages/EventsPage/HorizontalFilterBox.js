@@ -238,8 +238,8 @@ class HorizontalFilterBox extends Component {
   }
 
   getVersionToShow() {
-    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
-    if (version === OPTION2) return 2;
+  //  const version = sessionStorage.getItem(FILTER_BAR_VERSION);
+  //  if (version === OPTION2) return 2;
     return 1;
   }
   render() {

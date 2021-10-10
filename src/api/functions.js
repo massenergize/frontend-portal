@@ -1,5 +1,6 @@
 import URLS from "./urls";
-import { IS_SANDBOX, IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
+import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
+import { IS_SANDBOX } from "../../Utils";
 import store from '../redux/store';
 
 
@@ -17,10 +18,11 @@ export async function apiCall(
   relocationPage = null
 ) {
 
+  const is_sandbox = sessionStorage.getItem(IS_SANDBOX);
   // add some meta data for context in backend
   dataToSend = { 
     __is_prod: IS_PROD || IS_CANARY,
-    __is_sandbox: IS_SANDBOX,
+    __is_sandbox: is_sandbox,
     __community: _getCurrentCommunityContext(),
     ...dataToSend 
   };
