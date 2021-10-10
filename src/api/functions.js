@@ -1,5 +1,5 @@
 import URLS from "./urls";
-import { IS_SANDBOX, IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
+import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from '../redux/store';
 
 
@@ -20,8 +20,7 @@ export async function apiCall(
   // add some meta data for context in backend
   dataToSend = { 
     __is_prod: IS_PROD || IS_CANARY,
-    __is_sandbox: IS_SANDBOX,
-    __community: _getCurrentCommunityContext(),
+    ..._getCurrentCommunityContext(),
     ...dataToSend 
   };
 
@@ -66,9 +65,9 @@ export async function apiCall(
  */
 function _getCurrentCommunityContext(){
     const { page } = store.getState() || {}
-    const { community } = page || {}
+    const { community, __is_sandbox } = page || {}
     const { subdomain } = community || {}
-    return subdomain
+    return { __community: subdomain, __is_sandbox }
 }
 
 

@@ -1,6 +1,8 @@
 import * as moment from "moment";
 import React from "react";
+import qs from 'qs'
 export const PREFERRED_EQ = "PREFERRED_EQ";
+export const IS_SANDBOX = 'is_sandbox';
 
 /**
  * For equivalences with a common formular, this function is used to determine the value
@@ -35,14 +37,17 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   }
   return null;
 };
+
 export const getFilterVersionFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
-  const search = location.search;
-  var broken = search.slice(1, search.length);
-  broken = broken.split("=");
-  var found = broken.filter((item) => item.toLowerCase() === "filter")[0];
-  if (!found) return "";
-  return broken[broken.indexOf(found) + 1];
+  const { filter } = qs.parse(location.search, { ignoreQueryPrefix: true })
+  return filter;
+};
+
+export const getIsSandboxFromURL = (location) => {
+  if (!location || !location.search) return "";
+  const { sandbox } = qs.parse(location.search, { ignoreQueryPrefix: true })
+  return sandbox
 };
 
 export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
