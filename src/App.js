@@ -81,7 +81,7 @@ function App() {
   if (!community) {
     return <LoadingCircle />;
   }
-  console.log(community, user)
+
   return (
     <Switch>
       <Route community={community} user={user} component={AppRouter} />
