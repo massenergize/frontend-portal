@@ -2,6 +2,7 @@ import React from "react";
 import oops from "./oops.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import URLS from "../../../api/urls";
 
 class ErrorPage extends React.Component {
   render() {
@@ -33,13 +34,19 @@ class ErrorPage extends React.Component {
               src={oops}
               style={{ marginBottom: 20, height: 100, width: 100 }}
             />
-            <h1 style={{ color: "lightgray" }}>{errorMessage}</h1>
+            <h1 style={{ color: "lightgray" }}>
+              {!this.props.invalidCommunity
+                ? errorMessage
+                : "The community you want to access does not exist."}
+            </h1>
             <h3
               className="text-center"
               style={{ marginBottom: 20, color: "lightgray" }}
             >
               {" "}
-              {errorDescription}
+              {!this.props.invalidCommunity
+                ? errorDescription
+                : "Contact us at info@massenergize.org"}
             </h3>
             {this.props.allowBack && (
               <p className="text-center">
@@ -52,6 +59,14 @@ class ErrorPage extends React.Component {
                 >
                   Go Back
                 </Link>
+              </p>
+            )}
+
+            {this.props.invalidCommunity && (
+              <p className="text-center">
+                <a href={URLS.COMMUNITIES} className="mass-domain-link ">
+                  Checkout all active communities
+                </a>
               </p>
             )}
             {!this.props.allowBack && !this.props.invalidCommunity && (

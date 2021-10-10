@@ -6,18 +6,17 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { getFilterVersionFromURL, IS_SANDBOX, getIsSandboxFromURL } from "../../Utils";
-//import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
+import { getFilterVersionFromURL } from "../../Utils";
+import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
   componentDidMount() {
-    //const version = getFilterVersionFromURL(this.props.location);
-    //if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
-    const is_sandbox = getIsSandboxFromURL(this.props.location);
-    window.sessionStorage.setItem(IS_SANDBOX, is_sandbox);
+    const version = getFilterVersionFromURL(this.props.location);
+    if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+
   }
 
   render() {
@@ -29,7 +28,7 @@ class HomePage extends React.Component {
         />
       );
     }
-    is_sandbox = window.sessionStorage.getItem(IS_SANDBOX);
+    const is_sandbox = this.props.is_sandbox;
     if (!is_sandbox && !this.props.pageData.is_published) {
       return (
         <ErrorPage
@@ -148,6 +147,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
+    is_sandbox: store.page.__is_sandbox
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

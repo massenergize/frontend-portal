@@ -6,41 +6,64 @@ import AppRouter from "./AppRouter";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { apiCall } from "./api/functions";
 import LoadingCircle from "./components/Shared/LoadingCircle";
+import { getIsSandboxFromURL } from "./components/Utils";
+import {
+  LOAD_COMMUNITY_INFORMATION,
+  SET_IS_SANDBOX,
+} from "./redux/actions/types";
+import ErrorPage from "./components/Pages/Errors/ErrorPage";
 
 function App() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const community = useSelector((state) => state.page.community);
   const user = useSelector((state) => state.user);
+
   useEffect(() => {
+    // first let's determine if its a sandbox request
+    const is_sandbox = getIsSandboxFromURL(window.location);
+    if (is_sandbox) {
+      console.log("Sandbox: ", is_sandbox);
+    }
+
+    dispatch({
+      type: SET_IS_SANDBOX,
+      payload: is_sandbox,
+    });
+
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
       const hostList = [
-        'community.massenergize.org',
-        'communities.massenergize.org',
-        'community.massenergize.dev',
-        'communities.massenergize.dev',
-        'community-dev.massenergize.org',
-        'community-canary.massenergize.org',
-        'localhost',
+        "community.massenergize.org",
+        "communities.massenergize.org",
+        "community.massenergize.dev",
+        "communities.massenergize.dev",
+        "community-dev.massenergize.org",
+        "community-canary.massenergize.org",
       ];
+
       let body = {};
-      if (hostList.indexOf(hostname)>-1) {
-        const pathname = window.location.pathname; 
-        // pathname is like '/Wayland/Events/222/etc'
-        const slash = pathname.indexOf('/',1);
-        const subdomain = (slash > 0) ? pathname.substring(1, slash) : pathname.substring(1);
-        body = subdomain ? { subdomain: subdomain } : {}
+      if (hostList.indexOf(hostname) > -1) {
+        const pathname = window.location.pathname;
+        const slash = pathname.indexOf("/", 1);
+        const subdomain =
+          slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
+        body = subdomain ? { subdomain: subdomain } : {};
+      } else if (hostname === "localhost") {
+        // feel free to change this to some other community
+        body = { subdomain: "wayland" };
       }
-            
+
       apiCall("communities.info", body)
         .then((json) => {
           if (json.success) {
             dispatch({
-              type: "LOAD_COMMUNITY_INFORMATION",
+              type: LOAD_COMMUNITY_INFORMATION,
               payload: json.data,
             });
+          } else {
+            setError(json.error);
           }
         })
         .catch((err) => setError(err.message));
@@ -48,13 +71,17 @@ function App() {
   }, [community, dispatch]);
 
   if (error) {
-    return <p className="text-center text-danger"> {error} </p>;
+    return (
+      <ErrorPage
+        invalidCommunity
+      />
+    );
   }
 
   if (!community) {
     return <LoadingCircle />;
   }
-
+  console.log(community, user)
   return (
     <Switch>
       <Route community={community} user={user} component={AppRouter} />
