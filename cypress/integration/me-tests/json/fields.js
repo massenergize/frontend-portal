@@ -6,11 +6,11 @@ export default {
   emailToUse: "frimpong@kehillahglobal.com",
   passwordToUse: "Pongo123",
   urls: {
-    login: BASE_URL + "signin",
-    registration: BASE_URL + "signup",
+    login: DOMAIN + "signin",
+    registration: DOMAIN + "signup",
     landing: DOMAIN,
     homepage: BASE_URL,
-    actions: BASE_URL + "actions",
+    actions: DOMAIN + "actions",
   },
   community: COMMUNITY,
 };
