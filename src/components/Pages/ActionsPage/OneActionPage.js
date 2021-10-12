@@ -116,13 +116,12 @@ class OneActionPage extends React.Component {
           description: action.featured_summary,
           site_name: action.community && action.community.name,
           url: `${window.location.pathname}`,
-          image:action.image && action.image.url ,
-          keywords: action.title && action.title.split(' ') ,
+          image: action.image && action.image.url,
+          keywords: action.title && action.title.split(" "),
           updated_at: action.updated_at,
           created_at: action.updated_at,
-          tags: (tags || []).map( ({ name }) => name) || [],
+          tags: (tags || []).map(({ name }) => name) || [],
         })}
-
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
@@ -469,6 +468,7 @@ class OneActionPage extends React.Component {
                 {/* title */}
                 <div className="content-box">
                   <h2
+                    id="test-title"
                     className="cool-font"
                     style={{ padding: "20px 0px 0px 0px" }}
                   >

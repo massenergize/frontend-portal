@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
+import fields from "./../integration/me-tests/json/fields";
 Cypress.Commands.add(
   "loginWithDetails",
   function (email = "frimpong@kehillahglobal.com", password = "Pongo123") {
@@ -37,3 +37,4 @@ Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
   cy.visit(pageURL);
   cy.get(`#${successComponentID}`);
 });
+

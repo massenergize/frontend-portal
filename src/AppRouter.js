@@ -134,8 +134,8 @@ class AppRouter extends Component {
         apiCall("vendors_page_settings.info", body),
       ])
         .then((res) => {
-          const [            
-            homePageResponse, 
+          const [
+            homePageResponse,
             mainMenuResponse,
             aboutUsPageResponse,
             actionsPageResponse,
@@ -146,7 +146,6 @@ class AppRouter extends Component {
             teamsPageResponse,
             testimonialsPageResponse,
             vendorsPageResponse,
-
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
@@ -286,6 +285,10 @@ class AppRouter extends Component {
     }
   }
 
+  /**
+   *
+   * @TODO : Find a better way to modify the menu, this way works, but not time & resource efficient at all
+   */
   modifiedMenu(menu) {
     var oldAbout = menu[3];
     var oldActions = menu[1];
@@ -328,6 +331,7 @@ class AppRouter extends Component {
       var actionsSliced = oldActions.children.slice(1);
       actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
       var newAction = {
+        id: "test-action-menu-id",
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
       };
@@ -402,7 +406,7 @@ class AppRouter extends Component {
 
   render() {
     const { community } = this.props;
-    
+
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -523,7 +527,7 @@ class AppRouter extends Component {
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
-              <Route  component={HomePage} />
+              <Route component={HomePage} />
               {/* component={() => (
                   <ErrorPage
                     errorMessage="Page not found"
