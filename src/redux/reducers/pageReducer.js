@@ -37,6 +37,8 @@ import {
   TEAM_ADD_HOUSEHOLD,
   TEAM_REMOVE_HOUSEHOLD,
   LOAD_EQUIVALENCES,
+  SET_IS_SANDBOX,
+  LOAD_COMMUNITY_INFORMATION,
 } from "../actions/types";
 
 import {
@@ -73,6 +75,7 @@ const initialState = {
   community: null,
   communityData: null,
   communityAdmins: null,
+  __is_sandbox: false
 };
 
 function alreadyInSubTeam(state, action) {
@@ -97,7 +100,7 @@ export default function (state = initialState, action) {
         equivalences: action.payload,
       };
 
-    case "LOAD_COMMUNITY_INFORMATION":
+    case LOAD_COMMUNITY_INFORMATION:
       return {
         ...state,
         comInformation: action.payload,
@@ -401,6 +404,11 @@ export default function (state = initialState, action) {
           }),
           action.payload,
         ],
+      };
+    case SET_IS_SANDBOX:
+      return {
+        ...state,
+        __is_sandbox:  action.payload,
       };
     /**************************/
     default:

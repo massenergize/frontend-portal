@@ -17,52 +17,23 @@ def get_target_config(target, is_local):
       "IS_LOCAL": is_local,
       "IS_PROD": False,
       "IS_CANARY": False,
-      "IS_SANDBOX": False,
       "BUILD_VERSION": generate_new_build_number(target)
     }
 
-
-  elif target == 'dev-sandbox':
-    return {
-      "IS_LOCAL": is_local,
-      "IS_PROD": False,
-      "IS_CANARY": False,
-      "IS_SANDBOX": True,
-      "BUILD_VERSION": generate_new_build_number(target)
-    }
 
   elif target == 'prod':
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": True,
       "IS_CANARY": False,
-      "IS_SANDBOX": False,
       "BUILD_VERSION": generate_new_build_number(target)
     }
 
-  elif target == 'prod-sandbox':
-    return {
-      "IS_LOCAL": is_local,
-      "IS_PROD": True,
-      "IS_CANARY": False,
-      "IS_SANDBOX": True,
-      "BUILD_VERSION": generate_new_build_number(target)
-    }
   elif target == 'canary':
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": False,
       "IS_CANARY": True,
-      "IS_SANDBOX": False,
-      "BUILD_VERSION": generate_new_build_number(target)
-    }
-
-  elif target == 'canary-sandbox':
-    return {
-      "IS_LOCAL": is_local,
-      "IS_PROD": False,
-      "IS_CANARY": True,
-      "IS_SANDBOX": True,
       "BUILD_VERSION": generate_new_build_number(target)
     }
 
@@ -71,7 +42,7 @@ def get_target_config(target, is_local):
     return {
       "IS_LOCAL": is_local,
       "IS_PROD": False,
-      "IS_SANDBOX": False,
+      "IS_CANARY": False,
       "BUILD_VERSION": generate_new_build_number(target)
     }
 
@@ -98,8 +69,7 @@ def load_json_contents(path) -> dict:
   data = {}
   with open(path) as f:
     data = json.load(f)
-  
-  print(data)
+
   return data
 
 

@@ -6,7 +6,6 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { IS_SANDBOX } from "../../../config";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
@@ -17,6 +16,7 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+
   }
 
   render() {
@@ -28,7 +28,8 @@ class HomePage extends React.Component {
         />
       );
     }
-    if (!IS_SANDBOX && !this.props.pageData.is_published) {
+    const is_sandbox = this.props.is_sandbox;
+    if (!is_sandbox && !this.props.pageData.is_published) {
       return (
         <ErrorPage
           errorMessage="Sorry, your community isn't live at the moment."
@@ -146,6 +147,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
+    is_sandbox: store.page.__is_sandbox
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

@@ -41,6 +41,7 @@ import {
   TEAM_ADD_HOUSEHOLD,
   TEAM_REMOVE_HOUSEHOLD,
   LOAD_EQUIVALENCES,
+  LOAD_COMMUNITY_INFORMATION,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
@@ -59,7 +60,7 @@ export const reduxLoadEquivalences = (data) => {
 
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
   return dispatch({
-    type: "LOAD_COMMUNITY_INFORMATION",
+    type: LOAD_COMMUNITY_INFORMATION,
     payload: data,
   });
 };
