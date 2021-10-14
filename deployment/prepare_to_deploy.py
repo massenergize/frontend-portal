@@ -69,8 +69,7 @@ def load_json_contents(path) -> dict:
   data = {}
   with open(path) as f:
     data = json.load(f)
-  
-  print(data)
+
   return data
 
 
