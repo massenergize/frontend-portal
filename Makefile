@@ -11,22 +11,16 @@ build:
 .PHONY: build
 
 deploy-prod:
-	python deployment/prepare_to_deploy.py prod-sandbox 0 1
-	npm run build  && aws2 s3 sync build/ s3://sandbox.community.massenergize.org
 	python deployment/prepare_to_deploy.py prod 0 1
 	npm run build  && aws2 s3 sync build/ s3://community.massenergize.org
 .PHONY: deploy-prod
 
 deploy-canary:
-	python deployment/prepare_to_deploy.py canary-sandbox 0 1
-	npm run build  && aws2 s3 sync build/ s3://sandbox.community-canary.massenergize.org
 	python deployment/prepare_to_deploy.py canary 0 1
 	npm run build  && aws2 s3 sync build/ s3://community-canary.massenergize.org
 .PHONY: deploy-canary
 
 deploy-dev:
-	python deployment/prepare_to_deploy.py dev-sandbox 0 1
-	npm run build  && aws2 s3 sync build/ s3://sandbox.community-dev.massenergize.org
 	python deployment/prepare_to_deploy.py dev 0 1
 	npm run build  && aws2 s3 sync build/ s3://community-dev.massenergize.org
 .PHONY: deploy-dev
@@ -46,11 +40,6 @@ dev-prod:
 	npm start
 .PHONY: dev-prod
 
-run-dev-sandbox:
-	python deployment/prepare_to_deploy.py dev-sandbox $(local)
-	npm start
-.PHONY: run-dev-sandbox
-
 run-prod:
 	python deployment/prepare_to_deploy.py prod $(local)
 	npm start
@@ -61,18 +50,7 @@ run-canary:
 	npm start
 .PHONY: run-canary
 
-
 run-local:
 	python deployment/prepare_to_deploy.py dev 1
 	npm start
 .PHONY: run-prod
-
-run-prod-sandbox:
-	python deployment/prepare_to_deploy.py prod-sandbox  $(local)
-	npm start
-.PHONY: run-prod-sandbox
-
-run-canary-sandbox:
-	python deployment/prepare_to_deploy.py canary-sandbox  $(local)
-	npm start
-.PHONY: run-canary-sandbox
