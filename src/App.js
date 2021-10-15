@@ -9,6 +9,7 @@ import LoadingCircle from "./components/Shared/LoadingCircle";
 import { getIsSandboxFromURL } from "./components/Utils";
 import {
   LOAD_COMMUNITY_INFORMATION,
+  SET_IS_CUSTOM_SITE,
   SET_IS_SANDBOX,
 } from "./redux/actions/types";
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
@@ -31,6 +32,8 @@ function App() {
       payload: is_sandbox,
     });
 
+    console.log(window.location.hostname, community)
+
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
@@ -41,6 +44,8 @@ function App() {
         "communities.massenergize.dev",
         "community-dev.massenergize.org",
         "community-canary.massenergize.org",
+        // "massenergize.test",
+        "community.massenergize.test",
       ];
 
       let body = {};
@@ -50,6 +55,10 @@ function App() {
         const subdomain =
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
         body = subdomain ? { subdomain: subdomain } : {};
+        dispatch({
+          type: SET_IS_CUSTOM_SITE,
+          payload: false,
+        });
       } else if (hostname === "localhost") {
         // feel free to change this to some other community
         body = { subdomain: "wayland" };

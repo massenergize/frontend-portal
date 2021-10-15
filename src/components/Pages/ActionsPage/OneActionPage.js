@@ -108,6 +108,8 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
 
     const { tags } = action;
+    const { community } = action || {}
+    const { subdomain } = community || {}
     return (
       <>
         {this.renderModal()}
@@ -150,7 +152,7 @@ class OneActionPage extends React.Component {
                     label="Share this action!"
                     pageTitle={action.title}
                     pageDescription={action.featured_summary}
-                    url={window.location.href}
+                    url={`http://${subdomain}.massenergize.test:8000/action/${action.id}`}
                   />
                 </div>
                 {/* makes the todo and completed actions carts */}

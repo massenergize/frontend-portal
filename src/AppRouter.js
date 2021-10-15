@@ -94,28 +94,30 @@ class AppRouter extends Component {
   }
 
   async fetch() {
-    const { community } = this.props;
+    const { community, __is_custom_website } = this.props;
     const { subdomain } = community || {};
     const body = { subdomain: subdomain };
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
 
+    const prefix =  (!__is_custom_website) ? `/${subdomain}` : '' 
+
     this.props.reduxLoadLinks({
-      home: "/",
-      actions: `/actions`,
-      aboutus: `/aboutus`,
-      services: `/services`,
-      testimonials: `/testimonials`,
-      teams: `/teams`,
-      impact: `/impact`,
-      donate: `/donate`,
-      events: `/events`,
-      signin: `/signin`,
-      signup: `/signup`,
-      profile: `/profile`,
-      policies: `/policies`,
-      contactus: `/contactus`,
+      home: `${prefix}/`,
+      actions: `${prefix}/actions`,
+      aboutus: `${prefix}/aboutus`,
+      services: `${prefix}/services`,
+      testimonials: `${prefix}/testimonials`,
+      teams: `${prefix}/teams`,
+      impact: `${prefix}/impact`,
+      donate: `${prefix}/donate`,
+      events: `${prefix}/events`,
+      signin: `${prefix}/signin`,
+      signup: `${prefix}/signup`,
+      profile: `${prefix}/profile`,
+      policies: `${prefix}/policies`,
+      contactus: `${prefix}/contactus`,
     });
 
     if (community) {
@@ -524,13 +526,6 @@ class AppRouter extends Component {
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
               <Route  component={HomePage} />
-              {/* component={() => (
-                  <ErrorPage
-                    errorMessage="Page not found"
-                    errorDescription="The page you are trying to access does not exist"
-                  />
-                )}
-              /> */}
             </Switch>
           )
         }
@@ -553,6 +548,7 @@ class AppRouter extends Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
+    __is_custom_website: store.page.__is_custom_website,
     community: store.page.community,
     auth: store.firebase.auth,
     menu: store.page.menu,
