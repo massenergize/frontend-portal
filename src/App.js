@@ -32,8 +32,6 @@ function App() {
       payload: is_sandbox,
     });
 
-    console.log(window.location.hostname, community)
-
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;

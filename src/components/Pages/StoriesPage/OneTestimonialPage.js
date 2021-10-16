@@ -12,7 +12,6 @@ import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
-import URLS from "../../../api/urls";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -189,7 +188,7 @@ class OneTestimonialPage extends React.Component {
                 label="Share this event!"
                 pageTitle={story.name}
                 pageDescription={story.featured_summary}
-                url={`${URLS.COMMUNITIES}/${subdomain}/testimonials/${story.id}`}
+                url={`${URLS.SHARE}/${subdomain}/testimonials/${story.id}`}
               /> */}
             </div>
           </section>
@@ -199,9 +198,6 @@ class OneTestimonialPage extends React.Component {
   }
 
   renderStory(story = {}) {
-    const { community } = this.props;
-    const { subdomain } = community || {}
-
     let dateString = getHumanFriendlyDate(story.created_at);
     const creatorName =
       story?.user?.preferred_name || story?.user?.full_name || "...";

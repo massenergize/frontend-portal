@@ -90,7 +90,7 @@ class OneEventPage extends React.Component {
                 label="Share this event!"
                 pageTitle={event.name}
                 pageDescription={event.featured_summary}
-                url={`${URLS.COMMUNITIES}/${subdomain}/events/${event.id}`}
+                url={`${URLS.SHARE}/${subdomain}/events/${event.id}`}
               />
             </div>
           </section>

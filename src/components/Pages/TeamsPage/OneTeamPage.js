@@ -376,7 +376,7 @@ class OneTeamPage extends React.Component {
               label="Share this team!"
               pageTitle={team.name}
               pageDescription={team.tagline}
-              url={`${URLS.COMMUNITIES}/${subdomain}/teams/${team.id}`}
+              url={`${URLS.SHARE}/${subdomain}/teams/${team.id}`}
             />
           </div>
         )}
