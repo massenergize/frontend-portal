@@ -42,14 +42,15 @@ function App() {
         const slash = pathname.indexOf("/", 1);
         const subdomain =
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
+
+        // if no subdomain found, redirect to all communities page
+        console.log(subdomain)
+        if ([undefined, "", "/"].indexOf(subdomain)>-1) {
+          window.location.href = URLS.COMMUNITIES;
+          return;
+        }
+
         body = subdomain ? { subdomain: subdomain } : {};
-        dispatch({
-          type: SET_IS_CUSTOM_SITE,
-          payload: false,
-        });
-      } else if (hostname === "localhost" || hostname === "massenergize.test") {
-        // feel free to change this to some other community
-        body = { subdomain: "wayland" };
         dispatch({
           type: SET_IS_CUSTOM_SITE,
           payload: false,
