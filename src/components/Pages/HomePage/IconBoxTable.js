@@ -43,7 +43,7 @@ class IconBoxTable extends React.Component {
             title={box.title}
             description={box.description}
             icon={box.icon}
-            link={box.link}
+            link={`${this.props.prefix}${box.link}`}
           />
         </div>
       );

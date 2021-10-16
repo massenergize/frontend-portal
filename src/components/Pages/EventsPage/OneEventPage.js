@@ -8,6 +8,7 @@ import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
+import URLS from "../../../api/urls";
 
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class OneEventPage extends React.Component {
 
   render() {
     const event = this.state.event;
+    const { community } = event || {}
+    const { subdomain } = community || {}
 
     if (this.state.loading) {
       return <LoadingCircle />;
@@ -87,7 +90,7 @@ class OneEventPage extends React.Component {
                 label="Share this event!"
                 pageTitle={event.name}
                 pageDescription={event.featured_summary}
-                url={window.location.href}
+                url={`${URLS.SHARE}/${subdomain}/events/${event.id}`}
               />
             </div>
           </section>

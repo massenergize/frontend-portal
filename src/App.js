@@ -9,9 +9,11 @@ import LoadingCircle from "./components/Shared/LoadingCircle";
 import { getIsSandboxFromURL } from "./components/Utils";
 import {
   LOAD_COMMUNITY_INFORMATION,
+  SET_IS_CUSTOM_SITE,
   SET_IS_SANDBOX,
 } from "./redux/actions/types";
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
+import URLS from "./api/urls";
 
 function App() {
   const [error, setError] = useState(null);
@@ -34,25 +36,24 @@ function App() {
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
-      const hostList = [
-        "community.massenergize.org",
-        "communities.massenergize.org",
-        "community.massenergize.dev",
-        "communities.massenergize.dev",
-        "community-dev.massenergize.org",
-        "community-canary.massenergize.org",
-      ];
-
       let body = {};
-      if (hostList.indexOf(hostname) > -1) {
+      if (URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname)) {
         const pathname = window.location.pathname;
         const slash = pathname.indexOf("/", 1);
         const subdomain =
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
         body = subdomain ? { subdomain: subdomain } : {};
-      } else if (hostname === "localhost") {
+        dispatch({
+          type: SET_IS_CUSTOM_SITE,
+          payload: false,
+        });
+      } else if (hostname === "localhost" || hostname === "massenergize.test") {
         // feel free to change this to some other community
         body = { subdomain: "wayland" };
+        dispatch({
+          type: SET_IS_CUSTOM_SITE,
+          payload: false,
+        });
       }
 
       apiCall("communities.info", body)

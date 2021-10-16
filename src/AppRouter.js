@@ -83,6 +83,8 @@ class AppRouter extends Component {
       community: null,
       error: null,
       pagesEnabled: {},
+      menu: null,
+      prefix: "",
     };
 
     this.userHasAnIncompleteRegistration =
@@ -94,28 +96,30 @@ class AppRouter extends Component {
   }
 
   async fetch() {
-    const { community } = this.props;
+    const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
     const body = { subdomain: subdomain };
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
 
+    const prefix = !__is_custom_site ? `/${subdomain}` : "";
+
     this.props.reduxLoadLinks({
-      home: "/",
-      actions: `/actions`,
-      aboutus: `/aboutus`,
-      services: `/services`,
-      testimonials: `/testimonials`,
-      teams: `/teams`,
-      impact: `/impact`,
-      donate: `/donate`,
-      events: `/events`,
-      signin: `/signin`,
-      signup: `/signup`,
-      profile: `/profile`,
-      policies: `/policies`,
-      contactus: `/contactus`,
+      home: `${prefix}/`,
+      actions: `${prefix}/actions`,
+      aboutus: `${prefix}/aboutus`,
+      services: `${prefix}/services`,
+      testimonials: `${prefix}/testimonials`,
+      teams: `${prefix}/teams`,
+      impact: `${prefix}/impact`,
+      donate: `${prefix}/donate`,
+      events: `${prefix}/events`,
+      signin: `${prefix}/signin`,
+      signup: `${prefix}/signup`,
+      profile: `${prefix}/profile`,
+      policies: `${prefix}/policies`,
+      contactus: `${prefix}/contactus`,
     });
 
     if (community) {
@@ -134,8 +138,8 @@ class AppRouter extends Component {
         apiCall("vendors_page_settings.info", body),
       ])
         .then((res) => {
-          const [            
-            homePageResponse, 
+          const [
+            homePageResponse,
             mainMenuResponse,
             aboutUsPageResponse,
             actionsPageResponse,
@@ -146,7 +150,6 @@ class AppRouter extends Component {
             teamsPageResponse,
             testimonialsPageResponse,
             vendorsPageResponse,
-
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
@@ -171,6 +174,7 @@ class AppRouter extends Component {
               testimonialsPage: testimonialsPageResponse.data.is_published,
               teamsPage: teamsPageResponse.data.is_published,
             },
+            prefix,
           });
         })
         .catch((err) => {
@@ -368,6 +372,30 @@ class AppRouter extends Component {
           return item.children ? item.children.length > 0 : true;
       }
     });
+
+    return this.addPrefix(menu);
+  }
+
+  /**
+   * Adds the prefix to the subdomains where possible
+   * @param {*} menu 
+   * @returns 
+   */
+  addPrefix(menu) {
+    menu = menu.map((m) => {
+      if (
+        this.state.prefix !== "" &&
+        m.link &&
+        !m.link.startsWith(this.state.prefix)
+      )
+        m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+      if (m.children && m.children.length > 0) {
+        m.children = this.addPrefix(m.children);
+      }
+
+      return m;
+    });
+
     return menu;
   }
 
@@ -402,7 +430,7 @@ class AppRouter extends Component {
 
   render() {
     const { community } = this.props;
-    
+
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -431,18 +459,30 @@ class AppRouter extends Component {
     }
 
     const { links } = this.props;
+
     var finalMenu = [];
     if (this.props.menu) {
-      const navMenus = this.props.menu.filter((menu) => {
+      const [{ content }] = this.props.menu.filter((menu) => {
         return menu.name === "PortalMainNavLinks";
-      })[0].content;
-      finalMenu = [...navMenus];
+      });
+      finalMenu = content;
     }
+
     finalMenu = finalMenu.filter((item) => item.name !== "Home");
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
+    
+    var footerLinks = []
+    if(this.props.menu){
+      const [{ content }] = this.props.menu.filter((menu) => {
+        return menu.name === "PortalFooterQuickLinks";
+      })
+      footerLinks = this.addPrefix(content)
+    }
+
+
     const communityInfo = community || {};
 
     const communitiesLink = {
@@ -523,24 +563,13 @@ class AppRouter extends Component {
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
-              <Route  component={HomePage} />
-              {/* component={() => (
-                  <ErrorPage
-                    errorMessage="Page not found"
-                    errorDescription="The page you are trying to access does not exist"
-                  />
-                )}
-              /> */}
+              <Route component={HomePage} />
             </Switch>
           )
         }
         {this.props.menu ? (
           <Footer
-            footerLinks={
-              this.props.menu.filter((menu) => {
-                return menu.name === "PortalFooterQuickLinks";
-              })[0].content
-            }
+            footerLinks={footerLinks}
             footerInfo={footerInfo}
           />
         ) : (
@@ -553,6 +582,7 @@ class AppRouter extends Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
+    __is_custom_site: store.page.__is_custom_site,
     community: store.page.community,
     auth: store.firebase.auth,
     menu: store.page.menu,
