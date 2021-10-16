@@ -153,7 +153,7 @@ class OneActionPage extends React.Component {
                     label="Share this action!"
                     pageTitle={action.title}
                     pageDescription={action.featured_summary}
-                    url={`${URLS.COMMUNITIES}/${subdomain}/actions/${action.id}`}
+                    url={`${URLS.SHARE}/${subdomain}/actions/${action.id}`}
                   />
                 </div>
                 {/* makes the todo and completed actions carts */}
