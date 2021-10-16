@@ -188,7 +188,7 @@ class OneTestimonialPage extends React.Component {
                 label="Share this event!"
                 pageTitle={story.name}
                 pageDescription={story.featured_summary}
-                url={`${URLS.SHARE}/${subdomain}/testimonials/${story.id}`}
+                url={`${URLS.SHARE}/${subdomain}/testimonial/${story.id}`}
               /> */}
             </div>
           </section>
