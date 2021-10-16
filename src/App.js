@@ -62,6 +62,10 @@ function App() {
       } else if (hostname === "localhost") {
         // feel free to change this to some other community
         body = { subdomain: "wayland" };
+        dispatch({
+          type: SET_IS_CUSTOM_SITE,
+          payload: false,
+        });
       }
 
       apiCall("communities.info", body)

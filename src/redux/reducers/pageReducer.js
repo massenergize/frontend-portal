@@ -415,7 +415,7 @@ export default function (state = initialState, action) {
     case SET_IS_CUSTOM_SITE:
       return {
         ...state,
-        __is_custom_site:  action.payload,
+        __is_custom_site: action.payload,
       };
     /**************************/
     default:
