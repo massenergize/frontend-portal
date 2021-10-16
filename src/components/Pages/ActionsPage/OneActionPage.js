@@ -8,6 +8,7 @@ import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
 import MEModal from "./../Widgets/MEModal";
 import ActionModal from "./ActionModal";
+import URLS from "../../../api/urls";
 import {
   reduxAddToDone,
   reduxAddToTodo,
@@ -152,7 +153,7 @@ class OneActionPage extends React.Component {
                     label="Share this action!"
                     pageTitle={action.title}
                     pageDescription={action.featured_summary}
-                    url={`http://${subdomain}.massenergize.test:8000/action/${action.id}`}
+                    url={`${URLS.COMMUNITIES}/${subdomain}/actions/${action.id}`}
                   />
                 </div>
                 {/* makes the todo and completed actions carts */}
