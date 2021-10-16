@@ -21,12 +21,15 @@ if (IS_LOCAL) {
 }
 
 URLS["NONE_CUSTOM_WEBSITE_LIST"] = new Set([
-	"community.massenergize.org",
+  "community.massenergize.org",
 	"communities.massenergize.org",
 	"community.massenergize.dev",
 	"communities.massenergize.dev",
 	"community-dev.massenergize.org",
 	"community-canary.massenergize.org",
+  "community-canary.massenergize.dev",
 	"community.massenergize.test",
+	"massenergize.test",
+  "localhost",
 ])
 export default URLS;
