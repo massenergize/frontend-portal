@@ -33,6 +33,10 @@ class IconBoxTable extends React.Component {
     }
     return Object.keys(boxes).map((key, index) => {
       var box = boxes[key];
+      var iconLink = `${this.props.prefix}/${box.link}`.replace('//', '/')
+      if (box.link.startsWith("http")) {
+        iconLink = box.link
+      }
       return (
         <div
           className="col-lg-3 col-6 d-flex flex-row"
@@ -43,7 +47,7 @@ class IconBoxTable extends React.Component {
             title={box.title}
             description={box.description}
             icon={box.icon}
-            link={`${this.props.prefix}${box.link}`}
+            link={iconLink}
           />
         </div>
       );
