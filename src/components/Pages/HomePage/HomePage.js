@@ -20,6 +20,11 @@ class HomePage extends React.Component {
   }
 
   render() {
+    const { __is_custom_site, community } = this.props;
+    const { subdomain } =  community || {}
+
+    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : ''
+    
     if (!this.props.pageData) {
       return (
         <ErrorPage
@@ -116,6 +121,7 @@ class HomePage extends React.Component {
           <IconBoxTable
             title="Get started - See your local options!"
             boxes={iconQuickLinks}
+            prefix={prefix}
           />
         ) : null}
         {this.props.pageData.show_featured_stats ? (
@@ -147,7 +153,8 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
-    is_sandbox: store.page.__is_sandbox
+    is_sandbox: store.page.__is_sandbox,
+    __is_custom_site: store.page.__is_custom_site
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

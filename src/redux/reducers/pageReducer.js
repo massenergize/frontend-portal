@@ -39,6 +39,7 @@ import {
   LOAD_EQUIVALENCES,
   SET_IS_SANDBOX,
   LOAD_COMMUNITY_INFORMATION,
+  SET_IS_CUSTOM_SITE,
 } from "../actions/types";
 
 import {
@@ -75,7 +76,8 @@ const initialState = {
   community: null,
   communityData: null,
   communityAdmins: null,
-  __is_sandbox: false
+  __is_sandbox: false,
+  __is_custom_site: true
 };
 
 function alreadyInSubTeam(state, action) {
@@ -409,6 +411,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         __is_sandbox:  action.payload,
+      };
+    case SET_IS_CUSTOM_SITE:
+      return {
+        ...state,
+        __is_custom_site: action.payload,
       };
     /**************************/
     default:

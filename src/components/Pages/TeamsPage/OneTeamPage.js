@@ -16,6 +16,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
+import URLS from "../../../api/urls";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -364,6 +365,9 @@ class OneTeamPage extends React.Component {
   }
 
   renderSocials(team) {
+    const { community } = this.props;
+    const { subdomain } = community || {}
+
     return (
       <>
         {team.is_published && (
@@ -372,7 +376,7 @@ class OneTeamPage extends React.Component {
               label="Share this team!"
               pageTitle={team.name}
               pageDescription={team.tagline}
-              url={window.location.href}
+              url={`${URLS.SHARE}/${subdomain}/teams/${team.id}`}
             />
           </div>
         )}
@@ -538,6 +542,7 @@ class OneTeamPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
+    community: store.page.comInformation,
     links: store.links,
     teamsStats: store.page.teams,
     pref_eq: store.user.pref_equivalence,
