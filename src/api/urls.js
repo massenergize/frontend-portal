@@ -7,9 +7,9 @@ if (IS_LOCAL) {
   URLS["COMMUNITIES"] = "http://communities.massenergize.test:8000";
   URLS["SHARE"] = "http://share.massenergize.test:8000";
 } else if (IS_CANARY) {
-  URLS["ROOT"] = "https://api.canary.massenergize.org";
-  URLS["COMMUNITIES"] = "https://communities.canary.massenergize.org";
-  URLS["SHARE"] = "https://share.canary.massenergize.org";
+  URLS["ROOT"] = "https://api-canary.massenergize.org";
+  URLS["COMMUNITIES"] = "https://communities-canary.massenergize.org";
+  URLS["SHARE"] = "https://share-canary.massenergize.org";
 } else if (IS_PROD) {
   URLS["ROOT"] = "https://api.massenergize.org";
   URLS["COMMUNITIES"] = "https://communities.massenergize.org";
