@@ -1,0 +1,29 @@
+.text-footer {
+  padding: 3px 20px;
+  background: rgb(249 249 249);
+  width: 100%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.text-footer p {
+  color: black;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.sensitive-photo {
+  height: 150px;
+  width: 60%;
+  object-fit: contain;
+  border-top-left-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-sidebar-container {
+  padding: 10px;
+}
+
+.img-and-btns-container {
+  width: 100%;
+}
