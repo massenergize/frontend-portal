@@ -20,4 +20,13 @@ if (IS_LOCAL) {
   URLS["SHARE"] = "https://share.massenergize.dev";
 }
 
+URLS["NONE_CUSTOM_WEBSITE_LIST"] = new Set([
+	"community.massenergize.org",
+	"communities.massenergize.org",
+	"community.massenergize.dev",
+	"communities.massenergize.dev",
+	"community-dev.massenergize.org",
+	"community-canary.massenergize.org",
+	"community.massenergize.test",
+])
 export default URLS;
