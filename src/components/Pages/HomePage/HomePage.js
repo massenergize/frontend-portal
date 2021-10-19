@@ -5,6 +5,7 @@ import ErrorPage from "./../Errors/ErrorPage";
 import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
+import Cookies from 'universal-cookie';
 import { connect } from "react-redux";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
@@ -79,6 +80,10 @@ class HomePage extends React.Component {
         title: "Carbon Reduction",
       });
     }
+    const cookies = new Cookies();
+
+    cookies.set('myCookie', 'cookie-id-1', { path: '/' });
+    console.log(cookies.get('myCookie')); // Pacman
 
     return (
       <div className="boxed_wrapper">
