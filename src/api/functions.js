@@ -70,6 +70,42 @@ function _getCurrentCommunityContext(){
     return { __community: subdomain, __is_sandbox }
 }
 
+function set_cookie(cookies, key, value) {
+  cookies.set(key, value, { path: '/' });
+  console.log(cookies.get(key));
+}
+
+function get_cookie(cookies, key) {
+  let cookie = cookies.get(key);
+  console.log(cookie);
+  return cookie;
+}
+
+function log_device(cookies, key) {
+  // TODO: Check for device cookie
+  //       get device info
+  //       save new device to database
+  //       save device id to cookie
+}
+
+function log_user(cookies, key) {
+  // TODO: Check for device cookie
+  //       get device info
+  //       save new device to database
+  //       Attach new device to user
+  //       Attach user to new device
+  //       save device id to cookie
+}
+
+function device_checkin(cookies, key) {
+  if (true) { // TODO: if logged in 
+    log_user(cookies);
+  } else {
+    log_device(cookies);
+  }
+  
+}
+
 
 /**
  * Takes out the section that matches with the name given
