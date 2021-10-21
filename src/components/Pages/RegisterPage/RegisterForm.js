@@ -71,6 +71,26 @@ class RegisterFormBase extends React.Component {
     //console.log(id);
   }
 
+  componentDidMount() {
+    const body = { email: this.props.auth.email };
+    apiCall("users.checkImported", body)
+      .then((json) => {
+        if (json.success && json.data.imported) {
+          this.setState({
+            firstName: json.data.firstName,
+            lastName: json.data.lastName,
+            preferredName: json.data.preferredName,
+            specialUser: true,
+          });
+        } else {
+          console.log(json.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   getRegProtocol() {
     return localStorage.getItem("reg_protocol");
   }
@@ -329,23 +349,7 @@ class RegisterFormBase extends React.Component {
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-    const body = { email: this.props.auth.email };
-    apiCall("users.checkImported", body)
-      .then((json) => {
-        if (json.success && json.data.imported) {
-          this.setState({
-            firstName: json.data.firstName,
-            lastName: json.data.lastName,
-            preferredName: json.data.preferredName,
-            specialUser: true,
-          });
-        } else {
-          console.log(json.error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
