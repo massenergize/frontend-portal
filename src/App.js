@@ -13,7 +13,7 @@ import {
   SET_IS_SANDBOX,
 } from "./redux/actions/types";
 import Cookies from 'universal-cookie';
-import device_checkin from './api/functions';
+import { device_checkin } from './api/functions';
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
 import URLS from "./api/urls";
 
@@ -22,7 +22,7 @@ function App() {
   const dispatch = useDispatch();
   const community = useSelector((state) => state.page.community);
   const user = useSelector((state) => state.user);
-  const cookies = new Cookies();
+  // const cookies = new Cookies();
 
   useEffect(() => {
     // first let's determine if its a sandbox request

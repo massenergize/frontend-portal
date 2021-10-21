@@ -97,7 +97,7 @@ function log_user(cookies, key) {
   //       save device id to cookie
 }
 
-function device_checkin(cookies, key) {
+export function device_checkin(cookies, key) {
   if (true) { // TODO: if logged in 
     log_user(cookies);
   } else {
