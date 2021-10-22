@@ -1,0 +1,67 @@
+{
+  "name": "massenergize",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@sentry/react": "^5.21.3",
+    "apexcharts": "^3.28.1",
+    "chart.js": "^2.9.3",
+    "chartjs-plugin-datalabels": "^0.7.0",
+    "code": "^5.2.4",
+    "connected-react-router": "^6.6.1",
+    "croppie": "^2.6.5",
+    "eslint-plugin-import": "^2.24.2",
+    "firebase": "^7.17.1",
+    "glob": "^7.1.6",
+    "helmet": "^3.21.2",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
+    "package.json": "^2.0.1",
+    "query-string": "^6.13.1",
+    "react": "^16.12.0",
+    "react-apexcharts": "^1.3.6",
+    "react-bootstrap": "^1.6.3",
+    "react-chartjs-2": "^2.9.0",
+    "react-countup": "^4.3.2",
+    "react-datepicker": "^2.11.0",
+    "react-device-detect": "^1.11.14",
+    "react-dom": "^16.12.0",
+    "react-google-recaptcha": "^2.0.1",
+    "react-helmet": "^5.2.1",
+    "react-image-crop": "^8.6.9",
+    "react-moment": "^0.9.7",
+    "react-multi-carousel": "^1.4.6",
+    "react-player": "^2.9.0",
+    "react-redux": "^7.2.5",
+    "react-redux-firebase": "^3.0.7",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "^3.4.3",
+    "react-share": "^4.2.1",
+    "react-to-print": "^2.9.0",
+    "recharts": "^1.8.5",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "cypress open",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "cypress": "^8.5.0",
+    "cypress-localstorage-commands": "^1.5.0",
+    "immutable": "^4.0.0-rc.12",
+    "style-loader": "^0.23.1"
+  }
+}
