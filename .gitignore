@@ -27,3 +27,6 @@
 /.vscode
 
 v2.0/src/config/config.json
+
+build/
+node_modules/
