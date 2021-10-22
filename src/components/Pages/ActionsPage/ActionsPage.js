@@ -30,6 +30,7 @@ import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+import Tour from 'reactour';
 import EquivalenceModal from "./EquivalenceModal";
 
 /**
@@ -47,6 +48,7 @@ class ActionsPage extends React.Component {
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
+      tourIsOpen: false,
       checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
       loaded: false,
       openAddForm: null,
@@ -67,6 +69,24 @@ class ActionsPage extends React.Component {
       status: null,
       showEqModal: false,
     };
+
+    //first, check if the user has visited the page before - using localStorage
+    
+    //if (!localStorage.getItem('repeatUser')) {
+
+    //condition IS FOR TESTING ONLY
+    if (1 === 1) {
+      //this is the user's first visit to the portal
+      //change state to include tour
+      console.log('not repeat user');
+      this.state.tourIsOpen = true;
+      console.log('state', this.state);
+      localStorage.setItem('repeatUser', true);
+    }
+    else {
+      this.state.tourIsOpen = false;
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
@@ -161,6 +181,25 @@ class ActionsPage extends React.Component {
   }
 
   render() {
+    const steps = [
+      {
+        selector: '#welcome', 
+        content: 'Welcome to the Actions Page! This is where you can track what actions you have taken to reduce greenhouse gas emissions.'
+      },
+      {
+        selector: '.hori-filter-container.phone-vanish', 
+        content: 'These filters help you sort actions by their different characteristics. You can sort actions by their impact (how much CO2 they save), their cost, and more.'
+      }, 
+      {
+        selector: '.col-lg-6.col-md-12.col-sm-12.col-12.me-open-in-slower', 
+        content: "To add an action to your To-do list, just click the To Do button. You can also mark actions as completed and delete them from your To-do list. Your To-do list will show up in your profile page."
+      },
+      {
+        selector:"phone-vanish.col-lg-3.col-md-5.col-sm-12.col-xs-12.sidebar_styleTwo", 
+        content: "You can see the impact of your actions here. This panel shows both the amount of CO2 you've saved as well as the amount of CO2 the actions on your To-do list will save."
+      }
+    ];
+
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
@@ -187,7 +226,18 @@ class ActionsPage extends React.Component {
 
     return (
       <>
-        {this.renderEQModal()}
+        <Tour
+          accentColor="#8CC43C"
+          steps={steps}
+          isOpen={this.state.tourIsOpen}
+          rounded="20"
+          onRequestClose={() => {
+            this.setState({
+              tourIsOpen: false
+            });
+          }}
+        />
+         {this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
