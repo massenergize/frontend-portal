@@ -9,10 +9,33 @@ import { connect } from "react-redux";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
+import Tour from 'reactour';
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    //first, check if the user has visited the page before - using localStorage
+    //if (!localStorage.getItem('repeatUser')) {
+    //CONDITION IS FOR TESTING ONLY
+    if (1 === 1) {
+      //this is the user's first visit to the portal
+      //change state to include tour
+      console.log('not repeat user');
+      this.state = {
+        tourIsOpen: true
+      };
+      console.log('state', this.state);
+      localStorage.setItem('repeatUser', true);
+    }
+    else {
+      this.state = {
+        tourIsOpen: false
+      };
+    }    
+  }
+
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
@@ -24,7 +47,23 @@ class HomePage extends React.Component {
     const { subdomain } =  community || {}
 
     const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : ''
-    
+
+    const steps = [
+      {
+        selector: '#welcome',
+        content: 'Welcome to this MassEnergize community! We are a group of people dedicated to addressing climate change by reducing our greenhouse gas emissions. This portal exists to empower you and your family to fight climate change by providing you with tools, strategies, and resources. By creating an account, you can track how much CO2 you save and participate in community initiatives and events.',
+      },
+      {
+        selector: '#panel', 
+        content: "These buttons allow you to engage with the community and take you to different pages of the website."
+      }, 
+      {
+        selector: '#nav-bar', 
+        content: "Here is the navigation menu. Let's go to the Actions page. Close out of this popup and click on Actions. (If you're on mobile, click the horizontal bars and then Actions.)"
+      }
+      // ...
+    ];
+
     if (!this.props.pageData) {
       return (
         <ErrorPage
@@ -82,6 +121,17 @@ class HomePage extends React.Component {
 
     return (
       <div className="boxed_wrapper">
+        <Tour
+          accentColor="#8CC43C"
+          steps={steps}
+          isOpen={this.state.tourIsOpen}
+          rounded="20"
+          onRequestClose={() => {
+            this.setState({
+              tourIsOpen: false
+            });
+          }}
+        />
         {welcomeImagesData ? (
           <WelcomeImages data={welcomeImagesData} title={title} />
         ) : null}
