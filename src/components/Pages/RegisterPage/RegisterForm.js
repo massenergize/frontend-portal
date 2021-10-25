@@ -203,7 +203,7 @@ class RegisterFormBase extends React.Component {
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Enter your E-mail and a Password</h3>
+            <h3>Enter your Email and a Password</h3>
             <p>
               This helps us count your impact correctly, and avoid double
               counting. We collect no sensitive personal data, and do not share
