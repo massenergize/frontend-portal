@@ -22,7 +22,7 @@ function App() {
   const dispatch = useDispatch();
   const community = useSelector((state) => state.page.community);
   const user = useSelector((state) => state.user);
-  // const cookies = new Cookies();
+  const cookies = new Cookies();
 
   useEffect(() => {
     // first let's determine if its a sandbox request
@@ -36,7 +36,7 @@ function App() {
       payload: is_sandbox,
     });
 
-    device_checkin();
+    device_checkin(cookies);
 
     // Update the document title using the browser API
     if (!community) {

@@ -81,14 +81,36 @@ function get_cookie(cookies, key) {
   return cookie;
 }
 
-function log_device(cookies, key) {
+function log_device(cookies) {
   // TODO: Check for device cookie
-  //       get device info
-  //       save new device to database
-  //       save device id to cookie
+  let device = get_cookie(cookies, "device")
+  console.log("----------");
+  console.log(device);
+  console.log("----------");
+  let response;
+  if (device == null) {
+    const body = {
+      ip_address: "0.0.0.0",
+      device_type: "Phone",
+      operating_system: "PCOS",
+      browser: "Chromium",
+      browser_version: "1.2.3"
+    };
+    response = apiCall('/device.create', body);
+    device = response.id
+  } else {
+    const body = {
+      device_id: device,
+      ip_address: "0.0.0.0",
+      browser_version: "1.2.3"
+    };
+    response = apiCall('/device.log', body);
+  }
+  set_cookie(cookies, "device", device)
+  // save device id to cookie
 }
 
-function log_user(cookies, key) {
+function log_user(cookies) {
   // TODO: Check for device cookie
   //       get device info
   //       save new device to database
@@ -97,13 +119,8 @@ function log_user(cookies, key) {
   //       save device id to cookie
 }
 
-export function device_checkin(cookies, key) {
-  if (true) { // TODO: if logged in 
-    log_user(cookies);
-  } else {
-    log_device(cookies);
-  }
-  
+export function device_checkin(cookies) {
+  log_device(cookies);  
 }
 
 
