@@ -41,8 +41,8 @@ class OneEventPage extends React.Component {
 
   render() {
     const event = this.state.event;
-    const { community } = event || {}
-    const { subdomain } = community || {}
+    const { community } = event || {};
+    const { subdomain } = community || {};
 
     if (this.state.loading) {
       return <LoadingCircle />;
@@ -58,6 +58,7 @@ class OneEventPage extends React.Component {
       );
     }
 
+    console.log("I am teh event you know ", event);
     return (
       <>
         {Seo({
@@ -65,10 +66,10 @@ class OneEventPage extends React.Component {
           description: event.featured_summary,
           url: `${window.location.href}`,
           image: event.image && event.image.url,
-          keywords: event.name && event.name.split(' ') ,
+          keywords: event.name && event.name.split(" "),
           updated_at: event.updated_at,
           created_at: event.updated_at,
-          tags:  event.name && event.name.split(' ') ,
+          tags: event.name && event.name.split(" "),
         })}
 
         <div
