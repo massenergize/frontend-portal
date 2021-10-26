@@ -212,3 +212,18 @@
   opacity: 0;
   animation: rsvp-drop-anime 0.2s forwards;
 }
+@keyframes rsvp-drop-from-left-anime {
+  from {
+    transform: translate(0px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(100px, 45px);
+    opacity: 1;
+  }
+}
+
+.rsvp-drop-from-left-anime {
+  opacity: 0;
+  animation: rsvp-drop-from-left-anime 0.2s forwards;
+}
