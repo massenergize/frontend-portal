@@ -43,9 +43,8 @@ function App() {
         const subdomain =
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
 
-        // if no subdomain found, redirect to all communities page
-        console.log(subdomain)
-        if ([undefined, "", "/"].indexOf(subdomain)>-1) {
+        // if no subdomain found, redirect to all communities page (NB: The all communities page does not exist on this side of the application. It is a page on the backend)
+        if ([undefined, "", "/"].indexOf(subdomain) > -1) {
           window.location.href = URLS.COMMUNITIES;
           return;
         }
@@ -73,11 +72,7 @@ function App() {
   }, [community, dispatch]);
 
   if (error) {
-    return (
-      <ErrorPage
-        invalidCommunity
-      />
-    );
+    return <ErrorPage invalidCommunity />;
   }
 
   if (!community) {

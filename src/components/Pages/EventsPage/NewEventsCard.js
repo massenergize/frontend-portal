@@ -8,7 +8,7 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { apiCall } from "../../../api/functions";
 import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
-const RSVP_STATUS = {
+export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
   NOT_GOING: "Not Going",
@@ -98,7 +98,7 @@ export default class NewEventsCard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user) this.getRSVPStatus();
+    if (this.props.user) this.getRSVPStatus(); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
   }
 
   handleReadMore(e) {

@@ -203,6 +203,7 @@ class AppRouter extends Component {
         apiCall("testimonials.list", body),
         apiCall("vendors.list", body),
         apiCall("data.carbonEquivalency.get", body),
+        apiCall("communities.list", body),
       ])
         .then((res) => {
           const [
@@ -217,6 +218,7 @@ class AppRouter extends Component {
             testimonialsResponse,
             vendorsResponse,
             eqResponse,
+            listOfCommunitiesResponse,
           ] = res;
           this.props.reduxLoadEvents(eventsResponse.data);
           this.props.reduxLoadEventExceptions(eventExceptionsResponse);
@@ -229,6 +231,7 @@ class AppRouter extends Component {
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
           this.props.reduxLoadEquivalences(eqResponse.data);
+          this.props.reduxLoadCommunities(listOfCommunitiesResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -378,8 +381,8 @@ class AppRouter extends Component {
 
   /**
    * Adds the prefix to the subdomains where possible
-   * @param {*} menu 
-   * @returns 
+   * @param {*} menu
+   * @returns
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
@@ -473,15 +476,14 @@ class AppRouter extends Component {
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
     finalMenu = this.modifiedMenu(finalMenu);
-    
-    var footerLinks = []
-    if(this.props.menu){
+
+    var footerLinks = [];
+    if (this.props.menu) {
       const [{ content }] = this.props.menu.filter((menu) => {
         return menu.name === "PortalFooterQuickLinks";
-      })
-      footerLinks = this.addPrefix(content)
+      });
+      footerLinks = this.addPrefix(content);
     }
-
 
     const communityInfo = community || {};
 
@@ -568,10 +570,7 @@ class AppRouter extends Component {
           )
         }
         {this.props.menu ? (
-          <Footer
-            footerLinks={footerLinks}
-            footerInfo={footerInfo}
-          />
+          <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
         ) : (
           <LoadingCircle />
         )}
