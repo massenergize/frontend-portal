@@ -11,7 +11,7 @@ import Seo from "../../Shared/Seo";
 import URLS from "../../../api/urls";
 import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
-
+import * as moment from "moment";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -61,8 +61,6 @@ class OneEventPage extends React.Component {
         />
       );
     }
-
-    console.log("I am teh event you know ", event);
     return (
       <>
         {Seo({
@@ -145,6 +143,67 @@ class OneEventPage extends React.Component {
       }
     });
   }
+  renderRecurringDetails() {
+    const { event } = this.state;
+    const format = "MMMM Do YYYY, h:mm a";
+    if (!event?.recurring_details) return <></>;
+    const details = JSON.parse(event.recuring_details);
+
+    const {
+      upcoming_is_cancelled,
+      upcoming_is_rescheduled,
+      rescheduled_details,
+    } = details || {};
+    return (
+      <>
+        {upcoming_is_cancelled && (
+          <>
+            <span style={{ color: "maroon" }}>
+              <b>The event has been cancelled</b>
+            </span>
+            <br />
+          </>
+        )}
+        {upcoming_is_rescheduled && (
+          <>
+            <span>
+              <b>The event has been rescheduled</b>
+            </span>
+            <br />
+          </>
+        )}
+
+        {rescheduled_details && (
+          <>
+            <span>
+              <b>Start Date</b>
+            </span>
+            <br />
+            <span style={{ color: "black", fontSize: 14 }}>
+              {moment(rescheduled_details?.rescheduled_start_datetime).format(
+                format
+              )}
+            </span>
+            <br />
+          </>
+        )}
+        {rescheduled_details && (
+          <>
+            <span>
+              <b>End Date</b>
+            </span>
+            <br />
+            <span style={{ color: "black", fontSize: 14 }}>
+              {moment(rescheduled_details?.rescheduled_end_datetime).format(
+                format
+              )}
+            </span>
+            <br />
+          </>
+        )}
+      </>
+    );
+  }
   renderEvent(event) {
     const { user } = this.props;
     let dateString = dateFormatString(
@@ -159,7 +218,7 @@ class OneEventPage extends React.Component {
           <h3 className="cool-font text-center">{event.name}</h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
-              <div className="col-12 col-lg-4" style={{marginBottom:15}}>
+              <div className="col-12 col-lg-4" style={{ marginBottom: 15 }}>
                 <img
                   style={{
                     width: "100%",
@@ -171,11 +230,7 @@ class OneEventPage extends React.Component {
                   alt=""
                 />
 
-                <div
-                  // className="event-timeline "
-
-                  style={{ margin: "10px 0px", borderRadius: 12 }}
-                >
+                <div style={{ margin: "10px 0px", borderRadius: 12 }}>
                   <ul>
                     <li
                       key="time"
@@ -220,7 +275,7 @@ class OneEventPage extends React.Component {
                         {event?.recurring_details ? (
                           <></>
                         ) : (
-                          <span>Event recurring details not specified</span>
+                          this.renderRecurringDetails(event)
                         )}
                       </li>
                     )}
