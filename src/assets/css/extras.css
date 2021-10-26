@@ -56,6 +56,10 @@
   border: 0px;
   font-weight: bold;
 }
+.me-rsvp-btn:active {
+  background: orange !important;
+  color: black;
+}
 
 .me-rsvp-btn:hover {
   background: var(--app-theme-green);
@@ -447,6 +451,7 @@
 .btn-primary:not(:disabled):not(.disabled):active,
 .show > .btn-primary.dropdown-toggle {
   background: transparent !important;
+  color: inherit;
 }
 .clear-drop-after::after {
   display: none !important;

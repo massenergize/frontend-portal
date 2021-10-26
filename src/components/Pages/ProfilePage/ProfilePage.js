@@ -129,7 +129,7 @@ class ProfilePage extends React.Component {
     return (
       <Counter
         decimals={1}
-        end={score}
+        end={parseFloat(score)}
         unit={!pref_eq ? "lbs CO2" : ""}
         icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
         title={

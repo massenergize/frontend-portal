@@ -435,21 +435,19 @@ textarea {
 
 .section-title h2 {
   position: relative;
-  text-transform: capitalize;
   font-weight: 400;
   font-size: 32px;
 }
+/* remove this from section-titles: text-transform: capitalize; */
 
 .section-title h3 {
   position: relative;
-  text-transform: capitalize;
   font-weight: 400;
 }
 
 .section-title h4 {
   position: relative;
   font-size: 20px;
-  text-transform: capitalize;
   font-weight: 400;
 }
 
