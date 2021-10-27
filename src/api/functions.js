@@ -72,42 +72,40 @@ function _getCurrentCommunityContext(){
 
 function set_cookie(cookies, key, value) {
   cookies.set(key, value, { path: '/' });
-  console.log(cookies.get(key));
 }
 
 function get_cookie(cookies, key) {
   let cookie = cookies.get(key);
-  console.log(cookie);
   return cookie;
 }
 
 function log_device(cookies) {
   // TODO: Check for device cookie
   let device = get_cookie(cookies, "device")
-  console.log("----------");
-  console.log(device);
-  console.log("----------");
   let response;
-  if (device == null) {
+  if (device == undefined) {
     const body = {
       ip_address: "0.0.0.0",
       device_type: "Phone",
       operating_system: "PCOS",
       browser: "Chromium",
-      browser_version: "1.2.3"
     };
-    response = apiCall('/device.create', body);
-    device = response.id
+    response = apiCall('/device.create', body).then(function(result) {
+      set_cookie(cookies, "device", result.data.id)
+    }, function(err) {
+      console.log(err); // Error: "It broke"
+    });
   } else {
     const body = {
-      device_id: device,
+      id: device,
       ip_address: "0.0.0.0",
-      browser_version: "1.2.3"
     };
-    response = apiCall('/device.log', body);
+    response = apiCall('/device.log', body).then(function(result) {
+      set_cookie(cookies, "device", result.data.id)
+    }, function(err) {
+      console.log(err); // Error: "It broke"
+    });
   }
-  set_cookie(cookies, "device", device)
-  // save device id to cookie
 }
 
 function log_user(cookies) {
