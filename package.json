@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/analytics": "^0.7.2",
     "@sentry/react": "^5.21.3",
     "apexcharts": "^3.28.1",
     "chart.js": "^2.9.3",

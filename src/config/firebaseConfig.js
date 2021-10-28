@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { getAnalytics } from "firebase/analytics";
 import 'firebase/auth';
 import { IS_PROD, IS_CANARY } from './config'
 
@@ -21,13 +22,15 @@ if(IS_PROD || IS_CANARY){
     authDomain: "massenergize-auth.firebaseapp.com",
     databaseURL: "https://massenergize-auth.firebaseio.com",
     projectId: "massenergize-auth",
-    storageBucket: "",
+    storageBucket: "massenergize-auth.appspot.com",
     messagingSenderId: "72842344535",
     appId: "1:72842344535:web:9b1517b1b3d2e818",
   }
 }
 
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
+// 10/28/21 addition which Google Analytics new SDK requires (Issue 743)
+const analytics = getAnalytics(app);
 
 export default firebase;
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
