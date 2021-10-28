@@ -5,7 +5,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
-import { dateFormatString, locationFormatJSX } from "../../Utils";
+import { dateFormatString, recurringDetails, locationFormatJSX } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
 import URLS from "../../../api/urls";
@@ -147,15 +147,16 @@ class OneEventPage extends React.Component {
     const { event } = this.state;
     const format = "MMMM Do YYYY, h:mm a";
     if (!event?.recurring_details) return <></>;
-    const details = JSON.parse(event.recuring_details);
 
+    const recurringDetailString = recurringDetails(event);
     const {
       upcoming_is_cancelled,
       upcoming_is_rescheduled,
       rescheduled_details,
-    } = details || {};
+    } = event.recurring_details || {};
     return (
       <>
+        <b>{recurringDetailString}</b>
         {upcoming_is_cancelled && (
           <>
             <span style={{ color: "maroon" }}>
@@ -273,9 +274,9 @@ class OneEventPage extends React.Component {
                         }}
                       >
                         {event?.recurring_details ? (
-                          <></>
-                        ) : (
                           this.renderRecurringDetails(event)
+                        ) : (
+                          <></>
                         )}
                       </li>
                     )}
