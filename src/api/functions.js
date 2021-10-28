@@ -80,32 +80,30 @@ function get_cookie(cookies, key) {
 }
 
 function log_device(cookies) {
-  // TODO: Check for device cookie
-  let device = get_cookie(cookies, "device")
+  // TODO: Get IP address and other info
+  let device = get_cookie(cookies, "device");
+  let body;
+  let apiFunction;
   let response;
   if (device == undefined) {
-    const body = {
-      ip_address: "0.0.0.0",
-      device_type: "Phone",
-      operating_system: "PCOS",
-      browser: "Chromium",
-    };
-    response = apiCall('/device.create', body).then(function(result) {
-      set_cookie(cookies, "device", result.data.id)
-    }, function(err) {
-      console.log(err); // Error: "It broke"
-    });
+    body = {};
+    apiFunction = 'create'
   } else {
-    const body = {
-      id: device,
-      ip_address: "0.0.0.0",
-    };
-    response = apiCall('/device.log', body).then(function(result) {
-      set_cookie(cookies, "device", result.data.id)
-    }, function(err) {
-      console.log(err); // Error: "It broke"
-    });
+    body = { id: device };
+    apiFunction = 'log'
   }
+
+  response = apiCall('/device.' + apiFunction, body).then(function(result) {
+    try {
+      set_cookie(cookies, "device", result.data.id)
+    } catch (error) {
+      // console.log(error); // Debug
+      return { success: false, error };
+    }
+  }, function(error) {
+    // console.log(error);
+  });
+  return response;
 }
 
 function log_user(cookies) {
