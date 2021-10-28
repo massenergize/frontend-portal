@@ -106,15 +106,6 @@ function log_device(cookies) {
   return response;
 }
 
-function log_user(cookies) {
-  // TODO: Check for device cookie
-  //       get device info
-  //       save new device to database
-  //       Attach new device to user
-  //       Attach user to new device
-  //       save device id to cookie
-}
-
 export function device_checkin(cookies) {
   log_device(cookies);  
 }
