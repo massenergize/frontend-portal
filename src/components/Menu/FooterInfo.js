@@ -19,6 +19,8 @@ class FooterInfo extends React.Component {
 	render() {
 		const { pageData } = this.props;
 		const { community } = pageData || {};
+		const contactusLink = this.props.links.contactus;
+		console.log(contactusLink);
 		var communitylogo = community && community.logo && community.logo.url;
 		return (
 			<div className="col-7 col-md-4">
@@ -29,7 +31,7 @@ class FooterInfo extends React.Component {
 					<ul className="contact-info">
 						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Organizer</i></li>
 						{this.props.info.email &&
-							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={`${this.props.links.home}contactus`}>Click to contact Community Organizer </Link> </li>
+							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={this.props.links.contactus}>Click to contact Community Organizer </Link> </li>
 						}
 						{this.props.info.phone &&
 							<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
