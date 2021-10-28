@@ -97,7 +97,7 @@ function log_device(cookies) {
     try {
       set_cookie(cookies, "device", result.data.id)
     } catch (error) {
-      // console.log(error); // Debug
+      console.log(error); // Debug
       return { success: false, error };
     }
   }, function(error) {
