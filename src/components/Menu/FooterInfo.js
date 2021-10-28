@@ -19,8 +19,6 @@ class FooterInfo extends React.Component {
 	render() {
 		const { pageData } = this.props;
 		const { community } = pageData || {};
-		const contactusLink = this.props.links.contactus;
-		console.log(contactusLink);
 		var communitylogo = community && community.logo && community.logo.url;
 		return (
 			<div className="col-7 col-md-4">
