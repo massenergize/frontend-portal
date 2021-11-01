@@ -42,7 +42,6 @@ class AboutUsPage extends React.Component {
     }
 
     const pageData = this.props.pageData;
-    const donatePageData = this.props.donatePageData;
     const title = pageData.title ? pageData.title : "About Our Community";
     const subtitle = pageData.sub_title ? pageData.sub_title : null;
     const videoLink = pageData.featured_video_link
@@ -50,8 +49,11 @@ class AboutUsPage extends React.Component {
       : null;
     const image = pageData.image ? pageData.image : (pageData.images ? pageData.images[0] : null);
     const paragraphContent = pageData.description;
-    const donateMessage =
-      donatePageData && donatePageData.title ? donatePageData.title : null;
+
+    const donatePageData = this.props.donatePageData;
+    const donateEnabled = donatePageData && donatePageData.is_published ? donatePageData.is_published : null;
+    const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : null;
+    
     return (
       <div className="boxed_wrapper">
         <BreadCrumbBar links={[{ name: "About Us" }]} />
@@ -129,8 +131,11 @@ class AboutUsPage extends React.Component {
           </div>
         </div>
 
-        {/* <TeamMembers data={teamMembersData} /> */}
-        <DonateBar donateMessage={donateMessage} />
+        {donateEnabled ? (
+          <div>
+            <DonateBar donateMessage={donateMessage} />
+          </div>  
+        ) : null }
       </div>
     );
   }

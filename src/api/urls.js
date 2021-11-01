@@ -4,7 +4,9 @@ import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config";
 let URLS = {};
 if (IS_LOCAL) {
   URLS["ROOT"] = "http://massenergize.test:8000";
+  // URLS["ROOT"] = "http://localhost:8000";
   URLS["COMMUNITIES"] = "http://communities.massenergize.test:8000";
+  // URLS["COMMUNITIES"] = "http://localhost:3000";
   URLS["SHARE"] = "http://share.massenergize.test:8000";
 } else if (IS_CANARY) {
   URLS["ROOT"] = "https://api-canary.massenergize.org";
@@ -22,14 +24,14 @@ if (IS_LOCAL) {
 
 URLS["NONE_CUSTOM_WEBSITE_LIST"] = new Set([
   "community.massenergize.org",
-	"communities.massenergize.org",
-	"community.massenergize.dev",
-	"communities.massenergize.dev",
-	"community-dev.massenergize.org",
-	"community-canary.massenergize.org",
+  "communities.massenergize.org",
+  "community.massenergize.dev",
+  "communities.massenergize.dev",
+  "community-dev.massenergize.org",
+  "community-canary.massenergize.org",
   "community-canary.massenergize.dev",
-	"community.massenergize.test",
-	"massenergize.test",
+  "community.massenergize.test",
+  "massenergize.test",
   "localhost",
-])
+]);
 export default URLS;

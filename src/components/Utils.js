@@ -385,3 +385,36 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
 export function extractTextFromHTML(htmlText){
   return htmlText && htmlText.replace(/<[^>]+>/g, '')
 }
+
+export function recurringDetails(event) {
+
+  if (!event?.recurring_details) {
+    return "";
+  }
+
+  let recurringDetails = "";
+  // @TODO, clean this section up, when there are no pressing tickets
+  if (event.is_recurring) {
+    if (event.recurring_details) {
+      if (event.recurring_details.recurring_type === "week") {
+        if (event.recurring_details.separation_count === 1) {
+          recurringDetails = `Every ${event.recurring_details.day_of_week}`;
+        } else {
+          recurringDetails = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`;
+        }
+      } else if (event.recurring_details.recurring_type === "month") {
+        if (event.recurring_details.separation_count === 1) {
+          recurringDetails = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`;
+        } else {
+          recurringDetails = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`;
+        }
+      }
+      if (event.recurring_details.final_date) {
+        recurringDetails += ` through ${event.recurring_details.final_date}`;
+      }
+    } else {
+      recurringDetails = "Event recurring details not specified";
+    }
+  }
+  return recurringDetails;
+}
