@@ -43,6 +43,7 @@ class MECameleonButton extends Component {
             className={`cam-btn-defaults ${props.className}`}
             style={props.style}
             onClick={this.handleOnClick}
+            {...(passed.id ? { id: passed.id } : {})}
           >
             {props.text}
           </MEButton>
@@ -53,6 +54,7 @@ class MECameleonButton extends Component {
       <MEButton
         className={`cam-btn-defaults ${props.className}`}
         style={props.style}
+        {...(passed.id ? { id: passed.id } : {})}
       >
         {props.text}
       </MEButton>

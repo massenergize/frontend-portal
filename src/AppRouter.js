@@ -264,7 +264,7 @@ class AppRouter extends Component {
         user = newLoggedInUserResponse.data;
       }
     }
-
+ 
     if (user) {
       // set the user in the redux state
       this.props.reduxLogin(user);
@@ -337,6 +337,7 @@ class AppRouter extends Component {
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
+        navItemId:"action-nav-id"
       };
       // remove menu items for pages which cadmins have selected as not enabled
       newAction.children = newAction.children.filter((item) => {

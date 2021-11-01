@@ -281,6 +281,7 @@ class NavBarBurger extends React.Component {
               e.preventDefault();
               props.onClick(e);
             }}
+            {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
           >
             {" "}
             {props.navLink.name}{" "}
