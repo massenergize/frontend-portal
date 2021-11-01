@@ -1,5 +1,5 @@
 import fields from "./json/fields";
-import "./go-to-all-actions-page-via-navigation";
+import "./go-to-all-actions-page-via-navigation.spec";
 import { ONE_ACTION_COMPONENT_CHECKLIST } from "./reusable/values";
 
 /**

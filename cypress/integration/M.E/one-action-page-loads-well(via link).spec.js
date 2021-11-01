@@ -16,14 +16,6 @@ describe("One action page loads correctly", function () {
 
   it("Finds all important display components", function () {
     cy.findComponentsOnPage(ONE_ACTION_COMPONENT_CHECKLIST);
-    // cy.get("#test-action-title");
-    // cy.get("#test-done-btn");
-    // cy.get("#test-todo-btn");
-    // cy.get("#desctab");
-    // cy.get("#desc");
-    // cy.get("#steps");
-    // cy.get("#deep");
-    // cy.get("#deeptab");
-    // cy.get("#stepstab");
+ 
   });
 });
