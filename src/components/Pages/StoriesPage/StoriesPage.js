@@ -214,7 +214,10 @@ class StoriesPage extends React.Component {
 
                   {this.renderSideViewStories(stories)}
                 </div>
-                <div className="col-md-9 col-lg-9  col-sm-12 ">
+                <div
+                  className="col-md-9 col-lg-9  col-sm-12 test-stories-wrapper"
+                  data-number-of-stories={stories?.length || 0}
+                >
                   <div
                     className="row"
                     style={{
@@ -256,10 +259,12 @@ class StoriesPage extends React.Component {
   renderStories(stories) {
     if (!stories) {
       return (
-        <p>
-          There aren't any not any testimonials yet. If you have a story to
-          tell, let us know in the form below.
-        </p>
+        <div className="col-12 text-center">
+          <p className="cool-font">
+            There aren't any testimonials yet. If you have a story to tell, let
+            us know in the form below.
+          </p>
+        </div>
       );
     }
     if (stories.length === 0) {
@@ -281,7 +286,7 @@ class StoriesPage extends React.Component {
           "--sheet-anime-delay": getRandomIntegerInRange(500),
           "--sheet-anime-duration": getRandomIntegerInRange(500),
         }}
-        className="animate-testimonial-sheet"
+        className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet {...story} links={this.props.links} />
       </div>

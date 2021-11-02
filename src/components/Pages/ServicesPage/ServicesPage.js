@@ -230,6 +230,7 @@ class ServicesPage extends React.Component {
                       textTransform: "capitalize",
                       fontWeight: "bold",
                     }}
+                    className ="test-vendor-name"
                   >
                     {vendor.name}
                   </h4>

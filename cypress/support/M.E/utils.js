@@ -21,3 +21,37 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
     });
   });
 };
+
+export const typeInsideFilterbox = (text) => {
+  cy.get("#test-filter-box-id").type(text);
+};
+
+export const testimonialsShowProperly = () => {
+  cy.get(".test-stories-wrapper").then(function ($div) {
+    const noOfStories = $div.attr("data-number-of-stories");
+    if (noOfStories > 0)
+      cy.get(".test-story-sheet").should("have.lengthOf", noOfStories);
+    else cy.log("Loaded properly, but there were 0 testimonials...");
+  });
+};
+
+export const showThatTestimonialPageComponentsLoadWell = () => {
+  it("Shows title properly", () =>
+    cy
+      .get(".test-story-title")
+      .then(($title) =>
+        cy.wrap($title).should("have.text", $title.attr("data-story-title"))
+      ));
+  it("Shows description properly", () =>
+    cy
+      .get(".test-story-body")
+      .then(($body) =>
+        cy.wrap($body).should("have.text", $body.attr("data-story-body"))
+      ));
+  it("Shows username properly", () =>
+    cy
+      .get(".test-story-user-name")
+      .then(($el) =>
+        cy.wrap($el).should("have.text", "By " + $el.attr("data-user-name"))
+      ));
+};

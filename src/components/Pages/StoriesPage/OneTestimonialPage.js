@@ -155,7 +155,7 @@ class OneTestimonialPage extends React.Component {
       );
     }
 
-    const { tags } = story || {}
+    const { tags } = story || {};
     return (
       <>
         {Seo({
@@ -166,7 +166,7 @@ class OneTestimonialPage extends React.Component {
           keywords: story.title && story.title.split(" "),
           updated_at: story.updated_at,
           created_at: story.created_at,
-          tags: (tags || []).map( ({ name }) => name) || [],
+          tags: (tags || []).map(({ name }) => name) || [],
         })}
 
         <div
@@ -205,14 +205,10 @@ class OneTestimonialPage extends React.Component {
       <section className="event-section style-3">
         <div className="container">
           <h3
-            className="cool-font text-center"
-            style={
-              {
-                //textTransform: "capitalize",
-              }
-            }
+            className="cool-font text-center test-story-title"
+            data-story-title={story?.title}
           >
-            {story.title}
+            {story?.title}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
@@ -247,7 +243,12 @@ class OneTestimonialPage extends React.Component {
                       fontSize: "medium",
                     }}
                   >
-                    By {(story?.anonymous && "Anonymous") || creatorName}
+                    <span
+                      className="test-story-user-name"
+                      data-user-name={creatorName}
+                    >
+                      By {(story?.anonymous && "Anonymous") || creatorName}
+                    </span>
                   </METextView>
                   <METextView
                     mediaType="icon"
@@ -271,7 +272,8 @@ class OneTestimonialPage extends React.Component {
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
                   <p
-                    className="cool-font"
+                    className="cool-font test-story-body"
+                    data-story-body={story?.body}
                     style={{ color: "black", textAlign: "justify" }}
                   >
                     {story && story.body}
