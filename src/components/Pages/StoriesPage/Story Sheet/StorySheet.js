@@ -32,10 +32,9 @@ export default class StorySheet extends Component {
   }
 
   getUser() {
-    const { user, anonymous } = this.props;
-    if (anonymous) return "Anonymous";
-
-    return user?.preferred_name || user?.full_name || "...";
+    const { preferred_name, user, } = this.props;
+    //if (anonymous) return "Anonymous";
+    return preferred_name || user?.preferred_name || user?.full_name || "...";
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -64,6 +63,8 @@ export default class StorySheet extends Component {
   render() {
     const { created_at, title, file, id } = this.props;
     const date = getHumanFriendlyDate(created_at);
+    const creatorName = this.getUser();
+
     const noImageProps = !file ? { display: "block", width: "100%" } : {};
     const [pcHeight, mobileHeight] = this.getProperHeight();
     return (
@@ -118,7 +119,7 @@ export default class StorySheet extends Component {
           )}
 
           <div className="sheet-content-area">
-            <h4>{this.getUser()}</h4>
+            <h4>{creatorName}</h4>
             <div className="sheet-details">
               <p>{date}</p>
 
