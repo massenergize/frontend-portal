@@ -1,3 +1,17 @@
+export const oneTeamPageComponentsRenderProperly = () => {
+  var hasLotsOfText;
+  it("Has found team name", () => cy.get(".test-team-name").first());
+  it("Has found team tagline", () => cy.get(".test-team-tagline").first());
+  it("Has found description", () => {
+    cy.get(".test-one-team-wrapper")
+      .first()
+      .then(($div) => (hasLotsOfText = $div.text() === "true"));
+    if (hasLotsOfText) cy.get(".test-team-big-text").first();
+    else cy.get(".test-team-small-text").first();
+  });
+  it("Has found graph", () => cy.get("#test-team-graph-wrapper"));
+};
+
 export const showThatServicesDisplayProperly = () => {
   cy.get(".test-no-of-vendors-div").then(function ($div) {
     const noOfVendors = $div.attr("data-number-of-vendors");
@@ -17,7 +31,7 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
     "test-vendor-description",
     "test-vendor-phone",
     "test-vendor-email",
-  ]; // all ids are setup like this in the component, their attributes also follow the same nameing, just without "test-", but with "data-"
+  ]; // all ids are setup like this in the component, their attributes also follow the same naming, just without "test-", but with "data-"
   ids.forEach((id) => {
     id = "#" + id;
     cy.get(id).then(($element) => {

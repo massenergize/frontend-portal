@@ -323,6 +323,7 @@ class TeamsPage extends React.Component {
           <Link
             to={`${this.props.links.teams + "/" + teamObj.id} `}
             style={{ width: "100%" }}
+            className="test-team-clickable-card"
           >
             <div
               className="row no-gutter flex"

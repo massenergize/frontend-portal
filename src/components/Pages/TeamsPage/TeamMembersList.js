@@ -82,6 +82,7 @@ class TeamMembersList extends React.Component {
                 <li
                   key={admin.id}
                   style={{ marginLeft: 20, listStyleType: "circle" }}
+                  className="test-team-member-item"
                 >
                   <b>
                     {admin.preferred_name}{" "}
@@ -93,6 +94,7 @@ class TeamMembersList extends React.Component {
                 <li
                   key={layPerson.id}
                   style={{ marginLeft: 20, listStyleType: "circle" }}
+                  className="test-team-member-item"
                 >
                   {layPerson.preferred_name}
                 </li>
