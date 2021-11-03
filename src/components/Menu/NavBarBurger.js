@@ -314,6 +314,7 @@ class NavBarBurger extends React.Component {
         <li
           className="d-flex flex-column justify-content-center test-me-nav-menu-item"
           key={navLink.name}
+          {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
         >
           <Link className="cool-font" to={`${navLink.link}`}>
             {navLink.name}

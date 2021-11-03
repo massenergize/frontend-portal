@@ -4,6 +4,12 @@ export const showThatServicesDisplayProperly = () => {
     cy.get(".test-vendor-card").should("have.lengthOf", noOfVendors);
   });
 };
+export const showThatAllTeamCardsDisplayProperly = () => {
+  cy.get(".test-teams-wrapper").then(function ($div) {
+    const number = $div.attr("data-number-of-teams");
+    cy.get(".team-card").should("have.lengthOf", number);
+  });
+};
 
 export const checkForRelevantComponentsOnOneServicePage = () => {
   const ids = [
@@ -23,7 +29,7 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
 };
 
 export const typeInsideFilterbox = (text) => {
-  cy.get("#test-filter-box-id").type(text);
+  cy.get("#test-filter-box-id").type(text, { delay: 150 });
 };
 
 export const testimonialsShowProperly = () => {

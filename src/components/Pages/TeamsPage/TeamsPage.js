@@ -139,7 +139,8 @@ class TeamsPage extends React.Component {
         >
           <BreadCrumbBar links={[{ name: "Teams" }]} />
           <div
-            className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7"
+            className="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7 test-teams-wrapper"
+            data-number-of-teams={teamsData?.length || 0}
             style={{ margin: "auto", minHeight: "100vh" }}
           >
             <div className="text-center">
@@ -205,7 +206,7 @@ class TeamsPage extends React.Component {
               <>{this.renderTeams()}</>
             ) : (
               <center>
-                <p className="phone-font-15">
+                <p className="phone-font-15 ">
                   There are no teams in this community yet. You can start one by
                   clicking the start team button above!
                 </p>
