@@ -11,6 +11,9 @@ export default {
     landing: DOMAIN,
     homepage: BASE_URL,
     actions: BASE_URL + "actions",
+    services: BASE_URL + "services",
+    testimonials: BASE_URL + "testimonials",
+    teams: BASE_URL +"teams"
   },
   community: COMMUNITY,
 };
