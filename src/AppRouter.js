@@ -337,6 +337,7 @@ class AppRouter extends Component {
       var newAction = {
         name: "Actions",
         children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
+        navItemId: "action-nav-id",
       };
       // remove menu items for pages which cadmins have selected as not enabled
       newAction.children = newAction.children.filter((item) => {
@@ -358,7 +359,7 @@ class AppRouter extends Component {
     const menuPostActions = menu.splice(actionsIndex + 1);
     menu = [
       ...menu.splice(0, actionsIndex + 1),
-      { link: "/teams", name: "Teams" },
+      { link: "/teams", name: "Teams", navItemId: "team-nav-id" },
       ...menuPostActions,
     ];
 

@@ -71,12 +71,13 @@ class ServicesPage extends React.Component {
     if (serviceProviders.length === 0) {
       return (
         <div
-          className="text-center"
+          className="text-center test-no-of-vendors-div"
           style={{
             width: "100%",
             minHeight: window.screen.height - 200,
             paddingTop: "10vh",
           }}
+          data-number-of-vendors={serviceProviders?.length}
         >
           <img
             src={error_png}
@@ -115,7 +116,10 @@ class ServicesPage extends React.Component {
           }}
         >
           <BreadCrumbBar links={[{ name: "Service Providers" }]} />
-          <div className="container override-container-width">
+          <div
+            className="container override-container-width test-no-of-vendors-div"
+            data-number-of-vendors={serviceProviders?.length}
+          >
             <div className="row">
               <div className="col-md-10 col-lg-10 col-sm-12 offset-md-1 ">
                 <div style={{ marginBottom: 30 }}>
@@ -193,7 +197,10 @@ class ServicesPage extends React.Component {
 
     return vendors.map((vendor, index) => {
       return (
-        <div className={`col-12 col-md-4 col-lg-4`} key={index.toString()}>
+        <div
+          className={`col-12 col-md-4 col-lg-4 test-vendor-card`}
+          key={index.toString()}
+        >
           <MECard
             className={`vendor-hover  ${MEAnimation.getAnimationClass()}`}
             style={{ borderRadius: 10, position: "relative" }}
@@ -223,6 +230,7 @@ class ServicesPage extends React.Component {
                       textTransform: "capitalize",
                       fontWeight: "bold",
                     }}
+                    className ="test-vendor-name"
                   >
                     {vendor.name}
                   </h4>

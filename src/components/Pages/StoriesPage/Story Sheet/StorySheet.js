@@ -125,7 +125,7 @@ export default class StorySheet extends Component {
 
               <Link
                 style={{ marginLeft: "auto" }}
-                className="sheet-link"
+                className="sheet-link test-story-sheet-full-view-link"
                 to={`${this.props.links.testimonials}/${id}`}
               >
                 {" "}
@@ -179,6 +179,7 @@ export default class StorySheet extends Component {
                   color: "var(--app-theme-orange)",
                   fontSize: "0.85rem",
                 }}
+                className="test-story-sheet-title"
               >
                 {title}
               </h6>
