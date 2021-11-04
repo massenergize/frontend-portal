@@ -224,13 +224,12 @@ class ServicesPage extends React.Component {
                 </Link>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <h4
-                    className="pt-3"
+                    className="pt-3 test-vendor-name"
                     style={{
                       fontSize: "clamp(14px, 16px, 21px)",
                       textTransform: "capitalize",
                       fontWeight: "bold",
                     }}
-                    className ="test-vendor-name"
                   >
                     {vendor.name}
                   </h4>
