@@ -203,7 +203,8 @@ class OneTeamPage extends React.Component {
           )}
 
           <div
-            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8"
+            className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8 test-one-team-wrapper"
+            data-has-big-text={isBigText && "true"}
             style={{ margin: "auto" }}
           >
             <div className="row">
@@ -232,7 +233,9 @@ class OneTeamPage extends React.Component {
                             alt=""
                           />
                         )}
-                        {team && team.name}
+                        <span className="test-team-name">
+                          {team && team.name}
+                        </span>
                         {!isInTeam ? (
                           <i
                             className="fa fa-long-arrow-left"
@@ -255,7 +258,7 @@ class OneTeamPage extends React.Component {
                 <div className="row">
                   <div className="team-card-column">
                     <p
-                      className="team-card-content"
+                      className="team-card-content test-team-tagline"
                       style={{
                         textAlign: "center",
                         margin: "8px auto",
@@ -275,7 +278,7 @@ class OneTeamPage extends React.Component {
                   {isBigText && (
                     <div
                       style={{ marginTop: 15, marginBottom: 15 }}
-                      className="team-about-richtext-wrapper"
+                      className="team-about-richtext-wrapper test-team-big-text-wrapper"
                       dangerouslySetInnerHTML={{ __html: team.description }}
                     />
                   )}
@@ -366,7 +369,7 @@ class OneTeamPage extends React.Component {
 
   renderSocials(team) {
     const { community } = this.props;
-    const { subdomain } = community || {}
+    const { subdomain } = community || {};
 
     return (
       <>
@@ -424,7 +427,7 @@ class OneTeamPage extends React.Component {
               caret
             >
               <div
-                className="team-about-richtext-wrapper"
+                className="team-about-richtext-wrapper test-team-small-text"
                 dangerouslySetInnerHTML={{ __html: team.description }}
               />
             </MESectionWrapper>

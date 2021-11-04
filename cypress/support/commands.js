@@ -37,3 +37,10 @@ Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
   cy.visit(pageURL);
   cy.get(`#${successComponentID}`);
 });
+
+Cypress.Commands.add("findComponentsOnPage", function (arrayOfIds=[]) {
+  arrayOfIds.forEach(id => { 
+    cy.get("#"+id)
+  })
+});
+

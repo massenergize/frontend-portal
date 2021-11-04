@@ -15,7 +15,7 @@ const INITIAL_STATE = {
   aid: "--",
   vid: "--",
   vendor: "",
-  preferredName: "",
+  //preferredName: "",
   picFile: null,
   message: "Already completed an action? Tell Us Your Story",
   limit: 9000,
@@ -37,7 +37,7 @@ class StoryForm extends React.Component {
       captchaConfirmed: false,
       message: message,
       picFile: null,
-      preferred_name: "",
+      //preferredName: "",
       notificationState: null,
       spinner: false,
       formNotification: null,
@@ -84,11 +84,11 @@ class StoryForm extends React.Component {
       );
     });
   }
-  handlePreferredName(event) {
-    const val = event.target.value;
-    var string = val.trim() !== "" ? val.trim() : null;
-    this.setState({ preferredName: string });
-  }
+  //handlePreferredName(event) {
+  //  const val = event.target.value;
+  //  var string = val.trim() !== "" ? val.trim() : null;
+  //  this.setState({ preferredName: string });
+  //}
 
   closeToast() {
     this.setState({ notificationState: null });
@@ -144,7 +144,7 @@ class StoryForm extends React.Component {
         label:
           "Your name and email will be known to the Community Organizer but how would you like it to be displayed?",
         placeholder: "Name...",
-        value: "",
+        value: this.props.user?.preferred_name,
         required: true,
       },
       {
@@ -188,8 +188,8 @@ class StoryForm extends React.Component {
       );
     if (this.state.vid !== "other" && this.state.vendor !== "")
       this.setState({ vendor: "" });
-    if (this.state.preferred_name === "")
-      this.setState({ preferred_name: this.props.user.preferred_name });
+    //if (this.state.preferredName === "")
+    //  this.setState({ preferredName: this.props.user.preferredName });
     return (
       <MEFormGenerator
         style={{ background: "white", borderRadius: 10 }}

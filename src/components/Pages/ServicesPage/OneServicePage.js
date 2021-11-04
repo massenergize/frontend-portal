@@ -26,7 +26,6 @@ class OneServicePage extends React.Component {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
 
-    
     return (
       <>
         {Seo({
@@ -164,25 +163,38 @@ class OneServicePage extends React.Component {
                   caret
                 >
                   <a
-                    style={{ marginBottom: "6px", color: "black" }}
+                    style={{
+                      marginBottom: "6px",
+                      color: "black",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
                     href={`tel:${phone}`}
                   >
                     <b>
-                      <i className="fa fa-phone fa-m-right"></i>{" "}
-                    </b>{" "}
-                    {phone}
+                      <i className="fa fa-phone fa-m-right"></i>
+                    </b>
+                    <span id="test-vendor-phone" data-vendor-phone={phone}>
+                      {phone}
+                    </span>
                   </a>
-                  <br />
+
                   <a
-                    style={{ marginBottom: "6px", color: "black" }}
+                    style={{
+                      marginBottom: "6px",
+                      color: "black",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
                     href={`mailto:${email}`}
                   >
                     <b>
-                      <i className="fa fa-envelope fa-m-right"></i>{" "}
-                    </b>{" "}
-                    {email}
+                      <i className="fa fa-envelope fa-m-right"></i>
+                    </b>
+                    <span id="test-vendor-email" data-vendor-email={email}>
+                      {email}
+                    </span>
                   </a>
-                  <br />
 
                   {vendor.website ? (
                     <a
@@ -226,10 +238,18 @@ class OneServicePage extends React.Component {
                 className="col-md-8 col-lg-8 col-sm-6 col-12"
                 style={{ padding: "0px 25px" }}
               >
-                <h1 className="pt-3 mobile-title">{vendor.name}</h1>
+                <h1
+                  className="pt-3 mobile-title"
+                  id="test-vendor-name"
+                  data-vendor-name={vendor?.name}
+                >
+                  {vendor.name}
+                </h1>
                 <p
                   className="cool-font make-me-dark"
-                  dangerouslySetInnerHTML={{ __html: vendor.description }}
+                  id="test-vendor-description"
+                  data-vendor-description={vendor?.description}
+                  dangerouslySetInnerHTML={{ __html: vendor?.description }}
                 ></p>
               </div>
               {vendor.services && vendor.services.length > 0 ? (
