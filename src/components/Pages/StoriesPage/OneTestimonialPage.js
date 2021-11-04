@@ -10,6 +10,8 @@ import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
+import ShareButtons from "../../Shared/ShareButtons";
+import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
 
@@ -65,7 +67,7 @@ class OneTestimonialPage extends React.Component {
     const otherStories = this.getSomeOtherTestimonials();
     const content = otherStories.map((story, index) => {
       const creatorName =
-        story?.user?.preferred_name || story.user?.full_name || "...";
+        story?.preferred_name || story?.user?.preferred_name || story.user?.full_name || "...";
       return (
         <div key={index.toString()}>
           <MECard
@@ -141,6 +143,9 @@ class OneTestimonialPage extends React.Component {
 
   render() {
     const story = this.state.story ? this.state.story : {};
+    const { community } = story || {}
+    const { subdomain } = community || {}
+    
     if (this.state.loading) {
       return <LoadingCircle />;
     }
@@ -184,12 +189,12 @@ class OneTestimonialPage extends React.Component {
               <div className="single-products-details">
                 {this.renderStory(story)}
               </div>
-              {/* <ShareButtons
-                label="Share this event!"
+              <ShareButtons
+                label="Share this testimonial!"
                 pageTitle={story.name}
                 pageDescription={story.featured_summary}
                 url={`${URLS.SHARE}/${subdomain}/testimonial/${story.id}`}
-              /> */}
+              />
             </div>
           </section>
         </div>
@@ -200,7 +205,7 @@ class OneTestimonialPage extends React.Component {
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
     const creatorName =
-      story?.user?.preferred_name || story?.user?.full_name || "...";
+      story.preferred_name || story?.user?.preferred_name || story?.user?.full_name || "...";
     return (
       <section className="event-section style-3">
         <div className="container">
@@ -247,7 +252,7 @@ class OneTestimonialPage extends React.Component {
                       className="test-story-user-name"
                       data-user-name={creatorName}
                     >
-                      By {(story?.anonymous && "Anonymous") || creatorName}
+                      By {creatorName}
                     </span>
                   </METextView>
                   <METextView

@@ -4,10 +4,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
-import StoryModal from "./StoryModal";
-// import METestimonialCard from "./METestimonialCard";
 import MEButton from "../Widgets/MEButton";
-import MEModal from "../Widgets/MEModal";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
@@ -25,10 +22,8 @@ import MECard from "../Widgets/MECard";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
-    this.closeModal = this.closeModal.bind(this);
     this.state = {
       limit: 140, //size of a tweet
-      expanded: null,
       checked_values: null,
       modal_content: {
         image: null,
@@ -37,11 +32,9 @@ class StoriesPage extends React.Component {
         ano: null,
         user: null,
       },
-      testimonialModal: false,
       stories: [],
       searchText: null,
     };
-    this.readMore = this.readMore.bind(this);
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -54,19 +47,6 @@ class StoriesPage extends React.Component {
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
     if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
-  }
-
-  renderModal() {
-    if (this.state.expanded) {
-      return (
-        <MEModal
-          closeModal={this.closeModal}
-          contentStyle={{ minWidth: "100%" }}
-        >
-          <StoryModal content={this.state.modal_content} />
-        </MEModal>
-      );
-    }
   }
 
   renderAddTestmonialBtn() {
@@ -89,9 +69,6 @@ class StoriesPage extends React.Component {
     );
   }
 
-  readMore(params) {
-    this.setState({ expanded: params.id, modal_content: params.content });
-  }
   renderTestimonialForm() {
     if (this.props.user) {
       return <StoryForm uid={this.props.user.id} />;
@@ -125,9 +102,11 @@ class StoriesPage extends React.Component {
 
   renderSideViewStories(stories = []) {
     return (stories || []).map((story, index) => {
-      var creatorName =
-        story && story.preferred_name ? story.preferred_name : "...";
-      if (story?.anonymous) creatorName = "Anonymous";
+      const creatorName =
+        story && story.preferred_name
+          ? story.preferred_name
+          : story.user.preferred_name; //"...";
+      // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
         <div key={index.toString()}>
           <div key={index.toString()}>
@@ -149,9 +128,9 @@ class StoriesPage extends React.Component {
       );
     });
   }
+
   render() {
     const pageData = this.props.pageData;
-
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.tagCols) {
@@ -169,7 +148,6 @@ class StoriesPage extends React.Component {
 
     return (
       <>
-        {this.renderModal()}
         <div
           className="boxed_wrapper"
           style={{
@@ -250,10 +228,6 @@ class StoriesPage extends React.Component {
         </div>
       </>
     );
-  }
-
-  closeModal() {
-    this.setState({ expanded: null });
   }
 
   renderStories(stories) {
