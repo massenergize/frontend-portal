@@ -293,7 +293,40 @@ class AppRouter extends Component {
     }
   }
 
+  /**
+   * 1. The aim is to extract the "teams" URL as a child from the actions children list, and make it a main nav item
+   * 2. Make a contact us menu item
+   * 3. Then arrange menu items as : Home, Actions, Teams Events, About Us
+   * 4. Remove all menu links that have been deactivated by admins
+   *
+   * @param {*} menu
+   * @returns
+   */
   modifiedMenu(menu) {
+    //  Will continue after questions are answered by Brad Or Sam
+    // const itemsToShow = [];
+    // const untargeted = [];
+    // menu.forEach(menuItem => {
+    //   var altered={};
+    //   switch (menuItem?.name?.trim().toLowerCase()){
+    //     case "home":
+    //       itemsToShow[0] = {...menuItem, navItemId:"home-nav-id"}
+    //       itemsToShow.splice()
+    //     case "actions":
+    //       const children = menuItem.children.filter( child => child.link !== "/teams") // remove teams from action children list
+    //       altered = {...menuItem, children: children, navItemId:"action-nav-id"}
+    //       itemsToShow[1] = altered
+    //     case "about us":
+    //       // Make impact page the first on the dropdown list
+    //       const childrenWithNoImpact = menuItem.children.filter( child => child.link !== "/teams")
+
+    //     default:
+    //       untargeted.append(menuItem)
+    //   }
+    //   // set if deactivated over here
+    // })
+
+    // ---------------------------------------------------------------------------------------------------------------------
     var oldAbout = menu[3];
     var oldActions = menu[1];
     if (oldAbout) {
@@ -465,10 +498,12 @@ class AppRouter extends Component {
     const { links } = this.props;
 
     var finalMenu = [];
+    // console.log("I am the props menu", this.props.menu);
     if (this.props.menu) {
-      const [{ content }] = this.props.menu.filter((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      });
+      const { content } =
+        this.props.menu.find((menu) => {
+          return menu.name === "PortalMainNavLinks";
+        }) || {};
       finalMenu = content;
     }
 
@@ -476,6 +511,7 @@ class AppRouter extends Component {
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
+    // console.log("I am the final menu", finalMenu);
     finalMenu = this.modifiedMenu(finalMenu);
 
     var footerLinks = [];

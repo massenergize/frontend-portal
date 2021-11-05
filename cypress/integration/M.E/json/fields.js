@@ -13,7 +13,8 @@ export default {
     actions: BASE_URL + "actions",
     services: BASE_URL + "services",
     testimonials: BASE_URL + "testimonials",
-    teams: BASE_URL +"teams"
+    teams: BASE_URL +"teams",
+    events: BASE_URL + "events"
   },
   community: COMMUNITY,
 };
