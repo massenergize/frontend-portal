@@ -328,7 +328,8 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
-      const rest = (value === 0) ? 100 : goalObj.target_number_of_households - value;
+      const target = goalObj.target_number_of_households;
+      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
       return {
         labels: ["Households Engaged", "Remaining"],
         datasets: [
@@ -341,7 +342,8 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
       };
     }
     case "actions-completed": {
-      const rest = (value === 0) ? 100 : goalObj.target_number_of_actions - value;
+      const target = goalObj.target_number_of_actions;
+      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
       return {
         labels: ["Actions Completed", "Remaining"],
         datasets: [
@@ -357,7 +359,7 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
       const target = calcEQ(goalObj.target_carbon_footprint_reduction, factor);
       const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
-      const rest = (value === 0) ? 100 : target - value;
+      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
       return {
         labels: [unit, "Remaining"],
         datasets: [
