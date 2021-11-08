@@ -145,7 +145,7 @@ export default class NewEventsCard extends Component {
     const { rsvpStatus, loading, error } = this.state;
 
     return (
-      <div>
+      <div className="test-one-event-card">
         <MECard
           style={{
             padding: 0,

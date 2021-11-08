@@ -1,3 +1,23 @@
+export const showThatAllEventCardsDisplayProperly = () => {
+  var numberOfEvents;
+  it("Gets number of available events", function () {
+    cy.get(".test-events-page-wrapper").then(
+      ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
+    );
+  });
+
+  it("Checks to see 'No events' prompt is showing when there are no events or or all event cards are showing up when there are events", function () {
+    if (!numberOfEvents || numberOfEvents === 0) {
+      cy.get("#test-no-events").should("exist");
+      cy.get(".test-one-event-card").first().should("not.exist");
+      cy.log("There we no events...")
+    } else {
+      cy.get("#test-no-events").should("not.exist");
+      cy.get(".test-one-event-card").should("have.lengthOf", numberOfEvents);
+    }
+  });
+};
+
 export const oneTeamPageComponentsRenderProperly = () => {
   var hasLotsOfText;
   it("Has found team name", () => cy.get(".test-team-name").first());

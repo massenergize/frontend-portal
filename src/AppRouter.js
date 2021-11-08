@@ -301,6 +301,8 @@ class AppRouter extends Component {
    *
    * @param {*} menu
    * @returns
+   *
+   * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
     //  Will continue after questions are answered by Brad Or Sam
@@ -407,6 +409,17 @@ class AppRouter extends Component {
           return true;
         default:
           return item.children ? item.children.length > 0 : true;
+      }
+    });
+
+    menu = menu.map((item) => {
+      switch (item.name?.toLowerCase()) {
+        case "events":
+          return { ...item, navItemId: "events-nav-id" };
+        case "about us":
+          return { ...item, navItemId: "about-us-nav-id" };
+        default:
+          return item;
       }
     });
 
