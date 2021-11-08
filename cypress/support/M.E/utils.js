@@ -1,16 +1,45 @@
+export const oneEventPageComponentsRenderProperly = () => {
+  var rec, venue, date;
+  it("Got the details of recurring status, venue, and date from the event object itself", () => {
+    cy.get(".test-one-event-wrapper")
+      .first()
+      .then(($el) => {
+        rec = $el.attr("data-is-recurring");
+        venue = $el.attr("data-venue");
+        date = $el.attr("data-date");
+      });
+  });
+  it("Found event title", () => cy.get(".test-event-title").should("exist"));
+  it("Found event description", () =>
+    cy.get(".test-event-body").first().should("exist"));
+  it("Found event image", () => cy.get(".test-event-image"));
+  it("Found the event date", () => {
+    if (date) cy.get(".test-event-date").first().should("exist");
+    else cy.log("Does not have any date...");
+  });
+  it("Found the event venue", () => {
+    if (venue) cy.get(".test-event-venue").first().should("exist");
+    else cy.log("Does not have any venue...");
+  });
+  it("Found the event recurring status", () => {
+    if (rec) cy.get(".test-event-recurring-status").first().should("exist");
+    else cy.log("Does not have any recurring string...");
+  });
+};
+
 export const showThatAllEventCardsDisplayProperly = () => {
   var numberOfEvents;
-  it("Gets number of available events", function () {
+  it("Got number of available events", function () {
     cy.get(".test-events-page-wrapper").then(
       ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
     );
   });
 
-  it("Checks to see 'No events' prompt is showing when there are no events or or all event cards are showing up when there are events", function () {
+  it("Event cards display when there are events or 'No events' prompt shows up instead", function () {
     if (!numberOfEvents || numberOfEvents === 0) {
       cy.get("#test-no-events").should("exist");
       cy.get(".test-one-event-card").first().should("not.exist");
-      cy.log("There we no events...")
+      cy.log("There we no events...");
     } else {
       cy.get("#test-no-events").should("not.exist");
       cy.get(".test-one-event-card").should("have.lengthOf", numberOfEvents);
