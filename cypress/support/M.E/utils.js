@@ -1,3 +1,15 @@
+export const rsvpWithDropdown = () => {
+  it("Clicked the RSVP button to activate dropdown", function () {
+    cy.get(".test-card-rsvp-toggler").first().click();
+  });
+  it("RSVP dropdown opened up", function () {
+    cy.get(".test-light-drop-menu");
+  });
+
+  it("Chose 'Going' from RSVP dropdown list", () => {
+    cy.get(".test-light-drop-item").eq(1).click();
+  });
+};
 export const oneEventPageComponentsRenderProperly = () => {
   var rec, venue, date;
   it("Got the details of recurring status, venue, and date from the event object itself", () => {

@@ -20,6 +20,7 @@ class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      rsvpError: null,
       event: null,
       loading: true,
       rsvpLoading: false,
@@ -122,11 +123,14 @@ class OneEventPage extends React.Component {
         this.setState({
           rsvpStatus: json.data?.status,
           rsvpLoading: false,
-          error: null,
+          rsvpError: null,
         });
       } else {
         console.log("RSVP Error::", json.error);
-        this.setState({ error: json.error?.toString(), rsvpLoading: false });
+        this.setState({
+          rsvpError: json.error?.toString(),
+          rsvpLoading: false,
+        });
       }
     });
   }
@@ -316,17 +320,26 @@ class OneEventPage extends React.Component {
                             </span>
                           )
                         }
-                        labelClassNames="me-rsvp-btn z-depth-float"
+                        labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
                         data={[
                           RSVP_STATUS.INTERESTED,
                           RSVP_STATUS.GOING,
                           RSVP_STATUS.NOT_GOING,
                         ]}
                       />
-                      {this.state.error && (
-                        <small style={{ color: "red", marginTop: 4 }}>
+                      {this.state.rsvpError && (
+                        <small
+                          style={{ color: "red", marginTop: 4 }}
+                          className="test-rsvp-error"
+                        >
                           {this.state.error}
                         </small>
+                      )}
+                      {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
+                      {this.state.rsvpStatus && (
+                        <div className="test-rsvp-status-div">
+                          {this.state.rsvpStatus}
+                        </div>
                       )}
                     </div>
                   )}
