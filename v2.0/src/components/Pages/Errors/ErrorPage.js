@@ -2,9 +2,12 @@ import React from "react";
 import oops from "./oops.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import URLS from "../../../api/urls";
 
 class ErrorPage extends React.Component {
   render() {
+    const homeURL = window.location.origin + this.props.links.home;
+    const currentlyOnHomePage = window.location.href === homeURL;
     const errorMessage = this.props.errorMessage
       ? "Error: " + this.props.errorMessage
       : "An error occured.";
@@ -31,13 +34,19 @@ class ErrorPage extends React.Component {
               src={oops}
               style={{ marginBottom: 20, height: 100, width: 100 }}
             />
-            <h1 style={{ color: "lightgray" }}>{errorMessage}</h1>
+            <h1 style={{ color: "lightgray" }}>
+              {!this.props.invalidCommunity
+                ? errorMessage
+                : "The community you want to access does not exist."}
+            </h1>
             <h3
               className="text-center"
               style={{ marginBottom: 20, color: "lightgray" }}
             >
               {" "}
-              {errorDescription}
+              {!this.props.invalidCommunity
+                ? errorDescription
+                : "Contact us at info@massenergize.org"}
             </h3>
             {this.props.allowBack && (
               <p className="text-center">
@@ -52,10 +61,21 @@ class ErrorPage extends React.Component {
                 </Link>
               </p>
             )}
+
+            {this.props.invalidCommunity && (
+              <p className="text-center">
+                <a href={URLS.COMMUNITIES} className="mass-domain-link ">
+                  Checkout all active communities
+                </a>
+              </p>
+            )}
             {!this.props.allowBack && !this.props.invalidCommunity && (
               <p className="text-center">
-                <Link to={this.props.links.home} className="mass-domain-link ">
-                  Return to Home Page
+                <Link
+                  to={currentlyOnHomePage ? "/" : this.props.links.home}
+                  className="mass-domain-link "
+                >
+                  {currentlyOnHomePage ? "Reload Page" : " Return to Home Page"}
                 </Link>
               </p>
             )}

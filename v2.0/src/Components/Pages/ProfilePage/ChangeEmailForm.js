@@ -13,10 +13,12 @@ class ChangeEmailFormBase extends React.Component {
     super(props);
     this.state = {
       are_you_sure: false,
+      loading: false,
     };
   }
 
   render() {
+    const { loading } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
         <MECard className="me-anime-open-in">
@@ -52,10 +54,23 @@ class ChangeEmailFormBase extends React.Component {
           />
 
           <MEButton>{"Submit"}</MEButton>
+
           <MEButton variation="accent" onClick={() => this.props.closeForm()}>
             {" "}
             Cancel{" "}
           </MEButton>
+          <br />
+          {loading && (
+            <small
+              style={{
+                fontSize: 16,
+                color: "var(--app-theme-green)",
+                margin: 10,
+              }}
+            >
+              <i className="fa fa-spinner fa-spin" /> Loading...
+            </small>
+          )}
         </MECard>
       </form>
     );
@@ -70,10 +85,14 @@ class ChangeEmailFormBase extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
 
-    if(!this.state.password || !this.state.email) {
-      this.setState({error:"Please make sure you have provided a new email and your current password"})
+    if (!this.state.password || !this.state.email) {
+      this.setState({
+        error:
+          "Please make sure you have provided a new email and your current password",
+      });
       return;
     }
+    this.setState({ loading: true });
     var cred = this.props.firebase.auth.EmailAuthProvider.credential(
       this.props.user.email,
       this.state.password
@@ -93,15 +112,21 @@ class ChangeEmailFormBase extends React.Component {
             });
 
             this.props.closeForm(
-              "Thank you, your email has been changed. Please check your inbox to verify your new email"
+              "Great start! Your email has been changed. Please check your inbox to verify your new email"
             );
           })
           .catch((err) => {
-            this.setState({ error: err.message ? err.message : err });
+            this.setState({
+              error: err.message ? err.message : err,
+              loading: false,
+            });
           });
       })
       .catch((err) => {
-        this.setState({ error: err.message ? err.message : err });
+        this.setState({
+          error: err.message ? err.message : err,
+          loading: false,
+        });
       });
   };
   deleteAccount() {

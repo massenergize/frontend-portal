@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
 import StoryForm from "./StoryForm";
-// import ChooseHHForm from "./ChooseHHForm";
 import MEModal from "./../Widgets/MEModal";
 import ActionModal from "./ActionModal";
+import URLS from "../../../api/urls";
 import {
   reduxAddToDone,
   reduxAddToTodo,
@@ -23,7 +23,6 @@ import {
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ShareButtons from "../../Shared/ShareButtons";
-import { Helmet } from "react-helmet";
 import { getHTMLContent } from "../HTML/HTMLShop";
 import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
@@ -36,6 +35,7 @@ import {
   NO_AUTH,
   TODO,
 } from "./ActionStateConstants";
+import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 
 /**
@@ -107,18 +107,26 @@ class OneActionPage extends React.Component {
       );
     }
     this.chooseFontSize();
+
+    const { tags } = action;
+    const { community } = action || {}
+    const { subdomain } = community || {}
     return (
       <>
         {this.renderModal()}
-        <Helmet>
-          <meta property="og:title" content={action.title} />
-          <meta
-            property="og:image"
-            content={action.image && action.image.url}
-          />
-          <meta property="og:description" content={action.featured_summary} />
-          <meta property="og:url" content={window.location.href} />
-        </Helmet>
+        {Seo({
+          title: action.title,
+          description: action.featured_summary,
+          site_name: action.community && action.community.name,
+          url: `${window.location.pathname}`,
+          image:action.image && action.image.url ,
+          keywords: action.title && action.title.split(' ') ,
+          updated_at: action.updated_at,
+          created_at: action.updated_at,
+          tags: (tags || []).map( ({ name }) => name) || [],
+        })}
+
+
         <div className="boxed_wrapper">
           <BreadCrumbBar
             links={[
@@ -133,7 +141,10 @@ class OneActionPage extends React.Component {
                 className="row"
                 style={{ paddingRight: "0px", marginRight: "0px" }}
               >
-                <div className="col-md-9" style={{marginBottom:15}}>
+                <div
+                  className="col-md-9 mob-padding-zero"
+                  style={{ marginBottom: 15 }}
+                >
                   <div className="single-products-details">
                     {this.renderAction(action)}
                   </div>
@@ -142,7 +153,7 @@ class OneActionPage extends React.Component {
                     label="Share this action!"
                     pageTitle={action.title}
                     pageDescription={action.featured_summary}
-                    url={window.location.href}
+                    url={`${URLS.SHARE}/${subdomain}/action/${action.id}`}
                   />
                 </div>
                 {/* makes the todo and completed actions carts */}
@@ -346,7 +357,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(isDone);
-          this.setState({ showTodoMsg: false });
+          this.setState({ showTodoMsg: false, showTestimonialLink: false });
           return;
         }
       }
@@ -357,7 +368,7 @@ class OneActionPage extends React.Component {
         if (!this.userHasManyHouseHolds()) {
           //-- Check and see if user has more than one household. More? Open modal, else just do your magic
           this.removeFromCart(inTodo);
-          this.setState({ showTodoMsg: false });
+          this.setState({ showTodoMsg: false, showTestimonialLink: false });
           return;
         }
       }
@@ -393,7 +404,7 @@ class OneActionPage extends React.Component {
             content={this.getMyAction()}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -563,7 +574,7 @@ class OneActionPage extends React.Component {
                     </div>
                   )
                 }
-                {this.state.showTodoMsg ? (
+                {this.state.showTodoMsg && !this.state.showTestimonialLink ? (
                   <p style={{ fontSize: 15, marginLeft: 20, marginTop: 9 }}>
                     Nicely done! You have now added this action to your todo
                     list.
@@ -584,6 +595,8 @@ class OneActionPage extends React.Component {
               </div>
             </div>
           </div>
+
+          {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
           <div className="product-tab-box">
             <ul className="nav nav-tabs tab-menu">
@@ -681,7 +694,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.about),
                       }}
@@ -701,7 +714,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.steps_to_take),
                       }}
@@ -721,7 +734,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <p
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark word-wrap"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.deep_dive),
                       }}
@@ -763,7 +776,7 @@ class OneActionPage extends React.Component {
                   See Testimonials
                 </MELink>
                 <div className="phone-vanish">
-                  <div className="review-box make-me-dark">
+                  <div className="review-box make-me-dark word-wrap">
                     {/* Reviews */}
                     {this.renderStories(stories)}
                     {this.state.numberToShow < stories.length ? (
@@ -899,7 +912,7 @@ class OneActionPage extends React.Component {
         console.log(err);
       });
   };
-  addToCart = (aid, hid, status) => {
+  addToCart = (aid, hid, status, date_completed) => {
     if (status !== "TODO" && status !== "DONE") return;
 
     const route =
@@ -909,6 +922,7 @@ class OneActionPage extends React.Component {
     const body = {
       action_id: aid,
       household_id: hid,
+      date_completed: date_completed + "-01"
     };
     apiCall(route, body)
       .then((json) => {

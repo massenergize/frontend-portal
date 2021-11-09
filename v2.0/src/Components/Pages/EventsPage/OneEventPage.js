@@ -7,7 +7,8 @@ import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
 import { dateFormatString, locationFormatJSX } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
-import { Helmet } from "react-helmet";
+import Seo from "../../Shared/Seo";
+import URLS from "../../../api/urls";
 
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class OneEventPage extends React.Component {
 
   render() {
     const event = this.state.event;
+    const { community } = event || {}
+    const { subdomain } = community || {}
 
     if (this.state.loading) {
       return <LoadingCircle />;
@@ -57,12 +60,17 @@ class OneEventPage extends React.Component {
 
     return (
       <>
-        <Helmet>
-          <meta property="og:title" content={event.name} />
-          <meta property="og:image" content={event.image && event.image.url} />
-          <meta property="og:description" content={event.featured_summary} />
-          <meta property="og:url" content={window.location.href} />
-        </Helmet>
+        {Seo({
+          title: event.name,
+          description: event.featured_summary,
+          url: `${window.location.href}`,
+          image: event.image && event.image.url,
+          keywords: event.name && event.name.split(' ') ,
+          updated_at: event.updated_at,
+          created_at: event.updated_at,
+          tags:  event.name && event.name.split(' ') ,
+        })}
+
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -82,7 +90,7 @@ class OneEventPage extends React.Component {
                 label="Share this event!"
                 pageTitle={event.name}
                 pageDescription={event.featured_summary}
-                url={window.location.href}
+                url={`${URLS.SHARE}/${subdomain}/event/${event.id}`}
               />
             </div>
           </section>

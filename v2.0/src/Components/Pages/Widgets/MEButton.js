@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { getRandomIntegerInRange } from "../../Utils";
 
 const ACCENT = "accent";
 const UNION = "union";
@@ -61,14 +62,23 @@ class MEButton extends Component {
   }
 
   ejectComponent() {
-    const { style, href, to, disabled, type, target } = this.props;
+    const {
+      style,
+      href,
+      to,
+      disabled,
+      type,
+      target,
+      id = getRandomIntegerInRange(),
+    } = this.props;
     var newTab = target ? { target } : {};
     const classes = this.getClasses();
     const styles = style ? { ...style } : null;
     if (!href && !to) {
       return (
-        <div className="put-me-inline">
+        <div className={"put-me-inline"}>
           <button
+            id={id}
             type={type}
             disabled={disabled}
             className={classes}
@@ -86,6 +96,7 @@ class MEButton extends Component {
       return (
         <div className="put-me-inline">
           <a
+            id={id}
             disabled={disabled}
             className={classes}
             style={styles}
@@ -102,6 +113,7 @@ class MEButton extends Component {
       return (
         <div className="put-me-inline">
           <Link
+            id={id}
             disabled={disabled}
             className={classes}
             style={styles}
@@ -116,9 +128,12 @@ class MEButton extends Component {
       );
   }
   render() {
-    const { containerStyle } = this.props;
+    const { containerStyle, containerClassName } = this.props;
     return (
-      <div className="put-me-inline" style={containerStyle}>
+      <div
+        className={`put-me-inline ${containerClassName}`}
+        style={containerStyle}
+      >
         {this.ejectComponent()}
       </div>
     );
@@ -135,6 +150,7 @@ MEButton.defaultProps = {
   iconSize: "small",
   iconColor: "#282828",
   containerStyle: {},
+  containerClassName: "",
   target: null,
 };
 

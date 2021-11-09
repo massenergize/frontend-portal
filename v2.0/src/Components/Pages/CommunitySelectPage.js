@@ -26,7 +26,8 @@ class CommunitySelectPage extends React.Component {
     const { communities } = this.props;
     const com = communities.filter((item) => item.id === value)[0];
     this.saveSelectedToStorage(value); // Save selected community's id to localStorage before moving
-    this.props.history.push(`/${com.subdomain}`);
+    // this.props.history.push(`/${com.subdomain}`);
+    window.location = `/${com.subdomain}`;
   }
 
   /**
@@ -72,8 +73,9 @@ class CommunitySelectPage extends React.Component {
       (obj) => obj.community.id
     );
     return (
-      <>
+      <div id="communities-dropdown-test-id">
         <MEAutoComplete
+          id="test-auto-complete-textbox"
           textStyle={{ textTransform: "capitalize" }}
           useCaret={true}
           data={data}
@@ -84,10 +86,11 @@ class CommunitySelectPage extends React.Component {
             paddingLeft: 25,
           }}
           containerClassName="com-select-auto-edits"
+          childClassName="test-dropdown-child-class"
           placeholder="Choose your community"
           onItemSelected={this.handleCommunitySelected}
         />
-      </>
+      </div>
     );
   }
 
@@ -104,13 +107,14 @@ class CommunitySelectPage extends React.Component {
     };
     res.location = location;
     if (res.has_location) {
-      const state = location.state ? meStatesDataValues[meStatesData.indexOf(location.state)] : "";
-      
+      const state = location.state
+        ? meStatesDataValues[meStatesData.indexOf(location.state)]
+        : "";
 
       // Only add the County-State prefix when there is a location, and the community is geographically focused
-      const prefix = `${location.city || ""}${
-        location.city ? ", " : ""
-      } ${state || ""}`;
+      const prefix = `${location.city || ""}${location.city ? ", " : ""} ${
+        state || ""
+      }`;
       res.name_with_community = `${prefix} ${prefix.trim() ? " - " : ""} ${
         community.name
       }`;

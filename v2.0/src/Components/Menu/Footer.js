@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import {
   IS_PROD,
   IS_CANARY,
-  IS_SANDBOX,
   BUILD_VERSION,
 } from "../../config/config";
 import CommunitySocials from "./CommunitySocials";
@@ -29,21 +28,11 @@ class Footer extends React.Component {
   render() {
     // console.log("I am the community", this.props.community);
     let BUILD_VERSION_TEXT = BUILD_VERSION;
-    if (IS_PROD && IS_SANDBOX) {
-      // prod sandbox
-      BUILD_VERSION_TEXT = "Production Build (Sandbox) " + BUILD_VERSION_TEXT;
-    } else if (IS_PROD && !IS_SANDBOX) {
-      //prod main
+    if (IS_PROD) {      //prod main
       BUILD_VERSION_TEXT = "Production Build " + BUILD_VERSION_TEXT;
-    } else if (IS_CANARY && IS_SANDBOX) {
-      // prod sandbox
-      BUILD_VERSION_TEXT = "Canary Build (Sandbox) " + BUILD_VERSION_TEXT;
-    } else if (IS_CANARY && !IS_SANDBOX) {
+    } else if (IS_CANARY) {
       //prod main
       BUILD_VERSION_TEXT = "Canary Build " + BUILD_VERSION_TEXT;
-    } else if (!IS_PROD && IS_SANDBOX) {
-      // dev sandbox
-      BUILD_VERSION_TEXT = "Development Build (Sandbox) " + BUILD_VERSION_TEXT;
     } else {
       // dev sandbox
       BUILD_VERSION_TEXT = "Development Build " + BUILD_VERSION_TEXT;
@@ -91,7 +80,7 @@ class Footer extends React.Component {
                   href="https://massenergize.org"
                   rel="noopener noreferrer"
                 >
-                  Copyright © 2020
+                  Copyright © 2021
                 </a>{" "}
                 All Rights Reserved. Powered by{" "}
                 <a

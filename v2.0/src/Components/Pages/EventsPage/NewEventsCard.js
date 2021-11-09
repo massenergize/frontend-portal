@@ -4,22 +4,37 @@ import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
 import METextView from "../Widgets/METextView";
 import * as moment from "moment";
-import { locationFormatJSX } from "../../Utils";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-
+import { apiCall } from "../../../api/functions";
+import { Link } from "react-router-dom";
+import MELightDropDown from "../Widgets/MELightDropDown";
+const RSVP_STATUS = {
+  GOING: "Going",
+  INTERESTED: "Interested",
+  NOT_GOING: "Not Going",
+  RSVP: "RSVP",
+};
 export default class NewEventsCard extends Component {
   constructor(props) {
     super(props);
     this.handleReadMore = this.handleReadMore.bind(this);
+    this.itemSelected = this.itemSelected.bind(this);
+    this.getRSVPStatus = this.getRSVPStatus.bind(this);
+
     this.state = {
       img: null,
+      rsvpStatus: null,
+      loading: false,
+      error: null,
     };
   }
+
   getPhoto() {
     const { image } = this.props;
     if (image && image.url) return image.url;
     return photo;
   }
+
   getBody() {
     var body = this.props.featured_summary;
     var limit = this.props.body_limit;
@@ -40,16 +55,50 @@ export default class NewEventsCard extends Component {
     }
     return body;
   }
+
+  updateRSVP(status) {
+    if (status === MELightDropDown.NONE) return;
+    const LINK =
+      status === RSVP_STATUS.NOT_GOING
+        ? "events.rsvp.remove"
+        : "events.rsvp.update";
+    this.setState({ loading: true });
+    apiCall(LINK, {
+      event_id: this.props.id,
+      status: status,
+    }).then((json) => {
+      if (json.success) {
+        this.setState({
+          rsvpStatus: json.data?.status,
+          loading: false,
+          error: null,
+        });
+      } else {
+        console.log("RSVP Error::", json.error);
+        this.setState({ error: json.error?.toString(), loading: false });
+      }
+    });
+  }
+
+  getRSVPStatus() {
+    apiCall("events.rsvp.get", { event_id: this.props.id }).then((json) => {
+      if (json.success) {
+        const rsvp_status = json.data;
+        if (rsvp_status) {
+          const rsvpStatus =
+            rsvp_status.status === "RSVP" ? "Going" : rsvp_status.status;
+          this.setState({ rsvpStatus: rsvpStatus });
+        } else {
+          this.setState({ rsvpStatus: null });
+        }
+      } else {
+        console.log("failed to get event rsvp status");
+      }
+    });
+  }
+
   componentDidMount() {
-    document.addEventListener(
-      "error",
-      (e) => {
-        if (e.target.tagName.toLowerCase() !== "img") return;
-        e.target.src = photo;
-        e.target.alt = "The real img is missing, this is a default image";
-      },
-      true
-    );
+    if (this.props.user) this.getRSVPStatus();
   }
 
   handleReadMore(e) {
@@ -74,80 +123,123 @@ export default class NewEventsCard extends Component {
   }
 
   getEventTitle() {
-    const { name } = this.props;
-    if (name.length > 48) return name + "...";
+    var { name } = this.props;
+    if (name.length > 48) return name.substr(0, 48) + "...";
     return name;
   }
-  render() {
-    var { className, location, dateString, id, recurringDetailString } = this.props;
+
+  itemSelected(status) {
+    this.updateRSVP(status);
+  }
+  renderNewCardDesign() {
+    var {
+      className,
+      dateString,
+      id,
+      recurringDetailString,
+      user,
+      links,
+      customDropAnimation,
+      dropDirection,
+    } = this.props;
+    const { rsvpStatus, loading, error } = this.state;
+
     return (
       <div>
         <MECard
-          to={`${this.props.links.events + "/" + id}`}
-          style={{ padding: 0, position: "relative", borderRadius: 15 }}
+          style={{
+            padding: 0,
+            position: "relative",
+            borderRadius: 15,
+            background: "white",
+          }}
           className={`${MEAnimation.getAnimationClass()} ${className}`}
         >
-          <img src={this.getPhoto()} className="me-testimonial-img" alt="event" />
-          <div className="me-testimonial-content-box">
-            <div className="me-testimonial-about">
-              <small style={{ fontSize: 17 }}>
-                <b>
-                  {this.getEventTitle()}
-                  {/* <br />
-                  <i className="fa fa-clock-o" style={{ marginRight: 5 }} />
-                  {dateString} */}
-                </b>
-              </small>
-            </div>
-            <div style={{ padding: 15 }}>
-              <METextView
-                className="me-testimonial-content"
-                style={{ fontSize: 15, color: "#282828" }}
-              >
-                {this.getBody()}
-              </METextView>
+          <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }}>
+            <img
+              src={this.getPhoto()}
+              className="new-me-testimonial-img"
+              alt="event media"
+              onError={() => photo}
+            />
+            <h1
+              style={{
+                fontSize: 17,
+                fontWeight: "bold",
+                padding: "6px 18px",
+                minHeight: 52,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {this.getEventTitle()}
+            </h1>
+          </Link>
 
-              <div className="testimonial-link-holder">
-                <METextView
-                  mediaType="icon"
-                  icon="fa fa-clock-o"
-                  type="small"
-                  style={{ color: "green" }}
-                >
-                  {dateString}
+          <div className="bottom-date-area">
+            <div style={{ padding: 13 }}>
+              <span className="date-string">{dateString}</span>
+              <br />
+              {!user && (
+                <>
+                  <small style={{ fontSize: "90%" }}>
+                    <Link to={links.signin}>Sign In to RSVP</Link>
+                  </small>
+                  <br />
+                </>
+              )}
+
+              {recurringDetailString && (
+                <METextView type="small" style={{ color: "green" }}>
+                  {recurringDetailString}
                 </METextView>
-                <br />
-                <METextView
-                  type="small"
-                  style={{ color: "green" }}
-                  mediaType="icon"
-                  icon="fa fa-map-marker"
-                >
-                  {location ? locationFormatJSX(location) : "No Location"}
-                </METextView>
-                <br />
-                <METextView
-                  type="small"
-                  style={{ color: "green" }}
-                >
-                  {recurringDetailString ? recurringDetailString : recurringDetailString}
-                </METextView>
-              </div>
+              )}
             </div>
+
+            {user && (
+              <div style={{ marginLeft: "auto" }}>
+                <MELightDropDown
+                  direction={dropDirection}
+                  onItemSelected={this.itemSelected}
+                  animate={false}
+                  customAnimation={customDropAnimation || "rsvp-drop-anime"}
+                  controlLabel={true}
+                  label={
+                    (loading && <i className="fa fa-spinner fa-spin"></i>) ||
+                    rsvpStatus ||
+                    "RSVP"
+                  }
+                  labelClassNames="me-rsvp-btn z-depth-float"
+                  data={[
+                    RSVP_STATUS.INTERESTED,
+                    RSVP_STATUS.GOING,
+                    RSVP_STATUS.NOT_GOING,
+                  ]}
+                />
+              </div>
+            )}
           </div>
         </MECard>
+        {error && (
+          <small style={{ color: "red" }}>
+            Sorry, couldnt perform task: {error}
+          </small>
+        )}
       </div>
     );
+  }
+  render() {
+    return this.renderNewCardDesign();
   }
 }
 
 NewEventsCard.defaultProps = {
-  body:
-    "This is some more information about this testimonial. This is the default text...",
-  prefered_name: "Anonymous",
+  body: "This is some more information about this event. This is the default text...",
+  preferred_name: "Anonymous",
   action: {},
   created_at: "1st January 2020",
   links: {},
   name: "New Event",
   body_limit: 150,
+  dropDirection: "down",
 };

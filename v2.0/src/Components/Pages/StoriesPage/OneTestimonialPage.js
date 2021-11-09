@@ -6,13 +6,12 @@ import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./me_energy_default.png";
 import { getHumanFriendlyDate, getRandomIntegerInRange } from "../../Utils";
-// import ShareButtons from "../../Shared/ShareButtons";
-import { Helmet } from "react-helmet";
 import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
 import { Link } from "react-router-dom";
+import Seo from "../../Shared/Seo";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -66,7 +65,7 @@ class OneTestimonialPage extends React.Component {
     const otherStories = this.getSomeOtherTestimonials();
     const content = otherStories.map((story, index) => {
       const creatorName =
-        story && story.preferred_name ? story.preferred_name : "...";
+        story?.user?.preferred_name || story.user?.full_name || "...";
       return (
         <div key={index.toString()}>
           <MECard
@@ -77,7 +76,8 @@ class OneTestimonialPage extends React.Component {
             <br />
             <small style={{ color: "#4a1e04" }}>
               <b>
-                By {creatorName}, {getHumanFriendlyDate(story.created_at)}
+                By {(story?.anonymous && "Anonymous") || creatorName},{" "}
+                {getHumanFriendlyDate(story.created_at)}
               </b>
             </small>
           </MECard>
@@ -155,14 +155,20 @@ class OneTestimonialPage extends React.Component {
       );
     }
 
+    const { tags } = story || {}
     return (
       <>
-        <Helmet>
-          <meta property="og:title" content={story.name} />
-          <meta property="og:image" content={story.image && story.image.url} />
-          <meta property="og:description" content={story.featured_summary} />
-          <meta property="og:url" content={window.location.href} />
-        </Helmet>
+        {Seo({
+          title: story.title,
+          description: story.body,
+          url: `${window.location.href}`,
+          image: story.image && story.image.url,
+          keywords: story.title && story.title.split(" "),
+          updated_at: story.updated_at,
+          created_at: story.created_at,
+          tags: (tags || []).map( ({ name }) => name) || [],
+        })}
+
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -182,7 +188,7 @@ class OneTestimonialPage extends React.Component {
                 label="Share this event!"
                 pageTitle={story.name}
                 pageDescription={story.featured_summary}
-                url={window.location.href}
+                url={`${URLS.SHARE}/${subdomain}/testimonial/${story.id}`}
               /> */}
             </div>
           </section>
@@ -193,7 +199,8 @@ class OneTestimonialPage extends React.Component {
 
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
-
+    const creatorName =
+      story?.user?.preferred_name || story?.user?.full_name || "...";
     return (
       <section className="event-section style-3">
         <div className="container">
@@ -240,10 +247,7 @@ class OneTestimonialPage extends React.Component {
                       fontSize: "medium",
                     }}
                   >
-                    By{" "}
-                    {story.user && story.preferred_name
-                      ? story.preferred_name
-                      : "..."}
+                    By {(story?.anonymous && "Anonymous") || creatorName}
                   </METextView>
                   <METextView
                     mediaType="icon"

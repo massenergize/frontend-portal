@@ -14,22 +14,6 @@ class BarGraph extends React.Component {
 
 	render() {
 		const options = {
-			// title: {
-			//     text: this.props.title,
-			//     style: {
-			//         fontSize: '28px',
-			//         fontFamily: "'Verdana', sans-serif",
-			//         color: '#263238'
-			//     },
-			// },
-			// colors: this.props.colors,
-			// stacked:this.props.stacked? this.props.stacked : false,
-			// chart: {
-			//     id: "basic-bar"
-			// },
-			// xaxis: {
-			//     categories: this.props.categories
-			// }
 			title: {
 				text: this.props.title,
 				style: {
@@ -64,6 +48,9 @@ class BarGraph extends React.Component {
 					}
 				}
 			}],
+			dataLabels: {
+				enabled: false
+			},
 			plotOptions: {
 				bar: {
 					horizontal: false,

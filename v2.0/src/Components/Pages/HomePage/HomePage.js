@@ -6,7 +6,6 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { IS_SANDBOX } from "../../../config";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 
@@ -17,9 +16,15 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+
   }
 
   render() {
+    const { __is_custom_site, community } = this.props;
+    const { subdomain } =  community || {}
+
+    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : ''
+    
     if (!this.props.pageData) {
       return (
         <ErrorPage
@@ -28,7 +33,8 @@ class HomePage extends React.Component {
         />
       );
     }
-    if (!IS_SANDBOX && !this.props.pageData.is_published) {
+    const is_sandbox = this.props.is_sandbox;
+    if (!is_sandbox && !this.props.pageData.is_published) {
       return (
         <ErrorPage
           errorMessage="Sorry, your community isn't live at the moment."
@@ -59,41 +65,18 @@ class HomePage extends React.Component {
     //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
+    // Note: these titles aren't used - defined in Graphs
     const graphs = [
       {
         title: "Actions Completed",
-        data: goals
-          ? {
-              target: goals.target_number_of_actions,
-              attained:
-                goals.attained_number_of_actions +
-                goals.organic_attained_number_of_actions,
-            }
-          : null,
       },
       {
         title: "Households Engaged",
-        data: goals
-          ? {
-              target: goals.target_number_of_households,
-              attained:
-                goals.attained_number_of_households +
-                goals.organic_attained_number_of_households,
-            }
-          : null,
       },
     ];
     if (goals && goals.target_carbon_footprint_reduction > 0) {
       graphs.push({
         title: "Carbon Reduction",
-        data: goals
-          ? {
-              target: goals.target_carbon_footprint_reduction,
-              attained:
-                goals.attained_carbon_footprint_reduction +
-                goals.organic_attained_carbon_footprint_reduction,
-            }
-          : null,
       });
     }
 
@@ -112,7 +95,10 @@ class HomePage extends React.Component {
                 text={communityDescription}
                 paperStyle={{ maxWidth: "100vh" }}
               >
-                <h4 align="center" className="cool-font mob-font-lg">
+                <h4
+                  align="center"
+                  className="cool-font mob-font-lg me-section-title"
+                >
                   {communityTagline}
                   <span
                     className="fa fa-info-circle"
@@ -121,7 +107,10 @@ class HomePage extends React.Component {
                 </h4>
               </Tooltip>
             ) : (
-              <h4 align="center" className="cool-font mob-font-lg">
+              <h4
+                align="center"
+                className="cool-font mob-font-lg me-section-title"
+              >
                 {communityTagline}
               </h4>
             )}
@@ -132,6 +121,7 @@ class HomePage extends React.Component {
           <IconBoxTable
             title="Get started - See your local options!"
             boxes={iconQuickLinks}
+            prefix={prefix}
           />
         ) : null}
         {this.props.pageData.show_featured_stats ? (
@@ -163,6 +153,8 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
+    is_sandbox: store.page.__is_sandbox,
+    __is_custom_site: store.page.__is_custom_site
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

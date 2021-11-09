@@ -4,14 +4,11 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import notFound from "./green-mat.jpg";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
-// import { createFirebaseInstance } from "react-redux-firebase";
-// import DefaultClass from "../../Shared/Classes/DefaultClass";
-// import { Link } from "react-router-dom";
-// import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import ErrorPage from "../Errors/ErrorPage";
 import MECard from "../Widgets/MECard";
-import { getHumanFriendlyDate } from "../../Utils";
-// import MELink from "../Widgets/MELink";
+import { extractTextFromHTML, getHumanFriendlyDate } from "../../Utils";
+import Seo from "../../Shared/Seo";
+
 class OneServicePage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,8 +25,20 @@ class OneServicePage extends React.Component {
     const vendor = this.props.serviceProviders.filter((vendor) => {
       return vendor.id === Number(this.props.match.params.id);
     })[0];
+
+    
     return (
       <>
+        {Seo({
+          title: vendor.name,
+          description: extractTextFromHTML(vendor.description),
+          url: `${window.location.href}`,
+          image: vendor.image && vendor.image.url,
+          keywords: vendor.name && vendor.name.split(" "),
+          updated_at: vendor.updated_at,
+          created_at: vendor.created_at,
+          tags: vendor.name && vendor.name.split(" "),
+        })}
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -141,7 +150,7 @@ class OneServicePage extends React.Component {
                     style={{ borderRadius: 5 }}
                   >
                     <span className="fa fa-map-pin fa-m-right"></span>{" "}
-                    {vendor.location.city}, {vendor.location.state} 
+                    {vendor.location.city}, {vendor.location.state}
                   </div>
                 ) : null}
 

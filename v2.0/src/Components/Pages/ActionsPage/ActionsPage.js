@@ -8,18 +8,21 @@ import {
   reduxAddToDone,
   reduxAddToTodo,
   reduxMoveToDone,
+  reduxSetPreferredEquivalence,
 } from "../../../redux/actions/userActions";
 import {
   reduxChangeData,
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Action from "./PhotoSensitiveAction";
+import Action from "./PhotosensitiveCard/PhotoSensitiveAction";
+
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
   filterTagCollections,
   searchIsActiveFindContent,
+  sumOfCarbonScores,
 } from "../../Utils";
 import MEModal from "../Widgets/MEModal";
 import ActionModal from "./ActionModal";
@@ -27,7 +30,8 @@ import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-
+import EquivalenceModal from "./EquivalenceModal";
+//import ActionCompletionModal from "./ActionCompletionModal"
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
  * @props none - fetch data from api instead of getting data passed to you from props
@@ -61,9 +65,29 @@ class ActionsPage extends React.Component {
       showTodoMsg: false,
       actions: [],
       status: null,
+      showEqModal: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
+    this.toggleEQModal = this.toggleEQModal.bind(this);
+  }
+
+  renderEQModal() {
+    const { showEqModal } = this.state;
+    if (showEqModal)
+      return (
+        <EquivalenceModal
+          eqs={this.props.eq}
+          pref_eq={this.props.pref_eq}
+          toggleModal={this.toggleEQModal}
+          carbonScore={sumOfCarbonScores(this.props.done || [])}
+          reduxSetPreference={this.props.reduxSetPreferredEquivalence}
+        />
+      );
+  }
+
+  toggleEQModal(value) {
+    this.setState({ showEqModal: value });
   }
 
   addMeToSelected(param, reset = false) {
@@ -94,7 +118,7 @@ class ActionsPage extends React.Component {
             content={this.state.modal_content}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -160,8 +184,10 @@ class ActionsPage extends React.Component {
     var actions =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
+
     return (
       <>
+        {this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -216,6 +242,9 @@ class ActionsPage extends React.Component {
                         done={this.props.done}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
+                        pref_eq={this.props.pref_eq}
+                        eq={this.props.eq}
+                        toggleEQModal={this.toggleEQModal}
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -223,6 +252,9 @@ class ActionsPage extends React.Component {
                         todo={this.props.todo}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
+                        pref_eq={this.props.pref_eq}
+                        eq={this.props.eq}
+                        toggleEQModal={this.toggleEQModal}
                       />
                     </div>
                   </div>
@@ -230,8 +262,9 @@ class ActionsPage extends React.Component {
                 {/* renders the actions */}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
+                    id="test-action-cards-wrapper"
+                    data-number-of-actions-for-test={actions?.length}
                     className="row scroll-fix"
-                    id="actions-container mob-actions-page-padding-remove"
                     style={{ marginTop: 20, paddingTop: 30 }}
                   >
                     {this.renderActions(actions)}
@@ -273,6 +306,7 @@ class ActionsPage extends React.Component {
       var action = actions[key];
       return (
         <Action
+          className="test-action-card-item"
           key={key}
           action={action}
           tagCols={this.props.tagCols}
@@ -283,12 +317,13 @@ class ActionsPage extends React.Component {
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
-          // closeHHForm={() => this.setState({ openAddForm: null })}
-          // openHHForm={(aid) => this.setState({ openAddForm: aid })}
+          dontShowTestimonialLinkFxn={() =>
+            this.setState({ testimonialLink: false })
+          }
           showTodoMsg={this.state.showTodoMsg}
-          toggleShowTodoMsg={() => {
-            this.setState({ showTodoMsg: false });
-          }}
+          clearNotificationMsgs={() =>
+            this.setState({ showTodoMsg: false, testimonialLink: false })
+          }
           openModal={this.openModal}
           closeModal={() => this.setState({ openModalForm: null })}
         />
@@ -318,8 +353,9 @@ class ActionsPage extends React.Component {
         Number(actionRel.real_estate_unit.id) === Number(hid)
       );
     });
+    
     if (cart === "DONE") return checkDone.length > 0;
-
+    
     return checkTodo.length > 0 || checkDone.length > 0;
   };
   moveToDone = (actionRel) => {
@@ -330,10 +366,14 @@ class ActionsPage extends React.Component {
     };
     apiCall("users.actions.completed.add", body)
       .then((json) => {
+        console.log("api called here");
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
           // this.addToImpact(json.data.action);
-          this.setState({ testimonialLink: actionRel.action.id });
+          this.setState({
+            testimonialLink: actionRel.action.id,
+            showTodoMsg: false,
+          });
         } else {
           console.log(json.error);
         }
@@ -352,12 +392,13 @@ class ActionsPage extends React.Component {
     })[0];
     if (actionRel) this.moveToDone(actionRel);
   }
-  addToCart = (aid, hid, status) => {
+  addToCart = (aid, hid, status, date_completed) => {
     const body = {
       user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
-    };
+      date_completed : Boolean(date_completed) ? date_completed + "-01" : undefined
+    }
     const path =
       status === "DONE"
         ? "users.actions.completed.add"
@@ -453,6 +494,8 @@ const mapStoreToProps = (store) => {
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
+    pref_eq: store.user.pref_equivalence,
+    eq: store.page.equivalences,
   };
 };
 
@@ -462,5 +505,6 @@ const mapDispatchToProps = {
   reduxMoveToDone,
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetPreferredEquivalence,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);

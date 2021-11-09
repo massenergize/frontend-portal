@@ -66,6 +66,13 @@ class MEFileSelector extends Component {
       croppedFile: processedFile,
       croppedSize: { size: processedFile.size, text: newSize },
       originalFileName: original.name,
+      file: {
+        data: processedFile || original,
+        info: {
+          size: processedFile?.size || original?.size,
+          text: newSize || originalSize,
+        },
+      },
     };
     onFileSelected(toBeSent, this.removeImage);
     return;
@@ -84,7 +91,8 @@ class MEFileSelector extends Component {
         const newFile = this.base64StringtoFile(data, file.name);
         this.shipProcessedFile(file, newFile);
         this.setState({
-          croppedImageUrl: data,
+          croppedImageUrl: null,
+          src: data,
           file: newFile,
           showPrev: true,
           original: file,
@@ -218,18 +226,7 @@ class MEFileSelector extends Component {
     this.toggleCropperModal();
     if (!onFileSelected) return;
     const { file, croppedVersionOfFile } = this.state;
-    const originalSize = this.getFileSize(file);
-    const newSize = this.getFileSize(croppedVersionOfFile);
-    const toBeSent = {
-      originalFile: file,
-      originalSize: { size: file.size, text: originalSize },
-      croppedFile: croppedVersionOfFile,
-      croppedSize: { size: croppedVersionOfFile.size, text: newSize },
-      originalFileName: file.name,
-    };
-
-    onFileSelected(toBeSent, this.removeImage); // the remove function is sent to allow the uploader to be rest outside of the component
-    return;
+    return this.shipProcessedFile(file, croppedVersionOfFile);
   }
 
   initiateCropping(e) {
@@ -244,7 +241,7 @@ class MEFileSelector extends Component {
     const { onFileSelected } = this.props;
     this.setState({ file: null });
     if (!onFileSelected) return;
-    onFileSelected(null);
+    onFileSelected(null, this.removeImage);
   }
   renderCroppingModal() {
     const { modal, src, crop } = this.state;
@@ -253,13 +250,6 @@ class MEFileSelector extends Component {
     if (modal) {
       return (
         <>
-          {/* // <MEModal
-        //   closeModal={this.toggleCropperModal}
-        //   style={{ paddingTop: 30, maxHeight: "50vh", overflowY: "scroll" }}
-        //   contentStyle={{ top: "20vh", width: "100%", left: 0 }}
-        //   containerClassName={modalContainerClassName}
-        //   showOverlay={showOverlay}
-        // > */}
           <div className="me-anime-open-in">
             <center>
               <MEButton
@@ -279,6 +269,7 @@ class MEFileSelector extends Component {
                 onClick={(e) => {
                   e.preventDefault();
                   this.toggleCropperModal();
+                  this.setState({ croppedImageUrl: null });
                 }}
               >
                 Cancel Cropping
@@ -303,6 +294,7 @@ class MEFileSelector extends Component {
                     onChange={(newCrop) => this.whenCropChanges(newCrop)}
                     maxWidth={maxWidth}
                     maxHeight={maxHeight}
+                    circularCrop={this.props.circleCrop}
                   />
                 </center>
               </div>
@@ -314,14 +306,9 @@ class MEFileSelector extends Component {
     }
   }
   switchStates() {
-    const {
-      file,
-      croppedImageUrl,
-      showPrev,
-      modal,
-      defaultRemoved,
-    } = this.state;
-    const { previewStyle, defaultValue, name } = this.props;
+    const { file, croppedImageUrl, showPrev, modal, defaultRemoved, src } =
+      this.state;
+    const { previewStyle, defaultValue, name, allowCrop } = this.props;
 
     if (!file && defaultValue && !defaultRemoved) {
       return (
@@ -331,6 +318,7 @@ class MEFileSelector extends Component {
             alt={`${name}`}
             onClick={(e) => this.searchForImage(e)}
             className="image-chooser-default z-depth-float"
+            style={previewStyle}
           />
           <br />
           <a
@@ -358,7 +346,7 @@ class MEFileSelector extends Component {
         <div>
           <center>
             {/* ------------------------ PREVIEW IMAGE ------------------- */}
-            {croppedImageUrl && showPrev && (
+            {(croppedImageUrl || src) && showPrev && (
               <img
                 onClick={this.searchForImage}
                 alt="Cropped"
@@ -370,7 +358,7 @@ class MEFileSelector extends Component {
                   ...previewStyle,
                 }}
                 className="z-depth-float me-anime-open-in"
-                src={croppedImageUrl}
+                src={croppedImageUrl || src}
               />
             )}
             <br />
@@ -378,13 +366,15 @@ class MEFileSelector extends Component {
               Remove Image
             </a>
             <br />
-            <a
-              style={{ marginTop: 6 }}
-              href="##"
-              onClick={this.initiateCropping}
-            >
-              Crop Image
-            </a>
+            {allowCrop && (
+              <a
+                style={{ marginTop: 6 }}
+                href="##"
+                onClick={this.initiateCropping}
+              >
+                Crop Image
+              </a>
+            )}
             <p style={{ margin: 15, color: "#d2cfcf" }}>{file.name}</p>
 
             <MEButton
@@ -401,9 +391,7 @@ class MEFileSelector extends Component {
     return (
       <center>
         <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
-        <p style={{ margin: 15, color: "#d2cfcf" }}>
-          Choose an image from you device
-        </p>
+        <p style={{ margin: 15, color: "#d2cfcf" }}>{this.props.placeholder}</p>
         <MEButton
           className="g-uploader-btn-class"
           onClick={(e) => this.searchForImage(e)}
@@ -455,5 +443,8 @@ MEFileSelector.defaultProps = {
   previewStyle: {},
   modalContainerClassName: "",
   showOverlay: true,
+  placeholder: "Choose an image from your device",
+  allowCrop: true,
+  circleCrop: false,
 };
 export default MEFileSelector;

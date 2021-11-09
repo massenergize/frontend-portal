@@ -16,6 +16,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
+import URLS from "../../../api/urls";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -141,6 +142,7 @@ class OneTeamPage extends React.Component {
     );
 
     const subTeams = teamData.subTeams && teamData.subTeams.length > 0;
+    const isBigText = team?.description?.length >= 350;
     const teamInfo = {
       teamTitle,
       teamData,
@@ -149,7 +151,9 @@ class OneTeamPage extends React.Component {
       team,
       links,
       remountForcer,
+      isBigText,
     };
+
     return (
       <>
         <Helmet>
@@ -265,8 +269,16 @@ class OneTeamPage extends React.Component {
                 <TeamStatsBars
                   teamStats={team.is_published && teamData}
                   type={PACKED}
+                  pref_eq={this.props.pref_eq}
                 />
                 <div className="row" style={{ margin: 0 }}>
+                  {isBigText && (
+                    <div
+                      style={{ marginTop: 15, marginBottom: 15 }}
+                      className="team-about-richtext-wrapper"
+                      dangerouslySetInnerHTML={{ __html: team.description }}
+                    />
+                  )}
                   <div className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless">
                     <h5>
                       <b>Actions Completed</b>
@@ -277,6 +289,7 @@ class OneTeamPage extends React.Component {
                         </>
                       )}
                     </h5>
+
                     <TeamActionsGraph key={remountForcer} teamID={team.id} />
 
                     <p style={{ textAlign: "center", marginTop: 15 }}>
@@ -352,6 +365,9 @@ class OneTeamPage extends React.Component {
   }
 
   renderSocials(team) {
+    const { community } = this.props;
+    const { subdomain } = community || {}
+
     return (
       <>
         {team.is_published && (
@@ -360,7 +376,7 @@ class OneTeamPage extends React.Component {
               label="Share this team!"
               pageTitle={team.name}
               pageDescription={team.tagline}
-              url={window.location.href}
+              url={`${URLS.SHARE}/${subdomain}/team/${team.id}`}
             />
           </div>
         )}
@@ -379,11 +395,14 @@ class OneTeamPage extends React.Component {
       team,
       links,
       remountForcer,
+      isBigText,
     } = props;
+
+    // console.log("i am the team text", team.description?.length);
     return (
       <>
         <div className="row phone-vanish" style={{ minHeight: 142 }}>
-          <center>
+          <center style={{ width: "100%", padding: 4 }}>
             {hasLogo && (
               <img
                 className="one-team-image team-card-content"
@@ -394,18 +413,23 @@ class OneTeamPage extends React.Component {
             {team.parent && <div style={{ padding: 10 }}>{teamTitle}</div>}
           </center>
         </div>
-        <div className="row">
-          <MESectionWrapper
-            headerText={`About ${team && team.name}`}
-            motherStyle={{ width: "100%" }}
-            headerType="plain"
-            className="team-s-w-header team-s-w-about-us-h"
-            containerClassName="team-s-w-body "
-            caret
-          >
-            <div dangerouslySetInnerHTML={{ __html: team.description }} />
-          </MESectionWrapper>
-        </div>
+        {!isBigText && (
+          <div className="row">
+            <MESectionWrapper
+              headerText={`About ${team && team.name}`}
+              motherStyle={{ width: "100%" }}
+              headerType="plain"
+              className="team-s-w-header team-s-w-about-us-h"
+              containerClassName="team-s-w-body "
+              caret
+            >
+              <div
+                className="team-about-richtext-wrapper"
+                dangerouslySetInnerHTML={{ __html: team.description }}
+              />
+            </MESectionWrapper>
+          </div>
+        )}
         <div className="row" style={{ marginTop: 10 }}>
           <MESectionWrapper
             headerText={
@@ -464,9 +488,9 @@ class OneTeamPage extends React.Component {
                     <ul>
                       {teamData.subTeams.map((subTeamStats) => (
                         <li key={subTeamStats.team.id}>
-                          <Link
+                          <a
                             style={{ verticalAlign: "text-top" }}
-                            to={`${links.teams}/${subTeamStats.team.id}`}
+                            href={`${links.teams}/${subTeamStats.team.id}`}
                             className="subteams-link"
                           >
                             <i
@@ -474,7 +498,7 @@ class OneTeamPage extends React.Component {
                               style={{ marginRight: 6 }}
                             ></i>
                             {subTeamStats.team.name}
-                          </Link>
+                          </a>
                         </li>
                       ))}
                     </ul>
@@ -518,8 +542,10 @@ class OneTeamPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
+    community: store.page.comInformation,
     links: store.links,
     teamsStats: store.page.teams,
+    pref_eq: store.user.pref_equivalence,
   };
 };
 export default connect(mapStoreToProps, null)(OneTeamPage);

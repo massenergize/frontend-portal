@@ -69,6 +69,7 @@
 
 html {
   font-family: "Google Sans", "Open Sans", sans-serif;
+  scroll-behavior: smooth !important;
 }
 
 body {
@@ -9623,13 +9624,6 @@ button.as-link:hover {
 .home-subtitle {
   background: #003000;
   color: white;
-}
-
-/* Teams Page Styles */
-.teams-subheader {
-  color: #c7c7c7;
-  font-size: 1.65rem;
-  /* font-style: italic */
 }
 
 .me-sub-teams-box {
