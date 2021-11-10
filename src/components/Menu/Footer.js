@@ -40,6 +40,9 @@ class Footer extends React.Component {
 
     const moreInfo = this.getMoreInfo();
 
+    const donatePageData = this.props.donatePageData;
+    const donateEnabled = donatePageData && donatePageData.is_published ? donatePageData.is_published : null;
+
     return (
       <div className="d-flex flex-column">
         <footer className="main-footer m-footer-color">
@@ -92,9 +95,11 @@ class Footer extends React.Component {
                 </a>
               </p>
             </div>
+            {donateEnabled ? (
             <div className="pull-right get-text">
               <Link to={this.props.links.donate}>Donate Now</Link>
             </div>
+            ) : null }
           </div>
         </section>
         <section className="coders " style={{ background: "black" }}>
@@ -123,6 +128,7 @@ class Footer extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     community: store.page.community,
+    donatePageData: store.page.donatePage,
     links: store.links,
   };
 };
