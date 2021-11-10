@@ -305,37 +305,17 @@ class AppRouter extends Component {
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
-    //  Will continue after questions are answered by Brad Or Sam
-    // const itemsToShow = [];
-    // const untargeted = [];
-    // menu.forEach(menuItem => {
-    //   var altered={};
-    //   switch (menuItem?.name?.trim().toLowerCase()){
-    //     case "home":
-    //       itemsToShow[0] = {...menuItem, navItemId:"home-nav-id"}
-    //       itemsToShow.splice()
-    //     case "actions":
-    //       const children = menuItem.children.filter( child => child.link !== "/teams") // remove teams from action children list
-    //       altered = {...menuItem, children: children, navItemId:"action-nav-id"}
-    //       itemsToShow[1] = altered
-    //     case "about us":
-    //       // Make impact page the first on the dropdown list
-    //       const childrenWithNoImpact = menuItem.children.filter( child => child.link !== "/teams")
-
-    //     default:
-    //       untargeted.append(menuItem)
-    //   }
-    //   // set if deactivated over here
-    // })
-
-    // ---------------------------------------------------------------------------------------------------------------------
-    var oldAbout = menu[3];
+   var oldAbout = menu[3];
     var oldActions = menu[1];
     if (oldAbout) {
       var abtSliced = oldAbout.children.filter(
         (item) => item.name.toLowerCase() !== "impact"
       );
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+      const contactUsItem = {
+        link: "/contactus",
+        name: "Contact Us",
+      
+      };
 
       var newAbout = {
         name: "About Us",
@@ -418,6 +398,7 @@ class AppRouter extends Component {
           return { ...item, navItemId: "events-nav-id" };
         case "about us":
           return { ...item, navItemId: "about-us-nav-id" };
+
         default:
           return item;
       }

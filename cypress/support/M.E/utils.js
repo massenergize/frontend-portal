@@ -1,3 +1,28 @@
+export const contactUsPageComponentsLoadProperly = () => {
+  var hasLocation;
+  it("Found contact us form", () => {
+    cy.get("#test-contact-us-form").should("exist");
+    // look into testing the contact form generator
+  });
+  it("Found admin names", () => {
+    cy.get(".test-admin-names").should("exist");
+  });
+  it("Found location ", () => {
+    cy.get("test-contact-us-wrapper").then(
+      ($el) => (hasLocation = $el.attr("data-location"))
+    );
+    if (hasLocation) {
+      cy.get("#test-location-name").should("exist");
+      cy.get("#test-no-location-name").should("not.exist");
+      cy.log("Has location...");
+    } else {
+      cy.get("#test-location-name").should("not.exist");
+      cy.get("#test-no-location-name").should("exist");
+      cy.log("Does not have location...");
+    }
+  });
+};
+
 export const rsvpWithDropdown = () => {
   it("Clicked the RSVP button to activate dropdown", function () {
     cy.get(".test-card-rsvp-toggler").first().click();

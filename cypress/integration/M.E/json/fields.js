@@ -14,7 +14,8 @@ export default {
     services: BASE_URL + "services",
     testimonials: BASE_URL + "testimonials",
     teams: BASE_URL +"teams",
-    events: BASE_URL + "events"
+    events: BASE_URL + "events", 
+    contactus: BASE_URL+"contactus"
   },
   community: COMMUNITY,
 };
