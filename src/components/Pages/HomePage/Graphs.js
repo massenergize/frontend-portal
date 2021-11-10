@@ -116,7 +116,7 @@ class Graphs extends React.Component {
     //   dumbycol = <article className={"column col-md-3"}></article>;
     // }
     const impactPageData = this.props.impactPageData;
-    const impactEnabled =  impactPageData && impactPageData.is_published ? impactPageData.is_published : null;
+    const impactPageEnabled =  impactPageData && impactPageData.is_published ? impactPageData.is_published : null;
 
     return (
       <section className="fact-counter style-2 no-padd">
