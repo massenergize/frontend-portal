@@ -235,7 +235,9 @@ export default class NewEventsCard extends Component {
         )}
         {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
         {this.state.rsvpStatus && (
-          <div className="test-rsvp-status-div">{this.state.rsvpStatus}</div>
+          <div className="test-rsvp-status-div" style={{ opacity: 0 }}>
+            {this.state.rsvpStatus}
+          </div>
         )}
       </div>
     );
