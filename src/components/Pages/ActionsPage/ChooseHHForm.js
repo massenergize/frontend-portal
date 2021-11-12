@@ -8,12 +8,17 @@ import { getPropsArrayFromJsonArray } from "../../Utils";
 import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import METextView from "../Widgets/METextView";
 import { apiCall } from "./../../../api/functions";
+import "react-datepicker/dist/react-datepicker.css";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 
 class ChooseHHForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      DatesOnStart: {},
+      Dates: {},
       error: null,
       choice: null,
       toBeRemoved: [],
@@ -32,19 +37,20 @@ class ChooseHHForm extends React.Component {
   }
 
   render() {
-    //Dont show anything if the user has only one household
-    if (this.props.user && this.props.user.households.length === 1) {
+    //I modified an existing modal to hide some elements if status is done and has single household instead of multiple
+    var IsSingleHouse = this.props.user && this.props.user.households.length === 1 && this.props.open && this.props.status === 'DONE'
+    /*if (this.props.user && this.props.user.households.length === 1) {
       if (this.props.open) {
-        this.handleSubmit(null);
-        return <div>Finished!</div>;
+        //this.handleSubmit(null);
+        return <div></div>;
       }
-    }
+    }*/
     this.checkHouseholds();
     return (
       <>
         <div className="act-modal-whole">
           <div className="act-title-bar">
-            <h3>{this.props.action.title}</h3>
+            <h3>{IsSingleHouse ? "Please select when this action was completed":this.props.action.title}</h3>
           </div>
 
           <div className="act-modal-body">
@@ -64,7 +70,7 @@ class ChooseHHForm extends React.Component {
                   onSubmit={this.handleSubmit}
                   style={{ paddingBottom: 10 }}
                 >
-                  {this.renderHouseHoldsInLine(this.props.user.households)}
+                  {this.renderHouseHoldsInLine(this.props.user.households, IsSingleHouse)}
                   <div className="act-status-bar">
                     <h4
                       style={{
@@ -74,11 +80,11 @@ class ChooseHHForm extends React.Component {
                         textTransform: "capitalize",
                       }}
                     >
-                      {this.props.status}
+                      {IsSingleHouse ? "" :this.props.status}
                     </h4>
                     <div style={{ marginLeft: "auto", marginRight: 0 }}>
                       <button
-                        className="flat-btn"
+                        className="flat-btn  flat-btn_submit btn-success"
                         type="submit"
                         disabled={
                           this.state.error
@@ -149,8 +155,18 @@ class ChooseHHForm extends React.Component {
       });
     } else if (this.props.status === "DONE") {
       choices.forEach((choice) => {
-        if (!this.props.inCart(this.props.aid, choice)) {
-          this.props.addToCart(this.props.aid, choice, this.props.status);
+
+        if (
+          !this.props.inCart(this.props.aid, choice) ||
+          //if user selects diff date, it will submit to backend
+          this.state.Dates[choice] !== this.state.DatesOnStart[choice]
+        ) {
+          this.props.addToCart(
+            this.props.aid,
+            choice,
+            this.props.status,
+            this.state.Dates[choice]
+          );
           this.props.closeForm();
         } else if (this.props.inCart(this.props.aid, choice, "TODO")) {
           this.props.moveToDone(this.props.aid, choice);
@@ -193,16 +209,35 @@ class ChooseHHForm extends React.Component {
   }
 
   checkForAlreadySelected() {
-    const { status, user, aid } = this.props;
+    //Gets house IDs to build out date object
+    const BuildDates = (HouseID) => {
+      Dates[HouseID] = -1;
+    };
+    const { status, user, aid, done } = this.props;
 
     // const action = selectedAction || {};
     const households = (user && user.households) || [];
     const choice = [];
-    households.forEach(
-      (house) =>
-        this.props.inCart(aid, house.id, status) && choice.push(house.id)
-    );
-    this.setState({ choice, choicesOnStart: choice });
+    const Dates = {};
+    
+    households.forEach((house) => {
+      this.props.inCart(aid, house.id, status) &&
+        choice.push(house.id) &&
+        BuildDates(house.id);
+    });
+    //populates the datecompleted value for the selected houses and converts
+    //date string from yyyy-mm-dd to yyyy-mm for the front end to use
+    done.filter((done) => {
+      if (Dates[done.real_estate_unit.id] === -1) {
+        Dates[done.real_estate_unit.id] = done.date_completed.substring(
+          0,
+          done.date_completed.length - 3
+        );
+      }
+    });
+    //creates an orginal for comparison later to determine what dates changed to submit to backend
+    var DatesOnStart = { ...Dates };
+    this.setState({ choice, choicesOnStart: choice, Dates, DatesOnStart: DatesOnStart });
     return;
   }
   findAvailableHouses() {
@@ -221,7 +256,7 @@ class ChooseHHForm extends React.Component {
     return housesAvailable;
   }
 
-  renderHouseHoldsInLine(households) {
+  renderHouseHoldsInLine(households,IsSingleHouse) {
     const { status } = this.props;
     if (!households) return <div />;
     var filteredHH = households;
@@ -235,14 +270,48 @@ class ChooseHHForm extends React.Component {
     return names.map((name, index) => {
       const all = this.state.choice || [];
       const selected = all.includes(values[index]);
+      //calculates the min and max dates for the date picker in yyyy-mm format 
+      var DateObj = new Date();
+      var LastYear = DateObj.getFullYear() - 10;
+      const MinDate = LastYear.toString() + "-" + DateObj.getMonth();
+      const MaxDate = DateObj.toISOString().slice(0, 7);
       return (
-        <div
+        <div id="act-item-Container">
+          {IsSingleHouse ? <div id={"act-item-Container_SingleHouse"}><p>{name}</p> </div> :
+          <div
           className={`act-item`}
           onClick={() => this.onChange(values[index])}
           key={index.toString()}
         >
-          <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
+           <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
           <p>{name}</p>
+        </div>
+    }
+          {
+            status === "TODO" ? (
+              <div />
+            ) : (
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>When did you complete this action?</Tooltip>}
+              >
+                <div>
+                  <input
+                    min={MinDate}
+                    max={MaxDate}
+                    onChange={(event) =>
+                      this.onChangeDate(event, values[index])
+                    }
+                    id="CompletionDate"
+                    disabled={!IsSingleHouse &&!selected}
+                    type="month"
+                    value={this.state.Dates[values[index]]}
+                  />
+                </div>
+                {/*new Date().toISOString().slice(0, 7) */}
+              </OverlayTrigger>
+            ) /** <label for="CompletionDate">Comp. Date:</label>*/
+          }
         </div>
       );
     });
@@ -294,6 +363,15 @@ class ChooseHHForm extends React.Component {
     } else {
       return [...content, Number(householdID)];
     }
+  }
+
+  //Updates current date as it changes 
+  onChangeDate(Date, choice) {
+    var Dates = this.state.Dates;
+    Dates[choice] = Date.target.value;
+    this.setState({
+      Dates: Dates,
+    });
   }
   //updates the state when form elements are changed
   // if selected exists, remove from selected, and add to the list of "tobeRemoved"
