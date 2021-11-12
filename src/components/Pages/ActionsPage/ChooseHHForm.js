@@ -227,7 +227,7 @@ class ChooseHHForm extends React.Component {
     });
     //populates the datecompleted value for the selected houses and converts
     //date string from yyyy-mm-dd to yyyy-mm for the front end to use
-    done.filter((done) => {
+    done.forEach((done) => {
       if (Dates[done.real_estate_unit.id] === -1) {
         Dates[done.real_estate_unit.id] = done.date_completed.substring(
           0,
