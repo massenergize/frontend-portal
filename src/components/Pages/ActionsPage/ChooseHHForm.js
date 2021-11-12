@@ -215,6 +215,7 @@ class ChooseHHForm extends React.Component {
     };
     const { status, user, aid, done } = this.props;
 
+
     // const action = selectedAction || {};
     const households = (user && user.households) || [];
     const choice = [];
@@ -228,7 +229,7 @@ class ChooseHHForm extends React.Component {
     //populates the datecompleted value for the selected houses and converts
     //date string from yyyy-mm-dd to yyyy-mm for the front end to use
     done.forEach((done) => {
-      if (Dates[done.real_estate_unit.id] === -1) {
+      if (done.date_completed && Dates[done.real_estate_unit.id] === -1) {
         Dates[done.real_estate_unit.id] = done.date_completed.substring(
           0,
           done.date_completed.length - 3
