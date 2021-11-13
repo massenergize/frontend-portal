@@ -397,7 +397,10 @@ class ActionsPage extends React.Component {
       user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
-      date_completed : Boolean(date_completed) ? date_completed + "-01" : undefined
+    }
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed + "-01"
     }
     const path =
       status === "DONE"
