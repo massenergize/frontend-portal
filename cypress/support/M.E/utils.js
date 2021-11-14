@@ -1,3 +1,89 @@
+export const contactUsPageComponentsLoadProperly = () => {
+  var hasLocation;
+  it("Found contact us form", () => {
+    cy.get("#test-contact-us-form").should("exist");
+    // look into testing the contact form generator
+  });
+  it("Found admin names", () => {
+    cy.get(".test-admin-names").should("exist");
+  });
+  it("Found location ", () => {
+    cy.get("test-contact-us-wrapper").then(
+      ($el) => (hasLocation = $el.attr("data-location"))
+    );
+    if (hasLocation) {
+      cy.get("#test-location-name").should("exist");
+      cy.get("#test-no-location-name").should("not.exist");
+      cy.log("Has location...");
+    } else {
+      cy.get("#test-location-name").should("not.exist");
+      cy.get("#test-no-location-name").should("exist");
+      cy.log("Does not have location...");
+    }
+  });
+};
+
+export const rsvpWithDropdown = () => {
+  it("Clicked the RSVP button to activate dropdown", function () {
+    cy.get(".test-card-rsvp-toggler").first().click();
+  });
+  it("RSVP dropdown opened up", function () {
+    cy.get(".test-light-drop-menu");
+  });
+
+  it("Chose 'Going' from RSVP dropdown list", () => {
+    cy.get(".test-light-drop-item").eq(1).click();
+  });
+};
+export const oneEventPageComponentsRenderProperly = () => {
+  var rec, venue, date;
+  it("Got the details of recurring status, venue, and date from the event object itself", () => {
+    cy.get(".test-one-event-wrapper")
+      .first()
+      .then(($el) => {
+        rec = $el.attr("data-is-recurring");
+        venue = $el.attr("data-venue");
+        date = $el.attr("data-date");
+      });
+  });
+  it("Found event title", () => cy.get(".test-event-title").should("exist"));
+  it("Found event description", () =>
+    cy.get(".test-event-body").first().should("exist"));
+  it("Found event image", () => cy.get(".test-event-image"));
+  it("Found the event date", () => {
+    if (date) cy.get(".test-event-date").first().should("exist");
+    else cy.log("Does not have any date...");
+  });
+  it("Found the event venue", () => {
+    if (venue) cy.get(".test-event-venue").first().should("exist");
+    else cy.log("Does not have any venue...");
+  });
+  it("Found the event recurring status", () => {
+    if (rec) cy.get(".test-event-recurring-status").first().should("exist");
+    else cy.log("Does not have any recurring string...");
+  });
+};
+
+export const showThatAllEventCardsDisplayProperly = () => {
+  var numberOfEvents;
+  it("Got number of available events", function () {
+    cy.get(".test-events-page-wrapper").then(
+      ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
+    );
+  });
+
+  it("Event cards display when there are events or 'No events' prompt shows up instead", function () {
+    if (!numberOfEvents || numberOfEvents === 0) {
+      cy.get("#test-no-events").should("exist");
+      cy.get(".test-one-event-card").first().should("not.exist");
+      cy.log("There we no events...");
+    } else {
+      cy.get("#test-no-events").should("not.exist");
+      cy.get(".test-one-event-card").should("have.lengthOf", numberOfEvents);
+    }
+  });
+};
+
 export const oneTeamPageComponentsRenderProperly = () => {
   var hasLotsOfText;
   it("Has found team name", () => cy.get(".test-team-name").first());

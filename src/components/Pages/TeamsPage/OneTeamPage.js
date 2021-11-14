@@ -205,6 +205,7 @@ class OneTeamPage extends React.Component {
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8 test-one-team-wrapper"
             data-has-big-text={isBigText && "true"}
+            data-user-is-logged-in={user ? true : false}
             style={{ margin: "auto" }}
           >
             <div className="row">
@@ -247,7 +248,10 @@ class OneTeamPage extends React.Component {
                         ) : (
                           <></>
                         )}
-                        <span style={{ margin: "0px 15px" }}>
+                        <span
+                          style={{ margin: "0px 15px" }}
+                          id="test-join-team-btn"
+                        >
                           {buttonOrInTeam}
                         </span>
                       </h2>
