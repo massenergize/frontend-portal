@@ -5,7 +5,11 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
-import { dateFormatString, recurringDetails, locationFormatJSX } from "../../Utils";
+import {
+  dateFormatString,
+  recurringDetails,
+  locationFormatJSX,
+} from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
 import URLS from "../../../api/urls";
@@ -16,6 +20,7 @@ class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      rsvpError: null,
       event: null,
       loading: true,
       rsvpLoading: false,
@@ -118,11 +123,14 @@ class OneEventPage extends React.Component {
         this.setState({
           rsvpStatus: json.data?.status,
           rsvpLoading: false,
-          error: null,
+          rsvpError: null,
         });
       } else {
         console.log("RSVP Error::", json.error);
-        this.setState({ error: json.error?.toString(), rsvpLoading: false });
+        this.setState({
+          rsvpError: json.error?.toString(),
+          rsvpLoading: false,
+        });
       }
     });
   }
@@ -156,7 +164,9 @@ class OneEventPage extends React.Component {
     } = event.recurring_details || {};
     return (
       <>
-        <b>{recurringDetailString}</b>
+        <span className="test-event-recurring-status">
+          <b>{recurringDetailString}</b>
+        </span>
         {upcoming_is_cancelled && (
           <>
             <span style={{ color: "maroon" }}>
@@ -214,9 +224,16 @@ class OneEventPage extends React.Component {
     const location = event.location;
 
     return (
-      <section className="event-section style-3">
+      <section
+        className="event-section style-3 test-one-event-wrapper"
+        data-is-recurring={event?.is_recurring}
+        data-date={event?.start_date_and_time && event?.end_date_and_time}
+        data-venue={event?.location}
+      >
         <div className="container">
-          <h3 className="cool-font text-center">{event.name}</h3>
+          <h3 className="cool-font text-center test-event-title">
+            {event.name}
+          </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
               <div className="col-12 col-lg-4" style={{ marginBottom: 15 }}>
@@ -227,6 +244,7 @@ class OneEventPage extends React.Component {
                     objectFit: "contain",
                     borderRadius: 6,
                   }}
+                  className="test-event-image"
                   src={event.image ? event.image.url : notFound}
                   alt=""
                 />
@@ -239,7 +257,9 @@ class OneEventPage extends React.Component {
                     >
                       <b>Date</b>
                       <div style={{ fontSize: 14, display: "block" }}>
-                        <span className="make-me-dark">{dateString}</span>
+                        <span className="make-me-dark test-event-date">
+                          {dateString}
+                        </span>
                       </div>
                     </li>
                     {location ? (
@@ -257,7 +277,7 @@ class OneEventPage extends React.Component {
                         />
                         <b>Venue</b>{" "}
                         <div
-                          className="make-me-dark"
+                          className="make-me-dark test-event-venue"
                           style={{ fontSize: 14, display: "block" }}
                         >
                           {locationFormatJSX(location)}
@@ -300,17 +320,26 @@ class OneEventPage extends React.Component {
                             </span>
                           )
                         }
-                        labelClassNames="me-rsvp-btn z-depth-float"
+                        labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
                         data={[
                           RSVP_STATUS.INTERESTED,
                           RSVP_STATUS.GOING,
                           RSVP_STATUS.NOT_GOING,
                         ]}
                       />
-                      {this.state.error && (
-                        <small style={{ color: "red", marginTop: 4 }}>
+                      {this.state.rsvpError && (
+                        <small
+                          style={{ color: "red", marginTop: 4 }}
+                          className="test-rsvp-error"
+                        >
                           {this.state.error}
                         </small>
+                      )}
+                      {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
+                      {this.state.rsvpStatus && (
+                        <div className="test-rsvp-status-div">
+                          {this.state.rsvpStatus}
+                        </div>
                       )}
                     </div>
                   )}
@@ -319,7 +348,7 @@ class OneEventPage extends React.Component {
               <div className="col-12 col-lg-8">
                 <div className="text">
                   <p
-                    className="cool-font make-me-dark events-about-content"
+                    className="cool-font make-me-dark events-about-content test-event-body"
                     dangerouslySetInnerHTML={{ __html: event.description }}
                   ></p>
                   <br />

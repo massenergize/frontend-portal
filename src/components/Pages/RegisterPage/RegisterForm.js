@@ -607,7 +607,8 @@ class RegisterFormBase extends React.Component {
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
-    var redirect = str.substring(0, n) + "/signin";
+    const suffix = this.props.is_sandbox ? "?sandbox=true" : ""
+    var redirect = str.substring(0, n) + "/signin" + suffix;
     var actionCodeSettings = {
       url: redirect,
     };
@@ -857,6 +858,7 @@ const mapStoreToProps = (store) => {
     policies: store.page.policies,
     links: store.links,
     community: store.page.community,
+    is_sandbox: store.page.__is_sandbox,
   };
 };
 

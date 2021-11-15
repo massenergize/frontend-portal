@@ -415,6 +415,7 @@ export default class FormGenerator extends Component {
               <div style={{ marginLeft: "auto" }}>
                 {moreActions}
                 <MEButton
+                  className="test-form-g-button"
                   containerStyle={{
                     padding: "10px 12px",
                     fontSize: 13,

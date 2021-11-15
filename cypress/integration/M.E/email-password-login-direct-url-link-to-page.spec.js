@@ -1,16 +1,15 @@
+import fields from "./json/fields";
 
-import fields from './json/fields'
-
-describe("Renders login page", function () {
-  it("Visits login page", function () {
+describe("Authenticates user and redirects to profile page", function () {
+  it("Visited login page", function () {
     cy.visit(fields.urls.login);
   });
 
-  it("Enters user credentials of an exisiting user account", function () {
+  it("Entered user credentials of an exisiting user account and logged in", function () {
     cy.loginWithDetails();
   });
 
-  it("Redirects to, and renders profile page", function () {
-    cy.get("#profile-page-component");
+  it("Redirected to profile page", function () {
+    cy.get("#profile-page-component").should("exist");
   });
 });

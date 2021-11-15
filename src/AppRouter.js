@@ -293,14 +293,29 @@ class AppRouter extends Component {
     }
   }
 
+  /**
+   * 1. The aim is to extract the "teams" URL as a child from the actions children list, and make it a main nav item
+   * 2. Make a contact us menu item
+   * 3. Then arrange menu items as : Home, Actions, Teams Events, About Us
+   * 4. Remove all menu links that have been deactivated by admins
+   *
+   * @param {*} menu
+   * @returns
+   *
+   * @TODO change things here after BE changes have been made, so this is more efficient.
+   */
   modifiedMenu(menu) {
-    var oldAbout = menu[3];
+   var oldAbout = menu[3];
     var oldActions = menu[1];
     if (oldAbout) {
       var abtSliced = oldAbout.children.filter(
         (item) => item.name.toLowerCase() !== "impact"
       );
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+      const contactUsItem = {
+        link: "/contactus",
+        name: "Contact Us",
+      
+      };
 
       var newAbout = {
         name: "About Us",
@@ -374,6 +389,18 @@ class AppRouter extends Component {
           return true;
         default:
           return item.children ? item.children.length > 0 : true;
+      }
+    });
+
+    menu = menu.map((item) => {
+      switch (item.name?.toLowerCase()) {
+        case "events":
+          return { ...item, navItemId: "events-nav-id" };
+        case "about us":
+          return { ...item, navItemId: "about-us-nav-id" };
+
+        default:
+          return item;
       }
     });
 
@@ -465,10 +492,12 @@ class AppRouter extends Component {
     const { links } = this.props;
 
     var finalMenu = [];
+    // console.log("I am the props menu", this.props.menu);
     if (this.props.menu) {
-      const [{ content }] = this.props.menu.filter((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      });
+      const { content } =
+        this.props.menu.find((menu) => {
+          return menu.name === "PortalMainNavLinks";
+        }) || {};
       finalMenu = content;
     }
 
@@ -476,6 +505,7 @@ class AppRouter extends Component {
     const droppyHome = [{ name: "Home", link: "/" }];
     finalMenu = [...droppyHome, ...finalMenu];
     //modify again
+    // console.log("I am the final menu", finalMenu);
     finalMenu = this.modifiedMenu(finalMenu);
 
     var footerLinks = [];
