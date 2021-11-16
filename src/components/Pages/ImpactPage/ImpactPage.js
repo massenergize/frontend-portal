@@ -14,6 +14,8 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
+import ProductTour from "react-joyride";
+import { Link } from "react-router-dom";
 
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -66,6 +68,7 @@ class ImpactPage extends React.Component {
           {community ? community.name : null}
         </h5>
         <div
+          id="hh-card"
           className="card  mb-4 z-depth-float me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -272,6 +275,49 @@ class ImpactPage extends React.Component {
           calcEQ(goal.target_carbon_footprint_reduction, pref_eq.value)
       ),
     ];
+    const steps = [
+      {
+        target: "#hh-card",
+        title: "Many neighbors have taken actions",
+        content:
+          "This page also shows our community’s goal, because together we have some serious impact!",
+        locale: {
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+      },
+      {
+        target: "#see-global-impact",
+        title: "This is how many trees your neighbors have planted!", //this copy needs change
+        content: (
+          <>
+            If you want to add your trees to the collective forest, sign in by
+            clicking the green Sign In button in the top right.",
+            <br />
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signin}>
+                TAKE ME TO SIGN IN
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: false,
+        hideFooter: true,
+      },
+    ];
 
     return (
       <>
@@ -320,7 +366,10 @@ class ImpactPage extends React.Component {
                       Number Of Actions Completed
                     </h4>
                   </div>
-                  <div className="card-body   me-anime-open-in">
+                  <div
+                    className="card-body   me-anime-open-in"
+                    id="see-global-impact"
+                  >
                     {/* ------- BAR GRAPH BY APEXCHARTS  ON PC -------- */}
                     <BarGraph
                       categories={graph2Categories}
@@ -466,8 +515,8 @@ const ExplanationDialog = () => {
               campaign efforts)
             </li>
             <li>
-              The Carbon Reduction graph (if shown) shows the estimated reduction
-              for actions taken on the platform, which currently use
+              The Carbon Reduction graph (if shown) shows the estimated
+              reduction for actions taken on the platform, which currently use
               Massachusetts averages for those actions. It may also include
               estimated carbon reduction from reported State/Partner data or
               previous programs, if that is provided by the Community Admin.
