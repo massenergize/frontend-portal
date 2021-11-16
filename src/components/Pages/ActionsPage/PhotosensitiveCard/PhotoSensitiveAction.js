@@ -220,7 +220,7 @@ class PhotoSensitiveAction extends React.Component {
                     fontWeight: "bold",
                     marginLeft: 5,
                   }}
-                  containerClassName="phone-vanish"
+                  containerClassName="phone-vanish test-action-info-btn"
                 >
                   Info
                 </MEButton>

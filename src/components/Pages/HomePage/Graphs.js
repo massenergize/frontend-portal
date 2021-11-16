@@ -99,7 +99,7 @@ class Graphs extends React.Component {
               <span
                 style={{ fontSize: "1rem", color: "black", marginRight: 7 }}
               >
-                <b>{value}</b>
+                <b>{Number(value).toLocaleString()}</b>
               </span>
               {list[key].unit}
               &nbsp; ({percent}% of goal)
@@ -115,6 +115,9 @@ class Graphs extends React.Component {
     // if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
     //   dumbycol = <article className={"column col-md-3"}></article>;
     // }
+    const impactPageData = this.props.impactPageData;
+    const impactPageEnabled =  impactPageData && impactPageData.is_published ? impactPageData.is_published : null;
+
     return (
       <section className="fact-counter style-2 no-padd">
         <div className="text-center">
@@ -167,6 +170,7 @@ class Graphs extends React.Component {
             </article> */}
           </div>
         </div>
+        { impactPageEnabled ? (
         <center style={{ marginTop: 20 }}>
           <Link
             to={this.props.links.impact}
@@ -176,6 +180,7 @@ class Graphs extends React.Component {
             Our Impact
           </Link>
         </center>
+        ) : null };
       </section>
     );
   }
@@ -183,6 +188,7 @@ class Graphs extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     links: store.links,
+    impactPageData: store.page.impactPage,
     pref_eq: store.user.pref_equivalence,
   };
 };
