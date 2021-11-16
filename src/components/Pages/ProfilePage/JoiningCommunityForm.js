@@ -20,6 +20,7 @@ class JoiningCommunityForm extends React.Component {
 
   getAllCommunities() {
     const userComms = this.props.user.communities;
+    console.log("I AM THE COMMUNITIES BRUH", this.props.communities);
     const commArr = [];
     if (!this.props.communities) return { names: [], ids: [] };
     Object.keys(this.props.communities).map((key) => {
@@ -72,18 +73,19 @@ class JoiningCommunityForm extends React.Component {
         community_id: this.state.value,
       };
 
-			/** Collects the form data and sends it to the backend */
-			apiCall('communities.join', body).then(json => {
-				if (json.success) {
-          console.log("I want to see communities, after redux", JSON.stringify(json));
-					this.props.reduxLoadUserCommunities(json.data.communities);
-					this.props.closeForm();
-				}
-			}).catch(error => {
-				console.log(error);
-			})
-		}
-	}
+      /** Collects the form data and sends it to the backend */
+      apiCall("communities.join", body)
+        .then((json) => {
+          if (json.success) {
+            this.props.reduxLoadUserCommunities(json.data.communities);
+            this.props.closeForm();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
 }
 
 const mapStoreToProps = (store) => {

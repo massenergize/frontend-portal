@@ -1,5 +1,5 @@
 import "cypress-localstorage-commands";
-import fields from "./json/fields";
+import fields from "../json/fields";
 const { emailToUse, passwordToUse, urls } = fields;
 
 describe("Creating new ME user with email and password", function () {

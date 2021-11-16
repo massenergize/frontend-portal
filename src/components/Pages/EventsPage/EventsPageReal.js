@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import {
   dateFormatString,
+  recurringDetails,
   filterTagCollections,
   applyTagsAndGetContent,
   searchIsActiveFindContent,
@@ -86,7 +87,8 @@ class EventsPage extends React.Component {
     return (
       <>
         <div
-          className="boxed_wrapper"
+          className="boxed_wrapper test-events-page-wrapper"
+          data-number-of-events={this.props.events?.length || 0}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
@@ -156,7 +158,11 @@ class EventsPage extends React.Component {
     }
     if (this.props.events.length === 0) {
       return (
-        <div className="text-center" style={{ width: "100%" }}>
+        <div
+          className="text-center"
+          id="test-no-events-div"
+          style={{ width: "100%" }}
+        >
           <p className="cool-font">
             {" "}
             Sorry, looks like there are no upcoming events in your community{" "}
@@ -171,34 +177,11 @@ class EventsPage extends React.Component {
         exceptions = this.props.eventExceptions.data;
       }
       const page = events.map((event) => {
-        let recurringDetailString = "";
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
-        if (event.is_recurring) {
-
-          if (event.recurring_details) {
-            if (event.recurring_details.recurring_type === "week") {
-              if (event.recurring_details.separation_count === 1) {
-                recurringDetailString = `Every ${event.recurring_details.day_of_week}`;
-              } else {
-                recurringDetailString = `Every ${event.recurring_details.separation_count} weeks on ${event.recurring_details.day_of_week}`;
-              }
-            } else if (event.recurring_details.recurring_type === "month") {
-              if (event.recurring_details.separation_count === 1) {
-                recurringDetailString = `The ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week} of every month`;
-              } else {
-                recurringDetailString = `Every ${event.recurring_details.separation_count} months on the ${event.recurring_details.week_of_month} ${event.recurring_details.day_of_week}`;
-              }
-            }
-            if (event.recurring_details.final_date) {
-              recurringDetailString += ` through ${event.recurring_details.final_date}`
-            }
-          } else {
-            recurringDetailString = "Event recurring details not specified";
-          }
-        }
+        const recurringDetailString = recurringDetails(event);
 
         return (
           // can we format the cancelled message to be an overlay instead of going above?

@@ -5,17 +5,26 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
 import notFound from "./not-found.jpg";
-import { dateFormatString, locationFormatJSX } from "../../Utils";
+import {
+  dateFormatString,
+  recurringDetails,
+  locationFormatJSX,
+} from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
 import URLS from "../../../api/urls";
-
+import { RSVP_STATUS } from "./NewEventsCard";
+import MELightDropDown from "../Widgets/MELightDropDown";
+import * as moment from "moment";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      rsvpError: null,
       event: null,
       loading: true,
+      rsvpLoading: false,
+      rsvpStatus: null,
     };
   }
 
@@ -37,13 +46,13 @@ class OneEventPage extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.fetch(id);
+    this.getRSVPStatus(id);
   }
 
   render() {
     const event = this.state.event;
-    const { community } = event || {}
-    const { subdomain } = community || {}
-
+    const { community } = event || {};
+    const { subdomain } = community || {};
     if (this.state.loading) {
       return <LoadingCircle />;
     }
@@ -57,7 +66,6 @@ class OneEventPage extends React.Component {
         />
       );
     }
-
     return (
       <>
         {Seo({
@@ -65,10 +73,10 @@ class OneEventPage extends React.Component {
           description: event.featured_summary,
           url: `${window.location.href}`,
           image: event.image && event.image.url,
-          keywords: event.name && event.name.split(' ') ,
+          keywords: event.name && event.name.split(" "),
           updated_at: event.updated_at,
           created_at: event.updated_at,
-          tags:  event.name && event.name.split(' ') ,
+          tags: event.name && event.name.split(" "),
         })}
 
         <div
@@ -99,7 +107,116 @@ class OneEventPage extends React.Component {
     );
   }
 
+  // @TODO: Fxn appears in two places(here, NewEventCard)... make DRY later...
+  updateRSVP(status) {
+    if (status === MELightDropDown.NONE) return;
+    const LINK =
+      status === RSVP_STATUS.NOT_GOING
+        ? "events.rsvp.remove"
+        : "events.rsvp.update";
+    this.setState({ rsvpLoading: true });
+    apiCall(LINK, {
+      event_id: this.state.event?.id,
+      status: status,
+    }).then((json) => {
+      if (json.success) {
+        this.setState({
+          rsvpStatus: json.data?.status,
+          rsvpLoading: false,
+          rsvpError: null,
+        });
+      } else {
+        console.log("RSVP Error::", json.error);
+        this.setState({
+          rsvpError: json.error?.toString(),
+          rsvpLoading: false,
+        });
+      }
+    });
+  }
+  // @TODO: Fxn appears in two places(here, NewEventCard)... make DRY later...
+  getRSVPStatus(event_id) {
+    apiCall("events.rsvp.get", { event_id }).then((json) => {
+      if (json.success) {
+        const rsvp_status = json.data;
+        if (rsvp_status) {
+          const rsvpStatus =
+            rsvp_status.status === "RSVP" ? "Going" : rsvp_status.status;
+          this.setState({ rsvpStatus: rsvpStatus });
+        } else {
+          this.setState({ rsvpStatus: null });
+        }
+      } else {
+        console.log("failed to get event rsvp status");
+      }
+    });
+  }
+  renderRecurringDetails() {
+    const { event } = this.state;
+    const format = "MMMM Do YYYY, h:mm a";
+    if (!event?.recurring_details) return <></>;
+
+    const recurringDetailString = recurringDetails(event);
+    const {
+      upcoming_is_cancelled,
+      upcoming_is_rescheduled,
+      rescheduled_details,
+    } = event.recurring_details || {};
+    return (
+      <>
+        <span className="test-event-recurring-status">
+          <b>{recurringDetailString}</b>
+        </span>
+        {upcoming_is_cancelled && (
+          <>
+            <span style={{ color: "maroon" }}>
+              <b>The event has been cancelled</b>
+            </span>
+            <br />
+          </>
+        )}
+        {upcoming_is_rescheduled && (
+          <>
+            <span>
+              <b>The event has been rescheduled</b>
+            </span>
+            <br />
+          </>
+        )}
+
+        {rescheduled_details && (
+          <>
+            <span>
+              <b>Start Date</b>
+            </span>
+            <br />
+            <span style={{ color: "black", fontSize: 14 }}>
+              {moment(rescheduled_details?.rescheduled_start_datetime).format(
+                format
+              )}
+            </span>
+            <br />
+          </>
+        )}
+        {rescheduled_details && (
+          <>
+            <span>
+              <b>End Date</b>
+            </span>
+            <br />
+            <span style={{ color: "black", fontSize: 14 }}>
+              {moment(rescheduled_details?.rescheduled_end_datetime).format(
+                format
+              )}
+            </span>
+            <br />
+          </>
+        )}
+      </>
+    );
+  }
   renderEvent(event) {
+    const { user } = this.props;
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
@@ -107,21 +224,19 @@ class OneEventPage extends React.Component {
     const location = event.location;
 
     return (
-      <section className="event-section style-3">
+      <section
+        className="event-section style-3 test-one-event-wrapper"
+        data-is-recurring={event?.is_recurring}
+        data-date={event?.start_date_and_time && event?.end_date_and_time}
+        data-venue={event?.location}
+      >
         <div className="container">
-          <h3
-            className="cool-font text-center"
-            style={
-              {
-                //textTransform: "capitalize",
-              }
-            }
-          >
+          <h3 className="cool-font text-center test-event-title">
             {event.name}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
-              <div className="col-12 col-lg-4">
+              <div className="col-12 col-lg-4" style={{ marginBottom: 15 }}>
                 <img
                   style={{
                     width: "100%",
@@ -129,15 +244,12 @@ class OneEventPage extends React.Component {
                     objectFit: "contain",
                     borderRadius: 6,
                   }}
+                  className="test-event-image"
                   src={event.image ? event.image.url : notFound}
                   alt=""
                 />
 
-                <div
-                  // className="event-timeline "
-
-                  style={{ margin: "10px 0px", borderRadius: 12 }}
-                >
+                <div style={{ margin: "10px 0px", borderRadius: 12 }}>
                   <ul>
                     <li
                       key="time"
@@ -145,7 +257,9 @@ class OneEventPage extends React.Component {
                     >
                       <b>Date</b>
                       <div style={{ fontSize: 14, display: "block" }}>
-                        <span className="make-me-dark">{dateString}</span>
+                        <span className="make-me-dark test-event-date">
+                          {dateString}
+                        </span>
                       </div>
                     </li>
                     {location ? (
@@ -163,24 +277,78 @@ class OneEventPage extends React.Component {
                         />
                         <b>Venue</b>{" "}
                         <div
-                          className="make-me-dark"
+                          className="make-me-dark test-event-venue"
                           style={{ fontSize: 14, display: "block" }}
                         >
                           {locationFormatJSX(location)}
                         </div>
                       </li>
                     ) : null}
+
+                    {event?.is_recurring && (
+                      <li
+                        style={{
+                          listStyle: "none",
+                          marginTop: 10,
+                          color: "rgb(128 177 61)",
+                        }}
+                      >
+                        {event?.recurring_details ? (
+                          this.renderRecurringDetails(event)
+                        ) : (
+                          <></>
+                        )}
+                      </li>
+                    )}
                   </ul>
+                  {user && (
+                    <div style={{ position: "relative" }}>
+                      <MELightDropDown
+                        style={{ width: "100%", padding: 11 }}
+                        containerStyle={{ display: "block", padding: 0 }}
+                        direction="bottom"
+                        onItemSelected={(status) => this.updateRSVP(status)}
+                        animate={false}
+                        customAnimation="rsvp-drop-from-left-anime"
+                        controlLabel={true}
+                        label={
+                          this.state.rsvpLoading ? (
+                            <i className="fa fa-spinner fa-spin"></i>
+                          ) : (
+                            <span style={{ marginRight: 6 }}>
+                              {this.state.rsvpStatus || "RSVP for this event"}
+                            </span>
+                          )
+                        }
+                        labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
+                        data={[
+                          RSVP_STATUS.INTERESTED,
+                          RSVP_STATUS.GOING,
+                          RSVP_STATUS.NOT_GOING,
+                        ]}
+                      />
+                      {this.state.rsvpError && (
+                        <small
+                          style={{ color: "red", marginTop: 4 }}
+                          className="test-rsvp-error"
+                        >
+                          {this.state.error}
+                        </small>
+                      )}
+                      {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
+                      {this.state.rsvpStatus && (
+                        <div className="test-rsvp-status-div">
+                          {this.state.rsvpStatus}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {/* <center><h1><span style={{margin:5}} className="fa fa-arrow-down"></span></h1></center> */}
               </div>
               <div className="col-12 col-lg-8">
                 <div className="text">
-                  {/* <h5 className="cool-font" style={{ color: "lightgray" }}>
-                    About
-                  </h5> */}
                   <p
-                    className="cool-font make-me-dark events-about-content"
+                    className="cool-font make-me-dark events-about-content test-event-body"
                     dangerouslySetInnerHTML={{ __html: event.description }}
                   ></p>
                   <br />
@@ -191,33 +359,7 @@ class OneEventPage extends React.Component {
 
             <div className="content">
               <div className="row">
-                <div className="col-md-6 col-sm-6 col-xs-12">
-                  {/* <div className="event-timeline " style={{ margin: '10px 0px', borderRadius: 12 }}>
-										<div className="section-title style-2">
-                                            <h3>Event Schedule</h3>
-																				</div>
-										<ul>
-											<li key='time'><i className="fa fa-clock-o"></i><b>Date: </b> {date.toLocaleString()}
-												<b> - </b>{endDate.toLocaleString()}
-											</li>
-											<li key='time'><b>Date<br /> </b>
-												<div style={{ paddingLeft: 20 }}>
-													{textyStart}<br />
-													<b><span className="text text-success"> TO </span> </b><br />
-													{textyEnd}
-												</div>
-											</li>
-											{event.location ?
-												<li>
-													<i className="fa fa-map-marker" />
-													<b>Venue:</b> {event.location.street + ", " + event.location.city + " " + event.location.state}
-												</li>
-												:
-												null
-											}
-										</ul>
-									</div> */}
-                </div>
+                <div className="col-md-6 col-sm-6 col-xs-12"></div>
                 {event.details ? (
                   <div className="col-md-6 col-sm-6 col-xs-12">
                     <div className="section-title style-2">

@@ -109,7 +109,12 @@ class Events extends React.Component {
               className="col-md-3 col-sm-2 col-xs-12 text-sm-right"
             ></div>
           </div>
-          <div className="row mob-helper center-content">
+          <div
+            className="row mob-helper center-content"
+            style={{
+              justifyContent: this.props.events?.length > 3 ? "left" : "center",
+            }}
+          >
             {this.renderEvents()}
           </div>
           {this.props.events.length !== 0 ? (

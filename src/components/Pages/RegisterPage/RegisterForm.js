@@ -71,6 +71,26 @@ class RegisterFormBase extends React.Component {
     //console.log(id);
   }
 
+  componentDidMount() {
+    const body = { email: this.props.auth.email };
+    apiCall("users.checkImported", body)
+      .then((json) => {
+        if (json.success && json.data.imported) {
+          this.setState({
+            firstName: json.data.firstName,
+            lastName: json.data.lastName,
+            preferredName: json.data.preferredName,
+            specialUser: true,
+          });
+        } else {
+          console.log(json.error);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   getRegProtocol() {
     return localStorage.getItem("reg_protocol");
   }
@@ -183,7 +203,7 @@ class RegisterFormBase extends React.Component {
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Enter your E-mail and a Password</h3>
+            <h3>Enter your Email and a Password</h3>
             <p>
               This helps us count your impact correctly, and avoid double
               counting. We collect no sensitive personal data, and do not share
@@ -329,23 +349,7 @@ class RegisterFormBase extends React.Component {
       //serviceProvider,
       //termsAndServices,
     } = this.state;
-    const body = { email: this.props.auth.email };
-    apiCall("users.checkImported", body)
-      .then((json) => {
-        if (json.success && json.data.imported) {
-          this.setState({
-            firstName: json.data.firstName,
-            lastName: json.data.lastName,
-            preferredName: json.data.preferredName,
-            specialUser: true,
-          });
-        } else {
-          console.log(json.error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
@@ -603,7 +607,8 @@ class RegisterFormBase extends React.Component {
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
-    var redirect = str.substring(0, n) + "/signin";
+    const suffix = this.props.is_sandbox ? "?sandbox=true" : ""
+    var redirect = str.substring(0, n) + "/signin" + suffix;
     var actionCodeSettings = {
       url: redirect,
     };
@@ -853,6 +858,7 @@ const mapStoreToProps = (store) => {
     policies: store.page.policies,
     links: store.links,
     community: store.page.community,
+    is_sandbox: store.page.__is_sandbox,
   };
 };
 

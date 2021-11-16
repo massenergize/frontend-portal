@@ -89,7 +89,7 @@ class ImpactPage extends React.Component {
                     marginRight: 7,
                   }}
                 >
-                  <b> {values[0]}</b>
+                  <b> {values[0].toLocaleString()}</b>
                 </span>
                 Households &nbsp; ({percents[0]}% of goal)
               </p>
@@ -122,7 +122,7 @@ class ImpactPage extends React.Component {
                     marginRight: 7,
                   }}
                 >
-                  <b> {values[1]}</b>
+                  <b> {values[1].toLocaleString()}</b>
                 </span>
                 Actions &nbsp; ({percents[1]}% of goal)
               </p>
@@ -156,7 +156,7 @@ class ImpactPage extends React.Component {
                       marginRight: 7,
                     }}
                   >
-                    <b> {values[2]}</b>
+                    <b> {values[2].toLocaleString()}</b>
                   </span>
                   {carbon_units}
                   &nbsp; ({percents[2]}% of goal)

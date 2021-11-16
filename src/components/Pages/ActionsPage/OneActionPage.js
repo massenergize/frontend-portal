@@ -472,6 +472,7 @@ class OneActionPage extends React.Component {
                 {/* title */}
                 <div className="content-box">
                   <h2
+                  id="test-action-title"
                     className="cool-font"
                     style={{ padding: "20px 0px 0px 0px" }}
                   >
@@ -514,6 +515,7 @@ class OneActionPage extends React.Component {
                       <div className="btn-envelope">
                         <>
                           <MECameleonButton
+                          id="test-todo-btn"
                             _case={actionStateCase}
                             type={TODO}
                             {...this.getNoAuthParams()}
@@ -522,6 +524,7 @@ class OneActionPage extends React.Component {
                           />
 
                           <MECameleonButton
+                          id="test-done-btn"
                             _case={actionStateCase}
                             type={DONE}
                             {...this.getNoAuthParams()}
