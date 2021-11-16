@@ -29,7 +29,7 @@ export default class MELightDropDown extends Component {
           onClick={(e) => this.onItemSelected(e, child)}
         >
           <Dropdown.Item
-            className="dropdown-item  me-dropdown-theme-item force-padding-15"
+            className="dropdown-item  me-dropdown-theme-item force-padding-15 test-light-drop-item"
             style={{ fontWeight: "normal" }}
           >
             {child}
@@ -83,7 +83,7 @@ export default class MELightDropDown extends Component {
               borderRadius: "0",
               padding: "0",
             }}
-            className={`me-dropdown-theme ${
+            className={`test-light-drop-menu me-dropdown-theme ${
               animate && "me-anime-slide-from-top"
             } z-depth-1 ${customAnimation}`}
           >

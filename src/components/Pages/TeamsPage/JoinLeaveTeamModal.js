@@ -34,7 +34,7 @@ class JoinLeaveTeamModal extends React.Component {
     let modalContent;
     if (user) {
       modalContent = (
-        <>
+        <div id ="test-real-join-content">
           {this.leaving ? (
             <METextView style={{ color: "#282828" }}>
               Are you sure you want to leave?
@@ -58,8 +58,6 @@ class JoinLeaveTeamModal extends React.Component {
               variant={this.leaving ? "accent" : "normal"}
               icon={this.leaving ? "fa fa-times" : "fa fa-users"}
               iconStyle={this.leaving ? { color: "red" } : { color: "green" }}
-              //   className={`btn btn-success round-me
-              // ${this.leaving ? "leave-team-btn" : "join-team-btn"} raise`}
               onClick={() => this.joinLeaveTeam()}
             >
               {this.leaving ? "Yes, Leave" : "Join Now"}
@@ -79,11 +77,11 @@ class JoinLeaveTeamModal extends React.Component {
               </p>
             )}
           </div>
-        </>
+        </div>
       );
     } else {
       modalContent = (
-        <p>
+        <p id='test-sign-in-to-join'>
           You must <Link to={links.signin}>sign in or create a profile</Link>{" "}
           to {this.leaving ? "leave" : "join"} this team
         </p>
@@ -98,16 +96,7 @@ class JoinLeaveTeamModal extends React.Component {
           </h4>
           {modalContent}
         </MEModal>
-        {/* <div style={{ width: '100%', height: "100%" }}>
-          <div className="team-modal">
-            <h4 onClick={() => onClose()} className=" modal-close-x round-me"><span className="fa fa-close"></span></h4>
-            <h4 style={{ paddingRight: '60px' }}>{this.leaving ? "Leave" : "Join"} <b>{team.name}</b></h4>
-            <br />
-            {modalContent}
-          </div>
-        </div>
-        <div className="desc-modal-container">
-        </div> */}
+      
       </>
     );
   }

@@ -357,9 +357,10 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
-      const target = calcEQ(goalObj.target_carbon_footprint_reduction, factor);
+      const target = Number(calcEQ(goalObj.target_carbon_footprint_reduction, factor));
       const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
-      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
+      const diff = (value < target) ? target - value : 0;
+      const rest = (value === 0) ? 100 : diff;
       return {
         labels: [unit, "Remaining"],
         datasets: [

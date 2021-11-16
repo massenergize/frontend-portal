@@ -9,7 +9,7 @@ class ContactUsPage extends React.Component {
     if (admins.length > 0) {
       const adminsMapped = admins.map((admin, index) => {
         return (
-          <li>
+          <li className="test-admin-names">
             <a style={{ fontSize: 17, color: "green" }} href="#void">
               {admin.full_name}
             </a>
@@ -34,7 +34,7 @@ class ContactUsPage extends React.Component {
   ejectLocation(location) {
     if (location) {
       return (
-        <div>
+        <div id="test-location-name">
           <h4>Location</h4>
           <p className="make-me-dark">
             {location.address ? location.address + ",\n" : ""}
@@ -48,7 +48,7 @@ class ContactUsPage extends React.Component {
       return (
         <div>
           <h4>Location</h4>
-          <p>No location was provided by admin!</p>
+          <p id="test-no-location-name">No location was provided by admin!</p>
         </div>
       );
     }
@@ -90,7 +90,10 @@ class ContactUsPage extends React.Component {
       <>
         <div className="boxed_wrapper" style={{ marginBottom: 300 }}>
           <BreadCrumbBar links={[{ name: "Contact Us" }]} />
-          <div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
+          <div
+            className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12 test-contact-us-wrapper"
+            data-location={location}
+          >
             <div style={{ marginTop: 70 }}></div>
 
             <div className="container mob-contact-white-cleaner">

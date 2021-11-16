@@ -149,7 +149,7 @@ class ContactPageForm extends Component {
     // className="container mob-zero-margin mob-zero-padding me-anime-open-in"
     return (
       <div>
-        <div style={{ borderWidth: 0 }}>
+        <div style={{ borderWidth: 0 }} id = "test-contact-us-form">
           <MEFormGenerator
             onSubmit={this.onSubmit}
             title="Contact Community Organizer Here"
