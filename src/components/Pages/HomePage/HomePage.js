@@ -8,61 +8,59 @@ import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 import { getFilterVersionFromURL } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
+import ProductTour from "react-joyride";
+import { Link } from "react-router-dom";
 
-import Tour from 'reactour';
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  // state = {
+  //   stepIndex: 0
+  // };
+
+  // handleTourProgress = (data) => {
+  //   const { action, index, type } = data;
+  //   if (type === EVENTS.TOUR_END || action === ACTIONS.CLOSE) {
+  //     this.setState({ running: false, stepIndex: 1 });
+  //   } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+  //     this.setState({ stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) });
+  //   }
+  // };
+
   constructor(props) {
     super(props);
+
     //first, check if the user has visited the page before - using localStorage
     //if (!localStorage.getItem('repeatUser')) {
     //CONDITION IS FOR TESTING ONLY
-    if (1 === 1) {
-      //this is the user's first visit to the portal
-      //change state to include tour
-      console.log('not repeat user');
-      this.state = {
-        tourIsOpen: true
-      };
-      console.log('state', this.state);
-      localStorage.setItem('repeatUser', true);
-    }
-    else {
-      this.state = {
-        tourIsOpen: false
-      };
-    }    
+    // if (1 === 1) {
+    //   //this is the user's first visit to the portal
+    //   //change state to include tour
+    //   console.log('not repeat user');
+    //   this.state = {
+    //     tourIsOpen: true
+    //   };
+    //   console.log('state', this.state);
+    //   localStorage.setItem('repeatUser', true);
+    // }
+    // else {
+    //   this.state = {
+    //     tourIsOpen: false
+    //   };
+    // }
   }
 
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
-
   }
 
   render() {
     const { __is_custom_site, community } = this.props;
-    const { subdomain } =  community || {}
+    const { subdomain } = community || {};
 
-    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : ''
-
-    const steps = [
-      {
-        selector: '#welcome',
-        content: 'Welcome to this MassEnergize community! We are a group of people dedicated to addressing climate change by reducing our greenhouse gas emissions. This portal exists to empower you and your family to fight climate change by providing you with tools, strategies, and resources. By creating an account, you can track how much CO2 you save and participate in community initiatives and events.',
-      },
-      {
-        selector: '#panel', 
-        content: "These buttons allow you to engage with the community and take you to different pages of the website."
-      }, 
-      {
-        selector: '#nav-bar', 
-        content: "Here is the navigation menu. Let's go to the Actions page. Close out of this popup and click on Actions. (If you're on mobile, click the horizontal bars and then Actions.)"
-      }
-      // ...
-    ];
+    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : "";
 
     if (!this.props.pageData) {
       return (
@@ -101,6 +99,7 @@ class HomePage extends React.Component {
     const iconQuickLinks = this.props.pageData
       ? this.props.pageData.featured_links
       : [];
+    console.log("daniLinks", this.props.pageData.featured_links[0].links);
     //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
@@ -119,17 +118,85 @@ class HomePage extends React.Component {
       });
     }
 
+    this.state = {
+      steps: [
+        {
+          target: "body",
+          title: `Welcome to ${this.props.community.name}`,
+          content:
+            "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
+          locale: {
+            next: <span>START</span>,
+            skip: <span>Skip Tour</span>,
+          },
+          placement: "center",
+          disableBeacon: true,
+          disableOverlayClose: true,
+        },
+        {
+          target: ".icon-panel",
+          title: "Start taking action right away!",
+          content: (
+            <>
+              Clicking on these boxes will take you places! The one called
+              "actions" will take you straight to tons of actions that you can
+              take.
+              <br />
+              <div
+                style={{
+                  backgroundColor: "#F67B61",
+                  padding: "10px",
+                  color: "black",
+                  display: "inline-block",
+                  borderRadius: "10px",
+                  marginTop: "10px",
+                }}
+              >
+                <Link style={{ color: "white" }} to={this.props.links.actions}>
+                  TAKE ME TO ACTIONS
+                </Link>
+              </div>
+            </>
+          ),
+          placement: "auto",
+          spotlightClicks: true,
+          disableOverlayClose: true,
+          hideFooter: true,
+        },
+        // ...
+      ],
+    };
+
+    // console.log(this.props.community.name)
+    console.log("daniDirectLink", this.props.links.actions);
+    // console.log(this.props.links.testimonials)
+
     return (
       <div className="boxed_wrapper">
-        <Tour
-          accentColor="#8CC43C"
-          steps={steps}
-          isOpen={this.state.tourIsOpen}
-          rounded="20"
-          onRequestClose={() => {
-            this.setState({
-              tourIsOpen: false
-            });
+        <ProductTour
+          steps={this.state.steps}
+          continuous
+          showSkipButton
+          spotlightPadding={-40}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+              beaconSize: 36,
+            },
           }}
         />
         {welcomeImagesData ? (
@@ -168,12 +235,15 @@ class HomePage extends React.Component {
         </div>
 
         {this.props.pageData.show_featured_links ? (
-          <IconBoxTable
-            title="Get started - See your local options!"
-            boxes={iconQuickLinks}
-            prefix={prefix}
-          />
+          <div className="icon-panel" style={{ margin: "0px" }}>
+            <IconBoxTable
+              title="Get started - See your local options!"
+              boxes={iconQuickLinks}
+              prefix={prefix}
+            />
+          </div>
         ) : null}
+
         {this.props.pageData.show_featured_stats ? (
           <Graphs
             graphs={graphs}
@@ -185,11 +255,13 @@ class HomePage extends React.Component {
         ) : null}
 
         {this.props.pageData.show_featured_events ? (
-          <Events
-            events={events}
-            subtitle={this.props.pageData.featured_events_subtitle}
-            info={this.props.pageData.featured_events_description}
-          />
+          <div className="events-panel">
+            <Events
+              events={events}
+              subtitle={this.props.pageData.featured_events_subtitle}
+              info={this.props.pageData.featured_events_description}
+            />
+          </div>
         ) : null}
       </div>
     );
@@ -204,7 +276,7 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
     links: store.links,
     is_sandbox: store.page.__is_sandbox,
-    __is_custom_site: store.page.__is_custom_site
+    __is_custom_site: store.page.__is_custom_site,
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

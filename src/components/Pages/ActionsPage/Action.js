@@ -12,6 +12,9 @@ import { apiCall } from "../../../api/functions";
 import MEButton from "../Widgets/MEButton";
 import { getRandomIntegerInRange } from "../../Utils";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import ReactJoyride from "react-joyride"
+import { ACTIONS, EVENTS } from "react-joyride";
+import { Link} from 'react-router-dom'
 
 /**
  * Action Component is a single action for the action page, 
@@ -169,12 +172,69 @@ class Action extends React.Component {
   }
   
   render() {
+    this.state={
+      steps: [
+      {
+        target: "body", 
+        title: "Do we want a title?",
+        content: "Read what this is all about and, by using these tabs, find practical steps to take, neighbors testimonials, and a Deep Dive for even more information.",
+        locale: { 
+          next: <span>NEXT</span>,
+          skip: <span>Skip Tour</span>
+        },
+        placement: "center",
+        disableBeacon: true,
+      },
+      {
+        target: "body", 
+        title: "Chances are you’ve already done this action!",
+        content: "And you want to click that DONE IT button. Or you want to put it on your TO DO list. These are some of the many perks of signing up.",
+        locale: { 
+          next: <Link to={this.props.links.actions}>SHOW ME WHY FIRST</Link>, //goes to impact - donut graphs/ households taking action. I need to see how to link to impact when coming from individual action. maybe from foter if visible?
+          skip: <Link to={this.props.links.actions}>SHOW ME HOW TO SIGN IN</Link>,
+        },
+        placement: "center",
+        disableBeacon: true,
+      },
+        // ...
+    ]
+  }
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
     if (this.shouldRender()) {
       //checks if the action should render or not
       return (
+        
         <div className="col-lg-6 col-md-12 col-sm-12 col-12">
+          <ReactJoyride
+        steps={this.state.steps}
+        run={true}
+        continuous
+        showSkipButton
+        hideFooter={true}
+        spotlightPadding={-5}
+        spotlightClicks={true}
+        // disableOverlay
+        // showProgress
+        styles={{
+          options: {
+             // modal arrow and background color
+             arrowColor: "#eee",
+             backgroundColor: "#eee",
+             // page overlay color
+            //  overlayColor: "rgba(79, 26, 0, 0.1)",
+             //button color
+            primaryColor: "#8CC43C",
+             //text color
+             textColor: "black",
+             //width of modal
+             width: 500,
+             //zindex of modal
+             zIndex: 1000, 
+             beaconSize: 36
+         }
+      }}
+      />
           <div
             className={`single-shop-item m-action-item z-depth-float ${this.getAnimationClass()}`}
           >

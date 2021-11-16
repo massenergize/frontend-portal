@@ -37,6 +37,7 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
+import ProductTour from "react-joyride";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -109,8 +110,9 @@ class OneActionPage extends React.Component {
     this.chooseFontSize();
 
     const { tags } = action;
-    const { community } = action || {}
-    const { subdomain } = community || {}
+    const { community } = action || {};
+    const { subdomain } = community || {};
+
     return (
       <>
         {this.renderModal()}
@@ -119,13 +121,12 @@ class OneActionPage extends React.Component {
           description: action.featured_summary,
           site_name: action.community && action.community.name,
           url: `${window.location.pathname}`,
-          image:action.image && action.image.url ,
-          keywords: action.title && action.title.split(' ') ,
+          image: action.image && action.image.url,
+          keywords: action.title && action.title.split(" "),
           updated_at: action.updated_at,
           created_at: action.updated_at,
-          tags: (tags || []).map( ({ name }) => name) || [],
+          tags: (tags || []).map(({ name }) => name) || [],
         })}
-
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
@@ -145,7 +146,7 @@ class OneActionPage extends React.Component {
                   className="col-md-9 mob-padding-zero"
                   style={{ marginBottom: 15 }}
                 >
-                  <div className="single-products-details">
+                  <div className="single-products-details" id="dani-test1">
                     {this.renderAction(action)}
                   </div>
                   <br />
@@ -463,8 +464,98 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
+
+    const steps = [
+      {
+        target: "#test-actions-tabs",
+        title: "Discover action details",
+        content:
+          "Read what this is all about and, by using these tabs, find practical steps to take, neighbors testimonials, and a Deep Dive for even more information.",
+        locale: {
+          next: <span>NEXT</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      {
+        target: "#todo-btns",
+        title: "Chances are you’ve already done this action!",
+        content: (
+          <>
+            And you want to click that DONE IT button. Or you want to put it on
+            your TO DO list. These are some of the many perks of signing up.
+            <br />
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.impact}>
+                SHOW ME WHY FIRST
+              </Link>
+            </div>
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                margin: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signin}>
+                TAKE ME TO SIGN IN
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: false,
+        disableBeacon: true,
+        disableOverlayClose: true,
+        hideFooter: true,
+      },
+      // ...
+    ];
+
     return (
       <>
+        <ProductTour
+          steps={steps}
+          continuous
+          showSkipButton
+          hideFooter={true}
+          // spotlightPadding={-5}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+              beaconSize: 36,
+            },
+          }}
+        />
         <div>
           <div className="product-content-box">
             <div className="row">
@@ -472,7 +563,6 @@ class OneActionPage extends React.Component {
                 {/* title */}
                 <div className="content-box">
                   <h2
-                  id="test-action-title"
                     className="cool-font"
                     style={{ padding: "20px 0px 0px 0px" }}
                   >
@@ -512,10 +602,9 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      <div className="btn-envelope">
+                      <div className="btn-envelope" id="todo-btns">
                         <>
                           <MECameleonButton
-                          id="test-todo-btn"
                             _case={actionStateCase}
                             type={TODO}
                             {...this.getNoAuthParams()}
@@ -524,7 +613,6 @@ class OneActionPage extends React.Component {
                           />
 
                           <MECameleonButton
-                          id="test-done-btn"
                             _case={actionStateCase}
                             type={DONE}
                             {...this.getNoAuthParams()}
@@ -602,7 +690,7 @@ class OneActionPage extends React.Component {
           {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
           <div className="product-tab-box">
-            <ul className="nav nav-tabs tab-menu">
+            <ul className="nav nav-tabs tab-menu" id="test-actions-tabs">
               {/* tab switching system, may be a better way to do this */}
               <li
                 id="desctab"

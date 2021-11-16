@@ -30,8 +30,9 @@ import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
-import Tour from 'reactour';
 import EquivalenceModal from "./EquivalenceModal";
+import ProductTour from "react-joyride";
+import { Link } from "react-router-dom";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -41,6 +42,18 @@ import EquivalenceModal from "./EquivalenceModal";
  */
 
 class ActionsPage extends React.Component {
+  // state = {
+  //   stepIndex: 0
+  // };
+
+  // handleTourProgress = (data) => {
+  //   const { action, index, type } = data;
+  //   if (type === EVENTS.TOUR_END || action === ACTIONS.CLOSE) {
+  //     this.setState({ running: false, stepIndex: 1 });
+  //   } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+  //     this.setState({ stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) });
+  //   }
+  // };
   constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -71,19 +84,18 @@ class ActionsPage extends React.Component {
     };
 
     //first, check if the user has visited the page before - using localStorage
-    
+
     //if (!localStorage.getItem('repeatUser')) {
 
     //condition IS FOR TESTING ONLY
     if (1 === 1) {
       //this is the user's first visit to the portal
       //change state to include tour
-      console.log('not repeat user');
+      console.log("not repeat user");
       this.state.tourIsOpen = true;
-      console.log('state', this.state);
-      localStorage.setItem('repeatUser', true);
-    }
-    else {
+      console.log("state", this.state);
+      localStorage.setItem("repeatUser", true);
+    } else {
       this.state.tourIsOpen = false;
     }
 
@@ -181,25 +193,6 @@ class ActionsPage extends React.Component {
   }
 
   render() {
-    const steps = [
-      {
-        selector: '#welcome', 
-        content: 'Welcome to the Actions Page! This is where you can track what actions you have taken to reduce greenhouse gas emissions.'
-      },
-      {
-        selector: '.hori-filter-container.phone-vanish', 
-        content: 'These filters help you sort actions by their different characteristics. You can sort actions by their impact (how much CO2 they save), their cost, and more.'
-      }, 
-      {
-        selector: '.col-lg-6.col-md-12.col-sm-12.col-12.me-open-in-slower', 
-        content: "To add an action to your To-do list, just click the To Do button. You can also mark actions as completed and delete them from your To-do list. Your To-do list will show up in your profile page."
-      },
-      {
-        selector:"phone-vanish.col-lg-3.col-md-5.col-sm-12.col-xs-12.sidebar_styleTwo", 
-        content: "You can see the impact of your actions here. This panel shows both the amount of CO2 you've saved as well as the amount of CO2 the actions on your To-do list will save."
-      }
-    ];
-
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
@@ -224,20 +217,50 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
+    this.state = {
+      steps: [
+        {
+          target: "#test-action-cards-wrapper",
+          title: "Actions chosen by your neighbors",
+          content:
+            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
+          placement: "auto",
+          spotlightClicks: true,
+          disableBeacon: true,
+          disableOverlayClose: true,
+        },
+        // ...
+      ],
+    };
+
     return (
       <>
-        <Tour
-          accentColor="#8CC43C"
-          steps={steps}
-          isOpen={this.state.tourIsOpen}
-          rounded="20"
-          onRequestClose={() => {
-            this.setState({
-              tourIsOpen: false
-            });
+        <ProductTour
+          steps={this.state.steps}
+          showSkipButton
+          spotlightPadding={-5}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+              beaconSize: 36,
+            },
           }}
         />
-         {this.renderEQModal()}
+        {this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -274,13 +297,15 @@ class ActionsPage extends React.Component {
                   ) : null}
                 </center>
               </div>
-              <HorizontalFilterBox
-                type="action"
-                foundNumber={this.state.mirror_actions.length}
-                tagCols={this.props.tagCols}
-                boxClick={this.addMeToSelected}
-                search={this.handleSearch}
-              />
+              <div id="filter-box">
+                <HorizontalFilterBox
+                  type="action"
+                  foundNumber={this.state.mirror_actions}
+                  tagCols={this.props.tagCols}
+                  boxClick={this.addMeToSelected}
+                  search={this.handleSearch}
+                />
+              </div>
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}
                 <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
@@ -356,6 +381,7 @@ class ActionsPage extends React.Component {
       var action = actions[key];
       return (
         <Action
+          id="dani-test"
           className="test-action-card-item"
           key={key}
           action={action}
