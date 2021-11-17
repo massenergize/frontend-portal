@@ -367,8 +367,8 @@ class Action extends React.Component {
                       status={this.state.status}
                       open={this.props.HHFormOpen}
                       user={this.props.user}
-                      addToCart={(aid, hid, status) =>
-                        this.props.addToCart(aid, hid, status)
+                      addToCart={(aid, hid, status, date_completed) =>
+                        this.props.addToCart(aid, hid, status, date_completed)
                       }
                       inCart={(aid, hid, cart) =>
                         this.props.inCart(aid, hid, cart)
