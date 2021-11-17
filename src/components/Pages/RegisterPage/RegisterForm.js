@@ -21,6 +21,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 // import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
+import ProductTour from "react-joyride";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -191,13 +192,50 @@ class RegisterFormBase extends React.Component {
 			return this.renderPage3() 
 		}*/
   };
+
   renderPage1 = () => {
     const { email, passwordOne, passwordTwo, error } = this.state;
+    const steps = [
+      {
+        target: "body",
+        title: "Sign Up",
+        content:
+          "Click here and follow the instructions! Then come back and let us know what you’ve done already to protect this place we love, and we’ll help you make a plan to keep on acting on climate, because together we make a difference!",
+        placement: "center",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+    ];
     return (
       <div
         className="styled-form register-form"
         style={{ height: window.screen.height - 60, marginTop: 15 }}
       >
+        <ProductTour
+          steps={steps}
+          showSkipButton
+          // spotlightPadding={-5}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+            },
+          }}
+        />
         <div
           className="z-depth-float me-anime-fade-in-up"
           style={{ padding: 46, borderRadius: 12 }}
@@ -385,7 +423,7 @@ class RegisterFormBase extends React.Component {
                   </button>
                   <br />
                   <Link
-                  id="sign-in-anchor"
+                    id="sign-in-anchor"
                     to={this.props.links.signin}
                     onClick={() => this.props.firebase.auth().signOut()}
                   >
@@ -607,7 +645,7 @@ class RegisterFormBase extends React.Component {
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
-    const suffix = this.props.is_sandbox ? "?sandbox=true" : ""
+    const suffix = this.props.is_sandbox ? "?sandbox=true" : "";
     var redirect = str.substring(0, n) + "/signin" + suffix;
     var actionCodeSettings = {
       url: redirect,

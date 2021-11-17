@@ -134,6 +134,7 @@ class ImpactPage extends React.Component {
         </div>
         {goal && goal.target_carbon_footprint_reduction > 0 ? (
           <div
+            id="carbon-card"
             className="card z-depth-float mb-4 me-anime-open-in"
             style={{
               borderRadius: 10,
@@ -279,22 +280,42 @@ class ImpactPage extends React.Component {
       {
         target: "#hh-card",
         title: "Many neighbors have taken actions",
-        content:
-          "This page also shows our community’s goal, because together we have some serious impact!",
+        content: (
+          <>
+            This page also shows our community’s goal, because together we have
+            some serious impact! <br /> Add your own actions to the collective
+            goal by signing up.
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                TAKE ME TO SIGN UP
+              </Link>
+            </div>{" "}
+          </>
+        ),
         locale: {
           skip: <span>Skip Tour</span>,
         },
         placement: "auto",
         spotlightClicks: true,
         disableBeacon: true,
+        hideFooter: true,
       },
       {
-        target: "#see-global-impact",
+        target: "#carbon-card",
         title: "This is how many trees your neighbors have planted!", //this copy needs change
         content: (
           <>
-            If you want to add your trees to the collective forest, sign in by
-            clicking the green Sign In button in the top right.",
+            If you want to add your trees to the collective forest you can do it
+            by signing up",
             <br />
             <div
               style={{
@@ -306,8 +327,8 @@ class ImpactPage extends React.Component {
                 marginTop: "10px",
               }}
             >
-              <Link style={{ color: "white" }} to={this.props.links.signin}>
-                TAKE ME TO SIGN IN
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                TAKE ME TO SIGN UP
               </Link>
             </div>
           </>
@@ -321,6 +342,30 @@ class ImpactPage extends React.Component {
 
     return (
       <>
+        <ProductTour
+          steps={steps}
+          showSkipButton
+          spotlightPadding={30}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+            },
+          }}
+        />
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -366,10 +411,7 @@ class ImpactPage extends React.Component {
                       Number Of Actions Completed
                     </h4>
                   </div>
-                  <div
-                    className="card-body   me-anime-open-in"
-                    id="see-global-impact"
-                  >
+                  <div className="card-body   me-anime-open-in">
                     {/* ------- BAR GRAPH BY APEXCHARTS  ON PC -------- */}
                     <BarGraph
                       categories={graph2Categories}

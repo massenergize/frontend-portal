@@ -511,8 +511,8 @@ class OneActionPage extends React.Component {
                 margin: "10px",
               }}
             >
-              <Link style={{ color: "white" }} to={this.props.links.signin}>
-                TAKE ME TO SIGN IN
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                TAKE ME TO SIGN UP
               </Link>
             </div>
           </>
