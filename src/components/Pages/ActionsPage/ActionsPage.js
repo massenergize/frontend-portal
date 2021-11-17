@@ -120,7 +120,7 @@ class ActionsPage extends React.Component {
             content={this.state.modal_content}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -355,7 +355,7 @@ class ActionsPage extends React.Component {
           tagCols={this.props.tagCols}
           match={this.props.match} //passed from the Route, need to forward to the action for url matching
           user={this.props.user}
-          addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+          addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
           inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
@@ -434,12 +434,17 @@ class ActionsPage extends React.Component {
     })[0];
     if (actionRel) this.moveToDone(actionRel);
   }
-  addToCart = (aid, hid, status) => {
+  addToCart = (aid, hid, status, date_completed) => {
+
     const body = {
       user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
-    };
+    }
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed + "-01"
+    }
     const path =
       status === "DONE"
         ? "users.actions.completed.add"
@@ -463,6 +468,8 @@ class ActionsPage extends React.Component {
         console.log(error);
       });
   };
+
+
 
   addToImpact(action) {
     this.changeDataByName("ActionsCompletedData", 1);
