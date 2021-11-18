@@ -18,6 +18,54 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+
+    this.setState({      
+      steps: [
+      {
+        target: "body",
+        title: `Welcome to ${this.props.community.name}`,
+        content:
+          "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
+        locale: {
+          next: <span>START</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "center",
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      {
+        target: ".icon-panel",
+        title: "Start taking action right away!",
+        content: (
+          <>
+            Clicking on these boxes will take you places! The one called
+            "actions" will take you straight to tons of actions that you can
+            take.
+            <br />
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.actions}>
+                TAKE ME TO ACTIONS
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: true,
+        disableOverlayClose: true,
+        hideFooter: true,
+      },
+    ],
+    });
   }
 
   render() {
@@ -80,55 +128,6 @@ class HomePage extends React.Component {
         title: "Carbon Reduction",
       });
     }
-
-    this.state = {
-      steps: [
-        {
-          target: "body",
-          title: `Welcome to ${this.props.community.name}`,
-          content:
-            "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
-          locale: {
-            next: <span>START</span>,
-            skip: <span>Skip Tour</span>,
-          },
-          placement: "center",
-          disableBeacon: true,
-          disableOverlayClose: true,
-        },
-        {
-          target: ".icon-panel",
-          title: "Start taking action right away!",
-          content: (
-            <>
-              Clicking on these boxes will take you places! The one called
-              "actions" will take you straight to tons of actions that you can
-              take.
-              <br />
-              <div
-                style={{
-                  backgroundColor: "#F67B61",
-                  padding: "10px",
-                  color: "black",
-                  display: "inline-block",
-                  borderRadius: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <Link style={{ color: "white" }} to={this.props.links.actions}>
-                  TAKE ME TO ACTIONS
-                </Link>
-              </div>
-            </>
-          ),
-          placement: "auto",
-          spotlightClicks: true,
-          disableOverlayClose: true,
-          hideFooter: true,
-        },
-        // ...
-      ],
-    };
 
     return (
       <div className="boxed_wrapper">

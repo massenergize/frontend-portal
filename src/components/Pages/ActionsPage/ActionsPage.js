@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -32,7 +31,6 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
-import { Link } from "react-router-dom";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -72,6 +70,24 @@ class ActionsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState( {
+      steps: [
+        {
+          target: "#test-action-cards-wrapper",
+          title: "Actions chosen by your neighbors",
+          content:
+            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
+          placement: "auto",
+          spotlightClicks: true,
+          disableBeacon: true,
+          disableOverlayClose: true,
+        },
+        // ...
+      ],
+    })
   }
 
   renderEQModal() {
@@ -188,22 +204,6 @@ class ActionsPage extends React.Component {
     var actions =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
-
-    this.state = {
-      steps: [
-        {
-          target: "#test-action-cards-wrapper",
-          title: "Actions chosen by your neighbors",
-          content:
-            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
-          placement: "auto",
-          spotlightClicks: true,
-          disableBeacon: true,
-          disableOverlayClose: true,
-        },
-        // ...
-      ],
-    };
 
     return (
       <>
