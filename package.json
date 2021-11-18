@@ -29,6 +29,7 @@
     "react-google-recaptcha": "^2.0.1",
     "react-helmet": "^5.2.1",
     "react-image-crop": "^8.6.9",
+    "react-joyride": "^2.3.2",
     "react-moment": "^0.9.7",
     "react-multi-carousel": "^1.4.6",
     "react-player": "^2.9.0",
