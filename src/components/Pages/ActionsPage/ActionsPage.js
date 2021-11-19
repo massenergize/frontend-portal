@@ -73,7 +73,7 @@ class ActionsPage extends React.Component {
   }
 
   componentDidMount() {
-    this.setState( {
+    this.setState({
       steps: [
         {
           target: "#test-action-cards-wrapper",
@@ -87,7 +87,7 @@ class ActionsPage extends React.Component {
         },
         // ...
       ],
-    })
+    });
   }
 
   renderEQModal() {
@@ -205,10 +205,24 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
+    const steps = [
+      {
+        target: "#test-action-cards-wrapper",
+        title: "Actions chosen by your neighbors",
+        content:
+          "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      // ...
+    ];
+
     return (
       <>
         <ProductTour
-          steps={this.state.steps}
+          steps={steps}
           showSkipButton
           spotlightPadding={-5}
           // disableOverlay

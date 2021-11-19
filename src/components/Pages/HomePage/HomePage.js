@@ -19,52 +19,52 @@ class HomePage extends React.Component {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
 
-    this.setState({      
+    this.setState({
       steps: [
-      {
-        target: "body",
-        title: `Welcome to ${this.props.community.name}`,
-        content:
-          "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
-        locale: {
-          next: <span>START</span>,
-          skip: <span>Skip Tour</span>,
+        {
+          target: "body",
+          title: `Welcome to ${this.props.community.name}`,
+          content:
+            "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
+          locale: {
+            next: <span>START</span>,
+            skip: <span>Skip Tour</span>,
+          },
+          placement: "center",
+          disableBeacon: true,
+          disableOverlayClose: true,
         },
-        placement: "center",
-        disableBeacon: true,
-        disableOverlayClose: true,
-      },
-      {
-        target: ".icon-panel",
-        title: "Start taking action right away!",
-        content: (
-          <>
-            Clicking on these boxes will take you places! The one called
-            "actions" will take you straight to tons of actions that you can
-            take.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#F67B61",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.actions}>
-                TAKE ME TO ACTIONS
-              </Link>
-            </div>
-          </>
-        ),
-        placement: "auto",
-        spotlightClicks: true,
-        disableOverlayClose: true,
-        hideFooter: true,
-      },
-    ],
+        {
+          target: ".icon-panel",
+          title: "Start taking action right away!",
+          content: (
+            <>
+              Clicking on these boxes will take you places! The one called
+              "actions" will take you straight to tons of actions that you can
+              take.
+              <br />
+              <div
+                style={{
+                  backgroundColor: "#F67B61",
+                  padding: "10px",
+                  color: "black",
+                  display: "inline-block",
+                  borderRadius: "10px",
+                  marginTop: "10px",
+                }}
+              >
+                <Link style={{ color: "white" }} to={this.props.links.actions}>
+                  TAKE ME TO ACTIONS
+                </Link>
+              </div>
+            </>
+          ),
+          placement: "auto",
+          spotlightClicks: true,
+          disableOverlayClose: true,
+          hideFooter: true,
+        },
+      ],
     });
   }
 
@@ -129,10 +129,56 @@ class HomePage extends React.Component {
       });
     }
 
+    const steps = [
+      {
+        target: "body",
+        title: `Welcome to ${this.props.community.name}`,
+        content:
+          "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
+        locale: {
+          next: <span>START</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "center",
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      {
+        target: ".icon-panel",
+        title: "Start taking action right away!",
+        content: (
+          <>
+            Clicking on these boxes will take you places! The one called
+            "actions" will take you straight to tons of actions that you can
+            take.
+            <br />
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.actions}>
+                TAKE ME TO ACTIONS
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: true,
+        disableOverlayClose: true,
+        hideFooter: true,
+      },
+    ];
+
     return (
-      <div className="boxed_wrapper">
+      <>
         <ProductTour
-          steps={this.state.steps}
+          steps={steps}
           continuous
           showSkipButton
           spotlightPadding={-40}
@@ -153,72 +199,73 @@ class HomePage extends React.Component {
               width: 500,
               //zindex of modal
               zIndex: 1000,
-              beaconSize: 36,
             },
           }}
         />
-        {welcomeImagesData ? (
-          <WelcomeImages data={welcomeImagesData} title={title} />
-        ) : null}
-        <div
-          className=""
-          style={{ padding: 30, background: "white", color: "#383838" }}
-        >
-          <div className="text-center">
-            {communityDescription ? (
-              <Tooltip
-                text={communityDescription}
-                paperStyle={{ maxWidth: "100vh" }}
-              >
+        <div className="boxed_wrapper">
+          {welcomeImagesData ? (
+            <WelcomeImages data={welcomeImagesData} title={title} />
+          ) : null}
+          <div
+            className=""
+            style={{ padding: 30, background: "white", color: "#383838" }}
+          >
+            <div className="text-center">
+              {communityDescription ? (
+                <Tooltip
+                  text={communityDescription}
+                  paperStyle={{ maxWidth: "100vh" }}
+                >
+                  <h4
+                    align="center"
+                    className="cool-font mob-font-lg me-section-title"
+                  >
+                    {communityTagline}
+                    <span
+                      className="fa fa-info-circle"
+                      style={{ color: "#428a36", padding: "5px" }}
+                    ></span>
+                  </h4>
+                </Tooltip>
+              ) : (
                 <h4
                   align="center"
                   className="cool-font mob-font-lg me-section-title"
                 >
                   {communityTagline}
-                  <span
-                    className="fa fa-info-circle"
-                    style={{ color: "#428a36", padding: "5px" }}
-                  ></span>
                 </h4>
-              </Tooltip>
-            ) : (
-              <h4
-                align="center"
-                className="cool-font mob-font-lg me-section-title"
-              >
-                {communityTagline}
-              </h4>
-            )}
+              )}
+            </div>
           </div>
-        </div>
 
-        {this.props.pageData.show_featured_links ? (
-          <div className="icon-panel">
-            <IconBoxTable
-              title="Get started - See your local options!"
-              boxes={iconQuickLinks}
-              prefix={prefix}
+          {this.props.pageData.show_featured_links ? (
+            <div className="icon-panel">
+              <IconBoxTable
+                title="Get started - See your local options!"
+                boxes={iconQuickLinks}
+                prefix={prefix}
+              />
+            </div>
+          ) : null}
+          {this.props.pageData.show_featured_stats ? (
+            <Graphs
+              graphs={graphs}
+              size={120}
+              goals={goals}
+              subtitle={this.props.pageData.featured_stats_subtitle}
+              info={this.props.pageData.featured_stats_description}
             />
-          </div>
-        ) : null}
-        {this.props.pageData.show_featured_stats ? (
-          <Graphs
-            graphs={graphs}
-            size={120}
-            goals={goals}
-            subtitle={this.props.pageData.featured_stats_subtitle}
-            info={this.props.pageData.featured_stats_description}
-          />
-        ) : null}
+          ) : null}
 
-        {this.props.pageData.show_featured_events ? (
-          <Events
-            events={events}
-            subtitle={this.props.pageData.featured_events_subtitle}
-            info={this.props.pageData.featured_events_description}
-          />
-        ) : null}
-      </div>
+          {this.props.pageData.show_featured_events ? (
+            <Events
+              events={events}
+              subtitle={this.props.pageData.featured_events_subtitle}
+              info={this.props.pageData.featured_events_description}
+            />
+          ) : null}
+        </div>
+      </>
     );
   }
 }

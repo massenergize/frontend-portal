@@ -100,6 +100,7 @@ class ImpactPage extends React.Component {
           </div>
         </div>
         <div
+          id="card-individual-actions"
           className="card z-depth-float mb-4 me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -303,11 +304,12 @@ class ImpactPage extends React.Component {
         ),
         locale: {
           skip: <span>Skip Tour</span>,
+          next: <span>NEXT</span>,
         },
         placement: "auto",
         spotlightClicks: true,
         disableBeacon: true,
-        hideFooter: true,
+        hideFooter: false,
       },
       {
         target: "#carbon-card",
@@ -344,6 +346,7 @@ class ImpactPage extends React.Component {
       <>
         <ProductTour
           steps={steps}
+          continuous
           showSkipButton
           spotlightPadding={30}
           // disableOverlay
