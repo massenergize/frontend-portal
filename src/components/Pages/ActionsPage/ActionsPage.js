@@ -32,7 +32,6 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
-import { Link } from "react-router-dom";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -189,26 +188,24 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
-    this.state = {
-      steps: [
-        {
-          target: "#test-action-cards-wrapper",
-          title: "Actions chosen by your neighbors",
-          content:
-            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
-          placement: "auto",
-          spotlightClicks: true,
-          disableBeacon: true,
-          disableOverlayClose: true,
-        },
-        // ...
-      ],
-    };
+    const steps = [
+      {
+        target: "#test-action-cards-wrapper",
+        title: "Actions chosen by your neighbors",
+        content:
+          "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      // ...
+    ];
 
     return (
       <>
         <ProductTour
-          steps={this.state.steps}
+          steps={steps}
           showSkipButton
           spotlightPadding={-5}
           // disableOverlay

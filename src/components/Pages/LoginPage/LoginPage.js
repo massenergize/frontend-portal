@@ -3,7 +3,6 @@ import LoginForm from "./LoginForm";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import ProductTour from "react-joyride";
 
 class LoginPage extends React.Component {
   constructor(props) {
