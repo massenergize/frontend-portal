@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -71,6 +70,24 @@ class ActionsPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      steps: [
+        {
+          target: "#test-action-cards-wrapper",
+          title: "Actions chosen by your neighbors",
+          content:
+            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
+          placement: "auto",
+          spotlightClicks: true,
+          disableBeacon: true,
+          disableOverlayClose: true,
+        },
+        // ...
+      ],
+    });
   }
 
   renderEQModal() {
