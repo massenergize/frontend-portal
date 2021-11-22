@@ -14,6 +14,8 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
+import ProductTour from "react-joyride";
+import { Link } from "react-router-dom";
 
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -66,6 +68,7 @@ class ImpactPage extends React.Component {
           {community ? community.name : null}
         </h5>
         <div
+          id="hh-card"
           className="card  mb-4 z-depth-float me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -97,6 +100,7 @@ class ImpactPage extends React.Component {
           </div>
         </div>
         <div
+          id="card-individual-actions"
           className="card z-depth-float mb-4 me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -131,6 +135,7 @@ class ImpactPage extends React.Component {
         </div>
         {goal && goal.target_carbon_footprint_reduction > 0 ? (
           <div
+            id="carbon-card"
             className="card z-depth-float mb-4 me-anime-open-in"
             style={{
               borderRadius: 10,
@@ -272,9 +277,98 @@ class ImpactPage extends React.Component {
           calcEQ(goal.target_carbon_footprint_reduction, pref_eq.value)
       ),
     ];
+    const steps = [
+      {
+        target: "#hh-card",
+        title: "Many neighbors have taken actions",
+        content: (
+          <>
+            This page also shows our community’s goal, because together we have
+            some serious impact! <br /> Add your own actions to the collective
+            goal by signing up.
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                TAKE ME TO SIGN UP
+              </Link>
+            </div>{" "}
+          </>
+        ),
+        locale: {
+          skip: <span>Skip Tour</span>,
+          next: <span>NEXT</span>,
+        },
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+      {
+        target: "#carbon-card",
+        title: "This is how many trees your neighbors have planted!", //this copy needs change
+        content: (
+          <>
+            If you want to add your trees to the collective forest you can do it
+            by signing up",
+            <br />
+            <div
+              style={{
+                backgroundColor: "#F67B61",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                TAKE ME TO SIGN UP
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: false,
+        hideFooter: true,
+      },
+    ];
 
     return (
       <>
+        <ProductTour
+          steps={steps}
+          continuous
+          showSkipButton
+          spotlightPadding={30}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              //  overlayColor: "rgba(79, 26, 0, 0.1)",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+            },
+          }}
+        />
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -466,8 +560,8 @@ const ExplanationDialog = () => {
               campaign efforts)
             </li>
             <li>
-              The Carbon Reduction graph (if shown) shows the estimated reduction
-              for actions taken on the platform, which currently use
+              The Carbon Reduction graph (if shown) shows the estimated
+              reduction for actions taken on the platform, which currently use
               Massachusetts averages for those actions. It may also include
               estimated carbon reduction from reported State/Partner data or
               previous programs, if that is provided by the Community Admin.

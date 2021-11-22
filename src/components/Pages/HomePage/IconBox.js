@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { isValidUrl } from "../../../api/urls";
 
 /**
  * renders a single icon box on the home page
@@ -11,15 +12,6 @@ import { connect } from "react-redux";
  *      link
  */
 class IconBox extends React.Component {
-  isValidUrl(string) {
-    try {
-      new URL(string);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
   renderBoxStuff() {
     return (
       <>
@@ -47,7 +39,7 @@ class IconBox extends React.Component {
         className="service-item center hover-service-item me-anime-open-in"
         style={{ background: "white" }}
       >
-        {this.isValidUrl(this.props.link) ? (
+        {isValidUrl(this.props.link) ? (
           <a
             href={`${this.props.link}`}
             style={{ width: "100%", height: "100%" }}

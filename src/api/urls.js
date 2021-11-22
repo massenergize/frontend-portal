@@ -33,3 +33,12 @@ URLS["NONE_CUSTOM_WEBSITE_LIST"] = new Set([
   "localhost",
 ]);
 export default URLS;
+
+export function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
