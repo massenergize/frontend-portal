@@ -85,7 +85,7 @@ function log_device(cookies) {
   let body;
   let apiFunction;
   let response;
-  if (device == undefined) {
+  if (device === undefined) {
     body = {};
     apiFunction = 'create'
   } else {
