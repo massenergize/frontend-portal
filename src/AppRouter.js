@@ -25,6 +25,8 @@ import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
+import Cookies from 'universal-cookie';
+import { device_checkin } from './api/functions';
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -250,6 +252,10 @@ class AppRouter extends Component {
     await this.setStateAsync({ triedLogin: true });
     let { data } = await apiCall("auth.whoami");
     let user = null;
+
+    const cookies = new Cookies();
+
+    device_checkin(cookies);
 
     if (data) {
       user = data;
