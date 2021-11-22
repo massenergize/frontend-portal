@@ -36,8 +36,6 @@ function App() {
       payload: is_sandbox,
     });
 
-    device_checkin(cookies);
-
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
@@ -71,6 +69,7 @@ function App() {
           } else {
             setError(json.error);
           }
+          device_checkin(cookies);
         })
         .catch((err) => setError(err.message));
     }
