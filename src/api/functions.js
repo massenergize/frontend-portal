@@ -83,17 +83,14 @@ function log_device(cookies) {
   // TODO: Get IP address and other info
   let device = get_cookie(cookies, "device");
   let body;
-  let apiFunction;
   let response;
   if (device === undefined) {
     body = {};
-    apiFunction = 'create'
   } else {
     body = { id: device };
-    apiFunction = 'log'
   }
 
-  response = apiCall('/device.' + apiFunction, body).then(function(result) {
+  response = apiCall('/device.log', body).then(function(result) {
     try {
       set_cookie(cookies, "device", result.data.id)
     } catch (error) {
