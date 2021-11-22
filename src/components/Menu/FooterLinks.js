@@ -38,7 +38,6 @@ class FooterLinks extends React.Component {
 	}
 	render() {
 		const links = this.props.links;
-		console.log(links)
 		const twoCol = links.length > 4;
 		if (twoCol) {
 			var half_length = Math.ceil(links.length / 2);
