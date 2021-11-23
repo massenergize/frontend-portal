@@ -23,6 +23,7 @@ export default class NewEventsCard extends Component {
 
     this.state = {
       img: null,
+      pastEvent: null,
       rsvpStatus: null,
       loading: false,
       error: null,
@@ -98,7 +99,10 @@ export default class NewEventsCard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user) this.getRSVPStatus(); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
+    const rightNow = moment().format();
+    const pastEvent = rightNow > this.props.start_date_and_time;
+    this.setState({ pastEvent: pastEvent });
+    if (!pastEvent && this.props.user) this.getRSVPStatus(); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
   }
 
   handleReadMore(e) {
@@ -204,7 +208,7 @@ export default class NewEventsCard extends Component {
               )}
             </div>
 
-            {user && (
+            {user && !this.state.pastEvent && (
               <div style={{ marginLeft: "auto" }}>
                 <MELightDropDown
                   direction={dropDirection}
