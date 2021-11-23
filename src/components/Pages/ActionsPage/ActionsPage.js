@@ -72,24 +72,6 @@ class ActionsPage extends React.Component {
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({
-      steps: [
-        {
-          target: "#test-action-cards-wrapper",
-          title: "Actions chosen by your neighbors",
-          content:
-            "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
-          placement: "auto",
-          spotlightClicks: true,
-          disableBeacon: true,
-          disableOverlayClose: true,
-        },
-        // ...
-      ],
-    });
-  }
-
   renderEQModal() {
     const { showEqModal } = this.state;
     if (showEqModal)
