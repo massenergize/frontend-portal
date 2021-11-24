@@ -4,7 +4,6 @@ import { withFirebase } from "react-redux-firebase";
 import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
-
 import { apiCall } from "../../../api/functions";
 import {
   facebookProvider,
@@ -73,8 +72,9 @@ class RegisterFormBase extends React.Component {
   }
 
   componentDidMount() {
-    const body = { email: this.props.auth.email };
-    apiCall("users.checkImported", body)
+    if (this.props.auth.email) {
+      const body = { email: this.props.auth.email };
+      apiCall("users.checkImported", body)
       .then((json) => {
         if (json.success && json.data.imported) {
           this.setState({
@@ -89,7 +89,8 @@ class RegisterFormBase extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-      });
+      });     
+    }
   }
 
   getRegProtocol() {
@@ -257,7 +258,7 @@ class RegisterFormBase extends React.Component {
                 id="email"
                 type="email"
                 name="email"
-                value={email}
+                value={email || ""}
                 onChange={this.onChange}
                 placeholder="Enter your email"
                 required
@@ -570,10 +571,9 @@ class RegisterFormBase extends React.Component {
                     required
                   />
                 </div>
-
-                <ReCAPTCHA
-                  sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
-                  onChange={this.onReCaptchaChange}
+                 <ReCAPTCHA
+                sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
+                onChange={this.onReCaptchaChange}
                 />
                 <br />
                 <p style={{ marginLeft: "25px" }}>
