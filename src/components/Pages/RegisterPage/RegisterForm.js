@@ -196,6 +196,13 @@ class RegisterFormBase extends React.Component {
 
   renderPage1 = () => {
     const { email, passwordOne, passwordTwo, error } = this.state;
+    
+    const pageData = this.props.registerPage;
+    if (pageData == null) return <LoadingCircle />;
+    const title = pageData.title ? pageData.title : "Enter your Email and a Password";
+    const description = pageData.description ? pageData.description : 
+      "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
+
     const steps = [
       {
         target: "body",
@@ -208,6 +215,7 @@ class RegisterFormBase extends React.Component {
         hideFooter: false,
       },
     ];
+
     return (
       <div
         className="styled-form register-form"
@@ -242,13 +250,10 @@ class RegisterFormBase extends React.Component {
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Enter your Email and a Password</h3>
-            <p>
-              This helps us count your impact correctly, and avoid double
-              counting. We collect no sensitive personal data, and do not share
-              data.
-            </p>
+            <h3>{title}</h3>
+            <p> {description}</p>
           </div>
+
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <span className="adon-icon">
@@ -895,6 +900,7 @@ const mapStoreToProps = (store) => {
     user: store.user,
     policies: store.page.policies,
     links: store.links,
+    registerPage: store.page.registerPage,
     community: store.page.community,
     is_sandbox: store.page.__is_sandbox,
   };
