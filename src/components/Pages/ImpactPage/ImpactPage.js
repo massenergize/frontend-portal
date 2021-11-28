@@ -280,15 +280,15 @@ class ImpactPage extends React.Component {
     const steps = [
       {
         target: "#hh-card",
-        title: "Many neighbors have taken actions",
+        title: "Join your neighbors taking actions",
         content: (
           <>
-            This page also shows our community’s goal, because together we have
-            some serious impact! <br /> Add your own actions to the collective
-            goal by signing up.
+            Many households are already part of this community. People around
+            your neighborhood can colaborate and make an impact together.
+            <br />
             <div
               style={{
-                backgroundColor: "#F67B61",
+                backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
@@ -296,15 +296,15 @@ class ImpactPage extends React.Component {
                 marginTop: "10px",
               }}
             >
-              <Link style={{ color: "white" }} to={this.props.links.signup}>
-                TAKE ME TO SIGN UP
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
               </Link>
             </div>{" "}
           </>
         ),
         locale: {
           skip: <span>Skip Tour</span>,
-          next: <span>NEXT</span>,
+          next: <span>Next!</span>,
         },
         placement: "auto",
         spotlightClicks: true,
@@ -313,15 +313,16 @@ class ImpactPage extends React.Component {
       },
       {
         target: "#carbon-card",
-        title: "This is how many trees your neighbors have planted!", //this copy needs change
+        title: "Your actions help reduce carbon emissions", //this copy needs change
         content: (
           <>
-            If you want to add your trees to the collective forest you can do it
-            by signing up",
+            Your carbon footprint is tied to your activities. This community
+            helps you find people with similar interests and increase your CO2
+            savings.
             <br />
             <div
               style={{
-                backgroundColor: "#F67B61",
+                backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
@@ -329,15 +330,15 @@ class ImpactPage extends React.Component {
                 marginTop: "10px",
               }}
             >
-              <Link style={{ color: "white" }} to={this.props.links.signup}>
-                TAKE ME TO SIGN UP
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
               </Link>
             </div>
           </>
         ),
         placement: "auto",
         spotlightClicks: true,
-        disableBeacon: false,
+        disableBeacon: true,
         hideFooter: true,
       },
     ];
