@@ -6,6 +6,7 @@ import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamStatsBars, { PACKED } from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
+import TeamActionsList from "./TeamActionsList";
 import TeamMembersList from "./TeamMembersList";
 import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
 import TeamInfoModal from "./TeamInfoModal";
@@ -17,6 +18,11 @@ import { Link } from "react-router-dom";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import URLS from "../../../api/urls";
+import MELightDropDown from "../Widgets/MELightDropDown";
+export const SHOW_OPTION = {
+  GRAPH: "Graph",
+  LIST: "List",
+};
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -28,7 +34,9 @@ class OneTeamPage extends React.Component {
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
       numOfSubTeams: 0,
+      showOption: null,
     };
+    this.itemSelected = this.itemSelected.bind(this);
   }
 
   async fetch(id) {
@@ -60,6 +68,8 @@ class OneTeamPage extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.fetch(id);
+    // TODO: get show option from local storage
+    this.setState({ showOption: "Graph"});
   }
 
   componentDidUpdate(prevProps) {
@@ -68,6 +78,12 @@ class OneTeamPage extends React.Component {
     if (this.props.teamsStats && !this.state.teamData && !this.state.error) {
       this.fetch(id);
     }
+  }
+
+  itemSelected(status) {
+    if (status === MELightDropDown.NONE) return;
+    // TODO: update localStorage to record choice
+    this.setState({ showOption: status });
   }
 
   render() {
@@ -153,6 +169,7 @@ class OneTeamPage extends React.Component {
       remountForcer,
       isBigText,
     };
+    const { showOption } = this.state;
 
     return (
       <>
@@ -296,8 +313,27 @@ class OneTeamPage extends React.Component {
                         </>
                       )}
                     </h5>
+                    <MELightDropDown
+                      onItemSelected={this.itemSelected}
+                      animate={false}
+                      controlLabel={true}
+                      label={
+                        showOption ||
+                        "Option"
+                      }
+                      labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
+                      data={[
+                        SHOW_OPTION.GRAPH,
+                        SHOW_OPTION.LIST,
+                      ]}
+                    />
 
-                    <TeamActionsGraph key={remountForcer} teamID={team.id} />
+                    { showOption === "Graph" ? (
+                        <TeamActionsGraph key={remountForcer} teamID={team.id} />
+                      ) : (
+                        <TeamActionsList key={remountForcer} teamID={team.id} />
+                      )
+                    };
 
                     <p style={{ textAlign: "center", marginTop: 15 }}>
                       Complete{" "}
