@@ -80,15 +80,17 @@ class HomePage extends React.Component {
         title: "Carbon Reduction",
       });
     }
+    console.log("iconQuickLinks", iconQuickLinks);
 
     const steps = [
       {
         target: "body",
         title: `Welcome to ${this.props.community.name}`,
-        content:
-          "We’re very happy you are here. This is where your neighbors help you take meaningful climate actions. There’s so much YOU can do, so let us show you around! We’ll take only a minute.",
+        content: `${this.props.community.about_community}. This website is where you and your neighbors can take climate action
+            together. There’s so much YOU can do, so let us show you around!
+            We’ll take only two minutes.`,
         locale: {
-          next: <span>START</span>,
+          next: <span>Got it!</span>,
           skip: <span>Skip Tour</span>,
         },
         placement: "center",
@@ -98,15 +100,16 @@ class HomePage extends React.Component {
       {
         target: ".icon-panel",
         title: "Start taking action right away!",
+        //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
-          <>
-            Clicking on these boxes will take you places! The one called
-            "actions" will take you straight to tons of actions that you can
-            take.
+          <div>
+            Clicking on these boxes will take you places! The one called{" "}
+            {iconQuickLinks[2].title} will take you straight to tons of actions
+            that you can take.
             <br />
             <div
               style={{
-                backgroundColor: "#F67B61",
+                backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
@@ -115,13 +118,13 @@ class HomePage extends React.Component {
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.actions}>
-                TAKE ME TO ACTIONS
+                Got it!
               </Link>
             </div>
-          </>
+          </div>
         ),
         placement: "auto",
-        spotlightClicks: true,
+        spotlightClicks: false,
         disableOverlayClose: true,
         hideFooter: true,
       },

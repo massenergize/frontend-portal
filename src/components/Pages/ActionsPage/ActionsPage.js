@@ -189,14 +189,24 @@ class ActionsPage extends React.Component {
 
     const steps = [
       {
-        target: "#test-action-cards-wrapper",
+        target: "body",
         title: "Actions chosen by your neighbors",
-        content:
-          "There are a lot of them! You can browse, or you can filter by area, impact or cost. Interested in an action? Click on any card for more info.",
-        placement: "auto",
+        content: (
+          <>
+            There are a lot of them! You can filter by category, impact or cost.{" "}
+            Interested in an action?{" "}
+            <spam style={{ color: "#F67B61" }}>
+              Click on any card for more info.
+            </spam>
+          </>
+        ),
+        locale: {
+          close: <span>Got it!</span>,
+        },
+        placement: "center",
         spotlightClicks: true,
-        disableBeacon: true,
-        disableOverlayClose: true,
+        disableBeacon: false,
+        hideFooter: false,
       },
       // ...
     ];
@@ -206,7 +216,7 @@ class ActionsPage extends React.Component {
         <ProductTour
           steps={steps}
           showSkipButton
-          spotlightPadding={-5}
+          // spotlightPadding={-5}
           // disableOverlay
           // showProgress
           styles={{
@@ -224,7 +234,6 @@ class ActionsPage extends React.Component {
               width: 500,
               //zindex of modal
               zIndex: 1000,
-              beaconSize: 36,
             },
           }}
         />

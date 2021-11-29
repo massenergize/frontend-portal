@@ -30,6 +30,7 @@ class AboutUsPage extends React.Component {
     );
   }
   render() {
+    console.log(this.props.community.about_community);
     if (!this.props.pageData || !this.props.community) {
       return <LoadingCircle />;
     } else if (this.props.pageData === {} || this.props.community === {}) {
@@ -47,13 +48,21 @@ class AboutUsPage extends React.Component {
     const videoLink = pageData.featured_video_link
       ? pageData.featured_video_link
       : null;
-    const image = pageData.image ? pageData.image : (pageData.images ? pageData.images[0] : null);
+    const image = pageData.image
+      ? pageData.image
+      : pageData.images
+      ? pageData.images[0]
+      : null;
     const paragraphContent = pageData.description;
 
     const donatePageData = this.props.donatePageData;
-    const donateEnabled = donatePageData && donatePageData.is_published ? donatePageData.is_published : null;
-    const donateMessage = donatePageData && donatePageData.title ? donatePageData.title : null;
-    
+    const donateEnabled =
+      donatePageData && donatePageData.is_published
+        ? donatePageData.is_published
+        : null;
+    const donateMessage =
+      donatePageData && donatePageData.title ? donatePageData.title : null;
+
     return (
       <div className="boxed_wrapper">
         <BreadCrumbBar links={[{ name: "About Us" }]} />
@@ -69,18 +78,16 @@ class AboutUsPage extends React.Component {
                 {title}
               </h2>
             </center>
-            {subtitle ? 
-            <div>
-              <center>
-                <h4 className="cool-font" style={{ padding: 10 }}>
-                  {subtitle}
-                </h4>
-              </center>
-            </div> : null
-            }   
-            <center>
-              {image && this.renderImage(image)}
-            </center>
+            {subtitle ? (
+              <div>
+                <center>
+                  <h4 className="cool-font" style={{ padding: 10 }}>
+                    {subtitle}
+                  </h4>
+                </center>
+              </div>
+            ) : null}
+            <center>{image && this.renderImage(image)}</center>
             <div
               className="community-about-text cool-font make-me-dark"
               style={{ fontSize: "large", textAlign: "justify" }}
@@ -134,8 +141,8 @@ class AboutUsPage extends React.Component {
         {donateEnabled ? (
           <div>
             <DonateBar donateMessage={donateMessage} />
-          </div>  
-        ) : null }
+          </div>
+        ) : null}
       </div>
     );
   }

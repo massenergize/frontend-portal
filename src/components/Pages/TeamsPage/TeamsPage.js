@@ -14,6 +14,7 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
+import ProductTour from "react-joyride";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -122,8 +123,68 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
+    const steps = [
+      {
+        target: "body",
+        title: "Accomplish more by working in teams",
+        content: (
+          <>
+            Here's a list of teams in your community. A team can be about
+            anything you are interested in.
+            <br />
+            <div
+              style={{
+                backgroundColor: "#8DC53F",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.signup}>
+                Got it!
+              </Link>
+            </div>{" "}
+          </>
+        ),
+        locale: {
+          skip: <span>Skip Tour</span>,
+          next: <span>Got it!</span>,
+        },
+        placement: "center",
+        spotlightClicks: false,
+        disableBeacon: true,
+        hideFooter: true,
+      },
+    ];
+
     return (
       <>
+        <ProductTour
+          steps={steps}
+          showSkipButton
+          // spotlightPadding={5}
+          // disableOverlay
+          // showProgress
+          styles={{
+            options: {
+              // modal arrow and background color
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              // page overlay color
+              // overlayColor: "transparent",
+              //button color
+              primaryColor: "#8CC43C",
+              //text color
+              textColor: "black",
+              //width of modal
+              width: 500,
+              //zindex of modal
+              zIndex: 1000,
+            },
+          }}
+        />
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
 
         {createTeamModalOpen && (
@@ -132,7 +193,6 @@ class TeamsPage extends React.Component {
             onClose={this.onCreateTeamModalClose}
           />
         )}
-
         <div
           className="boxed_wrapper"
           style={{ minHeight: window.screen.height - 200 }}
@@ -163,7 +223,11 @@ class TeamsPage extends React.Component {
               {sub_title ? <p className="phone-font-15">{sub_title}</p> : null}
             </center>
             <center>
-              <div className="row no-gutters" style={{ marginBottom: "10px" }}>
+              <div
+                id="first-team"
+                className="row no-gutters"
+                style={{ marginBottom: "10px" }}
+              >
                 <div className="col-9">
                   <METextField
                     onChange={(event) => this.handleSearch(event)}
@@ -318,104 +382,107 @@ class TeamsPage extends React.Component {
     const teamObj = teamData.team;
 
     return (
-      <div key={teamObj.id}>
-        <div className={`team-card ${this.getAnimationClasses()}`}>
-          <Link
-            to={`${this.props.links.teams + "/" + teamObj.id} `}
-            style={{ width: "100%" }}
-            className="test-team-clickable-card"
-          >
-            <div
-              className="row no-gutter flex"
-              style={{ width: "100%", height: "100%" }}
+      <>
+        <div key={teamObj.id}>
+          <div className={`team-card ${this.getAnimationClasses()}`}>
+            <Link
+              to={`${this.props.links.teams + "/" + teamObj.id} `}
+              style={{ width: "100%" }}
+              className="test-team-clickable-card"
             >
-              <div className="col-sm-3 team-card-column">
-                <div className="team-card-content">
-                  <h4
-                    className="row team-card-title"
-                    style={{ marginLeft: 0, marginRight: 0 }}
-                  >
-                    <b>{teamObj.name}</b>
-                  </h4>
-                  <p
-                    className="row team-card-description"
-                    style={{ marginLeft: 0, marginRight: 0 }}
-                  >
-                    {teamObj.tagline}
-                  </p>
-                  {isInTeam && (
+              <div
+                className="row no-gutter flex"
+                style={{ width: "100%", height: "100%" }}
+              >
+                <div className="col-sm-3 team-card-column">
+                  <div className="team-card-content">
+                    <h4
+                      className="row team-card-title"
+                      style={{ marginLeft: 0, marginRight: 0 }}
+                    >
+                      <b>{teamObj.name}</b>
+                    </h4>
                     <p
                       className="row team-card-description"
-                      style={{
-                        paddingLeft: "15px",
-                        paddingRight: "10px",
-                        color: "#8dc63f",
-                      }}
+                      style={{ marginLeft: 0, marginRight: 0 }}
                     >
-                      &#10003; in this team {!isInThisTeam && "via a sub-team"}
+                      {teamObj.tagline}
                     </p>
-                  )}
+                    {isInTeam && (
+                      <p
+                        className="row team-card-description"
+                        style={{
+                          paddingLeft: "15px",
+                          paddingRight: "10px",
+                          color: "#8dc63f",
+                        }}
+                      >
+                        &#10003; in this team{" "}
+                        {!isInThisTeam && "via a sub-team"}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="col-sm-9">
-                <div className="row" style={{ margin: "0 auto" }}>
-                  {teamObj.logo ? (
-                    <>
-                      <div className="col-8 team-card-column">
+                <div className="col-sm-9">
+                  <div className="row" style={{ margin: "0 auto" }}>
+                    {teamObj.logo ? (
+                      <>
+                        <div className="col-8 team-card-column">
+                          <TeamStatsBars
+                            teamStats={teamData}
+                            pref_eq={this.props.pref_eq}
+                          />
+                        </div>
+                        <div className="col-4 team-card-column">
+                          <img
+                            className="team-card-img"
+                            src={teamObj.logo.url}
+                            alt=""
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="team-card-column">
                         <TeamStatsBars
                           teamStats={teamData}
                           pref_eq={this.props.pref_eq}
                         />
                       </div>
-                      <div className="col-4 team-card-column">
-                        <img
-                          className="team-card-img"
-                          src={teamObj.logo.url}
-                          alt=""
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div className="team-card-column">
-                      <TeamStatsBars
-                        teamStats={teamData}
-                        pref_eq={this.props.pref_eq}
-                      />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        </div>
-        {teamData.subTeams && teamData.subTeams.length > 0 && (
-          <>
-            <button
-              className="btn round-me collapse-team-btn bottom-right z-depth-float"
-              onClick={() => {
-                const { teamsData } = this.state;
-                const thisTeamIndex = teamsData.findIndex(
-                  (_teamData) => _teamData.team.id === teamData.team.id
-                );
-                teamsData[thisTeamIndex].collapsed =
-                  !teamsData[thisTeamIndex].collapsed;
-                this.setState({ teamsData: teamsData });
-              }}
-            >
-              {teamData.collapsed ? (
-                <span>Expand Sub-teams &darr;</span>
-              ) : (
-                <span>Collapse Sub-teams &uarr;</span>
+            </Link>
+          </div>
+          {teamData.subTeams && teamData.subTeams.length > 0 && (
+            <>
+              <button
+                className="btn round-me collapse-team-btn bottom-right z-depth-float"
+                onClick={() => {
+                  const { teamsData } = this.state;
+                  const thisTeamIndex = teamsData.findIndex(
+                    (_teamData) => _teamData.team.id === teamData.team.id
+                  );
+                  teamsData[thisTeamIndex].collapsed =
+                    !teamsData[thisTeamIndex].collapsed;
+                  this.setState({ teamsData: teamsData });
+                }}
+              >
+                {teamData.collapsed ? (
+                  <span>Expand Sub-teams &darr;</span>
+                ) : (
+                  <span>Collapse Sub-teams &uarr;</span>
+                )}
+              </button>
+              {!teamData.collapsed && (
+                <div className="me-sub-teams-box">
+                  {teamData.subTeams.map((subTeam) => this.renderTeam(subTeam))}
+                </div>
               )}
-            </button>
-            {!teamData.collapsed && (
-              <div className="me-sub-teams-box">
-                {teamData.subTeams.map((subTeam) => this.renderTeam(subTeam))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+            </>
+          )}
+        </div>
+      </>
     );
   }
 
