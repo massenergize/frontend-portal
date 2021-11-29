@@ -80,7 +80,6 @@ class HomePage extends React.Component {
         title: "Carbon Reduction",
       });
     }
-    console.log("iconQuickLinks", iconQuickLinks);
 
     const steps = [
       {

@@ -4,6 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import MEButton from "./../Widgets/MEButton";
+import LoadingCircle from "../../Shared/LoadingCircle";
 import {
   facebookProvider,
   googleProvider,
@@ -39,6 +40,12 @@ class LoginFormBase extends React.Component {
 
   render() {
     const { email, password, error } = this.state;
+
+    const pageData = this.props.signinPage;
+    if (pageData == null) return <LoadingCircle />;
+    const title = pageData.title ? pageData.title : "Sign in";
+    const description = pageData.description ? pageData.description : "";
+
     return (
       <div
         className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"
@@ -49,7 +56,8 @@ class LoginFormBase extends React.Component {
           style={{ padding: 55, borderRadius: 12 }}
         >
           <div className="section-title style-2 mob-sweet-b-10">
-            <h3 className="mog-title-fix">Sign in</h3>
+            <h3 className="mog-title-fix">{title}}</h3>
+            <p> {description}</p>
           </div>
           <form onSubmit={this.onSubmit}>
             <div className="form-group mob-sweet-b-10">
@@ -254,6 +262,7 @@ const LoginForm = compose(withFirebase)(LoginFormBase);
 const mapStoreToProps = (store) => {
   return {
     auth: store.firebase.auth,
+    signinPage: store.page.signinPage,
     links: store.links,
   };
 };
