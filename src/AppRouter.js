@@ -85,7 +85,8 @@ class AppRouter extends Component {
       community: null,
       error: null,
       pagesEnabled: {},
-      menu: null,
+      navBarMenu: null,
+      footerLinks: null,
       prefix: "",
     };
 
@@ -128,7 +129,7 @@ class AppRouter extends Component {
       // for lazy loading: load these first
       Promise.all([
         apiCall("home_page_settings.info", body),
-        apiCall("menus.list", body), //should add all communities to the menus.list
+        apiCall("menus.list", body),
         apiCall("about_us_page_settings.info", body),
         apiCall("actions_page_settings.info", body),
         apiCall("contact_us_page_settings.info", body),
@@ -159,6 +160,7 @@ class AppRouter extends Component {
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
+
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
           this.props.reduxLoadActionsPage(actionsPageResponse.data);
           this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
@@ -184,11 +186,13 @@ class AppRouter extends Component {
             },
             prefix,
           });
+          this.loadMenu(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
           console.log(err);
         });
+
       apiCall("events.date.update", body)
         .then((json) => {
           if (json.success) {
@@ -301,11 +305,35 @@ class AppRouter extends Component {
     }
   }
 
+  loadMenu(menus) {
+    if (!menus) {
+      console.log("Menus not loaded!");
+      return;
+    }
+
+    const { content } =
+        menus.find((menu) => {
+          return menu.name === "PortalMainNavLinks";
+        }) || {};
+    const initialMenu = content;
+    
+    console.log("Initial menu", initialMenu);
+    const finalMenu = this.modifiedMenu(initialMenu);
+    console.log("finalMenu", finalMenu)
+    this.setState({ navBarMenu: finalMenu})
+
+    const footerContent = menus.filter((menu) => {
+        return menu.name === "PortalFooterQuickLinks";
+      });
+    const footerLinks = this.addPrefix(footerContent[0].content);
+    console.log(footerLinks)
+    this.setState({ footerLinks: footerLinks });
+
+  }
   /**
-   * 1. The aim is to extract the "teams" URL as a child from the actions children list, and make it a main nav item
-   * 2. Make a contact us menu item
-   * 3. Then arrange menu items as : Home, Actions, Teams Events, About Us
-   * 4. Remove all menu links that have been deactivated by admins
+   * Eliminate all the junk this used to do
+   * Only effect: Remove all menu links that have been deactivated by admins
+   * Menu organization set in database
    *
    * @param {*} menu
    * @returns
@@ -313,31 +341,15 @@ class AppRouter extends Component {
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
-   var oldAbout = menu[3];
-    var oldActions = menu[1];
-    if (oldAbout) {
-      var abtSliced = oldAbout.children.filter(
-        (item) => item.name.toLowerCase() !== "impact"
-      );
-      const contactUsItem = {
-        link: "/contactus",
-        name: "Contact Us",
-      
-      };
+    var aboutMenu = menu.find((menu) => {
+      return menu.name === "About Us";
+    }) || {};
+    var actionsMenu = menu.find((menu) => {
+      return menu.name === "Actions";
+    }) || {};
 
-      var newAbout = {
-        name: "About Us",
-        children: [
-          { link: "/impact", name: "Our Impact" },
-          ...abtSliced,
-          contactUsItem,
-        ],
-      };
-      if (menu[4]) {
-        newAbout.children = [...newAbout.children, menu.pop()];
-      }
-      // remove menu items for pages which cadmins have selected as not enabled
-      newAbout.children = newAbout.children.filter((item) => {
+    if (aboutMenu) {
+     aboutMenu.children = aboutMenu.children.filter((item) => {
         switch (item.link) {
           case "/impact":
             return this.state.pagesEnabled.impactPage;
@@ -351,19 +363,11 @@ class AppRouter extends Component {
             return true;
         }
       });
-      menu[3] = newAbout;
+      menu[-1] = aboutMenu;
     }
 
-    if (oldActions) {
-      var actionsSliced = oldActions.children.slice(1);
-      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
-      var newAction = {
-        name: "Actions",
-        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
-        navItemId: "action-nav-id",
-      };
-      // remove menu items for pages which cadmins have selected as not enabled
-      newAction.children = newAction.children.filter((item) => {
+    if (actionsMenu) {
+      actionsMenu.children = actionsMenu.children.filter((item) => {
         switch (item.link) {
           case "/actions":
             return this.state.pagesEnabled.actionsPage;
@@ -375,16 +379,8 @@ class AppRouter extends Component {
             return true;
         }
       });
-      menu[1] = newAction;
+      menu[1] = actionsMenu;
     }
-
-    const actionsIndex = menu.findIndex((item) => item.name === "Actions");
-    const menuPostActions = menu.splice(actionsIndex + 1);
-    menu = [
-      ...menu.splice(0, actionsIndex + 1),
-      { link: "/teams", name: "Teams", navItemId: "team-nav-id" },
-      ...menuPostActions,
-    ];
 
     // remove menu items for pages which cadmins have selected as not enabled
     menu = menu.filter((item) => {
@@ -400,18 +396,6 @@ class AppRouter extends Component {
       }
     });
 
-    menu = menu.map((item) => {
-      switch (item.name?.toLowerCase()) {
-        case "events":
-          return { ...item, navItemId: "events-nav-id" };
-        case "about us":
-          return { ...item, navItemId: "about-us-nav-id" };
-
-        default:
-          return item;
-      }
-    });
-
     return this.addPrefix(menu);
   }
 
@@ -421,6 +405,7 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
+    console.log("addPrefix",menu)
     menu = menu.map((m) => {
 
       if (
@@ -501,32 +486,13 @@ class AppRouter extends Component {
 
     const { links } = this.props;
 
-    var finalMenu = [];
-    // console.log("I am the props menu", this.props.menu);
-    if (this.props.menu) {
-      const { content } =
-        this.props.menu.find((menu) => {
-          return menu.name === "PortalMainNavLinks";
-        }) || {};
-      finalMenu = content;
-    }
-
-    finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const droppyHome = [{ name: "Home", link: "/" }];
-    finalMenu = [...droppyHome, ...finalMenu];
-    //modify again
-    // console.log("I am the final menu", finalMenu);
-    finalMenu = this.modifiedMenu(finalMenu);
-
-    var footerLinks = [];
-    if (this.props.menu) {
-      const [{ content }] = this.props.menu.filter((menu) => {
-        return menu.name === "PortalFooterQuickLinks";
-      });
-      footerLinks = this.addPrefix(content);
-    }
-
     const communityInfo = community || {};
+
+    if (!this.state.navBarMenu) {
+      return <LoadingCircle />;
+    }
+    const navBarMenu = this.state.navBarMenu;
+    const footerLinks = this.state.footerLinks;
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -555,13 +521,11 @@ class AppRouter extends Component {
           tags: [community.name, community.subdomain],
         })}
 
-        {this.props.menu ? (
+        {navBarMenu ? (
           <div>
-            <NavBarBurger navLinks={finalMenu} />
+            <NavBarBurger navLinks={navBarMenu} />
           </div>
-        ) : (
-          <LoadingCircle />
-        )}
+        ) : null }
         {
           /**if theres a half finished account the only place a user can go is the register page */
           this.userHasAnIncompleteRegistration() ? (
@@ -610,11 +574,9 @@ class AppRouter extends Component {
             </Switch>
           )
         }
-        {this.props.menu ? (
+        {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
-        ) : (
-          <LoadingCircle />
-        )}
+        ) : null}
       </div>
     );
   }

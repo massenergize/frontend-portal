@@ -467,29 +467,30 @@ class OneActionPage extends React.Component {
     const steps = [
       {
         target: "#test-actions-tabs",
-        title: "Discover action details",
+        title: "Discover ideas for action",
         content:
-          "Read what this is all about and, by using these tabs, find practical steps to take, neighbors testimonials, and a Deep Dive for even more information.",
+          "Click these buttons to find practical steps to take, neighbors testimonials, and in some cases a deep dive for more details.",
         locale: {
-          next: <span>NEXT</span>,
+          next: <span>Got it!</span>,
           skip: <span>Skip Tour</span>,
         },
-        placement: "auto",
+        placement: "left-start",
         spotlightClicks: true,
         disableBeacon: true,
         disableOverlayClose: true,
       },
       {
         target: "#todo-btns",
-        title: "Chances are you’ve already done this action!",
+        title: "Perhaps you’ve already done this?",
         content: (
           <>
             And you want to click that DONE IT button. Or you want to put it on
-            your TO DO list. These are some of the many perks of signing up.
+            your TO DO list. Marking an action as done increases your
+            community's impact
             <br />
             <div
               style={{
-                backgroundColor: "#F67B61",
+                backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
@@ -498,26 +499,12 @@ class OneActionPage extends React.Component {
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.impact}>
-                SHOW ME WHY FIRST
-              </Link>
-            </div>
-            <div
-              style={{
-                backgroundColor: "#F67B61",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                margin: "10px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.signup}>
-                TAKE ME TO SIGN UP
+                Got it!
               </Link>
             </div>
           </>
         ),
-        placement: "auto",
+        placement: "left-start",
         spotlightClicks: false,
         disableBeacon: true,
         disableOverlayClose: true,

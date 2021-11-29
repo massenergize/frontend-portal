@@ -206,9 +206,17 @@ class RegisterFormBase extends React.Component {
     const steps = [
       {
         target: "body",
-        title: "Sign Up",
-        content:
-          "Click here and follow the instructions! Then come back and let us know what you’ve done already to protect this place we love, and we’ll help you make a plan to keep on acting on climate, because together we make a difference!",
+        title: `Join ${this.props.community.name}`,
+        content: (
+          <>
+            Be part of this amazing community. Enter your email and a password.
+            Use Google or Facebook for faster sign up. Together we make a
+            difference!
+          </>
+        ),
+        locale: {
+          close: <span>Done!</span>,
+        },
         placement: "center",
         spotlightClicks: true,
         disableBeacon: true,
