@@ -15,6 +15,7 @@ import {
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
 import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 import { Link } from "react-router-dom";
 
 // TODO: Render sidebar graphs
@@ -277,6 +278,8 @@ class ImpactPage extends React.Component {
           calcEQ(goal.target_carbon_footprint_reduction, pref_eq.value)
       ),
     ];
+
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "#hh-card",
@@ -345,11 +348,15 @@ class ImpactPage extends React.Component {
 
     return (
       <>
+        {seen_tour === "true" ? ( 
+          null
+          ) : (
         <ProductTour
           steps={steps}
           continuous
           showSkipButton
           spotlightPadding={30}
+          //callback={handleTourCallback}
           // disableOverlay
           // showProgress
           styles={{
@@ -370,6 +377,8 @@ class ImpactPage extends React.Component {
             },
           }}
         />
+        )};
+
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div

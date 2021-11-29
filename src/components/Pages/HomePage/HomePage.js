@@ -6,7 +6,7 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { getFilterVersionFromURL } from "../../Utils";
+import { getFilterVersionFromURL, getTakeTourFromURL, handleTourCallback } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
@@ -18,6 +18,12 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+
+    const tour_active = getTakeTourFromURL(window.location);
+    console.log("Tour qualifier: ", !tour_active);    
+    if (tour_active) {
+      window.localStorage.setItem("seen_community_portal_tour", "false");
+    }
   }
 
   render() {
@@ -81,6 +87,7 @@ class HomePage extends React.Component {
       });
     }
 
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "body",
@@ -131,10 +138,14 @@ class HomePage extends React.Component {
 
     return (
       <>
+        {seen_tour === "true" ? ( 
+          null
+          ) : (
         <ProductTour
           steps={steps}
           continuous
           showSkipButton
+          callback={handleTourCallback}
           spotlightPadding={-40}
           // disableOverlay
           // showProgress
@@ -155,7 +166,9 @@ class HomePage extends React.Component {
               zIndex: 1000,
             },
           }}
-        />
+         /> 
+         )}        
+
         <div className="boxed_wrapper">
           {welcomeImagesData ? (
             <WelcomeImages data={welcomeImagesData} title={title} />

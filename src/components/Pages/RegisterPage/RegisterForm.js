@@ -21,6 +21,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -198,12 +199,15 @@ class RegisterFormBase extends React.Component {
     const { email, passwordOne, passwordTwo, error } = this.state;
     
     const pageData = this.props.registerPage;
-    if (pageData == null) return <LoadingCircle />;
-    const title = pageData.title ? pageData.title : "Enter your Email and a Password";
-    const description = pageData.description ? pageData.description : 
+    //if (pageData == null) return <LoadingCircle />;
+
+    const title = pageData?.title ? pageData.title : "Enter your Email and a Password";
+    const description = pageData?.description ? pageData.description : 
       "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
 
-    const steps = [
+      const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+
+      const steps = [
       {
         target: "body",
         title: `Join ${this.props.community.name}`,
@@ -229,9 +233,13 @@ class RegisterFormBase extends React.Component {
         className="styled-form register-form"
         style={{ height: window.screen.height - 60, marginTop: 15 }}
       >
+        {seen_tour === "true" ? ( 
+          null
+          ) : (
         <ProductTour
           steps={steps}
           showSkipButton
+          callback={handleTourCallback}
           // spotlightPadding={-5}
           // disableOverlay
           // showProgress
@@ -253,6 +261,8 @@ class RegisterFormBase extends React.Component {
             },
           }}
         />
+        )};
+
         <div
           className="z-depth-float me-anime-fade-in-up"
           style={{ padding: 46, borderRadius: 12 }}
