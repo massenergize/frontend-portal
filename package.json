@@ -42,7 +42,9 @@
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typescript": "^4.5.2",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
