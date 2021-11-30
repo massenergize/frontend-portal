@@ -38,6 +38,7 @@ import {
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -464,6 +465,7 @@ class OneActionPage extends React.Component {
       : true;
     const actionStateCase = this.getActionStateCase();
 
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "#test-actions-tabs",
@@ -515,11 +517,15 @@ class OneActionPage extends React.Component {
 
     return (
       <>
+        {seen_tour === "true" ? ( 
+          null
+          ) : (
         <ProductTour
           steps={steps}
           continuous
           showSkipButton
           hideFooter={true}
+          //callback={handleTourCallback}
           // spotlightPadding={-5}
           // disableOverlay
           // showProgress
@@ -542,6 +548,8 @@ class OneActionPage extends React.Component {
             },
           }}
         />
+        )};
+
         <div>
           <div className="product-content-box">
             <div className="row">

@@ -31,6 +31,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -187,7 +188,8 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
-    const steps = [
+      const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+      const steps = [
       {
         target: "body",
         title: "Actions chosen by your neighbors",
@@ -213,9 +215,13 @@ class ActionsPage extends React.Component {
 
     return (
       <>
+        {seen_tour === "true" ? ( 
+          null
+          ) : (
         <ProductTour
           steps={steps}
           showSkipButton
+          //callback={handleTourCallback}
           // spotlightPadding={-5}
           // disableOverlay
           // showProgress
@@ -237,6 +243,8 @@ class ActionsPage extends React.Component {
             },
           }}
         />
+        )};
+
         {this.renderEQModal()}
         {this.renderModal()}
         <div
