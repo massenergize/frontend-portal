@@ -283,31 +283,11 @@ class ImpactPage extends React.Component {
     const steps = [
       {
         target: "#hh-card",
-        title: "Join your neighbors taking actions",
-        content: (
-          <>
-            Many households are already part of this community. People around
-            your neighborhood can colaborate and make an impact together.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.teams}>
-                Got it!
-              </Link>
-            </div>{" "}
-          </>
-        ),
+        content:
+          "Add your household actions to your community’s positive impact!",
         locale: {
           skip: <span>Skip Tour</span>,
-          next: <span>Next!</span>,
+          next: <span>Got it!</span>,
         },
         placement: "auto",
         spotlightClicks: true,
@@ -316,12 +296,10 @@ class ImpactPage extends React.Component {
       },
       {
         target: "#carbon-card",
-        title: "Your actions help reduce carbon emissions", //this copy needs change
         content: (
           <>
-            Your carbon footprint is tied to your activities. This community
-            helps you find people with similar interests and increase your CO2
-            savings.
+            Your actions help your community reduce carbon emissions, which can
+            be shown as trees planted, cars on the road, or other units.
             <br />
             <div
               style={{
@@ -330,7 +308,9 @@ class ImpactPage extends React.Component {
                 color: "black",
                 display: "inline-block",
                 borderRadius: "10px",
-                marginTop: "10px",
+                marginTop: "20px",
+                //TODO: I need a better option to move button to the right
+                marginLeft: "380px",
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.teams}>
@@ -348,37 +328,35 @@ class ImpactPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? ( 
-          null
-          ) : (
-        <ProductTour
-          steps={steps}
-          continuous
-          showSkipButton
-          spotlightPadding={30}
-          //callback={handleTourCallback}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
-        )};
-
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            spotlightPadding={30}
+            //callback={handleTourCallback}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div

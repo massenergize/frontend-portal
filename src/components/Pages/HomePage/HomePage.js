@@ -6,10 +6,15 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { getFilterVersionFromURL, getTakeTourFromURL, handleTourCallback } from "../../Utils";
+import {
+  getFilterVersionFromURL,
+  getTakeTourFromURL,
+  handleTourCallback,
+} from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
+import { relativeTimeRounding } from "moment";
 
 /*'
  * The Home Page of the MassEnergize
@@ -20,7 +25,7 @@ class HomePage extends React.Component {
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
 
     const tour_active = getTakeTourFromURL(window.location);
-    console.log("Tour qualifier: ", !tour_active);    
+    console.log("Tour qualifier: ", !tour_active);
     if (tour_active) {
       window.localStorage.setItem("seen_community_portal_tour", "false");
     }
@@ -88,15 +93,24 @@ class HomePage extends React.Component {
     }
 
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const about_community = `${this.props.community.about_community}`;
+    const community_name = `${this.props.community.name}`;
+
     const steps = [
       {
         target: "body",
-        title: `Welcome to ${this.props.community.name}`,
-        content: `${this.props.community.about_community}. This website is where you and your neighbors can take climate action
-            together. There’s so much YOU can do, so let us show you around!
-            We’ll take only two minutes.`,
+        title: <strong>Welcome to {community_name}</strong>,
+        content: (
+          <div>
+            {about_community}
+            <br />
+            This website is where you and your neighbors can take climate action
+            together. There’s so much YOU can do, so let us show you around!{" "}
+            {""}It’ll take only two minutes.
+          </div>
+        ),
         locale: {
-          next: <span>Got it!</span>,
+          next: <span>Show me!</span>,
           skip: <span>Skip Tour</span>,
         },
         placement: "center",
@@ -105,28 +119,29 @@ class HomePage extends React.Component {
       },
       {
         target: ".icon-panel",
-        title: "Start taking action right away!",
+        title: <strong>Start taking action right away!</strong>,
         //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
           <div>
-            Clicking on these boxes will take you places! The one called{" "}
-            {iconQuickLinks[2].title} will take you straight to tons of actions
-            that you can take.
+            The box called {iconQuickLinks[2].title} will let you see lots of
+            actions.
             <br />
-            <div
+            <button
               style={{
                 backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
                 borderRadius: "10px",
-                marginTop: "10px",
+                marginTop: "20px",
+                //TODO: I need a better option to move button to the right
+                marginLeft: "380px",
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.actions}>
                 Got it!
               </Link>
-            </div>
+            </button>
           </div>
         ),
         placement: "auto",
@@ -138,36 +153,34 @@ class HomePage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? ( 
-          null
-          ) : (
-        <ProductTour
-          steps={steps}
-          continuous
-          showSkipButton
-          callback={handleTourCallback}
-          spotlightPadding={-40}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-         /> 
-         )}        
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            callback={handleTourCallback}
+            spotlightPadding={-40}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
 
         <div className="boxed_wrapper">
           {welcomeImagesData ? (

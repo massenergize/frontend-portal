@@ -188,64 +188,53 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
-      const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
-      const steps = [
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const steps = [
       {
-        target: "body",
-        title: "Actions chosen by your neighbors",
-        content: (
-          <>
-            There are a lot of them! You can filter by category, impact or cost.{" "}
-            Interested in an action?{" "}
-            <spam style={{ color: "#F67B61" }}>
-              Click on any card for more info.
-            </spam>
-          </>
+        target: "#test-action-cards-wrapper",
+        title: (
+          <strong>All these actions were chosen by your neighbors!</strong>
         ),
-        locale: {
-          close: <span>Got it!</span>,
-        },
-        placement: "center",
+        content:
+          "You can filter these actions by category, impact or cost. Click on any card for more",
+        placement: "auto",
         spotlightClicks: true,
-        disableBeacon: false,
-        hideFooter: false,
+        disableBeacon: true,
+        hideFooter: true,
       },
       // ...
     ];
 
     return (
       <>
-        {seen_tour === "true" ? ( 
-          null
-          ) : (
-        <ProductTour
-          steps={steps}
-          showSkipButton
-          //callback={handleTourCallback}
-          // spotlightPadding={-5}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
-        )};
-
-        {this.renderEQModal()}
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            showSkipButton
+            //callback={handleTourCallback}
+            // spotlightPadding={-5}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;{this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
