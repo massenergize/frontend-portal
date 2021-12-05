@@ -12,6 +12,8 @@ import {
   LOAD_CONTACT_US_PAGE,
   LOAD_DONATE_PAGE,
   LOAD_IMPACT_PAGE,
+  LOAD_REGISTER_PAGE,
+  LOAD_SIGNIN_PAGE,
   LOAD_EVENTS,
   LOAD_EVENT_EXCEPTIONS,
   LOAD_ACTIONS,
@@ -180,6 +182,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         impactPage: action.payload,
+      };
+
+    case LOAD_REGISTER_PAGE:
+      return {
+        ...state,
+        registerPage: action.payload,
+      };
+
+    case LOAD_SIGNIN_PAGE:
+      return {
+        ...state,
+        signinPage: action.payload,
       };
 
     case LOAD_EVENTS_PAGE:

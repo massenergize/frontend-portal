@@ -4,7 +4,7 @@ import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
-import URLS from "./api/urls";
+import URLS, { isValidUrl } from "./api/urls";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -25,6 +25,8 @@ import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
+import Cookies from 'universal-cookie';
+import { device_checkin } from './api/functions';
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -44,6 +46,8 @@ import {
   reduxLoadDonatePage,
   reduxLoadEventsPage,
   reduxLoadImpactPage,
+  reduxLoadRegisterPage,
+  reduxLoadSigninPage,
   reduxLoadMenu,
   reduxLoadPolicies,
   reduxLoadActions,
@@ -83,7 +87,8 @@ class AppRouter extends Component {
       community: null,
       error: null,
       pagesEnabled: {},
-      menu: null,
+      navBarMenu: null,
+      footerLinks: null,
       prefix: "",
     };
 
@@ -126,13 +131,15 @@ class AppRouter extends Component {
       // for lazy loading: load these first
       Promise.all([
         apiCall("home_page_settings.info", body),
-        apiCall("menus.list", body), //should add all communities to the menus.list
+        apiCall("menus.list", body),
         apiCall("about_us_page_settings.info", body),
         apiCall("actions_page_settings.info", body),
         apiCall("contact_us_page_settings.info", body),
         apiCall("donate_page_settings.info", body),
         apiCall("events_page_settings.info", body),
         apiCall("impact_page_settings.info", body),
+        apiCall("register_page_settings.info", body),
+        apiCall("signin_page_settings.info", body),
         apiCall("teams_page_settings.info", body),
         apiCall("testimonials_page_settings.info", body),
         apiCall("vendors_page_settings.info", body),
@@ -147,18 +154,23 @@ class AppRouter extends Component {
             donatePageResponse,
             eventsPageResponse,
             impactPageResponse,
+            registerPageResponse,
+            signinPageResponse,
             teamsPageResponse,
             testimonialsPageResponse,
             vendorsPageResponse,
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
+
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
           this.props.reduxLoadActionsPage(actionsPageResponse.data);
           this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
           this.props.reduxLoadDonatePage(donatePageResponse.data);
           this.props.reduxLoadEventsPage(eventsPageResponse.data);
           this.props.reduxLoadImpactPage(impactPageResponse.data);
+          this.props.reduxLoadRegisterPage(registerPageResponse.data);
+          this.props.reduxLoadSigninPage(signinPageResponse.data);
           this.props.reduxLoadTeamsPage(teamsPageResponse.data);
           this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
@@ -176,11 +188,13 @@ class AppRouter extends Component {
             },
             prefix,
           });
+          this.loadMenu(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
           console.log(err);
         });
+
       apiCall("events.date.update", body)
         .then((json) => {
           if (json.success) {
@@ -251,6 +265,10 @@ class AppRouter extends Component {
     let { data } = await apiCall("auth.whoami");
     let user = null;
 
+    const cookies = new Cookies();
+
+    device_checkin(cookies);
+
     if (data) {
       user = data;
     } else {
@@ -293,28 +311,48 @@ class AppRouter extends Component {
     }
   }
 
-  modifiedMenu(menu) {
-    var oldAbout = menu[3];
-    var oldActions = menu[1];
-    if (oldAbout) {
-      var abtSliced = oldAbout.children.filter(
-        (item) => item.name.toLowerCase() !== "impact"
-      );
-      const contactUsItem = { link: "/contactus", name: "Contact Us" };
+  loadMenu(menus) {
+    if (!menus) {
+      console.log("Menus not loaded!");
+      return;
+    }
 
-      var newAbout = {
-        name: "About Us",
-        children: [
-          { link: "/impact", name: "Our Impact" },
-          ...abtSliced,
-          contactUsItem,
-        ],
-      };
-      if (menu[4]) {
-        newAbout.children = [...newAbout.children, menu.pop()];
-      }
-      // remove menu items for pages which cadmins have selected as not enabled
-      newAbout.children = newAbout.children.filter((item) => {
+    const { content } =
+        menus.find((menu) => {
+          return menu.name === "PortalMainNavLinks";
+        }) || {};
+    const initialMenu = content;
+    
+    const finalMenu = this.modifiedMenu(initialMenu);
+    this.setState({ navBarMenu: finalMenu})
+
+    const footerContent = menus.filter((menu) => {
+        return menu.name === "PortalFooterQuickLinks";
+      });
+    const footerLinks = this.addPrefix(footerContent[0].content);
+    this.setState({ footerLinks: footerLinks });
+
+  }
+  /**
+   * Eliminate all the junk this used to do
+   * Only effect: Remove all menu links that have been deactivated by admins
+   * Menu organization set in database
+   *
+   * @param {*} menu
+   * @returns
+   *
+   * @TODO change things here after BE changes have been made, so this is more efficient.
+   */
+  modifiedMenu(menu) {
+    var aboutMenu = menu.find((menu) => {
+      return menu.name === "About Us";
+    }) || {};
+    var actionsMenu = menu.find((menu) => {
+      return menu.name === "Actions";
+    }) || {};
+
+    if (aboutMenu) {
+     aboutMenu.children = aboutMenu.children.filter((item) => {
         switch (item.link) {
           case "/impact":
             return this.state.pagesEnabled.impactPage;
@@ -328,18 +366,11 @@ class AppRouter extends Component {
             return true;
         }
       });
-      menu[3] = newAbout;
+      menu[-1] = aboutMenu;
     }
 
-    if (oldActions) {
-      var actionsSliced = oldActions.children.slice(1);
-      actionsSliced = actionsSliced.filter((items) => items.name !== "Teams");
-      var newAction = {
-        name: "Actions",
-        children: [{ link: "/actions", name: "Actions" }, ...actionsSliced],
-      };
-      // remove menu items for pages which cadmins have selected as not enabled
-      newAction.children = newAction.children.filter((item) => {
+    if (actionsMenu) {
+      actionsMenu.children = actionsMenu.children.filter((item) => {
         switch (item.link) {
           case "/actions":
             return this.state.pagesEnabled.actionsPage;
@@ -351,16 +382,8 @@ class AppRouter extends Component {
             return true;
         }
       });
-      menu[1] = newAction;
+      menu[1] = actionsMenu;
     }
-
-    const actionsIndex = menu.findIndex((item) => item.name === "Actions");
-    const menuPostActions = menu.splice(actionsIndex + 1);
-    menu = [
-      ...menu.splice(0, actionsIndex + 1),
-      { link: "/teams", name: "Teams" },
-      ...menuPostActions,
-    ];
 
     // remove menu items for pages which cadmins have selected as not enabled
     menu = menu.filter((item) => {
@@ -385,10 +408,12 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
+    
     menu = menu.map((m) => {
       if (
         this.state.prefix !== "" &&
         m.link &&
+        !isValidUrl(m.link) &&
         !m.link.startsWith(this.state.prefix)
       )
         m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
@@ -463,29 +488,13 @@ class AppRouter extends Component {
 
     const { links } = this.props;
 
-    var finalMenu = [];
-    if (this.props.menu) {
-      const [{ content }] = this.props.menu.filter((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      });
-      finalMenu = content;
-    }
-
-    finalMenu = finalMenu.filter((item) => item.name !== "Home");
-    const droppyHome = [{ name: "Home", link: "/" }];
-    finalMenu = [...droppyHome, ...finalMenu];
-    //modify again
-    finalMenu = this.modifiedMenu(finalMenu);
-
-    var footerLinks = [];
-    if (this.props.menu) {
-      const [{ content }] = this.props.menu.filter((menu) => {
-        return menu.name === "PortalFooterQuickLinks";
-      });
-      footerLinks = this.addPrefix(content);
-    }
-
     const communityInfo = community || {};
+
+    if (!this.state.navBarMenu) {
+      return <LoadingCircle />;
+    }
+    const navBarMenu = this.state.navBarMenu;
+    const footerLinks = this.state.footerLinks;
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -514,13 +523,11 @@ class AppRouter extends Component {
           tags: [community.name, community.subdomain],
         })}
 
-        {this.props.menu ? (
+        {navBarMenu ? (
           <div>
-            <NavBarBurger navLinks={finalMenu} />
+            <NavBarBurger navLinks={navBarMenu} />
           </div>
-        ) : (
-          <LoadingCircle />
-        )}
+        ) : null }
         {
           /**if theres a half finished account the only place a user can go is the register page */
           this.userHasAnIncompleteRegistration() ? (
@@ -569,11 +576,9 @@ class AppRouter extends Component {
             </Switch>
           )
         }
-        {this.props.menu ? (
+        {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
-        ) : (
-          <LoadingCircle />
-        )}
+        ) : null}
       </div>
     );
   }
@@ -604,6 +609,8 @@ const mapDispatchToProps = {
   reduxLoadEventsPage,
   reduxLoadEventExceptions,
   reduxLoadImpactPage,
+  reduxLoadRegisterPage,
+  reduxLoadSigninPage,
   reduxLoadMenu,
   reduxLoadPolicies,
   reduxLoadActions,

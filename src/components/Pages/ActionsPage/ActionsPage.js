@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { Link } from "react-router-dom";
 import ErrorPage from "./../Errors/ErrorPage";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import { apiCall } from "../../../api/functions";
@@ -31,6 +30,8 @@ import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
+import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -118,7 +119,9 @@ class ActionsPage extends React.Component {
             content={this.state.modal_content}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            addToCart={(aid, hid, status, date_completed) =>
+              this.addToCart(aid, hid, status, date_completed)
+            }
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -185,9 +188,53 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const steps = [
+      {
+        target: "#test-action-cards-wrapper",
+        title: (
+          <strong>All these actions were chosen by your neighbors!</strong>
+        ),
+        content:
+          "You can filter these actions by category, impact or cost. Click on any card for more",
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: true,
+      },
+      // ...
+    ];
+
     return (
       <>
-        {this.renderEQModal()}
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            showSkipButton
+            //callback={handleTourCallback}
+            // spotlightPadding={-5}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;{this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"
@@ -226,7 +273,7 @@ class ActionsPage extends React.Component {
               </div>
               <HorizontalFilterBox
                 type="action"
-                foundNumber={this.state.mirror_actions.length}
+                foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
@@ -312,7 +359,9 @@ class ActionsPage extends React.Component {
           tagCols={this.props.tagCols}
           match={this.props.match} //passed from the Route, need to forward to the action for url matching
           user={this.props.user}
-          addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+          addToCart={(aid, hid, status, date_completed) =>
+            this.addToCart(aid, hid, status, date_completed)
+          }
           inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
@@ -391,12 +440,16 @@ class ActionsPage extends React.Component {
     })[0];
     if (actionRel) this.moveToDone(actionRel);
   }
-  addToCart = (aid, hid, status) => {
+  addToCart = (aid, hid, status, date_completed) => {
     const body = {
       user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
     };
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed + "-01";
+    }
     const path =
       status === "DONE"
         ? "users.actions.completed.add"

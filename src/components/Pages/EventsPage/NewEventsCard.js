@@ -23,6 +23,7 @@ export default class NewEventsCard extends Component {
 
     this.state = {
       img: null,
+      pastEvent: null,
       rsvpStatus: null,
       loading: false,
       error: null,
@@ -98,7 +99,10 @@ export default class NewEventsCard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user) this.getRSVPStatus(); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
+    const rightNow = moment().format();
+    const pastEvent = rightNow > this.props.start_date_and_time;
+    this.setState({ pastEvent: pastEvent });
+    if (!pastEvent && this.props.user) this.getRSVPStatus(); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
   }
 
   handleReadMore(e) {
@@ -143,9 +147,13 @@ export default class NewEventsCard extends Component {
       dropDirection,
     } = this.props;
     const { rsvpStatus, loading, error } = this.state;
-
+    const title = this.getEventTitle();
     return (
-      <div>
+      <div
+        className="test-one-event-card"
+        data-is-logged-in={this.props.user}
+        data-rsvp-status={this.state.rsvpStatus}
+      >
         <MECard
           style={{
             padding: 0,
@@ -171,8 +179,10 @@ export default class NewEventsCard extends Component {
                 display: "flex",
                 alignItems: "center",
               }}
+              className="test-event-card-title"
+              data-event-title={title}
             >
-              {this.getEventTitle()}
+              {title}
             </h1>
           </Link>
 
@@ -183,7 +193,9 @@ export default class NewEventsCard extends Component {
               {!user && (
                 <>
                   <small style={{ fontSize: "90%" }}>
-                    <Link to={links.signin}>Sign In to RSVP</Link>
+                    <Link className="test-sign-in-to-rsvp" to={links.signin}>
+                      Sign In to RSVP
+                    </Link>
                   </small>
                   <br />
                 </>
@@ -196,7 +208,7 @@ export default class NewEventsCard extends Component {
               )}
             </div>
 
-            {user && (
+            {user && !this.state.pastEvent && (
               <div style={{ marginLeft: "auto" }}>
                 <MELightDropDown
                   direction={dropDirection}
@@ -209,7 +221,7 @@ export default class NewEventsCard extends Component {
                     rsvpStatus ||
                     "RSVP"
                   }
-                  labelClassNames="me-rsvp-btn z-depth-float"
+                  labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
                   data={[
                     RSVP_STATUS.INTERESTED,
                     RSVP_STATUS.GOING,
@@ -221,9 +233,15 @@ export default class NewEventsCard extends Component {
           </div>
         </MECard>
         {error && (
-          <small style={{ color: "red" }}>
+          <small style={{ color: "red" }} className="test-rsvp-error">
             Sorry, couldnt perform task: {error}
           </small>
+        )}
+        {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
+        {this.state.rsvpStatus && (
+          <div className="test-rsvp-status-div" style={{ opacity: 0 }}>
+            {this.state.rsvpStatus}
+          </div>
         )}
       </div>
     );

@@ -87,7 +87,8 @@ class EventsPage extends React.Component {
     return (
       <>
         <div
-          className="boxed_wrapper"
+          className="boxed_wrapper test-events-page-wrapper"
+          data-number-of-events={this.props.events?.length || 0}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
@@ -157,7 +158,11 @@ class EventsPage extends React.Component {
     }
     if (this.props.events.length === 0) {
       return (
-        <div className="text-center" style={{ width: "100%" }}>
+        <div
+          className="text-center"
+          id="test-no-events-div"
+          style={{ width: "100%" }}
+        >
           <p className="cool-font">
             {" "}
             Sorry, looks like there are no upcoming events in your community{" "}
@@ -172,13 +177,12 @@ class EventsPage extends React.Component {
         exceptions = this.props.eventExceptions.data;
       }
       const page = events.map((event) => {
-
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
         );
         const recurringDetailString = recurringDetails(event);
-      
+
         return (
           // can we format the cancelled message to be an overlay instead of going above?
           <div

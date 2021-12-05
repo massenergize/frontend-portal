@@ -18,7 +18,10 @@ class ActionModal extends Component {
         status={this.props.status}
         open={true}
         user={this.props.user}
-        addToCart={(aid, hid, status) => this.props.addToCart(aid, hid, status)}
+        addToCart={(aid, hid, status, date_completed) =>
+          this.props.addToCart(aid, hid, status, date_completed)
+        }
+        
         inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
         moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
         closeForm={this.props.closeModal}

@@ -10,6 +10,8 @@ import photo from "./../ActionsPage/try.png";
 import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
+import ShareButtons from "../../Shared/ShareButtons";
+import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
 
@@ -65,7 +67,7 @@ class OneTestimonialPage extends React.Component {
     const otherStories = this.getSomeOtherTestimonials();
     const content = otherStories.map((story, index) => {
       const creatorName =
-        story?.user?.preferred_name || story.user?.full_name || "...";
+        story?.preferred_name || story?.user?.preferred_name || story.user?.full_name || "...";
       return (
         <div key={index.toString()}>
           <MECard
@@ -141,6 +143,9 @@ class OneTestimonialPage extends React.Component {
 
   render() {
     const story = this.state.story ? this.state.story : {};
+    const { community } = story || {}
+    const { subdomain } = community || {}
+    
     if (this.state.loading) {
       return <LoadingCircle />;
     }
@@ -155,7 +160,7 @@ class OneTestimonialPage extends React.Component {
       );
     }
 
-    const { tags } = story || {}
+    const { tags } = story || {};
     return (
       <>
         {Seo({
@@ -166,7 +171,7 @@ class OneTestimonialPage extends React.Component {
           keywords: story.title && story.title.split(" "),
           updated_at: story.updated_at,
           created_at: story.created_at,
-          tags: (tags || []).map( ({ name }) => name) || [],
+          tags: (tags || []).map(({ name }) => name) || [],
         })}
 
         <div
@@ -184,12 +189,12 @@ class OneTestimonialPage extends React.Component {
               <div className="single-products-details">
                 {this.renderStory(story)}
               </div>
-              {/* <ShareButtons
-                label="Share this event!"
+              <ShareButtons
+                label="Share this testimonial!"
                 pageTitle={story.name}
                 pageDescription={story.featured_summary}
                 url={`${URLS.SHARE}/${subdomain}/testimonial/${story.id}`}
-              /> */}
+              />
             </div>
           </section>
         </div>
@@ -200,19 +205,15 @@ class OneTestimonialPage extends React.Component {
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
     const creatorName =
-      story?.user?.preferred_name || story?.user?.full_name || "...";
+      story.preferred_name || story?.user?.preferred_name || story?.user?.full_name || "...";
     return (
       <section className="event-section style-3">
         <div className="container">
           <h3
-            className="cool-font text-center"
-            style={
-              {
-                //textTransform: "capitalize",
-              }
-            }
+            className="cool-font text-center test-story-title"
+            data-story-title={story?.title}
           >
-            {story.title}
+            {story?.title}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
@@ -247,7 +248,12 @@ class OneTestimonialPage extends React.Component {
                       fontSize: "medium",
                     }}
                   >
-                    By {(story?.anonymous && "Anonymous") || creatorName}
+                    <span
+                      className="test-story-user-name"
+                      data-user-name={creatorName}
+                    >
+                      By {creatorName}
+                    </span>
                   </METextView>
                   <METextView
                     mediaType="icon"
@@ -271,7 +277,8 @@ class OneTestimonialPage extends React.Component {
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
                   <p
-                    className="cool-font"
+                    className="cool-font test-story-body"
+                    data-story-body={story?.body}
                     style={{ color: "black", textAlign: "justify" }}
                   >
                     {story && story.body}

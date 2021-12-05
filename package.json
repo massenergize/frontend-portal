@@ -29,6 +29,7 @@
     "react-google-recaptcha": "^2.0.1",
     "react-helmet": "^5.2.1",
     "react-image-crop": "^8.6.9",
+    "react-joyride": "^2.3.2",
     "react-moment": "^0.9.7",
     "react-multi-carousel": "^1.4.6",
     "react-player": "^2.9.0",
@@ -41,7 +42,9 @@
     "recharts": "^1.8.5",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typescript": "^4.5.2",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

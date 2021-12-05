@@ -4,7 +4,6 @@ import { withFirebase } from "react-redux-firebase";
 import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
-
 import { apiCall } from "../../../api/functions";
 import {
   facebookProvider,
@@ -21,6 +20,8 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 // import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
+import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -72,23 +73,25 @@ class RegisterFormBase extends React.Component {
   }
 
   componentDidMount() {
-    const body = { email: this.props.auth.email };
-    apiCall("users.checkImported", body)
-      .then((json) => {
-        if (json.success && json.data.imported) {
-          this.setState({
-            firstName: json.data.firstName,
-            lastName: json.data.lastName,
-            preferredName: json.data.preferredName,
-            specialUser: true,
-          });
-        } else {
-          console.log(json.error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (this.props.auth.email) {
+      const body = { email: this.props.auth.email };
+      apiCall("users.checkImported", body)
+        .then((json) => {
+          if (json.success && json.data.imported) {
+            this.setState({
+              firstName: json.data.firstName,
+              lastName: json.data.lastName,
+              preferredName: json.data.preferredName,
+              specialUser: true,
+            });
+          } else {
+            console.log(json.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   getRegProtocol() {
@@ -191,24 +194,78 @@ class RegisterFormBase extends React.Component {
 			return this.renderPage3() 
 		}*/
   };
+
   renderPage1 = () => {
     const { email, passwordOne, passwordTwo, error } = this.state;
+
+    const pageData = this.props.registerPage;
+    //if (pageData == null) return <LoadingCircle />;
+
+    const title = pageData?.title
+      ? pageData.title
+      : "Enter your Email and a Password";
+    const description = pageData?.description
+      ? pageData.description
+      : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
+
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+
+    const steps = [
+      {
+        target: "body",
+        title: `Join ${this.props.community.name}`,
+        content:
+          "Be part of this amazing community. Enter your email and a password. Use Google or Facebook for faster sign up. Together we make a difference!",
+        locale: {
+          close: <span>Sign Up!</span>,
+        },
+        placement: "center",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+    ];
+
     return (
       <div
         className="styled-form register-form"
         style={{ height: window.screen.height - 60, marginTop: 15 }}
       >
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            showSkipButton
+            callback={handleTourCallback}
+            // spotlightPadding={-5}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;
         <div
           className="z-depth-float me-anime-fade-in-up"
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Enter your Email and a Password</h3>
-            <p>
-              This helps us count your impact correctly, and avoid double
-              counting. We collect no sensitive personal data, and do not share
-              data.
-            </p>
+            <h3>{title}</h3>
+            <p> {description}</p>
           </div>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -219,7 +276,7 @@ class RegisterFormBase extends React.Component {
                 id="email"
                 type="email"
                 name="email"
-                value={email}
+                value={email || ""}
                 onChange={this.onChange}
                 placeholder="Enter your email"
                 required
@@ -385,7 +442,7 @@ class RegisterFormBase extends React.Component {
                   </button>
                   <br />
                   <Link
-                  id="sign-in-anchor"
+                    id="sign-in-anchor"
                     to={this.props.links.signin}
                     onClick={() => this.props.firebase.auth().signOut()}
                   >
@@ -532,7 +589,6 @@ class RegisterFormBase extends React.Component {
                     required
                   />
                 </div>
-
                 <ReCAPTCHA
                   sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
                   onChange={this.onReCaptchaChange}
@@ -607,7 +663,8 @@ class RegisterFormBase extends React.Component {
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
-    var redirect = str.substring(0, n) + "/signin";
+    const suffix = this.props.is_sandbox ? "?sandbox=true" : "";
+    var redirect = str.substring(0, n) + "/signin" + suffix;
     var actionCodeSettings = {
       url: redirect,
     };
@@ -856,7 +913,9 @@ const mapStoreToProps = (store) => {
     user: store.user,
     policies: store.page.policies,
     links: store.links,
+    registerPage: store.page.registerPage,
     community: store.page.community,
+    is_sandbox: store.page.__is_sandbox,
   };
 };
 

@@ -14,6 +14,8 @@ import {
   LOAD_DONATE_PAGE,
   LOAD_EVENTS_PAGE,
   LOAD_IMPACT_PAGE,
+  LOAD_REGISTER_PAGE,
+  LOAD_SIGNIN_PAGE,
   LOAD_MENU,
   LOAD_POLICIES,
   LOAD_ACTIONS,
@@ -164,6 +166,20 @@ export const reduxLoadEventsPage = (page) => (dispatch) => {
 export const reduxLoadImpactPage = (page) => (dispatch) => {
   return dispatch({
     type: LOAD_IMPACT_PAGE,
+    payload: page,
+  });
+};
+
+export const reduxLoadRegisterPage = (page) => (dispatch) => {
+  return dispatch({
+    type: LOAD_REGISTER_PAGE,
+    payload: page,
+  });
+};
+
+export const reduxLoadSigninPage = (page) => (dispatch) => {
+  return dispatch({
+    type: LOAD_SIGNIN_PAGE,
     payload: page,
   });
 };

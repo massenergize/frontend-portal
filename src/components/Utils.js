@@ -1,6 +1,9 @@
 import * as moment from "moment";
 import React from "react";
 import qs from 'qs'
+import { STATUS } from "react-joyride";
+
+
 export const PREFERRED_EQ = "PREFERRED_EQ";
 export const IS_SANDBOX = 'is_sandbox';
 
@@ -48,6 +51,20 @@ export const getIsSandboxFromURL = (location) => {
   if (!location || !location.search) return "";
   const { sandbox } = qs.parse(location.search, { ignoreQueryPrefix: true })
   return sandbox
+};
+
+export const getTakeTourFromURL = (location) => {
+  if (!location || !location.search) return "";
+  const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return tour;
+};
+
+export const handleTourCallback = data => {
+  const { status } = data;
+  if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+     window.localStorage.setItem("seen_community_portal_tour", "true");
+  }
+  return true;
 };
 
 export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
@@ -328,7 +345,8 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
-      const rest = (value === 0) ? 100 : goalObj.target_number_of_households - value;
+      const target = goalObj.target_number_of_households;
+      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
       return {
         labels: ["Households Engaged", "Remaining"],
         datasets: [
@@ -341,7 +359,8 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
       };
     }
     case "actions-completed": {
-      const rest = (value === 0) ? 100 : goalObj.target_number_of_actions - value;
+      const target = goalObj.target_number_of_actions;
+      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
       return {
         labels: ["Actions Completed", "Remaining"],
         datasets: [
@@ -355,9 +374,10 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
-      const target = calcEQ(goalObj.target_carbon_footprint_reduction, factor);
+      const target = Number(calcEQ(goalObj.target_carbon_footprint_reduction, factor));
       const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
-      const rest = (value === 0) ? 100 : target - value;
+      const diff = (value < target) ? target - value : 0;
+      const rest = (value === 0) ? 100 : diff;
       return {
         labels: [unit, "Remaining"],
         datasets: [

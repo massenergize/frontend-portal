@@ -14,6 +14,9 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
+import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
+import { Link } from "react-router-dom";
 
 // TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -66,6 +69,7 @@ class ImpactPage extends React.Component {
           {community ? community.name : null}
         </h5>
         <div
+          id="hh-card"
           className="card  mb-4 z-depth-float me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -89,7 +93,7 @@ class ImpactPage extends React.Component {
                     marginRight: 7,
                   }}
                 >
-                  <b> {values[0]}</b>
+                  <b> {values[0].toLocaleString()}</b>
                 </span>
                 Households &nbsp; ({percents[0]}% of goal)
               </p>
@@ -97,6 +101,7 @@ class ImpactPage extends React.Component {
           </div>
         </div>
         <div
+          id="card-individual-actions"
           className="card z-depth-float mb-4 me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -122,7 +127,7 @@ class ImpactPage extends React.Component {
                     marginRight: 7,
                   }}
                 >
-                  <b> {values[1]}</b>
+                  <b> {values[1].toLocaleString()}</b>
                 </span>
                 Actions &nbsp; ({percents[1]}% of goal)
               </p>
@@ -131,6 +136,7 @@ class ImpactPage extends React.Component {
         </div>
         {goal && goal.target_carbon_footprint_reduction > 0 ? (
           <div
+            id="carbon-card"
             className="card z-depth-float mb-4 me-anime-open-in"
             style={{
               borderRadius: 10,
@@ -156,7 +162,7 @@ class ImpactPage extends React.Component {
                       marginRight: 7,
                     }}
                   >
-                    <b> {values[2]}</b>
+                    <b> {values[2].toLocaleString()}</b>
                   </span>
                   {carbon_units}
                   &nbsp; ({percents[2]}% of goal)
@@ -273,8 +279,84 @@ class ImpactPage extends React.Component {
       ),
     ];
 
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const steps = [
+      {
+        target: "#hh-card",
+        content:
+          "Add your household actions to your community’s positive impact!",
+        locale: {
+          skip: <span>Skip Tour</span>,
+          next: <span>Got it!</span>,
+        },
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+      {
+        target: "#carbon-card",
+        content: (
+          <>
+            Your actions help your community reduce carbon emissions, which can
+            be shown as trees planted, cars on the road, or other units.
+            <br />
+            <div
+              style={{
+                backgroundColor: "#8DC53F",
+                padding: "10px",
+                color: "black",
+                display: "inline-block",
+                borderRadius: "10px",
+                marginTop: "20px",
+                //TODO: I need a better option to move button to the right
+                marginLeft: "380px",
+              }}
+            >
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
+              </Link>
+            </div>
+          </>
+        ),
+        placement: "auto",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: true,
+      },
+    ];
+
     return (
       <>
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            spotlightPadding={30}
+            //callback={handleTourCallback}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -466,8 +548,8 @@ const ExplanationDialog = () => {
               campaign efforts)
             </li>
             <li>
-              The Carbon Reduction graph (if shown) shows the estimated reduction
-              for actions taken on the platform, which currently use
+              The Carbon Reduction graph (if shown) shows the estimated
+              reduction for actions taken on the platform, which currently use
               Massachusetts averages for those actions. It may also include
               estimated carbon reduction from reported State/Partner data or
               previous programs, if that is provided by the Community Admin.

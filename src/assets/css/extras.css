@@ -507,7 +507,18 @@
   border-color: #ccf3cc;
 }
 
+#act-item-Container {
+  display: flex;
+}
+
+#act-item-Container_SingleHouse {
+  width: 100%;
+  padding: 10px 20px;
+  border: dotted 0px #e2e2e2;
+  border-bottom-width: 2px;
+}
 .act-item {
+  width: 100%;
   padding: 10px 20px;
   border: dotted 0px #e2e2e2;
   border-bottom-width: 2px;
@@ -517,6 +528,7 @@
   transition: transform 0.1s ease-out;
   position: relative;
 }
+
 .act-item:hover {
   background: #f7f9f7;
   color: black;
@@ -559,7 +571,7 @@
 }
 
 .act-modal-whole {
-  min-height: 50vh;
+  min-height: 33vh;
   max-height: 90vh;
   position: relative;
 }
@@ -593,6 +605,11 @@
   background: #cc3d3d !important;
   transition: 0.3s ease-out;
 }
+
+.flat-btn_submit {
+  color: white !important;
+}
+
 .flat-btn {
   padding: 20px 30px;
   color: #282828;
