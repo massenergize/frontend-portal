@@ -128,11 +128,11 @@ class TeamsPage extends React.Component {
     const steps = [
       {
         target: "body",
-        title: "Accomplish more by working in teams",
+        title: <strong>Build community by working in teams</strong>,
         content: (
           <>
-            Here's a list of teams in your community. A team can be about
-            anything you are interested in.
+            Here’s a list of teams in your community. Join one or more by
+            clicking on them, or you can start a new team.
             <br />
             <div
               style={{
@@ -141,7 +141,9 @@ class TeamsPage extends React.Component {
                 color: "black",
                 display: "inline-block",
                 borderRadius: "10px",
-                marginTop: "10px",
+                marginTop: "20px",
+                //TODO: I need a better option to move button to the right
+                marginLeft: "380px",
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.signup}>
@@ -163,38 +165,34 @@ class TeamsPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? ( 
-          null
-          ) : (
-        <ProductTour
-          steps={steps}
-          showSkipButton
-          //callback={handleTourCallback}
-          // spotlightPadding={5}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              // overlayColor: "transparent",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
-        )};
-
-        {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
-
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            showSkipButton
+            //callback={handleTourCallback}
+            // spotlightPadding={5}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                // overlayColor: "transparent",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+        ;{redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
           <TeamInfoModal
             onComplete={this.onTeamCreate}

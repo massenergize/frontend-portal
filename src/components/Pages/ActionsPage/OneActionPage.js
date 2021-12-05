@@ -469,44 +469,45 @@ class OneActionPage extends React.Component {
     const steps = [
       {
         target: "#test-actions-tabs",
-        title: "Discover ideas for action",
+        title: <strong>Find out about this action</strong>,
         content:
-          "Click these buttons to find practical steps to take, neighbors testimonials, and in some cases a deep dive for more details.",
+          "Click these buttons to find practical steps to take, neighbors’ testimonials, and in some cases a deep dive for more details.",
         locale: {
           next: <span>Got it!</span>,
           skip: <span>Skip Tour</span>,
         },
-        placement: "left-start",
+        placement: "auto",
         spotlightClicks: true,
         disableBeacon: true,
         disableOverlayClose: true,
       },
       {
         target: "#todo-btns",
-        title: "Perhaps you’ve already done this?",
         content: (
           <>
-            And you want to click that DONE IT button. Or you want to put it on
-            your TO DO list. Marking an action as done increases your
-            community's impact
+            Perhaps you’ve already done this action? If so, click the DONE IT
+            button to add it to your community’s impact. Or click TO DO to put
+            it on your to do list.
             <br />
-            <div
+            <button
               style={{
                 backgroundColor: "#8DC53F",
                 padding: "10px",
                 color: "black",
                 display: "inline-block",
                 borderRadius: "10px",
-                marginTop: "10px",
+                marginTop: "20px",
+                //TODO: I need a better option to move button to the right
+                marginLeft: "380px",
               }}
             >
               <Link style={{ color: "white" }} to={this.props.links.impact}>
                 Got it!
               </Link>
-            </div>
+            </button>
           </>
         ),
-        placement: "left-start",
+        placement: "auto",
         spotlightClicks: false,
         disableBeacon: true,
         disableOverlayClose: true,
@@ -517,39 +518,37 @@ class OneActionPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? ( 
-          null
-          ) : (
-        <ProductTour
-          steps={steps}
-          continuous
-          showSkipButton
-          hideFooter={true}
-          //callback={handleTourCallback}
-          // spotlightPadding={-5}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-              beaconSize: 36,
-            },
-          }}
-        />
-        )};
-
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            hideFooter={true}
+            //callback={handleTourCallback}
+            // spotlightPadding={-5}
+            // disableOverlay
+            // showProgress
+            styles={{
+              options: {
+                // modal arrow and background color
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                // page overlay color
+                //  overlayColor: "rgba(79, 26, 0, 0.1)",
+                //button color
+                primaryColor: "#8CC43C",
+                //text color
+                textColor: "black",
+                //width of modal
+                width: 500,
+                //zindex of modal
+                zIndex: 1000,
+                beaconSize: 36,
+              },
+            }}
+          />
+        )}
+        ;
         <div>
           <div className="product-content-box">
             <div className="row">
