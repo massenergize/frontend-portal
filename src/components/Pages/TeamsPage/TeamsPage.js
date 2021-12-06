@@ -133,33 +133,19 @@ class TeamsPage extends React.Component {
           <>
             Here’s a list of teams in your community. Join one or more by
             clicking on them, or you can start a new team.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "20px",
-                //TODO: I need a better option to move button to the right
-                marginLeft: "380px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.signup}>
-                Got it!
-              </Link>
-            </div>{" "}
           </>
         ),
         locale: {
-          skip: <span>Skip Tour</span>,
-          next: <span>Got it!</span>,
+          last: (
+            <Link style={{ color: "white" }} to={this.props.links.signup}>
+              Got it!
+            </Link>
+          ),
         },
         placement: "center",
         spotlightClicks: false,
         disableBeacon: true,
-        hideFooter: true,
+        hideFooter: false,
       },
     ];
 
@@ -168,8 +154,11 @@ class TeamsPage extends React.Component {
         {seen_tour === "true" ? null : (
           <ProductTour
             steps={steps}
+            continuous
             showSkipButton
-            //callback={handleTourCallback}
+            debug
+            disableScrolling={true}
+            callback={handleTourCallback}
             // spotlightPadding={5}
             // disableOverlay
             // showProgress
@@ -185,7 +174,7 @@ class TeamsPage extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
               },
