@@ -56,7 +56,7 @@ class LoginFormBase extends React.Component {
           style={{ padding: 55, borderRadius: 12 }}
         >
           <div className="section-title style-2 mob-sweet-b-10">
-            <h3 className="mog-title-fix">{title}}</h3>
+            <h3 className="mog-title-fix">{title}</h3>
             <p> {description}</p>
           </div>
           <form onSubmit={this.onSubmit}>
