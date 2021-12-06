@@ -15,7 +15,7 @@ import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -158,7 +158,7 @@ class TeamsPage extends React.Component {
             showSkipButton
             debug
             disableScrolling={true}
-            callback={handleTourCallback}
+            // callback={handleTourCallback}
             // spotlightPadding={5}
             // disableOverlay
             // showProgress

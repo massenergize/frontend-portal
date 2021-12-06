@@ -94,6 +94,9 @@ class HomePage extends React.Component {
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const about_community = `${this.props.community.about_community}`;
     const community_name = `${this.props.community.name}`;
+    const actionName = iconQuickLinks
+      .filter((e) => e.link === "/actions")
+      .map((e) => e.title);
 
     const steps = [
       {
@@ -121,10 +124,7 @@ class HomePage extends React.Component {
         title: <strong>Start taking action right away!</strong>,
         //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
-          <>
-            The box called {iconQuickLinks[2].title} will let you see lots of
-            actions.
-          </>
+          <>The box called "{actionName}" will let you see lots of actions.</>
         ),
         locale: {
           skip: <span>Skip Tour</span>,
@@ -150,7 +150,7 @@ class HomePage extends React.Component {
             showSkipButton
             callback={handleTourCallback}
             spotlightPadding={-40}
-            debug
+            // debug
             disableScrolling={true}
             // showProgress
             styles={{
