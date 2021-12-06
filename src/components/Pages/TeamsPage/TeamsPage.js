@@ -158,7 +158,7 @@ class TeamsPage extends React.Component {
             showSkipButton
             debug
             disableScrolling={true}
-            callback={handleTourCallback}
+            // callback={handleTourCallback}
             // spotlightPadding={5}
             // disableOverlay
             // showProgress
