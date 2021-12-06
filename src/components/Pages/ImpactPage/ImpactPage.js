@@ -15,7 +15,7 @@ import {
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 import { Link } from "react-router-dom";
 
 // TODO: Render sidebar graphs

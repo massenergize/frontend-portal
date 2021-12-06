@@ -38,7 +38,7 @@ import {
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed

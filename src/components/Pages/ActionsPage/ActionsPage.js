@@ -31,7 +31,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters

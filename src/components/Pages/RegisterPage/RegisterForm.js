@@ -21,7 +21,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",

@@ -14,7 +14,6 @@ import {
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
-import { relativeTimeRounding } from "moment";
 
 /*'
  * The Home Page of the MassEnergize
