@@ -201,6 +201,7 @@ class ActionsPage extends React.Component {
         spotlightClicks: true,
         disableBeacon: true,
         hideFooter: true,
+        disableOverlayClose: true,
       },
       // ...
     ];
@@ -211,8 +212,9 @@ class ActionsPage extends React.Component {
           <ProductTour
             steps={steps}
             showSkipButton
-            //callback={handleTourCallback}
-            // spotlightPadding={-5}
+            disableScrolling={true}
+            // callback={handleTourCallback}
+            spotlightPadding={-12}
             // disableOverlay
             // showProgress
             styles={{
@@ -227,7 +229,7 @@ class ActionsPage extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
               },

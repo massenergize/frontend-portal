@@ -101,7 +101,6 @@ class ImpactPage extends React.Component {
           </div>
         </div>
         <div
-          id="card-individual-actions"
           className="card z-depth-float mb-4 me-anime-open-in"
           style={{
             borderRadius: 10,
@@ -287,7 +286,11 @@ class ImpactPage extends React.Component {
           "Add your household actions to your community’s positive impact!",
         locale: {
           skip: <span>Skip Tour</span>,
-          next: <span>Got it!</span>,
+          next: (
+            <Link style={{ color: "white" }} to={this.props.links.teams}>
+              Got it!
+            </Link>
+          ),
         },
         placement: "auto",
         spotlightClicks: true,
@@ -300,29 +303,19 @@ class ImpactPage extends React.Component {
           <>
             Your actions help your community reduce carbon emissions, which can
             be shown as trees planted, cars on the road, or other units.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "20px",
-                //TODO: I need a better option to move button to the right
-                marginLeft: "380px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.teams}>
-                Got it!
-              </Link>
-            </div>
           </>
         ),
+        locale: {
+          last: (
+            <Link style={{ color: "white" }} to={this.props.links.teams}>
+              Got it!
+            </Link>
+          ),
+        },
         placement: "auto",
         spotlightClicks: true,
         disableBeacon: true,
-        hideFooter: true,
+        hideFooter: false,
       },
     ];
 
@@ -334,7 +327,9 @@ class ImpactPage extends React.Component {
             continuous
             showSkipButton
             spotlightPadding={30}
-            //callback={handleTourCallback}
+            disableScrolling={true}
+            debug
+            // callback={handleTourCallback}
             // disableOverlay
             // showProgress
             styles={{
@@ -349,14 +344,13 @@ class ImpactPage extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
               },
             }}
           />
         )}
-        ;
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
