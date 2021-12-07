@@ -286,16 +286,20 @@ class ImpactPage extends React.Component {
           "Add your household actions to your community’s positive impact!",
         locale: {
           skip: <span>Skip Tour</span>,
-          next: (
-            <Link style={{ color: "white" }} to={this.props.links.teams}>
-              Got it!
-            </Link>
-          ),
+          next:
+            goal && goal.target_carbon_footprint_reduction > 0 ? (
+              <span>Got it!</span>
+            ) : (
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
+              </Link>
+            ),
         },
         placement: "auto",
-        spotlightClicks: true,
+        spotlightClicks: false,
         disableBeacon: true,
         hideFooter: false,
+        disableScrolling: false,
       },
       {
         target: "#carbon-card",
@@ -313,7 +317,7 @@ class ImpactPage extends React.Component {
           ),
         },
         placement: "auto",
-        spotlightClicks: true,
+        spotlightClicks: false,
         disableBeacon: true,
         hideFooter: false,
       },
