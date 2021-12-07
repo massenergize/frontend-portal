@@ -23,6 +23,7 @@ class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      DraftTestmonialData: {},
       limit: 140, //size of a tweet
       checked_values: null,
       modal_content: {
@@ -40,6 +41,13 @@ class StoriesPage extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
+  //sets the data to be passed down to the form component from the story sheet component when users clicks the edit button 
+  EditDraftTestmonial(DraftTestmonialData) {
+     this.setState({
+      DraftTestmonialData : DraftTestmonialData
+     })
+
+  }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
@@ -71,7 +79,10 @@ class StoriesPage extends React.Component {
 
   renderTestimonialForm() {
     if (this.props.user) {
-      return <StoryForm uid={this.props.user.id} />;
+      return <StoryForm 
+      key={this.state.DraftTestmonialData.Key}
+      DraftTestmonialData={this.state.DraftTestmonialData}
+      uid={this.props.user.id} />;
     }
   }
   scrollToForm() {
@@ -108,14 +119,14 @@ class StoriesPage extends React.Component {
           : story.user.preferred_name; //"...";
       // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
-        <div key={index.toString()}>
+        <div  key={index.toString()}>
           <div key={index.toString()}>
             <MECard
               href={`${this.props.links.testimonials}#sheet-content-${story.id}`}
               className="extra-story-cards me-anime-move-from-left-fast"
               style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
             >
-              {story.title}
+              {story.title} {story.is_published? "" : "(Pending Appr.)"}
               <br />
               <small style={{ color: "green" }}>
                 <b>
@@ -262,7 +273,10 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet {...story} links={this.props.links} />
+        <StorySheet 
+        EditDraftTestmonial={(DraftTestmonialData) => this.EditDraftTestmonial(DraftTestmonialData)}
+        {...story} 
+        links={this.props.links} />
       </div>
     ));
   }

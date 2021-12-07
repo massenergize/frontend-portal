@@ -207,6 +207,11 @@ export default class FormGenerator extends Component {
     const { fields } = this.props;
     if (!fields) return;
     this.setDefaultValues();
+
+//sets props for form data when in edit mode 
+  this.setState({
+    formData: this.props.DraftTestmonialData
+  })
   }
   getDropDownDefault(formItem) {
     //the real value of a dropdown should be take from its dataValues array if it exists
@@ -397,7 +402,7 @@ export default class FormGenerator extends Component {
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
-      <div>
+      <div id="ScrollToForEdit">
         <MECard className={`${animationClass} ${className}`} style={style}>
           <METextView
             containerStyle={{ width: "100%" }}
@@ -405,7 +410,7 @@ export default class FormGenerator extends Component {
           >
             {title}
           </METextView>
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit }>
             {this.createAndEjectForm()}
 
             <br />
@@ -414,6 +419,22 @@ export default class FormGenerator extends Component {
             <div style={{ display: "flex" }}>
               <div style={{ marginLeft: "auto" }}>
                 {moreActions}
+
+                       {/*Added a clear form button because when you click edit testimonial button,
+                        you can edit the testimonial but there is no way to clear the form to submit a new
+                         testimonial with out refreshing the page */}   
+                <MEButton
+                  type="button"
+                  onClick={() => {this.resetForm()}}
+                  className="test-form-g-button"
+                  containerStyle={{
+                    padding: "10px 12px",
+                    fontSize: 13,
+                  }}
+                >
+                  Clear Form
+                </MEButton>
+
                 <MEButton
                   className="test-form-g-button"
                   containerStyle={{
