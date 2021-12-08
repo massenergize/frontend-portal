@@ -70,7 +70,7 @@ class ImpactPage extends React.Component {
         </h5>
         <div
           id="hh-card"
-          className="card  mb-4 z-depth-float me-anime-open-in"
+          className="card  mb-4 z-depth-float me-anime-open-in target1-tour"
           style={{
             borderRadius: 10,
             background: "transparent",
@@ -302,6 +302,27 @@ class ImpactPage extends React.Component {
         disableScrolling: false,
       },
       {
+        target: "#tour-on-mobile",
+        content:
+          "MOBILE ONLY - Add your household actions to your community’s positive impact!",
+        locale: {
+          skip: <span>Skip Tour</span>,
+          next:
+            goal && goal.target_carbon_footprint_reduction > 0 ? (
+              <span>Got it!</span>
+            ) : (
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
+              </Link>
+            ),
+        },
+        placement: "auto",
+        spotlightClicks: false,
+        disableBeacon: true,
+        hideFooter: false,
+        disableScrolling: false,
+      },
+      {
         target: "#carbon-card",
         content: (
           <>
@@ -447,7 +468,10 @@ class ImpactPage extends React.Component {
                 </div>
               </div>
               {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
-              <div className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish">
+              <div
+                id="tour-on-mobile"
+                className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
+              >
                 {this.renderGraphs({
                   goal,
                   data,
