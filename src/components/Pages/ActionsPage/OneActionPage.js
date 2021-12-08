@@ -464,7 +464,6 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
-
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
