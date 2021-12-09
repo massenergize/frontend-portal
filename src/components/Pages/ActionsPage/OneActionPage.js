@@ -38,7 +38,7 @@ import {
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -464,7 +464,6 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
-
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
@@ -488,30 +487,21 @@ class OneActionPage extends React.Component {
             Perhaps you’ve already done this action? If so, click the DONE IT
             button to add it to your community’s impact. Or click TO DO to put
             it on your to do list.
-            <br />
-            <button
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "20px",
-                //TODO: I need a better option to move button to the right
-                marginLeft: "380px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.impact}>
-                Got it!
-              </Link>
-            </button>
           </>
         ),
-        placement: "auto",
+        locale: {
+          last: (
+            <Link style={{ color: "white" }} to={this.props.links.impact}>
+              Got it!
+            </Link>
+          ),
+        },
+        placement: "top",
         spotlightClicks: false,
         disableBeacon: true,
         disableOverlayClose: true,
-        hideFooter: true,
+        hideFooter: false,
+        disableScrolling: true,
       },
       // ...
     ];
@@ -523,9 +513,9 @@ class OneActionPage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            hideFooter={true}
-            //callback={handleTourCallback}
-            // spotlightPadding={-5}
+            debug
+            disableScrolling={true}
+            // callback={handleTourCallback}
             // disableOverlay
             // showProgress
             styles={{
@@ -540,7 +530,7 @@ class OneActionPage extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
                 beaconSize: 36,
@@ -548,7 +538,6 @@ class OneActionPage extends React.Component {
             }}
           />
         )}
-        ;
         <div>
           <div className="product-content-box">
             <div className="row">

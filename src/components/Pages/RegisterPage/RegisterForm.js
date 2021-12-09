@@ -21,7 +21,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+//import { handleTourCallback } from "../../Utils";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -235,7 +235,9 @@ class RegisterFormBase extends React.Component {
           <ProductTour
             steps={steps}
             showSkipButton
-            callback={handleTourCallback}
+            disableScrolling={true}
+            // callback={handleTourCallback}
+            debug
             // spotlightPadding={-5}
             // disableOverlay
             // showProgress
@@ -251,14 +253,14 @@ class RegisterFormBase extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
               },
             }}
           />
         )}
-        ;
+
         <div
           className="z-depth-float me-anime-fade-in-up"
           style={{ padding: 46, borderRadius: 12 }}

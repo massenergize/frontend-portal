@@ -14,7 +14,6 @@ import {
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
-import { relativeTimeRounding } from "moment";
 
 /*'
  * The Home Page of the MassEnergize
@@ -95,6 +94,9 @@ class HomePage extends React.Component {
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const about_community = `${this.props.community.about_community}`;
     const community_name = `${this.props.community.name}`;
+    const actionName = iconQuickLinks
+      .filter((e) => e.link === "/actions")
+      .map((e) => e.title);
 
     const steps = [
       {
@@ -122,32 +124,20 @@ class HomePage extends React.Component {
         title: <strong>Start taking action right away!</strong>,
         //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
-          <div>
-            The box called {iconQuickLinks[2].title} will let you see lots of
-            actions.
-            <br />
-            <button
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "20px",
-                //TODO: I need a better option to move button to the right
-                marginLeft: "380px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.actions}>
-                Got it!
-              </Link>
-            </button>
-          </div>
+          <>The box called "{actionName}" will let you see lots of actions.</>
         ),
+        locale: {
+          skip: <span>Skip Tour</span>,
+          last: (
+            <Link style={{ color: "white" }} to={this.props.links.actions}>
+              Got it!
+            </Link>
+          ),
+        },
         placement: "auto",
         spotlightClicks: false,
         disableOverlayClose: true,
-        hideFooter: true,
+        hideFooter: false,
       },
     ];
 
@@ -160,7 +150,8 @@ class HomePage extends React.Component {
             showSkipButton
             callback={handleTourCallback}
             spotlightPadding={-40}
-            // disableOverlay
+            // debug
+            disableScrolling={true}
             // showProgress
             styles={{
               options: {
@@ -174,7 +165,7 @@ class HomePage extends React.Component {
                 //text color
                 textColor: "black",
                 //width of modal
-                width: 500,
+                width: 400,
                 //zindex of modal
                 zIndex: 1000,
               },
