@@ -78,6 +78,7 @@ import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
+import CookieBanner from "./components/Shared/CookieBanner";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -579,6 +580,7 @@ class AppRouter extends Component {
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
         ) : null}
+        <CookieBanner/>
       </div>
     );
   }
