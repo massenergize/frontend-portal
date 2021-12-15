@@ -15,10 +15,9 @@ import {
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
 import ProductTour from "react-joyride";
-//import { handleTourCallback } from "../../Utils";
+import { handleTourCallback } from "../../Utils";
 import { Link } from "react-router-dom";
 
-// TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
   shortenWords(word) {
@@ -68,75 +67,9 @@ class ImpactPage extends React.Component {
         <h5 className="text-center" style={{ color: "#888", margin: 19 }}>
           {community ? community.name : null}
         </h5>
-        <div
-          id="hh-card"
-          className="card  mb-4 z-depth-float me-anime-open-in"
-          style={{
-            borderRadius: 10,
-            background: "transparent",
-            borderColor: "#ecf3ee",
-          }}
-        >
-          <div className="card-body imp-chart-h">
-            <center>
-              <h4 className="impact-graph-heading">Households Taking Action</h4>
-            </center>
-            {this.makeDoughnut(data[0])}
-          </div>
-          <div className="imp-desc-box">
-            <center>
-              <p className="impact-graph-title">
-                <span
-                  style={{
-                    fontSize: "1rem",
-                    color: "black",
-                    marginRight: 7,
-                  }}
-                >
-                  <b> {values[0].toLocaleString()}</b>
-                </span>
-                Households &nbsp; ({percents[0]}% of goal)
-              </p>
-            </center>
-          </div>
-        </div>
-        <div
-          className="card z-depth-float mb-4 me-anime-open-in"
-          style={{
-            borderRadius: 10,
-            background: "transparent",
-            borderColor: "#ecf3ee",
-          }}
-        >
-          <div className="card-body imp-chart-h">
-            <center>
-              <h4 className="impact-graph-heading">
-                Individual Actions Completed
-              </h4>
-            </center>
-            {this.makeDoughnut(data[1])}
-          </div>
-          <div className="imp-desc-box">
-            <center>
-              <p className="impact-graph-title">
-                <span
-                  style={{
-                    fontSize: "1rem",
-                    color: "black",
-                    marginRight: 7,
-                  }}
-                >
-                  <b> {values[1].toLocaleString()}</b>
-                </span>
-                Actions &nbsp; ({percents[1]}% of goal)
-              </p>
-            </center>
-          </div>
-        </div>
-        {goal && goal.target_carbon_footprint_reduction > 0 ? (
+        <div id="two-graphs">
           <div
-            id="carbon-card"
-            className="card z-depth-float mb-4 me-anime-open-in"
+            className="card  mb-4 z-depth-float me-anime-open-in"
             style={{
               borderRadius: 10,
               background: "transparent",
@@ -146,10 +79,10 @@ class ImpactPage extends React.Component {
             <div className="card-body imp-chart-h">
               <center>
                 <h4 className="impact-graph-heading">
-                  Carbon Reduction Impact
+                  Households Taking Action
                 </h4>
               </center>
-              {this.makeDoughnut(data[2])}
+              {this.makeDoughnut(data[0])}
             </div>
             <div className="imp-desc-box">
               <center>
@@ -161,15 +94,85 @@ class ImpactPage extends React.Component {
                       marginRight: 7,
                     }}
                   >
-                    <b> {values[2].toLocaleString()}</b>
+                    <b> {values[0].toLocaleString()}</b>
                   </span>
-                  {carbon_units}
-                  &nbsp; ({percents[2]}% of goal)
+                  Households &nbsp; ({percents[0]}% of goal)
                 </p>
               </center>
             </div>
           </div>
-        ) : null}
+          <div
+            className="card z-depth-float mb-4 me-anime-open-in"
+            style={{
+              borderRadius: 10,
+              background: "transparent",
+              borderColor: "#ecf3ee",
+            }}
+          >
+            <div className="card-body imp-chart-h">
+              <center>
+                <h4 className="impact-graph-heading">
+                  Individual Actions Completed
+                </h4>
+              </center>
+              {this.makeDoughnut(data[1])}
+            </div>
+            <div className="imp-desc-box">
+              <center>
+                <p className="impact-graph-title">
+                  <span
+                    style={{
+                      fontSize: "1rem",
+                      color: "black",
+                      marginRight: 7,
+                    }}
+                  >
+                    <b> {values[1].toLocaleString()}</b>
+                  </span>
+                  Actions &nbsp; ({percents[1]}% of goal)
+                </p>
+              </center>
+            </div>
+          </div>
+        </div>
+        <div id="carbon-card">
+          {goal && goal.target_carbon_footprint_reduction > 0 ? (
+            <div
+              className="card z-depth-float mb-4 me-anime-open-in"
+              style={{
+                borderRadius: 10,
+                background: "transparent",
+                borderColor: "#ecf3ee",
+              }}
+            >
+              <div className="card-body imp-chart-h">
+                <center>
+                  <h4 className="impact-graph-heading">
+                    Carbon Reduction Impact
+                  </h4>
+                </center>
+                {this.makeDoughnut(data[2])}
+              </div>
+              <div className="imp-desc-box">
+                <center>
+                  <p className="impact-graph-title">
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        color: "black",
+                        marginRight: 7,
+                      }}
+                    >
+                      <b> {values[2].toLocaleString()}</b>
+                    </span>
+                    {carbon_units}
+                    &nbsp; ({percents[2]}% of goal)
+                  </p>
+                </center>
+              </div>
+            </div>
+          ) : null}
+        </div>
       </>
     );
   }
@@ -232,7 +235,7 @@ class ImpactPage extends React.Component {
         },
       ],
     };
-
+    console.log("dataDaniTest", data);
     var graph2Categories = [];
     var graph2Series = [
       {
@@ -281,9 +284,9 @@ class ImpactPage extends React.Component {
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
-        target: "#hh-card",
+        target: "#two-graphs",
         content:
-          "Add your household actions to your community’s positive impact!",
+          "When you take an action, your household and action are added to the community total!",
         locale: {
           skip: <span>Skip Tour</span>,
           next:
@@ -302,7 +305,49 @@ class ImpactPage extends React.Component {
         disableScrolling: false,
       },
       {
+        target: "#tour-on-mobile",
+        content:
+          "When you take an action, your household and action are added to the community total!",
+        locale: {
+          back: <span style={{ color: "transparent" }}>Skip Tour</span>,
+          skip: <span>Skip Tour</span>,
+          next:
+            goal && goal.target_carbon_footprint_reduction > 0 ? (
+              <span>Got it!</span>
+            ) : (
+              <Link style={{ color: "white" }} to={this.props.links.teams}>
+                Got it!
+              </Link>
+            ),
+        },
+        placement: "auto",
+        spotlightClicks: false,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+      {
         target: "#carbon-card",
+        content: (
+          <>
+            Your actions help your community reduce carbon emissions, which can
+            be shown as trees planted, cars on the road, or other units.
+          </>
+        ),
+        locale: {
+          skip: <span>Skip Tour</span>,
+          next: (
+            <Link style={{ color: "white" }} to={this.props.links.teams}>
+              Got it!
+            </Link>
+          ),
+        },
+        placement: "auto",
+        spotlightClicks: false,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+      {
+        target: "#tour-on-mobile",
         content: (
           <>
             Your actions help your community reduce carbon emissions, which can
@@ -320,6 +365,11 @@ class ImpactPage extends React.Component {
         spotlightClicks: false,
         disableBeacon: true,
         hideFooter: false,
+        styles: {
+          options: {
+            backgroundColor: "white",
+          },
+        },
       },
     ];
 
@@ -330,20 +380,14 @@ class ImpactPage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            spotlightPadding={30}
+            spotlightPadding={10}
             disableScrolling={true}
             debug
-            // callback={handleTourCallback}
+            callback={handleTourCallback}
             // disableOverlay
             // showProgress
             styles={{
               options: {
-                // modal arrow and background color
-                arrowColor: "#eee",
-                backgroundColor: "#eee",
-                // page overlay color
-                //  overlayColor: "rgba(79, 26, 0, 0.1)",
-                //button color
                 primaryColor: "#8CC43C",
                 //text color
                 textColor: "black",
@@ -447,7 +491,10 @@ class ImpactPage extends React.Component {
                 </div>
               </div>
               {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
-              <div className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish">
+              <div
+                id="tour-on-mobile"
+                className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
+              >
                 {this.renderGraphs({
                   goal,
                   data,

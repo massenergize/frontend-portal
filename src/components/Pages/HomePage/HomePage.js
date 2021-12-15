@@ -101,7 +101,9 @@ class HomePage extends React.Component {
     const steps = [
       {
         target: "body",
-        title: <strong>Welcome to {community_name}</strong>,
+        title: (
+          <strong style={{ fontSize: 16 }}>Welcome to {community_name}</strong>
+        ),
         content: (
           <div>
             {about_community}
@@ -121,10 +123,17 @@ class HomePage extends React.Component {
       },
       {
         target: ".icon-panel",
-        title: <strong>Start taking action right away!</strong>,
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            Start taking action right away!
+          </strong>
+        ),
         //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
-          <>The box called "{actionName}" will let you see lots of actions.</>
+          <>
+            These 4 buttons take you places. The one called "{actionName}" will
+            show you many good actions to take.
+          </>
         ),
         locale: {
           skip: <span>Skip Tour</span>,
