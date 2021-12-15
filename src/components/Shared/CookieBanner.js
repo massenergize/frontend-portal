@@ -27,9 +27,9 @@ class CookieBanner extends React.Component {
 				background:'#8DC62E'}}>
 				<div className="container-fluid" style={{padding:'0px'}}>
 					<div className="row ml-auto" style={{margin:'0px'}}>
-						<div className="mr-auto">
+						<div className="mr-auto" style={{width:'70%'}}>
 							<div style={{color:'white', padding:'10px 15px'}}>
-								We use cookies to provide the best experience we can. By using MassEnergize, you accept our cookie policy.
+								We use cookies to provide the best experience we can for you. By using MassEnergize, you accept our cookie policy.
 							</div>
 						</div>
 						<div className="ml-auto" style={{alignItems:'center'}}>
@@ -43,15 +43,6 @@ class CookieBanner extends React.Component {
 									style={{background:'white', color:'black'}}>
 								Cookie policy
 							</a>
-						</div>
-						<div className="ml-auto" style={{}}>
-							<button onClick={this.acceptCookies} 
-									style={{borderRadius:'100px', 
-											padding:'0px 8px', 
-											background:'white', 
-											color:'black'}}>
-								x
-							</button>
 						</div>
 					</div>
 				</div>
