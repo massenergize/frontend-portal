@@ -3,26 +3,53 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class CookieBanner extends React.Component {
-	displayCookieBanner = true;
 
-	acceptCookies() {
-		this.displayCookieBanner = false;
+	constructor(props) {
+		super(props);
+		this.state = {
+			displayCookieBanner: true
+		};
+	  }
+	
+
+	acceptCookies = () => {
+		this.setState({displayCookieBanner: false});
 	}
 
 	render() {
 		return (
-			(this.displayCookieBanner ? (<div className="cookie-banner sticky" style={{background:'#8DC62E', padding:'10px', position:'sticky', bottom:'0', width:'100%'}}>
-				<div className="container-fluid">
-					<div className="row ml-auto">
-						<div className="col-lg-9 col-md-9 col-12">
-							<div style={{color:'white', padding:'10px 15px'}}>We use cookies to provide the best experience we can. By using MassEnergize, you accept our cookie policy.</div>
+			(this.state.displayCookieBanner ? (<div className="cookie-banner" style={{
+				position:'sticky',
+				zIndex:'10',
+				bottom:'0',
+				width:'100%',
+				padding:'10px',
+				background:'#8DC62E'}}>
+				<div className="container-fluid" style={{padding:'0px'}}>
+					<div className="row ml-auto" style={{margin:'0px'}}>
+						<div className="mr-auto">
+							<div style={{color:'white', padding:'10px 15px'}}>
+								We use cookies to provide the best experience we can. By using MassEnergize, you accept our cookie policy.
+							</div>
 						</div>
-						<div className="col-lg-2 col-md-2 col-12">
-							<button onClick={this.acceptCookies()} style={{color:'white', padding:'5px 10px'}}>Okay!</button>
-							<button link="https://community.massenergize.org/ConcordMA/policies?name=Privacy%20Policy" style={{color:'white', padding:'5px 10px'}}>Cookie policy</button>
+						<div className="ml-auto" style={{alignItems:'center'}}>
+							<button onClick={this.acceptCookies} 
+									class="cool-font new-sign-in float-right round-me z-depth-float" 
+									style={{background:'white', color:'black'}}>
+								Okay
+							</button>
+							<a href="https://community.massenergize.org/ConcordMA/policies?name=Privacy%20Policy" 
+									class="cool-font new-sign-in float-right round-me z-depth-float" 
+									style={{background:'white', color:'black'}}>
+								Cookie policy
+							</a>
 						</div>
-						<div className="col-lg-1 col-md-1 col-12">
-							<button onClick={this.acceptCookies()} style={{color:'white', padding:'5px 10px'}}>
+						<div className="ml-auto" style={{}}>
+							<button onClick={this.acceptCookies} 
+									style={{borderRadius:'100px', 
+											padding:'0px 8px', 
+											background:'white', 
+											color:'black'}}>
 								x
 							</button>
 						</div>
