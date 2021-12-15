@@ -31,7 +31,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
-//import { handleTourCallback } from "../../Utils";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -193,10 +193,12 @@ class ActionsPage extends React.Component {
       {
         target: "#test-action-cards-wrapper",
         title: (
-          <strong>All these actions were chosen by your neighbors!</strong>
+          <strong style={{ fontSize: 16 }}>
+            All these actions were chosen by your neighbors!
+          </strong>
         ),
         content:
-          "You can filter these actions by category, impact or cost. Click on any card for more",
+          "You can filter these actions by category, impact or cost. Click on any card to continue.",
         placement: "auto",
         spotlightClicks: true,
         disableBeacon: true,
@@ -213,7 +215,7 @@ class ActionsPage extends React.Component {
             steps={steps}
             showSkipButton
             disableScrolling={true}
-            // callback={handleTourCallback}
+            callback={handleTourCallback}
             spotlightPadding={-12}
             // disableOverlay
             // showProgress
