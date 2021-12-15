@@ -38,7 +38,7 @@ import {
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour from "react-joyride";
-//import { handleTourCallback } from "../../Utils";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -468,14 +468,16 @@ class OneActionPage extends React.Component {
     const steps = [
       {
         target: "#test-actions-tabs",
-        title: <strong>Find out about this action</strong>,
+        title: (
+          <strong style={{ fontSize: 16 }}>Find out about this action</strong>
+        ),
         content:
           "Click these buttons to find practical steps to take, neighbors’ testimonials, and in some cases a deep dive for more details.",
         locale: {
           next: <span>Got it!</span>,
           skip: <span>Skip Tour</span>,
         },
-        placement: "auto",
+        placement: "left",
         spotlightClicks: true,
         disableBeacon: true,
         disableOverlayClose: true,
@@ -484,7 +486,7 @@ class OneActionPage extends React.Component {
         target: "#todo-btns",
         content: (
           <>
-            Perhaps you’ve already done this action? If so, click the DONE IT
+            Perhaps you’ve already done this action? If so, click the DONE
             button to add it to your community’s impact. Or click TO DO to put
             it on your to do list.
           </>
@@ -515,7 +517,7 @@ class OneActionPage extends React.Component {
             showSkipButton
             debug
             disableScrolling={true}
-            // callback={handleTourCallback}
+            callback={handleTourCallback}
             // disableOverlay
             // showProgress
             styles={{
