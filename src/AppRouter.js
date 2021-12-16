@@ -268,7 +268,10 @@ class AppRouter extends Component {
 
     const cookies = new Cookies();
 
-    device_checkin(cookies);
+    device_checkin(cookies).then(
+      function(data) {},
+      function(err) {console.log(err);}
+    );
 
     if (data) {
       user = data;

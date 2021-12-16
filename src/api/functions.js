@@ -103,7 +103,7 @@ function log_device(cookies) {
   return response;
 }
 
-export function device_checkin(cookies) {
+export async function device_checkin(cookies) {
   log_device(cookies);  
 }
 
