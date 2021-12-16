@@ -41,7 +41,7 @@ class CookieBanner extends React.Component {
           <div className="row ml-auto" style={{margin:'0px'}}>
             <div className="mr-auto" style={{width:'70%'}}>
               <div style={{color:'white', padding:'10px 15px'}}>
-                We use cookies to provide the best experience we can for you. By using MassEnergize, you accept our cookie policy.
+                This website uses cookies to provide the best user experience we can. We share no data with third parties or for any commercial purpose. By using this site, you accept this use of cookies as outlined in our data privacy policy.
               </div>
             </div>
             <div className="ml-auto" style={{alignItems:'center'}}>
@@ -53,7 +53,7 @@ class CookieBanner extends React.Component {
               <a href="https://community.massenergize.org/ConcordMA/policies?name=Privacy%20Policy" 
                   class="cool-font new-sign-in float-right round-me z-depth-float" 
                   style={{background:'white', color:'black'}}>
-                Cookie policy
+                Data Privacy Policy
               </a>
             </div>
           </div>
