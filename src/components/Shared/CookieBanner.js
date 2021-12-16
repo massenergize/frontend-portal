@@ -1,18 +1,31 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Cookies from 'universal-cookie';
+import { set_cookie,  get_cookie } from '../../api/functions'
 
 class CookieBanner extends React.Component {
-	
+
 	constructor(props) {
 		super(props);
+		this.cookies = new Cookies();
+		var displayCookieBanner;
+
+		var accepted = get_cookie(this.cookies, "acceptsCookies");
+		if (accepted === undefined) {
+			displayCookieBanner = true;
+		} else {
+			displayCookieBanner = false;
+		}
+
 		this.state = {
-			displayCookieBanner: true
+			displayCookieBanner: displayCookieBanner
 		};
 	}
 	
 	acceptCookies = () => {
 		this.setState({displayCookieBanner: false});
+		set_cookie(this.cookies, "acceptsCookies", 1)
 	}
 	
 	render() {

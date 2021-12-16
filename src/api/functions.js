@@ -70,11 +70,11 @@ function _getCurrentCommunityContext(){
     return { __community: subdomain, __is_sandbox }
 }
 
-function set_cookie(cookies, key, value) {
+export function set_cookie(cookies, key, value) {
   cookies.set(key, value, { path: '/' });
 }
 
-function get_cookie(cookies, key) {
+export function get_cookie(cookies, key) {
   let cookie = cookies.get(key);
   return cookie;
 }
