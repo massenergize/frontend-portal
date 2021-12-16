@@ -3,19 +3,18 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class CookieBanner extends React.Component {
-
+	
 	constructor(props) {
 		super(props);
 		this.state = {
 			displayCookieBanner: true
 		};
-	  }
+	}
 	
-
 	acceptCookies = () => {
 		this.setState({displayCookieBanner: false});
 	}
-
+	
 	render() {
 		return (
 			(this.state.displayCookieBanner ? (<div className="cookie-banner" style={{
