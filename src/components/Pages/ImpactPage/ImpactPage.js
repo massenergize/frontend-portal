@@ -235,7 +235,7 @@ class ImpactPage extends React.Component {
         },
       ],
     };
-    console.log("dataDaniTest", data);
+
     var graph2Categories = [];
     var graph2Series = [
       {

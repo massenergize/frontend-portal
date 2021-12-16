@@ -2,9 +2,19 @@ import * as moment from "moment";
 import React from "react";
 import qs from "qs";
 import { STATUS } from "react-joyride";
+import { ME_STATES } from "./States"
+
+const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
+const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+export const stateAbbreviation = (stateName) => {
+  const index = meStatesData.indexOf(stateName)
+  if (index>-1) {
+      return meStatesDataValues[index];
+  }
+  return stateName;
+}
 
 export const PREFERRED_EQ = "PREFERRED_EQ";
-export const IS_SANDBOX = "is_sandbox";
 
 /**
  * For equivalences with a common formular, this function is used to determine the value
@@ -293,15 +303,15 @@ export function dateFormatString(startDate, endDate) {
  * @param location
  */
 export function locationFormatJSX(location) {
-  let firstLine = location.unit
-    ? `${location.unit || ""}${location.unit || ","} ${location.address || ""}`
+  let firstLine = location.unit && location.unit !== ""
+    ? `${location.address || ""}, ${location.unit}`
     : `${location.address || ""}`;
-
+  const state = location.state ? stateAbbreviation(location.state): "";
   return (
     <span>
       <b>{firstLine}</b>
       {location.city ? `, ${location.city}` : ""}
-      {location.state ? `, ${location.state}` : ""}
+      {state ? `, ${state}` : ""}
     </span>
   );
 }

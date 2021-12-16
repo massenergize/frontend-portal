@@ -5,8 +5,8 @@ import { withFirebase } from "react-redux-firebase";
 import METextView from "../Widgets/METextView";
 import METextField from "../Widgets/METextField";
 import MEButton from "../Widgets/MEButton";
-import { ME_STATES } from "./States";
 import { getPropsArrayFromJsonArray } from "../../Utils";
+import { ME_STATES } from "../../States";
 import MEDropdown from "../Widgets/MEDropdown";
 
 /********************************************************************/
