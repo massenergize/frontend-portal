@@ -264,12 +264,9 @@ class StoryForm extends React.Component {
 						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id)
 					} else {
 						delete body.image	
-					}
-					
+					}	
 				}
-
 				delete body?.ImgToDel
-		
       }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
@@ -282,17 +279,11 @@ class StoryForm extends React.Component {
             },
           });
           resetForm();
-         
             //reloads the testimonials list to the user can see the updated testimonial
               apiCall("testimonials.list", {subdomain: this.props.community.subdomain}).then(
                 (json) => {
                   this.props.reduxLoadTestimonials(json.data)
                 })
-
-
-
-
-
         } else {
           this.setState({
             formNotification: {

@@ -163,12 +163,7 @@ export default class StorySheet extends Component {
                     this.props.EditDraftTestmonial(Edit_Testimonial_Data)
                   }}
                     className="testimonial_edit_button" variant="outline-dark"><a href="#ScrollToForEdit"> Edit</a> </Button>}
-
               </div>
-
-
-
-
 
             </div>
             <div>

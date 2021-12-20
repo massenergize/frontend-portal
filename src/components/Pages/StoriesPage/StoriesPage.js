@@ -46,7 +46,6 @@ class StoriesPage extends React.Component {
      this.setState({
       DraftTestmonialData : DraftTestmonialData
      })
-
   }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });

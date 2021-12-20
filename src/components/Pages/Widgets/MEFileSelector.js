@@ -389,8 +389,6 @@ class MEFileSelector extends Component {
         </div>
       );
     }
-
-
     //this.props.formData can have the following 3 states this.props.formData = {} 
     //this.props.formData.image = null or this.props.formData.image.img ,
     //if the img url  property does not exist then it will return a null/undefined which will be set to an empty string 
@@ -398,11 +396,8 @@ class MEFileSelector extends Component {
      if (typeof EditImageSrc !== 'string') {
       EditImageSrc = ""
     }
-
-
     return (
       <center>
-
         {this.state.file || EditImageSrc === "" ?
           <>
             <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
@@ -418,7 +413,7 @@ class MEFileSelector extends Component {
 					type="button"
           className="g-uploader-btn-class"
           onClick={async () => {
-						
+						//waits for the state to be updated or the imgdel property will be deleted if added too early
 						await this.removeImage()
 						ImageToDelete(formData?.image)
 
@@ -429,10 +424,6 @@ class MEFileSelector extends Component {
 				
 				</>
 				}
-
-
-
-
         <MEButton
           className="g-uploader-btn-class"
           onClick={(e) => this.searchForImage(e)}
