@@ -165,6 +165,8 @@ export default class FormGenerator extends Component {
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEUploader
+				  ImageToDelete={(ImgToDel) => this.ImageToDelete(ImgToDel)}
+          formData={this.state.formData}
           {...formObject}
           onFileSelected={(file, removeFxn) => {
             this.handleFileSelection(formObject, file);
@@ -208,10 +210,10 @@ export default class FormGenerator extends Component {
     if (!fields) return;
     this.setDefaultValues();
 
-//sets props for form data when in edit mode 
-  this.setState({
-    formData: this.props.DraftTestmonialData
-  })
+    //sets props for form data when in edit mode 
+    this.setState({
+      formData: this.props.DraftTestmonialData
+    })
   }
   getDropDownDefault(formItem) {
     //the real value of a dropdown should be take from its dataValues array if it exists
@@ -397,6 +399,15 @@ export default class FormGenerator extends Component {
     }
   }
 
+    //this function keeps track of what  image  to delete should the user remove the image from the post and submit it without an image 
+	ImageToDelete(ImgToDel) {
+    var Data = this.state.formData
+    Data["ImgToDel"] = ImgToDel 
+    this.setState({
+            formData : Data
+        })
+
+	}
   render() {
     var { animate, className, style, title, elevate, moreActions } = this.props;
     const animationClass = animate ? "me-open-in" : "";
@@ -420,7 +431,7 @@ export default class FormGenerator extends Component {
               <div style={{ marginLeft: "auto" }}>
                 {moreActions}
 
-                       {/*Added a clear form button because when you click edit testimonial button,
+                {/*Added a clear form button because when you click edit testimonial button,
                         you can edit the testimonial but there is no way to clear the form to submit a new
                          testimonial with out refreshing the page */}   
                 <MEButton

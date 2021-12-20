@@ -252,10 +252,24 @@ class StoryForm extends React.Component {
       });
     } else {
       var Url = "testimonials.add"
-      //if the body has a Key, that means the data being submitted is for updating a testimonial and updates the URL
+      //if the body has a Key, that means the data being submitted is for updating a draft testimonial and updates the URL
       if (body.Key) {
-            Url = "testimonials.update"
-            delete body.Key 
+        Url = "testimonials.update"
+        delete body.Key
+                //prevents front end fron submitting null data to back end causing the picture to be overwritten 
+                //also prepares the image to be deleted if another one is not uploaded to replace it
+				if (body?.image === null || body?.image === undefined || body?.image?.hasOwnProperty("url") ) {
+					//marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+                    if (body?.ImgToDel) {
+						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id)
+					} else {
+						delete body.image	
+					}
+					
+				}
+
+				delete body?.ImgToDel
+		
       }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
@@ -274,9 +288,9 @@ class StoryForm extends React.Component {
                 (json) => {
                   this.props.reduxLoadTestimonials(json.data)
                 })
-            
 
-         
+
+
 
 
         } else {
@@ -304,7 +318,7 @@ const mapStoreToProps = (store) => {
 };
 
 const mapDispatchToProps = {
-  reduxLoadTestimonials 
+  reduxLoadTestimonials
 }
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
