@@ -64,12 +64,12 @@ export default class StorySheet extends Component {
   render() {
     const { action, body, other_vendor, preferred_name, title, vendor, is_approved, community, created_at, file, id, is_published } = this.props;
     //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
-    var Edit_Testimonial_Data = {
+    var testimonialData = {
       id: id,
       is_approved: is_approved,
       is_published: is_published,
       community: community.id,
-      Key: Math.random(),
+      key: Math.random(),
       action_id: action.id,
       tags: [],
       body: body,
@@ -160,7 +160,7 @@ export default class StorySheet extends Component {
                 {is_published ? <div /> :
 
                   <Button onClick={() => {
-                    this.props.EditDraftTestmonial(Edit_Testimonial_Data)
+                    this.props.EditTestimonial(testimonialData);
                   }}
                     className="testimonial_edit_button" variant="outline-dark"><a href="#ScrollToForEdit"> Edit</a> </Button>}
               </div>

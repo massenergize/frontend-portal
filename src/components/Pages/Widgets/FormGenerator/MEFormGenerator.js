@@ -211,9 +211,11 @@ export default class FormGenerator extends Component {
     this.setDefaultValues();
 
     //sets props for form data when in edit mode 
-    this.setState({
-      formData: this.props.DraftTestmonialData
-    })
+    if (this.props.inputData) { 
+      this.setState({
+        formData: this.props.inputData
+      })
+    }
   }
   getDropDownDefault(formItem) {
     //the real value of a dropdown should be take from its dataValues array if it exists
