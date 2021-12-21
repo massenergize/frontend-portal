@@ -17,11 +17,11 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
-//import { handleTourCallback } from "../../Utils";
+import { handleTourCallback } from "../../Utils";
+//import { helpers } from "chart.js";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -209,20 +209,59 @@ class RegisterFormBase extends React.Component {
       : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
 
     const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const community_name = `${this.props.community.name}`;
 
     const steps = [
       {
         target: "body",
-        title: `Join ${this.props.community.name}`,
-        content:
-          "Be part of this amazing community. Enter your email and a password. Use Google or Facebook for faster sign up. Together we make a difference!",
-        locale: {
-          close: <span>Sign Up!</span>,
-        },
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            Join the {community_name} community
+          </strong>
+        ),
+        content: (
+          <>
+            Be part of this amazing community. Enter your email and a password.
+            Use Google or Facebook for faster sign up. Together we make a
+            difference!
+            <div style={{ marginTop: 20, marginBottom: 0 }}>
+              <span
+                style={{
+                  backgroundColor: "#8CC43C",
+                  padding: 8,
+                  margin: 20,
+                  lineHeight: 1,
+                  fontSize: 16,
+                  borderRadius: 4,
+                  border: "1.5px solid blue",
+                }}
+              >
+                <Link style={{ color: "white" }} to={this.props.links.signup}>
+                  Sign Up!
+                </Link>
+              </span>
+              <span
+                style={{
+                  backgroundColor: "#8CC43C",
+                  padding: 8,
+                  margin: 15,
+                  lineHeight: 1,
+                  fontSize: 16,
+                  borderRadius: 4,
+                  border: "1.5px solid blue",
+                }}
+              >
+                <Link style={{ color: "white" }} to={this.props.links.home}>
+                  Back to Home
+                </Link>
+              </span>
+            </div>
+          </>
+        ),
         placement: "center",
         spotlightClicks: true,
         disableBeacon: true,
-        hideFooter: false,
+        hideFooter: true,
       },
     ];
 
@@ -236,7 +275,7 @@ class RegisterFormBase extends React.Component {
             steps={steps}
             showSkipButton
             disableScrolling={true}
-            // callback={handleTourCallback}
+            callback={handleTourCallback}
             debug
             // spotlightPadding={-5}
             // disableOverlay
