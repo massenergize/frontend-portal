@@ -31,7 +31,23 @@
 .sheet-details {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+}
+
+/*css for edit button on the testimonial page*/
+.testimonial_edit_button {
+  margin-left: auto;
+  display: block;
+  padding: 0px;
+}
+
+.testimonial_edit_button a {
+  color: black;
+  padding: 12px;
+}
+
+.testimonial_edit_button a:hover {
+  color: white;
 }
 
 .sheet-details p {

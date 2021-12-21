@@ -3,6 +3,7 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button'
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -61,7 +62,23 @@ export default class StorySheet extends Component {
     this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
   }
   render() {
-    const { created_at, title, file, id } = this.props;
+    const { action, body, other_vendor, preferred_name, title, vendor, is_approved, community, created_at, file, id, is_published } = this.props;
+    //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
+    var testimonialData = {
+      id: id,
+      is_approved: is_approved,
+      is_published: is_published,
+      community: community.id,
+      key: Math.random(),
+      action_id: action.id,
+      tags: [],
+      body: body,
+      other_vendor: other_vendor,
+      preferred_name: preferred_name,
+      title: title,
+      vendor_id: vendor ? vendor.id : "",
+      image: file
+    }
     const date = getHumanFriendlyDate(created_at);
     const creatorName = this.getUser();
 
@@ -119,25 +136,35 @@ export default class StorySheet extends Component {
           )}
 
           <div className="sheet-content-area">
-            <h4>{creatorName}</h4>
+            <h4>{creatorName} {is_published ? "" : " (Pending Approval) "} </h4>
             <div className="sheet-details">
               <p>{date}</p>
+              <div>
 
-              <Link
-                style={{ marginLeft: "auto" }}
-                className="sheet-link test-story-sheet-full-view-link"
-                to={`${this.props.links.testimonials}/${id}`}
-              >
-                {" "}
-                <i
-                  className="fa fa-copy"
-                  style={{ marginRight: 6 }}
-                  onClick={() => {
-                    document.execCommand("copy");
+                <Link
+                  style={{ marginLeft: "auto" }}
+                  className="sheet-link test-story-sheet-full-view-link"
+                  to={`${this.props.links.testimonials}/${id}`}
+                >
+                  {" "}
+                  <i
+                    className="fa fa-copy"
+                    style={{ marginRight: 6 }}
+                    onClick={() => {
+                      document.execCommand("copy");
+                    }}
+                  ></i>{" "}
+                  Full View
+                </Link>
+
+                {is_published ? <div /> :
+
+                  <Button onClick={() => {
+                    this.props.EditTestimonial(testimonialData);
                   }}
-                ></i>{" "}
-                Full View
-              </Link>
+                    className="testimonial_edit_button" variant="outline-dark"><a href="#ScrollToForEdit"> Edit</a> </Button>}
+              </div>
+
             </div>
             <div>
               {file && (
