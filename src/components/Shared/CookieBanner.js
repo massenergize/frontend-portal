@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import Cookies from 'universal-cookie';
 import { set_cookie,  get_cookie } from '../../api/functions'
 
