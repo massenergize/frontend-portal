@@ -52,6 +52,8 @@ class CookieBanner extends React.Component {
               </button>
               <a href="https://community.massenergize.org/ConcordMA/policies?name=Privacy%20Policy" 
                   class="cool-font new-sign-in float-right round-me z-depth-float" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   style={{background:'white', color:'black'}}>
                 Data Privacy Policy
               </a>
