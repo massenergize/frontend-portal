@@ -50,7 +50,7 @@ class CookieBanner extends React.Component {
                   style={{background:'white', color:'black'}}>
                 Okay
               </button>
-              <a href="https://community.massenergize.org/ConcordMA/policies?name=Privacy%20Policy" 
+              <a href={window.location.href + "policies?name=Privacy%20Policy"}
                   class="cool-font new-sign-in float-right round-me z-depth-float" 
                   target="_blank" 
                   rel="noopener noreferrer"
