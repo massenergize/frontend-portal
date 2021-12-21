@@ -254,19 +254,19 @@ class StoryForm extends React.Component {
       var Url = "testimonials.add"
       //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
       if (body.key) {
-        Url = "testimonials.update"
-        delete body.key
-                //prevents front end fron submitting null data to back end causing the picture to be overwritten 
-                //also prepares the image to be deleted if another one is not uploaded to replace it
+        Url = "testimonials.update";
+        delete body.key;
+        //prevents front end fron submitting null data to back end causing the picture to be overwritten 
+        //also prepares the image to be deleted if another one is not uploaded to replace it
 				if (body?.image === null || body?.image === undefined || body?.image?.hasOwnProperty("url") ) {
 					//marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
-                    if (body?.ImgToDel) {
-						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id)
+          if (body?.ImgToDel) {
+						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id);
 					} else {
-						delete body.image	
+						delete body.image;
 					}	
 				}
-				delete body?.ImgToDel
+				delete body?.ImgToDel;
       }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
