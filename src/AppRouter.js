@@ -583,7 +583,7 @@ class AppRouter extends Component {
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
         ) : null}
-        <CookieBanner/>
+        <CookieBanner policyPath={links.policies}/>
       </div>
     );
   }
