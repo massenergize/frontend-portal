@@ -17,11 +17,11 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
+//import { helpers } from "chart.js";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
