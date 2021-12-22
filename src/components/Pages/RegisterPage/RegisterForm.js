@@ -224,44 +224,29 @@ class RegisterFormBase extends React.Component {
             Be part of this amazing community. Enter your email and a password.
             Use Google or Facebook for faster sign up. Together we make a
             difference!
-            <div style={{ marginTop: 20, marginBottom: 0 }}>
-              <span
-                style={{
-                  backgroundColor: "#8CC43C",
-                  padding: 8,
-                  margin: 20,
-                  lineHeight: 1,
-                  fontSize: 16,
-                  borderRadius: 4,
-                  border: "1.5px solid blue",
-                }}
+            <div
+              style={{
+                position: "absolute",
+                top: 185,
+                left: 25,
+              }}
+            >
+              <Link
+                style={{ color: "black", cursor: "pointer", fontSize: 14 }}
+                to={this.props.links.home}
               >
-                <Link style={{ color: "white" }} to={this.props.links.signup}>
-                  Sign Up!
-                </Link>
-              </span>
-              <span
-                style={{
-                  backgroundColor: "#8CC43C",
-                  padding: 8,
-                  margin: 15,
-                  lineHeight: 1,
-                  fontSize: 16,
-                  borderRadius: 4,
-                  border: "1.5px solid blue",
-                }}
-              >
-                <Link style={{ color: "white" }} to={this.props.links.home}>
-                  Back to Home
-                </Link>
-              </span>
+                Back to Home
+              </Link>
             </div>
           </>
         ),
+        locale: {
+          last: "End Tour & Sign Up",
+        },
         placement: "center",
         spotlightClicks: true,
         disableBeacon: true,
-        hideFooter: true,
+        hideFooter: false,
       },
     ];
 
@@ -273,9 +258,11 @@ class RegisterFormBase extends React.Component {
         {seen_tour === "true" ? null : (
           <ProductTour
             steps={steps}
+            continuous
             showSkipButton
             disableScrolling={true}
             callback={handleTourCallback}
+            getHelpers={this.getHelpers}
             debug
             // spotlightPadding={-5}
             // disableOverlay
