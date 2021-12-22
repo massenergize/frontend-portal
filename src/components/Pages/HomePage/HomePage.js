@@ -128,7 +128,6 @@ class HomePage extends React.Component {
             Start taking action right away!
           </strong>
         ),
-        //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
         content: (
           <>
             These 4 buttons take you places. The one called "{actionName}" will
@@ -144,6 +143,7 @@ class HomePage extends React.Component {
           ),
         },
         placement: "auto",
+        disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
         hideFooter: false,
@@ -159,23 +159,15 @@ class HomePage extends React.Component {
             showSkipButton
             callback={handleTourCallback}
             spotlightPadding={-40}
-            // debug
+            debug
             disableScrolling={true}
-            // showProgress
             styles={{
               options: {
-                // modal arrow and background color
                 arrowColor: "#eee",
                 backgroundColor: "#eee",
-                // page overlay color
-                //  overlayColor: "rgba(79, 26, 0, 0.1)",
-                //button color
                 primaryColor: "#8CC43C",
-                //text color
                 textColor: "black",
-                //width of modal
                 width: 400,
-                //zindex of modal
                 zIndex: 1000,
               },
             }}

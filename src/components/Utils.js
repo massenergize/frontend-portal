@@ -1,8 +1,8 @@
 import * as moment from "moment";
 import React from "react";
 import qs from "qs";
-import { STATUS } from "react-joyride";
 import { ME_STATES } from "./States"
+import { STATUS, ACTIONS } from "react-joyride";
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
@@ -65,12 +65,20 @@ export const getIsSandboxFromURL = (location) => {
 export const getTakeTourFromURL = (location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  console.log("locationUtils", location);
   return tour;
 };
 
+//TODO: how to stop second step once seen tour is set to true? setTimeOut???
+//TODO: why home first step isn't closing when X is clicked?
 export const handleTourCallback = (data) => {
-  const { status } = data;
-  if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+  const { status, action, index } = data;
+  console.log("dataTourCallBack", data);
+
+  if (
+    (index > 0 && action === ACTIONS.CLOSE) ||
+    [STATUS.FINISHED, STATUS.SKIPPED].includes(status)
+  ) {
     window.localStorage.setItem("seen_community_portal_tour", "true");
   }
   return true;
