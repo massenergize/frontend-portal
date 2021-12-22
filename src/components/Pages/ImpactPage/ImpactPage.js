@@ -384,16 +384,11 @@ class ImpactPage extends React.Component {
             disableScrolling={true}
             debug
             callback={handleTourCallback}
-            // disableOverlay
-            // showProgress
             styles={{
               options: {
                 primaryColor: "#8CC43C",
-                //text color
                 textColor: "black",
-                //width of modal
                 width: 400,
-                //zindex of modal
                 zIndex: 1000,
               },
             }}

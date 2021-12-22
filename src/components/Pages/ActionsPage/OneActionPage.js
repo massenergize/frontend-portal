@@ -518,22 +518,13 @@ class OneActionPage extends React.Component {
             debug
             disableScrolling={true}
             callback={handleTourCallback}
-            // disableOverlay
-            // showProgress
             styles={{
               options: {
-                // modal arrow and background color
                 arrowColor: "#eee",
                 backgroundColor: "#eee",
-                // page overlay color
-                //  overlayColor: "rgba(79, 26, 0, 0.1)",
-                //button color
                 primaryColor: "#8CC43C",
-                //text color
                 textColor: "black",
-                //width of modal
                 width: 400,
-                //zindex of modal
                 zIndex: 1000,
                 beaconSize: 36,
               },
