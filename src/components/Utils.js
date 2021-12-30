@@ -65,7 +65,7 @@ export const getIsSandboxFromURL = (location) => {
 export const getTakeTourFromURL = (location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
-  console.log("locationUtils", location);
+  //console.log("locationUtils", location);
   return tour;
 };
 
@@ -73,7 +73,7 @@ export const getTakeTourFromURL = (location) => {
 //TODO: why home first step isn't closing when X is clicked?
 export const handleTourCallback = (data) => {
   const { status, action, index } = data;
-  console.log("dataTourCallBack", data);
+  //console.log("dataTourCallBack", data);
 
   if (
     (index > 0 && action === ACTIONS.CLOSE) ||
