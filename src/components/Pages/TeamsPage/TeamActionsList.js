@@ -1,7 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
 import { apiCall } from "../../../api/functions";
-import { IS_PROD } from "../../../config/config";
 import loader from "../../../assets/images/other/loader.gif";
 import DataTable from 'react-data-table-component';
 
@@ -16,9 +14,8 @@ class TeamActionsList extends React.Component {
 
   async fetch(id) {
     try {
-      const json = await apiCall("graphs.actions.completed.byTeam", {
+      const json = await apiCall("teams.actions.completed", {
         team_id: id,
-        is_dev: !IS_PROD,
       });
       if (json.success) {
         this.setState({ listResponse: json.data });
@@ -37,69 +34,49 @@ class TeamActionsList extends React.Component {
     this.fetch(id);
   }
 
-  shortenWords(word) {
-    let stringArr = word.split(" ");
-    if (word.toLowerCase() === "home energy") return word;
-    return stringArr[0];
-  }
+  //shortenWords(word) {
+  //  let stringArr = word.split(" ");
+  //  if (word.toLowerCase() === "home energy") return word;
+  //  return stringArr[0];
+  //}
 
   render() {
     const { loading, listResponse } = this.state;
-
     const columns = [
       {
-          name: 'Action name',
-          selector: row => row.action,
+          name: 'Action Name',
+          selector: row => row.name,
           sortable: true,
+          width: 40,
       },
       {
         name: 'Category',
         selector: row => row.category,
         sortable: true,
+        width: 20,
       },
       {
         name: '# Done',
-        selector: row => row.done,
+        selector: row => row.done_count,
         sortable: true,
+        center: true,
+        width: 6,
       },
       {
         name: 'Carbon savings',
-        selector: row => row.carbon,
+        selector: row => row.carbon_total,
         sortable: true,
+        center: true,
+        width: 12,
       },
       {
         name: '# Todo',
-        selector: row => row.todo,
+        selector: row => row.todo_count,
         sortable: true,
+        center: true,
+        width: 6,
       },
     ];
-  
-    const data = [
-      {
-          id: 1,
-          action: 'Install a heat pump',
-          category: 'Home Energy',
-          done: 20,
-          carbon: 40000,
-          todo: 2,
-      },
-      {
-        id: 2,
-        action: 'Install a solar array',
-        category: 'Solar',
-        done: 10,
-        carbon: 30000,
-        todo: 4,
-      },
-      {
-        id: 3,
-        action: 'Buy an electric vehicle',
-        category: 'Transportation',
-        done: 5,
-        carbon: 10000,
-        todo: 5,
-      },
-    ]
   
     if (loading)
       return (
@@ -122,23 +99,13 @@ class TeamActionsList extends React.Component {
         </p>
       );
 
-    let actions = {
-      labels: [],
-      datasets: [
-        {
-          label: "Actions",
-          data: [],
-          backgroundColor: "rgba(251, 85, 33, 0.85)",
-        },
-      ],
-    };
-
     return (
       <div>
-      This will be a list of actions (linked to action page), category, # done, carbon, # todo
-      <DataTable
+        <DataTable
             columns={columns}
-            data={data}
+            data={listResponse}
+            selectableRows
+            dense
         />
       </div>
     )

@@ -23,7 +23,7 @@
     "react-bootstrap": "^1.6.3",
     "react-chartjs-2": "^2.9.0",
     "react-countup": "^4.3.2",
-    "react-data-table-component": "^7.4.5",
+    "react-data-table-component": "^7.4.6",
     "react-datepicker": "^2.11.0",
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.12.0",

@@ -333,7 +333,7 @@ class OneTeamPage extends React.Component {
                       ) : (
                         <TeamActionsList key={remountForcer} teamID={team.id} />
                       )
-                    };
+                    }
 
                     <p style={{ textAlign: "center", marginTop: 15 }}>
                       Complete{" "}
