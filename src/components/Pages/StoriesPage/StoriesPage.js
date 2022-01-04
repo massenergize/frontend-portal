@@ -23,7 +23,7 @@ class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      DraftTestmonialData: {},
+      draftTestimonialData: {},
       limit: 140, //size of a tweet
       checked_values: null,
       modal_content: {
@@ -42,11 +42,10 @@ class StoriesPage extends React.Component {
   }
 
   //sets the data to be passed down to the form component from the story sheet component when users clicks the edit button 
-  EditDraftTestmonial(DraftTestmonialData) {
+  EditTestimonial(draftTestimonialData) {
      this.setState({
-      DraftTestmonialData : DraftTestmonialData
+      draftTestimonialData : draftTestimonialData
      })
-
   }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });
@@ -80,8 +79,8 @@ class StoriesPage extends React.Component {
   renderTestimonialForm() {
     if (this.props.user) {
       return <StoryForm 
-      key={this.state.DraftTestmonialData.Key}
-      DraftTestmonialData={this.state.DraftTestmonialData}
+      key={this.state.draftTestimonialData.key}
+      draftTestimonialData={this.state.draftTestimonialData}
       uid={this.props.user.id} />;
     }
   }
@@ -274,7 +273,7 @@ class StoriesPage extends React.Component {
         className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet 
-        EditDraftTestmonial={(DraftTestmonialData) => this.EditDraftTestmonial(DraftTestmonialData)}
+        EditTestimonial={(testmonialData) => this.EditTestimonial(testmonialData)}
         {...story} 
         links={this.props.links} />
       </div>

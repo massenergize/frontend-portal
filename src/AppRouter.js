@@ -78,6 +78,7 @@ import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
+import CookieBanner from "./components/Shared/CookieBanner";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -267,7 +268,10 @@ class AppRouter extends Component {
 
     const cookies = new Cookies();
 
-    device_checkin(cookies);
+    device_checkin(cookies).then(
+      function(data) {},
+      function(err) {console.log(err);}
+    );
 
     if (data) {
       user = data;
@@ -579,6 +583,7 @@ class AppRouter extends Component {
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
         ) : null}
+        <CookieBanner policyPath={links.policies}/>
       </div>
     );
   }
