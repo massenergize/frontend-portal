@@ -452,7 +452,7 @@ class ActionsPage extends React.Component {
     };
     // only include if user specified this
     if (date_completed) {
-      body.date_completed = date_completed + "-01";
+      body.date_completed = date_completed;
     }
     const path =
       status === "DONE"
