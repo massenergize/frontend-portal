@@ -1,18 +1,18 @@
 import * as moment from "moment";
 import React from "react";
 import qs from "qs";
-import { ME_STATES } from "./States"
+import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
 export const stateAbbreviation = (stateName) => {
-  const index = meStatesData.indexOf(stateName)
-  if (index>-1) {
-      return meStatesDataValues[index];
+  const index = meStatesData.indexOf(stateName);
+  if (index > -1) {
+    return meStatesDataValues[index];
   }
   return stateName;
-}
+};
 
 export const PREFERRED_EQ = "PREFERRED_EQ";
 
@@ -81,6 +81,11 @@ export const handleTourCallback = (data) => {
   ) {
     window.localStorage.setItem("seen_community_portal_tour", "true");
   }
+  return true;
+};
+
+export const handleCloseTourWithBtn = () => {
+  window.localStorage.setItem("seen_community_portal_tour", "true");
   return true;
 };
 
@@ -311,10 +316,11 @@ export function dateFormatString(startDate, endDate) {
  * @param location
  */
 export function locationFormatJSX(location) {
-  let firstLine = location.unit && location.unit !== ""
-    ? `${location.address || ""}, ${location.unit}`
-    : `${location.address || ""}`;
-  const state = location.state ? stateAbbreviation(location.state): "";
+  let firstLine =
+    location.unit && location.unit !== ""
+      ? `${location.address || ""}, ${location.unit}`
+      : `${location.address || ""}`;
+  const state = location.state ? stateAbbreviation(location.state) : "";
   return (
     <span>
       <b>{firstLine}</b>
