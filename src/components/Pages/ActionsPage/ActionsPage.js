@@ -108,7 +108,9 @@ class ActionsPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
+        
         <MEModal
+          className="parent-act-modal-whole"
           showCloseBtn={false}
           closeModal={this.closeModal}
           size="sm"
@@ -127,6 +129,7 @@ class ActionsPage extends React.Component {
             moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
+        
       );
     }
   }
