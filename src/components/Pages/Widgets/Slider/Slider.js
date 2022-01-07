@@ -16,6 +16,7 @@ export default class Slider extends Component {
     // first time its mounting
     if (state.itemInView === undefined && props.data)
       return { itemInView: props.data[0] };
+    return null;
   }
 
   countAndLoadItem() {

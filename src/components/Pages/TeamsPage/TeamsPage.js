@@ -150,6 +150,7 @@ class TeamsPage extends React.Component {
         spotlightClicks: false,
         disableBeacon: true,
         hideFooter: false,
+        disableOverlayClose: true,
       },
     ];
 
