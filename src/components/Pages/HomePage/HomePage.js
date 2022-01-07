@@ -22,15 +22,17 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
-
-    const tour_active = getTakeTourFromURL(window.location);
-    console.log("Tour qualifier: ", !tour_active);
-    if (tour_active) {
-      window.localStorage.setItem("seen_community_portal_tour", "false");
-    }
   }
 
   render() {
+    // Requesting tour from home menu adds a qualifier to the URL.  
+    // It won't restart if it was already going, until you refresh the site.
+    const tourRequested = getTakeTourFromURL(window.location);
+    if (tourRequested) {
+      window.localStorage.setItem("seen_community_portal_tour", "false");
+    }
+    const seen_tour = tourRequested ? false : window.localStorage.getItem("seen_community_portal_tour");
+
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -91,7 +93,6 @@ class HomePage extends React.Component {
       });
     }
 
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const about_community = `${this.props.community.about_community}`;
     const community_name = `${this.props.community.name}`;
     const actionName = iconQuickLinks

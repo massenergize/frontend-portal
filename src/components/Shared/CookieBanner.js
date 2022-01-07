@@ -45,12 +45,12 @@ class CookieBanner extends React.Component {
             </div>
             <div className="ml-auto" style={{alignItems:'center'}}>
               <button onClick={this.acceptCookies} 
-                  class="cool-font new-sign-in float-right round-me z-depth-float" 
+                  className="cool-font new-sign-in float-right round-me z-depth-float" 
                   style={{background:'white', color:'black'}}>
                 Okay
               </button>
               <a href={this.policyPath}
-                  class="cool-font new-sign-in float-right round-me z-depth-float" 
+                  className="cool-font new-sign-in float-right round-me z-depth-float" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{background:'white', color:'black'}}>

@@ -27,9 +27,11 @@ class NavBarBurger extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
   }
-  componentWillReceiveProps() {
-    this.forceUpdate();
-  }
+
+  // Comment out to eliminate warning : not sure this is needed
+  //componentWillReceiveProps() {
+  //  this.forceUpdate();
+  //}
   handleResize = () => {
     this.setState({
       menuBurgered: window.innerWidth < 992,
@@ -371,32 +373,7 @@ class NavBarBurger extends React.Component {
     //   borderRadius: "0",
     //   padding: "0",
     // };
-    if (user.info) {
-      // const ProfileBtnDropdown = React.forwardRef((props, ref) => (
-      //   <button
-      //     ref={ref}
-      //     className="me-universal-btn me-undefault-btn me-btn-union cool-font"
-      //     onClick={(e) => {
-      //       e.preventDefault();
-      //       props.onClick(e);
-      //     }}
-      //     style={{
-      //       margin: "auto 0 auto 10px",
-      //       fontSize: "12px",
-      //       fontWeight: 600,
-      //     }}
-      //   >
-      //     {/* <i className="fa fa-user" />{'\u00A0'} */}
-      //     <span className="pc-vanish">
-      //       {props.userName.length > 6
-      //         ? props.userName.substr(0, 4) + "..."
-      //         : props.userName}
-      //     </span>
-      //     <span className="phone-vanish">{props.userName}</span>
-      //     <span className="fa fa-angle-down text-white ml-1"></span>
-      //   </button>
-      // ));
-      // console.log(user.info)
+    if (user.info?.full_name) {
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle
@@ -615,10 +592,13 @@ class Menu extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open !== this.state.open) {
-      this.setState({ open: nextProps.open });
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.open !== state.open) {
+      return {
+        open: nextProps.open,
+      };
     }
+    return null;
   }
 
   render() {
@@ -659,6 +639,7 @@ class Menu extends React.Component {
     );
   }
 }
+
 /* MenuButton.jsx */
 class MenuButton extends React.Component {
   constructor(props) {
@@ -668,11 +649,16 @@ class MenuButton extends React.Component {
       color: this.props.color ? this.props.color : "black",
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open !== this.state.open) {
-      this.setState({ open: nextProps.open });
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.open !== state.open) {
+      return {
+        open: nextProps.open,
+      };
     }
+    return null;
   }
+
   handleClick() {
     this.setState({ open: !this.state.open });
   }
