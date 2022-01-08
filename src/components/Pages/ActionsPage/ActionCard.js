@@ -1,14 +1,14 @@
 import React from "react";
 import "./PhotosensitiveCard.css";
 import { Link, withRouter } from "react-router-dom";
-import StoryForm from "../StoryForm";
+import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
-} from "../../../../redux/actions/userActions";
-import { apiCall } from "../../../../api/functions";
-import MEButton from "../../Widgets/MEButton";
+} from "../../../redux/actions/userActions";
+import { apiCall } from "../../../api/functions";
+import MEButton from "../Widgets/MEButton";
 import {
   DEFAULT_STATE,
   DONE,
@@ -16,9 +16,9 @@ import {
   IS_IN_TODO,
   NO_AUTH,
   TODO,
-} from "../ActionStateConstants";
-import MEChameleonButton from "../MEChameleonButton";
-import MEAnimation from "../../../Shared/Classes/MEAnimation";
+} from "./ActionStateConstants";
+import MEChameleonButton from "./MEChameleonButton";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
 
 /**
  * Action Component is a single action for the action page,
@@ -35,7 +35,8 @@ import MEAnimation from "../../../Shared/Classes/MEAnimation";
  * @prop  match: match is passed from Route
  */
 
-class PhotoSensitiveAction extends React.Component {
+// was called PhotSensitiveAction
+class ActionCard extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -72,11 +73,11 @@ class PhotoSensitiveAction extends React.Component {
     var done = this.props.done ? this.props.done : [];
     return done.find((t) => t.action.id === action.id);
   }
-  checkTodo() {
-    var action = this.props.action;
-    var todo = this.props.todo ? this.props.todo : [];
-    return todo.find((t) => t.action.id === action.id);
-  }
+  //checkTodo() {
+  //  var action = this.props.action;
+  //  var todo = this.props.todo ? this.props.todo : [];
+  //  return todo.find((t) => t.action.id === action.id);
+  //}
 
   getActionStateCase() {
     const { user } = this.props;
@@ -465,4 +466,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(withRouter(PhotoSensitiveAction));
+)(withRouter(ActionCard));

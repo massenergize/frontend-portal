@@ -14,7 +14,7 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Action from "./PhotosensitiveCard/PhotoSensitiveAction";
+import ActionCard from "./ActionCard";
 
 import PageTitle from "../../Shared/PageTitle";
 import {
@@ -352,7 +352,7 @@ class ActionsPage extends React.Component {
     return Object.keys(actions).map((key) => {
       var action = actions[key];
       return (
-        <Action
+        <ActionCard
           className="test-action-card-item"
           key={key}
           action={action}
