@@ -971,8 +971,8 @@ class OneActionPage extends React.Component {
     apiCall("users.actions.completed.add", body)
       .then((json) => {
         if (json.success) {
-          this.setState({ showTestimonialLink: true });
           this.props.reduxMoveToDone(json.data);
+          this.setState({ showTestimonialLink: true });
           this.addToImpact(json.data.action);
         }
         //just update the state here

@@ -68,7 +68,7 @@ class ActionsPage extends React.Component {
       status: null,
       showEqModal: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
@@ -98,11 +98,6 @@ class ActionsPage extends React.Component {
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
     if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
-  }
-
-  handleBoxClick(id) {
-    // var id = event.target.value;
-    this.addMeToSelected(id);
   }
 
   renderModal() {
@@ -326,9 +321,9 @@ class ActionsPage extends React.Component {
   }
 
   // on change in any category or tag checkbox update the actionsPage
-  handleChange() {
-    this.forceUpdate();
-  }
+  //handleChange() {
+  //  this.forceUpdate();
+  //}
 
   // };
   // renders all the actions
@@ -362,7 +357,7 @@ class ActionsPage extends React.Component {
           addToCart={(aid, hid, status, date_completed) =>
             this.addToCart(aid, hid, status, date_completed)
           }
-          inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+          //inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
@@ -408,7 +403,7 @@ class ActionsPage extends React.Component {
   };
   moveToDone = (actionRel) => {
     const body = {
-      user_id: this.props.user.id,
+      //user_id: this.props.user.id,
       action_id: actionRel.action.id,
       household_id: actionRel.real_estate_unit.id,
     };
