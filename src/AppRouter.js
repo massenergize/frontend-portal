@@ -251,7 +251,7 @@ class AppRouter extends Component {
     let { data } = await apiCall("auth.whoami");
     let user = null;
 
-    if (data) {
+    if (data && Object.keys(data).length > 0) {
       user = data;
     } else {
       if (this.props.auth && firebase.auth().currentUser) {
@@ -291,6 +291,7 @@ class AppRouter extends Component {
         return false;
       }
     }
+    else return false;
   }
 
   /**
