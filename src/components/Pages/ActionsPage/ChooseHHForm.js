@@ -46,13 +46,13 @@ class ChooseHHForm extends React.Component {
       Choice1 =  "Just completed it!"
       Choice2 =  "Earlier this year (" + moment().format('YYYY') + ")"
       Choice3 =  "Last year (" + moment().subtract(1,"years").format("YYYY") + ")"
-      Choice4 =  "Before last year (" + moment().subtract(2,"years").format("YYYY") + ")"
+      Choice4 =  "Before last year"
     } 
     else if (this.props.status === "TODO") {
       Choice1 =  "Very Soon"
       Choice2 =  "Later this year (" + moment().add(3,"months").format("YYYY") + ")"
-      Choice3 =  "Next Few Years (" + moment().add(1,"years").format("YYYY") + ")"
-      Choice4 =  "Not planning but interested (" + moment().add(10,"years").format("YYYY") + ")"
+      Choice3 =  "Next Few Years"
+      Choice4 =  "Not planning but interested"
       }
   }
 
@@ -62,7 +62,7 @@ class ChooseHHForm extends React.Component {
   }
 
   render() {
-    this.checkHouseholds();
+    // Remove this check; if all households had action done, allow setting date.  this.checkHouseholds();
     return (
       <>
         <div className="act-modal-whole">
@@ -130,6 +130,8 @@ class ChooseHHForm extends React.Component {
     );
   }
 
+  // NOTE: This routine currently duplicated in ActionCard, ChooseHHForm, OneActionPage, Cart
+  // any changes need to be same in all 4 locations
   removeFromCart = (actionRel) => {
     if (!actionRel) return;
     const status = actionRel.status;
@@ -140,7 +142,6 @@ class ChooseHHForm extends React.Component {
           if (status === "DONE") {
             this.props.done.filter((item) => item.id !== actionRel.id);
             this.props.reduxRemoveFromDone(actionRel);
-            //this.props.reduxLoadDone(remainder);
           }
         }
       }
@@ -150,6 +151,7 @@ class ChooseHHForm extends React.Component {
   handleSubmit = (event) => {
     const houses = this.props.user.households;
     var choices = this.state.choice;
+    const actionId = this.props.aid;
     if (event) event.preventDefault();
     if (houses.length === 1) {
       choices = [houses[0].id];
@@ -165,29 +167,29 @@ class ChooseHHForm extends React.Component {
 
     if (this.props.status === "TODO") {
       choices.forEach((choice) => {
-        if (!this.props.inCart(this.props.aid, choice) ||
-          //if user selects diff date, it will submit to backend
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice]) {
-          this.props.addToCart(this.props.aid, choice, this.props.status, this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0]: "");
+        const dateChanged = this.state.Dates[choice] !== this.state.DatesOnStart[choice];          
+        if (!this.props.inCart(actionId, choice) || dateChanged)  //if user selects diff date, it will submit to backend           
+        {
+          const wasInTodo = this.props.inCart(actionId, choice, "TODO");
+          const updated = dateChanged && wasInTodo;
+          const date = this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0]: "";
+          this.props.addToCart(actionId, choice, this.props.status, date, updated);
           this.props.closeForm();
         }
       });
     } else if (this.props.status === "DONE") {
       choices.forEach((choice) => {
-        if (
-          !this.props.inCart(this.props.aid, choice) ||
-          //if user selects diff date, it will submit to backend
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice]
-        ) {
-          this.props.addToCart(
-            this.props.aid,
-            choice,
-            this.props.status,
-            this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0] : ""
-          );
+        const date = this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0]: "";
+        const dateChanged = this.state.Dates[choice] !== this.state.DatesOnStart[choice];          
+        const wasInDone = this.props.inCart(actionId, choice, "DONE");
+
+        if (!this.props.inCart(actionId, choice) || (wasInDone && dateChanged) )    //if user selects diff date, it will submit to backend      
+        {
+          const updated = dateChanged && wasInDone;
+          this.props.addToCart(actionId, choice, this.props.status, date, updated);
           this.props.closeForm();
-        } else if (this.props.inCart(this.props.aid, choice, "TODO")) {
-          this.props.moveToDone(this.props.aid, choice);
+        } else if (this.props.inCart(actionId, choice, "TODO")) {
+          this.props.moveToDone(actionId, choice, date);
           this.props.closeForm();
         }
       });
@@ -215,6 +217,7 @@ class ChooseHHForm extends React.Component {
       return found;
     }
   }
+
   removeHouseholdsThatWereUnselected() {
     // check the difference between the selected households on start and now, and remove the ones that the user unchecked
     const { toBeRemoved } = this.state;
@@ -326,62 +329,65 @@ class ChooseHHForm extends React.Component {
 //function that sets the value of the completion date depending on the time of year and option selected
   ChangeCompDate(CompStatus, choice) {
         
-        const {status} = this.props
-        var Dates = this.state.Dates;
-        if (status === "TODO") {
-          switch(CompStatus) {
-            case Choice1:
-              Dates[choice] = [moment().format('YYYY-MM-DD'),Choice1]
-              break;
-            case Choice2:
-            //if option selected in Jan,Feb, or March it will default to the beginning of the year else it will subtract 3 months from current date
-              if (moment().dayOfYear() < 90) {
-                Dates[choice] = [moment().endOf('year').format("YYYY-MM-DD"),Choice2 ] 
-              } else {
-                Dates[choice] = [moment().add(3,"months").format('YYYY-MM-DD'),Choice2]
-              }
-              break
-            case Choice3:
-              Dates[choice] = [moment().add(1,"years").format("YYYY-MM-DD"),Choice3]
-              break 
-            case Choice4:
-              Dates[choice] = [moment().add(10,"years").format("YYYY-MM-DD"), Choice4] 
-              break
-            default:
-              console.log("just to make warning go away")
+    const {status} = this.props;
+    var Dates = this.state.Dates;
+    if (status === "TODO") {
+      switch(CompStatus) {
+        case Choice1:
+          Dates[choice] = [moment().format('YYYY-MM-DD'),Choice1];
+          break;
+        case Choice2:
+        //if option selected in Jan,Feb, or March it will default to the beginning of the year else it will subtract 3 months from current date
+          if (moment().dayOfYear() < 90) {
+            Dates[choice] = [moment().endOf('year').format("YYYY-MM-DD"),Choice2 ] ;
+          } else {
+            Dates[choice] = [moment().add(3,"months").format('YYYY-MM-DD'),Choice2];
           }
-        } else {
-          switch(CompStatus) {
-            case Choice1:
-              Dates[choice] = [moment().format('YYYY-MM-DD'),Choice1]
-              break;
-            case Choice2:
-            //if option selected in Jan,Feb, or March it will default to the beginning of the year else it will subtract 3 months from current date
-              if (moment().dayOfYear() < 90) {
-                Dates[choice] = [moment().startOf('year').format("YYYY-MM-DD"),Choice2 ] 
-              } else {
-                Dates[choice] = [moment().subtract(3,"months").format('YYYY-MM-DD'),Choice2]
-              }
-              break
-            case Choice3:
-              Dates[choice] = [moment().subtract(1,"years").format("YYYY-MM-DD"),Choice3]
-              break 
-            case Choice4:
-              Dates[choice] = [moment().subtract(2,"years").format("YYYY-MM-DD"), Choice4] 
-              break
-            default:
-              console.log("just to make warning go away")
-          } 
-        }
+          break;
+        case Choice3:
+          Dates[choice] = [moment().add(1,"years").format("YYYY-MM-DD"),Choice3];
+          break;
+        case Choice4:
+          Dates[choice] = [moment().add(10,"years").format("YYYY-MM-DD"), Choice4];
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch(CompStatus) {
+        case Choice1:
+          Dates[choice] = [moment().format('YYYY-MM-DD'),Choice1]
+          break;
+        case Choice2:
+        //if option selected in Jan,Feb, or March it will default to the beginning of the year else it will subtract 3 months from current date
+          if (moment().dayOfYear() < 90) {
+            Dates[choice] = [moment().startOf('year').format("YYYY-MM-DD"),Choice2 ] 
+          } else {
+            Dates[choice] = [moment().subtract(3,"months").format('YYYY-MM-DD'),Choice2]
+          }
+          break
+        case Choice3:
+          Dates[choice] = [moment().subtract(1,"years").format("YYYY-MM-DD"),Choice3]
+          break 
+        case Choice4:
+          Dates[choice] = [moment().subtract(2,"years").format("YYYY-MM-DD"), Choice4] 
+          break
+        default:
+          console.log("just to make warning go away")
+      } 
+    }
 
-        this.setState({
-          Dates: Dates,
-          SelectedCompStatus: CompStatus
-        });
+    this.setState({
+      Dates: Dates,
+      SelectedCompStatus: CompStatus
+    });
   }
+
   renderHouseHoldsInLine(households) {
     const { status } = this.props;
-    const {Dates } = this.state
+    const { Dates } = this.state;
+    const month = moment().format('MM');
+
     if (!households) return <div />;
     var filteredHH = households;
     if (status === "TODO") {
@@ -430,7 +436,11 @@ class ChooseHHForm extends React.Component {
                         <Dropdown.Menu variant="dark">
 
                           <Dropdown.Item onClick={() => this.ChangeCompDate(Choice1,values[index] )}> {Choice1} </Dropdown.Item>
-                           {moment().format('MM') === '01' ? <div /> : <Dropdown.Item onClick={() => this.ChangeCompDate(Choice2,values[index] )}>{Choice2}</Dropdown.Item> }
+                           {(status === 'DONE' && month === '01') || 
+                            (status === 'TODO' && month === '12') ? 
+                              <div /> : 
+                              (<Dropdown.Item onClick={() => this.ChangeCompDate(Choice2,values[index] )}>{Choice2}</Dropdown.Item>)
+                            }
                           <Dropdown.Item onClick={() => this.ChangeCompDate(Choice3,values[index])}>{Choice3} </Dropdown.Item>
                           <Dropdown.Item onClick={() => this.ChangeCompDate(Choice4,values[index])}>{Choice4}</Dropdown.Item>
                         </Dropdown.Menu>
@@ -520,6 +530,7 @@ class ChooseHHForm extends React.Component {
     });
   }
 
+  // NOTE: this routine is not currently used
   checkHouseholds = () => {
     if (this.props.open) {
       var housesAvailable = [];
@@ -538,7 +549,7 @@ class ChooseHHForm extends React.Component {
       if (!this.state.error && !this.state.choice) {
         if (housesAvailable.length === 0) {
           this.setState({
-            error: `You have  added this action for all of your households`,
+            error: `You have added this action for all of your households`,
           });
         } else {
           // this.setState({ choice: housesAvailable[0] });

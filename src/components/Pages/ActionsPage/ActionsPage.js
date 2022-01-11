@@ -401,18 +401,21 @@ class ActionsPage extends React.Component {
 
     return checkTodo.length > 0 || checkDone.length > 0;
   };
-  moveToDone = (actionRel) => {
+
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDone = (actionRel, date_completed) => {
     const body = {
-      //user_id: this.props.user.id,
       action_id: actionRel.action.id,
       household_id: actionRel.real_estate_unit.id,
     };
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed;
+    }
     apiCall("users.actions.completed.add", body)
       .then((json) => {
-        console.log("api called here");
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
-          // this.addToImpact(json.data.action);
           this.setState({
             testimonialLink: actionRel.action.id,
             showTodoMsg: false,
@@ -420,24 +423,26 @@ class ActionsPage extends React.Component {
         } else {
           console.log(json.error);
         }
-        //just update the state here
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  moveToDoneByActionId(aid, hid) {
+
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDoneByActionId(aid, hid, date) {
     const actionRel = this.props.todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
       );
     })[0];
-    if (actionRel) this.moveToDone(actionRel);
+    if (actionRel) this.moveToDone(actionRel, date);
   }
+
+  // NOTE: Routine currently duplicated in ActionsPage and OneActionPage - preserve same functionality in each
   addToCart = (aid, hid, status, date_completed) => {
     const body = {
-      user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
     };
@@ -459,74 +464,16 @@ class ActionsPage extends React.Component {
             this.setState({ showTodoMsg: aid });
           } else if (status === "DONE") {
             this.props.reduxAddToDone(json.data);
-            // this.addToImpact(json.data.action);
             this.setState({ testimonialLink: aid, showTodoMsg: false });
-          }
+          }  
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  addToImpact(action) {
-    this.changeDataByName("ActionsCompletedData", 1);
-    action.tags.forEach((tag) => {
-      if (tag.tag_collection && tag.tag_collection.name === "Category") {
-        this.changeData(tag.id, 1);
-      }
-    });
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamAddAction(this.props.user.teams[key]);
-    });
-  }
-
-  changeDataByName(name, number) {
-    const communityData = this.props.communityData || [];
-    var data = communityData.filter((data) => {
-      return data.name === name;
-    })[0];
-
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
-
-  changeData(tagid, number) {
-    var data = this.props.communityData.filter((data) => {
-      if (data.tag) {
-        return data.tag === tagid;
-      }
-      return false;
-    })[0];
-    if (!data) {
-      return;
-    }
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
 }
+
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,

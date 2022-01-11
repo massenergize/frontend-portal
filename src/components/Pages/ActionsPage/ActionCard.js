@@ -47,6 +47,8 @@ class ActionCard extends React.Component {
     };
   }
 
+  // NOTE: This routine currently duplicated in ActionCard, ChooseHHForm, OneActionPage, Cart
+  // any changes need to be same in all 4 locations
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
     apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(
@@ -56,7 +58,6 @@ class ActionCard extends React.Component {
           if (status === "DONE") {
             this.props.done.filter((item) => item.id !== actionRel.id);
             this.props.reduxRemoveFromDone(actionRel);
-            //this.props.reduxLoadDone(remainder);
           }
         }
       }
@@ -73,12 +74,7 @@ class ActionCard extends React.Component {
     var done = this.props.done ? this.props.done : [];
     return done.find((t) => t.action.id === action.id);
   }
-  //checkTodo() {
-  //  var action = this.props.action;
-  //  var todo = this.props.todo ? this.props.todo : [];
-  //  return todo.find((t) => t.action.id === action.id);
-  //}
-
+  
   getActionStateCase() {
     const { user } = this.props;
     if (!user) return NO_AUTH;
@@ -95,8 +91,11 @@ class ActionCard extends React.Component {
   }
 
   userHasManyHouseHolds() {
-    return this.props.user.households.length > 1;
+    //return this.props.user.households.length > 1;
+    // so that users can change the date
+    return this.props.user.households.length > 0;
   }
+
   runActionFunction(_for) {
     // const hasManyHouseHolds = this.props.user.households.length > 1;
     if (_for === "DONE") {
@@ -321,6 +320,7 @@ class ActionCard extends React.Component {
       </>
     );
   }
+
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
@@ -335,6 +335,7 @@ class ActionCard extends React.Component {
     this.props.openModal(this.props.action, status);
     // this.props.openHHForm(this.props.action.id);
   };
+
   closeForm = () => {
     this.setState({
       status: null,
