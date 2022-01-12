@@ -42,6 +42,7 @@ class LoginFormBase extends React.Component {
   render() {
     const { email, password, error } = this.state;
 
+    this.completeSignInWithEmail();
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Sign in";
@@ -217,37 +218,61 @@ class LoginFormBase extends React.Component {
       });
   };
   signInWithEmail = () => {
+    console.log(window.location.href)
     var actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL you want to redirect back to. The domain (www.massenergize.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: 'https://www.example.com/finishSignUp?cartId=1234',
+      url: window.location.href,
       // This must be true.
       handleCodeInApp: true,
-      iOS: {
-        bundleId: 'com.example.ios'
-      },
-      android: {
-        packageName: 'com.example.android',
-        installApp: true,
-        minimumVersion: '12'
-      },
-      dynamicLinkDomain: 'example.page.link'
     };
     this.props.firebase
       .auth()
-      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
       .then(() => {
-        // The link was successfully sent. Inform the user.
+        // The link was successfully sent. 
+        // TODO: Inform the user.
+        alert("Please check your email for a new sign in link.");
+        console.log("Email sent!")
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
+        window.localStorage.setItem('emailForSignIn', this.state.email);
         // ...
       })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
+      .catch((err) => {
+        this.setState({ error: err.message });
       });
+  };
+  completeSignInWithEmail = () => {
+    // Confirm the link is a sign-in with email link.
+    if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      var email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        // User opened the link on a different device. To prevent session fixation
+        // attacks, ask the user to provide the associated email again. For example:
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      // The client SDK will parse the code from the link for you.
+      this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
+        .then((result) => {
+          // Clear email from storage.
+          window.localStorage.removeItem('emailForSignIn');
+          // You can access the new user via result.user
+          // Additional user info profile not available via:
+          // result.additionalUserInfo.profile == null
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+        })
+        .catch((error) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
+        });
+    }
   };
   signInWithFacebook = () => {
     this.props.firebase
