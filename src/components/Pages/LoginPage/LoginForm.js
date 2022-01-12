@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import MEButton from "./../Widgets/MEButton";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import {
-  facebookProvider,
   googleProvider,
+  emailProvider,
+  facebookProvider
 } from "../../../config/firebaseConfig";
 import { apiCall } from "../../../api/functions";
 import {
@@ -100,6 +101,14 @@ class LoginFormBase extends React.Component {
                   id="google"
                   type="button"
                   className="img-circle  round-me raise me-google-btn"
+                >
+                  <span className="fa fa-google"></span>
+                </button>
+                <button
+                  onClick={this.signInWithEmail}
+                  id="emai"
+                  type="button"
+                  className="img-circle  round-me raise me-email-btn"
                 >
                   <span className="fa fa-google"></span>
                 </button>
@@ -205,6 +214,39 @@ class LoginFormBase extends React.Component {
             console.log(err);
             this.setState({ error: err.message });
           });
+      });
+  };
+  signInWithEmail = () => {
+    var actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be in the authorized domains list in the Firebase Console.
+      url: 'https://www.example.com/finishSignUp?cartId=1234',
+      // This must be true.
+      handleCodeInApp: true,
+      iOS: {
+        bundleId: 'com.example.ios'
+      },
+      android: {
+        packageName: 'com.example.android',
+        installApp: true,
+        minimumVersion: '12'
+      },
+      dynamicLinkDomain: 'example.page.link'
+    };
+    this.props.firebase
+      .auth()
+      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', email);
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
       });
   };
   signInWithFacebook = () => {
