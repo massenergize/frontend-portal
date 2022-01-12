@@ -253,6 +253,13 @@ class AppRouter extends Component {
           console.log(err);
         });
     }
+
+    if (!this.state.triedLogin && !this.props.user) {
+      this.getUser().then((success) => {
+        console.log(`User Logged in: ${success}`);
+      });
+    }
+
   }
 
   setStateAsync(state) {
@@ -479,12 +486,6 @@ class AppRouter extends Component {
           errorDescription="This community page is not accessible.  Please contact the community administrator to resolve the problem."
         />
       );
-    }
-
-    if (!this.state.triedLogin && !this.props.user) {
-      this.getUser().then((success) => {
-        console.log(`User Logged in: ${success}`);
-      });
     }
 
     if (this.props.user && !this.state.triedLogin) {

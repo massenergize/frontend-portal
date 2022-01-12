@@ -75,6 +75,7 @@ class OneActionPage extends React.Component {
 
     const { id } = this.props.match.params;
     this.fetch(id);
+    this.chooseFontSize();
   }
 
   async fetch(id) {
@@ -108,7 +109,6 @@ class OneActionPage extends React.Component {
         />
       );
     }
-    this.chooseFontSize();
 
     const { tags } = action;
     const { community } = action || {};

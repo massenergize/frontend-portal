@@ -20,7 +20,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+import { handleTourCallback, handleCloseTourWithBtn } from "../../Utils";
 //import { helpers } from "chart.js";
 /* Modal config */
 const INITIAL_STATE = {
@@ -232,6 +232,7 @@ class RegisterFormBase extends React.Component {
               }}
             >
               <Link
+                onClick={handleCloseTourWithBtn}
                 style={{ color: "black", cursor: "pointer", fontSize: 14 }}
                 to={this.props.links.home}
               >
