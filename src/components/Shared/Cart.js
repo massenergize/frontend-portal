@@ -226,6 +226,8 @@ class Cart extends React.Component {
     });
   }
 
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  // except this version doesn't allow action date to be set
   moveToDone = (actionRel) => {
     const body = {
       user_id: this.props.user.id,
@@ -236,18 +238,18 @@ class Cart extends React.Component {
       .then((json) => {
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
-          this.addToImpact(json.data.action);
           this.setState({ testimonialLink: actionRel.action.id });
         } else {
           console.log(json.error);
         }
-        //just update the state here
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  // NOTE: This routine currently duplicated in ActionCard, ChooseHHForm, OneActionPage, Cart
+  // any changes need to be same in all 4 locations
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
     apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(
@@ -259,82 +261,14 @@ class Cart extends React.Component {
               (item) => item.id !== actionRel.id
             );
             this.props.reduxRemoveFromDone(actionRel);
-            //this.removeFromImpact(actionRel.action);
             this.props.reduxLoadDone(remainder);
-            //window.location.reload();
           }
         }
       }
     );
   };
-
-  removeFromImpact = (action) => {
-    this.changeDataByName("ActionsCompletedData", -1);
-    action.tags.forEach((tag) => {
-      if (tag.tag_collection && tag.tag_collection.name === "Category") {
-        this.changeData(tag.id, -1);
-      }
-    });
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamRemoveAction(this.props.user.teams[key]);
-    });
-  };
-  addToImpact(action) {
-    this.changeDataByName("ActionsCompletedData", 1);
-    action.tags.forEach((tag) => {
-      if (tag.tag_collection && tag.tag_collection.name === "Category") {
-        this.changeData(tag.id, 1);
-      }
-    });
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamAddAction(this.props.user.teams[key]);
-    });
-  }
-  changeDataByName(name, number) {
-    var data = this.props.communityData.filter((data) => {
-      return data.name === name;
-    })[0];
-
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
-  changeData = (tagid, number) => {
-    var data = this.props.communityData.filter((data) => {
-      if (data.tag) {
-        return data.tag === tagid;
-      }
-      return false;
-    })[0];
-    if (!data) {
-      console.log("no data stored for tag " + tagid);
-      return;
-    }
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  };
 }
+
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
