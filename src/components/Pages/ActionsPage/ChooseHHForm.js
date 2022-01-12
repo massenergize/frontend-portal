@@ -171,7 +171,6 @@ class ChooseHHForm extends React.Component {
         if (!this.props.inCart(actionId, choice) || dateChanged)  //if user selects diff date, it will submit to backend           
         {
           const wasInTodo = this.props.inCart(actionId, choice, "TODO");
-          const updated = dateChanged && wasInTodo;
           const date = this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0]: "";
           this.props.addToCart(actionId, choice, this.props.status, date);
           this.props.closeForm();
@@ -185,7 +184,6 @@ class ChooseHHForm extends React.Component {
 
         if (!this.props.inCart(actionId, choice) || (wasInDone && dateChanged) )    //if user selects diff date, it will submit to backend      
         {
-          const updated = dateChanged && wasInDone;
           this.props.addToCart(actionId, choice, this.props.status, date);
           this.props.closeForm();
         } else if (this.props.inCart(actionId, choice, "TODO")) {
