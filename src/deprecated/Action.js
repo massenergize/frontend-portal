@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "../../Shared/Tooltip";
-import ChooseHHForm from "./ChooseHHForm";
-import StoryForm from "./StoryForm";
+import Tooltip from "../components/Shared/Tooltip";
+import ChooseHHForm from "../components/Pages/ActionsPage/ChooseHHForm";
+import StoryForm from "../components/Pages/ActionsPage/StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
-} from "../../../redux/actions/userActions";
-import { apiCall } from "../../../api/functions";
-import MEButton from "../Widgets/MEButton";
-import { getRandomIntegerInRange } from "../../Utils";
-import CustomTooltip from "../Widgets/CustomTooltip";
+} from "../redux/actions/userActions";
+import { apiCall } from "../api/functions";
+import MEButton from "../components/Pages/Widgets/MEButton";
+import { getRandomIntegerInRange } from "../components/Utils";
+import CustomTooltip from "../components/Pages/Widgets/CustomTooltip";
 
 /**
  * Action Component is a single action for the action page, 
