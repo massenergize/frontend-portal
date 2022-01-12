@@ -170,7 +170,6 @@ class ChooseHHForm extends React.Component {
         const dateChanged = this.state.Dates[choice] !== this.state.DatesOnStart[choice];          
         if (!this.props.inCart(actionId, choice) || dateChanged)  //if user selects diff date, it will submit to backend           
         {
-          const wasInTodo = this.props.inCart(actionId, choice, "TODO");
           const date = this.state.Dates[choice] !== undefined ? this.state.Dates[choice][0]: "";
           this.props.addToCart(actionId, choice, this.props.status, date);
           this.props.closeForm();
