@@ -140,7 +140,6 @@ export default class StorySheet extends Component {
             <div className="sheet-details">
               <p>{date}</p>
               <div>
-
                 <Link
                   style={{ marginLeft: "auto" }}
                   className="sheet-link test-story-sheet-full-view-link"
@@ -164,7 +163,6 @@ export default class StorySheet extends Component {
                   }}
                     className="testimonial_edit_button" variant="outline-dark"><a href="#ScrollToForEdit"> Edit</a> </Button>}
               </div>
-
             </div>
             <div>
               {file && (
