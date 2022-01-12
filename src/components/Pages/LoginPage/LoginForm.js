@@ -31,6 +31,7 @@ class LoginFormBase extends React.Component {
     super(props);
     this.state = {
       ...INITIAL_STATE,
+      signInWithPassword: true,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -75,7 +76,7 @@ class LoginFormBase extends React.Component {
                 placeholder="Enter email"
               />
             </div>
-            <div className="form-group mob-sweet-b-10">
+            {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-unlock-alt"></span>
               </span>
@@ -87,7 +88,7 @@ class LoginFormBase extends React.Component {
                 onChange={this.onChange}
                 placeholder="Enter Password"
               />
-            </div>
+            </div> : <div/>}
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
@@ -175,6 +176,8 @@ class LoginFormBase extends React.Component {
       [event.target.name]: event.target.value,
       error: null,
     });
+
+    this.setSignInMethod();
   }
 
   onSubmit(event) {
@@ -196,6 +199,33 @@ class LoginFormBase extends React.Component {
           });
       });
   }
+
+  setSignInMethod = () => {
+    if (this.state.email) {
+      this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
+        .then((signInMethods) => {
+          // This returns the same array as fetchProvidersForEmail but for email
+          // provider identified by 'password' string, signInMethods would contain 2
+          // different strings:
+          // 'emailLink' if the user previously signed in with an email/link
+          // 'password' if the user has a password.
+          // A user could have both.
+          if (signInMethods.indexOf(
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) != -1) {
+            // User can sign in with email/password.
+            this.setState({signInWithPassword: true})
+          }
+          if (signInMethods.indexOf(
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) != -1) {
+            // User can sign in with email/link.
+            this.setState({signInWithPassword: false})
+          }
+        })
+        .catch((error) => {
+          // Some error occurred, you can inspect the code: error.code
+        });
+    }
+  };
 
   //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD:
   //WOULD NOT DELETE DATA I THINK?
@@ -267,6 +297,7 @@ class LoginFormBase extends React.Component {
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
+          // TODO: Redirect to home
         })
         .catch((error) => {
           // Some error occurred, you can inspect the code: error.code
