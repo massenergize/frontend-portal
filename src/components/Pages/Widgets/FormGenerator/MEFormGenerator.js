@@ -209,7 +209,6 @@ export default class FormGenerator extends Component {
     const { fields } = this.props;
     if (!fields) return;
     this.setDefaultValues();
-
     //sets props for form data when in edit mode 
     if (this.props.inputData) { 
       this.setState({
