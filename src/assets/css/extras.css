@@ -346,14 +346,16 @@
 } */
 
 .Add_Testimonial {
-	position: relative;
-    display: inline-block;
+  padding-right: 15px;
+  position: absolute;
+  right: 0;
+  display: inline-block;
 }
 
 .Add_Testimonial_Plus_Icon {
-	padding: 2px;
-	position: relative;
-	top: -2px
+  padding: 2px;
+  position: relative;
+  top: -2px
 }
 
 .hori-search-box {
@@ -1754,6 +1756,7 @@
     margin-left: 20%;
   }
   .hori-filter-container {
+	position: relative;
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 16px;
