@@ -280,7 +280,7 @@ class AppRouter extends Component {
       function(err) {console.log(err);}
     );
 
-    if (data) {
+    if (data && Object.keys(data).length > 0) {
       user = data;
     } else {
       if (this.props.auth && firebase.auth().currentUser) {
@@ -320,6 +320,7 @@ class AppRouter extends Component {
         return false;
       }
     }
+    else return false;
   }
 
   loadMenu(menus) {
