@@ -41,12 +41,6 @@ class StoriesPage extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  //sets the data to be passed down to the form component from the story sheet component when users clicks the edit button 
-  EditTestimonial(draftTestimonialData) {
-     this.setState({
-      draftTestimonialData : draftTestimonialData
-     })
-  }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
@@ -54,6 +48,11 @@ class StoriesPage extends React.Component {
     arr = arr.filter((item) => item.collectionName !== param.collectionName);
     if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
+  }
+
+  //lettings parent know when modal is open to hide story sheet at the bottom of the page.  When the 2 instances of story sheet are on the same page, pictures dont work right
+  IsModalOpen =  (IsModalOpen) => {
+	  this.setState({IsModalOpen: IsModalOpen})
   }
 
   renderAddTestmonialBtn() {
@@ -189,6 +188,7 @@ class StoriesPage extends React.Component {
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
               </div>
               <HorizontalFilterBox
+			  	IsModalOpen={this.IsModalOpen}
                 type="testimonials"
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
@@ -216,7 +216,7 @@ class StoriesPage extends React.Component {
                     {this.renderStories(stories)}
                   </div>
                   <div id="testimonial-area" style={{ height: 100 }}></div>
-                  <div>{this.renderTestimonialForm()}</div>
+                   {this.state.IsModalOpen ? <div/>  : <div>{this.renderTestimonialForm()}</div>} 
                 </div>
               </div>
               <div
@@ -273,7 +273,7 @@ class StoriesPage extends React.Component {
         className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet 
-        EditTestimonial={(testmonialData) => this.EditTestimonial(testmonialData)}
+		IsModalOpen={this.IsModalOpen}
         {...story} 
         links={this.props.links} />
       </div>

@@ -415,7 +415,7 @@ export default class FormGenerator extends Component {
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
-      <div id="ScrollToForEdit">
+      
         <MECard className={`${animationClass} ${className}`} style={style}>
           <METextView
             containerStyle={{ width: "100%" }}
@@ -461,7 +461,7 @@ export default class FormGenerator extends Component {
             </div>
           </form>
         </MECard>
-      </div>
+      
     );
   }
 }

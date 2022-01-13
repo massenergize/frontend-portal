@@ -344,6 +344,18 @@
   position: absolute; 
   transform: translateX(50)
 } */
+
+.Add_Testimonial {
+	position: relative;
+    display: inline-block;
+}
+
+.Add_Testimonial_Plus_Icon {
+	padding: 2px;
+	position: relative;
+	top: -2px
+}
+
 .hori-search-box {
   display: inline-block !important;
   border-width: 0px !important;
