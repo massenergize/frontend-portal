@@ -31,7 +31,7 @@ class LoginFormBase extends React.Component {
     super(props);
     this.state = {
       ...INITIAL_STATE,
-      signInWithPassword: true,
+      signInWithPassword: null,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -93,7 +93,7 @@ class LoginFormBase extends React.Component {
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
-                  Sign In
+                  {this.state.signInWithPassword !== null ? ( this.state.signInWithPassword ? "Sign In" : "Email me a Link") : "Continue"}
                 </MEButton>
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
@@ -126,10 +126,10 @@ class LoginFormBase extends React.Component {
             </div>
           </form>
           <p>
-            <button className=" energize-link" onClick={this.forgotPassword}>
+            {this.state.signInWithPassword ? <button className=" energize-link" onClick={this.forgotPassword}>
               {" "}
               Forgot Password{" "}
-            </button>
+            </button> : <div/>}
           </p>
           <p>
             {" "}
@@ -168,7 +168,7 @@ class LoginFormBase extends React.Component {
   //checks if the login info is invalid, if so, the submit button will be disabled
   isInvalid() {
     const { password, email } = this.state;
-    return password === "" || email === "";
+    return email === "";
   }
   //updates the state when form elements are changed
   onChange(event) {
@@ -181,23 +181,29 @@ class LoginFormBase extends React.Component {
   }
 
   onSubmit(event) {
-    event.preventDefault();
-    //firebase prop comes from the withFirebase higher component
-    this.props.firebase
-      .auth()
-      .setPersistence(this.state.persistence)
-      .then(() => {
-        this.props.firebase
-          .auth()
-          .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .then((auth) => {
-            this.fetchMassToken(auth.user._lat, auth.user.email);
-            this.setState({ ...INITIAL_STATE }); //reset the login boxes
-          })
-          .catch((err) => {
-            this.setState({ error: err.message });
-          });
-      });
+    if (this.state.signInWithPassword === null) {
+      this.setSignInMethod();
+    } else if (this.state.signInWithPassword) {
+      event.preventDefault();
+      //firebase prop comes from the withFirebase higher component
+      this.props.firebase
+        .auth()
+        .setPersistence(this.state.persistence)
+        .then(() => {
+          this.props.firebase
+            .auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((auth) => {
+              this.fetchMassToken(auth.user._lat, auth.user.email);
+              this.setState({ ...INITIAL_STATE }); //reset the login boxes
+            })
+            .catch((err) => {
+              this.setState({ error: err.message });
+            });
+        });
+    } else {
+      this.signInWithEmail();
+    }
   }
 
   setSignInMethod = () => {
@@ -221,7 +227,8 @@ class LoginFormBase extends React.Component {
             this.setState({signInWithPassword: false})
           }
         })
-        .catch((error) => {
+        .catch((err) => {
+          console.log(err);
           // Some error occurred, you can inspect the code: error.code
         });
     }
@@ -270,6 +277,7 @@ class LoginFormBase extends React.Component {
         // ...
       })
       .catch((err) => {
+        console.log(err);
         this.setState({ error: err.message });
       });
   };
@@ -289,7 +297,7 @@ class LoginFormBase extends React.Component {
       }
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
-        .then((result) => {
+        .then((auth) => {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
           // You can access the new user via result.user
@@ -298,10 +306,13 @@ class LoginFormBase extends React.Component {
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
           // TODO: Redirect to home
+          this.fetchMassToken(auth.user._lat, auth.user.email);
+          this.setState({ ...INITIAL_STATE });
         })
-        .catch((error) => {
+        .catch((err) => {
           // Some error occurred, you can inspect the code: error.code
           // Common errors could be invalid email and invalid or expired OTPs.
+          console.log(err);
         });
     }
   };
