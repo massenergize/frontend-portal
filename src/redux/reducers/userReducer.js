@@ -58,7 +58,8 @@ export default function (state = initialState, action) {
     case ADD_TO_TODO:
       return {
         ...state,
-        todo: [action.payload, ...state.todo],
+        // if action already on list, replace with updated version
+        todo: [action.payload, ...state.todo.filter((element) => element.id !== action.payload.id)],
       };
     case REMOVE_FROM_TODO:
       return {
@@ -74,7 +75,8 @@ export default function (state = initialState, action) {
     case ADD_TO_DONE:
       return {
         ...state,
-        done: [action.payload, ...state.done],
+        // if action already on list, replace with updated version
+        done: [action.payload, ...state.done.filter((element) => element.id !== action.payload.id)],
       };
     case REMOVE_FROM_DONE:
       return {

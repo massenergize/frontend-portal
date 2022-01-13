@@ -143,7 +143,6 @@ export default class StorySheet extends Component {
             <div className="sheet-details">
               <p>{date}</p>
               <div>
-
                 <Link
                   style={{ marginLeft: "auto" }}
                   className="sheet-link test-story-sheet-full-view-link"
@@ -178,16 +177,18 @@ export default class StorySheet extends Component {
                 )
                 }
               </div>
-                        <Modal
-                        size="lg"
-                        show={this.state.OpenModal}
-                        onHide={() => {
-                            this.setState({ OpenModal: false });
-                            this.props.IsModalOpen(false);
-                        }}
-                        >
-                        <StoryForm draftTestimonialData={testimonialData} />
-                        </Modal>
+ 
+              <Modal
+              size="lg"
+              show={this.state.OpenModal}
+              onHide={() => {
+                  this.setState({ OpenModal: false });
+                  this.props.IsModalOpen(false);
+              }}
+              >
+              <StoryForm draftTestimonialData={testimonialData} />
+              </Modal>
+ 
             </div>
             <div>
               {file && (

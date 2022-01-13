@@ -529,6 +529,12 @@
   border: dotted 0px #e2e2e2;
   border-bottom-width: 2px;
 }
+
+/*fixed CSS issue with dropdown related to action completion date */
+#CompletionDate {
+  position: absolute;
+  right: 0;
+}
 .act-item {
   width: 100%;
   padding: 10px 20px;
@@ -582,6 +588,11 @@
   margin-bottom: 0px;
 }
 
+/*limits modal width on parents page */
+.parent-act-modal-whole {
+  max-width: 500px;
+  margin: auto;
+}
 .act-modal-whole {
   min-height: 33vh;
   max-height: 90vh;
