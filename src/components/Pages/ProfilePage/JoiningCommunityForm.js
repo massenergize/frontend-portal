@@ -20,7 +20,7 @@ class JoiningCommunityForm extends React.Component {
 
   getAllCommunities() {
     const userComms = this.props.user.communities;
-    console.log("I AM THE COMMUNITIES BRUH", this.props.communities);
+
     const commArr = [];
     if (!this.props.communities) return { names: [], ids: [] };
     Object.keys(this.props.communities).map((key) => {
