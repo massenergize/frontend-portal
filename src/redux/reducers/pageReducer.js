@@ -179,7 +179,9 @@ export default function (state = initialState, action) {
       };
 
     case LOAD_IMPACT_PAGE:
-      action.payload.display_prefs = {}
+      action.payload.display_prefs = {display_households: true, display_actions: true, display_carbon: true, 
+                                      platform_households: true, platform_actions: true, platform_carbon: true, 
+                                      state_households: true, state_actions: true, manual_households: false, manual_carbon: false}
       if (action.payload.more_info)
         action.payload.display_prefs = JSON.parse(action.payload.more_info)
       return {
