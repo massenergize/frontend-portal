@@ -149,7 +149,6 @@ class EditingProfileForm extends React.Component {
 }
 
 const mapStoreToProps = (store) => {
-  //console.log(store.user.info);
   return {
     user: store.user.info,
     auth: store.firebase.auth,

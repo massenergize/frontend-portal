@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
+import { Link } from "react-router-dom";
 import notFound from "./not-found.jpg";
 import {
   dateFormatString,
@@ -25,6 +26,7 @@ class OneEventPage extends React.Component {
       loading: true,
       rsvpLoading: false,
       rsvpStatus: null,
+      pastEvent: null,
     };
   }
 
@@ -46,7 +48,10 @@ class OneEventPage extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.fetch(id);
-    this.getRSVPStatus(id);
+    const rightNow = moment().format();
+    const pastEvent = rightNow > this.props.start_date_and_time;
+    this.setState({ pastEvent: pastEvent });
+    if (!pastEvent && this.props.user) this.getRSVPStatus(id); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
   }
 
   render() {
@@ -301,48 +306,62 @@ class OneEventPage extends React.Component {
                       </li>
                     )}
                   </ul>
-                  {user && (
-                    <div style={{ position: "relative" }}>
-                      <MELightDropDown
-                        style={{ width: "100%", padding: 11 }}
-                        containerStyle={{ display: "block", padding: 0 }}
-                        direction="bottom"
-                        onItemSelected={(status) => this.updateRSVP(status)}
-                        animate={false}
-                        customAnimation="rsvp-drop-from-left-anime"
-                        controlLabel={true}
-                        label={
-                          this.state.rsvpLoading ? (
-                            <i className="fa fa-spinner fa-spin"></i>
-                          ) : (
-                            <span style={{ marginRight: 6 }}>
-                              {this.state.rsvpStatus || "RSVP for this event"}
-                            </span>
-                          )
-                        }
-                        labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
-                        data={[
-                          RSVP_STATUS.INTERESTED,
-                          RSVP_STATUS.GOING,
-                          RSVP_STATUS.NOT_GOING,
-                        ]}
-                      />
-                      {this.state.rsvpError && (
-                        <small
-                          style={{ color: "red", marginTop: 4 }}
-                          className="test-rsvp-error"
-                        >
-                          {this.state.error}
-                        </small>
-                      )}
-                      {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
-                      {this.state.rsvpStatus && (
-                        <div className="test-rsvp-status-div">
-                          {this.state.rsvpStatus}
-                        </div>
-                      )}
+                  {event.rsvp_enabled && !this.state.pastEvent ? (
+                    <div>
+                      {user ? (
+                        <div style={{ position: "relative" }}>
+                          <MELightDropDown
+                            style={{ width: "100%", padding: 11 }}
+                            containerStyle={{ display: "block", padding: 0 }}
+                            direction="bottom"
+                            onItemSelected={(status) => this.updateRSVP(status)}
+                            animate={false}
+                            customAnimation="rsvp-drop-from-left-anime"
+                            controlLabel={true}
+                            label={
+                              this.state.rsvpLoading ? (
+                                <i className="fa fa-spinner fa-spin"></i>
+                              ) : (
+                                <span style={{ marginRight: 6 }}>
+                                  {this.state.rsvpStatus || "RSVP for this event"}
+                                </span>
+                              )
+                            }
+                            labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
+                            data={[
+                              RSVP_STATUS.INTERESTED,
+                              RSVP_STATUS.GOING,
+                              RSVP_STATUS.NOT_GOING,
+                            ]}
+                          />
+                          {this.state.rsvpError && (
+                            <small
+                              style={{ color: "red", marginTop: 4 }}
+                              className="test-rsvp-error"
+                            >
+                              {this.state.error}
+                            </small>
+                          )}
+                          {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
+                          {this.state.rsvpStatus && (
+                            <div className="test-rsvp-status-div">
+                              {this.state.rsvpStatus}
+                            </div>
+
+                          )}
+                        </div> 
+                        ):(
+                          <div>
+                            <small style={{ fontSize: "90%" }}>
+                              <Link className="test-sign-in-to-rsvp" to={this.props.links.signin}>
+                                Sign In to RSVP
+                              </Link>
+                            </small>
+                          </div>
+                        )}
+
                     </div>
-                  )}
+                  ): null }
                 </div>
               </div>
               <div className="col-12 col-lg-8">

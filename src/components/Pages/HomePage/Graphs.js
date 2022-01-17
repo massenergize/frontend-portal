@@ -20,52 +20,62 @@ import Tooltip from "../Widgets/CustomTooltip";
 */
 
 class Graphs extends React.Component {
-  renderGraphs(graphs) {
+  renderGraphs(graphs, display_prefs) {
     if (!graphs) {
       return <div>No Graphs to Display</div>;
     }
-    const oneGraphClasses =
-      "column col-lg-12 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
-    const twoGraphClasses =
-      "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
-    const threeGraphClasses =
-      "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+
+    function selectGraphs(graph) {
+      if (graph.title === "Households Engaged" && display_prefs.display_households) return true;
+      if (graph.title === "Actions Completed" && display_prefs.display_actions) return true;
+      if (graph.title === "Carbon Reduction" && display_prefs.display_carbon) return true;
+      return false;
+    }
+
+    var classes;
+    graphs = graphs.filter(selectGraphs); 
+    if (graphs.length === 0) 
+      return <div>No Graphs selected</div>;
+    else if (graphs.length === 1) 
+      classes = "column col-lg-12 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    else if (graphs.length === 2) 
+      classes = "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    else if (graphs.length >= 3) 
+      classes = "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
 
     const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;
 
-    var classes;
-    if (graphs.length === 1) classes = oneGraphClasses;
-    if (graphs.length === 2) classes = twoGraphClasses;
-    if (graphs.length >= 3) classes = threeGraphClasses;
+    const list = [
+      {
+        key: "households",
+        unit: "Households",
+        heading: "Households Taking Action",
+        target: this.props.goals.target_number_of_households,
+       },
+      {
+        key: "actions-completed",
+        unit: "Actions",
+        heading: "Individual Actions Completed",
+        target: this.props.goals.target_number_of_actions,
+      },
+      {
+        key: "carbon-reduction",
+        unit: pref_eq.name,
+        heading: "Carbon Reduction Impact",
+        target: calcEQ(
+          this.props.goals.target_carbon_footprint_reduction,
+          pref_eq.value
+        ),
+      },
+    ]
+    
     return Object.keys(graphs).map((key) => {
-      let list = [
-        {
-          key: "households",
-          unit: "Households",
-          heading: "Households Taking Action",
-          target: this.props.goals.target_number_of_households,
-        },
-        {
-          key: "actions-completed",
-          unit: "Actions",
-          heading: "Individual Actions Completed",
-          target: this.props.goals.target_number_of_actions,
-        },
-        {
-          key: "carbon-reduction",
-          unit: pref_eq.name,
-          heading: "Carbon Reduction Impact",
-          target: calcEQ(
-            this.props.goals.target_carbon_footprint_reduction,
-            pref_eq.value
-          ),
-        },
-      ];
 
       const value = getCircleGraphData(
         this.props.goals,
         list[key].key,
-        pref_eq
+        pref_eq,
+        display_prefs
       );
 
       const target = list[key].target;
@@ -91,7 +101,8 @@ class Graphs extends React.Component {
               data={createCircleGraphData(
                 this.props.goals,
                 list[key].key,
-                pref_eq
+                pref_eq,
+                display_prefs,
               )}
             />
 
@@ -116,6 +127,8 @@ class Graphs extends React.Component {
     //   dumbycol = <article className={"column col-md-3"}></article>;
     // }
     const impactPageData = this.props.impactPageData;
+    const display_prefs = impactPageData.display_prefs;
+
     const impactPageEnabled =  impactPageData && impactPageData.is_published ? impactPageData.is_published : null;
 
     return (
@@ -151,7 +164,7 @@ class Graphs extends React.Component {
         <div className="container">
           <div className="row no-gutter clearfix">
             {/* {dumbycol} */}
-            {this.renderGraphs(this.props.graphs)}
+            {this.renderGraphs(this.props.graphs, display_prefs)}
 
             {/* <article
               className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
