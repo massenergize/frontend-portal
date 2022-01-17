@@ -280,7 +280,7 @@ class HorizontalFilterBox extends Component {
             <Button
                 onClick={() => {
                 this.setState({ OpenModal: true });
-                this.props.IsModalOpen(true);
+                this.props.isModalOpen(true);
                 }}
                 variant="outline-dark"
             >
@@ -307,7 +307,7 @@ class HorizontalFilterBox extends Component {
         show={this.state.OpenModal}
         onHide={() => {
             this.setState({ OpenModal: false });
-            this.props.IsModalOpen(false);
+            this.props.isModalOpen(false);
         }}
         >
         <StoryForm />

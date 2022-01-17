@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
-import MEButton from "../Widgets/MEButton";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
@@ -50,45 +48,10 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
-  //lettings parent know when modal is open to hide story sheet at the bottom of the page.  When the 2 instances of story sheet are on the same page, pictures dont work right
-  IsModalOpen =  (IsModalOpen) => {
-	  this.setState({IsModalOpen: IsModalOpen})
-  }
-
-  renderAddTestmonialBtn() {
-    if (this.props.user) {
-      return (
-        <MEButton
-          mediaType="icon"
-          icon="fa fa-plus"
-          style={{ fontSize: 15 }}
-          onClick={this.scrollToForm}
-        >
-          Add My Testimonial
-        </MEButton>
-      );
-    }
-    return (
-      <center>
-        <MELink to={this.props.links.signin}>Sign In to submit a story</MELink>
-      </center>
-    );
-  }
-
-  renderTestimonialForm() {
-    if (this.props.user) {
-      return <StoryForm 
-      key={this.state.draftTestimonialData.key}
-      draftTestimonialData={this.state.draftTestimonialData}
-      uid={this.props.user.id} />;
-    }
-  }
-  scrollToForm() {
-    document.getElementById("testimonial-area").scrollIntoView({
-      behavior: "smooth",
-      alignToTop: true,
-      block: "start",
-    });
+  //lettings parent know when modal is open to hide story sheet at the bottom of the page.  
+  // When the 2 instances of story sheet are on the same page, pictures dont work right
+  isModalOpen =  (isModalOpen) => {
+	  this.setState({isModalOpen: isModalOpen})
   }
 
   handleSearch(e) {
@@ -188,7 +151,7 @@ class StoriesPage extends React.Component {
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
               </div>
               <HorizontalFilterBox
-			  	IsModalOpen={this.IsModalOpen}
+			  	      isModalOpen={this.isModalOpen}
                 type="testimonials"
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
@@ -215,8 +178,6 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  <div id="testimonial-area" style={{ height: 100 }}></div>
-                   {this.state.IsModalOpen ? <div/>  : <div>{this.renderTestimonialForm()}</div>} 
                 </div>
               </div>
               <div
@@ -273,7 +234,7 @@ class StoriesPage extends React.Component {
         className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet 
-		IsModalOpen={this.IsModalOpen}
+		    isModalOpen={this.isModalOpen}
         {...story} 
         links={this.props.links} />
       </div>

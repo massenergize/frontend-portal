@@ -166,7 +166,7 @@ export default class StorySheet extends Component {
                     <Button
                     onClick={() => {
                         this.setState({ OpenModal: true });
-                        this.props.IsModalOpen(true);
+                        this.props.isModalOpen(true);
                     }}
                     className="testimonial_edit_button"
                     variant="outline-dark"
@@ -183,7 +183,7 @@ export default class StorySheet extends Component {
               show={this.state.OpenModal}
               onHide={() => {
                   this.setState({ OpenModal: false });
-                  this.props.IsModalOpen(false);
+                  this.props.isModalOpen(false);
               }}
               >
               <StoryForm draftTestimonialData={testimonialData} />
