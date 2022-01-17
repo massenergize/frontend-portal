@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
 import MEButton from "../Widgets/MEButton";
@@ -18,7 +17,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import StorySheet from "./Story Sheet/StorySheet";
 import MECard from "../Widgets/MECard";
-
+import StoryFormButtonModal from "./StoryFormButtonModal"
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -50,10 +49,6 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
-  //lettings parent know when modal is open to hide story sheet at the bottom of the page.  When the 2 instances of story sheet are on the same page, pictures dont work right
-  IsModalOpen =  (IsModalOpen) => {
-	  this.setState({IsModalOpen: IsModalOpen})
-  }
 
   renderAddTestmonialBtn() {
     if (this.props.user) {
@@ -77,11 +72,12 @@ class StoriesPage extends React.Component {
 
   renderTestimonialForm() {
     if (this.props.user) {
-      return <StoryForm 
-      key={this.state.draftTestimonialData.key}
-      draftTestimonialData={this.state.draftTestimonialData}
-      uid={this.props.user.id} />;
-    }
+      return (
+    <div className="every-day-flex">
+      <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+    </div>
+	  )
+	     }
   }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
@@ -188,7 +184,6 @@ class StoriesPage extends React.Component {
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
               </div>
               <HorizontalFilterBox
-			  	IsModalOpen={this.IsModalOpen}
                 type="testimonials"
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
@@ -215,8 +210,9 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
+				  <div>{this.renderTestimonialForm()}</div>
+
                   <div id="testimonial-area" style={{ height: 100 }}></div>
-                   {this.state.IsModalOpen ? <div/>  : <div>{this.renderTestimonialForm()}</div>} 
                 </div>
               </div>
               <div
@@ -273,7 +269,6 @@ class StoriesPage extends React.Component {
         className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet 
-		IsModalOpen={this.IsModalOpen}
         {...story} 
         links={this.props.links} />
       </div>

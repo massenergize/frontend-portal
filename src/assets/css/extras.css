@@ -1766,6 +1766,22 @@
     margin-right: 20%;
     margin-left: 20%;
   }
+
+  .SuccessNotification {
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 99;
+    position: fixed;
+	border: 1px solid black;
+	border-radius: 10px;
+  }
+
+  .SuccessNotification_Header {
+	justify-content: space-between;
+  }
+
   .hori-filter-container {
 	position: relative;
     text-align: center;
@@ -1777,6 +1793,8 @@
     border-left-width: 0px;
     border-right-width: 0px;
   }
+
+  .snackbar-success
   .mob-modal-correction {
     margin-top: -5vh !important;
   }

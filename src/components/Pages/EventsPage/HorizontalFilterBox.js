@@ -3,14 +3,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 // import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import Button from 'react-bootstrap/Button';
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
-import Modal from 'react-bootstrap/Modal'
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryForm from "../ActionsPage/StoryForm"
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
+ 
 export const FILTER_BAR_VERSION = "filter_bar_version";
 // const OPTION1 = "option1";
 const OPTION2 = "option2";
@@ -19,7 +18,6 @@ class HorizontalFilterBox extends Component {
   constructor() {
     super();
     this.state = {
-	  OpenModal: false,
       activeTags: [],
       dropActive: false,
       showSearch: false,
@@ -240,7 +238,6 @@ class HorizontalFilterBox extends Component {
       );
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
-
   getVersionToShow() {
    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
    if (version === OPTION2) return 2;
@@ -277,14 +274,8 @@ class HorizontalFilterBox extends Component {
         {
         window.location.pathname.includes("testimonial") && this.props.user ? (
             <div className="Add_Testimonial">
-            <Button
-                onClick={() => {
-                this.setState({ OpenModal: true });
-                this.props.IsModalOpen(true);
-                }}
-                variant="outline-dark"
-            >
-                <svg
+	          <StoryFormButtonModal>
+                 <svg
                 className=""
                 x="0px"
                 y="0px"
@@ -295,23 +286,12 @@ class HorizontalFilterBox extends Component {
                 <path d="M 12 2 C 6.4666667 2 2 6.4666667 2 12 C 2 17.533333 6.4666667 22 12 22 C 17.533333 22 22 17.533333 22 12 C 22 6.4666667 17.533333 2 12 2 z M 12 4 C 16.466667 4 20 7.5333333 20 12 C 20 16.466667 16.466667 20 12 20 C 7.5333333 20 4 16.466667 4 12 C 4 7.5333333 7.5333333 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z"></path>
                 </svg>
                 Add My Testimonial
-            </Button>
+				</StoryFormButtonModal>
             </div>
         ) : (
             <div />
         )
         }
-
-        <Modal
-        size="lg"
-        show={this.state.OpenModal}
-        onHide={() => {
-            this.setState({ OpenModal: false });
-            this.props.IsModalOpen(false);
-        }}
-        >
-        <StoryForm />
-        </Modal>;
 
         </div>
         {/* --------------------- PHONE MODE ----------------- */}

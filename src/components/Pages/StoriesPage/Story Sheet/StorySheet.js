@@ -3,9 +3,7 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import StoryForm from "../../ActionsPage/StoryForm";
+import StoryFormButtonModal from "../StoryFormButtonModal"
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -25,8 +23,7 @@ export default class StorySheet extends Component {
       showImage: false,
       readMore: false,
       textIsShort: true,
-      fallbackImg: null,
-	  OpenModal: false
+      fallbackImg: null
     };
     this.setDefaultImage = this.setDefaultImage.bind(this);
   }
@@ -160,35 +157,18 @@ export default class StorySheet extends Component {
                 </Link>
 
                 {
-                is_published ? (
-                    <div />
-                ) : (
-                    <Button
-                    onClick={() => {
-                        this.setState({ OpenModal: true });
-                        this.props.IsModalOpen(true);
-                    }}
-                    className="testimonial_edit_button"
-                    variant="outline-dark"
-                    >
-                    {" "}
-                    Edit{" "}
-                    </Button>
-                )
+                    is_published ? (
+                        <div />
+                    ) : (
+                        <StoryFormButtonModal
+                        ButtonClasses="testimonial_edit_button"
+                        draftTestimonialData={testimonialData}
+                        >
+                        Edit
+                        </StoryFormButtonModal>
+                    )
                 }
               </div>
- 
-              <Modal
-              size="lg"
-              show={this.state.OpenModal}
-              onHide={() => {
-                  this.setState({ OpenModal: false });
-                  this.props.IsModalOpen(false);
-              }}
-              >
-              <StoryForm draftTestimonialData={testimonialData} />
-              </Modal>
- 
             </div>
             <div>
               {file && (

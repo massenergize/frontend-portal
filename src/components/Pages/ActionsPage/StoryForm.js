@@ -270,15 +270,21 @@ class StoryForm extends React.Component {
       }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
-          this.setState({
-            formNotification: {
-              icon: "fa fa-check",
-              type: "good",
-              text:
-                "Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
-            },
-          });
-          resetForm();
+			
+			if (this.props?.TriggerSuccessNotification) {
+				this.props.TriggerSuccessNotification(true)
+				this.props.TriggerModal(false)
+			} else {
+				this.setState({
+					formNotification: {
+					  icon: "fa fa-check",
+					  type: "good",
+					  text:
+						"Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
+					},
+				  });
+				  resetForm();		
+			}
             //reloads the testimonials list to the user can see the updated testimonial
               apiCall("testimonials.list", {subdomain: this.props.community.subdomain}).then(
                 (json) => {
