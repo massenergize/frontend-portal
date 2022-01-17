@@ -30,7 +30,6 @@ class AboutUsPage extends React.Component {
     );
   }
   render() {
-    console.log(this.props.community.about_community);
     if (!this.props.pageData || !this.props.community) {
       return <LoadingCircle />;
     } else if (this.props.pageData === {} || this.props.community === {}) {
