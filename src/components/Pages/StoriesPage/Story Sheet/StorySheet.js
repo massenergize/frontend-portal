@@ -3,7 +3,9 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import StoryForm from "../../ActionsPage/StoryForm";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -24,6 +26,7 @@ export default class StorySheet extends Component {
       readMore: false,
       textIsShort: true,
       fallbackImg: null,
+	  OpenModal: false
     };
     this.setDefaultImage = this.setDefaultImage.bind(this);
   }
@@ -171,20 +174,36 @@ export default class StorySheet extends Component {
                   Full View
                 </Link>
 
-                {is_published ? (
-                  <div />
+                {
+                is_published ? (
+                    <div />
                 ) : (
-                  <Button
+                    <Button
                     onClick={() => {
-                      this.props.EditTestimonial(testimonialData);
+                        this.setState({ OpenModal: true });
+                        this.props.isModalOpen(true);
                     }}
                     className="testimonial_edit_button"
                     variant="outline-dark"
-                  >
-                    <a href="#ScrollToForEdit"> Edit</a>{" "}
-                  </Button>
-                )}
+                    >
+                    {" "}
+                    Edit{" "}
+                    </Button>
+                )
+                }
               </div>
+ 
+              <Modal
+              size="lg"
+              show={this.state.OpenModal}
+              onHide={() => {
+                  this.setState({ OpenModal: false });
+                  this.props.isModalOpen(false);
+              }}
+              >
+              <StoryForm draftTestimonialData={testimonialData} />
+              </Modal>
+ 
             </div>
             <div>
               {file && (

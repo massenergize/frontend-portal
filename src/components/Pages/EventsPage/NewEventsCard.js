@@ -145,6 +145,7 @@ export default class NewEventsCard extends Component {
       links,
       customDropAnimation,
       dropDirection,
+      rsvp_enabled,
     } = this.props;
     const { rsvpStatus, loading, error } = this.state;
     const title = this.getEventTitle();
@@ -190,7 +191,7 @@ export default class NewEventsCard extends Component {
             <div style={{ padding: 13 }}>
               <span className="date-string">{dateString}</span>
               <br />
-              {!user && (
+              {!user && rsvp_enabled && (
                 <>
                   <small style={{ fontSize: "90%" }}>
                     <Link className="test-sign-in-to-rsvp" to={links.signin}>
@@ -208,7 +209,7 @@ export default class NewEventsCard extends Component {
               )}
             </div>
 
-            {user && !this.state.pastEvent && (
+            {user && rsvp_enabled && !this.state.pastEvent && (
               <div style={{ marginLeft: "auto" }}>
                 <MELightDropDown
                   direction={dropDirection}

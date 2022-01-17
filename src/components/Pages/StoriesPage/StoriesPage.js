@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import StoryForm from "../ActionsPage/StoryForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import PageTitle from "../../Shared/PageTitle";
-import MEButton from "../Widgets/MEButton";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
@@ -41,12 +39,6 @@ class StoriesPage extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  //sets the data to be passed down to the form component from the story sheet component when users clicks the edit button 
-  EditTestimonial(draftTestimonialData) {
-     this.setState({
-      draftTestimonialData : draftTestimonialData
-     })
-  }
   addMeToSelected(param, reset = false) {
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
@@ -56,40 +48,10 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
-  renderAddTestmonialBtn() {
-    if (this.props.user) {
-      return (
-        <MEButton
-          mediaType="icon"
-          icon="fa fa-plus"
-          style={{ fontSize: 15 }}
-          onClick={this.scrollToForm}
-        >
-          Add My Testimonial
-        </MEButton>
-      );
-    }
-    return (
-      <center>
-        <MELink to={this.props.links.signin}>Sign In to submit a story</MELink>
-      </center>
-    );
-  }
-
-  renderTestimonialForm() {
-    if (this.props.user) {
-      return <StoryForm 
-      key={this.state.draftTestimonialData.key}
-      draftTestimonialData={this.state.draftTestimonialData}
-      uid={this.props.user.id} />;
-    }
-  }
-  scrollToForm() {
-    document.getElementById("testimonial-area").scrollIntoView({
-      behavior: "smooth",
-      alignToTop: true,
-      block: "start",
-    });
+  //lettings parent know when modal is open to hide story sheet at the bottom of the page.  
+  // When the 2 instances of story sheet are on the same page, pictures dont work right
+  isModalOpen =  (isModalOpen) => {
+	  this.setState({isModalOpen: isModalOpen})
   }
 
   handleSearch(e) {
@@ -189,6 +151,7 @@ class StoriesPage extends React.Component {
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
               </div>
               <HorizontalFilterBox
+			  	      isModalOpen={this.isModalOpen}
                 type="testimonials"
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
@@ -215,8 +178,6 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  <div id="testimonial-area" style={{ height: 100 }}></div>
-                  <div>{this.renderTestimonialForm()}</div>
                 </div>
               </div>
               <div
@@ -273,7 +234,7 @@ class StoriesPage extends React.Component {
         className="animate-testimonial-sheet test-story-sheet"
       >
         <StorySheet 
-        EditTestimonial={(testmonialData) => this.EditTestimonial(testmonialData)}
+		    isModalOpen={this.isModalOpen}
         {...story} 
         links={this.props.links} />
       </div>

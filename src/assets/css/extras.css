@@ -344,6 +344,20 @@
   position: absolute; 
   transform: translateX(50)
 } */
+
+.Add_Testimonial {
+  padding-right: 15px;
+  position: absolute;
+  right: 0;
+  display: inline-block;
+}
+
+.Add_Testimonial_Plus_Icon {
+  padding: 2px;
+  position: relative;
+  top: -2px
+}
+
 .hori-search-box {
   display: inline-block !important;
   border-width: 0px !important;
@@ -1753,6 +1767,7 @@
     margin-left: 20%;
   }
   .hori-filter-container {
+	position: relative;
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 16px;
