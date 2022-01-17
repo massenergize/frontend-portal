@@ -9,7 +9,6 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
- 
 export const FILTER_BAR_VERSION = "filter_bar_version";
 // const OPTION1 = "option1";
 const OPTION2 = "option2";
@@ -239,8 +238,8 @@ class HorizontalFilterBox extends Component {
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
   getVersionToShow() {
-   const version = sessionStorage.getItem(FILTER_BAR_VERSION);
-   if (version === OPTION2) return 2;
+    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
+    if (version === OPTION2) return 2;
     return 1;
   }
   render() {
@@ -270,10 +269,10 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-
-        {
-        window.location.pathname.includes("testimonial") && this.props.user ? (
+          {window.location.pathname.includes("testimonial") &&
+          this.props.user ? (
             <div className="Add_Testimonial">
+
 	          <StoryFormButtonModal>
                  <svg
                 className=""
@@ -283,19 +282,20 @@ class HorizontalFilterBox extends Component {
                 height="24"
                 viewBox="0 0 24 24"
                 >
-                <path d="M 12 2 C 6.4666667 2 2 6.4666667 2 12 C 2 17.533333 6.4666667 22 12 22 C 17.533333 22 22 17.533333 22 12 C 22 6.4666667 17.533333 2 12 2 z M 12 4 C 16.466667 4 20 7.5333333 20 12 C 20 16.466667 16.466667 20 12 20 C 7.5333333 20 4 16.466667 4 12 C 4 7.5333333 7.5333333 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z"></path>
+                  <path d="M 12 2 C 6.4666667 2 2 6.4666667 2 12 C 2 17.533333 6.4666667 22 12 22 C 17.533333 22 22 17.533333 22 12 C 22 6.4666667 17.533333 2 12 2 z M 12 4 C 16.466667 4 20 7.5333333 20 12 C 20 16.466667 16.466667 20 12 20 C 7.5333333 20 4 16.466667 4 12 C 4 7.5333333 7.5333333 4 12 4 z M 11 7 L 11 11 L 7 11 L 7 13 L 11 13 L 11 17 L 13 17 L 13 13 L 17 13 L 17 11 L 13 11 L 13 7 L 11 7 z"></path>
                 </svg>
                 Add My Testimonial
+
 				</StoryFormButtonModal>
             </div>
-        ) : (
+          ) : (
             <div />
+
         )
         }
-
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
-        <div	 className="pc-vanish" style={{ marginBottom: 10 }}>
+        <div className="pc-vanish" style={{ marginBottom: 10 }}>
           <input
             id="test-filter-box-id"
             className="phone-search-input "
@@ -324,7 +324,7 @@ class HorizontalFilterBox extends Component {
               style={{ width: "150%", height: "100vh" }}
             ></div>
           </div>
-		</div>
+        </div>
       </>
     );
   }
@@ -333,7 +333,7 @@ class HorizontalFilterBox extends Component {
 const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
-	user: store.user.info
+    user: store.user.info,
   };
 };
 
