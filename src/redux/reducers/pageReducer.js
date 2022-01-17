@@ -179,6 +179,8 @@ export default function (state = initialState, action) {
       };
 
     case LOAD_IMPACT_PAGE:
+      if (action.payload.more_info)
+        action.payload.display_prefs = JSON.parse(action.payload.more_info)
       return {
         ...state,
         impactPage: action.payload,
