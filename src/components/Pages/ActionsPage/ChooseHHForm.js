@@ -370,7 +370,7 @@ class ChooseHHForm extends React.Component {
           Dates[choice] = [moment().subtract(2,"years").format("YYYY-MM-DD"), Choice4] 
           break
         default:
-          console.log("just to make warning go away")
+          break;
       } 
     }
 
