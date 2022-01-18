@@ -6,6 +6,6 @@ describe("Gets to all teams page via clicking on navigation", function () {
   });
 
   it("Clicks on 'teams' on navbar and directs to all teams page", function () {
-    cy.get("#team-nav-id").click();
+    cy.get("#menu-teams-id").click();
   });
 });

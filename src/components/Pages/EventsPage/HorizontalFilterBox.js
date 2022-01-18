@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-// import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
-// import MEModal from "../Widgets/MEModal";
-// import MEDropdown from "../Widgets/MEDropdown";
+import Modal from "react-bootstrap/Modal";
 import METextField from "../Widgets/METextField";
+import StoryForm from "../ActionsPage/StoryForm";
 export const FILTER_BAR_VERSION = "filter_bar_version";
-// const OPTION1 = "option1";
 const OPTION2 = "option2";
 
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
     this.state = {
+      OpenModal: false,
       activeTags: [],
       dropActive: false,
       showSearch: false,
@@ -238,8 +237,8 @@ class HorizontalFilterBox extends Component {
   }
 
   getVersionToShow() {
-   const version = sessionStorage.getItem(FILTER_BAR_VERSION);
-   if (version === OPTION2) return 2;
+    const version = sessionStorage.getItem(FILTER_BAR_VERSION);
+    if (version === OPTION2) return 2;
     return 1;
   }
   render() {
@@ -269,6 +268,33 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
+          {window.location.pathname.includes("testimonial") &&
+          this.props.user ? (
+            <div className="add-testimonial-container">
+              <div
+                className="add-testimonial touchable-opacity"
+                onClick={() => {
+                  this.setState({ OpenModal: true });
+                  this.props.isModalOpen(true);
+                }}
+              >
+                <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                <p>Add Testimonial</p>
+              </div>
+            </div>
+          ) : (
+            <div />
+          )}
+          <Modal
+            size="lg"
+            show={this.state.OpenModal}
+            onHide={() => {
+              this.setState({ OpenModal: false });
+              this.props.isModalOpen(false);
+            }}
+          >
+            <StoryForm />
+          </Modal>
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
@@ -309,6 +335,7 @@ class HorizontalFilterBox extends Component {
 const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
+    user: store.user.info,
   };
 };
 
