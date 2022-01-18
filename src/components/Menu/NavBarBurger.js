@@ -27,7 +27,6 @@ class NavBarBurger extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
   }
-
   handleResize = () => {
     this.setState({
       menuBurgered: window.innerWidth < 992,
@@ -194,6 +193,7 @@ class NavBarBurger extends React.Component {
       </div>
     );
   }
+
   renderNavLinks(navLinks) {
     if (!navLinks) {
       return <li key="noLinks">No PageLinks to Display</li>;
@@ -361,7 +361,6 @@ class NavBarBurger extends React.Component {
           className="cool-font new-sign-in float-right round-me z-depth-float"
           to={links.signin}
         >
-          {/* <i className="fa fa-user" style={{ padding: "0px 2px"}} />{'\u00A0'} */}
           Sign In
         </Link>
       );

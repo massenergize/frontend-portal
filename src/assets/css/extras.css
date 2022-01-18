@@ -345,17 +345,33 @@
   transform: translateX(50)
 } */
 
-.Add_Testimonial {
+.touchable-opacity:hover {
+  opacity: 0.8;
+  transition: 0.2s ease-out;
+}
+.add-testimonial-container {
   padding-right: 15px;
   position: absolute;
-  right: 0;
+  right: -16px;
+  top: -1px;
   display: inline-block;
 }
-
-.Add_Testimonial_Plus_Icon {
-  padding: 2px;
-  position: relative;
-  top: -2px
+.add-testimonial {
+  cursor: pointer;
+  height: 100%;
+  background: #fba930;
+  color: white;
+  padding: 13px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.add-testimonial p {
+  margin: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .hori-search-box {
@@ -1767,7 +1783,7 @@
     margin-left: 20%;
   }
   .hori-filter-container {
-	position: relative;
+    position: relative;
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 16px;
