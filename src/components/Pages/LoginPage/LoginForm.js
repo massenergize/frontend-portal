@@ -329,6 +329,7 @@ class LoginFormBase extends React.Component {
           // TODO: Redirect to home
           this.fetchMassToken(auth.user._lat, auth.user.email);
           this.setState({ ...INITIAL_STATE });
+          window.location.href = window.location.origin + this.props.links.home;
         })
         .catch((err) => {
           // Some error occurred, you can inspect the code: error.code
