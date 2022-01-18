@@ -142,7 +142,7 @@ class LoginFormBase extends React.Component {
             {this.state.signInWithPassword ? <button className=" energize-link" onClick={this.forgotPassword}>
               {" "}
               Forgot Password{" "}
-            </button> : <div/>}
+            </button> : ""}
           </p>
           <p>
             {" "}
