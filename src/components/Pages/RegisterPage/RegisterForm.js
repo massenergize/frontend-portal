@@ -61,6 +61,7 @@ class RegisterFormBase extends React.Component {
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
       email: null,
+      selectedSignInOption: "passwordless",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -203,7 +204,7 @@ class RegisterFormBase extends React.Component {
 
     const title = pageData?.title
       ? pageData.title
-      : "Enter your Email and a Password";
+      : (this.state.selectedSignInOption === "password" ? "Enter your Email and a Password" : "Enter your Email");
     const description = pageData?.description
       ? pageData.description
       : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
@@ -301,36 +302,56 @@ class RegisterFormBase extends React.Component {
                 required
               />
             </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="password"
-                type="password"
-                name="passwordOne"
-                value={passwordOne}
-                onChange={this.onChange}
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="confirm-password"
-                type="password"
-                name="passwordTwo"
-                value={passwordTwo}
-                onChange={this.onChange}
-                placeholder="Re-enter your password"
-                required
-              />
-            </div>
+            {this.state.selectedSignInOption === "password" ? <div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="password"
+                  type="password"
+                  name="passwordOne"
+                  value={passwordOne}
+                  onChange={this.onChange}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="confirm-password"
+                  type="password"
+                  name="passwordTwo"
+                  value={passwordTwo}
+                  onChange={this.onChange}
+                  placeholder="Re-enter your password"
+                  required
+                />
+              </div>
+            </div> : <div/>}
             <br />
             {error && <p style={{ color: "red" }}> {error} </p>}
+            <form>
+              <div className="radio">
+                <label>
+                  <input type="radio" value="passwordless" 
+                                checked={this.state.selectedSignInOption === 'passwordless'} 
+                                onChange={this.handleSignInOptionChange} />
+                  Passwordless
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input type="radio" value="password" 
+                                checked={this.state.selectedSignInOption === 'password'} 
+                                onChange={this.handleSignInOptionChange} />
+                  With Password
+                </label>
+              </div>
+            </form>
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton
@@ -709,12 +730,14 @@ class RegisterFormBase extends React.Component {
 
   isInvalid() {
     const { passwordOne, email, name, passwordTwo } = this.state;
-    return (
-      passwordOne !== passwordTwo ||
+    if (this.state.selectedSignInOption === "password") {
+      return passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
-      name === ""
-    );
+      name === "";
+    } else if (this.state.selectedSignInOption === "passwordless") {
+      return email === "" || email === null;
+    };
   }
 
   onSubmit(event) {
@@ -823,6 +846,11 @@ class RegisterFormBase extends React.Component {
             this.setState({ ...INITIAL_STATE, form: 2 });
           });
       });
+  };
+  handleSignInOptionChange = (changeEvent) => {
+    this.setState({
+      selectedSignInOption: changeEvent.target.value
+    });
   };
   signInWithFacebook = (e) => {
     this.setState({ is_using_facebook: true });

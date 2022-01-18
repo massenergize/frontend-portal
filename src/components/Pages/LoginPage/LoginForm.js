@@ -180,8 +180,8 @@ class LoginFormBase extends React.Component {
   };
   //checks if the login info is invalid, if so, the submit button will be disabled
   isInvalid() {
-    const { email } = this.state;
-    return email === "";
+    const { password, email } = this.state;
+    return (this.state.signInWithPassword ? email === null || email === "" || password === "": email === "" || email === null);
   }
   //updates the state when form elements are changed
   onChange(event) {
@@ -191,7 +191,6 @@ class LoginFormBase extends React.Component {
     });
 
     this.setSignInMethod();
-    console.log("4 After setSignInMethod signInWithPassword: " + this.state.signInWithPassword);
   }
 
   onSubmit(event) {
@@ -237,15 +236,12 @@ class LoginFormBase extends React.Component {
             this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
             this.setState({signInWithPassword: false});
-            console.log("1 Set signInWithPassword: " + this.state.signInWithPassword);
           } else if (signInMethods.indexOf(
             this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/password.
             this.setState({signInWithPassword: true});
-            console.log("2 Set signInWithPassword: " + this.state.signInWithPassword);
           } else {
             this.setState({signInWithPassword: null});
-            console.log("3 Set signInWithPassword: " + this.state.signInWithPassword);
           };
         })
         .catch((err) => {
