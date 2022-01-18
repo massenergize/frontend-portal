@@ -25,8 +25,8 @@ import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
-import Cookies from 'universal-cookie';
-import { device_checkin } from './api/functions';
+import Cookies from "universal-cookie";
+import { device_checkin } from "./api/functions";
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -259,7 +259,6 @@ class AppRouter extends Component {
         console.log(`User Logged in: ${success}`);
       });
     }
-
   }
 
   setStateAsync(state) {
@@ -276,8 +275,10 @@ class AppRouter extends Component {
     const cookies = new Cookies();
 
     device_checkin(cookies).then(
-      function(data) {},
-      function(err) {console.log(err);}
+      function (data) {},
+      function (err) {
+        console.log(err);
+      }
     );
 
     if (data && Object.keys(data).length > 0) {
@@ -319,8 +320,7 @@ class AppRouter extends Component {
         console.log(`no user with this email: ${user.email}`);
         return false;
       }
-    }
-    else return false;
+    } else return false;
   }
 
   loadMenu(menus) {
@@ -330,23 +330,21 @@ class AppRouter extends Component {
     }
 
     const { content } =
-        menus.find((menu) => {
-          return menu.name === "PortalMainNavLinks";
-        }) || {};
+      menus.find((menu) => {
+        return menu.name === "PortalMainNavLinks";
+      }) || {};
     const initialMenu = content;
-    
+
     const finalMenu = this.modifiedMenu(initialMenu);
-    this.setState({ navBarMenu: finalMenu})
+    this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
-        return menu.name === "PortalFooterQuickLinks";
-      });
+      return menu.name === "PortalFooterQuickLinks";
+    });
     const footerLinks = this.addPrefix(footerContent[0].content);
     this.setState({ footerLinks: footerLinks });
-
   }
   /**
-   * Eliminate all the junk this used to do
    * Only effect: Remove all menu links that have been deactivated by admins
    * Menu organization set in database
    *
@@ -356,15 +354,17 @@ class AppRouter extends Component {
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
-    var aboutMenu = menu.find((menu) => {
-      return menu.name === "About Us";
-    }) || {};
-    var actionsMenu = menu.find((menu) => {
-      return menu.name === "Actions";
-    }) || {};
+    var aboutMenu =
+      menu.find((menu) => {
+        return menu.name === "About Us";
+      }) || {};
+    var actionsMenu =
+      menu.find((menu) => {
+        return menu.name === "Actions";
+      }) || {};
 
     if (aboutMenu) {
-     aboutMenu.children = aboutMenu.children.filter((item) => {
+      aboutMenu.children = aboutMenu.children.filter((item) => {
         switch (item.link) {
           case "/impact":
             return this.state.pagesEnabled.impactPage;
@@ -420,7 +420,6 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
-    
     menu = menu.map((m) => {
       if (
         this.state.prefix !== "" &&
@@ -533,7 +532,7 @@ class AppRouter extends Component {
           <div>
             <NavBarBurger navLinks={navBarMenu} />
           </div>
-        ) : null }
+        ) : null}
         {
           /**if theres a half finished account the only place a user can go is the register page */
           this.userHasAnIncompleteRegistration() ? (
@@ -585,7 +584,7 @@ class AppRouter extends Component {
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
         ) : null}
-        <CookieBanner policyPath={links.policies}/>
+        <CookieBanner policyPath={links.policies} />
       </div>
     );
   }
