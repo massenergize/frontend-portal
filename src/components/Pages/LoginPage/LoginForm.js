@@ -7,7 +7,6 @@ import MEButton from "./../Widgets/MEButton";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import {
   googleProvider,
-  emailProvider,
   facebookProvider
 } from "../../../config/firebaseConfig";
 import { apiCall } from "../../../api/functions";
@@ -76,7 +75,7 @@ class LoginFormBase extends React.Component {
                 placeholder="Enter email"
               />
             </div>
-            {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
+            {/* {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-unlock-alt"></span>
               </span>
@@ -88,12 +87,26 @@ class LoginFormBase extends React.Component {
                 onChange={this.onChange}
                 placeholder="Enter Password"
               />
-            </div> : <div/>}
+            </div> : <div/>} */}
+            <div className="form-group mob-sweet-b-10">
+              <span className="adon-icon">
+                <span className="fa fa-unlock-alt"></span>
+              </span>
+              <input
+                id="login-password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={this.onChange}
+                placeholder="Enter Password"
+              />
+            </div>
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
-                  {this.state.signInWithPassword !== null ? ( this.state.signInWithPassword ? "Sign In" : "Email me a Link") : "Continue"}
+                  {/* {this.state.signInWithPassword !== null ? ( this.state.signInWithPassword ? "Sign In" : "Email me a Link") : "Continue"} */}
+                  Sign In
                 </MEButton>
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
@@ -112,7 +125,7 @@ class LoginFormBase extends React.Component {
                   type="button"
                   className="img-circle  round-me raise me-email-btn"
                 >
-                  <span className="fa fa-google"></span>
+                  <span className="fa fa-envelope"></span>
                 </button>
                 <button
                   onClick={this.signInWithFacebook}
@@ -167,7 +180,7 @@ class LoginFormBase extends React.Component {
   };
   //checks if the login info is invalid, if so, the submit button will be disabled
   isInvalid() {
-    const { password, email } = this.state;
+    const { email } = this.state;
     return email === "";
   }
   //updates the state when form elements are changed
@@ -178,12 +191,14 @@ class LoginFormBase extends React.Component {
     });
 
     this.setSignInMethod();
+    console.log("4 After setSignInMethod signInWithPassword: " + this.state.signInWithPassword);
   }
 
   onSubmit(event) {
-    if (this.state.signInWithPassword === null) {
-      this.setSignInMethod();
-    } else if (this.state.signInWithPassword) {
+    // if (this.state.signInWithPassword === null) {
+    //   this.setSignInMethod();
+    // } else 
+    // if (this.state.signInWithPassword) {
       event.preventDefault();
       //firebase prop comes from the withFirebase higher component
       this.props.firebase
@@ -201,9 +216,11 @@ class LoginFormBase extends React.Component {
               this.setState({ error: err.message });
             });
         });
-    } else {
-      this.signInWithEmail();
-    }
+    // }
+    // ;
+    // else {
+    //   this.setSignInMethod();
+    // };
   }
 
   setSignInMethod = () => {
@@ -217,15 +234,19 @@ class LoginFormBase extends React.Component {
           // 'password' if the user has a password.
           // A user could have both.
           if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) != -1) {
-            // User can sign in with email/password.
-            this.setState({signInWithPassword: true})
-          }
-          if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) != -1) {
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
-            this.setState({signInWithPassword: false})
-          }
+            this.setState({signInWithPassword: false});
+            console.log("1 Set signInWithPassword: " + this.state.signInWithPassword);
+          } else if (signInMethods.indexOf(
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
+            // User can sign in with email/password.
+            this.setState({signInWithPassword: true});
+            console.log("2 Set signInWithPassword: " + this.state.signInWithPassword);
+          } else {
+            this.setState({signInWithPassword: null});
+            console.log("3 Set signInWithPassword: " + this.state.signInWithPassword);
+          };
         })
         .catch((err) => {
           console.log(err);
@@ -255,7 +276,7 @@ class LoginFormBase extends React.Component {
       });
   };
   signInWithEmail = () => {
-    console.log(window.location.href)
+    // console.log(window.location.href)
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.massenergize.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
@@ -293,7 +314,7 @@ class LoginFormBase extends React.Component {
       if (!email) {
         // User opened the link on a different device. To prevent session fixation
         // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email for confirmation');
+        email = window.prompt('Please provide your email again for confirmation');
       }
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
