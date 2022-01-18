@@ -28,10 +28,6 @@ class NavBarBurger extends React.Component {
     window.removeEventListener("resize", this.handleResize);
   }
 
-  // Comment out to eliminate warning : not sure this is needed
-  //componentWillReceiveProps() {
-  //  this.forceUpdate();
-  //}
   handleResize = () => {
     this.setState({
       menuBurgered: window.innerWidth < 992,
@@ -126,12 +122,7 @@ class NavBarBurger extends React.Component {
                 className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                {/*  main-logo col d-flex  align-items-center*/}
-
-                {/* <h3 className="cool-font"><span style={{ color: '#f9686f' }} className="fa fa-plug"></span>Mass<span style={{ color: 'green' }}>Energize</span></h3>
-									<br /><small style={{ color: '#f9686f', position: 'absolute', top: 42, left: 48, fontSize: 16 }}>{communityName}</small> */}
                 <Link to={links.home}>
-                  {/* style={{display:'table-cell', verticalAlign:'middle', fontSize:'25px', fontWeight:'bold', height:'35px', color:'#f64b2f'}} */}
                   <div
                     style={{
                       display: "table-cell",
@@ -153,8 +144,6 @@ class NavBarBurger extends React.Component {
                     {communitylogo ? null : (
                       <>&nbsp;{header ? header.title : null}</>
                     )}
-                    {/* <img src={logo} alt="" style={{ display: "inline-block" }} className='header-logo' />
-                                        <>&nbsp;Concord</> */}
                   </div>
                 </Link>
               </div>
@@ -172,15 +161,7 @@ class NavBarBurger extends React.Component {
                       />
                       {this.renderLogin()}
                     </div>
-                    <Menu open={this.state.menuOpen}>
-                      {/* {this.renderLayeredMenu(this.props.navLinks)} */}
-                      {menuItems}
-                      {/* <div style={{marginLeft: "1em"}}>
-                                        <Menu open={true} submenu={true}>
-                                            {menuItems}
-                                        </Menu>
-                                    </div> */}
-                    </Menu>
+                    <Menu open={this.state.menuOpen}>{menuItems}</Menu>
                   </div>
                 </div>
               ) : (
@@ -213,53 +194,6 @@ class NavBarBurger extends React.Component {
       </div>
     );
   }
-
-  // NORMAL STATE
-  /* renderNavLinks(navLinks) {
-    if (!navLinks) {
-      return <li key="noLinks">No PageLinks to Display</li>;
-    }
-    const style = {
-      borderTop: "5px solid #8dc63f",
-      borderRadius: "0",
-      padding: "0",
-      minwidth: "100px",
-    };
-    const { links } = this.props;
-    return Object.keys(navLinks).map((key) => {
-      var navLink = navLinks[key];
-      if (navLink.children) {
-        return (
-          <li
-            className="d-flex flex-column justify-content-center"
-            key={navLink.name}
-          >
-            <Dropdown onSelect={() => null}>
-              <Dropdown.Toggle
-                // as={CustomToggle(navLink)}
-                navLink={navLink}
-                id="dropdown-custom-components"
-              ></Dropdown.Toggle>
-              <Dropdown.Menu style={style}>
-                {this.renderDropdownItems(navLink.children)}
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
-        );
-      }
-      return (
-        <li
-          className="d-flex flex-column justify-content-center"
-          key={navLink.name}
-        >
-          <Link className="cool-font" to={`${links.home}${navLink.link}`}>
-            {navLink.name}
-          </Link>
-        </li>
-      );
-    });
-  } */
-  // NORMAL STATE
   renderNavLinks(navLinks) {
     if (!navLinks) {
       return <li key="noLinks">No PageLinks to Display</li>;
