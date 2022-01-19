@@ -336,13 +336,12 @@ class AppRouter extends Component {
     const initialMenu = content;
 
     const finalMenu = this.modifiedMenu(initialMenu);
-    console.log("I am the final menu bro", finalMenu);
     this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    const footerLinks = this.addPrefix(footerContent[0].content);
+    const footerLinks = this.addPrefix(footerContent[0].content.links);
     this.setState({ footerLinks: footerLinks });
   }
   /**
