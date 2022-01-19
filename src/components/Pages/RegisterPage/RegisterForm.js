@@ -336,24 +336,22 @@ class RegisterFormBase extends React.Component {
             </div> : <div/>}
             <br />
             {error && <p style={{ color: "red" }}> {error} </p>}
-            <form>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="passwordless" 
-                                checked={this.state.selectedSignInOption === 'passwordless'} 
-                                onChange={this.handleSignInOptionChange} />
-                  <p>Passwordless</p>
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input type="radio" value="password" 
-                                checked={this.state.selectedSignInOption === 'password'} 
-                                onChange={this.handleSignInOptionChange} />
-                  <p>With Password</p>
-                </label>
-              </div>
-            </form>
+            <div className="radio">
+              <label>
+                <input type="radio" value="passwordless" 
+                              checked={this.state.selectedSignInOption === 'passwordless'} 
+                              onChange={this.handleSignInOptionChange} />
+                <p>Passwordless</p>
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input type="radio" value="password" 
+                              checked={this.state.selectedSignInOption === 'password'} 
+                              onChange={this.handleSignInOptionChange} />
+                <p>With Password</p>
+              </label>
+            </div>
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton
