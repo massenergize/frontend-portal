@@ -30,7 +30,7 @@ class LoginFormBase extends React.Component {
     super(props);
     this.state = {
       ...INITIAL_STATE,
-      signInWithPassword: null,
+      signInWithPassword: false,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 

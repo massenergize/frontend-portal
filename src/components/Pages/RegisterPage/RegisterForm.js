@@ -108,6 +108,8 @@ class RegisterFormBase extends React.Component {
     }
     const policies = this.props.policies || [];
 
+    this.completeSignInWithEmail();
+
     var page;
     if (this.props.auth.isEmpty) {
       page = 1;
@@ -744,7 +746,8 @@ class RegisterFormBase extends React.Component {
     this.setRegProtocol();
     event.preventDefault();
     const { email, passwordOne } = this.state;
-    this.props.firebase
+    if (this.state.selectedSignInOption === "password") {
+      this.props.firebase
       .auth()
       .setPersistence(this.state.persistence)
       .then(() => {
@@ -759,7 +762,75 @@ class RegisterFormBase extends React.Component {
             this.setState({ error: err.message });
           });
       });
+    } else if (this.state.selectedSignInOption === "passwordless") {
+      this.signInWithEmail();
+    };
+    
   }
+
+  signInWithEmail = () => {
+    // console.log(window.location.href)
+    var actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.massenergize.com) for this
+      // URL must be in the authorized domains list in the Firebase Console.
+      url: window.location.href,
+      // This must be true.
+      handleCodeInApp: true,
+    };
+    this.props.firebase
+      .auth()
+      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. 
+        // TODO: Inform the user.
+        alert("Please check your email for a new sign in link.");
+        console.log("Email sent!")
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', this.state.email);
+        // ...
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ error: err.message });
+      });
+  };
+  completeSignInWithEmail = () => {
+    // Confirm the link is a sign-in with email link.
+    if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      var email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        // User opened the link on a different device. To prevent session fixation
+        // attacks, ask the user to provide the associated email again. For example:
+        email = window.prompt('Please provide your email again for confirmation');
+      }
+      // The client SDK will parse the code from the link for you.
+      this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
+        .then((auth) => {
+          // Clear email from storage.
+          window.localStorage.removeItem('emailForSignIn');
+          // You can access the new user via result.user
+          // Additional user info profile not available via:
+          // result.additionalUserInfo.profile == null
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+          // TODO: Redirect to home
+          this.fetchMassToken(auth.user._lat, auth.user.email);
+          this.setState({ ...INITIAL_STATE });
+          window.location.href = window.location.origin + this.props.links.home;
+        })
+        .catch((err) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
+          console.log(err);
+        });
+    }
+  };
   //for generating the profile picture before the user can upload one when they go back to edit their profile
 
   onFinalSubmit(event) {
