@@ -7,7 +7,7 @@ describe("Visit all services page via navigation", function () {
   });
 
   it("Selects services page from navigation menu dropdown", function () {
-    cy.get("#action-nav-id").click();
+    cy.get("#menu-actions-id").click();
     cy.get(".test-me-nav-drop-item").eq(1).click();
   });
 
