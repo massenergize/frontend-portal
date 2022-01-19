@@ -1,6 +1,8 @@
 :root {
   --app-theme-orange: #f57b34;
   --app-theme-green: #8dc443;
+  --app-theme-green-darker: #75ab2d;
+  --app-theme-orange-lighter: #fba930;
 }
 
 .word-wrap {
@@ -521,19 +523,23 @@
   transform: scale(1.06);
   transition: 0.2s ease-in-out;
 }
+
+.choose-hh-form {
+  padding-bottom: 10px;
+  min-height: 220px;
+  max-height: 220px;
+  overflow-y: scroll;
+}
 .act-rect {
   width: 17px;
   height: 17px;
   border: solid 2px green;
   display: inline-block;
   margin-right: 10px;
-  position: absolute;
-  top: 27%;
 }
 
 .act-selected {
   background: #18c125;
-  border-style: dotted;
   border-color: #ccf3cc;
 }
 
@@ -550,10 +556,14 @@
 
 /*fixed CSS issue with dropdown related to action completion date */
 #CompletionDate {
-  position: absolute;
-  right: 0;
+  margin-left: auto;
+  /* position: absolute; */
+  /* right: 0; */
+  /* margin:10px 15px; */
 }
 .act-item {
+  display: flex;
+  align-items: center;
   width: 100%;
   padding: 10px 20px;
   border: dotted 0px #e2e2e2;
@@ -568,14 +578,11 @@
 .act-item:hover {
   background: #f7f9f7;
   color: black;
-  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
-    0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   transition: 0.2s ease-out;
 }
 
 .act-item:active {
-  transform: scale(0.95);
+  /* transform: scale(0.95); */
 }
 
 .act-error {
@@ -592,10 +599,9 @@
   font-size: 15px;
   color: #282828;
   display: inline-block;
-  margin-left: 7%;
 }
 .act-title-bar {
-  padding: 15px 20px;
+  padding: 14px 20px;
   width: 100%;
   background: green;
   margin-bottom: 10px;
@@ -603,6 +609,7 @@
 
 .act-title-bar h3 {
   color: white;
+  font-size: 18px;
   margin-bottom: 0px;
 }
 
@@ -626,7 +633,8 @@
   position: absolute;
   bottom: 0px;
   width: 100%;
-  height: 64px;
+  /* height: 64px; */
+  height: 54px;
   background: #fbf9f9;
   left: 0px;
   border-bottom-left-radius: 10px;
@@ -652,7 +660,7 @@
 }
 
 .flat-btn {
-  padding: 20px 30px;
+  padding: 15px 30px;
   color: #282828;
   cursor: pointer;
   display: inline-block;
@@ -877,14 +885,16 @@
 }
 .bottom-date-area {
   /* padding: 13px; */
-  background-color: #f9f9f9;
+  background-color: var(--app-theme-orange);
   display: flex;
   flex-direction: row;
-  color: #75ab2d;
+  color: white;
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
   font-size: 0.9rem !important;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .me-testimonial-img {
@@ -1789,7 +1799,7 @@
     margin-bottom: 16px;
     border-radius: -22px;
     margin-top: -20px;
-    border: solid 2px #fba930;
+    border: solid 2px var(--app-theme-orange);
     border-left-width: 0px;
     border-right-width: 0px;
   }
