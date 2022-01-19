@@ -276,13 +276,13 @@ class OneTestimonialPage extends React.Component {
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
-                  <p
+                  <div
                     className="cool-font test-story-body"
                     data-story-body={story?.body}
+					dangerouslySetInnerHTML={{__html: story?.body}}
                     style={{ color: "black", textAlign: "justify" }}
-                  >
-                    {story && story.body}
-                  </p>
+					
+                  ></div>
                   {this.renderRelatedAction()}
                 </div>
               </div>

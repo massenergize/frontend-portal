@@ -51,8 +51,8 @@ export default class StorySheet extends Component {
   getBody() {
     const { body } = this.props;
     const [yes, substring, fullBody] = hasLargeText(body);
-    if (yes && !this.state.readMore) return substring;
-    return fullBody;
+    if (yes && !this.state.readMore) return substring.replace(/<[^>]+>/g, '');
+    return fullBody.replace(/<[^>]+>/g, '');
   }
 
   getProperHeight() {

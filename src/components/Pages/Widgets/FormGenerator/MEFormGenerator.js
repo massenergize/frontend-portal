@@ -11,6 +11,9 @@ import MECheckBoxes from "../MECheckBoxGroup";
 // import MEUploader from "../MEUploader";
 import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
+import {Editor as TinyEditor} from "@tinymce/tinymce-react"
+
+const TINY_MCE_API_KEY = '3fpefbsmtkh71yhtjyykjwj5ezs3a5cac5ei018wvnlg2g0r';
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -257,7 +260,28 @@ export default class FormGenerator extends Component {
         case INPUT:
           return this.getInput(formItem, index);
         case TEXTAREA:
-          return this.getInput(formItem, index);
+                return (
+                <TinyEditor
+                    value={this.state.formData["body"]}
+                    onEditorChange={(content, editor) => {
+                    this.handleFields("body", content);
+                    }}
+                    init={{
+                    height: 350,
+                    menubar: false,
+
+                    plugins: [
+                        "advlist autolink lists link image charmap print preview anchor forecolor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table paste code help wordcount",
+                    ],
+                    toolbar:
+                        "undo redo | formatselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify | link | bullist numlist outdent indent |  fontselect | fontsizeselect",
+                    }}
+                    apiKey={TINY_MCE_API_KEY}
+                />
+                );
+          //return this.getInput(formItem, index);
         case DROPDOWN:
           return this.getDropdown(formItem, index);
         case AUTOCOMPLETE:
@@ -424,7 +448,6 @@ export default class FormGenerator extends Component {
           </METextView>
           <form onSubmit={this.onSubmit }>
             {this.createAndEjectForm()}
-
             <br />
             <div>{this.displayInformation()}</div>
             <div>{this.displayImageWarning()}</div>
