@@ -342,7 +342,7 @@ class RegisterFormBase extends React.Component {
                   <input type="radio" value="passwordless" 
                                 checked={this.state.selectedSignInOption === 'passwordless'} 
                                 onChange={this.handleSignInOptionChange} />
-                  Passwordless
+                  <p>Passwordless</p>
                 </label>
               </div>
               <div className="radio">
@@ -350,7 +350,7 @@ class RegisterFormBase extends React.Component {
                   <input type="radio" value="password" 
                                 checked={this.state.selectedSignInOption === 'password'} 
                                 onChange={this.handleSignInOptionChange} />
-                  With Password
+                  <p>With Password</p>
                 </label>
               </div>
             </form>
