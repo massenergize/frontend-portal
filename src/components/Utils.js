@@ -66,7 +66,7 @@ export const getTakeTourFromURL = (location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
   //console.log("locationUtils", location);
-  return tour;
+  return tour?.toLowerCase();
 };
 
 //TODO: how to stop second step once seen tour is set to true? setTimeOut???
@@ -330,14 +330,19 @@ export function locationFormatJSX(location) {
   );
 }
 
-export function getCircleGraphData(goalObj, which, pref_eq = null, display_prefs={}) {
+export function getCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs = {}
+) {
   if (goalObj === null) return 0;
   let value = 0;
   switch (which) {
     case "households": {
-      if (display_prefs.manual_households) 
+      if (display_prefs.manual_households)
         value += goalObj.initial_number_of_households;
-      if (display_prefs.state_households) 
+      if (display_prefs.state_households)
         value += goalObj.attained_number_of_households;
       if (display_prefs.platform_households)
         value += goalObj.organic_attained_number_of_households;
@@ -354,12 +359,12 @@ export function getCircleGraphData(goalObj, which, pref_eq = null, display_prefs
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
-        if (display_prefs.manual_carbon)
-          value += goalObj.initial_carbon_footprint_reduction;
-        if (display_prefs.state_carbon)
-          value += goalObj.attained_carbon_footprint_reduction;
-        if (display_prefs.platform_carbon)
-          value += goalObj.organic_attained_carbon_footprint_reduction;
+      if (display_prefs.manual_carbon)
+        value += goalObj.initial_carbon_footprint_reduction;
+      if (display_prefs.state_carbon)
+        value += goalObj.attained_carbon_footprint_reduction;
+      if (display_prefs.platform_carbon)
+        value += goalObj.organic_attained_carbon_footprint_reduction;
       value = calcEQ(value, factor);
       return value;
     }
@@ -368,7 +373,12 @@ export function getCircleGraphData(goalObj, which, pref_eq = null, display_prefs
   }
 }
 
-export function createCircleGraphData(goalObj, which, pref_eq = null, display_prefs) {
+export function createCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs
+) {
   if (goalObj === null) return {};
 
   const value = getCircleGraphData(goalObj, which, pref_eq, display_prefs);

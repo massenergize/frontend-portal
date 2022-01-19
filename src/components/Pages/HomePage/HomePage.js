@@ -25,13 +25,19 @@ class HomePage extends React.Component {
   }
 
   render() {
-    // Requesting tour from home menu adds a qualifier to the URL.  
+    // Requesting tour from home menu adds a qualifier to the URL.
     // It won't restart if it was already going, until you refresh the site.
     const tourRequested = getTakeTourFromURL(window.location);
-    if (tourRequested) {
+    console.log("I am the requested bruh", tourRequested);
+    if (tourRequested === "true") {
       window.localStorage.setItem("seen_community_portal_tour", "false");
-    }
-    const seen_tour = tourRequested ? false : window.localStorage.getItem("seen_community_portal_tour");
+    } else if (tourRequested === "false")
+      window.localStorage.setItem("seen_community_portal_tour", "true");
+
+    const seen_tour =
+      tourRequested === "true"
+        ? false
+        : window.localStorage.getItem("seen_community_portal_tour");
 
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
