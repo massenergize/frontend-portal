@@ -75,19 +75,6 @@ class LoginFormBase extends React.Component {
                 placeholder="Enter email"
               />
             </div>
-            {/* {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="login-password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={this.onChange}
-                placeholder="Enter Password"
-              />
-            </div> : <div/>} */}
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-unlock-alt"></span>
@@ -105,7 +92,6 @@ class LoginFormBase extends React.Component {
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
-                  {/* {this.state.signInWithPassword !== null ? ( this.state.signInWithPassword ? "Sign In" : "Email me a Link") : "Continue"} */}
                   Sign In
                 </MEButton>
               </div>
@@ -194,32 +180,23 @@ class LoginFormBase extends React.Component {
   }
 
   onSubmit(event) {
-    // if (this.state.signInWithPassword === null) {
-    //   this.setSignInMethod();
-    // } else 
-    // if (this.state.signInWithPassword) {
-      event.preventDefault();
-      //firebase prop comes from the withFirebase higher component
-      this.props.firebase
-        .auth()
-        .setPersistence(this.state.persistence)
-        .then(() => {
-          this.props.firebase
-            .auth()
-            .signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then((auth) => {
-              this.fetchMassToken(auth.user._lat, auth.user.email);
-              this.setState({ ...INITIAL_STATE }); //reset the login boxes
-            })
-            .catch((err) => {
-              this.setState({ error: err.message });
-            });
-        });
-    // }
-    // ;
-    // else {
-    //   this.setSignInMethod();
-    // };
+    event.preventDefault();
+    //firebase prop comes from the withFirebase higher component
+    this.props.firebase
+      .auth()
+      .setPersistence(this.state.persistence)
+      .then(() => {
+        this.props.firebase
+          .auth()
+          .signInWithEmailAndPassword(this.state.email, this.state.password)
+          .then((auth) => {
+            this.fetchMassToken(auth.user._lat, auth.user.email);
+            this.setState({ ...INITIAL_STATE }); //reset the login boxes
+          })
+          .catch((err) => {
+            this.setState({ error: err.message });
+          });
+      });
   }
 
   setSignInMethod = () => {
