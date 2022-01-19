@@ -28,7 +28,6 @@ class HomePage extends React.Component {
     // Requesting tour from home menu adds a qualifier to the URL.
     // It won't restart if it was already going, until you refresh the site.
     const tourRequested = getTakeTourFromURL(window.location);
-    console.log("I am the requested bruh", tourRequested);
     if (tourRequested === "true") {
       window.localStorage.setItem("seen_community_portal_tour", "false");
     } else if (tourRequested === "false")
