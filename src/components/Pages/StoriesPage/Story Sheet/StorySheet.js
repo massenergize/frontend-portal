@@ -4,6 +4,8 @@ import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import StoryForm from "../../ActionsPage/StoryForm";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -24,6 +26,7 @@ export default class StorySheet extends Component {
       readMore: false,
       textIsShort: true,
       fallbackImg: null,
+	  OpenModal: false
     };
     this.setDefaultImage = this.setDefaultImage.bind(this);
   }
@@ -33,7 +36,7 @@ export default class StorySheet extends Component {
   }
 
   getUser() {
-    const { preferred_name, user, } = this.props;
+    const { preferred_name, user } = this.props;
     //if (anonymous) return "Anonymous";
     return preferred_name || user?.preferred_name || user?.full_name || "...";
   }
@@ -62,23 +65,36 @@ export default class StorySheet extends Component {
     this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
   }
   render() {
-    const { action, body, other_vendor, preferred_name, title, vendor, is_approved, community, created_at, file, id, is_published } = this.props;
+    const {
+      action,
+      body,
+      other_vendor,
+      preferred_name,
+      title,
+      vendor,
+      is_approved,
+      community,
+      created_at,
+      file,
+      id,
+      is_published,
+    } = this.props;
     //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
     var testimonialData = {
       id: id,
       is_approved: is_approved,
       is_published: is_published,
-      community: community.id,
+      community: community?.id,
       key: Math.random(),
-      action_id: action.id,
+      action_id: action?.id,
       tags: [],
       body: body,
       other_vendor: other_vendor,
       preferred_name: preferred_name,
       title: title,
       vendor_id: vendor ? vendor.id : "",
-      image: file
-    }
+      image: file,
+    };
     const date = getHumanFriendlyDate(created_at);
     const creatorName = this.getUser();
 
@@ -136,7 +152,9 @@ export default class StorySheet extends Component {
           )}
 
           <div className="sheet-content-area">
-            <h4>{creatorName} {is_published ? "" : " (Pending Approval) "} </h4>
+            <h4>
+              {creatorName} {is_published ? "" : " (Pending Approval) "}{" "}
+            </h4>
             <div className="sheet-details">
               <p>{date}</p>
               <div>
@@ -156,13 +174,36 @@ export default class StorySheet extends Component {
                   Full View
                 </Link>
 
-                {is_published ? <div /> :
-
-                  <Button onClick={() => {
-                    this.props.EditTestimonial(testimonialData);
-                  }}
-                    className="testimonial_edit_button" variant="outline-dark"><a href="#ScrollToForEdit"> Edit</a> </Button>}
+                {
+                is_published ? (
+                    <div />
+                ) : (
+                    <Button
+                    onClick={() => {
+                        this.setState({ OpenModal: true });
+                        this.props.isModalOpen(true);
+                    }}
+                    className="testimonial_edit_button"
+                    variant="outline-dark"
+                    >
+                    {" "}
+                    Edit{" "}
+                    </Button>
+                )
+                }
               </div>
+ 
+              <Modal
+              size="lg"
+              show={this.state.OpenModal}
+              onHide={() => {
+                  this.setState({ OpenModal: false });
+                  this.props.isModalOpen(false);
+              }}
+              >
+              <StoryForm draftTestimonialData={testimonialData} />
+              </Modal>
+ 
             </div>
             <div>
               {file && (

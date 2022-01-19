@@ -229,7 +229,7 @@ class ActionsPage extends React.Component {
             }}
           />
         )}
-        ;{this.renderEQModal()}
+        {this.renderEQModal()}
         {this.renderModal()}
         <div
           className="boxed_wrapper"

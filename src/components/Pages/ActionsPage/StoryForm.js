@@ -228,7 +228,7 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(event, data, resetForm) {
-    const { community } = this.props;
+    const { community, user } = this.props;
     event.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -241,7 +241,8 @@ class StoryForm extends React.Component {
       },
     });
     const communityID = community ? { community_id: community.id } : {};
-    const body = { ...data, rank: 0, ...communityID };
+    const userEmail = user ? { user_email: user.email } : {};
+    const body = { ...data, rank: 0, ...communityID, ...userEmail };
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({
         formNotification: {
@@ -268,6 +269,7 @@ class StoryForm extends React.Component {
 				}
 				delete body?.ImgToDel;
       }
+      console.log("testimonial body", body)
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
           this.setState({

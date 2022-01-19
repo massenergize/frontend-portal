@@ -66,7 +66,7 @@ export const getTakeTourFromURL = (location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
   //console.log("locationUtils", location);
-  return tour;
+  return tour?.toLowerCase();
 };
 
 //TODO: how to stop second step once seen tour is set to true? setTimeOut???
@@ -330,29 +330,41 @@ export function locationFormatJSX(location) {
   );
 }
 
-export function getCircleGraphData(goalObj, which, pref_eq = null) {
+export function getCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs = {}
+) {
   if (goalObj === null) return 0;
+  let value = 0;
   switch (which) {
     case "households": {
-      let value =
-        goalObj.initial_number_of_households +
-        goalObj.attained_number_of_households +
-        goalObj.organic_attained_number_of_households;
+      if (display_prefs.manual_households)
+        value += goalObj.initial_number_of_households;
+      if (display_prefs.state_households)
+        value += goalObj.attained_number_of_households;
+      if (display_prefs.platform_households)
+        value += goalObj.organic_attained_number_of_households;
       return value;
     }
     case "actions-completed": {
-      let value =
-        goalObj.initial_number_of_actions +
-        goalObj.attained_number_of_actions +
-        goalObj.organic_attained_number_of_actions;
+      if (display_prefs.manual_actions)
+        value += goalObj.initial_number_of_actions;
+      if (display_prefs.state_actions)
+        value += goalObj.attained_number_of_actions;
+      if (display_prefs.platform_actions)
+        value += goalObj.organic_attained_number_of_actions;
       return value;
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
-      let value =
-        goalObj.initial_carbon_footprint_reduction +
-        goalObj.attained_carbon_footprint_reduction +
-        goalObj.organic_attained_carbon_footprint_reduction;
+      if (display_prefs.manual_carbon)
+        value += goalObj.initial_carbon_footprint_reduction;
+      if (display_prefs.state_carbon)
+        value += goalObj.attained_carbon_footprint_reduction;
+      if (display_prefs.platform_carbon)
+        value += goalObj.organic_attained_carbon_footprint_reduction;
       value = calcEQ(value, factor);
       return value;
     }
@@ -361,10 +373,15 @@ export function getCircleGraphData(goalObj, which, pref_eq = null) {
   }
 }
 
-export function createCircleGraphData(goalObj, which, pref_eq = null) {
+export function createCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs
+) {
   if (goalObj === null) return {};
 
-  const value = getCircleGraphData(goalObj, which, pref_eq);
+  const value = getCircleGraphData(goalObj, which, pref_eq, display_prefs);
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool

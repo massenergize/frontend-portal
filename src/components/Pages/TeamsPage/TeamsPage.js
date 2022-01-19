@@ -186,7 +186,7 @@ class TeamsPage extends React.Component {
             }}
           />
         )}
-        ;{redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
+        {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
           <TeamInfoModal
             onComplete={this.onTeamCreate}
