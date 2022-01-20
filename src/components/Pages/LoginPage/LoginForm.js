@@ -30,7 +30,7 @@ class LoginFormBase extends React.Component {
     super(props);
     this.state = {
       ...INITIAL_STATE,
-      signInWithPassword: false,
+      signInWithPassword: null,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -42,7 +42,6 @@ class LoginFormBase extends React.Component {
   render() {
     const { email, password, error } = this.state;
 
-    this.completeSignInWithEmail();
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Sign in";
@@ -75,7 +74,7 @@ class LoginFormBase extends React.Component {
                 placeholder="Enter email"
               />
             </div>
-            <div className="form-group mob-sweet-b-10">
+            {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-unlock-alt"></span>
               </span>
@@ -87,13 +86,18 @@ class LoginFormBase extends React.Component {
                 onChange={this.onChange}
                 placeholder="Enter Password"
               />
-            </div>
+            </div> : <div/>}
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
+                { this.state.signInWithPassword===null ? <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>Continue</MEButton> : 
+                this.state.signInWithPassword ? 
                 <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
                   Sign In
-                </MEButton>
+                </MEButton> : 
+                <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
+                  Email Sent!
+                </MEButton>}
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
@@ -107,6 +111,7 @@ class LoginFormBase extends React.Component {
                 </button>
                 <button
                   onClick={this.signInWithEmail}
+                  disabled={this.isInvalid()}
                   id="emai"
                   type="button"
                   className="img-circle  round-me raise me-email-btn"
@@ -125,10 +130,10 @@ class LoginFormBase extends React.Component {
             </div>
           </form>
           <p>
-            {this.state.signInWithPassword ? <button className=" energize-link" onClick={this.forgotPassword}>
+            <button className=" energize-link" onClick={this.forgotPassword}>
               {" "}
               Forgot Password{" "}
-            </button> : ""}
+            </button>
           </p>
           <p>
             {" "}
@@ -141,6 +146,10 @@ class LoginFormBase extends React.Component {
       </div>
     );
   }
+
+  componentDidMount = () => {
+    this.completeSignInWithEmail();
+  };
 
   forgotPassword = () => {
     if (this.state.email !== "") {
@@ -175,14 +184,13 @@ class LoginFormBase extends React.Component {
       [event.target.name]: event.target.value,
       error: null,
     });
-
-    this.setSignInMethod();
   }
 
   onSubmit(event) {
     event.preventDefault();
     //firebase prop comes from the withFirebase higher component
-    this.props.firebase
+    if (this.state.signInWithPassword) {
+      this.props.firebase
       .auth()
       .setPersistence(this.state.persistence)
       .then(() => {
@@ -197,12 +205,16 @@ class LoginFormBase extends React.Component {
             this.setState({ error: err.message });
           });
       });
+    }
   }
 
-  setSignInMethod = () => {
+  signInWithMethod = () => {
+    console.log("1 signInWithMethod " + this.state.email);
     if (this.state.email) {
+      console.log("1.1 if (this.state.email) { " + this.state.email);
       this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
         .then((signInMethods) => {
+          console.log("1.2 fetchSignInMethodsForEmail " + this.state.email);
           // This returns the same array as fetchProvidersForEmail but for email
           // provider identified by 'password' string, signInMethods would contain 2
           // different strings:
@@ -211,22 +223,26 @@ class LoginFormBase extends React.Component {
           // A user could have both.
           if (signInMethods.indexOf(
             this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
+              console.log("2 Sign in with email " + this.state.email);
             // User can sign in with email/link.
-            this.setState({signInWithPassword: false});
+            this.setState({signInWithPassword: false}, this.signInWithEmail());
           } else if (signInMethods.indexOf(
             this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
+              console.log("3 Sign in with password " + this.state.email);
             // User can sign in with email/password.
             this.setState({signInWithPassword: true});
           } else {
+            console.log("4 No sign in method " + this.state.email);
             this.setState({signInWithPassword: null});
           };
         })
         .catch((err) => {
+          console.log("5 Error " + this.state.email);
           console.log(err);
           // Some error occurred, you can inspect the code: error.code
         });
-    }
-  };
+    };
+  }
 
   //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD:
   //WOULD NOT DELETE DATA I THINK?
