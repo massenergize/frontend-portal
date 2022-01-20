@@ -31,6 +31,7 @@ class LoginFormBase extends React.Component {
     this.state = {
       ...INITIAL_STATE,
       signInWithPassword: null,
+      selectedSignInOption: "passwordless",
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -127,21 +128,54 @@ class LoginFormBase extends React.Component {
                   <span className="fa fa-facebook"></span>
                 </button>
               </div>
+              
+            </div>
+            <div className="row">
+              <div className="col">
+                <p>
+                  <button className=" energize-link" onClick={this.forgotPassword}>
+                    {" "}
+                    Forgot Password{" "}
+                  </button>
+                </p>
+                <p>
+                  {" "}
+                  Don't have a profile?{" "}
+                  <Link className="energize-link" to={this.props.links.signup}>
+                    Create one
+                  </Link>{" "}
+                </p>{" "}
+              </div>
+              <div className="col">
+                <div className="radio">
+                  <div className="row">
+                    <div className="col-3">
+                      <input type="radio" value="passwordless" 
+                          checked={this.state.selectedSignInOption === "passwordless"} 
+                          onChange={this.handleSignInOptionChange} />
+                    </div>
+                    <div className="col-9">
+                      <label>
+                        <p>Passwordless</p>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3">
+                      <input type="radio" value="password" 
+                            checked={this.state.selectedSignInOption === "password"} 
+                            onChange={this.handleSignInOptionChange} />
+                    </div>
+                    <div className="col-9">
+                      <label>
+                        <p>With Password</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
-          <p>
-            <button className=" energize-link" onClick={this.forgotPassword}>
-              {" "}
-              Forgot Password{" "}
-            </button>
-          </p>
-          <p>
-            {" "}
-            Don't have a profile?{" "}
-            <Link className="energize-link" to={this.props.links.signup}>
-              Create one
-            </Link>{" "}
-          </p>{" "}
         </div>
       </div>
     );
@@ -186,6 +220,23 @@ class LoginFormBase extends React.Component {
     });
   }
 
+  handleSignInOptionChange = (changeEvent) => {
+    this.setState({
+      selectedSignInOption: changeEvent.target.value
+    }, this.setSignInWithPassword);
+  };
+
+  setSignInWithPassword = () => {
+    const {selectedSignInOption, signInWithPassword} = this.state;
+    if (selectedSignInOption === "passwordless") {
+      this.setState({signInWithPassword: false});
+    } else if (selectedSignInOption === "password") {
+      this.setState({signInWithPassword: true});
+    } else {
+      this.setState({selectedSignInOption: "passwordless"});
+    };
+  };
+
   onSubmit(event) {
     event.preventDefault();
     //firebase prop comes from the withFirebase higher component
@@ -209,12 +260,9 @@ class LoginFormBase extends React.Component {
   }
 
   signInWithMethod = () => {
-    console.log("1 signInWithMethod " + this.state.email);
     if (this.state.email) {
-      console.log("1.1 if (this.state.email) { " + this.state.email);
       this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
         .then((signInMethods) => {
-          console.log("1.2 fetchSignInMethodsForEmail " + this.state.email);
           // This returns the same array as fetchProvidersForEmail but for email
           // provider identified by 'password' string, signInMethods would contain 2
           // different strings:
@@ -223,21 +271,17 @@ class LoginFormBase extends React.Component {
           // A user could have both.
           if (signInMethods.indexOf(
             this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
-              console.log("2 Sign in with email " + this.state.email);
             // User can sign in with email/link.
             this.setState({signInWithPassword: false}, this.signInWithEmail());
           } else if (signInMethods.indexOf(
             this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-              console.log("3 Sign in with password " + this.state.email);
             // User can sign in with email/password.
             this.setState({signInWithPassword: true});
           } else {
-            console.log("4 No sign in method " + this.state.email);
             this.setState({signInWithPassword: null});
           };
         })
         .catch((err) => {
-          console.log("5 Error " + this.state.email);
           console.log(err);
           // Some error occurred, you can inspect the code: error.code
         });
@@ -268,7 +312,6 @@ class LoginFormBase extends React.Component {
     if (this.state.email === "") {
       this.setState({error: "Please enter your email to enable passwordles authentication"});
     } else {
-      // console.log(window.location.href)
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.massenergize.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
@@ -282,7 +325,7 @@ class LoginFormBase extends React.Component {
       .then(() => {
         // The link was successfully sent. 
         // TODO: Inform the user.
-        alert("Please check your email for a new sign in link.");
+        alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
         console.log("Email sent!")
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
