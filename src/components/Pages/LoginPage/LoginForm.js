@@ -45,7 +45,7 @@ class LoginFormBase extends React.Component {
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Sign in";
-    const description = pageData.description ? pageData.description : "";
+    const description = pageData.description ? pageData.description : "Sign in with your name and password if you have one.";
 
     return (
       <div
@@ -58,6 +58,7 @@ class LoginFormBase extends React.Component {
         >
           <div className="section-title style-2 mob-sweet-b-10">
             <h3 className="mog-title-fix">{title}</h3>
+            <h4>Welcome!</h4>
             <p> {description}</p>
           </div>
           <form onSubmit={this.onSubmit}>
