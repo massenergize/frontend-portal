@@ -111,7 +111,6 @@ class LoginFormBase extends React.Component {
                 </button>
                 <button
                   onClick={this.signInWithEmail}
-                  disabled={this.isInvalid()}
                   id="emai"
                   type="button"
                   className="img-circle  round-me raise me-email-btn"
@@ -265,7 +264,10 @@ class LoginFormBase extends React.Component {
       });
   };
   signInWithEmail = () => {
-    // console.log(window.location.href)
+    if (this.state.email === "") {
+      this.setState({error: "Please enter your email to enable passwordles authentication"});
+    } else {
+      // console.log(window.location.href)
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.massenergize.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
@@ -290,6 +292,7 @@ class LoginFormBase extends React.Component {
         console.log(err);
         this.setState({ error: err.message });
       });
+    };
   };
   completeSignInWithEmail = () => {
     // Confirm the link is a sign-in with email link.
