@@ -46,7 +46,7 @@ class LoginFormBase extends React.Component {
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Sign in";
-    const description = pageData.description ? pageData.description : "Sign in with your name and password if you have one.";
+    const description = pageData.description ? pageData.description : "Sign in with your email and password if you have one.";
 
     return (
       <div
