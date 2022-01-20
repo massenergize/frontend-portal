@@ -76,7 +76,7 @@ class LoginFormBase extends React.Component {
                 placeholder="Enter email"
               />
             </div>
-            {this.state.signInWithPassword ? <div className="form-group mob-sweet-b-10">
+            <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-unlock-alt"></span>
               </span>
@@ -88,18 +88,16 @@ class LoginFormBase extends React.Component {
                 onChange={this.onChange}
                 placeholder="Enter Password"
               />
-            </div> : <div/>}
+            </div>
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                { this.state.signInWithPassword===null ? <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>Continue</MEButton> : 
-                this.state.signInWithPassword ? 
                 <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
                   Sign In
-                </MEButton> : 
-                <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
-                  Email Sent!
-                </MEButton>}
+                </MEButton>
+                <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                  Sign In With Link
+                </MEButton>
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
@@ -110,14 +108,6 @@ class LoginFormBase extends React.Component {
                   className="img-circle  round-me raise me-google-btn"
                 >
                   <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={this.signInWithEmail}
-                  id="emai"
-                  type="button"
-                  className="img-circle  round-me raise me-email-btn"
-                >
-                  <span className="fa fa-envelope"></span>
                 </button>
                 <button
                   onClick={this.signInWithFacebook}
@@ -145,34 +135,6 @@ class LoginFormBase extends React.Component {
                     Create one
                   </Link>{" "}
                 </p>{" "}
-              </div>
-              <div className="col">
-                <div className="radio">
-                  <div className="row">
-                    <div className="col-3">
-                      <input type="radio" value="passwordless" 
-                          checked={this.state.selectedSignInOption === "passwordless"} 
-                          onChange={this.handleSignInOptionChange} />
-                    </div>
-                    <div className="col-9">
-                      <label>
-                        <p>Passwordless</p>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3">
-                      <input type="radio" value="password" 
-                            checked={this.state.selectedSignInOption === "password"} 
-                            onChange={this.handleSignInOptionChange} />
-                    </div>
-                    <div className="col-9">
-                      <label>
-                        <p>With Password</p>
-                      </label>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </form>
