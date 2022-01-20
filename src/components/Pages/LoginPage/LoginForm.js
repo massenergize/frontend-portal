@@ -31,7 +31,7 @@ class LoginFormBase extends React.Component {
     this.state = {
       ...INITIAL_STATE,
       signInWithPassword: null,
-      selectedSignInOption: "passwordless",
+      selectedSignInOption: null,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -92,14 +92,16 @@ class LoginFormBase extends React.Component {
             {error && <p style={{ color: "red" }}> {error} </p>}
             <div className="clearfix">
               <div className="form-group pull-left">
-                { this.state.signInWithPassword===null ? <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>Continue</MEButton> : 
-                this.state.signInWithPassword ? 
-                <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
-                  Sign In
-                </MEButton> : 
-                <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
-                  Email Sent!
-                </MEButton>}
+                { this.state.signInWithPassword===null ? 
+                  <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
+                    Continue</MEButton> : 
+                  this.state.signInWithPassword ? 
+                    <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
+                      Sign In
+                    </MEButton> : 
+                    <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                      Email Me a Sign in Link
+                    </MEButton>}
               </div>
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
@@ -152,7 +154,7 @@ class LoginFormBase extends React.Component {
                     <div className="col-3">
                       <input type="radio" value="passwordless" 
                           checked={this.state.selectedSignInOption === "passwordless"} 
-                          onChange={this.handleSignInOptionChange} />
+                          onClick={this.handleSignInOptionChange} />
                     </div>
                     <div className="col-9">
                       <label>
@@ -164,7 +166,7 @@ class LoginFormBase extends React.Component {
                     <div className="col-3">
                       <input type="radio" value="password" 
                             checked={this.state.selectedSignInOption === "password"} 
-                            onChange={this.handleSignInOptionChange} />
+                            onClick={this.handleSignInOptionChange} />
                     </div>
                     <div className="col-9">
                       <label>
@@ -210,7 +212,7 @@ class LoginFormBase extends React.Component {
   //checks if the login info is invalid, if so, the submit button will be disabled
   isInvalid() {
     const { password, email } = this.state;
-    return (this.state.signInWithPassword ? email === null || email === "" || password === "": email === "" || email === null);
+    return email === null || email === "";
   }
   //updates the state when form elements are changed
   onChange(event) {
@@ -259,6 +261,7 @@ class LoginFormBase extends React.Component {
     }
   }
 
+  // Signs the user in with an email link if they are already set up woth passwordless
   signInWithMethod = () => {
     if (this.state.email) {
       this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
@@ -308,6 +311,8 @@ class LoginFormBase extends React.Component {
           });
       });
   };
+
+  // Signs in with passwordless. Will create a user if the user does not exist.
   signInWithEmail = () => {
     if (this.state.email === "") {
       this.setState({error: "Please enter your email to enable passwordles authentication"});
