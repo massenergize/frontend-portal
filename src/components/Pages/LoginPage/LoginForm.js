@@ -188,14 +188,17 @@ class LoginFormBase extends React.Component {
               {/*<div className="col">
                 <div className="radio">
                   <div className="row">
+                    <p>Sign in preference (Optional)</p>
+                  </div>
+                  <div className="row">
                     <div className="col-3">
-                      <input type="radio" value="passwordless" 
+                      <input type="radio" value="passwordless"
                           checked={this.state.selectedSignInOption === "passwordless"} 
                           onClick={this.handleSignInOptionChange} />
                     </div>
                     <div className="col-9">
                       <label>
-                        <p>Passwordless</p>
+                        <p style={{margin: "0"}}>Email me a link</p>
                       </label>
                     </div>
                   </div>
@@ -207,7 +210,7 @@ class LoginFormBase extends React.Component {
                     </div>
                     <div className="col-9">
                       <label>
-                        <p>With Password</p>
+                        <p style={{margin: "0"}}>With Password</p>
                       </label>
                     </div>
                   </div>
