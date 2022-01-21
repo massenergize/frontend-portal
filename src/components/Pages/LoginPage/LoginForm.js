@@ -129,16 +129,6 @@ class LoginFormBase extends React.Component {
                 >
                   <span className="fa fa-google"></span>
                 </button>
-                {/*
-                <button
-                  onClick={this.signInWithEmail}
-                  id="emai"
-                  type="button"
-                  className="img-circle  round-me raise me-email-btn"
-                >
-                  <span className="fa fa-envelope"></span>
-                </button>
-                */}
                 <button
                   onClick={this.signInWithFacebook}
                   id="facebook"
@@ -184,38 +174,6 @@ class LoginFormBase extends React.Component {
                   </div>
                 )
               }
-
-              {/*<div className="col">
-                <div className="radio">
-                  <div className="row">
-                    <p>Sign in preference (Optional)</p>
-                  </div>
-                  <div className="row">
-                    <div className="col-3">
-                      <input type="radio" value="passwordless"
-                          checked={this.state.selectedSignInOption === "passwordless"} 
-                          onClick={this.handleSignInOptionChange} />
-                    </div>
-                    <div className="col-9">
-                      <label>
-                        <p style={{margin: "0"}}>Email me a link</p>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3">
-                      <input type="radio" value="password" 
-                            checked={this.state.selectedSignInOption === "password"} 
-                            onClick={this.handleSignInOptionChange} />
-                    </div>
-                    <div className="col-9">
-                      <label>
-                        <p style={{margin: "0"}}>With Password</p>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                </div> */}
             </div>
           </form>
         </div>
@@ -262,12 +220,6 @@ class LoginFormBase extends React.Component {
       error: null,
     });
   }
-
-  //handleSignInOptionChange = (changeEvent) => {
-  //  this.setState({
-  //    selectedSignInOption: changeEvent.target.value
-  //  }, this.setSignInWithPassword);
-  //};
 
   setSignInWithPassword = () => {
     this.setState({signInWithPassword: true, error: null});
