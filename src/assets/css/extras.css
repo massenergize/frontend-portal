@@ -1339,6 +1339,22 @@
   border-right-color: #4885ed !important;
   transition: 0.2s ease-in-out;
 }
+.me-email-btn {
+  /* border-width:0px; */
+  background: #8dc343 !important;
+  border-color: #8dc343 !important;
+  color: white !important;
+}
+.me-email-btn:hover {
+  background: white !important;
+  color: #8dc343 !important;
+
+  border-color: #8dc343 !important;
+  border-top-color: #3cba54 !important;
+  border-bottom-color: #f4c20d !important;
+  border-right-color: #4885ed !important;
+  transition: 0.2s ease-in-out;
+}
 .me-facebook-btn {
   /* border-width:0px; */
   background: #4885ed !important;
