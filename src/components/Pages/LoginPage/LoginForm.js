@@ -398,12 +398,15 @@ class LoginFormBase extends React.Component {
         // User opened the link on a different device. To prevent session fixation
         // attacks, ask the user to provide the associated email again. For example:
         email = window.prompt('Please provide your email again for confirmation');
+        window.localStorage.setItem('emailForSignIn', this.state.email);
       }
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
         .then((auth) => {
           // Clear email from storage.
-          window.localStorage.removeItem('emailForSignIn');
+          // WHY?  I don't think we need to do this
+          // window.localStorage.removeItem('emailForSignIn');
+
           // You can access the new user via result.user
           // Additional user info profile not available via:
           // result.additionalUserInfo.profile == null

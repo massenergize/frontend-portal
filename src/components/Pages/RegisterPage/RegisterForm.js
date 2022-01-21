@@ -494,16 +494,19 @@ class RegisterFormBase extends React.Component {
             ) : (
               <>
                 <center>
-                  <p style={{ color: "red" }}>
+                  <p style={{ color: "blue" }}>
                     {" "}
-                    Please finish creating your profile before you continue
                     {this.state.specialUser ? (
                       <p>
                         Welcome! You have been invited by a community admin to
                         this MassEnergize Community.
                       </p>
                     ) : (
-                      <></>
+                      <>
+                    Hello, {this.props.auth.email}!
+                    <br/>
+                    Please finish creating your profile before you continue
+                      </>
                     )}
                   </p>
                 </center>
