@@ -108,7 +108,7 @@ class LoginFormBase extends React.Component {
             <div className="clearfix">
               <div className="form-group pull-left">
                 { this.state.signInWithPassword===null ? 
-                  <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
+                  <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
                     Continue</MEButton> : 
                   this.state.signInWithPassword ? 
                     <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
@@ -256,6 +256,8 @@ class LoginFormBase extends React.Component {
   }
 
   // Signs the user in with an email link if they are already set up woth passwordless
+  // This is not currently used, but might come in handy if we ever need to see if a 
+  // user already has an profile.
   signInWithMethod = () => {
     if (this.state.email) {
       this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
