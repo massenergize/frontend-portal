@@ -31,7 +31,6 @@ class LoginFormBase extends React.Component {
     this.state = {
       ...INITIAL_STATE,
       signInWithPassword: false,
-      //selectedSignInOption: null,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -108,13 +107,13 @@ class LoginFormBase extends React.Component {
             <div className="clearfix">
               <div className="form-group pull-left">
                 { this.state.signInWithPassword===null ? 
-                  <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                  <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
                     Continue</MEButton> : 
                   this.state.signInWithPassword ? 
                     <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
                       Sign In
                     </MEButton> : 
-                    <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                    <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
                       Continue
                     </MEButton>}
               </div>
@@ -255,9 +254,8 @@ class LoginFormBase extends React.Component {
     }
   }
 
-  // Signs the user in with an email link if they are already set up woth passwordless
-  // This is not currently used, but might come in handy if we ever need to see if a 
-  // user already has an profile.
+  // Signs the user in with an email link if they are already set up woth passwordless.
+  // If a user does not have a profile or has only used a password to sign in we 
   signInWithMethod = () => {
     if (this.state.email) {
       this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
@@ -269,15 +267,14 @@ class LoginFormBase extends React.Component {
           // 'password' if the user has a password.
           // A user could have both.
           if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1 ||
+            signInMethods.indexOf(
+              this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
             this.setState({signInWithPassword: false}, this.signInWithEmail());
-          } else if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-            // User can sign in with email/password.
-            this.setState({signInWithPassword: true});
           } else {
-            this.setState({signInWithPassword: null});
+            // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
+            this.setState({signInWithPassword: false}, this.signInWithEmail(window.location.origin + this.props.links.signup));
           };
         })
         .catch((err) => {
@@ -309,14 +306,17 @@ class LoginFormBase extends React.Component {
   };
 
   // Signs in with passwordless. Will create a user if the user does not exist.
-  signInWithEmail = () => {
+  signInWithEmail = (redirURL=null) => {
     if (this.state.email === "") {
       this.setState({error: "Please enter your email to enable passwordless authentication"});
     } else {
+      if (redirURL === null) {
+        redirURL = window.location.href
+      };
     var actionCodeSettings = {
       // URL you want to redirect back to. The domain (www.massenergize.com) for this
       // URL must be in the authorized domains list in the Firebase Console.
-      url: window.location.href,
+      url: redirURL,
       // This must be true.
       handleCodeInApp: true,
     };
