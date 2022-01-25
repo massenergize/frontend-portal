@@ -359,8 +359,7 @@ class LoginFormBase extends React.Component {
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
         .then((auth) => {
           // Clear email from storage.
-          // WHY?  I don't think we need to do this
-          // window.localStorage.removeItem('emailForSignIn');
+          window.localStorage.removeItem('emailForSignIn');
 
           // You can access the new user via result.user
           // Additional user info profile not available via:
