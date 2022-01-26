@@ -1,13 +1,13 @@
 import React from 'react'
 import "react-datepicker/dist/react-datepicker.css"
-import SideBar from '../../Menu/SideBar'
-import PageTitle from '../../Shared/PageTitle';
-import LoadingCircle from '../../Shared/LoadingCircle'
+import SideBar from '../components/Menu/SideBar'
+import PageTitle from '../components/Shared/PageTitle';
+import LoadingCircle from '../components/Shared/LoadingCircle'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import RSVPForm from './RSVPForm';
-import BreadCrumbBar from '../../Shared/BreadCrumbBar'
-import CONST from '../../Constants'
+import RSVPForm from '../components/Pages/EventsPage/RSVPForm';
+import BreadCrumbBar from '../components/Shared/BreadCrumbBar'
+import CONST from '../components/Constants'
 import * as moment from 'moment';
 
 

@@ -61,6 +61,7 @@ class RegisterFormBase extends React.Component {
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
       email: null,
+      selectedSignInOption: "passwordless",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -106,6 +107,8 @@ class RegisterFormBase extends React.Component {
       return <LoadingCircle />;
     }
     const policies = this.props.policies || [];
+
+    this.completeSignInWithEmail();
 
     var page;
     if (this.props.auth.isEmpty) {
@@ -203,7 +206,7 @@ class RegisterFormBase extends React.Component {
 
     const title = pageData?.title
       ? pageData.title
-      : "Enter your Email and a Password";
+      : (this.state.selectedSignInOption === "password" ? "Enter your Email and a Password" : "Enter your Email");
     const description = pageData?.description
       ? pageData.description
       : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
@@ -301,36 +304,54 @@ class RegisterFormBase extends React.Component {
                 required
               />
             </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="password"
-                type="password"
-                name="passwordOne"
-                value={passwordOne}
-                onChange={this.onChange}
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="confirm-password"
-                type="password"
-                name="passwordTwo"
-                value={passwordTwo}
-                onChange={this.onChange}
-                placeholder="Re-enter your password"
-                required
-              />
-            </div>
+            {this.state.selectedSignInOption === "password" ? <div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="password"
+                  type="password"
+                  name="passwordOne"
+                  value={passwordOne}
+                  onChange={this.onChange}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="confirm-password"
+                  type="password"
+                  name="passwordTwo"
+                  value={passwordTwo}
+                  onChange={this.onChange}
+                  placeholder="Re-enter your password"
+                  required
+                />
+              </div>
+            </div> : <div/>}
             <br />
             {error && <p style={{ color: "red" }}> {error} </p>}
+            <div className="radio">
+              <label>
+                <input type="radio" value="passwordless" 
+                              checked={this.state.selectedSignInOption === "passwordless"} 
+                              onChange={this.handleSignInOptionChange} />
+                <p>Passwordless</p>
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input type="radio" value="password" 
+                              checked={this.state.selectedSignInOption === "password"} 
+                              onChange={this.handleSignInOptionChange} />
+                <p>With Password</p>
+              </label>
+            </div>
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton
@@ -473,16 +494,19 @@ class RegisterFormBase extends React.Component {
             ) : (
               <>
                 <center>
-                  <p style={{ color: "red" }}>
+                  <p style={{ color: "blue" }}>
                     {" "}
-                    Please finish creating your profile before you continue
                     {this.state.specialUser ? (
                       <p>
                         Welcome! You have been invited by a community admin to
                         this MassEnergize Community.
                       </p>
                     ) : (
-                      <></>
+                      <>
+                    Hello, {this.props.auth.email}!
+                    <br/>
+                    Please finish creating your profile before you continue
+                      </>
                     )}
                   </p>
                 </center>
@@ -709,19 +733,22 @@ class RegisterFormBase extends React.Component {
 
   isInvalid() {
     const { passwordOne, email, name, passwordTwo } = this.state;
-    return (
-      passwordOne !== passwordTwo ||
+    if (this.state.selectedSignInOption === "password") {
+      return passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
-      name === ""
-    );
+      name === "";
+    } else if (this.state.selectedSignInOption === "passwordless") {
+      return email === "" || email === null;
+    };
   }
 
   onSubmit(event) {
     this.setRegProtocol();
     event.preventDefault();
     const { email, passwordOne } = this.state;
-    this.props.firebase
+    if (this.state.selectedSignInOption === "password") {
+      this.props.firebase
       .auth()
       .setPersistence(this.state.persistence)
       .then(() => {
@@ -736,7 +763,75 @@ class RegisterFormBase extends React.Component {
             this.setState({ error: err.message });
           });
       });
+    } else if (this.state.selectedSignInOption === "passwordless") {
+      this.signInWithEmail();
+    };
+    
   }
+
+  signInWithEmail = () => {
+    // console.log(window.location.href)
+    var actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.massenergize.com) for this
+      // URL must be in the authorized domains list in the Firebase Console.
+      url: window.location.href,
+      // This must be true.
+      handleCodeInApp: true,
+    };
+    this.props.firebase
+      .auth()
+      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. 
+        // TODO: Inform the user.
+        alert("Please check your email for a new sign in link.");
+        console.log("Email sent!")
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', this.state.email);
+        // ...
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ error: err.message });
+      });
+  };
+  completeSignInWithEmail = () => {
+    // Confirm the link is a sign-in with email link.
+    if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      var email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        // User opened the link on a different device. To prevent session fixation
+        // attacks, ask the user to provide the associated email again. For example:
+        email = window.prompt('Please provide your email again for confirmation');
+      }
+      // The client SDK will parse the code from the link for you.
+      this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
+        .then((auth) => {
+          // Clear email from storage.
+          window.localStorage.removeItem('emailForSignIn');
+          // You can access the new user via result.user
+          // Additional user info profile not available via:
+          // result.additionalUserInfo.profile == null
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+          // TODO: Redirect to home
+          this.fetchMassToken(auth.user._lat, auth.user.email);
+          this.setState({ ...INITIAL_STATE });
+          window.location.href = window.location.origin + this.props.links.home;
+        })
+        .catch((err) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
+          console.log(err);
+        });
+    }
+  };
   //for generating the profile picture before the user can upload one when they go back to edit their profile
 
   onFinalSubmit(event) {
@@ -822,6 +917,11 @@ class RegisterFormBase extends React.Component {
             this.setState({ ...INITIAL_STATE, form: 2 });
           });
       });
+  };
+  handleSignInOptionChange = (changeEvent) => {
+    this.setState({
+      selectedSignInOption: changeEvent.target.value
+    });
   };
   signInWithFacebook = (e) => {
     this.setState({ is_using_facebook: true });

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-// import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
@@ -10,7 +9,6 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 import METextField from "../Widgets/METextField";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
 export const FILTER_BAR_VERSION = "filter_bar_version";
-// const OPTION1 = "option1";
 const OPTION2 = "option2";
 
 class HorizontalFilterBox extends Component {
