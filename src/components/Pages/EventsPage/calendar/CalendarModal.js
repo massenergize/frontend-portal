@@ -20,7 +20,7 @@ export default function CalendarModal({ event, close, toFullView }) {
     >
       <div className="calendar-modal">
         <img src={event?.image?.url || notFound} alt="Event media" />
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className="c-m-info">
           <div style={{ height: "100%", padding: 15 }}>
             <h5>{name || "..."}</h5>
             <p style={{ color: "black", fontSize: 15 }}>

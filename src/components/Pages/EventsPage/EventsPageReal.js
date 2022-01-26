@@ -20,6 +20,7 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import CalendarModal from "./calendar/CalendarModal";
 
+const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
   NORMAL: { name: "Normal View", icon: "fa-bars", key: "normal" },
   CALENDAR: { name: "Calendar View", icon: "fa-calendar", key: "calendar" },
@@ -29,6 +30,7 @@ const VIEW_MODES = {
  */
 class EventsPage extends React.Component {
   constructor(props) {
+    const savedView = localStorage.getItem(EVENT_VIEW_MODE);
     super(props);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
@@ -37,7 +39,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
-      view_mode: VIEW_MODES.CALENDAR.key,
+      view_mode: savedView || VIEW_MODES.CALENDAR.key,
       showModal: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -151,9 +153,10 @@ class EventsPage extends React.Component {
                         const isActive = this.state.view_mode === mode?.key;
                         return (
                           <div
-                            onClick={() =>
-                              this.setState({ view_mode: mode?.key })
-                            }
+                            onClick={() => {
+                              this.setState({ view_mode: mode?.key });
+                              localStorage.setItem(EVENT_VIEW_MODE, mode?.key);
+                            }}
                             className={`${
                               isActive &&
                               "event-view-toggler-active z-depth-float"

@@ -18,20 +18,21 @@ const localizer = dateFnsLocalizer({
 
 export default function EventCalendarView({ events, openModal }) {
   return (
-    <Calendar
-      localizer={localizer}
-      events={events || []}
-      startAccessor="start_date_and_time"
-      titleAccessor="name"
-      endAccessor="end_date_and_time"
-      style={{ height: 500 }}
-      views={["month"]}
-      onSelectEvent={(obj) => openModal(obj)}
-      popup={true}
-      showMultiDayTimes={true}
-      eventPropGetter={() => ({
-        className: "c-event-mark z-depth-float",
-      })}
-    />
+    <div className="event-calendar-container">
+      <Calendar
+        localizer={localizer}
+        events={events || []}
+        startAccessor="start_date_and_time"
+        titleAccessor="name"
+        endAccessor="end_date_and_time"
+        views={["month"]}
+        onSelectEvent={(obj) => openModal(obj)}
+        popup={true}
+        showMultiDayTimes={true}
+        eventPropGetter={() => ({
+          className: "c-event-mark z-depth-float",
+        })}
+      />
+    </div>
   );
 }
