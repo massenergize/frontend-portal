@@ -61,7 +61,6 @@ class RegisterFormBase extends React.Component {
       persistence: this.props.firebase.auth.Auth.Persistence.SESSION,
       form: props.form ? props.form : 1,
       email: null,
-      selectedSignInOption: "passwordless",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -206,7 +205,7 @@ class RegisterFormBase extends React.Component {
 
     const title = pageData?.title
       ? pageData.title
-      : (this.state.selectedSignInOption === "password" ? "Enter your Email and a Password" : "Enter your Email");
+      : "Enter your Email and a Password";
     const description = pageData?.description
       ? pageData.description
       : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
@@ -304,7 +303,7 @@ class RegisterFormBase extends React.Component {
                 required
               />
             </div>
-            {this.state.selectedSignInOption === "password" ? <div>
+            <div>
               <div className="form-group">
                 <span className="adon-icon">
                   <span className="fa fa-unlock-alt"></span>
@@ -333,25 +332,9 @@ class RegisterFormBase extends React.Component {
                   required
                 />
               </div>
-            </div> : <div/>}
+            </div>
             <br />
             {error && <p style={{ color: "red" }}> {error} </p>}
-            <div className="radio">
-              <label>
-                <input type="radio" value="passwordless" 
-                              checked={this.state.selectedSignInOption === "passwordless"} 
-                              onChange={this.handleSignInOptionChange} />
-                <p>Passwordless</p>
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input type="radio" value="password" 
-                              checked={this.state.selectedSignInOption === "password"} 
-                              onChange={this.handleSignInOptionChange} />
-                <p>With Password</p>
-              </label>
-            </div>
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton
@@ -733,22 +716,17 @@ class RegisterFormBase extends React.Component {
 
   isInvalid() {
     const { passwordOne, email, name, passwordTwo } = this.state;
-    if (this.state.selectedSignInOption === "password") {
-      return passwordOne !== passwordTwo ||
+    return passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
       name === "";
-    } else if (this.state.selectedSignInOption === "passwordless") {
-      return email === "" || email === null;
-    };
   }
 
   onSubmit(event) {
     this.setRegProtocol();
     event.preventDefault();
     const { email, passwordOne } = this.state;
-    if (this.state.selectedSignInOption === "password") {
-      this.props.firebase
+    this.props.firebase
       .auth()
       .setPersistence(this.state.persistence)
       .then(() => {
@@ -762,11 +740,7 @@ class RegisterFormBase extends React.Component {
           .catch((err) => {
             this.setState({ error: err.message });
           });
-      });
-    } else if (this.state.selectedSignInOption === "passwordless") {
-      this.signInWithEmail();
-    };
-    
+    });    
   }
 
   signInWithEmail = () => {
@@ -918,11 +892,7 @@ class RegisterFormBase extends React.Component {
           });
       });
   };
-  handleSignInOptionChange = (changeEvent) => {
-    this.setState({
-      selectedSignInOption: changeEvent.target.value
-    });
-  };
+
   signInWithFacebook = (e) => {
     this.setState({ is_using_facebook: true });
     this.props.firebase
