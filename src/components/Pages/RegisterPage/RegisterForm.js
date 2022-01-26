@@ -727,20 +727,20 @@ class RegisterFormBase extends React.Component {
     event.preventDefault();
     const { email, passwordOne } = this.state;
     this.props.firebase
-    .auth()
-    .setPersistence(this.state.persistence)
-    .then(() => {
-      this.props.firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, passwordOne)
-        .then((authUser) => {
-          this.setState({ ...INITIAL_STATE, form: 2 });
-          this.sendVerificationEmail();
-        })
-        .catch((err) => {
-          this.setState({ error: err.message });
-        });
-    });
+      .auth()
+      .setPersistence(this.state.persistence)
+      .then(() => {
+        this.props.firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, passwordOne)
+          .then((authUser) => {
+            this.setState({ ...INITIAL_STATE, form: 2 });
+            this.sendVerificationEmail();
+          })
+          .catch((err) => {
+            this.setState({ error: err.message });
+          });
+    });    
   }
 
   signInWithEmail = () => {
@@ -892,6 +892,7 @@ class RegisterFormBase extends React.Component {
           });
       });
   };
+
   signInWithFacebook = (e) => {
     this.setState({ is_using_facebook: true });
     this.props.firebase
