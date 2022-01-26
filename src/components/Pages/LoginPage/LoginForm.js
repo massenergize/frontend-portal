@@ -45,7 +45,7 @@ class LoginFormBase extends React.Component {
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Welcome!";
-    const description = pageData.description ? pageData.description : ""; 
+    const description = pageData.description ? pageData.description : "";
 
     return (
       <div
@@ -181,9 +181,7 @@ class LoginFormBase extends React.Component {
   };
 
   componentDidMount = () => {
-    var email = window.localStorage.getItem('emailForSignIn');
-    this.setState({email})
-    this.completeSignInWithEmail();
+    this.completeSignInWithEmail()
   };
 
   forgotPassword = () => {
@@ -358,7 +356,7 @@ class LoginFormBase extends React.Component {
         // attacks, ask the user to provide the associated email again. For example:
         email = window.prompt('Please provide your email again for confirmation');
         window.localStorage.setItem('emailForSignIn', email);
-      }
+      };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
         .then((auth) => {
