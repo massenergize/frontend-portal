@@ -178,7 +178,7 @@ class LoginFormBase extends React.Component {
         </div>
       </div>
     );
-  }
+  };
 
   componentDidMount = () => {
     this.completeSignInWithEmail();
@@ -342,7 +342,6 @@ class LoginFormBase extends React.Component {
 
   completeSignInWithEmail = () => {
     // Confirm the link is a sign-in with email link.
-    console.log("completeSignInWithEmail")
     if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
@@ -355,7 +354,7 @@ class LoginFormBase extends React.Component {
         // User opened the link on a different device. To prevent session fixation
         // attacks, ask the user to provide the associated email again. For example:
         email = window.prompt('Please provide your email again for confirmation');
-        window.localStorage.setItem('emailForSignIn', this.state.email);
+        window.localStorage.setItem('emailForSignIn', email);
       }
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
