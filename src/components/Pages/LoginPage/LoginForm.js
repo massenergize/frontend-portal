@@ -107,7 +107,7 @@ class LoginFormBase extends React.Component {
             <div className="clearfix">
               <div className="form-group pull-left">
                 { this.state.signInWithPassword===null ? 
-                  <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                  <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
                     Continue</MEButton> : 
                   this.state.signInWithPassword ? 
                     <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
