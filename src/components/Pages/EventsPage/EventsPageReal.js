@@ -16,6 +16,14 @@ import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+import EventCalendarView from "./calendar/EventCalendarView";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
+import CalendarModal from "./calendar/CalendarModal";
+
+const VIEW_MODES = {
+  NORMAL: { name: "Normal View", icon: "fa-bars", key: "normal" },
+  CALENDAR: { name: "Calendar View", icon: "fa-calendar", key: "calendar" },
+};
 /**
  * Renders the event page
  */
@@ -29,6 +37,8 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
+      view_mode: VIEW_MODES.CALENDAR.key,
+      showModal: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -91,6 +101,13 @@ class EventsPage extends React.Component {
           data-number-of-events={this.props.events?.length || 0}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
+          <CalendarModal
+            event={this.state.showModal}
+            close={() => this.setState({ showModal: null })}
+            toFullView={(e) =>
+              this.props.history.push(this.props.links.events + "/" + e?.id)
+            }
+          />
           {/* renders the sidebar and events columns */}
           <div className="boxed-wrapper">
             <BreadCrumbBar links={[{ name: "Events" }]} />
@@ -128,13 +145,53 @@ class EventsPage extends React.Component {
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                     />
-
-                    <div
-                      className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
-                      style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
-                    >
-                      <div className="row">{this.renderEvents(found)}</div>
+                    <div className="event-view-togglers">
+                      {Object.keys(VIEW_MODES).map((key, index) => {
+                        const mode = VIEW_MODES[key];
+                        const isActive = this.state.view_mode === mode?.key;
+                        return (
+                          <div
+                            onClick={() =>
+                              this.setState({ view_mode: mode?.key })
+                            }
+                            className={`${
+                              isActive &&
+                              "event-view-toggler-active z-depth-float"
+                            }`}
+                            key={index}
+                          >
+                            <i className={`fa ${mode?.icon}`}></i> {mode?.name}
+                          </div>
+                        );
+                      })}
                     </div>
+
+                    {this.state.view_mode === VIEW_MODES.NORMAL?.key && (
+                      <div
+                        className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
+                        style={{
+                          paddingTop: 0,
+                          marginTop: 9,
+                          paddingRight: 40,
+                        }}
+                      >
+                        <div className="row">{this.renderEvents(found)}</div>
+                      </div>
+                    )}
+
+                    {this.state.view_mode === VIEW_MODES.CALENDAR.key && (
+                      <div
+                        style={{ marginTop: 40 }}
+                        className={MEAnimation.getScaleInAnimation()}
+                      >
+                        <EventCalendarView
+                          events={found}
+                          openModal={(event) =>
+                            this.setState({ showModal: event })
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

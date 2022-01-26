@@ -316,6 +316,7 @@ export function dateFormatString(startDate, endDate) {
  * @param location
  */
 export function locationFormatJSX(location) {
+  if (!location) return;
   let firstLine =
     location.unit && location.unit !== ""
       ? `${location.address || ""}, ${location.unit}`
