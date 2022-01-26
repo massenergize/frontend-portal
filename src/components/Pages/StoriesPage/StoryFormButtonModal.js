@@ -45,6 +45,9 @@ class StoryFormButtonModal extends Component {
             this.TriggerModal(false);
           }}
         >
+		  <div className="CloseModalButton"><Button onClick={() => {
+            this.TriggerModal(false);
+          }} variant="light">Close</Button></div>
           <StoryForm
             draftTestimonialData={this.props.draftTestimonialData}
             TriggerSuccessNotification={(bool) =>

@@ -1824,6 +1824,12 @@
 	justify-content: space-between;
   }
 
+  .CloseModalButton {
+	margin-right: -90px;
+	position: absolute;
+	right:0;
+  }
+
   .hori-filter-container {
     position: relative;
     text-align: center;
