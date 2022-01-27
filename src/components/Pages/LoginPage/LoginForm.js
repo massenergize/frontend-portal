@@ -380,10 +380,10 @@ class LoginFormBase extends React.Component {
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
-          // TODO: Redirect to home
           this.fetchMassToken(auth.user._lat, auth.user.email);
           this.setState({ ...INITIAL_STATE });
-          window.location.href = window.location.origin + this.props.links.home;
+          window.location.href = this.props.links.home;
+          // window.location.href = window.location.origin + this.props.links.home;
         })
         .catch((err) => {
           // Some error occurred, you can inspect the code: error.code
