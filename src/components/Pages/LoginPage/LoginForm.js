@@ -187,11 +187,9 @@ class LoginFormBase extends React.Component {
         email = window.localStorage.getItem('emailForSignIn');
         if (email && email !== "") {
           this.setState({email:email}, this.completeSignInWithEmail());
-        }
-        ; 
-        // else {
-        //   this.setState({error:"Please provide your email again for confirmation"});
-        // };
+        } else {
+          this.setState({ error: "Please provide your email again for confirmation" });
+        };
       };
     };
   };
@@ -290,11 +288,9 @@ class LoginFormBase extends React.Component {
               this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
             this.setState({signInWithPassword: false}, this.signInWithEmail());
-            console.log("Yes!");
           } else {
             // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
             this.setState({signInWithPassword: false}, this.signInWithEmail(window.location.origin + this.props.links.signup));
-            console.log("Noooooo");
           };
         })
         .catch((err) => {
@@ -332,33 +328,33 @@ class LoginFormBase extends React.Component {
     if (this.state.email === "") {
       this.setState({error: "Please enter your email to enable passwordless authentication"});
     } else {
-      if (redirURL === null) {
+      if (!redirURL) {
         redirURL = window.location.href
       };
-    var actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.massenergize.com) for this
-      // URL must be in the authorized domains list in the Firebase Console.
-      url: redirURL,
-      // This must be true.
-      handleCodeInApp: true,
-    };
-    this.props.firebase
-      .auth()
-      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
-      .then(() => {
-        // The link was successfully sent. 
-        // TODO: Inform the user.
-        alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
-        console.log("Email sent!")
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', this.state.email);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ error: err.message });
-      });
-    };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.massenergize.com) for this
+        // URL must be in the authorized domains list in the Firebase Console.
+        url: redirURL,
+        // This must be true.
+        handleCodeInApp: true,
+      };
+      this.props.firebase
+        .auth()
+        .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
+        .then(() => {
+          // The link was successfully sent. 
+          // TODO: Inform the user.
+          alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
+          console.log("Email sent!")
+          // Save the email locally so you don't need to ask the user for it again
+          // if they open the link on the same device.
+          window.localStorage.setItem('emailForSignIn', this.state.email);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setState({ error: err.message });
+        });
+      };
   };
 
   completeSignInWithEmail = () => {
@@ -372,13 +368,6 @@ class LoginFormBase extends React.Component {
       var { email } = this.state;
       if (!email || email === "") {
         var email = window.localStorage.getItem('emailForSignIn');
-        if (!email || email === "") {
-          // User opened the link on a different device. To prevent session fixation
-          // attacks, ask the user to provide the associated email again. For example:
-          console.log("6 " + email);
-          email = window.prompt('Please provide your email again for confirmation');
-          window.localStorage.setItem('emailForSignIn', email);
-        };
       };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
