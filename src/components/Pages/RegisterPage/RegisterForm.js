@@ -92,7 +92,17 @@ class RegisterFormBase extends React.Component {
           console.log(err);
         });
     };
-    this.completeSignInWithEmail();
+    var { email } = this.state;
+    if (!email || email === "") {
+      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        email = window.localStorage.getItem('emailForSignIn');
+        if (email && email !== "") {
+          this.setState({email:email}, this.completeSignInWithEmail());
+        } else {
+          this.setState({ error: "Please provide your email again for confirmation" });
+        };
+      };
+    };
   }
 
   getRegProtocol() {
@@ -777,17 +787,16 @@ class RegisterFormBase extends React.Component {
       // the sign-in operation.
       // Get the email if available. This should be available if the user completes
       // the flow on the same device where they started it.
-      var email = window.localStorage.getItem('emailForSignIn');
-      if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email again for confirmation');
-      }
+      var { email } = this.state;
+      if (!email || email === "") {
+        var email = window.localStorage.getItem('emailForSignIn');
+      };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
         .then((auth) => {
           // Clear email from storage.
           window.localStorage.removeItem('emailForSignIn');
+
           // You can access the new user via result.user
           // Additional user info profile not available via:
           // result.additionalUserInfo.profile == null
