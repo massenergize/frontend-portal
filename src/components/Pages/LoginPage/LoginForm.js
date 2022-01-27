@@ -181,7 +181,19 @@ class LoginFormBase extends React.Component {
   };
 
   componentDidMount = () => {
-    this.completeSignInWithEmail()
+    var { email } = this.state;
+    if (!email || email === "") {
+      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        email = window.localStorage.getItem('emailForSignIn');
+        if (email && email !== "") {
+          this.setState({email:email}, this.completeSignInWithEmail());
+        }
+        ; 
+        // else {
+        //   this.setState({error:"Please provide your email again for confirmation"});
+        // };
+      };
+    };
   };
 
   forgotPassword = () => {
@@ -259,8 +271,12 @@ class LoginFormBase extends React.Component {
   // Signs the user in with an email link if they are already set up woth passwordless.
   // If a user does not have a profile or has only used a password to sign in we 
   signInWithMethod = () => {
-    if (this.state.email) {
-      this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
+    var { email } = this.state;
+    if (email && email !== "") {
+      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        this.completeSignInWithEmail();
+      } else {
+        this.props.firebase.auth().fetchSignInMethodsForEmail(email)
         .then((signInMethods) => {
           // This returns the same array as fetchProvidersForEmail but for email
           // provider identified by 'password' string, signInMethods would contain 2
@@ -274,15 +290,18 @@ class LoginFormBase extends React.Component {
               this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
             this.setState({signInWithPassword: false}, this.signInWithEmail());
+            console.log("Yes!");
           } else {
             // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
             this.setState({signInWithPassword: false}, this.signInWithEmail(window.location.origin + this.props.links.signup));
+            console.log("Noooooo");
           };
         })
         .catch((err) => {
           console.log(err);
           // Some error occurred, you can inspect the code: error.code
         });
+      };
     };
   }
 
@@ -350,12 +369,16 @@ class LoginFormBase extends React.Component {
       // the sign-in operation.
       // Get the email if available. This should be available if the user completes
       // the flow on the same device where they started it.
-      var email = window.localStorage.getItem('emailForSignIn');
+      var { email } = this.state;
       if (!email || email === "") {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email again for confirmation');
-        window.localStorage.setItem('emailForSignIn', email);
+        var email = window.localStorage.getItem('emailForSignIn');
+        if (!email || email === "") {
+          // User opened the link on a different device. To prevent session fixation
+          // attacks, ask the user to provide the associated email again. For example:
+          console.log("6 " + email);
+          email = window.prompt('Please provide your email again for confirmation');
+          window.localStorage.setItem('emailForSignIn', email);
+        };
       };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
