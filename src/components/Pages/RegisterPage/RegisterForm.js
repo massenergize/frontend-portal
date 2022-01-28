@@ -68,11 +68,10 @@ class RegisterFormBase extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.setRegProtocol = this.setRegProtocol.bind(this);
-    //const { id } = this.props.match.params;
-    //console.log(id);
   }
 
   componentDidMount() {
+    //console.log("componentDidMount", this.props.auth)
     if (this.props.auth.email) {
       const body = { email: this.props.auth.email };
       apiCall("users.checkImported", body)
@@ -97,6 +96,7 @@ class RegisterFormBase extends React.Component {
       if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
         email = window.localStorage.getItem('emailForSignIn');
         if (email && email !== "") {
+          //console.log("componentDidMount will setState for email", email)
           this.setState({email:email}, this.completeSignInWithEmail());
         } else {
           this.setState({ error: "Please provide your email again for confirmation" });
@@ -114,6 +114,7 @@ class RegisterFormBase extends React.Component {
 
   render() {
     if (!this.props.auth || !this.props.user) {
+      //console.log("RegisterPage loading circle 1")
       return <LoadingCircle />;
     }
     const policies = this.props.policies || [];
@@ -124,6 +125,7 @@ class RegisterFormBase extends React.Component {
     } else {
       page = 2;
     }
+    //console.log("Register page =", page)
     const [TOS] = policies.filter((x) => x.name === "Terms of Service") || "";
 
     const [PP] = policies.filter((x) => x.name === "Privacy Policy") || "";
@@ -135,6 +137,7 @@ class RegisterFormBase extends React.Component {
       this.props.auth.emailVerified &&
       this.props.user.accepts_terms_and_conditions
     ) {
+      //console.log("Redirecting to profile page")
       return <Redirect to={this.props.links.profile} />;
     }
 
@@ -201,9 +204,6 @@ class RegisterFormBase extends React.Component {
     } else if (page === 2) {
       return this.renderPage2();
     }
-    /*else if (page === 3) {
-			return this.renderPage3() 
-		}*/
   };
 
   renderPage1 = () => {
@@ -435,14 +435,13 @@ class RegisterFormBase extends React.Component {
       city,
       state,
       zip,
-      //serviceProvider,
-      //termsAndServices,
     } = this.state;
 
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
     if (!this.getRegProtocol()) {
+      //console.log("not getRegProtocal")
       return <LoadingCircle />;
     }
     return (
@@ -553,7 +552,7 @@ class RegisterFormBase extends React.Component {
                   <select
                     value={state}
                     className="form-control"
-                    onChange={(event) =>
+                    onChange={(event) => 
                       this.setState({ state: event.target.value })
                     }
                     placeholder="State"
@@ -789,7 +788,7 @@ class RegisterFormBase extends React.Component {
       // the flow on the same device where they started it.
       var { email } = this.state;
       if (!email || email === "") {
-        var email = window.localStorage.getItem('emailForSignIn');
+        email = window.localStorage.getItem('emailForSignIn');
       };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)

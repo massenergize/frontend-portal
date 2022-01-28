@@ -367,7 +367,7 @@ class LoginFormBase extends React.Component {
       // the flow on the same device where they started it.
       var { email } = this.state;
       if (!email || email === "") {
-        var email = window.localStorage.getItem('emailForSignIn');
+        email = window.localStorage.getItem('emailForSignIn');
       };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)

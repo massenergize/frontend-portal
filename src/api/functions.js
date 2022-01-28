@@ -93,7 +93,7 @@ function log_device(cookies) {
   response = apiCall('/device.log', body).then(function(result) {
     try {
       if (result.data)
-        set_cookie(cookies, "device", result.data.id)
+        set_cookie(cookies, "device", result.data.id);
     } catch (error) {
       console.log(error); // Debug
       return { success: false, error };
