@@ -292,6 +292,10 @@ class AppRouter extends Component {
           idToken: idToken,
         });
         user = newLoggedInUserResponse.data;
+        if (!user && newLoggedInUserResponse.error === "authenticated_but_needs_registration") {
+          window.localStorage.setItem("reg_protocol", "show");
+          return false;
+        }
       }
     }
 
