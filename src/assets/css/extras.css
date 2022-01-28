@@ -5,6 +5,66 @@
   --app-theme-orange-lighter: #fba930;
 }
 
+.underline-me {
+  border: solid 0px black;
+  border-bottom-width: 1px;
+  padding-bottom: 5px;
+}
+.calendar-modal img {
+  object-fit: cover;
+}
+.calendar-modal-btn {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 15px;
+  background-color: var(--app-theme-green);
+  text-align: center;
+  color: white;
+}
+.calendar-modal {
+  display: flex;
+  width: 100%;
+  flex: 2;
+}
+
+.c-event-mark {
+  background: var(--app-theme-orange) !important;
+  color: white;
+
+  border-radius: 0px !important;
+  font-size: 14px !important;
+  cursor: pointer;
+}
+.c-event-mark:hover {
+  background-color: var(--app-theme-green) !important;
+  transition: 0.2s ease-out;
+}
+.event-view-togglers {
+  display: flex;
+  flex-direction: row;
+}
+.event-view-togglers div {
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.event-view-togglers div:hover {
+  background-color: var(--app-theme-green);
+  color: white;
+  transition: 0.2s ease-out;
+}
+
+.event-view-togglers div > i {
+  margin-right: 6px;
+}
+.event-view-toggler-active {
+  background-color: var(--app-theme-green);
+  color: white;
+}
+
 .word-wrap {
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
@@ -346,6 +406,11 @@
   position: absolute; 
   transform: translateX(50)
 } */
+
+.touchable-opacity {
+  cursor: pointer;
+  font-weight: bold;
+}
 
 .touchable-opacity:hover {
   opacity: 0.8;
@@ -1901,17 +1966,60 @@
   .pc-vanish {
     display: none !important;
   }
+  .event-calendar-container {
+    height: 500px;
+  }
+  .c-event-mark {
+    padding: 5px !important;
+  }
+  .calendar-modal {
+    flex-direction: row;
+    height: 350px;
+  }
 
-  /* ------------------------------- TABLETS ----------------------------- */
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .tablet-vanish {
-      display: none !important;
-    }
+  .calendar-modal img {
+    width: 50%;
+    height: 100%;
+  }
+  .calendar-modal * {
+    flex: 1;
+  }
+  .event-view-togglers div {
+    padding: 15px 25px;
+    font-size: 15px;
+  }
+}
+/* ------------------------------- TABLETS ----------------------------- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-vanish {
+    display: none !important;
   }
 }
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .event-view-togglers div {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .c-m-info {
+    height: 100%;
+  }
+  .calendar-modal img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .calendar-modal {
+    flex-direction: column;
+    height: 500px;
+  }
+  .event-calendar-container {
+    height: 300px;
+  }
+  .event-view-togglers {
+    margin-top: 100px;
+  }
   .data-explanation-dialog {
     border: solid 1px green;
     margin: 5px;
