@@ -532,8 +532,8 @@ class ChooseHHForm extends React.Component {
             ) : (
               <div />
             )}
-          </div>
         </div>
+	
       );
     });
   }
