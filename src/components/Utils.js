@@ -4,6 +4,13 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 
+export const fetchParamsFromURLS = (location) => {
+  if (!location || !location.search) return "";
+  const { filters, categories } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  console.log("i am the box bro ::-->", filters, categories);
+
+};
+
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
 export const stateAbbreviation = (stateName) => {
@@ -50,7 +57,7 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   return null;
 };
 
-export const getFilterVersionFromURL = (location, paramName) => {
+export const getFilterVersionFromURL = (location) => {
   if (!location || !location.search) return "";
   const { filter } = qs.parse(location.search, { ignoreQueryPrefix: true });
   return filter;
@@ -65,7 +72,6 @@ export const getIsSandboxFromURL = (location) => {
 export const getTakeTourFromURL = (location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
-  //console.log("locationUtils", location);
   return tour?.toLowerCase();
 };
 

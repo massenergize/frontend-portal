@@ -19,6 +19,7 @@ import ActionCard from "./ActionCard";
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
+  fetchParamsFromURLS,
   filterTagCollections,
   searchIsActiveFindContent,
   sumOfCarbonScores,
@@ -32,6 +33,28 @@ import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
+
+const INIT_STATE = {
+  checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
+  loaded: false,
+  openAddForm: null,
+  testimonialLink: null,
+  openModalForm: null,
+  modal_content: {
+    //tbd
+    image: null,
+    title: null,
+    desc: null,
+    ano: null,
+    user: null,
+  },
+  actionModal: false, //tbd
+  mirror_actions: [],
+  showTodoMsg: false,
+  actions: [],
+  status: null,
+  showEqModal: false,
+};
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -47,28 +70,7 @@ class ActionsPage extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.state = {
-      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
-      loaded: false,
-      openAddForm: null,
-      testimonialLink: null,
-      openModalForm: null,
-      modal_content: {
-        //tbd
-        image: null,
-        title: null,
-        desc: null,
-        ano: null,
-        user: null,
-      },
-      actionModal: false, //tbd
-      mirror_actions: [],
-      showTodoMsg: false,
-      actions: [],
-      status: null,
-      showEqModal: false,
-    };
-    //this.handleChange = this.handleChange.bind(this);
+    this.state = { ...INIT_STATE };
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
@@ -103,7 +105,6 @@ class ActionsPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
-        
         <MEModal
           className="parent-act-modal-whole"
           showCloseBtn={false}
@@ -124,7 +125,6 @@ class ActionsPage extends React.Component {
             moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
-        
       );
     }
   }
@@ -162,6 +162,8 @@ class ActionsPage extends React.Component {
   }
 
   render() {
+    fetchParamsFromURLS(this.props.location, "box");
+    console.log("LOCATION", this.props.location);
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
@@ -215,8 +217,6 @@ class ActionsPage extends React.Component {
             disableScrolling={true}
             callback={handleTourCallback}
             spotlightPadding={-12}
-            // disableOverlay
-            // showProgress
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -319,13 +319,6 @@ class ActionsPage extends React.Component {
       </>
     );
   }
-
-  // on change in any category or tag checkbox update the actionsPage
-  //handleChange() {
-  //  this.forceUpdate();
-  //}
-
-  // };
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -465,7 +458,7 @@ class ActionsPage extends React.Component {
           } else if (status === "DONE") {
             this.props.reduxAddToDone(json.data);
             this.setState({ testimonialLink: aid, showTodoMsg: false });
-          }  
+          }
         }
       })
       .catch((error) => {
