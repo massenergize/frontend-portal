@@ -7,7 +7,7 @@ import MEButton from "./../Widgets/MEButton";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import {
   googleProvider,
-  facebookProvider
+  facebookProvider,
 } from "../../../config/firebaseConfig";
 import { apiCall } from "../../../api/functions";
 import {
@@ -41,7 +41,6 @@ class LoginFormBase extends React.Component {
 
   render() {
     const { email, password, error } = this.state;
-
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Welcome!";
@@ -64,13 +63,15 @@ class LoginFormBase extends React.Component {
           {this.state.signInWithPassword ? (
             <div>
               <p>Enter your email and password.</p>
-            </div> 
-            ):(
-            <div>
-              <p>Enter your email address for password-free sign-in.  We'll send you an email with verification link.</p>
             </div>
-            )
-          }
+          ) : (
+            <div>
+              <p>
+                Enter your email address for password-free sign-in. We'll send
+                you an email with verification link.
+              </p>
+            </div>
+          )}
 
           <form onSubmit={this.onSubmit}>
             <div className="form-group mob-sweet-b-10">
@@ -87,35 +88,43 @@ class LoginFormBase extends React.Component {
               />
             </div>
             {this.state.signInWithPassword ? (
-            <div className="form-group mob-sweet-b-10">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="login-password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={this.onChange}
-                placeholder="Enter Password"
-              />
-            </div> 
-            ) : <div/>}
+              <div className="form-group mob-sweet-b-10">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="login-password"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={this.onChange}
+                  placeholder="Enter Password"
+                />
+              </div>
+            ) : (
+              <div />
+            )}
 
             {error && <p style={{ color: "red" }}> {error} </p>}
 
             <div className="clearfix">
               <div className="form-group pull-left">
-                { this.state.signInWithPassword===null ? 
-                  <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
-                    Continue</MEButton> : 
-                  this.state.signInWithPassword ? 
-                    <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
-                      Sign In
-                    </MEButton> : 
-                    <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
-                      Continue
-                    </MEButton>}
+                {!this.state.signInWithPassword ? (
+                  <MEButton
+                    onClick={this.signInWithMethod}
+                    disabled={this.isInvalid()}
+                  >
+                    Continue
+                  </MEButton>
+                ) : (
+                  <MEButton
+                    type="submit"
+                    disabled={this.isInvalid()}
+                    id="sign-in-btn"
+                  >
+                    Sign In
+                  </MEButton>
+                )}
               </div>
 
               <div className="form-group social-links-two padd-top-5 pull-right">
@@ -136,67 +145,86 @@ class LoginFormBase extends React.Component {
                 >
                   <span className="fa fa-facebook"></span>
                 </button>
-              </div>              
+              </div>
             </div>
 
             <div className="row">
               {this.state.signInWithPassword ? (
-              <div className="col">
-                <p>
-                  <button className=" energize-link" onClick={this.forgotPassword}>
-                    {" "}
-                    Forgot my password{" "}
-                  </button>
-                </p>
-                <p>
-                  <button className=" energize-link" onClick={this.setSignInWithEmail}>
-                    {" "}
-                    Sign in without password{" "}
-                  </button>
-                </p>
-                <p>
-                  {" "}
-                    Don't have a profile?{" "}
-                  <Link className="energize-link" to={this.props.links.signup}>
-                    Create one
-                  </Link>{" "}
-                </p>{" "}
-              </div>
-                ):(
-                  <div className="col">
+                <div className="col">
                   <p>
-                    <button className=" energize-link" onClick={this.setSignInWithPassword}>
+                    <button
+                      className=" energize-link"
+                      onClick={this.forgotPassword}
+                    >
+                      {" "}
+                      Forgot my password{" "}
+                    </button>
+                  </p>
+                  <p>
+                    <button
+                      className=" energize-link"
+                      onClick={this.setSignInWithEmail}
+                    >
+                      {" "}
+                      Sign in without password{" "}
+                    </button>
+                  </p>
+                  <p>
+                    {" "}
+                    Don't have a profile?{" "}
+                    <Link
+                      className="energize-link"
+                      to={this.props.links.signup}
+                    >
+                      Create one
+                    </Link>{" "}
+                  </p>{" "}
+                </div>
+              ) : (
+                <div className="col">
+                  <p>
+                    <button
+                      className=" energize-link"
+                      onClick={this.setSignInWithPassword}
+                    >
                       {" "}
                       Sign in with a password{" "}
                     </button>
                   </p>
-                  </div>
-                )
-              }
+                </div>
+              )}
             </div>
           </form>
         </div>
       </div>
     );
-  };
+  }
 
-  componentDidMount = () => {
+  checkIfPasswordLessAndAuthorise() {
     var { email } = this.state;
     if (!email || email === "") {
-      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
-        email = window.localStorage.getItem('emailForSignIn');
+      if (
+        this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+      ) {
+        email = window.localStorage.getItem("emailForSignIn");
         if (email && email !== "") {
-          this.setState({email:email}, this.completeSignInWithEmail());
+          this.setState({ email: email }, this.completeSignInWithEmail());
         } else {
-          this.setState({ error: "Please provide your email again for confirmation" });
-        };
-      };
-    };
+          this.setState({
+            error: "Please provide your email again for confirmation",
+          });
+        }
+      }
+    }
+  }
+
+  componentDidMount = () => {
+    this.checkIfPasswordLessAndAuthorise();
   };
 
   forgotPassword = () => {
     if (this.state.email !== "") {
-      window.localStorage.setItem('emailForSignIn', this.state.email);
+      window.localStorage.setItem("emailForSignIn", this.state.email);
       var actionCodeSettings = {
         url: window.location.href,
       };
@@ -232,11 +260,11 @@ class LoginFormBase extends React.Component {
   }
 
   setSignInWithPassword = () => {
-    this.setState({signInWithPassword: true, error: null});
+    this.setState({ signInWithPassword: true, error: null });
   };
 
   setSignInWithEmail = () => {
-    this.setState({signInWithPassword: false, error: null});
+    this.setState({ signInWithPassword: false, error: null });
   };
 
   onSubmit(event) {
@@ -244,62 +272,81 @@ class LoginFormBase extends React.Component {
 
     // if we get here without e-mail entered, don't error
     if (!this.state.email || this.state.email === "") return;
-    window.localStorage.setItem('emailForSignIn', this.state.email);
+    window.localStorage.setItem("emailForSignIn", this.state.email);
     window.localStorage.setItem("reg_protocol", "show");
     //firebase prop comes from the withFirebase higher component
     if (this.state.signInWithPassword) {
       this.props.firebase
-      .auth()
-      .setPersistence(this.state.persistence)
-      .then(() => {
-        this.props.firebase
-          .auth()
-          .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .then((auth) => {
-            this.fetchMassToken(auth.user._lat, auth.user.email);
-            this.setState({ ...INITIAL_STATE }); //reset the login boxes
-          })
-          .catch((err) => {
-            this.setState({ error: err.message });
-          });
-      });
+        .auth()
+        .setPersistence(this.state.persistence)
+        .then(() => {
+          this.props.firebase
+            .auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((auth) => {
+              this.fetchMassToken(auth.user._lat, auth.user.email);
+              this.setState({ ...INITIAL_STATE }); //reset the login boxes
+            })
+            .catch((err) => {
+              this.setState({ error: err.message });
+            });
+        });
     }
   }
 
   // Signs the user in with an email link if they are already set up woth passwordless.
-  // If a user does not have a profile or has only used a password to sign in we 
-  signInWithMethod = () => {
+  // If a user does not have a profile or has only used a password to sign in we
+  signInWithMethod = (e) => {
+    e.preventDefault();
     var { email } = this.state;
     if (email && email !== "") {
-      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+      if (
+        this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+      ) {
         this.completeSignInWithEmail();
       } else {
-        this.props.firebase.auth().fetchSignInMethodsForEmail(email)
-        .then((signInMethods) => {
-          // This returns the same array as fetchProvidersForEmail but for email
-          // provider identified by 'password' string, signInMethods would contain 2
-          // different strings:
-          // 'emailLink' if the user previously signed in with an email/link
-          // 'password' if the user has a password.
-          // A user could have both.
-          if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1 ||
-            signInMethods.indexOf(
-              this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-            // User can sign in with email/link.
-            this.setState({signInWithPassword: false}, this.signInWithEmail());
-          } else {
-            // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
-            this.setState({signInWithPassword: false}, this.signInWithEmail(window.location.origin + this.props.links.signup));
-          };
-        })
-        .catch((err) => {
-          console.log(err);
-          // Some error occurred, you can inspect the code: error.code
-        });
-      };
-    };
-  }
+        this.props.firebase
+          .auth()
+          .fetchSignInMethodsForEmail(email)
+          .then((signInMethods) => {
+            // This returns the same array as fetchProvidersForEmail but for email
+            // provider identified by 'password' string, signInMethods would contain 2
+            // different strings:
+            // 'emailLink' if the user previously signed in with an email/link
+            // 'password' if the user has a password.
+            // A user could have both.
+            if (
+              signInMethods.indexOf(
+                this.props.firebase.auth.EmailAuthProvider
+                  .EMAIL_LINK_SIGN_IN_METHOD
+              ) !== -1 ||
+              signInMethods.indexOf(
+                this.props.firebase.auth.EmailAuthProvider
+                  .EMAIL_PASSWORD_SIGN_IN_METHOD
+              ) !== -1
+            ) {
+              // User can sign in with email/link.
+              this.setState(
+                { signInWithPassword: false },
+                this.signInWithEmail()
+              );
+            } else {
+              // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
+              this.setState(
+                { signInWithPassword: false },
+                this.signInWithEmail(
+                  window.location.origin + this.props.links.signup
+                )
+              );
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            // Some error occurred, you can inspect the code: error.code
+          });
+      }
+    }
+  };
 
   //KNOWN BUG : LOGGING IN WITH GOOGLE WILL DELETE ANY ACCOUNT WITH THE SAME PASSWORD:
   //WOULD NOT DELETE DATA I THINK?
@@ -312,7 +359,7 @@ class LoginFormBase extends React.Component {
           .auth()
           .signInWithPopup(googleProvider)
           .then((auth) => {
-            window.localStorage.setItem('emailForSignIn', auth.user.email);
+            window.localStorage.setItem("emailForSignIn", auth.user.email);
             this.fetchMassToken(auth.user._lat, auth.user.email);
             this.setState({ ...INITIAL_STATE });
           })
@@ -324,13 +371,15 @@ class LoginFormBase extends React.Component {
   };
 
   // Signs in with passwordless. Will create a user if the user does not exist.
-  signInWithEmail = (redirURL=null) => {
+  signInWithEmail = (redirURL = null) => {
     if (this.state.email === "") {
-      this.setState({error: "Please enter your email to enable passwordless authentication"});
+      this.setState({
+        error: "Please enter your email to enable passwordless authentication",
+      });
     } else {
       if (!redirURL) {
-        redirURL = window.location.href
-      };
+        redirURL = window.location.href;
+      }
       var actionCodeSettings = {
         // URL you want to redirect back to. The domain (www.massenergize.com) for this
         // URL must be in the authorized domains list in the Firebase Console.
@@ -342,55 +391,41 @@ class LoginFormBase extends React.Component {
         .auth()
         .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
         .then(() => {
-          // The link was successfully sent. 
+          // The link was successfully sent.
           // TODO: Inform the user.
-          alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
-          console.log("Email sent!")
+          alert(
+            "Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder."
+          );
+          console.log("Email sent!");
           // Save the email locally so you don't need to ask the user for it again
           // if they open the link on the same device.
-          window.localStorage.setItem('emailForSignIn', this.state.email);
+          window.localStorage.setItem("emailForSignIn", this.state.email);
         })
         .catch((err) => {
           console.log(err);
           this.setState({ error: err.message });
         });
-      };
+    }
   };
 
   completeSignInWithEmail = () => {
-    // Confirm the link is a sign-in with email link.
-    if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
-      // Additional state parameters can also be passed via URL.
-      // This can be used to continue the user's intended action before triggering
-      // the sign-in operation.
-      // Get the email if available. This should be available if the user completes
-      // the flow on the same device where they started it.
-      var { email } = this.state;
-      if (!email || email === "") {
-        email = window.localStorage.getItem('emailForSignIn');
-      };
-      // The client SDK will parse the code from the link for you.
-      this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
-        .then((auth) => {
-          // Clear email from storage.
-          window.localStorage.removeItem('emailForSignIn');
-
-          // You can access the new user via result.user
-          // Additional user info profile not available via:
-          // result.additionalUserInfo.profile == null
-          // You can check if the user is new or existing:
-          // result.additionalUserInfo.isNewUser
-          this.fetchMassToken(auth.user._lat, auth.user.email);
-          this.setState({ ...INITIAL_STATE });
-          window.location.href = this.props.links.home;
-          // window.location.href = window.location.origin + this.props.links.home;
-        })
-        .catch((err) => {
-          // Some error occurred, you can inspect the code: error.code
-          // Common errors could be invalid email and invalid or expired OTPs.
-          console.log(err);
-        });
+    var { email } = this.state;
+    if (!email || email === "") {
+      email = window.localStorage.getItem("emailForSignIn");
     }
+    this.props.firebase
+      .auth()
+      .signInWithEmailLink(email, window.location.href)
+      .then((auth) => {
+        // Clear email from storage.
+        window.localStorage.removeItem("emailForSignIn");
+        this.fetchMassToken(auth.user._lat, auth.user.email);
+        this.setState({ ...INITIAL_STATE });
+        window.location.href = this.props.links.home;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   signInWithFacebook = () => {
@@ -402,7 +437,7 @@ class LoginFormBase extends React.Component {
           .auth()
           .signInWithPopup(facebookProvider)
           .then((auth) => {
-            window.localStorage.setItem('emailForSignIn', auth.user.email);
+            window.localStorage.setItem("emailForSignIn", auth.user.email);
             this.fetchMassToken(auth.user._lat, auth.user.email);
             this.setState({ ...INITIAL_STATE });
           })
