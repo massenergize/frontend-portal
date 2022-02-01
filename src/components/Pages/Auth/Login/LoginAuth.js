@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import BreadCrumbBar from "../../../Shared/BreadCrumbBar";
 import MEButton from "../../Widgets/MEButton";
-import Notification from "../../Widgets/Notification/Notification";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
 import { isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
-  const { userWantsPasswordFree, setUsePasswordFree, signUserIn, loading } =
-    props;
+  const {
+    userWantsPasswordFree,
+    setUsePasswordFree,
+    signUserIn,
+    loading,
+    links,
+  } = props;
 
   const [form, setForm] = useState({});
 
@@ -155,16 +158,15 @@ export default function LoginAuth(props) {
                   </button>
                 </div>
                 <p>
-                  {" "}
                   Don't have a profile?
                   <Link
                     style={{ marginLeft: 5 }}
                     className="energize-link"
-                    // to={this.props.links.signup}
+                    to={links?.signup}
                   >
                     Create one
-                  </Link>{" "}
-                </p>{" "}
+                  </Link>
+                </p>
               </div>
             </div>
           </div>

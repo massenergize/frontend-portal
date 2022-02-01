@@ -9,7 +9,7 @@ export default function Notification({ children, good = true, onClick }) {
   const icon = good ? "fa-check-circle" : "fa-times";
   return (
     <div
-      className="touchable-opacity"
+      className="me-anime-open-in touchable-opacity "
       style={{
         padding: "15px 20px",
         display: "flex",

@@ -1,31 +1,28 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { firebaseLogin } from "../../../redux/actions/authActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import SignUpAuth from "./Registration/SignUpAuth";
-import { withEmailAndPassword } from "./shared/firebase-utils";
 
 const SIGNIN = "signin";
 const REGISTER = "signup";
 
-export default function AuthEntry() {
+function AuthEntry({ firebaseLogin, notification, links }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
 
-  const [notification, setNotification] = useState({});
   const [loading, setLoading] = useState(false);
   const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
 
   const signUserIn = (form) => {
     setLoading(true);
-    // withEmailAndPassword(form?.email, form?.password, (auth, error) => {
-    //   setLoading(false);
-    //   console.log("I am the the returned response bro", auth, error);
-    // });
+    firebaseLogin(form, () => setLoading(false));
   };
 
-  console.log("I am the loading bro", loading);
   // ------------------------------------------------------------------
 
   var Page = <></>;
@@ -38,14 +35,15 @@ export default function AuthEntry() {
         userWantsPasswordFree={userWantsPasswordFree}
         setUsePasswordFree={setUsePasswordFree}
         signUserIn={signUserIn}
+        links={links}
       />
     );
     pageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
   } else if (isRegistrationPage) {
-    Page = <SignUpAuth loading={loading} />;
+    Page = <SignUpAuth loading={loading} links={links} />;
     pageTitle = "Sign Up";
   }
-  // ------------------------------------------------------------------------
+
   return (
     <>
       <div>
@@ -58,7 +56,11 @@ export default function AuthEntry() {
             <div className="container">
               <div className="row">
                 <div className="col-md-8 col-12 offset-md-2">
-                  {notification?.message && <Notification {...notification} />}
+                  {notification?.message && (
+                    <Notification {...notification}>
+                      {notification?.message}
+                    </Notification>
+                  )}
                   {Page}
                 </div>
               </div>
@@ -69,3 +71,17 @@ export default function AuthEntry() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    notification: state.authNotification,
+    authState: state.authState,
+    fireAuth: state.fireAuth,
+    links: state.links,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ firebaseLogin: firebaseLogin }, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AuthEntry);

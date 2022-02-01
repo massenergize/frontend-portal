@@ -3,14 +3,23 @@ import { translateFirebaseError } from "./utils";
 
 const Auth = firebase?.auth();
 export const withEmailAndPassword = async (email, password, cb) => {
-  try {
-    const response = Auth.signInWithEmailAndPassword(email, password);
-    if (cb) cb(response);
-    return response;
-  } catch (e) {
-    if (cb) cb(null, translateFirebaseError(e?.toString()));
-    console.log("SIGN_IN_ERROR:", e?.toString());
-  }
+  Auth.signInWithEmailAndPassword(email, password)
+    .then((response) => {
+      if (cb) cb(response);
+    })
+    .catch((e) => {
+      if (cb) cb(null, translateFirebaseError(e?.toString()));
+      console.log("SIGN_IN_ERROR:", e?.toString());
+    });
+
+  // try {
+  //   const response = Auth.signInWithEmailAndPassword(email, password);
+  //   if (cb) cb(response);
+  //   return response;
+  // } catch (e) {
+  //   if (cb) cb(null, translateFirebaseError(e?.toString()));
+  //   console.log("SIGN_IN_ERROR:", e?.toString());
+  // }
 };
 
 export const checkFirebaseAuthenticationState = async (cb) => {
