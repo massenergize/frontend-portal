@@ -11,6 +11,8 @@ export default function LoginAuth(props) {
     signUserIn,
     loading,
     links,
+    description,
+    title,
   } = props;
 
   const [form, setForm] = useState({});
@@ -21,9 +23,6 @@ export default function LoginAuth(props) {
   const getValue = (name) => {
     return (form || {})[name] || "";
   };
-
-  const title = "Welcome To MassEnergize";
-  const description = "";
 
   if (userWantsPasswordFree)
     return (

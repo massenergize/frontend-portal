@@ -1,4 +1,7 @@
-import { withEmailAndPassword } from "../../components/Pages/Auth/shared/firebase-utils";
+import {
+  registerWithEmailAndPassword,
+  withEmailAndPassword,
+} from "../../components/Pages/Auth/shared/firebase-helpers";
 
 export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
@@ -20,8 +23,16 @@ const makeError = (message) => {
   return { good: false, message };
 };
 export const firebaseLogin = (data, cb) => (dispatch) => {
-  withEmailAndPassword(data?.email, data?.password, (auth, error) => {
-    if (cb) cb();
+  withEmailAndPassword(data.email, data.password, (auth, error) => {
+    if (cb) cb(auth);
+    if (error) return dispatch(setAuthNotification(makeError(error)));
+    console.log("I am the AUTH BRO", auth);
+  });
+};
+
+export const firebaseRegistration = (data, cb) => (dispatch) => {
+  registerWithEmailAndPassword(data.email, data.password, (auth, error) => {
+    if (cb) cb(auth);
     if (error) return dispatch(setAuthNotification(makeError(error)));
     console.log("I am the AUTH BRO", auth);
   });

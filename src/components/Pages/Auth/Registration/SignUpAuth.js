@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { isInvalid } from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 
-export default function SignUpAuth({ description, title }) {
+export default function SignUpAuth({
+  description,
+  title,
+  loading,
+  registerUser,
+}) {
+  const [form, setForm] = useState({});
+
+  const onChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const getValue = (name) => {
+    return (form || {})[name] || "";
+  };
+  const invalidPassword = () => {
+    var status =
+      isInvalid(getValue("password")) ||
+      isInvalid(getValue("confirm_password"));
+    return status;
+  };
+
   return (
     <div className="styled-form register-form">
       <div
@@ -21,8 +42,8 @@ export default function SignUpAuth({ description, title }) {
               id="email"
               type="email"
               name="email"
-              // value={email || ""}
-              // onChange={this.onChange}
+              value={getValue("email")}
+              onChange={onChange}
               placeholder="Enter your email"
               required
             />
@@ -35,9 +56,9 @@ export default function SignUpAuth({ description, title }) {
               <input
                 id="password"
                 type="password"
-                name="passwordOne"
-                // value={passwordOne}
-                // onChange={this.onChange}
+                name="password"
+                value={getValue("password")}
+                onChange={onChange}
                 placeholder="Enter your password"
                 required
               />
@@ -49,9 +70,9 @@ export default function SignUpAuth({ description, title }) {
               <input
                 id="confirm-password"
                 type="password"
-                name="passwordTwo"
-                // value={passwordTwo}
-                // onChange={this.onChange}
+                name="confirm_password"
+                value={getValue("confirm_password")}
+                onChange={onChange}
                 placeholder="Re-enter your password"
                 required
               />
@@ -62,11 +83,14 @@ export default function SignUpAuth({ description, title }) {
           <div className="clearfix">
             <div className="form-group pull-left">
               <MEButton
-                type="submit"
-                // disabled={this.isInvalid()}
+                disabled={
+                  isInvalid(getValue("email")) || invalidPassword() || loading
+                }
                 id="create-profile-btn"
+                loading={loading}
+                onClick={() => registerUser(form)}
               >
-                Create Profile
+                {loading ? "Creating profile..." : " Create Profile"}
               </MEButton>
               <small style={{ margin: "0px 15px" }}>
                 <b>OR USE</b>

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { firebaseLogin } from "../../../redux/actions/authActions";
+import {
+  firebaseLogin,
+  firebaseRegistration,
+  setAuthNotification,
+} from "../../../redux/actions/authActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
@@ -10,7 +14,13 @@ import SignUpAuth from "./Registration/SignUpAuth";
 const SIGNIN = "signin";
 const REGISTER = "signup";
 
-function AuthEntry({ firebaseLogin, notification, links }) {
+function AuthEntry({
+  firebaseLogin,
+  notification,
+  links,
+  setNotification,
+  firebaseRegistration,
+}) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
@@ -23,8 +33,22 @@ function AuthEntry({ firebaseLogin, notification, links }) {
     firebaseLogin(form, () => setLoading(false));
   };
 
+  const registerUser = (form) => {
+    const p = form?.password;
+    const cp = form?.confirm_password;
+    if (p && cp && p !== cp)
+      return setNotification({
+        good: false,
+        message: "Looks like your passwords do not match, please try again",
+      });
+    setLoading(true);
+    firebaseRegistration(form, () => setLoading(false));
+  };
+
   // ------------------------------------------------------------------
 
+  const title = "Welcome To MassEnergize";
+  const description = "";
   var Page, PageTitle;
 
   if (isSignInPage) {
@@ -39,7 +63,15 @@ function AuthEntry({ firebaseLogin, notification, links }) {
     );
     PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
   } else if (isRegistrationPage) {
-    Page = <SignUpAuth loading={loading} links={links} />;
+    Page = (
+      <SignUpAuth
+        loading={loading}
+        links={links}
+        description={description}
+        title={title}
+        registerUser={registerUser}
+      />
+    );
     PageTitle = "Sign Up";
   }
 
@@ -81,6 +113,13 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ firebaseLogin: firebaseLogin }, dispatch);
+  return bindActionCreators(
+    {
+      firebaseLogin: firebaseLogin,
+      setNotification: setAuthNotification,
+      firebaseRegistration,
+    },
+    dispatch
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AuthEntry);
