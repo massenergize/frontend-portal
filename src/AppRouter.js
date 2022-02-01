@@ -27,8 +27,6 @@ import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
 import Cookies from "universal-cookie";
 import { device_checkin } from "./api/functions";
-import firebase from "firebase/app";
-import "firebase/auth";
 
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
 
@@ -80,6 +78,7 @@ import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
+import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -99,6 +98,7 @@ class AppRouter extends Component {
   }
 
   componentDidMount() {
+    this.props.checkFirebaseAuthencation();
     this.fetch();
   }
 
@@ -643,5 +643,6 @@ const mapDispatchToProps = {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetPreferredEquivalence,
+  checkFirebaseAuthencation: subscribeToFirebaseAuthChanges,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

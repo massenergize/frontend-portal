@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
-import { isInvalid } from "../shared/utils";
+import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
   const {
@@ -20,6 +20,11 @@ export default function LoginAuth(props) {
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const whenUserTypes = (e) => {
+    if (ifEnterKeyIsPressed(e)) signUserIn(form);
+  };
+
   const getValue = (name) => {
     return (form || {})[name] || "";
   };
@@ -86,6 +91,7 @@ export default function LoginAuth(props) {
                 value={getValue("password")}
                 placeholder="Enter your secure password here..."
                 onChange={onChange}
+                onKeyUp={whenUserTypes}
               />
             </div>
 

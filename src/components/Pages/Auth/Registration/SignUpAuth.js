@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { isInvalid } from "../shared/utils";
+import { Link } from "react-router-dom";
+import { signOutOfFirebase } from "../shared/firebase-helpers";
+import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 
 export default function SignUpAuth({
@@ -7,15 +9,23 @@ export default function SignUpAuth({
   title,
   loading,
   registerUser,
+  links,
 }) {
   const [form, setForm] = useState({});
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const newForm = { ...form, [e.target.name]: e.target.value };
+    setForm(newForm);
   };
+
+  const whenUserTypes = (e) => {
+    if (ifEnterKeyIsPressed(e)) registerUser(form);
+  };
+
   const getValue = (name) => {
     return (form || {})[name] || "";
   };
+
   const invalidPassword = () => {
     var status =
       isInvalid(getValue("password")) ||
@@ -73,6 +83,7 @@ export default function SignUpAuth({
                 name="confirm_password"
                 value={getValue("confirm_password")}
                 onChange={onChange}
+                onKeyUp={whenUserTypes}
                 placeholder="Re-enter your password"
                 required
               />
@@ -81,7 +92,8 @@ export default function SignUpAuth({
           <br />
 
           <div className="clearfix">
-            <div className="form-group pull-left">
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              {/* <div className="form-group pull-left"> */}
               <MEButton
                 disabled={
                   isInvalid(getValue("email")) || invalidPassword() || loading
@@ -92,22 +104,45 @@ export default function SignUpAuth({
               >
                 {loading ? "Creating profile..." : " Create Profile"}
               </MEButton>
-              <small style={{ margin: "0px 15px" }}>
-                <b>OR USE</b>
-              </small>
-              <MEButton
-                // onClick={this.signInWithGoogle}
-                className="me-google-btn"
-              >
-                Google
-              </MEButton>
 
-              <MEButton
-                // onClick={this.signInWithFacebook}
-                className="me-facebook-btn"
+              <div style={{ marginLeft: "auto" }}>
+                <small style={{ margin: "0px 15px" }}>
+                  <b>OR USE</b>
+                </small>
+                <MEButton
+                  // onClick={this.signInWithGoogle}
+                  className="me-google-btn"
+                >
+                  Google
+                </MEButton>
+
+                <MEButton
+                  // onClick={this.signInWithFacebook}
+                  className="me-facebook-btn"
+                >
+                  Facebook
+                </MEButton>
+              </div>
+            </div>
+
+            <div
+              style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
+            >
+              <Link
+                style={{
+                  textDecoration: "underline",
+                  fontWeight: "bold",
+                  marginBottom: 6,
+                  fontSize: "large",
+                }}
+                className=" energize-link"
+                to={links.signin}
+                // onClick={() => setUsePasswordFree(true)}
               >
-                Facebook
-              </MEButton>
+                I have an account already
+              </Link>
+
+              <button onClick={() => signOutOfFirebase()}>Signout</button>
             </div>
           </div>
         </div>

@@ -13,14 +13,11 @@ export const withEmailAndPassword = (email, password, cb) => {
     });
 };
 
-export const checkFirebaseAuthenticationState = async (cb) => {
-  try {
-    const firebseUser = Auth.onAuthStateChanged();
-    if (cb) cb(firebseUser);
-  } catch (e) {
-    if (cb) cb(null, translateFirebaseError(e?.toString()));
-    console.log("ON_AUTH_CHANGE", e?.toString());
-  }
+export const checkFirebaseAuthenticationState = (cb) => {
+  if (!Auth) return;
+  Auth.onAuthStateChanged((user) => {
+    if (cb) cb(user);
+  });
 };
 
 export const registerWithEmailAndPassword = (email, password, cb) => {
@@ -32,4 +29,8 @@ export const registerWithEmailAndPassword = (email, password, cb) => {
       if (cb) cb(null, translateFirebaseError(e?.toString()));
       console.log("FIREBASE_REG_ERROR:", e?.toString());
     });
+};
+
+export const signOutOfFirebase = () => {
+  Auth.signOut();
 };

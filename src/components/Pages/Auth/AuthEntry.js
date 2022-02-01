@@ -10,7 +10,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import SignUpAuth from "./Registration/SignUpAuth";
-
+import { validatePassword } from "./shared/utils";
 const SIGNIN = "signin";
 const REGISTER = "signup";
 
@@ -28,18 +28,26 @@ function AuthEntry({
   const [loading, setLoading] = useState(false);
   const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
 
+  const clearSlate = () => {
+    setNotification({});
+  };
   const signUserIn = (form) => {
+    clearSlate();
     setLoading(true);
     firebaseLogin(form, () => setLoading(false));
   };
 
   const registerUser = (form) => {
-    const p = form?.password;
-    const cp = form?.confirm_password;
-    if (p && cp && p !== cp)
+    clearSlate();
+    const passwordRequirements = validatePassword(
+      form?.password,
+      form?.confirm_password
+    );
+
+    if (!passwordRequirements.passed)
       return setNotification({
         good: false,
-        message: "Looks like your passwords do not match, please try again",
+        message: passwordRequirements.error,
       });
     setLoading(true);
     firebaseRegistration(form, () => setLoading(false));
