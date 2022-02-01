@@ -11,15 +11,6 @@ export const withEmailAndPassword = async (email, password, cb) => {
       if (cb) cb(null, translateFirebaseError(e?.toString()));
       console.log("SIGN_IN_ERROR:", e?.toString());
     });
-
-  // try {
-  //   const response = Auth.signInWithEmailAndPassword(email, password);
-  //   if (cb) cb(response);
-  //   return response;
-  // } catch (e) {
-  //   if (cb) cb(null, translateFirebaseError(e?.toString()));
-  //   console.log("SIGN_IN_ERROR:", e?.toString());
-  // }
 };
 
 export const checkFirebaseAuthenticationState = async (cb) => {

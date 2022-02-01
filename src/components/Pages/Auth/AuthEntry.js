@@ -25,8 +25,7 @@ function AuthEntry({ firebaseLogin, notification, links }) {
 
   // ------------------------------------------------------------------
 
-  var Page = <></>;
-  var pageTitle;
+  var Page, PageTitle;
 
   if (isSignInPage) {
     Page = (
@@ -38,17 +37,17 @@ function AuthEntry({ firebaseLogin, notification, links }) {
         links={links}
       />
     );
-    pageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
+    PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
   } else if (isRegistrationPage) {
     Page = <SignUpAuth loading={loading} links={links} />;
-    pageTitle = "Sign Up";
+    PageTitle = "Sign Up";
   }
 
   return (
     <>
       <div>
         <div className="boxed_wrapper" style={{ height: "100vh" }}>
-          <BreadCrumbBar links={[{ name: pageTitle }]} />
+          <BreadCrumbBar links={[{ name: PageTitle }]} />
           <section
             className="register-section sec-padd-top"
             style={{ paddingTop: 5 }}
