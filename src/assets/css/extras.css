@@ -1371,6 +1371,9 @@
   color: white;
   border-color: gray;
 }
+.me-universal-btn[disabled] span {
+  color: white !important;
+}
 
 .me-universal-btn:hover .me-btn-icon {
   color: white !important;

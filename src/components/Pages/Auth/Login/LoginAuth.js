@@ -4,9 +4,11 @@ import BreadCrumbBar from "../../../Shared/BreadCrumbBar";
 import MEButton from "../../Widgets/MEButton";
 import Notification from "../../Widgets/Notification/Notification";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
+import { isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
-  const { onSubmit, userWantsPasswordFree, setUsePasswordFree } = props;
+  const { userWantsPasswordFree, setUsePasswordFree, signUserIn, loading } =
+    props;
 
   const [form, setForm] = useState({});
 
@@ -50,10 +52,12 @@ export default function LoginAuth(props) {
           </div>
 
           <div>
-            <p>Enter your email and password.</p>
+            <p>
+              Fill in the form to appropriately activate the 'sign in' button
+            </p>
           </div>
 
-          <form onSubmit={onSubmit}>
+          <div>
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-envelope-o"></span>
@@ -86,11 +90,16 @@ export default function LoginAuth(props) {
             <div className="clearfix">
               <div className="form-group pull-left">
                 <MEButton
-                  type="submit"
-                  // disabled={this.isInvalid()}
+                  onClick={() => signUserIn(form)}
+                  disabled={
+                    isInvalid(getValue("email")) ||
+                    isInvalid(getValue("password")) ||
+                    loading
+                  }
                   id="sign-in-btn"
+                  loading={loading}
                 >
-                  Sign In
+                  {loading ? "Working on it..." : "Sign In"}
                 </MEButton>
               </div>
 
@@ -158,7 +167,7 @@ export default function LoginAuth(props) {
                 </p>{" "}
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

@@ -298,7 +298,7 @@ const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
     collection: store.page.collection,
-    auth: store.firebase.auth,
+    // auth: store.firebase.auth,
     user: store.user.info,
     pageData: store.page.eventsPage,
     eventExceptions: store.page.eventExceptions,

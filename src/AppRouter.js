@@ -255,11 +255,11 @@ class AppRouter extends Component {
         });
     }
 
-    if (!this.state.triedLogin && !this.props.user) {
-      this.getUser().then((success) => {
-        console.log(`User Logged in: ${success}`);
-      });
-    }
+    // if (!this.state.triedLogin && !this.props.user) {
+    //   this.getUser().then((success) => {
+    //     console.log(`User Logged in: ${success}`);
+    //   });
+    // }
   }
 
   setStateAsync(state) {
@@ -268,69 +268,69 @@ class AppRouter extends Component {
     });
   }
 
-  async getUser() {
-    await this.setStateAsync({ triedLogin: true });
-    let { data } = await apiCall("auth.whoami");
-    let user = null;
+  // async getUser() {
+  //   await this.setStateAsync({ triedLogin: true });
+  //   let { data } = await apiCall("auth.whoami");
+  //   let user = null;
 
-    const cookies = new Cookies();
+  //   const cookies = new Cookies();
 
-    device_checkin(cookies).then(
-      function (data) {},
-      function (err) {
-        console.log(err);
-      }
-    );
+  //   device_checkin(cookies).then(
+  //     function (data) {},
+  //     function (err) {
+  //       console.log(err);
+  //     }
+  //   );
 
-    if (data && Object.keys(data).length > 0) {
-      user = data;
-    } else {
-      if (this.props.auth && firebase.auth().currentUser) {
-        const idToken = await firebase
-          .auth()
-          .currentUser.getIdToken(/* forceRefresh */ true);
-        const newLoggedInUserResponse = await apiCall("auth.login", {
-          idToken: idToken,
-        });
-        user = newLoggedInUserResponse.data;
-        if (
-          !user &&
-          newLoggedInUserResponse.error ===
-            "authenticated_but_needs_registration"
-        ) {
-          window.localStorage.setItem("reg_protocol", "show");
-          return false;
-        }
-      }
-    }
+  //   if (data && Object.keys(data).length > 0) {
+  //     user = data;
+  //   } else {
+  //     if (this.props.auth && firebase.auth().currentUser) {
+  //       const idToken = await firebase
+  //         .auth()
+  //         .currentUser.getIdToken(/* forceRefresh */ true);
+  //       const newLoggedInUserResponse = await apiCall("auth.login", {
+  //         idToken: idToken,
+  //       });
+  //       user = newLoggedInUserResponse.data;
+  //       if (
+  //         !user &&
+  //         newLoggedInUserResponse.error ===
+  //           "authenticated_but_needs_registration"
+  //       ) {
+  //         window.localStorage.setItem("reg_protocol", "show");
+  //         return false;
+  //       }
+  //     }
+  //   }
 
-    if (user) {
-      // set the user in the redux state
-      this.props.reduxLogin(user);
+  //   if (user) {
+  //     // set the user in the redux state
+  //     this.props.reduxLogin(user);
 
-      // we know that the user is already signed in so proceed
-      const [
-        userActionsTodoResponse,
-        userActionsCompletedResponse,
-        eventsRsvpListResponse,
-      ] = await Promise.all([
-        apiCall("users.actions.todo.list", { email: user.email }),
-        apiCall("users.actions.completed.list", { email: user.email }),
-        apiCall("users.events.list", { email: user.email }),
-      ]);
+  //     // we know that the user is already signed in so proceed
+  //     const [
+  //       userActionsTodoResponse,
+  //       userActionsCompletedResponse,
+  //       eventsRsvpListResponse,
+  //     ] = await Promise.all([
+  //       apiCall("users.actions.todo.list", { email: user.email }),
+  //       apiCall("users.actions.completed.list", { email: user.email }),
+  //       apiCall("users.events.list", { email: user.email }),
+  //     ]);
 
-      if (userActionsTodoResponse && userActionsCompletedResponse) {
-        this.props.reduxLoadTodo(userActionsTodoResponse.data);
-        this.props.reduxLoadDone(userActionsCompletedResponse.data);
-        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
+  //     if (userActionsTodoResponse && userActionsCompletedResponse) {
+  //       this.props.reduxLoadTodo(userActionsTodoResponse.data);
+  //       this.props.reduxLoadDone(userActionsCompletedResponse.data);
+  //       this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
 
-        return true;
-      } else {
-        console.log(`no user with this email: ${user.email}`);
-        return false;
-      }
-    } else return false;
-  }
+  //       return true;
+  //     } else {
+  //       console.log(`no user with this email: ${user.email}`);
+  //       return false;
+  //     }
+  //   } else return false;
+  // }
 
   loadMenu(menus) {
     if (!menus) {
@@ -482,9 +482,9 @@ class AppRouter extends Component {
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
-    if (!isLoaded(this.props.auth)) {
-      return <LoadingCircle />;
-    }
+    // if (!isLoaded(this.props.auth)) {
+    //   return <LoadingCircle />;
+    // }
 
     /* error page if community isn't published */
     if (!community) {
@@ -496,9 +496,9 @@ class AppRouter extends Component {
       );
     }
 
-    if (this.props.user && !this.state.triedLogin) {
-      return <LoadingCircle />;
-    }
+    // if (this.props.user && !this.state.triedLogin) {
+    //   return <LoadingCircle />;
+    // }
 
     const { links } = this.props;
 
@@ -544,51 +544,48 @@ class AppRouter extends Component {
         ) : null}
         {
           /**if theres a half finished account the only place a user can go is the register page */
-          this.userHasAnIncompleteRegistration() ? (
-            <Switch>
-              <Route component={RegisterPage} />
-            </Switch>
-          ) : (
-            <Switch>
-              {/* ---- This route is a facebook app requirement. -------- */}
-              <Route path={`/how-to-delete-my-data`} component={Help} />
-              <Route exact path="/" component={HomePage} />
-              <Route exact path={links.home} component={HomePage} />
-              <Route exact path={`${links.home}home`} component={HomePage} />
-              <Route exact path={links.actions} component={ActionsPage} />
-              <Route
-                exact
-                path={`${links.actions}/:id`}
-                component={OneActionPage}
-              />
+          // this.userHasAnIncompleteRegistration() ? (
+          //   <Switch>
+          //     <Route component={RegisterPage} />
+          //   </Switch>
+          // ) : (
+          <Switch>
+            {/* ---- This route is a facebook app requirement. -------- */}
+            <Route path={`/how-to-delete-my-data`} component={Help} />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path={links.home} component={HomePage} />
+            <Route exact path={`${links.home}home`} component={HomePage} />
+            <Route exact path={links.actions} component={ActionsPage} />
+            <Route
+              exact
+              path={`${links.actions}/:id`}
+              component={OneActionPage}
+            />
 
-              <Route path={links.aboutus} component={AboutUsPage} />
-              <Route exact path={links.services} component={ServicesPage} />
-              <Route
-                path={`${links.services}/:id`}
-                component={OneServicePage}
-              />
+            <Route path={links.aboutus} component={AboutUsPage} />
+            <Route exact path={links.services} component={ServicesPage} />
+            <Route path={`${links.services}/:id`} component={OneServicePage} />
 
-              <Route exact path={links.testimonials} component={StoriesPage} />
-              <Route
-                path={`${links.testimonials}/:id`}
-                component={OneTestimonialPage}
-              />
-              <Route exact path={links.teams} component={TeamsPage} />
-              <Route path={`${links.teams}/:id`} component={OneTeamPage} />
-              <Route path={links.impact} component={ImpactPage} />
-              <Route path={links.donate} component={DonatePage} />
-              <Route exact path={links.events} component={EventsPage} />
-              <Route path={`${links.events}/:id`} component={OneEventPage} />
-              <Route path={links.signin} component={AuthEntry} />
-              <Route path={links.signup} component={AuthEntry} />
-              <Route path="/completeRegistration?" component={RegisterPage} />
-              <Route path={links.profile} component={ProfilePage} />
-              <Route path={links.policies} component={PoliciesPage} />
-              <Route path={links.contactus} component={ContactPage} />
-              <Route component={HomePage} />
-            </Switch>
-          )
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route
+              path={`${links.testimonials}/:id`}
+              component={OneTestimonialPage}
+            />
+            <Route exact path={links.teams} component={TeamsPage} />
+            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+            <Route path={links.impact} component={ImpactPage} />
+            <Route path={links.donate} component={DonatePage} />
+            <Route exact path={links.events} component={EventsPage} />
+            <Route path={`${links.events}/:id`} component={OneEventPage} />
+            <Route path={links.signin} component={AuthEntry} />
+            <Route path={links.signup} component={AuthEntry} />
+            <Route path="/completeRegistration?" component={RegisterPage} />
+            <Route path={links.profile} component={ProfilePage} />
+            <Route path={links.policies} component={PoliciesPage} />
+            <Route path={links.contactus} component={ContactPage} />
+            <Route component={HomePage} />
+          </Switch>
+          // )
         }
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
@@ -603,7 +600,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     __is_custom_site: store.page.__is_custom_site,
     community: store.page.community,
-    auth: store.firebase.auth,
+    // auth: store.firebase.auth,
     menu: store.page.menu,
     links: store.links,
     eq: store.page.equivalences,
