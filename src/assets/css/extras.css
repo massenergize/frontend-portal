@@ -621,6 +621,7 @@
 
 /*fixed CSS issue with dropdown related to action completion date */
 #CompletionDate {
+  padding: 5px;
   margin-left: auto;
   /* position: absolute; */
   /* right: 0; */
