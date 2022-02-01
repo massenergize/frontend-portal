@@ -13,6 +13,8 @@ export default function LoginAuth(props) {
     links,
     description,
     title,
+    signInWithGoogle,
+    signInWithFacebook,
   } = props;
 
   const [form, setForm] = useState({});
@@ -114,7 +116,7 @@ export default function LoginAuth(props) {
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
                 <button
-                  // onClick={this.signInWithGoogle}
+                  onClick={() => signInWithGoogle()}
                   id="google"
                   type="button"
                   className="img-circle  round-me  me-google-btn z-depth-float"
@@ -122,7 +124,7 @@ export default function LoginAuth(props) {
                   <span className="fa fa-google"></span>
                 </button>
                 <button
-                  // onClick={this.signInWithFacebook}
+                  onClick={signInWithFacebook}
                   id="facebook"
                   type="button"
                   className="img-circle  round-me me-facebook-btn z-depth-float"

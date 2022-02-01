@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
 import { signOutOfFirebase } from "../shared/firebase-helpers";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
+import FormCompletion from "./FormCompletion";
 
 export default function SignUpAuth({
   description,
@@ -10,8 +12,11 @@ export default function SignUpAuth({
   loading,
   registerUser,
   links,
+  userNeedsToRegister,
 }) {
   const [form, setForm] = useState({});
+  const [itsTimeForRegistration, setTimeForRegistration] =
+    useState(userNeedsToRegister);
 
   const onChange = (e) => {
     const newForm = { ...form, [e.target.name]: e.target.value };
@@ -32,6 +37,11 @@ export default function SignUpAuth({
       isInvalid(getValue("confirm_password"));
     return status;
   };
+
+  if (itsTimeForRegistration)
+    return (
+      <FormCompletion onChange={onChange} getValue={getValue} form={form} />
+    );
 
   return (
     <div className="styled-form register-form">

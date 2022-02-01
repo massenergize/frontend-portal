@@ -1,9 +1,8 @@
 export const AUTH_STATES = {
   USER_IS_NOT_AUTHENTICATED: "user-is-not-authenticated",
-  CHECKING_FIREBASE: "looking-for-firebase-authentication",
-  CHECK_MASS_ENERGIZE: "checking-massenergize-for-profile",
-  MASS_ENERGIZE_PROFILE_DOES_NOT_EXIST:
-    "massenergize-profile-does-not-exist-yet",
+  CHECKING_FIREBASE: "looking_for_firebase_authentication",
+  CHECK_MASS_ENERGIZE: "checking_massenergize_for_profile",
+  NEEDS_REGISTRATION: "authenticated_but_needs_registration",
 };
 
 export const translateFirebaseError = (error) => {

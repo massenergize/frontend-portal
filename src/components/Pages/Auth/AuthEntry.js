@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
+  authenticateWithFacebook,
+  authenticateWithGoogle,
   firebaseLogin,
   firebaseRegistration,
   setAuthNotification,
 } from "../../../redux/actions/authActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import LoadingCircle from "../../Shared/LoadingCircle";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
+import FormCompletion from "./Registration/FormCompletion";
 import SignUpAuth from "./Registration/SignUpAuth";
-import { validatePassword } from "./shared/utils";
+import { AUTH_STATES, validatePassword } from "./shared/utils";
 const SIGNIN = "signin";
 const REGISTER = "signup";
 
@@ -20,11 +24,15 @@ function AuthEntry({
   links,
   setNotification,
   firebaseRegistration,
+  doAuthenticationWithGoogle,
+  doAuthenticationWithFacebook,
+  authState,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
-
+  const userNeedsToRegister = authState === AUTH_STATES.NEEDS_REGISTRATION;
+  const appIsNowCheckingFirebase = authState === AUTH_STATES.CHECKING_FIREBASE;
   const [loading, setLoading] = useState(false);
   const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
 
@@ -53,6 +61,10 @@ function AuthEntry({
     firebaseRegistration(form, () => setLoading(false));
   };
 
+  // ---------------------------------------------------------------
+
+  if (appIsNowCheckingFirebase) return <LoadingCircle />;
+
   // ------------------------------------------------------------------
 
   const title = "Welcome To MassEnergize";
@@ -67,6 +79,8 @@ function AuthEntry({
         setUsePasswordFree={setUsePasswordFree}
         signUserIn={signUserIn}
         links={links}
+        signInWithGoogle={doAuthenticationWithGoogle}
+        signInWithFacebook={doAuthenticationWithFacebook}
       />
     );
     PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
@@ -78,6 +92,9 @@ function AuthEntry({
         description={description}
         title={title}
         registerUser={registerUser}
+        registerWithGoogle={doAuthenticationWithGoogle}
+        registerWithFacebook={doAuthenticationWithFacebook}
+        userNeedsToRegister={userNeedsToRegister}
       />
     );
     PageTitle = "Sign Up";
@@ -126,6 +143,8 @@ const mapDispatchToProps = (dispatch) => {
       firebaseLogin: firebaseLogin,
       setNotification: setAuthNotification,
       firebaseRegistration,
+      doAuthenticationWithGoogle: authenticateWithGoogle,
+      doAuthenticationWithFacebook: authenticateWithFacebook,
     },
     dispatch
   );

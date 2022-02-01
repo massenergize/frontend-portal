@@ -1,10 +1,14 @@
+import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
 import {
   AUTH_NOTIFICATION,
   SET_CURRENT_AUTH_STATE,
   SET_FIREBASE_USER,
 } from "../actions/authActions";
 
-export const reducerForSettingAuthState = (state = null, action) => {
+export const reducerForSettingAuthState = (
+  state = AUTH_STATES.CHECKING_FIREBASE,
+  action
+) => {
   if (action.type === SET_CURRENT_AUTH_STATE) {
     return action.payload;
   }

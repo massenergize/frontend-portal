@@ -1,4 +1,7 @@
-import firebase from "../../../../config/firebaseConfig";
+import firebase, {
+  facebookProvider,
+  googleProvider,
+} from "../../../../config/firebaseConfig";
 import { translateFirebaseError } from "./utils";
 
 const Auth = firebase?.auth();
@@ -31,6 +34,27 @@ export const registerWithEmailAndPassword = (email, password, cb) => {
     });
 };
 
+export const firebaseAuthenticationWithGoogle = (cb) => {
+  Auth.signInWithPopup(googleProvider)
+    .then((response) => {
+      if (cb) cb(response);
+    })
+    .catch((e) => {
+      if (cb) cb(null, translateFirebaseError(e?.toString()));
+      console.log("GOOGLE_AUTH:", e?.toString());
+    });
+};
+
+export const firebaseAuthenticationWithFacebook = (cb) => {
+  Auth.signInWithPopup(facebookProvider)
+    .then((response) => {
+      if (cb) cb(response);
+    })
+    .catch((e) => {
+      if (cb) cb(null, translateFirebaseError(e?.toString()));
+      console.log("FACEBOOK_AUTH:", e?.toString());
+    });
+};
 export const signOutOfFirebase = () => {
   Auth.signOut();
 };
