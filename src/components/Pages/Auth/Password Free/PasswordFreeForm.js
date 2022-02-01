@@ -1,36 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import BreadCrumbBar from "../../../Shared/BreadCrumbBar";
 import MEButton from "../../Widgets/MEButton";
-import Notification from "../../Widgets/Notification/Notification";
-import PasswordFreeForm from "../Password Free/PasswordFreeForm";
 
-export default function LoginAuth(props) {
-  const { onSubmit, userWantsPasswordFree, setUsePasswordFree } = props;
-
-  const [form, setForm] = useState({});
-
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-  const getValue = (name) => {
-    return (form || {})[name] || "";
-  };
-
-  const title = "Welcome To MassEnergize";
-  const description = "";
-
-  if (userWantsPasswordFree)
-    return (
-      <PasswordFreeForm
-        {...props}
-        title={title}
-        description={description}
-        usePassword={() => setUsePasswordFree(false)}
-        onChange={onChange}
-      />
-    );
-
+export default function PasswordFreeForm({
+  description,
+  title,
+  onSubmit,
+  usePassword,
+}) {
   return (
     <div>
       <div
@@ -46,11 +24,15 @@ export default function LoginAuth(props) {
             style={{ marginBottom: 5 }}
           >
             <h3 className="mog-title-fix">{title}</h3>
-            <p> {description}</p>
+            {description && <p> {description}</p>}
           </div>
 
           <div>
-            <p>Enter your email and password.</p>
+            <p>
+              Enter your email address for{" "}
+              <b style={{ color: "var(--app-theme-green)" }}>password-free</b>{" "}
+              sign-in. We'll send you an email with verification link.
+            </p>
           </div>
 
           <form onSubmit={onSubmit}>
@@ -62,24 +44,9 @@ export default function LoginAuth(props) {
                 id="login-email"
                 type="email"
                 name="email"
-                value={getValue("email")}
+                // value={email || ""}
                 // onChange={onChange}
                 placeholder="Enter your email here..."
-                onChange={onChange}
-              />
-            </div>
-
-            <div className="form-group mob-sweet-b-10">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="login-password"
-                type="password"
-                name="password"
-                value={getValue("password")}
-                placeholder="Enter your secure password here..."
-                onChange={onChange}
               />
             </div>
 
@@ -90,7 +57,7 @@ export default function LoginAuth(props) {
                   // disabled={this.isInvalid()}
                   id="sign-in-btn"
                 >
-                  Sign In
+                  Continue
                 </MEButton>
               </div>
 
@@ -100,7 +67,7 @@ export default function LoginAuth(props) {
                   // onClick={this.signInWithGoogle}
                   id="google"
                   type="button"
-                  className="img-circle  round-me  me-google-btn z-depth-float"
+                  className="img-circle  round-me z-depth-float me-google-btn"
                 >
                   <span className="fa fa-google"></span>
                 </button>
@@ -108,7 +75,7 @@ export default function LoginAuth(props) {
                   // onClick={this.signInWithFacebook}
                   id="facebook"
                   type="button"
-                  className="img-circle  round-me me-facebook-btn z-depth-float"
+                  className="img-circle  round-me z-depth-float me-facebook-btn"
                 >
                   <span className="fa fa-facebook"></span>
                 </button>
@@ -132,30 +99,11 @@ export default function LoginAuth(props) {
                       fontSize: "large",
                     }}
                     className=" energize-link"
-                    onClick={() => setUsePasswordFree(true)}
+                    onClick={usePassword}
                   >
-                    Sign In With No Password
-                  </button>
-
-                  <button
-                    className=" energize-link"
-                    style={{ marginLeft: "auto" }}
-                    // onClick={this.forgotPassword}
-                  >
-                    I Forgot my password
+                    I want to use Email and Password
                   </button>
                 </div>
-                <p>
-                  {" "}
-                  Don't have a profile?
-                  <Link
-                    style={{ marginLeft: 5 }}
-                    className="energize-link"
-                    // to={this.props.links.signup}
-                  >
-                    Create one
-                  </Link>{" "}
-                </p>{" "}
               </div>
             </div>
           </form>
