@@ -79,6 +79,7 @@ import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
+import AuthEntry from "./components/Pages/Auth/AuthEntry";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -292,7 +293,11 @@ class AppRouter extends Component {
           idToken: idToken,
         });
         user = newLoggedInUserResponse.data;
-        if (!user && newLoggedInUserResponse.error === "authenticated_but_needs_registration") {
+        if (
+          !user &&
+          newLoggedInUserResponse.error ===
+            "authenticated_but_needs_registration"
+        ) {
           window.localStorage.setItem("reg_protocol", "show");
           return false;
         }
@@ -575,8 +580,8 @@ class AppRouter extends Component {
               <Route path={links.donate} component={DonatePage} />
               <Route exact path={links.events} component={EventsPage} />
               <Route path={`${links.events}/:id`} component={OneEventPage} />
-              <Route path={links.signin} component={LoginPage} />
-              <Route path={links.signup} component={RegisterPage} />
+              <Route path={links.signin} component={AuthEntry} />
+              <Route path={links.signup} component={AuthEntry} />
               <Route path="/completeRegistration?" component={RegisterPage} />
               <Route path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
