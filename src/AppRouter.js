@@ -14,7 +14,6 @@ import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
 import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
 import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
 import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
-import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
 import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
 import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";

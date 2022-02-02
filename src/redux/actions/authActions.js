@@ -6,7 +6,6 @@ import {
   firebaseAuthenticationWithGoogle,
   firebaseAuthenticationWithNoPassword,
   registerWithEmailAndPassword,
-  sendSignInLinkToEmail,
   signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";

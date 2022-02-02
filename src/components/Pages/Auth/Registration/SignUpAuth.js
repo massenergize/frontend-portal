@@ -27,7 +27,7 @@ export default function SignUpAuth({
   registerWithFacebook,
 }) {
   const [form, setForm] = useState({});
-  const [itsTimeForRegistration, setTimeForRegistration] =
+  const [itsTimeForRegistration] =
     useState(userNeedsToRegister);
 
   const history = useHistory();

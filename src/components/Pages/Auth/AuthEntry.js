@@ -17,7 +17,6 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import SignUpAuth from "./Registration/SignUpAuth";
-import ResetPassword from "./Reset/ResetPassword";
 import VerifyEmailBox from "./shared/components/VerifyEmailBox";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
 

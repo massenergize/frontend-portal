@@ -1,5 +1,4 @@
 import React from "react";
-const common = {};
 const THEME = {
   GOOD: { background: "#bbebbb8f", color: "green" },
   BAD: { background: "#ffd8d8", color: "maroon" },

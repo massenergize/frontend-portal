@@ -80,7 +80,7 @@ export default function LoginAuth(props) {
 
   useEffect(() => {
     backgroundCheckForPasswordlessAuthentication();
-  }, []);
+  }, [setUserContinuedPasswordFreeInDiffEnv]);
 
   if (userWantsToResetPassword)
     return <ResetPassword cancel={() => setPasswordReset(false)} />;

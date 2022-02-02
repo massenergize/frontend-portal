@@ -5,7 +5,8 @@ import firebase, {
 import { translateFirebaseError } from "./utils";
 
 const PASSWORD_FREE_EMAIL = "password_free_email";
-const Auth = firebase?.auth();
+export const Auth = firebase?.auth();
+export const FirebaseEmailAuthProvider = firebase.auth.EmailAuthProvider;
 
 export const DIFFERENT_ENVIRONMENT = "different_environment";
 export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {

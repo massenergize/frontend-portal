@@ -12,6 +12,8 @@ import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import MECard from "../Widgets/MECard";
 import METextField from "../Widgets/METextField";
+import { Auth } from "../Auth/shared/firebase-helpers";
+import { signMeOut } from "../../../redux/actions/authActions";
 
 class DeleteAccountFormBase extends React.Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class DeleteAccountFormBase extends React.Component {
     this.state = {
       are_you_sure: false,
       password: "",
+      error: null,
     };
   }
 
@@ -30,6 +33,9 @@ class DeleteAccountFormBase extends React.Component {
             {" "}
             Are you sure you want to delete your profile?{" "}
           </METextView>
+          {this.state.error && (
+            <small style={{ color: "red" }}>{this.state.error}</small>
+          )}
           <div>
             <input
               type="radio"
@@ -113,65 +119,48 @@ class DeleteAccountFormBase extends React.Component {
         this.props.user.email,
         this.state.password
       );
-      this.props.firebase
-        .auth()
-        .currentUser.reauthenticateWithCredential(cred)
-        .then(() => {
-          this.props.firebase
-            .auth()
-            .currentUser.delete()
-            .then(() => {
-              apiCall("users.delete", { user_id: this.props.user.id }).then(
-                (json) => {
-                  this.props.firebase.auth().signOut();
-                  this.props.reduxLogout();
-                }
-              );
-            });
+      Auth.currentUser.reauthenticateWithCredential(cred).then(() => {
+        Auth.currentUser.delete().then(() => {
+          apiCall("users.delete", { user_id: this.props.user.id }).then(
+            (json) => {
+              this.props.signOut();
+            }
+          );
         });
+      });
     } else if (provider === "google") {
       //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
-      this.props.firebase
-        .auth()
-        .signInWithPopup(googleProvider)
-        .then(() => {
-          this.props.firebase
-            .auth()
-            .currentUser.delete()
-            .then(() => {
-              apiCall("users.delete", { user_id: this.props.user.id }).then(
-                (json) => {
-                  this.props.firebase.auth().signOut();
-                  this.props.reduxLogout();
-                }
-              );
-            })
-            .catch((err) => {
-              this.setState({ error: err.message });
-            });
-        });
+      Auth.signInWithPopup(googleProvider).then(() => {
+        Auth.currentUser
+          .delete()
+          .then(() => {
+            apiCall("users.delete", { user_id: this.props.user.id }).then(
+              (json) => {
+                this.props.signOut();
+              }
+            );
+          })
+          .catch((err) => {
+            this.setState({ error: err.message });
+          });
+      });
       return;
     } else if (provider === "facebook") {
       //this.setState({ error: 'Sorry, deleting profiles that use facebook sign in is not yet supported' });
-      this.props.firebase
-        .auth()
-        .signInWithPopup(facebookProvider)
-        .then(() => {
-          this.props.firebase
-            .auth()
-            .currentUser.delete()
-            .then(() => {
-              apiCall("users.delete", { user_id: this.props.user.id }).then(
-                (json) => {
-                  this.props.firebase.auth().signOut();
-                  this.props.reduxLogout();
-                }
-              );
-            })
-            .catch((err) => {
-              this.setState({ error: err.message });
-            });
-        });
+      Auth.signInWithPopup(facebookProvider).then(() => {
+        Auth.currentUser
+          .delete()
+          .then(() => {
+            apiCall("users.delete", { user_id: this.props.user.id }).then(
+              (json) => {
+                this.props.signOut();
+              }
+            );
+          })
+          .catch((err) => {
+            this.setState({ error: err.message });
+          });
+      });
       return;
     } else {
       this.setState({
@@ -182,26 +171,14 @@ class DeleteAccountFormBase extends React.Component {
   }
 
   getProvider() {
-    if (this.props.auth && this.props.auth.providerData) {
-      //if (this.props.auth.providerData.length === 1) {
-      if (this.props.auth.providerData[0].providerId === "password") {
-        return "email_and_password";
-      } else if (
-        this.props.auth.providerData[0].providerId
-          .toLowerCase()
-          .indexOf("google") > -1
-      ) {
-        return "google";
-      } else if (
-        this.props.auth.providerData[0].providerId
-          .toLowerCase()
-          .indexOf("facebook") > -1
-      ) {
-        return "facebook";
-      }
-      //}
-    }
-    return null;
+    const providers = Auth.currentUser?.providerData;
+    if (!providers) return null;
+    const provider = providers[0];
+    if (provider.providerId === "password") return "email_and_password";
+    else if (provider?.providerId.toLowerCase().indexOf("google") > -1)
+      return "google";
+    else if (provider?.providerId.toLowerCase().indexOf("facebook") > -1)
+      return "facebook";
   }
 }
 
@@ -210,7 +187,7 @@ const DeleteAccountForm = compose(withFirebase)(DeleteAccountFormBase);
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    auth: store.firebase.auth,
+    signOut: signMeOut,
   };
 };
 export default connect(mapStoreToProps, { reduxLogin, reduxLogout })(
