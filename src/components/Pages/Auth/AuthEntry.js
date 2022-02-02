@@ -17,6 +17,7 @@ import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import FormCompletion from "./Registration/FormCompletion";
 import SignUpAuth from "./Registration/SignUpAuth";
+import VerifyEmailBox from "./shared/components/VerifyEmailBox";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
 const SIGNIN = "signin";
 const REGISTER = "signup";
@@ -39,6 +40,7 @@ function AuthEntry({
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
+
   const userNeedsToRegister = authState === AUTH_STATES.NEEDS_REGISTRATION;
   const userIsAuthenticated = authState === AUTH_STATES.USER_IS_AUTHENTICATED;
   const appIsNowCheckingFirebase = authState === AUTH_STATES.CHECKING_FIREBASE;
@@ -72,6 +74,8 @@ function AuthEntry({
     setLoading(true);
     firebaseRegistration(form, () => setLoading(false));
   };
+
+  if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
   // console.log("FIREAUTH, and ME USER", fireAuth, user);
   // ---------------------------------------------------------------

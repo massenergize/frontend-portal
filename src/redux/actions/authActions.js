@@ -129,9 +129,28 @@ export const firebaseRegistration = (data, cb) => (dispatch) => {
   registerWithEmailAndPassword(data.email, data.password, (auth, error) => {
     if (cb) cb(auth);
     if (error) return dispatch(setAuthNotification(makeError(error)));
+    dispatch(sendVerificationEmail(auth?.user));
     dispatch(fetchTokenFromMassEnergize(auth?.user?._lat));
     dispatch(setFirebaseUser(auth?.user));
   });
+};
+
+export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
+  if (!fireAuth) {
+    cb && cb(false);
+    return console.log("Could not send verification email1");
+  }
+  const is_sandbox = getState().__is_sandbox;
+  var str = window.location.href;
+  var n = str.lastIndexOf("/");
+  const suffix = is_sandbox ? "?sandbox=true" : "";
+  var redirect = str.substring(0, n) + "/signin" + suffix;
+  var actionCodeSettings = {
+    url: redirect,
+  };
+  fireAuth.sendEmailVerification(actionCodeSettings);
+  cb && cb(true);
+  console.log("Verification Email Sent!");
 };
 
 export const setAuthStateAction = (state) => {

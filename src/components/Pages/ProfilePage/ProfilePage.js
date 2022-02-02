@@ -10,7 +10,7 @@ import AddingHouseholdForm from "./AddingHouseholdForm";
 import EditingProfileForm from "./EditingProfileForm";
 // import EventCart from "./EventCart";
 import { withFirebase } from "react-redux-firebase";
-
+import VerifyEmailBox from "./../Auth/shared/components/VerifyEmailBox";
 import {
   reduxMoveToDone,
   reduxAddHousehold,
@@ -145,6 +145,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
+    const { fireAuth } = this.props;
     // if (!this.props.user) {
     //   return <Redirect to={this.props.links.signin}> </Redirect>;
     // }
@@ -167,6 +168,8 @@ class ProfilePage extends React.Component {
 
     if (appIsCheckingFirebase || appIsCheckingMassEnergize)
       return <LoadingCircle />;
+
+    if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
     const myHouseholds = this.props.user.households || [];
 

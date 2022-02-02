@@ -62,7 +62,7 @@ export default function LoginAuth(props) {
 
           <div>
             <p>
-              Fill in the form to appropriately activate the 'sign in' button
+              Fill in the form appropriately to activate the 'sign in' button
             </p>
           </div>
 
