@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { signOutOfFirebase } from "../shared/firebase-helpers";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
@@ -13,11 +13,17 @@ export default function SignUpAuth({
   registerUser,
   links,
   userNeedsToRegister,
+  cancelRegistration,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration, setTimeForRegistration] =
     useState(userNeedsToRegister);
+  const history = useHistory();
 
+  const yesDeleteMyAccount = () => {
+    cancelRegistration();
+    history.push(links.signin);
+  };
   const onChange = (e) => {
     const newForm = { ...form, [e.target.name]: e.target.value };
     setForm(newForm);
@@ -40,7 +46,12 @@ export default function SignUpAuth({
 
   if (itsTimeForRegistration)
     return (
-      <FormCompletion onChange={onChange} getValue={getValue} form={form} />
+      <FormCompletion
+        onChange={onChange}
+        getValue={getValue}
+        form={form}
+        cancelRegistration={yesDeleteMyAccount}
+      />
     );
 
   return (

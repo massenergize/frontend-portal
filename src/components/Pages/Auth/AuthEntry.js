@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import {
   authenticateWithFacebook,
   authenticateWithGoogle,
+  cancelMyRegistration,
   firebaseLogin,
   firebaseRegistration,
   setAuthNotification,
@@ -27,6 +28,7 @@ function AuthEntry({
   doAuthenticationWithGoogle,
   doAuthenticationWithFacebook,
   authState,
+  cancelRegistration,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -95,6 +97,7 @@ function AuthEntry({
         registerWithGoogle={doAuthenticationWithGoogle}
         registerWithFacebook={doAuthenticationWithFacebook}
         userNeedsToRegister={userNeedsToRegister}
+        cancelRegistration={cancelRegistration}
       />
     );
     PageTitle = "Sign Up";
@@ -145,6 +148,7 @@ const mapDispatchToProps = (dispatch) => {
       firebaseRegistration,
       doAuthenticationWithGoogle: authenticateWithGoogle,
       doAuthenticationWithFacebook: authenticateWithFacebook,
+      cancelRegistration: cancelMyRegistration,
     },
     dispatch
   );

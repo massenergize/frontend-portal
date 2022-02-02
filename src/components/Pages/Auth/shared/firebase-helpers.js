@@ -58,3 +58,9 @@ export const firebaseAuthenticationWithFacebook = (cb) => {
 export const signOutOfFirebase = () => {
   Auth.signOut();
 };
+
+export const deleteAccountFromFirebase = (cb) => {
+  // signOutOfFirebase();
+  Auth.currentUser.delete();
+  cb && cb();
+};

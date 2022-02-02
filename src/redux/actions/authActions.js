@@ -1,9 +1,11 @@
 import { apiCall } from "../../api/functions";
 import {
   checkFirebaseAuthenticationState,
+  deleteAccountFromFirebase,
   firebaseAuthenticationWithFacebook,
   firebaseAuthenticationWithGoogle,
   registerWithEmailAndPassword,
+  signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
@@ -14,20 +16,33 @@ export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
 export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
 
+export const signMeOut = () => (dispatch) => {
+  signOutOfFirebase();
+  dispatch(setFirebaseUser(null));
+  dispatch(setMassEnergizeUser(null));
+  dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+};
+
+export const cancelMyRegistration = (cb) => (dispatch) => {
+  deleteAccountFromFirebase(() => {
+    cb && cb();
+    dispatch(signMeOut());
+  });
+};
 export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
   apiCall("auth.login", { idToken: lat })
     .then((response) => {
-      if (cb) cb(response);
       const error = response.error;
       if (!error) return dispatch(reduxLogin(response.data));
       if (error === AUTH_STATES.NEEDS_REGISTRATION)
         return dispatch(setAuthStateAction(AUTH_STATES.NEEDS_REGISTRATION));
+      if (cb) cb(response);
     })
     .catch((error) => {
       if (cb) cb(null, error?.toString());
       dispatch(setAuthNotification(makeError(error)));
-      console.log("WHOAMI_ERROR", error?.toString());
+      console.log("AUTH_LOGIN_ERROR", error?.toString());
     });
 };
 export const authenticateWithGoogle = () => (dispatch) => {
@@ -45,8 +60,12 @@ export const authenticateWithFacebook = () => (dispatch) => {
   });
 };
 export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
-  checkFirebaseAuthenticationState((user, error) => {
-    if (error) return dispatch(setAuthNotification(makeError(error)));
+  checkFirebaseAuthenticationState((user) => {
+    if (!user) {
+      return dispatch(
+        setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED)
+      );
+    }
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(setFirebaseUser(user));
   });
@@ -87,4 +106,11 @@ export const setFirebaseUser = (user) => {
 
 const makeError = (message) => {
   return { good: false, message };
+};
+
+export const onReCaptchaChange = (value, cb) => {
+  if (!value) return cb && cb(false);
+  apiCall("auth.verifyCaptcha", { captchaString: value }).then((response) => {
+    if (response && response.data && response.data.success) cb && cb(true);
+  });
 };
