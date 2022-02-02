@@ -6,6 +6,17 @@ import { translateFirebaseError } from "./utils";
 
 const Auth = firebase?.auth();
 
+export const sendPasswordResetEmail = (email, cb) => {
+  Auth.sendPasswordResetEmail(email)
+    .then(() => {
+      cb && cb(true);
+      console.log("Password reset Email sent!");
+    })
+    .catch((e) => {
+      cb && cb(false);
+      console.log("Could not send password reset email!", e?.toString());
+    });
+};
 export const withEmailAndPassword = (email, password, cb) => {
   Auth.signInWithEmailAndPassword(email, password)
     .then((response) => {

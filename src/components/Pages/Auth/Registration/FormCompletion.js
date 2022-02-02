@@ -23,7 +23,6 @@ export default function FormCompletion({
   const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
   const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
 
-  console.log("I am the policies bro", policies, TOS, PP);
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
   const preferredName = getValue("preferred_name");

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
+import ResetPassword from "../Reset/ResetPassword";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
@@ -15,6 +16,8 @@ export default function LoginAuth(props) {
     title,
     signInWithGoogle,
     signInWithFacebook,
+    setPasswordReset,
+    userWantsToResetPassword,
   } = props;
 
   const [form, setForm] = useState({});
@@ -30,6 +33,9 @@ export default function LoginAuth(props) {
   const getValue = (name) => {
     return (form || {})[name] || "";
   };
+
+  if (userWantsToResetPassword)
+    return <ResetPassword cancel={() => setPasswordReset(false)} />;
 
   if (userWantsPasswordFree)
     return (
@@ -159,7 +165,7 @@ export default function LoginAuth(props) {
                   <button
                     className=" energize-link"
                     style={{ marginLeft: "auto" }}
-                    // onClick={this.forgotPassword}
+                    onClick={() => setPasswordReset(true)}
                   >
                     I Forgot my password
                   </button>

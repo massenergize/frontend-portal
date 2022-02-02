@@ -23,6 +23,8 @@ export default function SignUpAuth({
   completeFormRegistrationInME,
   setLoading,
   policies,
+  registerWithGoogle,
+  registerWithFacebook,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration, setTimeForRegistration] =
@@ -159,14 +161,22 @@ export default function SignUpAuth({
                   <b>OR USE</b>
                 </small>
                 <MEButton
-                  // onClick={this.signInWithGoogle}
+                  onClick={() => {
+                    registerWithGoogle((user) => {
+                      if (user) window.location.reload();
+                    });
+                  }}
                   className="me-google-btn"
                 >
                   Google
                 </MEButton>
 
                 <MEButton
-                  // onClick={this.signInWithFacebook}
+                  onClick={() =>
+                    registerWithFacebook((user) => {
+                      if (user) window.location.reload();
+                    })
+                  }
                   className="me-facebook-btn"
                 >
                   Facebook

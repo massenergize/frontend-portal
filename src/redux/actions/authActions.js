@@ -91,16 +91,19 @@ export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
     });
 };
 
-export const authenticateWithGoogle = () => (dispatch) => {
-  firebaseAuthenticationWithGoogle((user, error) => {
+export const authenticateWithGoogle = (cb) => (dispatch) => {
+  firebaseAuthenticationWithGoogle((response, error) => {
+    const user = response?.user;
     if (error) return dispatch(setAuthNotification(makeError(error)));
+    cb && cb(user);
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(setFirebaseUser(user));
   });
 };
-export const authenticateWithFacebook = () => (dispatch) => {
+export const authenticateWithFacebook = (cb) => (dispatch) => {
   firebaseAuthenticationWithFacebook((user, error) => {
     if (error) return dispatch(setAuthNotification(makeError(error)));
+    cb && cb(user);
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(setFirebaseUser(user));
   });
@@ -149,9 +152,13 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
   var actionCodeSettings = {
     url: redirect,
   };
-  fireAuth.sendEmailVerification(actionCodeSettings);
-  cb && cb(true);
-  console.log("Verification Email Sent!");
+  fireAuth
+    .sendEmailVerification(actionCodeSettings)
+    .then((_) => {
+      cb && cb(true);
+      console.log("Verification Email Sent!");
+    })
+    .catch((e) => console.log("Failed sending verification email"));
 };
 
 export const setAuthStateAction = (state) => {

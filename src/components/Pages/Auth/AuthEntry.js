@@ -15,10 +15,11 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
-import FormCompletion from "./Registration/FormCompletion";
 import SignUpAuth from "./Registration/SignUpAuth";
+import ResetPassword from "./Reset/ResetPassword";
 import VerifyEmailBox from "./shared/components/VerifyEmailBox";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
+
 const SIGNIN = "signin";
 const REGISTER = "signup";
 
@@ -50,6 +51,7 @@ function AuthEntry({
 
   const [loading, setLoading] = useState(false);
   const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
+  const [userWantsPasswordReset, setUserWantsPasswordReset] = useState(false);
 
   const clearSlate = () => {
     setNotification({});
@@ -77,6 +79,7 @@ function AuthEntry({
   };
 
   // ---------------------------------------------------------------
+
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
   if (userIsAuthenticated) return <Redirect to={links.profile} />;
@@ -95,6 +98,7 @@ function AuthEntry({
       <LoginAuth
         loading={loading}
         userWantsPasswordFree={userWantsPasswordFree}
+        userWantsToResetPassword={userWantsPasswordReset}
         description={description}
         title={title}
         setUsePasswordFree={setUsePasswordFree}
@@ -102,6 +106,7 @@ function AuthEntry({
         links={links}
         signInWithGoogle={doAuthenticationWithGoogle}
         signInWithFacebook={doAuthenticationWithFacebook}
+        setPasswordReset={setUserWantsPasswordReset}
       />
     );
     PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
