@@ -11,8 +11,8 @@ export default function DeleteConfirmation({
       style={{ padding: 20, borderRadius: 6 }}
     >
       <p style={{ color: "black", margin: 0 }}>
-        If you cancel, your account you will lose all your registration progress
-        and will be removed from the platform. Are you sure about this?
+        If you cancel, your registration information will be
+        completely removed from the platform. Are you sure about this?
       </p>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ marginLeft: "auto" }}>

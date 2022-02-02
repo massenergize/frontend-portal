@@ -22,6 +22,7 @@ export default function SignUpAuth({
   fireAuth,
   completeFormRegistrationInME,
   setLoading,
+  policies,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration, setTimeForRegistration] =
@@ -78,6 +79,7 @@ export default function SignUpAuth({
         cancelRegistration={yesDeleteMyAccount}
         createMyAccountNow={finaliseFormAndRegister}
         loading={loading}
+        policies={policies}
       />
     );
 

@@ -5,7 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "./FormCompletion.css";
 import { isInvalid } from "../shared/utils";
 import { onReCaptchaChange } from "../../../../redux/actions/authActions";
-
+import InformationBoard from "./InformationBoard";
 import DeleteConfirmation from "./DeleteConfirmation";
 export default function FormCompletion({
   onChange,
@@ -13,10 +13,17 @@ export default function FormCompletion({
   cancelRegistration,
   createMyAccountNow,
   loading,
+  policies,
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [showTOS, setShowTOS] = useState(false);
+  const [showPP, setShowPP] = useState(false);
 
+  const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
+  const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
+
+  console.log("I am the policies bro", policies, TOS, PP);
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
   const preferredName = getValue("preferred_name");
@@ -36,6 +43,18 @@ export default function FormCompletion({
     }
     return false;
   };
+
+  if (showTOS)
+    return (
+      <InformationBoard
+        close={() => setShowTOS(false)}
+        html={TOS?.description}
+      />
+    );
+  if (showPP)
+    return (
+      <InformationBoard close={() => setShowPP(false)} html={PP?.description} />
+    );
 
   if (deleteConfirmation)
     return (
@@ -135,7 +154,7 @@ export default function FormCompletion({
             By continuing, I accept the{" "}
             <button
               type="button"
-              onClick={() => this.setState({ showPP: true })}
+              onClick={() => setShowPP(true)}
               className="as-link"
               style={{ display: "inline-block" }}
             >
@@ -145,7 +164,7 @@ export default function FormCompletion({
             and agree to comply with the
             <button
               type="button"
-              // onClick={() => this.setState({ showTOS: true })}
+              onClick={() => setShowTOS(true)}
               className="as-link"
               style={{ display: "inline-block", marginLeft: 3 }}
             >

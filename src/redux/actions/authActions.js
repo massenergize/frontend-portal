@@ -32,7 +32,8 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
   const auth = getState().fireAuth;
   apiCall("users.create", body)
     .then((response) => {
-      if (response?.success & response?.data)
+      console.log("I am the response bro", response);
+      if (response?.success && response?.data)
         return dispatch(
           fetchTokenFromMassEnergize(auth._lat, (response) => {
             console.log("I MADE IT THROUGH REGISTRATION", response);

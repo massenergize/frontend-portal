@@ -36,6 +36,7 @@ function AuthEntry({
   fireAuth,
   completeFormRegistrationInME,
   user,
+  policies,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -75,10 +76,9 @@ function AuthEntry({
     firebaseRegistration(form, () => setLoading(false));
   };
 
+  // ---------------------------------------------------------------
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-  // console.log("FIREAUTH, and ME USER", fireAuth, user);
-  // ---------------------------------------------------------------
   if (userIsAuthenticated) return <Redirect to={links.profile} />;
 
   if (appIsNowCheckingFirebase || appIsCheckingMassEnergize)
@@ -90,7 +90,7 @@ function AuthEntry({
   const description = "";
   var Page, PageTitle;
 
-  if (isSignInPage) {
+  if (isSignInPage && !userNeedsToRegister) {
     Page = (
       <LoginAuth
         loading={loading}
@@ -105,7 +105,7 @@ function AuthEntry({
       />
     );
     PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
-  } else if (isRegistrationPage) {
+  } else if (isRegistrationPage || userNeedsToRegister) {
     Page = (
       <SignUpAuth
         setLoading={setLoading}
@@ -121,6 +121,7 @@ function AuthEntry({
         community={community}
         fireAuth={fireAuth}
         completeFormRegistrationInME={completeFormRegistrationInME}
+        policies={policies}
       />
     );
     PageTitle = "Sign Up";
@@ -162,6 +163,7 @@ const mapStateToProps = (state) => {
     links: state.links,
     community: state.page.community,
     user: state.user,
+    policies: state.page.policies,
   };
 };
 
