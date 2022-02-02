@@ -38,6 +38,7 @@ function AuthEntry({
   completeFormRegistrationInME,
   policies,
   finaliseNoPasswordAuth,
+  registerPageData,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -89,9 +90,10 @@ function AuthEntry({
 
   // ------------------------------------------------------------------
 
-  const title = "Welcome To MassEnergize";
-  const description = "";
-  var Page, PageTitle;
+  var title = "Welcome,",
+    description = "",
+    Page,
+    PageTitle;
 
   if (isSignInPage && !userNeedsToRegister) {
     Page = (
@@ -112,8 +114,12 @@ function AuthEntry({
         setLoading={setLoading}
       />
     );
-    PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
+    PageTitle = userWantsPasswordFree ? "Password-Free Sign In" : "Sign In";
   } else if (isRegistrationPage || userNeedsToRegister) {
+    title = registerPageData?.title || title;
+    description =
+      registerPageData?.description ||
+      "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
     Page = (
       <SignUpAuth
         setLoading={setLoading}
@@ -172,6 +178,7 @@ const mapStateToProps = (state) => {
     community: state.page.community,
     user: state.user,
     policies: state.page.policies,
+    registerPageData: state.page.registerPage,
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
@@ -61,7 +61,7 @@ export default function LoginAuth(props) {
     });
   };
 
-  const backgroundCheckForPasswordlessAuthentication = () => {
+  const backgroundCheckForPasswordlessAuthentication = useCallback(() => {
     checkForPasswordFreeAuth((email, error) => {
       if (!error) {
         finaliseNoPasswordAuth(email);
@@ -76,11 +76,15 @@ export default function LoginAuth(props) {
         setUserContinuedPasswordFreeInDiffEnv(true);
       }
     });
-  };
+  }, [
+    setUserContinuedPasswordFreeInDiffEnv,
+    finaliseNoPasswordAuth,
+    setNotification,
+  ]);
 
   useEffect(() => {
     backgroundCheckForPasswordlessAuthentication();
-  }, [setUserContinuedPasswordFreeInDiffEnv]);
+  }, [backgroundCheckForPasswordlessAuthentication]);
 
   if (userWantsToResetPassword)
     return <ResetPassword cancel={() => setPasswordReset(false)} />;

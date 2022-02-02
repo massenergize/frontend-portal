@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-
-import { signOutOfFirebase } from "../shared/firebase-helpers";
 import {
   getRandomColor,
   ifEnterKeyIsPressed,
@@ -9,6 +7,9 @@ import {
 } from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
+import ProductTour from "react-joyride";
+import { handleCloseTourWithBtn, handleTourCallback } from "../../../Utils";
+import TourContent, { TourTitle } from "./TourContent";
 
 export default function SignUpAuth({
   description,
@@ -27,8 +28,7 @@ export default function SignUpAuth({
   registerWithFacebook,
 }) {
   const [form, setForm] = useState({});
-  const [itsTimeForRegistration] =
-    useState(userNeedsToRegister);
+  const [itsTimeForRegistration] = useState(userNeedsToRegister);
 
   const history = useHistory();
 
@@ -85,8 +85,54 @@ export default function SignUpAuth({
       />
     );
 
+  const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+  const community_name = community?.name;
+  const steps = [
+    {
+      target: "body",
+      title: <TourTitle community_name={community_name} />,
+      content: (
+        <TourContent
+          links={links}
+          handleCloseTourWithBtn={handleCloseTourWithBtn}
+        />
+      ),
+      locale: {
+        last: "End Tour & Sign Up",
+      },
+      placement: "center",
+      spotlightClicks: true,
+      disableBeacon: true,
+      hideFooter: false,
+    },
+  ];
+
   return (
     <div className="styled-form register-form">
+      {/* --------------------- TOUR ---------------- */}
+      {seen_tour === "true" ? null : (
+        <ProductTour
+          steps={steps}
+          continuous
+          showSkipButton
+          disableScrolling={true}
+          callback={handleTourCallback}
+          // getHelpers={this.getHelpers}
+          debug
+          styles={{
+            options: {
+              arrowColor: "#eee",
+              backgroundColor: "#eee",
+              primaryColor: "#8CC43C",
+              textColor: "black",
+              width: 400,
+              zIndex: 1000,
+            },
+          }}
+        />
+      )}
+
+      {/* ---------------------------------------------- */}
       <div
         className="z-depth-float me-anime-fade-in-up"
         style={{ padding: 46, borderRadius: 12 }}
@@ -196,12 +242,9 @@ export default function SignUpAuth({
                 }}
                 className=" energize-link"
                 to={links.signin}
-                // onClick={() => setUsePasswordFree(true)}
               >
                 I have an account already
               </Link>
-
-              <button onClick={() => signOutOfFirebase()}>Signout</button>
             </div>
           </div>
         </div>

@@ -72,7 +72,6 @@ import { reduxLoadLinks } from "./redux/actions/linkActions";
 
 import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
-import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
@@ -97,6 +96,8 @@ class AppRouter extends Component {
   }
 
   componentDidMount() {
+    const cookies = new Cookies();
+    device_checkin(cookies).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthencation();
     this.fetch();
   }
