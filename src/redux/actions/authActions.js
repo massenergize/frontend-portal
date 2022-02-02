@@ -4,7 +4,9 @@ import {
   deleteAccountFromFirebase,
   firebaseAuthenticationWithFacebook,
   firebaseAuthenticationWithGoogle,
+  firebaseAuthenticationWithNoPassword,
   registerWithEmailAndPassword,
+  sendSignInLinkToEmail,
   signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
@@ -15,6 +17,18 @@ export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
 export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
+
+export const finaliseNoPasswordAuthentication = (email, cb) => (dispatch) => {
+  firebaseAuthenticationWithNoPassword(email, (response, error) => {
+    if (error) {
+      cb && cb(null, error);
+      dispatch(setAuthNotification(makeError(error)));
+    }
+
+    const user = response?.user;
+    fetchTokenFromMassEnergize(user?._lat, cb);
+  });
+};
 
 export const fetchUserContent = (email) => async (dispatch) => {
   try {
@@ -32,13 +46,12 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
   const auth = getState().fireAuth;
   apiCall("users.create", body)
     .then((response) => {
-      console.log("I am the response bro", response);
       if (response?.success && response?.data)
         return dispatch(
-          fetchTokenFromMassEnergize(auth._lat, (response) => {
-            console.log("I MADE IT THROUGH REGISTRATION", response);
-            cb && cb(response);
-          })
+          fetchTokenFromMassEnergize(
+            auth._lat,
+            (response) => cb && cb(response)
+          )
         );
       console.log(
         "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user"

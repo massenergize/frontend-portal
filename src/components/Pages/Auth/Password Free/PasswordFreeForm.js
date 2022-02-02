@@ -1,14 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import BreadCrumbBar from "../../../Shared/BreadCrumbBar";
 import MEButton from "../../Widgets/MEButton";
+import { isInvalid } from "../shared/utils";
 
 export default function PasswordFreeForm({
   description,
   title,
-  onSubmit,
   usePassword,
+  onChange,
+  getValue,
+  sendLink,
+  loading,
+  sent,
 }) {
+  const email = getValue("email");
+
   return (
     <div>
       <div
@@ -35,7 +42,7 @@ export default function PasswordFreeForm({
             </p>
           </div>
 
-          <form onSubmit={onSubmit}>
+          <div>
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-envelope-o"></span>
@@ -44,8 +51,8 @@ export default function PasswordFreeForm({
                 id="login-email"
                 type="email"
                 name="email"
-                // value={email || ""}
-                // onChange={onChange}
+                value={email}
+                onChange={onChange}
                 placeholder="Enter your email here..."
               />
             </div>
@@ -54,10 +61,12 @@ export default function PasswordFreeForm({
               <div className="form-group pull-left">
                 <MEButton
                   type="submit"
-                  // disabled={this.isInvalid()}
+                  disabled={isInvalid(email)}
                   id="sign-in-btn"
+                  onClick={() => sendLink()}
+                  loading={loading}
                 >
-                  Continue
+                  {loading ? "Sending Link..." : "Continue"}
                 </MEButton>
               </div>
 
@@ -106,7 +115,7 @@ export default function PasswordFreeForm({
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

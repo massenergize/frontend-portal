@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
 import ResetPassword from "../Reset/ResetPassword";
+import {
+  checkForPasswordFreeAuth,
+  DIFFERENT_ENVIRONMENT,
+  sendSignInLinkToEmail,
+} from "../shared/firebase-helpers";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
@@ -18,9 +23,16 @@ export default function LoginAuth(props) {
     signInWithFacebook,
     setPasswordReset,
     userWantsToResetPassword,
+    setNotification,
+    finaliseNoPasswordAuth,
+    setLoading,
   } = props;
 
   const [form, setForm] = useState({});
+  const [
+    userContinuedPasswordFreeInDiffEnv,
+    setUserContinuedPasswordFreeInDiffEnv,
+  ] = useState(false);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,6 +46,42 @@ export default function LoginAuth(props) {
     return (form || {})[name] || "";
   };
 
+  const sendLink = () => {
+    setLoading(true);
+    const email = getValue("email");
+    if (userContinuedPasswordFreeInDiffEnv)
+      return finaliseNoPasswordAuth(email);
+    sendSignInLinkToEmail(email, (_, error) => {
+      setLoading(false);
+      if (error) return setNotification({ good: false, message: error });
+      setNotification({
+        good: true,
+        message: `We have sent a  special link to ${email}, check it out.`,
+      });
+    });
+  };
+
+  const backgroundCheckForPasswordlessAuthentication = () => {
+    checkForPasswordFreeAuth((email, error) => {
+      if (!error) {
+        finaliseNoPasswordAuth(email);
+        return;
+      }
+      if (error?.type === DIFFERENT_ENVIRONMENT) {
+        setNotification({
+          good: false,
+          message:
+            "Password-free authentication was unable to complete. Are you continuing the process on a new device or browser? Please provide your email again",
+        });
+        setUserContinuedPasswordFreeInDiffEnv(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    backgroundCheckForPasswordlessAuthentication();
+  }, []);
+
   if (userWantsToResetPassword)
     return <ResetPassword cancel={() => setPasswordReset(false)} />;
 
@@ -45,6 +93,11 @@ export default function LoginAuth(props) {
         description={description}
         usePassword={() => setUsePasswordFree(false)}
         onChange={onChange}
+        getValue={getValue}
+        sendLink={sendLink}
+        loading={loading}
+
+        // diffEnv={userContinuedPasswordFreeInDiffEnv}
       />
     );
 

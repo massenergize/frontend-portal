@@ -7,6 +7,7 @@ import {
   authenticateWithGoogle,
   cancelMyRegistration,
   completeUserRegistration,
+  finaliseNoPasswordAuthentication,
   firebaseLogin,
   firebaseRegistration,
   setAuthNotification,
@@ -36,8 +37,8 @@ function AuthEntry({
   community,
   fireAuth,
   completeFormRegistrationInME,
-  user,
   policies,
+  finaliseNoPasswordAuth,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -50,7 +51,7 @@ function AuthEntry({
     authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
 
   const [loading, setLoading] = useState(false);
-  const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
+  const [userWantsPasswordFree, setUsePasswordFree] = useState(true);
   const [userWantsPasswordReset, setUserWantsPasswordReset] = useState(false);
 
   const clearSlate = () => {
@@ -107,6 +108,9 @@ function AuthEntry({
         signInWithGoogle={doAuthenticationWithGoogle}
         signInWithFacebook={doAuthenticationWithFacebook}
         setPasswordReset={setUserWantsPasswordReset}
+        setNotification={setNotification}
+        finaliseNoPasswordAuth={finaliseNoPasswordAuth}
+        setLoading={setLoading}
       />
     );
     PageTitle = userWantsPasswordFree ? "Password Free Sign In" : "Sign In";
@@ -182,6 +186,7 @@ const mapDispatchToProps = (dispatch) => {
       doAuthenticationWithFacebook: authenticateWithFacebook,
       cancelRegistration: cancelMyRegistration,
       completeFormRegistrationInME: completeUserRegistration,
+      finaliseNoPasswordAuth: finaliseNoPasswordAuthentication,
     },
     dispatch
   );
