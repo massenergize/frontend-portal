@@ -194,6 +194,7 @@ class StoryForm extends React.Component {
     //  this.setState({ preferredName: this.props.user.preferredName });
     return (
       <MEFormGenerator
+	    TriggerModal = {(bool) => this.props.TriggerModal(bool)}
         inputData = {this.props.draftTestimonialData}
         style={{ background: "white", borderRadius: 10 }}
         className="z-depth-1"

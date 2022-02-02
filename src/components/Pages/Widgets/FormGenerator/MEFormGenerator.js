@@ -429,7 +429,7 @@ export default class FormGenerator extends Component {
             <div>{this.displayInformation()}</div>
             <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
-              <div style={{ marginLeft: "auto" }}>
+              <div style={{ margin: "auto" }}>
                 {moreActions}
 
                 {/*Added a clear form button because when you click edit testimonial button,
@@ -438,20 +438,33 @@ export default class FormGenerator extends Component {
                 <MEButton
                   type="button"
                   onClick={() => {this.resetForm()}}
-                  className="test-form-g-button"
                   containerStyle={{
                     padding: "10px 12px",
-                    fontSize: 13,
+                    fontSize: 18,
                   }}
                 >
                   Clear Form
                 </MEButton>
 
+				
                 <MEButton
-                  className="test-form-g-button"
+                  type="button"
+                  onClick={() => {this.props.TriggerModal(false)}}
+                  className="close-testimonial-modal-button"
                   containerStyle={{
                     padding: "10px 12px",
-                    fontSize: 13,
+                    fontSize: 18,
+                  }}
+                >
+                  Cancel 
+                </MEButton>
+
+
+                <MEButton
+                  className="submit-testimonial-button"
+                  containerStyle={{
+                    padding: "10px 12px",
+                    fontSize: 18,
                   }}
                 >
                   {this.props.actionText}
