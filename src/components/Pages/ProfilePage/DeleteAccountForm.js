@@ -110,15 +110,14 @@ class DeleteAccountFormBase extends React.Component {
   deleteAccount() {
     const provider = this.getProvider();
     if (provider === "email_and_password") {
-      //var cred = this.props.firebase.auth.EmailAuthProvider.credential(
-      //  this.props.user.email,
-      //  this.state.password
-      //);
-      //this.props.firebase
-      //  .auth()
-      //  .currentUser.reauthenticateWithCredential(cred)
-      //  .then(() => {
-        console.log(this.props.firebase.auth().currentUser)
+      var cred = this.props.firebase.auth.EmailAuthProvider.credential(
+        this.props.user.email,
+        this.state.password
+      );
+      this.props.firebase
+        .auth()
+        .currentUser.reauthenticateWithCredential(cred)
+        .then(() => {
           this.props.firebase
             .auth()
             .currentUser.delete()
@@ -130,7 +129,7 @@ class DeleteAccountFormBase extends React.Component {
                 }
               );
             });
-      //  });
+        });
     } else if (provider === "google") {
       //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
       this.props.firebase
