@@ -47,6 +47,7 @@ export default function LoginAuth(props) {
   };
 
   const sendLink = () => {
+    setNotification({});
     setLoading(true);
     const email = getValue("email");
     if (userContinuedPasswordFreeInDiffEnv)
@@ -67,7 +68,7 @@ export default function LoginAuth(props) {
         finaliseNoPasswordAuth(email);
         return;
       }
-      if (error?.type === DIFFERENT_ENVIRONMENT) {
+      if (error === DIFFERENT_ENVIRONMENT) {
         setNotification({
           good: false,
           message:
@@ -100,8 +101,6 @@ export default function LoginAuth(props) {
         getValue={getValue}
         sendLink={sendLink}
         loading={loading}
-
-        // diffEnv={userContinuedPasswordFreeInDiffEnv}
       />
     );
 

@@ -38,6 +38,7 @@ export const checkForPasswordFreeAuth = (cb) => {
     const email = localStorage.getItem(PASSWORD_FREE_EMAIL);
     if (!email) {
       cb && cb(null, DIFFERENT_ENVIRONMENT);
+      console.log("WE COULD NOT FIND THE TEMPORARY EMAIL BRO");
       return;
     }
     cb && cb(email);
