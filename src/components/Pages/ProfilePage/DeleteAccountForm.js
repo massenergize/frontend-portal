@@ -11,7 +11,7 @@ import {
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import MECard from "../Widgets/MECard";
-//import METextField from "../Widgets/METextField";
+import METextField from "../Widgets/METextField";
 
 class DeleteAccountFormBase extends React.Component {
   constructor(props) {
@@ -61,8 +61,7 @@ class DeleteAccountFormBase extends React.Component {
               {" "}
               No
             </label>
-            {/* password not required for deleting profile
-            this.getProvider() === "email_and_password" ? (
+            {this.getProvider() === "email_and_password" ? (
               <>
                 <br />
                 <small>
@@ -77,7 +76,7 @@ class DeleteAccountFormBase extends React.Component {
                   required
                 />
               </>
-            ) : null*/}
+            ) : null}
           </div>
           <MEButton type="submit">{"Submit"}</MEButton>
           <MEButton
