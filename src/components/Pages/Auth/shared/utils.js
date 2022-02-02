@@ -1,8 +1,9 @@
 export const AUTH_STATES = {
-  USER_IS_NOT_AUTHENTICATED: "user-is-not-authenticated",
+  USER_IS_NOT_AUTHENTICATED: "user_is_not_authenticated",
   CHECKING_FIREBASE: "looking_for_firebase_authentication",
   CHECK_MASS_ENERGIZE: "checking_massenergize_for_profile",
   NEEDS_REGISTRATION: "authenticated_but_needs_registration",
+  USER_IS_AUTHENTICATED: "user_is_authenticated",
 };
 
 export const translateFirebaseError = (error) => {
@@ -42,4 +43,13 @@ export const validatePassword = (password, confirmPasssword) => {
 export const ifEnterKeyIsPressed = (e) => {
   if (e?.key === "Enter" || e?.keyCode === 13) return true;
   return false;
+};
+
+export const getRandomColor = () => {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 };

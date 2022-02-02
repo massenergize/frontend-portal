@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import { signOutOfFirebase } from "../shared/firebase-helpers";
-import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
+import {
+  getRandomColor,
+  ifEnterKeyIsPressed,
+  isInvalid,
+} from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 
@@ -14,10 +18,15 @@ export default function SignUpAuth({
   links,
   userNeedsToRegister,
   cancelRegistration,
+  community,
+  fireAuth,
+  completeFormRegistrationInME,
+  setLoading,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration, setTimeForRegistration] =
     useState(userNeedsToRegister);
+
   const history = useHistory();
 
   const yesDeleteMyAccount = () => {
@@ -44,6 +53,22 @@ export default function SignUpAuth({
     return status;
   };
 
+  const finaliseFormAndRegister = () => {
+    const location = " , " + form.city + ", " + form.state + ", " + form.zip;
+    const body = {
+      full_name: form.firstName + " " + form.lastName,
+      preferred_name: form.preferred_name || form.firstName,
+      email: fireAuth.email,
+      location: location,
+      is_vendor: false,
+      accepts_terms_and_conditions: true,
+      subdomain: community && community.subdomain,
+      color: getRandomColor(),
+    };
+
+    setLoading(true);
+    completeFormRegistrationInME(body, () => setLoading(false));
+  };
   if (itsTimeForRegistration)
     return (
       <FormCompletion
@@ -51,6 +76,8 @@ export default function SignUpAuth({
         getValue={getValue}
         form={form}
         cancelRegistration={yesDeleteMyAccount}
+        createMyAccountNow={finaliseFormAndRegister}
+        loading={loading}
       />
     );
 
@@ -114,7 +141,6 @@ export default function SignUpAuth({
 
           <div className="clearfix">
             <div style={{ display: "flex", flexDirection: "row" }}>
-              {/* <div className="form-group pull-left"> */}
               <MEButton
                 disabled={
                   isInvalid(getValue("email")) || invalidPassword() || loading

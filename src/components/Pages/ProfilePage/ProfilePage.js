@@ -46,6 +46,8 @@ import {
   sumOfCarbonScores,
 } from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
+import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
+import { AUTH_STATES } from "../Auth/shared/utils";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -67,7 +69,7 @@ class ProfilePage extends React.Component {
 
   componentDidMount() {
     // disable the registration protocol to prevent the form from ever showing again, until enabled
-    localStorage.removeItem("reg_protocol");
+    // localStorage.removeItem("reg_protocol");
   }
 
   getEqData() {
@@ -143,15 +145,28 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    if (!this.props.user) {
-      return <Redirect to={this.props.links.signin}> </Redirect>;
-    }
+    // if (!this.props.user) {
+    //   return <Redirect to={this.props.links.signin}> </Redirect>;
+    // }
 
-    if (!this.props.user) {
-      // can this execute?
-      this.props.firebase.auth().signOut();
-      this.props.reduxLogout();
-    }
+    // if (!this.props.user) {
+    //   // can this execute?
+    //   this.props.firebase.auth().signOut();
+    //   this.props.reduxLogout();
+
+    // }
+    const userIsNotAuthenticated =
+      this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
+    const appIsCheckingFirebase =
+      this.props.authState === AUTH_STATES.CHECKING_FIREBASE;
+    const appIsCheckingMassEnergize =
+      this.props.authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
+
+    if (userIsNotAuthenticated)
+      return <Redirect to={this.props.links.signin}> </Redirect>;
+
+    if (appIsCheckingFirebase || appIsCheckingMassEnergize)
+      return <LoadingCircle />;
 
     const myHouseholds = this.props.user.households || [];
 
@@ -445,9 +460,10 @@ class ProfilePage extends React.Component {
               >
                 Edit Profile
               </Dropdown.Item>
-              {this.props.auth.providerData &&
+              {/* {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
-              this.props.auth.providerData[0].providerId === "password" ? (
+              this.props.auth.providerData[0].providerId === "password" ? ( */}
+              {usesOnlyPasswordAuth(this.props.fireAuth) ? (
                 <>
                   <Dropdown.Item
                     onClick={() =>
@@ -857,7 +873,7 @@ class ProfilePage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
+    // auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -870,6 +886,8 @@ const mapStoreToProps = (store) => {
     links: store.links,
     eq: store.page.equivalences,
     pref_eq: store.user.pref_equivalence,
+    fireAuth: store.fireAuth,
+    authState: store.authState,
   };
 };
 const mapDispatchToProps = {

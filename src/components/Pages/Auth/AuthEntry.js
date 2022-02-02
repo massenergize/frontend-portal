@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import {
   authenticateWithFacebook,
   authenticateWithGoogle,
   cancelMyRegistration,
+  completeUserRegistration,
   firebaseLogin,
   firebaseRegistration,
   setAuthNotification,
@@ -29,12 +31,20 @@ function AuthEntry({
   doAuthenticationWithFacebook,
   authState,
   cancelRegistration,
+  community,
+  fireAuth,
+  completeFormRegistrationInME,
+  user,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
   const userNeedsToRegister = authState === AUTH_STATES.NEEDS_REGISTRATION;
+  const userIsAuthenticated = authState === AUTH_STATES.USER_IS_AUTHENTICATED;
   const appIsNowCheckingFirebase = authState === AUTH_STATES.CHECKING_FIREBASE;
+  const appIsCheckingMassEnergize =
+    authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
+
   const [loading, setLoading] = useState(false);
   const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
 
@@ -63,9 +73,12 @@ function AuthEntry({
     firebaseRegistration(form, () => setLoading(false));
   };
 
+  // console.log("FIREAUTH, and ME USER", fireAuth, user);
   // ---------------------------------------------------------------
+  if (userIsAuthenticated) return <Redirect to={links.profile} />;
 
-  if (appIsNowCheckingFirebase) return <LoadingCircle />;
+  if (appIsNowCheckingFirebase || appIsCheckingMassEnergize)
+    return <LoadingCircle />;
 
   // ------------------------------------------------------------------
 
@@ -78,6 +91,8 @@ function AuthEntry({
       <LoginAuth
         loading={loading}
         userWantsPasswordFree={userWantsPasswordFree}
+        description={description}
+        title={title}
         setUsePasswordFree={setUsePasswordFree}
         signUserIn={signUserIn}
         links={links}
@@ -89,6 +104,7 @@ function AuthEntry({
   } else if (isRegistrationPage) {
     Page = (
       <SignUpAuth
+        setLoading={setLoading}
         loading={loading}
         links={links}
         description={description}
@@ -98,6 +114,9 @@ function AuthEntry({
         registerWithFacebook={doAuthenticationWithFacebook}
         userNeedsToRegister={userNeedsToRegister}
         cancelRegistration={cancelRegistration}
+        community={community}
+        fireAuth={fireAuth}
+        completeFormRegistrationInME={completeFormRegistrationInME}
       />
     );
     PageTitle = "Sign Up";
@@ -137,6 +156,8 @@ const mapStateToProps = (state) => {
     authState: state.authState,
     fireAuth: state.fireAuth,
     links: state.links,
+    community: state.page.community,
+    user: state.user,
   };
 };
 
@@ -149,6 +170,7 @@ const mapDispatchToProps = (dispatch) => {
       doAuthenticationWithGoogle: authenticateWithGoogle,
       doAuthenticationWithFacebook: authenticateWithFacebook,
       cancelRegistration: cancelMyRegistration,
+      completeFormRegistrationInME: completeUserRegistration,
     },
     dispatch
   );

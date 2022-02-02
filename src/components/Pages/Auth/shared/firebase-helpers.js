@@ -5,6 +5,7 @@ import firebase, {
 import { translateFirebaseError } from "./utils";
 
 const Auth = firebase?.auth();
+
 export const withEmailAndPassword = (email, password, cb) => {
   Auth.signInWithEmailAndPassword(email, password)
     .then((response) => {
@@ -14,6 +15,14 @@ export const withEmailAndPassword = (email, password, cb) => {
       if (cb) cb(null, translateFirebaseError(e?.toString()));
       console.log("FIREBASE_SIGN_IN_ERROR:", e?.toString());
     });
+};
+
+export const usesOnlyPasswordAuth = (fireAuth) => {
+  if (!fireAuth) return false;
+  const providers = fireAuth.providerData || [];
+  if (providers.length !== 1) return false;
+  if (providers[0]?.providerId === "password") return true;
+  return false;
 };
 
 export const checkFirebaseAuthenticationState = (cb) => {

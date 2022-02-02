@@ -5,56 +5,44 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "./FormCompletion.css";
 import { isInvalid } from "../shared/utils";
 import { onReCaptchaChange } from "../../../../redux/actions/authActions";
-import { useHistory } from "react-router-dom";
+
+import DeleteConfirmation from "./DeleteConfirmation";
 export default function FormCompletion({
   onChange,
   getValue,
   cancelRegistration,
+  createMyAccountNow,
+  loading,
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
-  const preferredName = getValue("preferredName");
+  const preferredName = getValue("preferred_name");
   const city = getValue("city");
   const state = getValue("state");
   const zip = getValue("zip");
-  const captcha = getValue("captcha");
 
   const checkCaptcha = (value) => {
     onReCaptchaChange(value, (status) => setcaptchaIsValid(status));
   };
 
   const formNeedsWorks = () => {
-    [firstName, lastName, preferredName, city, state, zip].forEach((f) => {
-      if (isInvalid(f)) return true;
-    });
+    const fieldVals = [firstName, lastName, city, state, zip];
+    for (let i = 0; i < fieldVals.length; i++) {
+      const field = fieldVals[i];
+      if (isInvalid(field)) return true;
+    }
     return false;
   };
 
   if (deleteConfirmation)
     return (
-      <div
-        className="z-depth-float me-anime-open-in"
-        style={{ padding: 20, borderRadius: 6 }}
-      >
-        <p style={{ color: "black", margin: 0 }}>
-          If you cancel, your account you will lose all your registration
-          progress and will be removed from the platform. Are you sure about
-          this?
-        </p>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ marginLeft: "auto" }}>
-            <MEButton
-              variation="accent"
-              onClick={() => setDeleteConfirmation(false)}
-            >
-              No
-            </MEButton>
-            <MEButton onClick={() => cancelRegistration()}>Yes</MEButton>
-          </div>
-        </div>
-      </div>
+      <DeleteConfirmation
+        setDeleteConfirmation={setDeleteConfirmation}
+        cancelRegistration={cancelRegistration}
+      />
     );
 
   return (
@@ -96,7 +84,7 @@ export default function FormCompletion({
             </span>
             <input
               type="text"
-              name="preferredName"
+              name="preferred_name"
               value={preferredName}
               onChange={onChange}
               placeholder="Preferred Name (visible to others)"
@@ -116,13 +104,14 @@ export default function FormCompletion({
             <select
               value={state}
               className="form-control"
-              // onChange={(event) => this.setState({ state: event.target.value })}
+              name="state"
+              onChange={onChange}
               placeholder="State"
             >
-              {US_STATES.map((state, index) => {
+              {US_STATES.map((s, index) => {
                 return (
-                  <option key={index?.toString()} value={state.value}>
-                    {state.name}
+                  <option key={index?.toString()} value={s.value}>
+                    {s.name}
                   </option>
                 );
               })}
@@ -178,8 +167,10 @@ export default function FormCompletion({
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
               disabled={!captchaIsValid || formNeedsWorks()}
+              onClick={() => createMyAccountNow()}
+              loading={loading}
             >
-              Finish Creating Profile
+              {loading ? "Creating Profile..." : "Finish Creating Profile"}
             </MEButton>
           </div>
           <small>

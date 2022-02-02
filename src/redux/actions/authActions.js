@@ -9,12 +9,46 @@ import {
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
-import { reduxLogin } from "./userActions";
+import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
 
 export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
 export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
+
+export const fetchUserContent = (email) => async (dispatch) => {
+  try {
+    const done = await apiCall("users.actions.completed.list", { email });
+    const todo = await apiCall("users.actions.todo.list", { email });
+    dispatch(reduxLoadTodo(todo?.data || []));
+    dispatch(reduxLoadDone(done?.data || []));
+    dispatch(setAuthStateAction(AUTH_STATES.USER_IS_AUTHENTICATED));
+  } catch (e) {
+    console.log("LOADIN_USER_CONTENT_ERROR:", e.toString());
+  }
+};
+
+export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
+  const auth = getState().fireAuth;
+  apiCall("users.create", body)
+    .then((response) => {
+      if (response?.success & response?.data)
+        return dispatch(
+          fetchTokenFromMassEnergize(auth._lat, (response) => {
+            console.log("I MADE IT THROUGH REGISTRATION", response);
+            cb && cb(response);
+          })
+        );
+      console.log(
+        "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user"
+      );
+    })
+    .catch((error) => {
+      if (cb) cb(null, error?.toString());
+      dispatch(setAuthNotification(makeError(error)));
+      console.log("CREATING_ME_USER_ERROR:", error?.toString());
+    });
+};
 
 export const signMeOut = () => (dispatch) => {
   signOutOfFirebase();
@@ -29,22 +63,33 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
     dispatch(signMeOut());
   });
 };
+
 export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
   apiCall("auth.login", { idToken: lat })
     .then((response) => {
       const error = response.error;
-      if (!error) return dispatch(reduxLogin(response.data));
+      const massUser = response.data;
+      cb && cb(massUser);
+      if (!error) {
+        dispatch(fetchUserContent(massUser?.email));
+        dispatch(setAuthStateAction(AUTH_STATES.CHECK_MASS_ENERGIZE));
+        return dispatch(reduxLogin(massUser));
+      }
       if (error === AUTH_STATES.NEEDS_REGISTRATION)
         return dispatch(setAuthStateAction(AUTH_STATES.NEEDS_REGISTRATION));
-      if (cb) cb(response);
+
+      cb && cb(null, error);
+      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
     })
     .catch((error) => {
       if (cb) cb(null, error?.toString());
       dispatch(setAuthNotification(makeError(error)));
+      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
       console.log("AUTH_LOGIN_ERROR", error?.toString());
     });
 };
+
 export const authenticateWithGoogle = () => (dispatch) => {
   firebaseAuthenticationWithGoogle((user, error) => {
     if (error) return dispatch(setAuthNotification(makeError(error)));
