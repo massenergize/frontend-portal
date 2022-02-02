@@ -950,10 +950,10 @@
 }
 .bottom-date-area {
   /* padding: 13px; */
-  background-color: var(--app-theme-orange);
+  background-color: #f9f9f9; /* var(--app-theme-orange); */
   display: flex;
   flex-direction: row;
-  color: white;
+  color: #75ab2d;
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
