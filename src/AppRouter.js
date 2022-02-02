@@ -346,6 +346,14 @@ class AppRouter extends Component {
       return menu.name === "PortalFooterQuickLinks";
     });
     const footerLinks = this.addPrefix(footerContent[0].content.links);
+
+    const communitiesLink = {
+      name: "All MassEnergize Community Sites",
+      link: URLS.COMMUNITIES, //"http://" + window.location.host,
+      special: true,
+    };
+
+    footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
   /**
@@ -504,19 +512,12 @@ class AppRouter extends Component {
     }
     const navBarMenu = this.state.navBarMenu;
     const footerLinks = this.state.footerLinks;
-
-    const communitiesLink = {
-      name: "All MassEnergize Community Sites",
-      link: URLS.COMMUNITIES, //"http://" + window.location.host,
-      special: true,
-    };
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
-      allCommunities: communitiesLink,
     };
-
+    
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
