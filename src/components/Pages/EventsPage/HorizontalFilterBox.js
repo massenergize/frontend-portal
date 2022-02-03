@@ -4,9 +4,10 @@ import { withRouter } from "react-router";
 import { getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
-import Modal from "react-bootstrap/Modal";
+// import MEModal from "../Widgets/MEModal";
+// import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryForm from "../ActionsPage/StoryForm";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -14,7 +15,6 @@ class HorizontalFilterBox extends Component {
   constructor() {
     super();
     this.state = {
-      OpenModal: false,
       activeTags: [],
       dropActive: false,
       showSearch: false,
@@ -235,7 +235,6 @@ class HorizontalFilterBox extends Component {
       );
     return <i className=" fa fa-angle-down" style={{ marginLeft: 5 }}></i>;
   }
-
   getVersionToShow() {
     const version = sessionStorage.getItem(FILTER_BAR_VERSION);
     if (version === OPTION2) return 2;
@@ -270,31 +269,18 @@ class HorizontalFilterBox extends Component {
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
           this.props.user ? (
-            <div className="add-testimonial-container">
-              <div
-                className="add-testimonial touchable-opacity"
-                onClick={() => {
-                  this.setState({ OpenModal: true });
-                  this.props.isModalOpen(true);
-                }}
-              >
-                <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                <p>Add Testimonial</p>
-              </div>
-            </div>
+	          <StoryFormButtonModal>
+                <div className="add-testimonial-container">
+                  <div className="add-testimonial touchable-opacity">
+                      <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                      <p>Add Testimonial</p>
+                  </div>
+                </div>
+				</StoryFormButtonModal>
           ) : (
             <div />
-          )}
-          <Modal
-            size="lg"
-            show={this.state.OpenModal}
-            onHide={() => {
-              this.setState({ OpenModal: false });
-              this.props.isModalOpen(false);
-            }}
-          >
-            <StoryForm />
-          </Modal>
+        )
+        }
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>

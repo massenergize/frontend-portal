@@ -465,8 +465,8 @@ class ChooseHHForm extends React.Component {
           >
             <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
             <p>{name}</p>
-
-            {status === "TODO" || status === "DONE" ? (
+          </div>
+		  {status === "TODO" || status === "DONE" ? (
               <OverlayTrigger
                 placement="top"
                 overlay={
@@ -532,8 +532,8 @@ class ChooseHHForm extends React.Component {
             ) : (
               <div />
             )}
-          </div>
         </div>
+	
       );
     });
   }
