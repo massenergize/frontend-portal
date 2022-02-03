@@ -1,0 +1,28 @@
+/* to be continued... */
+.form-completion-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 2;
+}
+
+.complete-form-header {
+  padding: 15px 25px;
+  background: var(--app-theme-orange);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.complete-form-header p {
+  color: white;
+  margin: 0;
+}
+
+.c-f-inner-wrapper {
+  padding: 20px;
+}
+
+.shave-points {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}

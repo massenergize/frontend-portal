@@ -239,7 +239,6 @@ class AddingHouseholdForm extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     community: store.page.community,
   };

@@ -3,6 +3,10 @@ import RegisterForm from "./RegisterForm";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { connect } from "react-redux";
 
+/**
+ * WE DONT USE THIS ANYMORE
+ * @deprecated
+ */
 class RegisterPage extends React.Component {
   render() {
     //avoids trying to render before the promise from the server is fulfilled

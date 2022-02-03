@@ -33,16 +33,28 @@ class MEButton extends Component {
     clickEvent(e);
   };
   ejectIcon() {
-    const { icon, iconSize, iconColor, iconStyle } = this.props;
+    const {
+      icon,
+      iconSize,
+      iconColor,
+      iconStyle,
+      loading = false,
+    } = this.props;
     const iconStyles = {
       marginRight: 5,
       color: iconColor,
       fontSize: iconSize,
       ...iconStyle,
     };
-    if (icon) {
+    if (loading)
+      return (
+        <span
+          className={`fa fa-spinner fa-spin me-btn-icon`}
+          style={{ ...iconStyles, fontSize: "large", fontWeight: "bold" }}
+        />
+      );
+    if (icon)
       return <span className={`fa ${icon} me-btn-icon`} style={iconStyles} />;
-    }
   }
   getClasses() {
     var classes;
