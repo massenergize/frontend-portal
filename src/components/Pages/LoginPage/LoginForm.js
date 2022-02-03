@@ -31,7 +31,6 @@ class LoginFormBase extends React.Component {
     this.state = {
       ...INITIAL_STATE,
       signInWithPassword: false,
-      //selectedSignInOption: null,
       persistence: props.firebase.auth.Auth.Persistence.SESSION,
     };
 
@@ -46,7 +45,7 @@ class LoginFormBase extends React.Component {
     const pageData = this.props.signinPage;
     if (pageData == null) return <LoadingCircle />;
     const title = pageData.title ? pageData.title : "Welcome!";
-    const description = pageData.description ? pageData.description : ""; 
+    const description = pageData.description ? pageData.description : "";
 
     return (
       <div
@@ -68,7 +67,7 @@ class LoginFormBase extends React.Component {
             </div> 
             ):(
             <div>
-              <p>Enter your email address.  We'll send you a verification link to sign in.</p>
+              <p>Enter your email address for password-free sign-in.  We'll send you an email with verification link.</p>
             </div>
             )
           }
@@ -82,7 +81,7 @@ class LoginFormBase extends React.Component {
                 id="login-email"
                 type="email"
                 name="email"
-                value={email}
+                value={email || ""}
                 onChange={this.onChange}
                 placeholder="Enter email"
               />
@@ -114,7 +113,7 @@ class LoginFormBase extends React.Component {
                     <MEButton type="submit" disabled={this.isInvalid()} id="sign-in-btn">
                       Sign In
                     </MEButton> : 
-                    <MEButton onClick={this.signInWithEmail} disabled={this.isInvalid()}>
+                    <MEButton onClick={this.signInWithMethod} disabled={this.isInvalid()}>
                       Continue
                     </MEButton>}
               </div>
@@ -152,7 +151,7 @@ class LoginFormBase extends React.Component {
                 <p>
                   <button className=" energize-link" onClick={this.setSignInWithEmail}>
                     {" "}
-                    Sign in with Email only{" "}
+                    Sign in without password{" "}
                   </button>
                 </p>
                 <p>
@@ -168,7 +167,7 @@ class LoginFormBase extends React.Component {
                   <p>
                     <button className=" energize-link" onClick={this.setSignInWithPassword}>
                       {" "}
-                      Sign in with Email and Password{" "}
+                      Sign in with a password{" "}
                     </button>
                   </p>
                   </div>
@@ -179,14 +178,25 @@ class LoginFormBase extends React.Component {
         </div>
       </div>
     );
-  }
+  };
 
   componentDidMount = () => {
-    this.completeSignInWithEmail();
+    var { email } = this.state;
+    if (!email || email === "") {
+      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        email = window.localStorage.getItem('emailForSignIn');
+        if (email && email !== "") {
+          this.setState({email:email}, this.completeSignInWithEmail());
+        } else {
+          this.setState({ error: "Please provide your email again for confirmation" });
+        };
+      };
+    };
   };
 
   forgotPassword = () => {
     if (this.state.email !== "") {
+      window.localStorage.setItem('emailForSignIn', this.state.email);
       var actionCodeSettings = {
         url: window.location.href,
       };
@@ -234,7 +244,8 @@ class LoginFormBase extends React.Component {
 
     // if we get here without e-mail entered, don't error
     if (!this.state.email || this.state.email === "") return;
-
+    window.localStorage.setItem('emailForSignIn', this.state.email);
+    window.localStorage.setItem("reg_protocol", "show");
     //firebase prop comes from the withFirebase higher component
     if (this.state.signInWithPassword) {
       this.props.firebase
@@ -255,10 +266,15 @@ class LoginFormBase extends React.Component {
     }
   }
 
-  // Signs the user in with an email link if they are already set up woth passwordless
+  // Signs the user in with an email link if they are already set up woth passwordless.
+  // If a user does not have a profile or has only used a password to sign in we 
   signInWithMethod = () => {
-    if (this.state.email) {
-      this.props.firebase.auth().fetchSignInMethodsForEmail(this.state.email)
+    var { email } = this.state;
+    if (email && email !== "") {
+      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+        this.completeSignInWithEmail();
+      } else {
+        this.props.firebase.auth().fetchSignInMethodsForEmail(email)
         .then((signInMethods) => {
           // This returns the same array as fetchProvidersForEmail but for email
           // provider identified by 'password' string, signInMethods would contain 2
@@ -267,21 +283,21 @@ class LoginFormBase extends React.Component {
           // 'password' if the user has a password.
           // A user could have both.
           if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1) {
+            this.props.firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) !== -1 ||
+            signInMethods.indexOf(
+              this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
             // User can sign in with email/link.
             this.setState({signInWithPassword: false}, this.signInWithEmail());
-          } else if (signInMethods.indexOf(
-            this.props.firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-            // User can sign in with email/password.
-            this.setState({signInWithPassword: true});
           } else {
-            this.setState({signInWithPassword: null});
+            // This is a new email, we'll add them to passwordless sign in and redirect them to complete registration.
+            this.setState({signInWithPassword: false}, this.signInWithEmail(window.location.origin + this.props.links.signup));
           };
         })
         .catch((err) => {
           console.log(err);
           // Some error occurred, you can inspect the code: error.code
         });
+      };
     };
   }
 
@@ -296,6 +312,7 @@ class LoginFormBase extends React.Component {
           .auth()
           .signInWithPopup(googleProvider)
           .then((auth) => {
+            window.localStorage.setItem('emailForSignIn', auth.user.email);
             this.fetchMassToken(auth.user._lat, auth.user.email);
             this.setState({ ...INITIAL_STATE });
           })
@@ -307,70 +324,66 @@ class LoginFormBase extends React.Component {
   };
 
   // Signs in with passwordless. Will create a user if the user does not exist.
-  signInWithEmail = () => {
+  signInWithEmail = (redirURL=null) => {
     if (this.state.email === "") {
       this.setState({error: "Please enter your email to enable passwordless authentication"});
     } else {
-    var actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.massenergize.com) for this
-      // URL must be in the authorized domains list in the Firebase Console.
-      url: window.location.href,
-      // This must be true.
-      handleCodeInApp: true,
-    };
-    this.props.firebase
-      .auth()
-      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
-      .then(() => {
-        // The link was successfully sent. 
-        // TODO: Inform the user.
-        alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
-        console.log("Email sent!")
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', this.state.email);
-        // ...
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ error: err.message });
-      });
-    };
+      if (!redirURL) {
+        redirURL = window.location.href
+      };
+      var actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.massenergize.com) for this
+        // URL must be in the authorized domains list in the Firebase Console.
+        url: redirURL,
+        // This must be true.
+        handleCodeInApp: true,
+      };
+      this.props.firebase
+        .auth()
+        .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
+        .then(() => {
+          // The link was successfully sent. 
+          // TODO: Inform the user.
+          alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
+          console.log("Email sent!")
+          // Save the email locally so you don't need to ask the user for it again
+          // if they open the link on the same device.
+          window.localStorage.setItem('emailForSignIn', this.state.email);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setState({ error: err.message });
+        });
+      };
   };
 
   completeSignInWithEmail = () => {
     // Confirm the link is a sign-in with email link.
-    console.log("completeSignInWithEmail")
     if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
       // the sign-in operation.
       // Get the email if available. This should be available if the user completes
       // the flow on the same device where they started it.
-      var email = window.localStorage.getItem('emailForSignIn');
-      console.log("email from localStorage", email)
+      var { email } = this.state;
       if (!email || email === "") {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email again for confirmation');
-        window.localStorage.setItem('emailForSignIn', this.state.email);
-      }
+        email = window.localStorage.getItem('emailForSignIn');
+      };
       // The client SDK will parse the code from the link for you.
       this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
         .then((auth) => {
           // Clear email from storage.
-          // WHY?  I don't think we need to do this
-          // window.localStorage.removeItem('emailForSignIn');
+          window.localStorage.removeItem('emailForSignIn');
 
           // You can access the new user via result.user
           // Additional user info profile not available via:
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
-          // TODO: Redirect to home
           this.fetchMassToken(auth.user._lat, auth.user.email);
           this.setState({ ...INITIAL_STATE });
-          window.location.href = window.location.origin + this.props.links.home;
+          window.location.href = this.props.links.home;
+          // window.location.href = window.location.origin + this.props.links.home;
         })
         .catch((err) => {
           // Some error occurred, you can inspect the code: error.code
@@ -389,6 +402,7 @@ class LoginFormBase extends React.Component {
           .auth()
           .signInWithPopup(facebookProvider)
           .then((auth) => {
+            window.localStorage.setItem('emailForSignIn', auth.user.email);
             this.fetchMassToken(auth.user._lat, auth.user.email);
             this.setState({ ...INITIAL_STATE });
           })
