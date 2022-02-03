@@ -2,5 +2,5 @@
   "IS_LOCAL": false,
   "IS_PROD": false,
   "IS_CANARY": true,
-  "BUILD_VERSION": "4.1.25"
+  "BUILD_VERSION": "4.1.26"
 }
