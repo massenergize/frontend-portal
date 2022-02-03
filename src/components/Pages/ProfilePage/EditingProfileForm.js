@@ -153,7 +153,7 @@ class EditingProfileForm extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    auth: store.firebase.auth,
+    // auth: store.firebase.auth,
   };
 };
 export default connect(mapStoreToProps, { reduxLogin })(EditingProfileForm);
