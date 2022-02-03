@@ -46,11 +46,12 @@ class EditingProfileForm extends React.Component {
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
-        profile_picture: this.state.image,
         preferred_name: this.state.preferred_name,
       };
+      if (this.state.image) {
+        body.profile_picture = this.state.image;
+      }            
       this.setState({ loading: true });
-
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
         .then((json) => {
@@ -71,6 +72,7 @@ class EditingProfileForm extends React.Component {
 
   render() {
     const { loading } = this.state;
+    console.log(this.state)
     return (
       <form onSubmit={this.onSubmit}>
         <div

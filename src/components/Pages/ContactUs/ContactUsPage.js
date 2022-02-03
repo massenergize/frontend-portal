@@ -5,32 +5,7 @@ import { connect } from "react-redux";
 import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
 class ContactUsPage extends React.Component {
-  ejectAdmins(admins) {
-    if (admins.length > 0) {
-      const adminsMapped = admins.map((admin, index) => {
-        return (
-          <li className="test-admin-names">
-            <a style={{ fontSize: 17, color: "green" }} href="#void">
-              {admin.full_name}
-            </a>
-          </li>
-        );
-      });
-      return (
-        <div>
-          <h4>Admins</h4>
-          {adminsMapped}
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h4>Admins</h4>
-          <p>No admins are in charge yet!</p>
-        </div>
-      );
-    }
-  }
+  
   ejectLocation(location) {
     if (location) {
       return (
@@ -63,7 +38,7 @@ class ContactUsPage extends React.Component {
     const description =
       pageData && pageData.description
         ? pageData && pageData.description
-        : "We are always striving to make this better and welcome your feedback! Reach the community organizer by filling in the form.";
+        : "We are always striving to make this better and welcome your feedback! Reach the community administrator by filling in the form.";
     if (!this.props.homePageData && !communityInfo) {
       return (
         <div className="boxed_wrapper">
@@ -84,7 +59,7 @@ class ContactUsPage extends React.Component {
       );
     }
 
-    const { id, location, admins } = communityInfo;
+    const { id, location, owner_name } = communityInfo;
 
     return (
       <>
@@ -100,12 +75,13 @@ class ContactUsPage extends React.Component {
               <div className="row">
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                   <h3>{title}</h3>
-                  <p className="make-me-dark">{description}</p>
+                  <p className="make-me-dark">{description}</p> 
+                  <h4 className="make-me-dark">{communityInfo.name} site admin:</h4>
+                  <h5>{owner_name}</h5> 
                   {this.ejectLocation(location)}
-                  {this.ejectAdmins(admins)}
                 </div>
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 mob-zero-padding">
-                  <ContactPageForm admins={admins} community_id={id} />
+                  <ContactPageForm community_id={id} />
                 </div>
               </div>
             </div>

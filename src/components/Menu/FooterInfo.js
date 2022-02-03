@@ -20,6 +20,7 @@ class FooterInfo extends React.Component {
 		const { pageData } = this.props;
 		const { community } = pageData || {};
 		var communitylogo = community && community.logo && community.logo.url;
+		const adminTitle = "Community Admin";
 		return (
 			<div className="col-7 col-md-4">
 				<div className="footer-widget about-column">
@@ -27,15 +28,14 @@ class FooterInfo extends React.Component {
 						<img src={communitylogo ? communitylogo : logo} alt="LOGO" style={{ display: "inline-block" }} className='header-logo' />
 					</Link></figure>
 					<ul className="contact-info">
-						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}Community Organizer</i></li>
+						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}{adminTitle}</i></li>
 						{this.props.info.email &&
-							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={this.props.links.contactus}>Click to contact Community Organizer </Link> </li>
+							<li><span className="icon-e-mail-envelope"></span><Link className="energize-link" to={this.props.links.contactus}>Click to contact {adminTitle}</Link> </li>
 						}
 						{this.props.info.phone &&
 							<li><span className="icon-phone-call"></span>{this.props.info.phone}</li>
 						}
 					</ul>
-					<div> <a className="energize-link" href={this.props.info.allCommunities.link}>{this.props.info.allCommunities.name} </a></div>
 				</div>
 			</div>
 		);
