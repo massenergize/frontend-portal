@@ -169,7 +169,6 @@ const ChangeEmailForm = compose(withFirebase)(ChangeEmailFormBase);
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    // auth: store.firebase.auth,
-  };
+   };
 };
 export default connect(mapStoreToProps, { reduxLogin })(ChangeEmailForm);

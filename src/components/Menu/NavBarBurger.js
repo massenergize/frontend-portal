@@ -369,8 +369,6 @@ class NavBarBurger extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    // auth: store.firebase.auth,
-
     user: store.user,
     pageData: store.page.homePage,
     links: store.links,

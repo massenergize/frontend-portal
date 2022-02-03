@@ -410,7 +410,6 @@ class OneEventPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     events: store.page.events,
     links: store.links,

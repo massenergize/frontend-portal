@@ -20,7 +20,6 @@ import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
 import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
-import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
@@ -488,11 +487,11 @@ class AppRouter extends Component {
             <Route path={`${links.events}/:id`} component={OneEventPage} />
             <Route path={links.signin} component={AuthEntry} />
             <Route path={links.signup} component={AuthEntry} />
-            <Route path="/completeRegistration?" component={RegisterPage} />
             <Route path={links.profile} component={ProfilePage} />
             <Route path={links.policies} component={PoliciesPage} />
             <Route path={links.contactus} component={ContactPage} />
             <Route component={HomePage} />
+            {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
           </Switch>
           // )
         }
@@ -509,7 +508,6 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     __is_custom_site: store.page.__is_custom_site,
     community: store.page.community,
-    // auth: store.firebase.auth,
     menu: store.page.menu,
     links: store.links,
     eq: store.page.equivalences,
