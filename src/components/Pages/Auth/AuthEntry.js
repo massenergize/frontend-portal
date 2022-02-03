@@ -22,7 +22,7 @@ import { AUTH_STATES, validatePassword } from "./shared/utils";
 
 const SIGNIN = "signin";
 const REGISTER = "signup";
-
+const LAST_VISITED = "last_visited";
 function AuthEntry({
   firebaseLogin,
   notification,
@@ -44,6 +44,7 @@ function AuthEntry({
   const isSignInPage = URL.includes(SIGNIN);
   const isRegistrationPage = URL.includes(REGISTER);
 
+  const lastKnownLocation = localStorage.getItem(LAST_VISITED);
   const userNeedsToRegister = authState === AUTH_STATES.NEEDS_REGISTRATION;
   const userIsAuthenticated = authState === AUTH_STATES.USER_IS_AUTHENTICATED;
   const appIsNowCheckingFirebase = authState === AUTH_STATES.CHECKING_FIREBASE;
@@ -83,7 +84,8 @@ function AuthEntry({
 
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-  if (userIsAuthenticated) return <Redirect to={links.profile} />;
+  if (userIsAuthenticated)
+    return <Redirect to={lastKnownLocation || links.profile} />;
 
   if (appIsNowCheckingFirebase || appIsCheckingMassEnergize)
     return <LoadingCircle />;

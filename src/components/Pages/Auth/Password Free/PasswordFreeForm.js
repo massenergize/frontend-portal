@@ -1,6 +1,6 @@
 import React from "react";
 import MEButton from "../../Widgets/MEButton";
-import { isInvalid } from "../shared/utils";
+import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function PasswordFreeForm({
   description,
@@ -10,9 +10,14 @@ export default function PasswordFreeForm({
   getValue,
   sendLink,
   loading,
-  sent,
+  signInWithGoogle,
+  signInWithFacebook,
 }) {
   const email = getValue("email");
+
+  const whenUserTypes = (e) => {
+    if (ifEnterKeyIsPressed(e)) sendLink();
+  };
 
   return (
     <div>
@@ -51,6 +56,7 @@ export default function PasswordFreeForm({
                 name="email"
                 value={email}
                 onChange={onChange}
+                onKeyUp={whenUserTypes}
                 placeholder="Enter your email here..."
               />
             </div>
@@ -71,7 +77,7 @@ export default function PasswordFreeForm({
               <div className="form-group social-links-two padd-top-5 pull-right">
                 Or sign in with
                 <button
-                  // onClick={this.signInWithGoogle}
+                  onClick={() => signInWithGoogle()}
                   id="google"
                   type="button"
                   className="img-circle  round-me z-depth-float me-google-btn"
@@ -79,7 +85,7 @@ export default function PasswordFreeForm({
                   <span className="fa fa-google"></span>
                 </button>
                 <button
-                  // onClick={this.signInWithFacebook}
+                  onClick={() => signInWithFacebook()}
                   id="facebook"
                   type="button"
                   className="img-circle  round-me z-depth-float me-facebook-btn"

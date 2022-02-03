@@ -378,22 +378,14 @@ class AppRouter extends Component {
   }
 
   saveCurrentPageURL() {
-    let host = window.location.host;
-    const loginURL = host + this.props.links.signin;
-    const registerURL = host + this.props.links.signup;
-    const profileURL = host + this.props.links.profile;
     const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
     const realRoute = window.location.pathname;
     if (
-      this.props.links.signup &&
-      this.props.links.signin &&
-      this.props.links.profile &&
-      currentURL !== loginURL &&
-      currentURL !== registerURL &&
-      currentURL !== profileURL
-    ) {
+      !currentURL?.includes("signin") &&
+      !currentURL?.includes("signup") &&
+      !currentURL?.includes("profile")
+    )
       window.localStorage.setItem("last_visited", realRoute);
-    }
   }
 
   userHasAnIncompleteRegistration() {

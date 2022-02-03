@@ -2,13 +2,100 @@ import firebase, {
   facebookProvider,
   googleProvider,
 } from "../../../../config/firebaseConfig";
-import { translateFirebaseError } from "./utils";
+import {translateFirebaseError} from "./utils";
+const PROVIDERS = {
+  PASSWORD: "password",
+  GOOGLE: "google",
+  FACEBOOK: "facebook",
+  EMAIL_LINK: "emailLink",
+};
 
 const PASSWORD_FREE_EMAIL = "password_free_email";
 export const Auth = firebase?.auth();
 export const FirebaseEmailAuthProvider = firebase.auth.EmailAuthProvider;
-
+export const FirebaseGoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+export const FirebaseFacebookAuthProvider = firebase.auth.FacebookAuthProvider;
 export const DIFFERENT_ENVIRONMENT = "different_environment";
+
+export const fetchUserSignInMethods = (email, cb) => {
+  Auth.fetchSignInMethodsForEmail(email)
+    .then((methods) => {
+      cb && cb(methods);
+      return methods;
+    })
+    .catch((e) => {
+      cb && cb(null, e?.toString());
+      console.log("SIGN_IN_METHODS_ERROR :", e?.toString());
+    });
+};
+
+export const usesGoogleProvider = (fireUser) => {
+  fireUser = fireUser || Auth.currentUser;
+  const providers = fireUser?.providerData || [];
+  return providers[0]?.providerId === PROVIDERS.GOOGLE;
+};
+export const usesFacebookProvider = (fireUser) => {
+  fireUser = fireUser || Auth.currentUser;
+  const providers = fireUser?.providerData || [];
+  return providers[0]?.providerId === PROVIDERS.FACEBOOK;
+};
+export const usesEmailProvider = async (fireUser) => {
+  fireUser = fireUser || Auth.currentUser;
+  const providers = fireUser?.providerData || [];
+  return providers?.providerId === PROVIDERS.PASSWORD;
+};
+
+export const usesEmailLinkProvider = (fireUser, cb) => {
+  fireUser = fireUser || Auth.currentUser;
+  fetchUserSignInMethods(fireUser?.email, (methods, error) => {
+    if (error) return cb && cb(false);
+    methods = methods || [];
+    if (methods?.includes(PROVIDERS.EMAIL_LINK)) return cb && cb(true);
+    cb && cb(false);
+  });
+};
+
+export const firebaseDeleteEmailPasswordAccount = (data, cb) => {
+  var cred = FirebaseEmailAuthProvider.credential(data?.email, data?.password);
+  Auth.currentUser
+    .reauthenticateWithCredential(cred)
+    .then(() => {
+      Auth.currentUser.delete().then(() => cb && cb(true));
+    })
+    .catch((e) => {
+      cb && cb(null, e?.toString());
+      console.log("EMAIL_PASS_REAUTH_FOR_DELETE_ERROR:", e?.toString());
+    });
+};
+
+export const firebaseDeleteGoogleAuthAccount = (cb) => {
+  Auth.signInWithPopup(FirebaseGoogleAuthProvider).then(() => {
+    Auth.currentUser
+      .delete()
+      .then(() => {
+        cb && cb(true);
+      })
+      .catch((e) => {
+        cb && cb(null, e?.toString());
+        console.log("GOOGLE_AUTH_ACCOUNT_DELETION:", e?.toString());
+      });
+  });
+};
+
+export const firebaseDeleteFacebookAuthAccount = (cb) => {
+  Auth.signInWithPopup(FirebaseFacebookAuthProvider).then(() => {
+    Auth.currentUser
+      .delete()
+      .then(() => {
+        cb && cb(true);
+      })
+      .catch((e) => {
+        cb && cb(null, e?.toString());
+        console.log("FACEBOOK_AUTH_ACCOUNT_DELETION:", e?.toString());
+      });
+  });
+};
+
 export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {
   link = link || window.location.href;
   Auth.signInWithEmailLink(email, window.location.href)
@@ -38,7 +125,6 @@ export const checkForPasswordFreeAuth = (cb) => {
     const email = localStorage.getItem(PASSWORD_FREE_EMAIL);
     if (!email) {
       cb && cb(null, DIFFERENT_ENVIRONMENT);
-      console.log("WE COULD NOT FIND THE TEMPORARY EMAIL BRO");
       return;
     }
     cb && cb(email);

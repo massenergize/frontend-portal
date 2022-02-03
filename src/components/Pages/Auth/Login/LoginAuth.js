@@ -49,9 +49,11 @@ export default function LoginAuth(props) {
   const sendLink = () => {
     setNotification({});
     setLoading(true);
+
     const email = getValue("email");
     if (userContinuedPasswordFreeInDiffEnv)
       return finaliseNoPasswordAuth(email);
+
     sendSignInLinkToEmail(email, (_, error) => {
       setLoading(false);
       if (error) return setNotification({ good: false, message: error });

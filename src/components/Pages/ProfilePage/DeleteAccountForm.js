@@ -12,9 +12,24 @@ import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
 import MECard from "../Widgets/MECard";
 import METextField from "../Widgets/METextField";
-import { Auth } from "../Auth/shared/firebase-helpers";
-import { signMeOut } from "../../../redux/actions/authActions";
-
+import {
+  Auth,
+  fetchUserSignInMethods,
+  firebaseDeleteEmailPasswordAccount,
+  firebaseDeleteFacebookAuthAccount,
+  firebaseDeleteGoogleAuthAccount,
+  FirebaseEmailAuthProvider,
+  usesEmailLinkProvider,
+  usesEmailProvider,
+  usesFacebookProvider,
+  usesGoogleProvider,
+} from "../Auth/shared/firebase-helpers";
+import {
+  completeUserDeletion,
+  signMeOut,
+} from "../../../redux/actions/authActions";
+import PasswordLessDeleteBox from "./PasswordLessDeleteBox";
+import Notification from "../Widgets/Notification/Notification";
 class DeleteAccountFormBase extends React.Component {
   constructor(props) {
     super(props);
@@ -22,19 +37,39 @@ class DeleteAccountFormBase extends React.Component {
       are_you_sure: false,
       password: "",
       error: null,
+      usesEmailLink: false,
+      loading: false,
+      specialLink: "",
     };
   }
 
+  componentDidMount() {
+    usesEmailLinkProvider(null, (state) => {
+      this.setState({ usesEmailLink: state });
+    });
+  }
   render() {
     return (
       <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
         <form onSubmit={this.onSubmit}>
           <METextView>
-            {" "}
-            Are you sure you want to delete your profile?{" "}
+            The current email assosciated with your account is
+            <span
+              style={{
+                fontWeight: "bold",
+                color: "var(--app-theme-orange)",
+                marginRight: 5,
+                marginLeft: 5,
+              }}
+            >
+              {this.props.user?.email}.
+              <br />
+            </span>
+            Are you sure you want to delete your profile?
           </METextView>
           {this.state.error && (
-            <small style={{ color: "red" }}>{this.state.error}</small>
+            <Notification good={false}>{this.state.error}</Notification>
+            // <small style={{ color: "red" }}>{this.state.error}</small>
           )}
           <div>
             <input
@@ -50,8 +85,7 @@ class DeleteAccountFormBase extends React.Component {
               htmlFor="yes_im_sure"
               style={{ display: "inline-block", marginRight: 15 }}
             >
-              {" "}
-              Yes{" "}
+              Yes
             </label>
             &nbsp;
             <input
@@ -67,7 +101,12 @@ class DeleteAccountFormBase extends React.Component {
               {" "}
               No
             </label>
-            {this.getProvider() === "email_and_password" ? (
+            {this.state.askForSpecialLink && (
+              <PasswordLessDeleteBox
+                onChange={(e) => this.setState({ speciaLink: e.target.value })}
+              />
+            )}
+            {usesEmailProvider() && !this.state.usesEmailLink && (
               <>
                 <br />
                 <small>
@@ -82,7 +121,7 @@ class DeleteAccountFormBase extends React.Component {
                   required
                 />
               </>
-            ) : null}
+            )}
           </div>
           <MEButton type="submit">{"Submit"}</MEButton>
           <MEButton
@@ -104,74 +143,106 @@ class DeleteAccountFormBase extends React.Component {
     });
   };
 
+  deletePasswordlessAccount() {
+    const { speciaLink } = this.state;
+    if (!speciaLink)
+      return this.setState({
+        error: "We need that special link we sent you! ",
+      });
+  }
   onSubmit = (event) => {
     event.preventDefault();
-    if (this.state.are_you_sure) {
+    this.setState({ error: false, loading: true });
+    const { are_you_sure, usesEmailLink, askForSpecialLink } = this.state;
+    if (askForSpecialLink) return this.deletePasswordlessAccount();
+    if (are_you_sure) {
+      if (usesEmailLink) return this.setState({ askForSpecialLink: true });
       this.deleteAccount();
-    } else {
-      this.props.closeForm();
+      return;
     }
+    this.props.closeForm();
   };
+
+  // deleteAccount() {
+  //   const provider = this.getProvider();
+  //   if (provider === "email_and_password") {
+  //     var cred = FirebaseEmailAuthProvider.credential(
+  //       this.props.user.email,
+  //       this.state.password
+  //     );
+  //     Auth.currentUser.reauthenticateWithCredential(cred).then(() => {
+  //       Auth.currentUser.delete().then(() => {
+  //         apiCall("users.delete", {user_id: this.props.user.id}).then(
+  //           (json) => {
+  //             this.props.signOut();
+  //           }
+  //         );
+  //       });
+  //     });
+  //   } else if (provider === "google") {
+  //     //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
+  //     Auth.signInWithPopup(googleProvider).then(() => {
+  //       Auth.currentUser
+  //         .delete()
+  //         .then(() => {
+  //           apiCall("users.delete", {user_id: this.props.user.id}).then(
+  //             (json) => {
+  //               this.props.signOut();
+  //             }
+  //           );
+  //         })
+  //         .catch((err) => {
+  //           this.setState({error: err.message});
+  //         });
+  //     });
+  //     return;
+  //   } else if (provider === "facebook") {
+  //     //this.setState({ error: 'Sorry, deleting profiles that use facebook sign in is not yet supported' });
+  //     Auth.signInWithPopup(facebookProvider).then(() => {
+  //       Auth.currentUser
+  //         .delete()
+  //         .then(() => {
+  //           apiCall("users.delete", {user_id: this.props.user.id}).then(
+  //             (json) => {
+  //               this.props.signOut();
+  //             }
+  //           );
+  //         })
+  //         .catch((err) => {
+  //           this.setState({error: err.message});
+  //         });
+  //     });
+  //     return;
+  //   } else {
+  //     this.setState({
+  //       error: "Unknown authorization provider. Unable to delete profile",
+  //     });
+  //     return;
+  //   }
+  // }
   deleteAccount() {
-    const provider = this.getProvider();
-    if (provider === "email_and_password") {
-      var cred = this.props.firebase.auth.EmailAuthProvider.credential(
-        this.props.user.email,
-        this.state.password
-      );
-      Auth.currentUser.reauthenticateWithCredential(cred).then(() => {
-        Auth.currentUser.delete().then(() => {
-          apiCall("users.delete", { user_id: this.props.user.id }).then(
-            (json) => {
-              this.props.signOut();
-            }
-          );
-        });
+    const { deleteUserFromMEAndLogout } = this.props;
+    if (usesGoogleProvider())
+      return firebaseDeleteGoogleAuthAccount((done) => {
+        if (done) deleteUserFromMEAndLogout();
       });
-    } else if (provider === "google") {
-      //this.setState({ error: 'Sorry, deleting profiles that use google sign in is not yet supported' });
-      Auth.signInWithPopup(googleProvider).then(() => {
-        Auth.currentUser
-          .delete()
-          .then(() => {
-            apiCall("users.delete", { user_id: this.props.user.id }).then(
-              (json) => {
-                this.props.signOut();
-              }
-            );
-          })
-          .catch((err) => {
-            this.setState({ error: err.message });
-          });
+    if (usesFacebookProvider())
+      return firebaseDeleteFacebookAuthAccount((done) => {
+        if (done) deleteUserFromMEAndLogout();
       });
-      return;
-    } else if (provider === "facebook") {
-      //this.setState({ error: 'Sorry, deleting profiles that use facebook sign in is not yet supported' });
-      Auth.signInWithPopup(facebookProvider).then(() => {
-        Auth.currentUser
-          .delete()
-          .then(() => {
-            apiCall("users.delete", { user_id: this.props.user.id }).then(
-              (json) => {
-                this.props.signOut();
-              }
-            );
-          })
-          .catch((err) => {
-            this.setState({ error: err.message });
-          });
+
+    if (usesEmailProvider())
+      return firebaseDeleteEmailPasswordAccount((done) => {
+        if (done) deleteUserFromMEAndLogout();
       });
-      return;
-    } else {
-      this.setState({
-        error: "Unknown authorization provider. Unable to delete profile",
-      });
-      return;
-    }
   }
 
   getProvider() {
     const providers = Auth.currentUser?.providerData;
+    fetchUserSignInMethods(this.props.user.email, (methods) =>
+      console.log("I AM THE SIGN IN METHODS", methods)
+    );
+    console.log("I am the providers", providers);
     if (!providers) return null;
     const provider = providers[0];
     if (provider.providerId === "password") return "email_and_password";
@@ -190,6 +261,8 @@ const mapStoreToProps = (store) => {
     signOut: signMeOut,
   };
 };
-export default connect(mapStoreToProps, { reduxLogin, reduxLogout })(
-  DeleteAccountForm
-);
+export default connect(mapStoreToProps, {
+  reduxLogin,
+  reduxLogout,
+  deleteUserFromMEAndLogout: completeUserDeletion,
+})(DeleteAccountForm);
