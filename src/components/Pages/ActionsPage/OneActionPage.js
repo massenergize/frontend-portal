@@ -1007,7 +1007,6 @@ class OneActionPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,

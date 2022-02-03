@@ -477,7 +477,6 @@ class ActionsPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    // auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
