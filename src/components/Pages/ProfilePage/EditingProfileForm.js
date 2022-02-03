@@ -32,7 +32,6 @@ class EditingProfileForm extends React.Component {
 
   //updates the state when form elements are changed (not including image)
   onChange(event) {
-    console.log("onChange event.target", event.target)
     this.setState({
       [event.target.name]: event.target.value,
       error: null,
@@ -53,7 +52,6 @@ class EditingProfileForm extends React.Component {
         body.profile_picture = this.state.image;
       }            
       this.setState({ loading: true });
-      console.log("onSubmit body", body)
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
         .then((json) => {
