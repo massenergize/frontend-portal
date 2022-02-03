@@ -1,21 +1,21 @@
-import firebase, {
-  facebookProvider,
-  googleProvider,
-} from "../../../../config/firebaseConfig";
-import {translateFirebaseError} from "./utils";
+import firebase from "../../../../config/firebaseConfig";
+import { translateFirebaseError } from "./utils";
 const PROVIDERS = {
   PASSWORD: "password",
-  GOOGLE: "google",
-  FACEBOOK: "facebook",
+  GOOGLE: "google.com",
+  FACEBOOK: "facebook.com",
   EMAIL_LINK: "emailLink",
 };
 
 const PASSWORD_FREE_EMAIL = "password_free_email";
+export const DIFFERENT_ENVIRONMENT = "different_environment";
+
 export const Auth = firebase?.auth();
 export const FirebaseEmailAuthProvider = firebase.auth.EmailAuthProvider;
-export const FirebaseGoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-export const FirebaseFacebookAuthProvider = firebase.auth.FacebookAuthProvider;
-export const DIFFERENT_ENVIRONMENT = "different_environment";
+export const FirebaseGoogleAuthProvider =
+  new firebase.auth.GoogleAuthProvider();
+export const FirebaseFacebookAuthProvider =
+  new firebase.auth.FacebookAuthProvider();
 
 export const fetchUserSignInMethods = (email, cb) => {
   Auth.fetchSignInMethodsForEmail(email)
@@ -39,10 +39,10 @@ export const usesFacebookProvider = (fireUser) => {
   const providers = fireUser?.providerData || [];
   return providers[0]?.providerId === PROVIDERS.FACEBOOK;
 };
-export const usesEmailProvider = async (fireUser) => {
+export const usesEmailProvider = (fireUser) => {
   fireUser = fireUser || Auth.currentUser;
   const providers = fireUser?.providerData || [];
-  return providers?.providerId === PROVIDERS.PASSWORD;
+  return providers[0]?.providerId === PROVIDERS.PASSWORD;
 };
 
 export const usesEmailLinkProvider = (fireUser, cb) => {
@@ -56,7 +56,13 @@ export const usesEmailLinkProvider = (fireUser, cb) => {
 };
 
 export const firebaseDeleteEmailPasswordAccount = (data, cb) => {
-  var cred = FirebaseEmailAuthProvider.credential(data?.email, data?.password);
+  const { isPasswordFree, password, email, emailLink } = data;
+  var cred;
+
+  if (isPasswordFree)
+    cred = FirebaseEmailAuthProvider.credentialWithLink(email, emailLink);
+  else cred = FirebaseEmailAuthProvider.credential(email, password);
+
   Auth.currentUser
     .reauthenticateWithCredential(cred)
     .then(() => {
@@ -64,7 +70,7 @@ export const firebaseDeleteEmailPasswordAccount = (data, cb) => {
     })
     .catch((e) => {
       cb && cb(null, e?.toString());
-      console.log("EMAIL_PASS_REAUTH_FOR_DELETE_ERROR:", e?.toString());
+      console.log("EMAIL_REAUTH_FOR_DELETE_ERROR:", e?.toString());
     });
 };
 
@@ -107,6 +113,7 @@ export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {
       console.log("NO_PASSWORD_AUTH_FAILURE:", e?.toString());
     });
 };
+
 export const sendSignInLinkToEmail = (email, cb) => {
   var settings = {
     url: window.location.href,
@@ -181,7 +188,7 @@ export const registerWithEmailAndPassword = (email, password, cb) => {
 };
 
 export const firebaseAuthenticationWithGoogle = (cb) => {
-  Auth.signInWithPopup(googleProvider)
+  Auth.signInWithPopup(FirebaseGoogleAuthProvider)
     .then((response) => {
       if (cb) cb(response);
     })
@@ -192,7 +199,7 @@ export const firebaseAuthenticationWithGoogle = (cb) => {
 };
 
 export const firebaseAuthenticationWithFacebook = (cb) => {
-  Auth.signInWithPopup(facebookProvider)
+  Auth.signInWithPopup(FirebaseFacebookAuthProvider)
     .then((response) => {
       if (cb) cb(response);
     })
