@@ -25,6 +25,7 @@ export default function EventCalendarView({ events, openModal }) {
         startAccessor="start_date_and_time"
         titleAccessor="name"
         endAccessor="end_date_and_time"
+        messages={{previous:"Previous"}}
         views={["month"]}
         onSelectEvent={(obj) => openModal(obj)}
         popup={true}

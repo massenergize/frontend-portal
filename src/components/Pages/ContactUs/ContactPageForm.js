@@ -152,7 +152,7 @@ class ContactPageForm extends Component {
         <div style={{ borderWidth: 0 }} id = "test-contact-us-form">
           <MEFormGenerator
             onSubmit={this.onSubmit}
-            title="Contact Community Organizer Here"
+            title="Contact Community Admin Here"
             actionText="Send Message"
             fields={this.neededFields()}
             info={this.state.formNotification}

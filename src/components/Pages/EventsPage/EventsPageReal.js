@@ -22,7 +22,7 @@ import CalendarModal from "./calendar/CalendarModal";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
-  NORMAL: { name: "Normal View", icon: "fa-bars", key: "normal" },
+  NORMAL: { name: "Upcoming", icon: "fa-bars", key: "normal" },
   CALENDAR: { name: "Calendar View", icon: "fa-calendar", key: "calendar" },
 };
 /**
