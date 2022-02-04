@@ -54,6 +54,7 @@ class ImpactPage extends React.Component {
     );
   }
   renderGraphs({
+    display_prefs,
     goal,
     data,
     community,
@@ -68,6 +69,7 @@ class ImpactPage extends React.Component {
           {community ? community.name : null}
         </h5>
         <div id="two-graphs">
+          {display_prefs.display_households ? (
           <div
             className="card  mb-4 z-depth-float me-anime-open-in"
             style={{
@@ -101,13 +103,15 @@ class ImpactPage extends React.Component {
               </center>
             </div>
           </div>
+          ) : null}
+          {display_prefs.display_actions ? (
           <div
-            className="card z-depth-float mb-4 me-anime-open-in"
-            style={{
-              borderRadius: 10,
-              background: "transparent",
-              borderColor: "#ecf3ee",
-            }}
+              className="card z-depth-float mb-4 me-anime-open-in"
+              style={{
+                borderRadius: 10,
+                background: "transparent",
+                borderColor: "#ecf3ee",
+              }}
           >
             <div className="card-body imp-chart-h">
               <center>
@@ -134,7 +138,9 @@ class ImpactPage extends React.Component {
               </center>
             </div>
           </div>
+        ) : null}
         </div>
+        {display_prefs.display_carbon ? (
         <div id="carbon-card">
           {goal && goal.target_carbon_footprint_reduction > 0 ? (
             <div
@@ -173,6 +179,7 @@ class ImpactPage extends React.Component {
             </div>
           ) : null}
         </div>
+        ) : null}
       </>
     );
   }
@@ -403,6 +410,7 @@ class ImpactPage extends React.Component {
             <div className="row">
               <div className="col-12 col-lg-4 mob-impact-pad-fix phone-vanish">
                 {this.renderGraphs({
+                  display_prefs,
                   goal,
                   data,
                   community,
@@ -491,6 +499,7 @@ class ImpactPage extends React.Component {
                 className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
               >
                 {this.renderGraphs({
+                  display_prefs,
                   goal,
                   data,
                   community,

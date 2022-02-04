@@ -48,18 +48,21 @@ class Graphs extends React.Component {
     const list = [
       {
         key: "households",
+        title: "Households Engaged",
         unit: "Households",
         heading: "Households Taking Action",
         target: this.props.goals.target_number_of_households,
        },
       {
         key: "actions-completed",
+        title: "Actions Completed",
         unit: "Actions",
         heading: "Individual Actions Completed",
         target: this.props.goals.target_number_of_actions,
       },
       {
         key: "carbon-reduction",
+        title: "Carbon Reduction",
         unit: pref_eq.name,
         heading: "Carbon Reduction Impact",
         target: calcEQ(
@@ -69,22 +72,24 @@ class Graphs extends React.Component {
       },
     ]
     
-    return Object.keys(graphs).map((key) => {
-
+    return graphs.map((graph) => {
+      var graphPars = list.filter(obj => {
+        return obj.title === graph.title;
+      })[0]
       const value = getCircleGraphData(
         this.props.goals,
-        list[key].key,
+        graphPars.key,
         pref_eq,
         display_prefs
       );
 
-      const target = list[key].target;
+      const target = graphPars.target;
       const percent = target !== 0 ? parseInt((100.0 * value) / target) : 0; // to avoid "NaN%"
 
       return (
-        <div key={key} className={classes} data-wow-duration="0ms">
+        <div key={graphPars.key} className={classes} data-wow-duration="0ms">
           <center>
-            <h4 className="impact-graph-heading">{list[key].heading}</h4>
+            <h4 className="impact-graph-heading">{graphPars.heading}</h4>
 
             <Doughnut
               width={180}
@@ -100,7 +105,7 @@ class Graphs extends React.Component {
               }}
               data={createCircleGraphData(
                 this.props.goals,
-                list[key].key,
+                graphPars.key,
                 pref_eq,
                 display_prefs,
               )}
@@ -112,7 +117,7 @@ class Graphs extends React.Component {
               >
                 <b>{Number(value).toLocaleString()}</b>
               </span>
-              {list[key].unit}
+              {graphPars.unit}
               &nbsp; ({percent}% of goal)
             </p>
           </center>
