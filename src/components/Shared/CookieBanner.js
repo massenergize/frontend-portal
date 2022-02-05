@@ -40,7 +40,9 @@ class CookieBanner extends React.Component {
           <div className="row ml-auto" style={{margin:'0px'}}>
             <div className="mr-auto" style={{width:'70%'}}>
               <div style={{color:'white', padding:'10px 15px'}}>
-                This website uses cookies to provide the best user experience we can. We share no data with third parties or for any commercial purpose. By using this site, you accept this use of cookies as outlined in our data privacy policy.
+                This website uses cookies to provide the best user experience we can. We share no data with third parties or for any commercial purpose. 
+                By using this site, you accept this use of cookies as outlined in our <a href={this.policyPath} target="_blank" 
+                  rel="noopener noreferrer" style={{color:'grey'}}>data privacy policy.</a>
               </div>
             </div>
             <div className="ml-auto" style={{alignItems:'center'}}>
@@ -49,13 +51,6 @@ class CookieBanner extends React.Component {
                   style={{background:'white', color:'black'}}>
                 Okay
               </button>
-              <a href={this.policyPath}
-                  className="cool-font new-sign-in float-right round-me z-depth-float" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{background:'white', color:'black'}}>
-                Data Privacy Policy
-              </a>
             </div>
           </div>
         </div>
