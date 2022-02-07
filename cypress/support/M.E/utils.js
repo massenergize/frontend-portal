@@ -66,6 +66,7 @@ export const oneEventPageComponentsRenderProperly = () => {
 
 export const showThatAllEventCardsDisplayProperly = () => {
   var numberOfEvents;
+  before(() => cy.clearAuthentication());
   it("Got number of available events", function () {
     cy.get(".test-events-page-wrapper").then(
       ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
@@ -133,6 +134,7 @@ export const typeInsideFilterbox = (text) => {
 };
 
 export const testimonialsShowProperly = () => {
+  before(() => cy.clearAuthentication());
   cy.get(".test-stories-wrapper").then(function ($div) {
     const noOfStories = $div.attr("data-number-of-stories");
     if (noOfStories > 0)
