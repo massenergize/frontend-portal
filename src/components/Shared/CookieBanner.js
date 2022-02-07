@@ -36,7 +36,7 @@ class CookieBanner extends React.Component {
         width:'100%',
         padding:'10px',
         background:'#8DC62E'}}>
-        <div className="container-fluid" style={{padding:'0px'}}>
+        <div className="container-fluid" style={{padding:'0px'}} id ="test-cookie-banner">
           <div className="row ml-auto" style={{margin:'0px'}}>
             <div className="mr-auto" style={{width:'70%'}}>
               <div style={{color:'white', padding:'10px 15px'}}>
@@ -45,6 +45,7 @@ class CookieBanner extends React.Component {
             </div>
             <div className="ml-auto" style={{alignItems:'center'}}>
               <button onClick={this.acceptCookies} 
+              id="test-cookie-banner-okay"
                   className="cool-font new-sign-in float-right round-me z-depth-float" 
                   style={{background:'white', color:'black'}}>
                 Okay

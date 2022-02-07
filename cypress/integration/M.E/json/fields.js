@@ -4,8 +4,8 @@ const BASE_URL = DOMAIN + COMMUNITY + "/";
 // const urlParams = "?tour=false"; // useful, dont remove
 const urlParams = "";
 export default {
-  emailToUse: "frimpong@kehillahglobal.com",
-  passwordToUse: "Pongo123",
+  emailToUse: "mrfimpong+30@gmail.com",
+  passwordToUse: "123456",
   urls: {
     login: BASE_URL + "signin",
     registration: BASE_URL + "signup",

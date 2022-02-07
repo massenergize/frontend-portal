@@ -1,6 +1,9 @@
 import fields from "./json/fields";
 
 describe("Authenticates user and redirects to profile page", function () {
+  it("Cleared any previous authentication", () => {
+    cy.clearAuthentication();
+  });
   it("Visited login page", function () {
     cy.visit(fields.urls.login);
   });
