@@ -26,6 +26,7 @@ export default function SignUpAuth({
   policies,
   registerWithGoogle,
   registerWithFacebook,
+  showTour,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
@@ -85,7 +86,6 @@ export default function SignUpAuth({
       />
     );
 
-  const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
   const community_name = community?.name;
   const steps = [
     {
@@ -110,7 +110,7 @@ export default function SignUpAuth({
   return (
     <div className="styled-form register-form">
       {/* --------------------- TOUR ---------------- */}
-      {seen_tour === "true" ? null : (
+      {showTour && (
         <ProductTour
           steps={steps}
           continuous

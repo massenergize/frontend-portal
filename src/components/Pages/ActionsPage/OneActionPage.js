@@ -256,7 +256,6 @@ class OneActionPage extends React.Component {
     return null;
   }
 
-
   /**
    * renders the action on the page
    */
@@ -362,7 +361,9 @@ class OneActionPage extends React.Component {
             content={this.getMyAction()}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
+            addToCart={(aid, hid, status, date_completed) =>
+              this.addToCart(aid, hid, status, date_completed)
+            }
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -421,7 +422,7 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+
     const steps = [
       {
         target: "#test-actions-tabs",
@@ -467,7 +468,7 @@ class OneActionPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             continuous
@@ -1015,6 +1016,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     links: store.links,
     collection: store.page.collection,
+    showTour: store.page.collection,
   };
 };
 const mapDispatchToProps = {

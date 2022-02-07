@@ -59,6 +59,7 @@ import {
   reduxLoadCommunityInformation,
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
+  reduxSetTourState,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -76,6 +77,7 @@ import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
+import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -89,12 +91,19 @@ class AppRouter extends Component {
       footerLinks: null,
       prefix: "",
     };
-
-    this.userHasAnIncompleteRegistration =
-      this.userHasAnIncompleteRegistration.bind(this);
   }
 
+  checkTourState = () => {
+    var valueFromURL = getTakeTourFromURL();
+    var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
+    // value passed via url should take precedence over one in storage if provided
+    var showTour = valueFromURL || valueFromStorage;
+    showTour = showTour === "false" ? false : true;
+    window.localStorage.setItem(TOUR_STORAGE_KEY, showTour);
+    this.props.setTourState(showTour);
+  };
   componentDidMount() {
+    this.checkTourState();
     const cookies = new Cookies();
     device_checkin(cookies).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthencation();
@@ -395,16 +404,6 @@ class AppRouter extends Component {
       window.localStorage.setItem("last_visited", realRoute);
   }
 
-  userHasAnIncompleteRegistration() {
-    return (
-      (this.state.triedLogin && // we tried to check who this user is
-        !this.props.user && // we didnt find a profile
-        this.props.auth.uid) || // but we found a firebase userID.  This means they did not finish creating their profile
-      (this.props.auth.uid && // firebase userID is created
-        !this.props.auth.emailVerified) // but user did not verify their email yet
-    );
-  }
-
   render() {
     const { community } = this.props;
 
@@ -435,7 +434,7 @@ class AppRouter extends Component {
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
     };
-    
+
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
@@ -551,5 +550,6 @@ const mapDispatchToProps = {
   reduxLoadEquivalences,
   reduxSetPreferredEquivalence,
   checkFirebaseAuthencation: subscribeToFirebaseAuthChanges,
+  setTourState: reduxSetTourState,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);
