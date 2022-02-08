@@ -3,9 +3,10 @@ import React from "react";
 import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
-
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+
+export const TOUR_STORAGE_KEY = "SHOW_TOUR";
 export const stateAbbreviation = (stateName) => {
   const index = meStatesData.indexOf(stateName);
   if (index > -1) {
@@ -50,7 +51,7 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   return null;
 };
 
-export const getFilterVersionFromURL = (location, paramName) => {
+export const getFilterVersionFromURL = (location) => {
   if (!location || !location.search) return "";
   const { filter } = qs.parse(location.search, { ignoreQueryPrefix: true });
   return filter;
@@ -62,7 +63,7 @@ export const getIsSandboxFromURL = (location) => {
   return sandbox;
 };
 
-export const getTakeTourFromURL = (location) => {
+export const getTakeTourFromURL = (location = window.location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
   //console.log("locationUtils", location);
@@ -79,13 +80,13 @@ export const handleTourCallback = (data) => {
     (index > 0 && action === ACTIONS.CLOSE) ||
     [STATUS.FINISHED, STATUS.SKIPPED].includes(status)
   ) {
-    window.localStorage.setItem("seen_community_portal_tour", "true");
+    window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
   }
   return true;
 };
 
 export const handleCloseTourWithBtn = () => {
-  window.localStorage.setItem("seen_community_portal_tour", "true");
+  window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
   return true;
 };
 

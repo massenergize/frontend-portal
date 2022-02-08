@@ -103,7 +103,6 @@ class ActionsPage extends React.Component {
   renderModal() {
     if (this.state.openModalForm) {
       return (
-        
         <MEModal
           className="parent-act-modal-whole"
           showCloseBtn={false}
@@ -124,7 +123,6 @@ class ActionsPage extends React.Component {
             moveToDone={this.moveToDoneByActionId}
           />
         </MEModal>
-        
       );
     }
   }
@@ -186,7 +184,6 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "#test-action-cards-wrapper",
@@ -203,20 +200,17 @@ class ActionsPage extends React.Component {
         hideFooter: true,
         disableOverlayClose: true,
       },
-      // ...
     ];
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             showSkipButton
             disableScrolling={true}
             callback={handleTourCallback}
             spotlightPadding={-12}
-            // disableOverlay
-            // showProgress
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -465,7 +459,7 @@ class ActionsPage extends React.Component {
           } else if (status === "DONE") {
             this.props.reduxAddToDone(json.data);
             this.setState({ testimonialLink: aid, showTodoMsg: false });
-          }  
+          }
         }
       })
       .catch((error) => {
@@ -488,6 +482,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     pref_eq: store.user.pref_equivalence,
     eq: store.page.equivalences,
+    showTour: store.page.showTour,
   };
 };
 

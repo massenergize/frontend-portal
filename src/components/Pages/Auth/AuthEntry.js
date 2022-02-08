@@ -39,6 +39,7 @@ function AuthEntry({
   policies,
   finaliseNoPasswordAuth,
   registerPageData,
+  showTour,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -138,6 +139,7 @@ function AuthEntry({
         fireAuth={fireAuth}
         completeFormRegistrationInME={completeFormRegistrationInME}
         policies={policies}
+        showTour={showTour}
       />
     );
     PageTitle = "Sign Up";
@@ -181,6 +183,7 @@ const mapStateToProps = (state) => {
     user: state.user,
     policies: state.page.policies,
     registerPageData: state.page.registerPage,
+    showTour: state.page.showTour,
   };
 };
 
