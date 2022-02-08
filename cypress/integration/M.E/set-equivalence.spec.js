@@ -1,13 +1,22 @@
 import "cypress-localstorage-commands";
+import fields from "./json/fields";
 
 describe("User trying to set equivalence", function () {
-  it("Renders login page", function () {
-    cy.visit("http://localhost:3000/wayland/signin");
+  before(() => {
+    cy.visit(fields.urls.homepage.withParams);
+    cy.cleanUp();
+    cy.authenticateWithoutUI();
+    cy.visit(fields.urls.homepage.raw + "profile");
   });
+  // it("Renders login page", function () {
+  //   cy.visit(fields.urls.homepage);
+  //   cy.cleanUp();
+  // });
 
-  it("Types login details and signs in", function () {
-    cy.loginWithDetails();
-  });
+  // it("Types login details and signs in", function () {
+  //   // cy.loginWithDetails();
+  //   // cy.authenticateWithoutUI();
+  // });
 
   it("Renders profile page", function () {
     cy.get("#profile-page-component");

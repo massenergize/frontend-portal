@@ -1,5 +1,5 @@
 import { typeInsideFilterbox } from "../../support/M.E/utils";
-import fields from "./json/fields";
+
 
 import "./reusable/go-to-all-testimonials-page-via-navigation.spec";
 
@@ -11,6 +11,7 @@ import "./reusable/go-to-all-testimonials-page-via-navigation.spec";
 
 var numberOfStories, title;
 describe("Filterbox on testimonials page works well", function () {
+  before(() => cy.cleanUp());
   it("Gets the number of available Testimonials ", function () {
     cy.get(".test-stories-wrapper").then(
       ($el) => (numberOfStories = $el.attr("data-number-of-stories"))

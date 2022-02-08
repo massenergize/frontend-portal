@@ -58,15 +58,15 @@ export const oneEventPageComponentsRenderProperly = () => {
     if (venue) cy.get(".test-event-venue").first().should("exist");
     else cy.log("Does not have any venue...");
   });
-  it("Found the event recurring status", () => {
-    if (rec) cy.get(".test-event-recurring-status").first().should("exist");
-    else cy.log("Does not have any recurring string...");
-  });
+  // it("Found the event recurring status", () => {
+  //   if (rec) cy.get(".test-event-recurring-status").first().should("exist");
+  //   else cy.log("Does not have any recurring string...");
+  // });
 };
 
 export const showThatAllEventCardsDisplayProperly = () => {
   var numberOfEvents;
-  before(() => cy.clearAuthentication());
+  before(() => cy.cleanUp());
   it("Got number of available events", function () {
     cy.get(".test-events-page-wrapper").then(
       ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
@@ -87,6 +87,7 @@ export const showThatAllEventCardsDisplayProperly = () => {
 
 export const oneTeamPageComponentsRenderProperly = () => {
   var hasLotsOfText;
+  before(() => cy.cleanUp());
   it("Has found team name", () => cy.get(".test-team-name").first());
   it("Has found team tagline", () => cy.get(".test-team-tagline").first());
   it("Has found description", () => {
@@ -131,10 +132,10 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
 
 export const typeInsideFilterbox = (text) => {
   cy.get("#test-filter-box-id").type(text, { delay: 150 });
+  cy.get("#test-filter-box-id").scrollIntoView({ offset: { top: -550 } });
 };
 
 export const testimonialsShowProperly = () => {
-  before(() => cy.clearAuthentication());
   cy.get(".test-stories-wrapper").then(function ($div) {
     const noOfStories = $div.attr("data-number-of-stories");
     if (noOfStories > 0)
@@ -144,6 +145,7 @@ export const testimonialsShowProperly = () => {
 };
 
 export const showThatTestimonialPageComponentsLoadWell = () => {
+  before(() => cy.cleanUp());
   it("Shows title properly", () =>
     cy
       .get(".test-story-title")

@@ -3,6 +3,7 @@ import "./reusable/go-to-all-events-page(via link).spec";
 
 var title;
 describe("Filtering on all events page works well", function () {
+  before(() => cy.cleanUp());
   it("Got the title of the first event", function () {
     cy.get(".test-event-card-title")
       .first()

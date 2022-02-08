@@ -13,7 +13,10 @@ import fields from "./json/fields";
 var name,
   numberOfServiceProviders = 0;
 describe("Filter box on services page works well", function () {
-  before(() => cy.visit(fields.urls.services));
+  before(() => {
+    cy.visit(fields.urls.services.withParams);
+    cy.cleanUp();
+  });
 
   it("Gets number of available vendors", function () {
     cy.get(".test-no-of-vendors-div").then(

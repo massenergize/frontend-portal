@@ -11,11 +11,11 @@ import { ONE_ACTION_COMPONENT_CHECKLIST } from "./reusable/values";
 const knownActionId = 7;
 describe("One action page loads correctly", function () {
   before(function () {
-    cy.visit(fields.urls.actions + "/" + knownActionId);
+    cy.visit(fields.urls.actions.raw + "/" + knownActionId + fields.params);
+    cy.cleanUp();
   });
 
   it("Finds all important display components", function () {
     cy.findComponentsOnPage(ONE_ACTION_COMPONENT_CHECKLIST);
- 
   });
 });

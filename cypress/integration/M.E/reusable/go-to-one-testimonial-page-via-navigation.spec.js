@@ -1,4 +1,3 @@
-import fields from "../json/fields";
 import "./go-to-all-testimonials-page-via-navigation.spec";
 
 describe("Chooses a testimonial from all testimonials page, and redirects to individual testimonial page", function () {

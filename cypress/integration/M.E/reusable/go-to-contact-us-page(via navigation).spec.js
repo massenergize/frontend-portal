@@ -1,7 +1,7 @@
 import fields from "../json/fields";
 
 describe("Visits contact us page via navigation menu", () => {
-  it("Visited homepage", () => cy.visit(fields.urls.homepage));
+  it("Visited homepage", () => cy.visit(fields.urls.homepage.withParams));
 
   it("Clicked on 'contact us' from menu and redirected there", () => {
     cy.get("#about-us-nav-id").click();

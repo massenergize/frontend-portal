@@ -9,8 +9,8 @@ import fields from "./json/fields";
  */
 describe("Test actions filterbox functionality", function () {
   before(function () {
-    cy.clearAuthentication();
-    cy.visit(fields.urls.actions);
+    cy.visit(fields.urls.actions.withParams);
+    cy.cleanUp();
   });
 
   it("Filterbox types and filters actions as expected", function () {

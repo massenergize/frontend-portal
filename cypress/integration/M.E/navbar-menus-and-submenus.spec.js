@@ -9,7 +9,8 @@ import fields from "./json/fields";
  */
 describe("Navbar menu and submenu items  load and work well", function () {
   before(() => {
-    cy.visit(fields.urls.homepage);
+    cy.visit(fields.urls.homepage.withParams);
+    cy.cleanUp();
   });
 
   it("Renders main navlink menu items", function () {

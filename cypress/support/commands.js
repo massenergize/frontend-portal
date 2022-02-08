@@ -1,6 +1,12 @@
 import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
-
+import fields from "../integration/M.E/json/fields";
+const removeCookieBanner = () => {
+  cy.get("#test-cookie-banner-okay").click();
+};
+const clearAuthentication = () => {
+  Auth.signOut();
+};
 Cypress.Commands.add(
   "loginWithDetails",
   function (email = "frimpong@kehillahglobal.com", password = "Pongo123") {
@@ -12,17 +18,16 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add(
   "authenticateWithoutUI",
-  function (email = "frimpong@kehillahglobal.com", password = "Pongo123") {
+  function (email = fields.emailToUse, password = fields.passwordToUse) {
     Auth.signOut();
     return Auth.signInWithEmailAndPassword(email, password);
   }
 );
-
 Cypress.Commands.add("deactivateTour", function () {
   cy.get("[aria-label='Skip Tour']").click();
 });
 
-Cypress.Commands.add("clearAuthentication", () => Auth.signOut());
+Cypress.Commands.add("clearAuthentication", clearAuthentication);
 
 Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
   cy.visit(pageURL);
@@ -35,7 +40,8 @@ Cypress.Commands.add("findComponentsOnPage", function (arrayOfIds = []) {
   });
 });
 
-Cypress.Commands.add("cleanup", function () {
-  // window.localStorage.setItem("seen_community_portal_tour", true);
-  //test to be continued
+Cypress.Commands.add("removeBanner", removeCookieBanner);
+Cypress.Commands.add("cleanUp", function () {
+  removeCookieBanner();
+  clearAuthentication();
 });

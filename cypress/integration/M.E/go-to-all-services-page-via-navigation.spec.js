@@ -3,7 +3,8 @@ import fields from "./json/fields";
 
 describe("Visit all services page via navigation", function () {
   before("Renders services page", () => {
-    cy.visit(fields.urls.homepage);
+    cy.visit(fields.urls.homepage.withParams);
+    cy.cleanUp();
   });
 
   it("Selects services page from navigation menu dropdown", function () {

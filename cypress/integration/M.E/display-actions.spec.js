@@ -8,7 +8,8 @@ import fields from "./json/fields";
  */
 describe("Action cards display appropriately", function () {
   before(function () {
-    cy.visit(fields.urls.actions);
+    cy.visit(fields.urls.actions.withParams);
+    cy.cleanUp()
   });
 
   it("All cards rendered, and number of cards match number of actions", function () {

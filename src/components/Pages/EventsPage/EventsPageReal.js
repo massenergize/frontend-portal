@@ -39,7 +39,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
-      view_mode: savedView || VIEW_MODES.CALENDAR.key,
+      view_mode: savedView || VIEW_MODES.NORMAL.key,
       showModal: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);

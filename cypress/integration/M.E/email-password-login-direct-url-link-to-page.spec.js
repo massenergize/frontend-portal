@@ -9,7 +9,7 @@ describe("Authenticates user and redirects to profile page", function () {
   });
 
   it("Entered user credentials of an exisiting user account and logged in", function () {
-    cy.loginWithDetails();
+    cy.loginWithDetails(fields.emailToUse, fields.passwordToUse);
   });
 
   it("Redirected to profile page", function () {
