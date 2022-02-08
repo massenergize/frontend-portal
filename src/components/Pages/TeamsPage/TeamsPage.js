@@ -124,7 +124,6 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "body",
@@ -156,7 +155,7 @@ class TeamsPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             continuous
@@ -164,9 +163,6 @@ class TeamsPage extends React.Component {
             debug
             disableScrolling={true}
             callback={handleTourCallback}
-            // spotlightPadding={5}
-            // disableOverlay
-            // showProgress
             styles={{
               options: {
                 // modal arrow and background color
@@ -503,6 +499,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
     pref_eq: store.user.pref_equivalence,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {

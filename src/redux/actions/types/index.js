@@ -33,8 +33,8 @@ export const LEAVE_TEAM = 'LEAVE_TEAM'
  * these actions load the database data for the pages
  * find the pagedata at store.pages.[pagename]
  */
+export const SET_TOUR_STATE = "SET_TOUR_STATE"; 
 export const LOAD_COMMUNITY = 'LOAD_COMMUNITY'
-
 export const LOAD_HOME_PAGE = 'LOAD_HOME_PAGE' //home_page
 export const LOAD_ACTIONS_PAGE = 'LOAD_ACTIONS_PAGE' //actions_page
 export const LOAD_SERVICE_PROVIDERS_PAGE = 'LOAD_SERVICE_PROVIDERS_PAGE' //service_provider_page

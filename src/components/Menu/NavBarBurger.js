@@ -267,9 +267,11 @@ class NavBarBurger extends React.Component {
       ? this.props.pageData.community
       : { name: "My Community" };
     return children.map((child, key) => {
+      const id = child?.navItemId ? { id: child.navItemId } : {};
       if (child.special) {
         return (
           <Link
+            {...id}
             key={key}
             className=" cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => {
@@ -282,10 +284,18 @@ class NavBarBurger extends React.Component {
       } else {
         return (
           <Link
+            {...id}
             key={key}
             to={`${child.link}`}
             className="cool-font  p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
-            onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+            onClick={(e) => {
+              if (e.target.id === "take-the-tour") {
+                e.preventDefault();
+                window.location = this.props.links.home + "?tour=true";
+                return;
+              }
+              document.dispatchEvent(new MouseEvent("click"));
+            }}
           >
             {child.name === "current-home" ? comm.name : child.name}
           </Link>
