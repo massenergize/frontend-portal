@@ -6,11 +6,7 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import {
-  getFilterVersionFromURL,
-  getTakeTourFromURL,
-  handleTourCallback,
-} from "../../Utils";
+import { getFilterVersionFromURL, handleTourCallback } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
@@ -25,19 +21,7 @@ class HomePage extends React.Component {
   }
 
   render() {
-    // Requesting tour from home menu adds a qualifier to the URL.
-    // It won't restart if it was already going, until you refresh the site.
-    const tourRequested = getTakeTourFromURL(window.location);
-    if (tourRequested === "true") {
-      window.localStorage.setItem("seen_community_portal_tour", "false");
-    } else if (tourRequested === "false")
-      window.localStorage.setItem("seen_community_portal_tour", "true");
-
-    const seen_tour =
-      tourRequested === "true"
-        ? false
-        : window.localStorage.getItem("seen_community_portal_tour");
-
+    const { showTour } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -80,7 +64,6 @@ class HomePage extends React.Component {
     const iconQuickLinks = this.props.pageData
       ? this.props.pageData.featured_links
       : [];
-    //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
     // Note: these titles aren't used - defined in Graphs
@@ -158,7 +141,7 @@ class HomePage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {showTour && (
           <ProductTour
             steps={steps}
             continuous
@@ -257,6 +240,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     is_sandbox: store.page.__is_sandbox,
     __is_custom_site: store.page.__is_custom_site,
+    showTour: store.page.showTour,
   };
 };
 export default connect(mapStoreToProps, null)(HomePage);

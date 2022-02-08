@@ -288,7 +288,6 @@ class ImpactPage extends React.Component {
       ),
     ];
 
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
         target: "#two-graphs",
@@ -382,7 +381,7 @@ class ImpactPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour &&  (
           <ProductTour
             steps={steps}
             continuous
@@ -526,6 +525,7 @@ const mapStoreToProps = (store) => {
     impactPage: store.page.impactPage,
     pref_eq: store.user.pref_equivalence,
     links: store.links,
+    showTour: store.page.showTour
   };
 };
 

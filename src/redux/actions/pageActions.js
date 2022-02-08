@@ -44,6 +44,7 @@ import {
   TEAM_REMOVE_HOUSEHOLD,
   LOAD_EQUIVALENCES,
   LOAD_COMMUNITY_INFORMATION,
+  SET_TOUR_STATE,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
@@ -55,11 +56,16 @@ export const reduxLoadEquivalences = (data) => {
       (item) => item.id === pref_eq?.id && item.name === pref_eq?.name
     );
     if (found) dispatch(reduxSetPreferredEquivalence(found));
-    // else localStorage.removeItem(PREFERRED_EQ);
     return dispatch({ type: LOAD_EQUIVALENCES, payload: data });
   };
 };
 
+export const reduxSetTourState = (state) => (dispatch) => {
+  return dispatch({
+    type: SET_TOUR_STATE,
+    payload: state,
+  });
+};
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
   return dispatch({
     type: LOAD_COMMUNITY_INFORMATION,
