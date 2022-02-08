@@ -93,17 +93,51 @@ class AppRouter extends Component {
     };
   }
 
-  checkTourState = () => {
+  cleanURL(string) {
+    if (!string) return "";
+    const noSlash = string.split("/").join("");
+    return noSlash.split("?")[0];
+  }
+
+  isHomepage(menu) {
+    const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
+    if (!main) return false;
+    const homeFxn = (m) => m.name === "Home";
+    const homegroup = main.content.find(homeFxn);
+    const home = homegroup?.children?.find(homeFxn);
+    var location = this.cleanURL(window.location.href);
+    var rebuilt = this.cleanURL(
+      window.location.protocol + window.location.host + home.link
+    );
+    return location === rebuilt;
+  }
+
+  /**
+   * IDEA: The idea is that we use this function to determine the value of the tour
+   * The first time the site loads. Only the first time!
+   * So, we check where the user is currently entering from first. If the user is not entering
+   * through the homepage, we wont bother finding the state of the tour, from the url or local storage,
+   * the tour will be set to never display inside redux.
+   * Otherwise, we go ahead and determine the tour state;
+   * By initially checking if anything is passed via url, or  checking local storage if nothing.
+   * In the end we either get a value of the current tour state from (url or localStorage), or we get nothing.
+   * Nothing means user is new, so show tour!
+   * @param {*} menu
+   * @returns
+   */
+  checkTourState = (menu) => {
+    if (!this.isHomepage(menu)) return this.props.setTourState(false);
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
-    // value passed via url should take precedence over one in storage if provided
+    //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
     var showTour = valueFromURL || valueFromStorage;
     showTour = showTour === "false" ? false : true;
+
     window.localStorage.setItem(TOUR_STORAGE_KEY, showTour);
     this.props.setTourState(showTour);
   };
+
   componentDidMount() {
-    this.checkTourState();
     const cookies = new Cookies();
     device_checkin(cookies).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthencation();
@@ -199,6 +233,7 @@ class AppRouter extends Component {
             prefix,
           });
           this.loadMenu(mainMenuResponse.data);
+          this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -406,7 +441,6 @@ class AppRouter extends Component {
 
   render() {
     const { community } = this.props;
-
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -510,6 +544,7 @@ const mapStoreToProps = (store) => {
     menu: store.page.menu,
     links: store.links,
     eq: store.page.equivalences,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {

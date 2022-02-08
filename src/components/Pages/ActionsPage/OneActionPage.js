@@ -1016,7 +1016,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     links: store.links,
     collection: store.page.collection,
-    showTour: store.page.collection,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {
