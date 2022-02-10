@@ -117,6 +117,7 @@ class HomePage extends React.Component {
         placement: "center",
         disableBeacon: true,
         disableOverlayClose: true,
+
         // hideCloseButton: true,
       },
       {
@@ -133,7 +134,6 @@ class HomePage extends React.Component {
           </>
         ),
         locale: {
-          back: <span>OOOgbemi</span>,
           skip: <span>Skip Tour</span>,
           last: (
             <Link style={{ color: "white" }} to={this.props.links.actions}>
@@ -145,6 +145,7 @@ class HomePage extends React.Component {
         disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
+        spotlight: { padding: 20, background: "red" },
         // hideCloseButton: true,
       },
     ];
@@ -157,7 +158,7 @@ class HomePage extends React.Component {
             continuous
             showSkipButton
             callback={this.tourCallback}
-            spotlightPadding={-40}
+            spotlightPadding={-70}
             debug
             disableScrolling={true}
             styles={{
