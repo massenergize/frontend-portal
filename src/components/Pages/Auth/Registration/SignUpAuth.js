@@ -117,8 +117,6 @@ export default function SignUpAuth({
           showSkipButton
           disableScrolling={true}
           callback={handleTourCallback}
-          // getHelpers={this.getHelpers}
-          debug
           styles={{
             options: {
               arrowColor: "#eee",

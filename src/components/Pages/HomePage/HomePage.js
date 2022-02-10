@@ -170,7 +170,6 @@ class HomePage extends React.Component {
             showSkipButton
             callback={this.tourCallback}
             spotlightPadding={-70}
-            debug
             disableScrolling={true}
             styles={{
               options: {

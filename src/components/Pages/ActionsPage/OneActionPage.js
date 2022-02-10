@@ -482,7 +482,6 @@ class OneActionPage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            debug
             disableScrolling={true}
             callback={this.tourCallback}
             styles={{

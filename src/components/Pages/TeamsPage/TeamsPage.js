@@ -160,7 +160,6 @@ class TeamsPage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            debug
             disableScrolling={true}
             callback={handleTourCallback}
             styles={{

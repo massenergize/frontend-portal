@@ -395,14 +395,13 @@ class ImpactPage extends React.Component {
     ];
     return (
       <>
-        {true && (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             continuous
             showSkipButton
             spotlightPadding={10}
             disableScrolling={true}
-            debug
             callback={this.tourCallback}
             disableOverlayClose
             styles={{
@@ -545,7 +544,6 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence,
     links: store.links,
     showTour: store.page.showTour,
-    teamsStats: store.page.teams,
     tourNextLink: !store.page.teams?.length
       ? store.links?.signup
       : store.links?.teams,
