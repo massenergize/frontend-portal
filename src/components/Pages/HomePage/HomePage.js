@@ -8,8 +8,8 @@ import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 import { getFilterVersionFromURL, handleTourCallback } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
-import ProductTour from "react-joyride";
-import { Link } from "react-router-dom";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
+import { Link, withRouter } from "react-router-dom";
 
 /*'
  * The Home Page of the MassEnergize
@@ -19,6 +19,14 @@ class HomePage extends React.Component {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
+
+  tourCallback = (data) => {
+    const { history, links } = this.props;
+    handleTourCallback(data, ({ action, index, status }) => {
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        history.push(links?.actions); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
 
   render() {
     const { showTour } = this.props;
@@ -109,6 +117,7 @@ class HomePage extends React.Component {
         placement: "center",
         disableBeacon: true,
         disableOverlayClose: true,
+        // hideCloseButton: true,
       },
       {
         target: ".icon-panel",
@@ -124,6 +133,7 @@ class HomePage extends React.Component {
           </>
         ),
         locale: {
+          back: <span>OOOgbemi</span>,
           skip: <span>Skip Tour</span>,
           last: (
             <Link style={{ color: "white" }} to={this.props.links.actions}>
@@ -135,7 +145,7 @@ class HomePage extends React.Component {
         disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
-        hideFooter: false,
+        // hideCloseButton: true,
       },
     ];
 
@@ -146,7 +156,7 @@ class HomePage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            callback={handleTourCallback}
+            callback={this.tourCallback}
             spotlightPadding={-40}
             debug
             disableScrolling={true}
@@ -243,4 +253,5 @@ const mapStoreToProps = (store) => {
     showTour: store.page.showTour,
   };
 };
-export default connect(mapStoreToProps, null)(HomePage);
+
+export default connect(mapStoreToProps, null)(withRouter(HomePage));

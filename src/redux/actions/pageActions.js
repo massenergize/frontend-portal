@@ -1,6 +1,7 @@
 import {
   fetchAndParseStorageContent,
   PREFERRED_EQ,
+  TOUR_STORAGE_KEY,
 } from "../../components/Utils";
 import {
   LOAD_HOME_PAGE,
@@ -60,12 +61,15 @@ export const reduxLoadEquivalences = (data) => {
   };
 };
 
-export const reduxSetTourState = (state) => (dispatch) => {
-  return dispatch({
-    type: SET_TOUR_STATE,
-    payload: state,
-  });
-};
+export const reduxSetTourState =
+  (state, persist = false) =>
+  (dispatch) => {
+    if (persist) window.localStorage.setItem(TOUR_STORAGE_KEY, state);
+    return dispatch({
+      type: SET_TOUR_STATE,
+      payload: state,
+    });
+  };
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
   return dispatch({
     type: LOAD_COMMUNITY_INFORMATION,
