@@ -128,8 +128,6 @@ class HomePage extends React.Component {
         placement: "center",
         disableBeacon: true,
         disableOverlayClose: true,
-
-        // hideCloseButton: true,
       },
       {
         target: ".icon-panel",
@@ -157,7 +155,6 @@ class HomePage extends React.Component {
         spotlightClicks: false,
         disableOverlayClose: true,
         spotlight: { padding: 20, background: "red" },
-        // hideCloseButton: true,
       },
     ];
 
