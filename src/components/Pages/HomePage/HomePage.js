@@ -6,10 +6,15 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { getFilterVersionFromURL, handleTourCallback } from "../../Utils";
+import {
+  getFilterVersionFromURL,
+  handleTourCallback,
+  TOUR_STORAGE_KEY,
+} from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { Link, withRouter } from "react-router-dom";
+import { reduxSetTourState } from "../../../redux/actions/pageActions";
 
 /*'
  * The Home Page of the MassEnergize
@@ -20,9 +25,15 @@ class HomePage extends React.Component {
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
 
+  closeTourCompletely() {
+    const { setTourValueInRedux } = this.props;
+    setTourValueInRedux(false);
+    window.localStorage.setItem(TOUR_STORAGE_KEY, false);
+  }
   tourCallback = (data) => {
     const { history, links } = this.props;
     handleTourCallback(data, ({ action, index, status }) => {
+      if (action === ACTIONS.CLOSE) return this.closeTourCompletely();
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
         history.push(links?.actions); // This is triggered when user presses enter on "got it" instead of clicking
     });
@@ -255,4 +266,6 @@ const mapStoreToProps = (store) => {
   };
 };
 
-export default connect(mapStoreToProps, null)(withRouter(HomePage));
+export default connect(mapStoreToProps, {
+  setTourValueInRedux: reduxSetTourState,
+})(withRouter(HomePage));

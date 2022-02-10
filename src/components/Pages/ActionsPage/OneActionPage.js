@@ -1,7 +1,7 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
@@ -37,7 +37,7 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
-import ProductTour from "react-joyride";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 
 /**
@@ -399,6 +399,15 @@ class OneActionPage extends React.Component {
     return {};
   }
 
+  // @TODO make this fxn a util fxn then use everywhere later!
+  tourCallback = (data) => {
+    const { history, links } = this.props;
+    handleTourCallback(data, ({ action, index, status }) => {
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        history.push(links?.impact); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -475,7 +484,7 @@ class OneActionPage extends React.Component {
             showSkipButton
             debug
             disableScrolling={true}
-            callback={handleTourCallback}
+            callback={this.tourCallback}
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -1029,4 +1038,7 @@ const mapDispatchToProps = {
   reduxRemoveFromTodo,
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneActionPage));
