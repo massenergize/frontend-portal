@@ -10,7 +10,6 @@ import { getFilterVersionFromURL, handleTourCallback } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour from "react-joyride";
 import { Link } from "react-router-dom";
-
 /*'
  * The Home Page of the MassEnergize
  */
@@ -173,21 +172,20 @@ class HomePage extends React.Component {
           >
             <div className="text-center">
               {communityDescription ? (
-                <Tooltip
-                  text={communityDescription}
-                  paperStyle={{ maxWidth: "100vh" }}
-                >
-                  <h4
-                    align="center"
-                    className="cool-font mob-font-lg me-section-title"
-                  >
-                    {communityTagline}
-                    <span
-                      className="fa fa-info-circle"
-                      style={{ color: "#428a36", padding: "5px" }}
-                    ></span>
-                  </h4>
-                </Tooltip>
+                <>
+                  <Tooltip text={communityDescription} placement="top">
+                    <h4
+                      align="center"
+                      className="cool-font mob-font-lg me-section-title"
+                    >
+                      {communityTagline}
+                      <span
+                        className="fa fa-info-circle"
+                        style={{ color: "#428a36", padding: "5px" }}
+                      />
+                    </h4>
+                  </Tooltip>
+                </>
               ) : (
                 <h4
                   align="center"
