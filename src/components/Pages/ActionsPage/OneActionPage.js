@@ -1,7 +1,7 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
@@ -19,6 +19,8 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetTourInformation,
+  SECOND_SET,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -37,7 +39,7 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
-import ProductTour from "react-joyride";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 
 /**
@@ -399,6 +401,18 @@ class OneActionPage extends React.Component {
     return {};
   }
 
+  continueTour() {
+    const { history, links, reduxSetTourInformation } = this.props;
+    reduxSetTourInformation({ stage: SECOND_SET });
+    history.push(links?.home || "");
+  }
+  tourCallback = (data) => {
+    handleTourCallback(data, ({ action, index, status }) => {
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        return this.continueTour(); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -450,11 +464,7 @@ class OneActionPage extends React.Component {
           </>
         ),
         locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.impact}>
-              Got it!
-            </Link>
-          ),
+          last: <span style={{ color: "white" }}>Got it!</span>,
         },
         placement: "top",
         spotlightClicks: false,
@@ -473,9 +483,8 @@ class OneActionPage extends React.Component {
             steps={steps}
             continuous
             showSkipButton
-            debug
             disableScrolling={true}
-            callback={handleTourCallback}
+            callback={this.tourCallback}
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -1027,6 +1036,10 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
+  reduxSetTourInformation,
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneActionPage));

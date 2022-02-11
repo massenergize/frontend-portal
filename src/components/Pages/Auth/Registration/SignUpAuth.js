@@ -7,9 +7,7 @@ import {
 } from "../shared/utils";
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
-import ProductTour from "react-joyride";
-import { handleCloseTourWithBtn, handleTourCallback } from "../../../Utils";
-import TourContent, { TourTitle } from "./TourContent";
+
 
 export default function SignUpAuth({
   description,
@@ -86,53 +84,9 @@ export default function SignUpAuth({
       />
     );
 
-  const community_name = community?.name;
-  const steps = [
-    {
-      target: "body",
-      title: <TourTitle community_name={community_name} />,
-      content: (
-        <TourContent
-          links={links}
-          handleCloseTourWithBtn={handleCloseTourWithBtn}
-        />
-      ),
-      locale: {
-        last: "End Tour & Sign Up",
-      },
-      placement: "center",
-      spotlightClicks: true,
-      disableBeacon: true,
-      hideFooter: false,
-    },
-  ];
 
   return (
     <div className="styled-form register-form">
-      {/* --------------------- TOUR ---------------- */}
-      {showTour && (
-        <ProductTour
-          steps={steps}
-          continuous
-          showSkipButton
-          disableScrolling={true}
-          callback={handleTourCallback}
-          // getHelpers={this.getHelpers}
-          debug
-          styles={{
-            options: {
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              primaryColor: "#8CC43C",
-              textColor: "black",
-              width: 400,
-              zIndex: 1000,
-            },
-          }}
-        />
-      )}
-
-      {/* ---------------------------------------------- */}
       <div
         className="z-depth-float me-anime-fade-in-up"
         style={{ padding: 46, borderRadius: 12 }}
