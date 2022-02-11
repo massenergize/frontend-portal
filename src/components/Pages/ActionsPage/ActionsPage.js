@@ -186,15 +186,16 @@ class ActionsPage extends React.Component {
 
     const steps = [
       {
-        target: "#test-action-cards-wrapper",
+        target: ".test-action-card-item",
         title: (
           <strong style={{ fontSize: 16 }}>
             All these actions were chosen by your neighbors!
           </strong>
         ),
         content:
-          "You can filter these actions by category, impact or cost. Click on any card to continue.",
-        placement: "auto",
+          "You can filter these actions by category, impact or cost. Click on the card to continue.",
+        placement: "top",
+        spotlightPadding: 10,
         spotlightClicks: true,
         disableBeacon: true,
         hideFooter: true,

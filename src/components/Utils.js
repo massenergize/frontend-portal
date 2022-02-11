@@ -66,22 +66,21 @@ export const getIsSandboxFromURL = (location) => {
 export const getTakeTourFromURL = (location = window.location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
-  //console.log("locationUtils", location);
   return tour?.toLowerCase();
 };
 
 //TODO: how to stop second step once seen tour is set to true? setTimeOut???
 //TODO: why home first step isn't closing when X is clicked?
-export const handleTourCallback = (data) => {
+export const handleTourCallback = (data, cb) => {
+  if (cb) return cb(data);
   const { status, action, index } = data;
-  //console.log("dataTourCallBack", data);
-
   if (
     (index > 0 && action === ACTIONS.CLOSE) ||
     [STATUS.FINISHED, STATUS.SKIPPED].includes(status)
   ) {
     window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
   }
+
   return true;
 };
 

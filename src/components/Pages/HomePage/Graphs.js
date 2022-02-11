@@ -26,22 +26,30 @@ class Graphs extends React.Component {
     }
 
     function selectGraphs(graph) {
-      if (graph.title === "Households Engaged" && display_prefs.display_households) return true;
-      if (graph.title === "Actions Completed" && display_prefs.display_actions) return true;
-      if (graph.title === "Carbon Reduction" && display_prefs.display_carbon) return true;
+      if (
+        graph.title === "Households Engaged" &&
+        display_prefs.display_households
+      )
+        return true;
+      if (graph.title === "Actions Completed" && display_prefs.display_actions)
+        return true;
+      if (graph.title === "Carbon Reduction" && display_prefs.display_carbon)
+        return true;
       return false;
     }
 
     var classes;
-    graphs = graphs.filter(selectGraphs); 
-    if (graphs.length === 0) 
-      return <div>No Graphs selected</div>;
-    else if (graphs.length === 1) 
-      classes = "column col-lg-12 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
-    else if (graphs.length === 2) 
-      classes = "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
-    else if (graphs.length >= 3) 
-      classes = "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    graphs = graphs.filter(selectGraphs);
+    if (graphs.length === 0) return <div>No Graphs selected</div>;
+    else if (graphs.length === 1)
+      classes =
+        "column col-lg-12 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    else if (graphs.length === 2)
+      classes =
+        "column col-lg-6 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
+    else if (graphs.length >= 3)
+      classes =
+        "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
 
     const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;
 
@@ -52,7 +60,7 @@ class Graphs extends React.Component {
         unit: "Households",
         heading: "Households Taking Action",
         target: this.props.goals.target_number_of_households,
-       },
+      },
       {
         key: "actions-completed",
         title: "Actions Completed",
@@ -70,12 +78,12 @@ class Graphs extends React.Component {
           pref_eq.value
         ),
       },
-    ]
-    
+    ];
+
     return graphs.map((graph) => {
-      var graphPars = list.filter(obj => {
+      var graphPars = list.filter((obj) => {
         return obj.title === graph.title;
-      })[0]
+      })[0];
       const value = getCircleGraphData(
         this.props.goals,
         graphPars.key,
@@ -107,7 +115,7 @@ class Graphs extends React.Component {
                 this.props.goals,
                 graphPars.key,
                 pref_eq,
-                display_prefs,
+                display_prefs
               )}
             />
 
@@ -127,17 +135,16 @@ class Graphs extends React.Component {
   }
 
   render() {
-    // var dumbycol = "";
-    // if (this.props.graphs && Object.keys(this.props.graphs).length === 2) {
-    //   dumbycol = <article className={"column col-md-3"}></article>;
-    // }
     const impactPageData = this.props.impactPageData;
     const display_prefs = impactPageData.display_prefs;
 
-    const impactPageEnabled =  impactPageData && impactPageData.is_published ? impactPageData.is_published : null;
+    const impactPageEnabled =
+      impactPageData && impactPageData.is_published
+        ? impactPageData.is_published
+        : null;
 
     return (
-      <section className="fact-counter style-2 no-padd">
+      <section className="fact-counter style-2 no-padd tour-graph-pointer">
         <div className="text-center">
           {this.props.info ? (
             <Tooltip
@@ -165,40 +172,23 @@ class Graphs extends React.Component {
             </h4>
           )}
         </div>
-
         <div className="container">
-          <div className="row no-gutter clearfix">
-            {/* {dumbycol} */}
+          <div className="row no-gutter clearfix ">
             {this.renderGraphs(this.props.graphs, display_prefs)}
-
-            {/* <article
-              className="column counter-column col-lg-3 col-md-6 col-sm-6 col-xs-12 wow fadeIn"
-              data-wow-duration="0ms"
-            >
-              <div className="item mob-our-impact-div">
-                <div className="icon"><i className="fa fa-chart-bar" /></div>
-                <Link
-                  to={this.props.links.impact}
-                  className="thm-btn btn-finishing raise"
-                >
-                  Our Impact
-                </Link>
-                <h4 className="counter-title">about our community impact</h4>
-              </div>
-            </article> */}
           </div>
         </div>
-        { impactPageEnabled ? (
-        <center style={{ marginTop: 20 }}>
-          <Link
-            to={this.props.links.impact}
-            className="homepage-all-events-btn round-me z-depth-1"
-            style={{ marginTop: 20 }}
-          >
-            Our Impact
-          </Link>
-        </center>
-        ) : null };
+        {impactPageEnabled ? (
+          <center style={{ marginTop: 20 }}>
+            <Link
+              to={this.props.links.impact}
+              className="homepage-all-events-btn round-me z-depth-1"
+              style={{ marginTop: 20 }}
+            >
+              Our Impact
+            </Link>
+          </center>
+        ) : null}
+        ;
       </section>
     );
   }

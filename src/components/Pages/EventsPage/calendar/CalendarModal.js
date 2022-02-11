@@ -6,6 +6,8 @@ import {
 } from "../../../Utils";
 import MEModal from "../../Widgets/MEModal";
 import notFound from "./../not-found.jpg";
+
+// Currently not being used as@ 11/02/22
 export default function CalendarModal({ event, close, toFullView }) {
   if (!event) return <></>;
   const { name, start_date_and_time, end_date_and_time, location } = event;
