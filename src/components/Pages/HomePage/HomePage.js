@@ -36,8 +36,16 @@ class HomePage extends React.Component {
   }
   tourCallback = (data) => {
     const { history, links } = this.props;
-    handleTourCallback(data, ({ action, index, status }) => {
-      if (action === ACTIONS.CLOSE) return this.closeTourCompletely();
+
+    handleTourCallback(data, ({ action, index, status, step }) => {
+      const userHasGoneFullCircle =
+        step?.identifier === "the-end" &&
+        action === ACTIONS.NEXT &&
+        status === STATUS.FINISHED;
+
+      if (action === ACTIONS.CLOSE || userHasGoneFullCircle)
+        return this.closeTourCompletely();
+
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
         history.push(links?.actions); // This is triggered when user presses enter on "got it" instead of clicking
     });
@@ -177,15 +185,13 @@ class HomePage extends React.Component {
       {
         target: ".new-sign-in",
         title: (
-          <strong style={{ fontSize: 16 }}>
-            Join our community in less than a minute!
-          </strong>
+          <strong style={{ fontSize: 16 }}>It only takes a minute!</strong>
         ),
         content:
-          "For taking actions that are counted, or joining a team, you can sign-in with just your email",
+          "Join our community, so that you can join teams, and your actions can be counted. Only your email is needed!",
         locale: {
           skip: <span>Skip Tour</span>,
-          last: <Link style={{ color: "white" }}>Got it!</Link>,
+          last: <span style={{ color: "white" }}>Got it!</span>,
         },
         spotlightPadding: 20,
         placement: "bottom-end",
@@ -193,6 +199,7 @@ class HomePage extends React.Component {
         spotlightClicks: false,
         disableOverlayClose: true,
         disableScrolling: false,
+        identifier: "the-end",
       },
     ];
 
