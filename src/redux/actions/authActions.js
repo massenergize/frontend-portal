@@ -1,4 +1,4 @@
-import {apiCall} from "../../api/functions";
+import { apiCall } from "../../api/functions";
 import {
   checkFirebaseAuthenticationState,
   deleteAccountFromFirebase,
@@ -9,8 +9,10 @@ import {
   signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
-import {AUTH_STATES} from "../../components/Pages/Auth/shared/utils";
-import {reduxLoadDone, reduxLoadTodo, reduxLogin} from "./userActions";
+import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
+import { getTakeTourFromURL } from "../../components/Utils";
+import { reduxSetTourState } from "./pageActions";
+import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
 
 export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
@@ -18,7 +20,7 @@ export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
 
 export const completeUserDeletion = (user_id, cb) => (dispatch) => {
-  apiCall("users.delete", {user_id})
+  apiCall("users.delete", { user_id })
     .then(() => {
       cb && cb(true);
       dispatch(signMeOut);
@@ -43,8 +45,8 @@ export const finaliseNoPasswordAuthentication = (email, cb) => (dispatch) => {
 
 export const fetchUserContent = (email) => async (dispatch) => {
   try {
-    const done = await apiCall("users.actions.completed.list", {email});
-    const todo = await apiCall("users.actions.todo.list", {email});
+    const done = await apiCall("users.actions.completed.list", { email });
+    const todo = await apiCall("users.actions.todo.list", { email });
     dispatch(reduxLoadTodo(todo?.data || []));
     dispatch(reduxLoadDone(done?.data || []));
     dispatch(setAuthStateAction(AUTH_STATES.USER_IS_AUTHENTICATED));
@@ -91,7 +93,7 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
 
 export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
-  apiCall("auth.login", {idToken: lat})
+  apiCall("auth.login", { idToken: lat })
     .then((response) => {
       const error = response.error;
       const massUser = response.data;
@@ -133,12 +135,18 @@ export const authenticateWithFacebook = (cb) => (dispatch) => {
   });
 };
 export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
+  const tour = getTakeTourFromURL();
   checkFirebaseAuthenticationState((user) => {
-    if (!user) {
+    if (!user)
       return dispatch(
         setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED)
       );
-    }
+
+    // ------------------------------------------------
+    // Never show tour when user is signed. Overwrite tour state to false.
+    // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
+    if (!tour) dispatch(reduxSetTourState(false));
+    // ------------------------------------------------
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(setFirebaseUser(user));
   });
@@ -186,27 +194,27 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
 };
 
 export const setAuthStateAction = (state) => {
-  return {type: SET_CURRENT_AUTH_STATE, payload: state};
+  return { type: SET_CURRENT_AUTH_STATE, payload: state };
 };
 
 export const setAuthNotification = (notification) => {
-  return {type: AUTH_NOTIFICATION, payload: notification};
+  return { type: AUTH_NOTIFICATION, payload: notification };
 };
 
 export const setMassEnergizeUser = (user) => {
-  return {type: SET_FIREBASE_USER, payload: user};
+  return { type: SET_FIREBASE_USER, payload: user };
 };
 export const setFirebaseUser = (user) => {
-  return {type: SET_FIREBASE_USER, payload: user};
+  return { type: SET_FIREBASE_USER, payload: user };
 };
 
 const makeError = (message) => {
-  return {good: false, message};
+  return { good: false, message };
 };
 
 export const onReCaptchaChange = (value, cb) => {
   if (!value) return cb && cb(false);
-  apiCall("auth.verifyCaptcha", {captchaString: value}).then((response) => {
+  apiCall("auth.verifyCaptcha", { captchaString: value }).then((response) => {
     if (response && response.data && response.data.success) cb && cb(true);
   });
 };

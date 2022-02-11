@@ -48,9 +48,9 @@ class EditingProfileForm extends React.Component {
         full_name: this.state.full_name,
         preferred_name: this.state.preferred_name,
       };
-      if (this.state.image) {
+      if (this.state.imageReset) {
         body.profile_picture = this.state.image;
-      }            
+      }
       this.setState({ loading: true });
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
@@ -58,7 +58,7 @@ class EditingProfileForm extends React.Component {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            this.setState({ loading: false });
+            this.setState({ loading: false, imageReset: null});
           }
         })
         .catch((error) => {

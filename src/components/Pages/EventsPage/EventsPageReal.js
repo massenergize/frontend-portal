@@ -18,7 +18,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-import CalendarModal from "./calendar/CalendarModal";
+import { withRouter } from "react-router-dom";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -39,7 +39,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
-      view_mode: savedView || VIEW_MODES.CALENDAR.key,
+      view_mode: savedView || VIEW_MODES.NORMAL.key,
       showModal: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -72,6 +72,7 @@ class EventsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
+    const { history, links } = this.props;
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.events || !this.props.tagCols) {
@@ -103,13 +104,6 @@ class EventsPage extends React.Component {
           data-number-of-events={this.props.events?.length || 0}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
-          <CalendarModal
-            event={this.state.showModal}
-            close={() => this.setState({ showModal: null })}
-            toFullView={(e) =>
-              this.props.history.push(this.props.links.events + "/" + e?.id)
-            }
-          />
           {/* renders the sidebar and events columns */}
           <div className="boxed-wrapper">
             <BreadCrumbBar links={[{ name: "Events" }]} />
@@ -189,8 +183,8 @@ class EventsPage extends React.Component {
                       >
                         <EventCalendarView
                           events={found}
-                          openModal={(event) =>
-                            this.setState({ showModal: event })
+                          onEventClick={(obj) =>
+                            history?.push(links?.events + "/" + obj?.id)
                           }
                         />
                       </div>
@@ -307,4 +301,4 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
   };
 };
-export default connect(mapStoreToProps, null)(EventsPage);
+export default connect(mapStoreToProps, null)(withRouter(EventsPage));

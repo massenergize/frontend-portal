@@ -130,17 +130,17 @@ class AppRouter extends Component {
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
-    var showTour = valueFromURL || valueFromStorage;
-    showTour = showTour === "false" ? false : true;
+    valueFromURL = valueFromURL === "true" ? true : false;
+    if (valueFromURL) return this.props.setTourState(valueFromURL);
 
-    window.localStorage.setItem(TOUR_STORAGE_KEY, showTour);
-    this.props.setTourState(showTour);
+    valueFromStorage = valueFromStorage === "false" ? false : true;
+    this.props.setTourState(valueFromStorage);
   };
 
   componentDidMount() {
     const cookies = new Cookies();
     device_checkin(cookies).then(null, (err) => console.log(err));
-    this.props.checkFirebaseAuthencation();
+    this.props.checkFirebaseAuthentication();
     this.fetch();
   }
 
@@ -584,7 +584,7 @@ const mapDispatchToProps = {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetPreferredEquivalence,
-  checkFirebaseAuthencation: subscribeToFirebaseAuthChanges,
+  checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
   setTourState: reduxSetTourState,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

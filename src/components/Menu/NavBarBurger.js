@@ -149,7 +149,7 @@ class NavBarBurger extends React.Component {
               </div>
               {this.state.menuBurgered ? ( // BURGERED STATE
                 <div
-                  className="col-lg-8 col-md-4 col-sm-6 col-6"
+                  className="col-lg-8 col-md-4 col-sm-6 col-6 tour-nav-pointer"
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <div style={{ margin: "auto 0 auto auto" }}>
@@ -165,7 +165,7 @@ class NavBarBurger extends React.Component {
                   </div>
                 </div>
               ) : (
-                <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column">
+                <div className="col-lg-8 col-md-4 col-sm-6 col-6 menu-column tour-nav-pointer">
                   <div style={styles.container}>
                     <nav
                       className="padding-0 menuzord d-flex"
@@ -310,14 +310,6 @@ class NavBarBurger extends React.Component {
       user.preferences && user.preferences.color
         ? user.preferences.color
         : "#fd7e14";
-    // const style = {
-    //   borderColor:"white",
-    //   borderTopWidth:5,
-    //   borderTopColor:"#f57b34",
-    //   borderTopWidth:3,
-    //   borderRadius: "0",
-    //   padding: "0",
-    // };
     if (user.info?.full_name) {
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
@@ -329,14 +321,13 @@ class NavBarBurger extends React.Component {
               <img
                 src={user.info.profile_picture.url}
                 alt="profile media"
-                className="me-nav-profile-pic z-depth-1`"
+                className="me-nav-profile-pic z-depth-1"
                 style={{
                   "--user-pref-color": btnColor,
                 }}
               ></img>
             ) : (
               <img
-                // src={createImagefromInitials(btnColor, user.info.full_name, 50)}
                 src={createImagefromInitials(btnColor, user.info.full_name, 35)}
                 alt="profile media"
                 className="me-nav-profile-pic z-depth-1`"

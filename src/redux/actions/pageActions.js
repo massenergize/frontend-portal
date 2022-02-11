@@ -1,6 +1,7 @@
 import {
   fetchAndParseStorageContent,
   PREFERRED_EQ,
+  TOUR_STORAGE_KEY,
 } from "../../components/Utils";
 import {
   LOAD_HOME_PAGE,
@@ -45,9 +46,15 @@ import {
   LOAD_EQUIVALENCES,
   LOAD_COMMUNITY_INFORMATION,
   SET_TOUR_STATE,
+  SET_TOUR_INFO,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
+export const FIRST_SET = "first-set";
+export const SECOND_SET = "second-set";
+export const reduxSetTourInformation = (data = { stage: FIRST_SET }) => {
+  return { type: SET_TOUR_INFO, payload: data };
+};
 export const reduxLoadEquivalences = (data) => {
   return (dispatch) => {
     data = data || [];
@@ -60,12 +67,15 @@ export const reduxLoadEquivalences = (data) => {
   };
 };
 
-export const reduxSetTourState = (state) => (dispatch) => {
-  return dispatch({
-    type: SET_TOUR_STATE,
-    payload: state,
-  });
-};
+export const reduxSetTourState =
+  (state, persist = false) =>
+  (dispatch) => {
+    if (persist) window.localStorage.setItem(TOUR_STORAGE_KEY, state);
+    return dispatch({
+      type: SET_TOUR_STATE,
+      payload: state,
+    });
+  };
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
   return dispatch({
     type: LOAD_COMMUNITY_INFORMATION,
