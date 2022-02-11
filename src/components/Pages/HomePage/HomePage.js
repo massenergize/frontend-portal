@@ -44,7 +44,6 @@ class HomePage extends React.Component {
   };
 
   render() {
-    console.log("Here it is for you informaiton", this.props.tourInfo.stage);
     const { showTour, tourInfo } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};

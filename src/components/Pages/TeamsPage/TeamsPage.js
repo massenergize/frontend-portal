@@ -14,8 +14,6 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
-import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -124,63 +122,8 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
-    const steps = [
-      {
-        target: "body",
-        title: (
-          <strong style={{ fontSize: 16 }}>
-            Build community by working in teams
-          </strong>
-        ),
-        content: (
-          <>
-            Here’s a list of teams in your community. Join one or more by
-            clicking on them, or you can start a new team.
-          </>
-        ),
-        locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.signup}>
-              Got it!
-            </Link>
-          ),
-        },
-        placement: "center",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-        disableOverlayClose: true,
-      },
-    ];
-
     return (
       <>
-        {this.props.showTour && (
-          <ProductTour
-            steps={steps}
-            continuous
-            showSkipButton
-            disableScrolling={true}
-            callback={handleTourCallback}
-            styles={{
-              options: {
-                // modal arrow and background color
-                arrowColor: "#eee",
-                backgroundColor: "#eee",
-                // page overlay color
-                // overlayColor: "transparent",
-                //button color
-                primaryColor: "#8CC43C",
-                //text color
-                textColor: "black",
-                //width of modal
-                width: 400,
-                //zindex of modal
-                zIndex: 1000,
-              },
-            }}
-          />
-        )}
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
           <TeamInfoModal
@@ -498,7 +441,6 @@ const mapStoreToProps = (store) => {
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
     pref_eq: store.user.pref_equivalence,
-    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {

@@ -14,9 +14,6 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
-import ProductTour, { ACTIONS, STATUS } from "react-joyride";
-import { handleTourCallback } from "../../Utils";
-import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
@@ -184,17 +181,6 @@ class ImpactPage extends React.Component {
     );
   }
 
-  tourCallback = (data) => {
-    const { history, tourNextLink } = this.props;
-    handleTourCallback(data, ({ action, index, status }) => {
-      if (
-        ACTIONS.UPDATE === action &&
-        (index === 2 || index === 3) &&
-        STATUS.FINISHED === status
-      )
-        history.push(tourNextLink);
-    });
-  };
   render() {
     if (!this.props.comData) {
       return (
@@ -300,120 +286,8 @@ class ImpactPage extends React.Component {
       ),
     ];
 
-    const showCarbonDisplay =
-      display_prefs.display_carbon && goal.target_carbon_footprint_reduction;
-
-    const steps = [
-      {
-        target: "#two-graphs",
-        content:
-          "When you take an action, your household and action are added to the community total!",
-        locale: {
-          skip: <span>Skip Tour</span>,
-          next:
-            goal && goal.target_carbon_footprint_reduction > 0 ? (
-              <span>Got it!</span>
-            ) : (
-              <Link style={{ color: "white" }} to={this.props.tourNextLink}>
-                Got it!
-              </Link>
-            ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-        disableScrolling: false,
-      },
-      {
-        target: "#tour-on-mobile",
-        content:
-          "When you take an action, your household and action are added to the community total!",
-        locale: {
-          back: <span style={{ color: "transparent" }}>Skip Tour</span>,
-          skip: <span>Skip Tour</span>,
-          next:
-            goal && goal.target_carbon_footprint_reduction > 0 ? (
-              <span>Got it!</span>
-            ) : (
-              <Link style={{ color: "white" }} to={this.props.tourNextLink}>
-                Got it!
-              </Link>
-            ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-      },
-      {
-        target: `#carbon-card${showCarbonDisplay ? "" : "-invalidate-id"}`,
-        content: (
-          <>
-            Your actions help your community reduce carbon emissions, which can
-            be shown as trees planted, cars on the road, or other units.
-          </>
-        ),
-        locale: {
-          skip: <span>Skip Tour</span>,
-          next: (
-            <Link style={{ color: "white" }} to={this.props.links.teams}>
-              Got it!
-            </Link>
-          ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-      },
-      {
-        target: "#tour-on-mobile",
-        content: (
-          <>
-            Your actions help your community reduce carbon emissions, which can
-            be shown as trees planted, cars on the road, or other units.
-          </>
-        ),
-        locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.teams}>
-              Got it!
-            </Link>
-          ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-        styles: {
-          options: {
-            backgroundColor: "white",
-          },
-        },
-      },
-    ];
     return (
       <>
-        {this.props.showTour && (
-          <ProductTour
-            steps={steps}
-            continuous
-            showSkipButton
-            spotlightPadding={10}
-            disableScrolling={true}
-            callback={this.tourCallback}
-            disableOverlayClose
-            styles={{
-              options: {
-                primaryColor: "#8CC43C",
-                textColor: "black",
-                width: 400,
-                zIndex: 1000,
-              },
-            }}
-          />
-        )}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -543,10 +417,6 @@ const mapStoreToProps = (store) => {
     impactPage: store.page.impactPage,
     pref_eq: store.user.pref_equivalence,
     links: store.links,
-    showTour: store.page.showTour,
-    tourNextLink: !store.page.teams?.length
-      ? store.links?.signup
-      : store.links?.teams,
   };
 };
 
