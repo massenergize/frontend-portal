@@ -43,6 +43,7 @@ import {
   LOAD_COMMUNITY_INFORMATION,
   SET_IS_CUSTOM_SITE,
   SET_TOUR_STATE,
+  SET_TOUR_INFO,
 } from "../actions/types";
 
 import {
@@ -50,8 +51,10 @@ import {
   inSubTeam,
   inThisTeam,
 } from "../../components/Pages/TeamsPage/utils";
+import { FIRST_SET } from "../actions/pageActions";
 
 const initialState = {
+  tourInfo: { stage: FIRST_SET },
   //page data for each page
   homePage: null,
   actionsPage: null,
@@ -99,6 +102,11 @@ export default function (state = initialState, action) {
   switch (action.type) {
     /**************************/
 
+    case SET_TOUR_INFO:
+      return {
+        ...state,
+        tourInfo: action.payload,
+      };
     case SET_TOUR_STATE:
       return {
         ...state,

@@ -14,7 +14,11 @@ import {
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { Link, withRouter } from "react-router-dom";
-import { reduxSetTourState } from "../../../redux/actions/pageActions";
+import {
+  FIRST_SET,
+  reduxSetTourState,
+  SECOND_SET,
+} from "../../../redux/actions/pageActions";
 
 /*'
  * The Home Page of the MassEnergize
@@ -40,7 +44,8 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const { showTour } = this.props;
+    console.log("Here it is for you informaiton", this.props.tourInfo.stage);
+    const { showTour, tourInfo } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -106,7 +111,7 @@ class HomePage extends React.Component {
       .filter((e) => e.link === "/actions")
       .map((e) => e.title);
 
-    const steps = [
+    const firstSet = [
       {
         target: "body",
         title: (
@@ -154,15 +159,51 @@ class HomePage extends React.Component {
         disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
-        spotlight: { padding: 20, background: "red" },
       },
     ];
+    const secondSet = [
+      {
+        target: ".tour-graph-pointer",
+        content:
+          "When you take an action, your household and action are added to the community total!",
+        locale: {
+          next: <span>Got it!</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "auto",
+        disableBeacon: true,
+        disableOverlayClose: true,
+        disableScrolling: false,
+      },
+      {
+        target: ".new-sign-in",
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            Join our community in less than a minute!
+          </strong>
+        ),
+        content:
+          "For taking actions that are counted, or joining a team, you can sign-in with just your email",
+        locale: {
+          skip: <span>Skip Tour</span>,
+          last: <Link style={{ color: "white" }}>Got it!</Link>,
+        },
+        spotlightPadding: 20,
+        placement: "bottom-end",
+        disableBeacon: true,
+        spotlightClicks: false,
+        disableOverlayClose: true,
+        disableScrolling: false,
+      },
+    ];
+
+    var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
 
     return (
       <>
         {showTour && (
           <ProductTour
-            steps={steps}
+            steps={steps[tourInfo.stage]}
             continuous
             showSkipButton
             callback={this.tourCallback}
@@ -259,6 +300,7 @@ const mapStoreToProps = (store) => {
     is_sandbox: store.page.__is_sandbox,
     __is_custom_site: store.page.__is_custom_site,
     showTour: store.page.showTour,
+    tourInfo: store.page.tourInfo,
   };
 };
 

@@ -19,6 +19,8 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetTourInformation,
+  SECOND_SET,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -399,12 +401,15 @@ class OneActionPage extends React.Component {
     return {};
   }
 
-  // @TODO make this fxn a util fxn then use everywhere later!
+  continueTour() {
+    const { history, links, reduxSetTourInformation } = this.props;
+    reduxSetTourInformation({ stage: SECOND_SET });
+    history.push(links?.home || "");
+  }
   tourCallback = (data) => {
-    const { history, links } = this.props;
     handleTourCallback(data, ({ action, index, status }) => {
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
-        history.push(links?.impact); // This is triggered when user presses enter on "got it" instead of clicking
+        return this.continueTour(); // This is triggered when user presses enter on "got it" instead of clicking
     });
   };
 
@@ -459,11 +464,7 @@ class OneActionPage extends React.Component {
           </>
         ),
         locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.impact}>
-              Got it!
-            </Link>
-          ),
+          last: <span style={{ color: "white" }}>Got it!</span>,
         },
         placement: "top",
         spotlightClicks: false,
@@ -1035,6 +1036,7 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
+  reduxSetTourInformation,
 };
 
 export default connect(

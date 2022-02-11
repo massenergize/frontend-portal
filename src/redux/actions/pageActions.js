@@ -46,9 +46,15 @@ import {
   LOAD_EQUIVALENCES,
   LOAD_COMMUNITY_INFORMATION,
   SET_TOUR_STATE,
+  SET_TOUR_INFO,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
+export const FIRST_SET = "first-set";
+export const SECOND_SET = "second-set";
+export const reduxSetTourInformation = (data = { stage: FIRST_SET }) => {
+  return { type: SET_TOUR_INFO, payload: data };
+};
 export const reduxLoadEquivalences = (data) => {
   return (dispatch) => {
     data = data || [];
