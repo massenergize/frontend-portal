@@ -180,7 +180,7 @@ class HomePage extends React.Component {
         placement: "auto",
         disableBeacon: true,
         disableOverlayClose: true,
-        disableScrolling: false,
+        // disableScrolling: false,
       },
       {
         target: ".new-sign-in",
@@ -214,7 +214,8 @@ class HomePage extends React.Component {
             showSkipButton
             callback={this.tourCallback}
             spotlightPadding={-70}
-            disableScrolling={true}
+            disableScrolling={false}
+            scrollToFirstStep={true}
             styles={{
               options: {
                 arrowColor: "#eee",
