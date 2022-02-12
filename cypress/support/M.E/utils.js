@@ -131,7 +131,7 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
 };
 
 export const typeInsideFilterbox = (text) => {
-  cy.get("#test-filter-box-id").type(text, { delay: 150 });
+  cy.get("#test-filter-box-id").type(text, { delay: 150, force: true });
   cy.get("#test-filter-box-id").scrollIntoView({ offset: { top: -550 } });
 };
 

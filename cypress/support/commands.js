@@ -2,7 +2,10 @@ import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
 import fields from "../integration/M.E/json/fields";
 const removeCookieBanner = () => {
-  cy.get("#test-cookie-banner-okay").click();
+  // This is just a function to always close the banner, not for testing the cookie banner
+  cy.get("#test-cookie-banner-okay").then(($banner) => {
+    if ($banner) cy.wrap($banner).click();
+  });
 };
 const clearAuthentication = () => {
   Auth.signOut();
