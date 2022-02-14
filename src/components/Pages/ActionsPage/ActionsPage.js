@@ -194,7 +194,7 @@ class ActionsPage extends React.Component {
         ),
         content:
           "You can filter these actions by category, impact or cost. Click on the card to continue.",
-        placement: "top",
+        placement: "right",
         spotlightPadding: 10,
         spotlightClicks: true,
         disableBeacon: true,
