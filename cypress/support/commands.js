@@ -1,6 +1,6 @@
 import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
-import fields from "../integration/M.E/json/fields";
+import fields from "../fixtures/json/fields";
 const removeCookieBanner = () => {
   // This is just a function to always close the banner, not for testing the cookie banner
   cy.get("#test-cookie-banner-okay").then(($banner) => {
