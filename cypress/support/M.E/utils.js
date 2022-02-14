@@ -87,7 +87,6 @@ export const showThatAllEventCardsDisplayProperly = () => {
 
 export const oneTeamPageComponentsRenderProperly = () => {
   var hasLotsOfText;
-  before(() => cy.cleanUp());
   it("Has found team name", () => cy.get(".test-team-name").first());
   it("Has found team tagline", () => cy.get(".test-team-tagline").first());
   it("Has found description", () => {
@@ -145,7 +144,6 @@ export const testimonialsShowProperly = () => {
 };
 
 export const showThatTestimonialPageComponentsLoadWell = () => {
-  before(() => cy.cleanUp());
   it("Shows title properly", () =>
     cy
       .get(".test-story-title")

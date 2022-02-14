@@ -1,3 +1,4 @@
+import { typeInsideFilterbox } from "../../support/M.E/utils";
 import fields from "./../../fixtures/json/fields"
 
 
@@ -12,15 +13,16 @@ describe("Test actions filterbox functionality", function () {
   before(function () {
     cy.visit(fields.urls.actions.withParams);
     cy.cleanUp();
-  });
+  }); 
 
   it("Filterbox types and filters actions as expected", function () {
-    cy.get("#test-filter-box-id").as("filterbox");
+    // cy.get("#test-filter-box-id").as("filterbox");
     cy.get(".test-action-card-item")
       .first()
       .find(".test-action-title")
       .then(function ($title) {
-        cy.get("@filterbox").type($title.text(), { delay: 100 });
+        // cy.get("@filterbox").type($title.text(), { delay: 100 });
+        typeInsideFilterbox($title.text())
         cy.get(".test-action-card-item")
           .find(".test-action-title")
           .should("have.text", $title.text());
