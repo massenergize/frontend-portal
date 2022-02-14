@@ -1,5 +1,5 @@
 
-import "./../reusable/go-to-one-team-page-via-link.spec";
+import "../reusable/go-to-one-team-page-via-link.spec";
 
 // Test to show that join in button does not show, but a prompt it shown when user is not signed in (one team page)
 
