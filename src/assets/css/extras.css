@@ -610,6 +610,7 @@
 
 #act-item-Container {
   display: flex;
+  align-items: center;
 }
 
 #act-item-Container_SingleHouse {

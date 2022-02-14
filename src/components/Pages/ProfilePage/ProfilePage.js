@@ -374,6 +374,7 @@ class ProfilePage extends React.Component {
                         user={this.props.user}
                         addHousehold={this.addHousehold}
                         closeForm={() => this.setState({ addingHH: false })}
+                        editHousehold={this.editHousehold}
                       />
                       <MEButton
                         variation="accent"
@@ -649,6 +650,7 @@ class ProfilePage extends React.Component {
     });
   }
   renderHouseholds(households) {
+    const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
       if (this.state.editingHH === house.id) {
@@ -702,14 +704,16 @@ class ProfilePage extends React.Component {
                   iconSize="large"
                   style={{ padding: "4px 8px", marginRight: 8 }}
                 />
-                <MEButton
-                  onClick={() => this.deleteHousehold(house)}
-                  className="me-delete-btn"
-                  icon="fa fa-trash"
-                  iconStyle={{ margin: 0 }}
-                  iconSize="large"
-                  style={{ padding: "4px 10px" }}
-                />
+                {isNotLastHouse && (
+                  <MEButton
+                    onClick={() => this.deleteHousehold(house)}
+                    className="me-delete-btn"
+                    icon="fa fa-trash"
+                    iconStyle={{ margin: 0 }}
+                    iconSize="large"
+                    style={{ padding: "4px 10px" }}
+                  />
+                )}
               </div>
             </MECard>
           </div>
