@@ -353,7 +353,6 @@ class OneTestimonialPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     stories: store.page.testimonials,
     links: store.links,

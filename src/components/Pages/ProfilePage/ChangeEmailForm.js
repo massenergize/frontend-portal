@@ -7,6 +7,10 @@ import { apiCall } from "../../../api/functions";
 import METextField from "../Widgets/METextField";
 import MEButton from "../Widgets/MEButton";
 import MECard from "../Widgets/MECard";
+import {
+  Auth,
+  FirebaseEmailAuthProvider,
+} from "../Auth/shared/firebase-helpers";
 
 class ChangeEmailFormBase extends React.Component {
   constructor(props) {
@@ -93,19 +97,17 @@ class ChangeEmailFormBase extends React.Component {
       return;
     }
     this.setState({ loading: true });
-    var cred = this.props.firebase.auth.EmailAuthProvider.credential(
+    var cred = FirebaseEmailAuthProvider.credential(
       this.props.user.email,
       this.state.password
     );
-    this.props.firebase
-      .auth()
-      .currentUser.reauthenticateWithCredential(cred)
+    Auth.currentUser
+      .reauthenticateWithCredential(cred)
       .then(() => {
-        this.props.firebase
-          .auth()
-          .currentUser.updateEmail(this.state.email)
+        Auth.currentUser
+          .updateEmail(this.state.email)
           .then(() => {
-            this.props.firebase.auth().currentUser.sendEmailVerification();
+            Auth.currentUser.sendEmailVerification();
             apiCall("users.update", {
               user_id: this.props.user.id,
               email: this.state.email,
@@ -121,6 +123,34 @@ class ChangeEmailFormBase extends React.Component {
               loading: false,
             });
           });
+        // var cred = this.props.firebase.auth.EmailAuthProvider.credential(
+        //   this.props.user.email,
+        //   this.state.password
+        // );
+        // this.props.firebase
+        //   .auth()
+        //   .currentUser.reauthenticateWithCredential(cred)
+        //   .then(() => {
+        //     this.props.firebase
+        //       .auth()
+        //       .currentUser.updateEmail(this.state.email)
+        //       .then(() => {
+        //         this.props.firebase.auth().currentUser.sendEmailVerification();
+        //         apiCall("users.update", {
+        //           user_id: this.props.user.id,
+        //           email: this.state.email,
+        //         });
+
+        //         this.props.closeForm(
+        //           "Great start! Your email has been changed. Please check your inbox to verify your new email"
+        //         );
+        //       })
+        //       .catch((err) => {
+        //         this.setState({
+        //           error: err.message ? err.message : err,
+        //           loading: false,
+        //         });
+        //       });
       })
       .catch((err) => {
         this.setState({
@@ -139,7 +169,6 @@ const ChangeEmailForm = compose(withFirebase)(ChangeEmailFormBase);
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    auth: store.firebase.auth,
-  };
+   };
 };
 export default connect(mapStoreToProps, { reduxLogin })(ChangeEmailForm);

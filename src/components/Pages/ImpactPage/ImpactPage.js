@@ -14,8 +14,8 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
+import { isMobile } from "react-device-detect";
 
-// TODO: Render sidebar graphs
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
   shortenWords(word) {
@@ -52,122 +52,135 @@ class ImpactPage extends React.Component {
     );
   }
   renderGraphs({
+    display_prefs,
     goal,
     data,
     community,
     percents,
     carbon_units,
     values,
-    maintainAspectRatio = false,
   }) {
     return (
       <>
         <h5 className="text-center" style={{ color: "#888", margin: 19 }}>
           {community ? community.name : null}
         </h5>
-        <div
-          className="card  mb-4 z-depth-float me-anime-open-in"
-          style={{
-            borderRadius: 10,
-            background: "transparent",
-            borderColor: "#ecf3ee",
-          }}
-        >
-          <div className="card-body imp-chart-h">
-            <center>
-              <h4 className="impact-graph-heading">Households Taking Action</h4>
-            </center>
-            {this.makeDoughnut(data[0])}
-          </div>
-          <div className="imp-desc-box">
-            <center>
-              <p className="impact-graph-title">
-                <span
-                  style={{
-                    fontSize: "1rem",
-                    color: "black",
-                    marginRight: 7,
-                  }}
-                >
-                  <b> {values[0].toLocaleString()}</b>
-                </span>
-                Households &nbsp; ({percents[0]}% of goal)
-              </p>
-            </center>
-          </div>
-        </div>
-        <div
-          className="card z-depth-float mb-4 me-anime-open-in"
-          style={{
-            borderRadius: 10,
-            background: "transparent",
-            borderColor: "#ecf3ee",
-          }}
-        >
-          <div className="card-body imp-chart-h">
-            <center>
-              <h4 className="impact-graph-heading">
-                Individual Actions Completed
-              </h4>
-            </center>
-            {this.makeDoughnut(data[1])}
-          </div>
-          <div className="imp-desc-box">
-            <center>
-              <p className="impact-graph-title">
-                <span
-                  style={{
-                    fontSize: "1rem",
-                    color: "black",
-                    marginRight: 7,
-                  }}
-                >
-                  <b> {values[1].toLocaleString()}</b>
-                </span>
-                Actions &nbsp; ({percents[1]}% of goal)
-              </p>
-            </center>
-          </div>
-        </div>
-        {goal && goal.target_carbon_footprint_reduction > 0 ? (
-          <div
-            className="card z-depth-float mb-4 me-anime-open-in"
-            style={{
-              borderRadius: 10,
-              background: "transparent",
-              borderColor: "#ecf3ee",
-            }}
-          >
-            <div className="card-body imp-chart-h">
-              <center>
-                <h4 className="impact-graph-heading">
-                  Carbon Reduction Impact
-                </h4>
-              </center>
-              {this.makeDoughnut(data[2])}
+        <div id="two-graphs">
+          {display_prefs.display_households ? (
+            <div
+              className="card  mb-4 z-depth-float me-anime-open-in"
+              style={{
+                borderRadius: 10,
+                background: "transparent",
+                borderColor: "#ecf3ee",
+              }}
+            >
+              <div className="card-body imp-chart-h">
+                <center>
+                  <h4 className="impact-graph-heading">
+                    Households Taking Action
+                  </h4>
+                </center>
+                {this.makeDoughnut(data[0])}
+              </div>
+              <div className="imp-desc-box">
+                <center>
+                  <p className="impact-graph-title">
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        color: "black",
+                        marginRight: 7,
+                      }}
+                    >
+                      <b> {values[0].toLocaleString()}</b>
+                    </span>
+                    Households &nbsp; ({percents[0]}% of goal)
+                  </p>
+                </center>
+              </div>
             </div>
-            <div className="imp-desc-box">
-              <center>
-                <p className="impact-graph-title">
-                  <span
-                    style={{
-                      fontSize: "1rem",
-                      color: "black",
-                      marginRight: 7,
-                    }}
-                  >
-                    <b> {values[2].toLocaleString()}</b>
-                  </span>
-                  {carbon_units}
-                  &nbsp; ({percents[2]}% of goal)
-                </p>
-              </center>
+          ) : null}
+          {display_prefs.display_actions ? (
+            <div
+              className="card z-depth-float mb-4 me-anime-open-in"
+              style={{
+                borderRadius: 10,
+                background: "transparent",
+                borderColor: "#ecf3ee",
+              }}
+            >
+              <div className="card-body imp-chart-h">
+                <center>
+                  <h4 className="impact-graph-heading">
+                    Individual Actions Completed
+                  </h4>
+                </center>
+                {this.makeDoughnut(data[1])}
+              </div>
+              <div className="imp-desc-box">
+                <center>
+                  <p className="impact-graph-title">
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        color: "black",
+                        marginRight: 7,
+                      }}
+                    >
+                      <b> {values[1].toLocaleString()}</b>
+                    </span>
+                    Actions &nbsp; ({percents[1]}% of goal)
+                  </p>
+                </center>
+              </div>
             </div>
+          ) : null}
+        </div>
+        {display_prefs.display_carbon ? (
+          <div id="carbon-card">
+            {goal && goal.target_carbon_footprint_reduction > 0 ? (
+              <div
+                className="card z-depth-float mb-4 me-anime-open-in"
+                style={{
+                  borderRadius: 10,
+                  background: "transparent",
+                  borderColor: "#ecf3ee",
+                }}
+              >
+                <div className="card-body imp-chart-h">
+                  <center>
+                    <h4 className="impact-graph-heading">
+                      Carbon Reduction Impact
+                    </h4>
+                  </center>
+                  {this.makeDoughnut(data[2])}
+                </div>
+                <div className="imp-desc-box">
+                  <center>
+                    <p className="impact-graph-title">
+                      <span
+                        style={{
+                          fontSize: "1rem",
+                          color: "black",
+                          marginRight: 7,
+                        }}
+                      >
+                        <b> {values[2].toLocaleString()}</b>
+                      </span>
+                      {carbon_units}
+                      &nbsp; ({percents[2]}% of goal)
+                    </p>
+                  </center>
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </>
     );
   }
+
   render() {
     if (!this.props.comData) {
       return (
@@ -180,8 +193,8 @@ class ImpactPage extends React.Component {
 
     const pageData = this.props.impactPage;
     if (pageData == null) return <LoadingCircle />;
-    const title =
-      pageData && pageData.title ? pageData.title : "Our Community's Impact";
+    const display_prefs = pageData.display_prefs;
+    const title = pageData.title ? pageData.title : "Our Community's Impact";
     //const sub_title = pageData && pageData.sub_title ? pageData.sub_title : null
     const description = pageData.description ? pageData.description : null;
 
@@ -255,14 +268,14 @@ class ImpactPage extends React.Component {
     const carbon_units = pref_eq.name;
 
     const data = [
-      createCircleGraphData(goal, "households"),
-      createCircleGraphData(goal, "actions-completed"),
-      createCircleGraphData(goal, "carbon-reduction", pref_eq),
+      createCircleGraphData(goal, "households", null, display_prefs),
+      createCircleGraphData(goal, "actions-completed", null, display_prefs),
+      createCircleGraphData(goal, "carbon-reduction", pref_eq, display_prefs),
     ];
     const values = [
-      getCircleGraphData(goal, "households"),
-      getCircleGraphData(goal, "actions-completed"),
-      getCircleGraphData(goal, "carbon-reduction", pref_eq),
+      getCircleGraphData(goal, "households", null, display_prefs),
+      getCircleGraphData(goal, "actions-completed", null, display_prefs),
+      getCircleGraphData(goal, "carbon-reduction", pref_eq, display_prefs),
     ];
     const percents = [
       parseInt((100 * values[0]) / goal.target_number_of_households),
@@ -284,6 +297,7 @@ class ImpactPage extends React.Component {
             <div className="row">
               <div className="col-12 col-lg-4 mob-impact-pad-fix phone-vanish">
                 {this.renderGraphs({
+                  display_prefs,
                   goal,
                   data,
                   community,
@@ -306,7 +320,7 @@ class ImpactPage extends React.Component {
                   ) : null}
                 </center>
                 <div style={{ padding: 10 }}>
-                  <ExplanationDialog />
+                  <ExplanationDialog display_prefs={display_prefs} />
                 </div>
                 <div
                   className="card rounded-0 mb-4 z-depth-float phone-vanish"
@@ -331,52 +345,60 @@ class ImpactPage extends React.Component {
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "46vh",
-                    padding: 10,
-                    marginBottom: 25,
-                  }}
-                  className=" pc-vanish"
-                >
+                {isMobile && (
                   <div
-                    className="card-header text-center bg-white "
-                    style={{ marginTop: 5 }}
-                  >
-                    <h4 className="cool-font phone-medium-title">
-                      Number Of Actions Completed
-                    </h4>
-                  </div>
-                  {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
-                  <HorizontalBar
-                    options={{
-                      plugins: {
-                        datalabels: false,
-                        color: "#fff",
-                      },
-                      maintainAspectRatio: false,
-                      scales: {
-                        xAxes: [{ stacked: false }],
-                        yAxes: [{ stacked: false }],
-                      },
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "46vh",
+                      padding: 10,
+                      marginBottom: 25,
                     }}
-                    data={phoneImpact}
-                  />
-                </div>
+                    className=" pc-vanish"
+                  >
+                    <div
+                      className="card-header text-center bg-white "
+                      style={{ marginTop: 5 }}
+                    >
+                      <h4 className="cool-font phone-medium-title">
+                        Number Of Actions Completed
+                      </h4>
+                    </div>
+                    {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
+                    <HorizontalBar
+                      options={{
+                        plugins: {
+                          datalabels: false,
+                          color: "#fff",
+                        },
+                        maintainAspectRatio: false,
+                        scales: {
+                          xAxes: [{ stacked: false }],
+                          yAxes: [{ stacked: false }],
+                        },
+                      }}
+                      data={phoneImpact}
+                    />
+                  </div>
+                )}
               </div>
               {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
-              <div className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish">
-                {this.renderGraphs({
-                  goal,
-                  data,
-                  community,
-                  values,
-                  percents,
-                  carbon_units,
-                })}
-              </div>
+              {isMobile && (
+                <div
+                  id="tour-on-mobile"
+                  className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
+                >
+                  {this.renderGraphs({
+                    display_prefs,
+                    goal,
+                    data,
+                    community,
+                    values,
+                    percents,
+                    carbon_units,
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -402,7 +424,7 @@ export default connect(mapStoreToProps, { reduxLoadCommunitiesStats })(
   ImpactPage
 );
 
-const ExplanationDialog = () => {
+const ExplanationDialog = ({ display_prefs }) => {
   const [showDialog, setShowDialog] = useState(false);
   return (
     <>
@@ -437,41 +459,84 @@ const ExplanationDialog = () => {
             />
           </div>
           <p className="exp-title">
-            Data shown in the graph comes from two sources:
+            Data shown in the Actions graph comes from two sources:
           </p>
-          <ol>
+          <ol type="a">
+            <li>Actions reported by community members</li>
             <li>
-              Data collected on the platform from community members who have
-              taken actions
-            </li>
-            <li>
-              Data entered by Community Admins for reported actions from State
-              or Partner databases, or from previous community programs.
+              Actions from State or Parner databases or previous community
+              programs.
             </li>
           </ol>
 
           <p className="exp-title">
-            On the Community impact totals (donut graphs):
+            Data shown in the "donut" graphs is calculated using guidance from
+            the Community Admin:
           </p>
           <ol>
-            <li>
-              The Actions Completed graph shows the sum of self reported and
-              state/partner data. In some cases, there may be double counting
-            </li>
-            <li>
-              The Households Engaged is an estimate. Communities sum up self
-              reported households, plus the number of actions completed in the
-              category with the largest number of state/partner values, and
-              added community engagement efforts (plus community specific
-              campaign efforts)
-            </li>
-            <li>
-              The Carbon Reduction graph (if shown) shows the estimated reduction
-              for actions taken on the platform, which currently use
-              Massachusetts averages for those actions. It may also include
-              estimated carbon reduction from reported State/Partner data or
-              previous programs, if that is provided by the Community Admin.
-            </li>
+            {display_prefs.display_actions ? (
+              <div>
+                <li>
+                  The Actions graph is an estimate of the number of actions
+                  taken by community members. It includes:
+                  <ol type="a">
+                    {display_prefs.platform_actions ? (
+                      <li>Actions reported by community members</li>
+                    ) : null}
+                    {display_prefs.state_actions ? (
+                      <li>
+                        Actions from State or Partner databases or previous
+                        community members
+                      </li>
+                    ) : null}
+                  </ol>
+                </li>
+                <br />
+              </div>
+            ) : null}
+            {display_prefs.display_households ? (
+              <div>
+                <li>
+                  The Households graph is an estimate of the number of
+                  households that have taken action. It includes:
+                  <ol type="a">
+                    {display_prefs.platform_households ? (
+                      <li>Households reporting actions on this website</li>
+                    ) : null}
+                    {display_prefs.state_households ? (
+                      <li>
+                        Households that installed solar arrays from the State
+                        database.
+                      </li>
+                    ) : null}
+                    {display_prefs.manual_households ? (
+                      <li>
+                        Households that participated in previous community
+                        programs.
+                      </li>
+                    ) : null}
+                  </ol>
+                </li>
+                <br />
+              </div>
+            ) : null}
+            {display_prefs.display_carbon ? (
+              <div>
+                <li>
+                  The Carbon Reduction graph is an estimate of the annual CO2
+                  emissions reduced by the actions taken, using best available
+                  data. It includes CO2 reductions from:
+                  <ol type="a">
+                    {display_prefs.platform_carbon ? (
+                      <li>Actions reported by community members.</li>
+                    ) : null}
+                    {display_prefs.manual_households ? (
+                      <li>Actions taken during previous community programs.</li>
+                    ) : null}
+                  </ol>
+                </li>
+              </div>
+            ) : null}
           </ol>
         </div>
       )}

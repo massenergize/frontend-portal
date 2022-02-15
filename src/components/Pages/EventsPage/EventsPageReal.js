@@ -16,11 +16,21 @@ import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
+import EventCalendarView from "./calendar/EventCalendarView";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
+import { withRouter } from "react-router-dom";
+
+const EVENT_VIEW_MODE = "event-view-mode";
+const VIEW_MODES = {
+  NORMAL: { name: "Upcoming", icon: "fa-bars", key: "normal" },
+  CALENDAR: { name: "Calendar View", icon: "fa-calendar", key: "calendar" },
+};
 /**
  * Renders the event page
  */
 class EventsPage extends React.Component {
   constructor(props) {
+    const savedView = localStorage.getItem(EVENT_VIEW_MODE);
     super(props);
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
@@ -29,6 +39,8 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
+      view_mode: savedView || VIEW_MODES.NORMAL.key,
+      showModal: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -60,6 +72,7 @@ class EventsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
+    const { history, links } = this.props;
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.events || !this.props.tagCols) {
@@ -128,13 +141,54 @@ class EventsPage extends React.Component {
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                     />
-
-                    <div
-                      className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
-                      style={{ paddingTop: 0, marginTop: 9, paddingRight: 40 }}
-                    >
-                      <div className="row">{this.renderEvents(found)}</div>
+                    <div className="event-view-togglers">
+                      {Object.keys(VIEW_MODES).map((key, index) => {
+                        const mode = VIEW_MODES[key];
+                        const isActive = this.state.view_mode === mode?.key;
+                        return (
+                          <div
+                            onClick={() => {
+                              this.setState({ view_mode: mode?.key });
+                              localStorage.setItem(EVENT_VIEW_MODE, mode?.key);
+                            }}
+                            className={`${
+                              isActive &&
+                              "event-view-toggler-active z-depth-float"
+                            }`}
+                            key={index}
+                          >
+                            <i className={`fa ${mode?.icon}`}></i> {mode?.name}
+                          </div>
+                        );
+                      })}
                     </div>
+
+                    {this.state.view_mode === VIEW_MODES.NORMAL?.key && (
+                      <div
+                        className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
+                        style={{
+                          paddingTop: 0,
+                          marginTop: 9,
+                          paddingRight: 40,
+                        }}
+                      >
+                        <div className="row">{this.renderEvents(found)}</div>
+                      </div>
+                    )}
+
+                    {this.state.view_mode === VIEW_MODES.CALENDAR.key && (
+                      <div
+                        style={{ marginTop: 40 }}
+                        className={MEAnimation.getScaleInAnimation()}
+                      >
+                        <EventCalendarView
+                          events={found}
+                          onEventClick={(obj) =>
+                            history?.push(links?.events + "/" + obj?.id)
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -238,7 +292,6 @@ const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
     collection: store.page.collection,
-    auth: store.firebase.auth,
     user: store.user.info,
     pageData: store.page.eventsPage,
     eventExceptions: store.page.eventExceptions,
@@ -248,4 +301,4 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
   };
 };
-export default connect(mapStoreToProps, null)(EventsPage);
+export default connect(mapStoreToProps, null)(withRouter(EventsPage));

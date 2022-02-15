@@ -33,8 +33,9 @@ export const LEAVE_TEAM = 'LEAVE_TEAM'
  * these actions load the database data for the pages
  * find the pagedata at store.pages.[pagename]
  */
+export const SET_TOUR_INFO = "SET_TOUR_INFORMATION"; 
+export const SET_TOUR_STATE = "SET_TOUR_STATE"; 
 export const LOAD_COMMUNITY = 'LOAD_COMMUNITY'
-
 export const LOAD_HOME_PAGE = 'LOAD_HOME_PAGE' //home_page
 export const LOAD_ACTIONS_PAGE = 'LOAD_ACTIONS_PAGE' //actions_page
 export const LOAD_SERVICE_PROVIDERS_PAGE = 'LOAD_SERVICE_PROVIDERS_PAGE' //service_provider_page
@@ -46,6 +47,8 @@ export const LOAD_CONTACT_US_PAGE = 'LOAD_CONTACT_US_PAGE'
 export const LOAD_DONATE_PAGE = 'LOAD_DONATE_PAGE'
 export const LOAD_EVENTS_PAGE = 'LOAD_EVENTS_PAGE'
 export const LOAD_IMPACT_PAGE = 'LOAD_IMPACT_PAGE'
+export const LOAD_REGISTER_PAGE = 'LOAD_REGISTER_PAGE'
+export const LOAD_SIGNIN_PAGE = 'LOAD_SIGNIN_PAGE'
 export const LOAD_MENU = 'LOAD_MENU' //menu (technically not a page but useful to store)
 export const LOAD_POLICIES = 'LOAD_POLICIES' //events_page/events
 export const LOAD_COMMUNITY_DATA = 'LOAD_COMMUNITY_DATA'

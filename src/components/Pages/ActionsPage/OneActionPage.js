@@ -1,7 +1,7 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
@@ -19,6 +19,8 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetTourInformation,
+  SECOND_SET,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -37,6 +39,8 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -73,6 +77,7 @@ class OneActionPage extends React.Component {
 
     const { id } = this.props.match.params;
     this.fetch(id);
+    this.chooseFontSize();
   }
 
   async fetch(id) {
@@ -106,11 +111,10 @@ class OneActionPage extends React.Component {
         />
       );
     }
-    this.chooseFontSize();
 
     const { tags } = action;
-    const { community } = action || {}
-    const { subdomain } = community || {}
+    const { community } = action || {};
+    const { subdomain } = community || {};
     return (
       <>
         {this.renderModal()}
@@ -119,13 +123,12 @@ class OneActionPage extends React.Component {
           description: action.featured_summary,
           site_name: action.community && action.community.name,
           url: `${window.location.pathname}`,
-          image:action.image && action.image.url ,
-          keywords: action.title && action.title.split(' ') ,
+          image: action.image && action.image.url,
+          keywords: action.title && action.title.split(" "),
           updated_at: action.updated_at,
           created_at: action.updated_at,
-          tags: (tags || []).map( ({ name }) => name) || [],
+          tags: (tags || []).map(({ name }) => name) || [],
         })}
-
 
         <div className="boxed_wrapper">
           <BreadCrumbBar
@@ -254,36 +257,6 @@ class OneActionPage extends React.Component {
     }
     return null;
   }
-  moveToDone = (actionRel) => {
-    const body = {
-      user_id: this.props.user.id,
-      action_id: actionRel.action.id,
-      household_id: actionRel.real_estate_unit.id,
-    };
-    apiCall("users.actions.completed.add", body)
-      .then((json) => {
-        if (json.success) {
-          this.props.reduxMoveToDone(json.data);
-          // this.addToImpact(json.data.action);
-          this.setState({ testimonialLink: actionRel.action.id });
-        } else {
-          console.log(json.error);
-        }
-        //just update the state here
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  moveToDoneByActionId(aid, hid) {
-    const actionRel = this.props.todo.filter((actionRel) => {
-      return (
-        Number(actionRel.action.id) === Number(aid) &&
-        Number(actionRel.real_estate_unit.id) === Number(hid)
-      );
-    })[0];
-    if (actionRel) this.moveToDone(actionRel);
-  }
 
   /**
    * renders the action on the page
@@ -302,6 +275,7 @@ class OneActionPage extends React.Component {
       }
     });
   }
+
   actionIsInTodo() {
     var action = this.getMyAction();
     var todo = this.props.todo ? this.props.todo : [];
@@ -321,21 +295,6 @@ class OneActionPage extends React.Component {
     }
     return null;
   }
-  removeFromCart = (actionRel) => {
-    const status = actionRel.status;
-    if (status !== "TODO" && status !== "DONE") return;
-
-    apiCall("users.actions.remove", { id: actionRel.id }).then((json) => {
-      if (json.success) {
-        if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
-        if (status === "DONE") {
-          this.props.done.filter((item) => item.id !== actionRel.id);
-          this.props.reduxRemoveFromDone(actionRel);
-          //this.props.reduxLoadDone(remainder);
-        }
-      }
-    });
-  };
 
   checkDone() {
     var action = this.getMyAction();
@@ -404,7 +363,9 @@ class OneActionPage extends React.Component {
             content={this.getMyAction()}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status) => this.addToCart(aid, hid, status)}
+            addToCart={(aid, hid, status, date_completed) =>
+              this.addToCart(aid, hid, status, date_completed)
+            }
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -440,6 +401,18 @@ class OneActionPage extends React.Component {
     return {};
   }
 
+  continueTour() {
+    const { history, links, reduxSetTourInformation } = this.props;
+    reduxSetTourInformation({ stage: SECOND_SET });
+    history.push(links?.home || "");
+  }
+  tourCallback = (data) => {
+    handleTourCallback(data, ({ action, index, status }) => {
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        return this.continueTour(); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -463,8 +436,68 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
+
+    const steps = [
+      {
+        target: "#test-actions-tabs",
+        title: (
+          <strong style={{ fontSize: 16 }}>Find out about this action</strong>
+        ),
+        content:
+          "Click these buttons to find practical steps to take, neighbors’ testimonials, and in some cases a deep dive for more details.",
+        locale: {
+          next: <span>Got it!</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "left",
+        spotlightClicks: true,
+        disableBeacon: true,
+        disableOverlayClose: true,
+      },
+      {
+        target: "#todo-btns",
+        content: (
+          <>
+            Perhaps you’ve already done this action? If so, click the DONE
+            button to add it to your community’s impact. Or click TO DO to put
+            it on your to do list.
+          </>
+        ),
+        locale: {
+          last: <span style={{ color: "white" }}>Got it!</span>,
+        },
+        placement: "top",
+        spotlightClicks: false,
+        disableBeacon: true,
+        disableOverlayClose: true,
+        hideFooter: false,
+        disableScrolling: true,
+      },
+      // ...
+    ];
+
     return (
       <>
+        {this.props.showTour && (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            disableScrolling={true}
+            callback={this.tourCallback}
+            styles={{
+              options: {
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                primaryColor: "#8CC43C",
+                textColor: "black",
+                width: 400,
+                zIndex: 1000,
+                beaconSize: 36,
+              },
+            }}
+          />
+        )}
         <div>
           <div className="product-content-box">
             <div className="row">
@@ -472,7 +505,7 @@ class OneActionPage extends React.Component {
                 {/* title */}
                 <div className="content-box">
                   <h2
-                  id="test-action-title"
+                    id="test-action-title"
                     className="cool-font"
                     style={{ padding: "20px 0px 0px 0px" }}
                   >
@@ -512,10 +545,10 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      <div className="btn-envelope">
+                      <div className="btn-envelope" id="todo-btns">
                         <>
                           <MECameleonButton
-                          id="test-todo-btn"
+                            id="test-todo-btn"
                             _case={actionStateCase}
                             type={TODO}
                             {...this.getNoAuthParams()}
@@ -524,7 +557,7 @@ class OneActionPage extends React.Component {
                           />
 
                           <MECameleonButton
-                          id="test-done-btn"
+                            id="test-done-btn"
                             _case={actionStateCase}
                             type={DONE}
                             {...this.getNoAuthParams()}
@@ -602,7 +635,7 @@ class OneActionPage extends React.Component {
           {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
           <div className="product-tab-box">
-            <ul className="nav nav-tabs tab-menu">
+            <ul className="nav nav-tabs tab-menu" id="test-actions-tabs">
               {/* tab switching system, may be a better way to do this */}
               <li
                 id="desctab"
@@ -867,12 +900,11 @@ class OneActionPage extends React.Component {
   handleChange() {
     this.forceUpdate();
   }
-  /**
-   * These are the Cart functions
-   */
 
   /**
-   * These are the cart functions
+   * These are the Cart functions
+   * NOTE: The routines inCart, moveToDone, addToCart and removeFromCart are currently duplicated in Cart.js, OneActionPage.js and ActionsPage.js;
+   * The functionality needs to be the same in each so if you change it in on, change it in all three.
    */
   inCart = (aid, hid, cart) => {
     if (!this.props.todo) return false;
@@ -897,17 +929,24 @@ class OneActionPage extends React.Component {
 
     return checkTodo.length > 0 || checkDone.length > 0;
   };
-  moveToDone = (actionRel) => {
+
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDone = (actionRel, date_completed) => {
     const body = {
       action_id: actionRel.action.id,
       household_id: actionRel.real_estate_unit.id,
     };
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed;
+    }
     apiCall("users.actions.completed.add", body)
       .then((json) => {
         if (json.success) {
-          this.setState({ showTestimonialLink: true });
           this.props.reduxMoveToDone(json.data);
-          this.addToImpact(json.data.action);
+          this.setState({ testimonialLink: actionRel.action.id });
+        } else {
+          console.log(json.error);
         }
         //just update the state here
       })
@@ -915,9 +954,21 @@ class OneActionPage extends React.Component {
         console.log(err);
       });
   };
-  addToCart = (aid, hid, status) => {
-    if (status !== "TODO" && status !== "DONE") return;
 
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDoneByActionId(aid, hid, date_completed) {
+    const actionRel = this.props.todo.filter((actionRel) => {
+      return (
+        Number(actionRel.action.id) === Number(aid) &&
+        Number(actionRel.real_estate_unit.id) === Number(hid)
+      );
+    })[0];
+    if (actionRel) this.moveToDone(actionRel, date_completed);
+  }
+
+  // NOTE: Routine currently duplicated in ActionsPage and OneActionPage - preserve same functionality in each
+  addToCart = (aid, hid, status, date_completed) => {
+    if (status !== "TODO" && status !== "DONE") return;
     const route =
       status === "TODO"
         ? "users.actions.todo.add"
@@ -926,6 +977,10 @@ class OneActionPage extends React.Component {
       action_id: aid,
       household_id: hid,
     };
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed;
+    }
     apiCall(route, body)
       .then((json) => {
         if (json.success) {
@@ -936,7 +991,6 @@ class OneActionPage extends React.Component {
           } else if (status === "DONE") {
             this.setState({ showTestimonialLink: true });
             this.props.reduxAddToDone(json.data);
-            this.addToImpact(json.data.action);
           }
         }
       })
@@ -945,68 +999,24 @@ class OneActionPage extends React.Component {
       });
   };
 
-  addToImpact(action) {
-    this.changeDataByName("ActionsCompletedData", 1);
-    action.tags.forEach((tag) => {
-      if (tag.tag_collection && tag.tag_collection.name === "Category") {
-        this.changeData(tag.id, 1);
-      }
-    });
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamAddAction(this.props.user.teams[key]);
-    });
-  }
-  changeDataByName(name, number) {
-    if (!this.props.communityData) return null;
-    // Bug fix needed : this is an Object, not a List so filter doesn't work.
-    var data = this.props.communityData.filter((data) => {
-      return data.name === name;
-    })[0];
-
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
+  // NOTE: This routine currently duplicated in ActionCard, ChooseHHForm, OneActionPage, Cart
+  // any changes need to be same in all 4 locations
+  removeFromCart = (actionRel) => {
+    const status = actionRel.status;
+    if (status !== "TODO" && status !== "DONE") return;
+    apiCall("users.actions.remove", { id: actionRel.id }).then((json) => {
       if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
+        if (status === "TODO") this.props.reduxRemoveFromTodo(actionRel);
+        if (status === "DONE") {
+          this.props.done.filter((item) => item.id !== actionRel.id);
+          this.props.reduxRemoveFromDone(actionRel);
+        }
       }
     });
-  }
-  changeData(tagid, number) {
-    var data = this.props.communityData.filter((data) => {
-      if (data.tag) {
-        return data.tag === tagid;
-      }
-      return false;
-    })[0];
-    if (!data) {
-      console.log("no data stored for tag " + tagid);
-      return;
-    }
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
+  };
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -1015,6 +1025,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     links: store.links,
     collection: store.page.collection,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {
@@ -1025,6 +1036,10 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
+  reduxSetTourInformation,
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneActionPage));

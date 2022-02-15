@@ -1,6 +1,7 @@
 import {
   fetchAndParseStorageContent,
   PREFERRED_EQ,
+  TOUR_STORAGE_KEY,
 } from "../../components/Utils";
 import {
   LOAD_HOME_PAGE,
@@ -14,6 +15,8 @@ import {
   LOAD_DONATE_PAGE,
   LOAD_EVENTS_PAGE,
   LOAD_IMPACT_PAGE,
+  LOAD_REGISTER_PAGE,
+  LOAD_SIGNIN_PAGE,
   LOAD_MENU,
   LOAD_POLICIES,
   LOAD_ACTIONS,
@@ -42,9 +45,16 @@ import {
   TEAM_REMOVE_HOUSEHOLD,
   LOAD_EQUIVALENCES,
   LOAD_COMMUNITY_INFORMATION,
+  SET_TOUR_STATE,
+  SET_TOUR_INFO,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
+export const FIRST_SET = "first-set";
+export const SECOND_SET = "second-set";
+export const reduxSetTourInformation = (data = { stage: FIRST_SET }) => {
+  return { type: SET_TOUR_INFO, payload: data };
+};
 export const reduxLoadEquivalences = (data) => {
   return (dispatch) => {
     data = data || [];
@@ -53,11 +63,19 @@ export const reduxLoadEquivalences = (data) => {
       (item) => item.id === pref_eq?.id && item.name === pref_eq?.name
     );
     if (found) dispatch(reduxSetPreferredEquivalence(found));
-    // else localStorage.removeItem(PREFERRED_EQ);
     return dispatch({ type: LOAD_EQUIVALENCES, payload: data });
   };
 };
 
+export const reduxSetTourState =
+  (state, persist = false) =>
+  (dispatch) => {
+    if (persist) window.localStorage.setItem(TOUR_STORAGE_KEY, state);
+    return dispatch({
+      type: SET_TOUR_STATE,
+      payload: state,
+    });
+  };
 export const reduxLoadCommunityInformation = (data) => (dispatch) => {
   return dispatch({
     type: LOAD_COMMUNITY_INFORMATION,
@@ -164,6 +182,20 @@ export const reduxLoadEventsPage = (page) => (dispatch) => {
 export const reduxLoadImpactPage = (page) => (dispatch) => {
   return dispatch({
     type: LOAD_IMPACT_PAGE,
+    payload: page,
+  });
+};
+
+export const reduxLoadRegisterPage = (page) => (dispatch) => {
+  return dispatch({
+    type: LOAD_REGISTER_PAGE,
+    payload: page,
+  });
+};
+
+export const reduxLoadSigninPage = (page) => (dispatch) => {
+  return dispatch({
+    type: LOAD_SIGNIN_PAGE,
     payload: page,
   });
 };

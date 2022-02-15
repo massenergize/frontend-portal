@@ -4,7 +4,6 @@ import { withFirebase } from "react-redux-firebase";
 import { Link, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import ReCAPTCHA from "react-google-recaptcha";
-
 import { apiCall } from "../../../api/functions";
 import {
   facebookProvider,
@@ -18,9 +17,11 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import LoadingCircle from "../../Shared/LoadingCircle";
-// import Tooltip from "../../Shared/Tooltip";
 import MEButton from "../Widgets/MEButton";
 import METextView from "../Widgets/METextView";
+import ProductTour from "react-joyride";
+import { handleTourCallback, handleCloseTourWithBtn } from "../../Utils";
+//import { helpers } from "chart.js";
 /* Modal config */
 const INITIAL_STATE = {
   email: "",
@@ -51,6 +52,10 @@ function getRandomColor() {
   return color;
 }
 
+/**
+ * WE DONT USE THIS ANYMORE
+ * @deprecated
+ */
 class RegisterFormBase extends React.Component {
   constructor(props) {
     super(props);
@@ -67,28 +72,45 @@ class RegisterFormBase extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onFinalSubmit = this.onFinalSubmit.bind(this);
     this.setRegProtocol = this.setRegProtocol.bind(this);
-    //const { id } = this.props.match.params;
-    //console.log(id);
   }
 
   componentDidMount() {
-    const body = { email: this.props.auth.email };
-    apiCall("users.checkImported", body)
-      .then((json) => {
-        if (json.success && json.data.imported) {
-          this.setState({
-            firstName: json.data.firstName,
-            lastName: json.data.lastName,
-            preferredName: json.data.preferredName,
-            specialUser: true,
-          });
+    //console.log("componentDidMount", this.props.auth)
+    if (this.props.auth.email) {
+      const body = { email: this.props.auth.email };
+      apiCall("users.checkImported", body)
+        .then((json) => {
+          if (json.success && json.data.imported) {
+            this.setState({
+              firstName: json.data.firstName,
+              lastName: json.data.lastName,
+              preferredName: json.data.preferredName,
+              specialUser: true,
+            });
+          } else {
+            console.log(json.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    var { email } = this.state;
+    if (!email || email === "") {
+      if (
+        this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+      ) {
+        email = window.localStorage.getItem("emailForSignIn");
+        if (email && email !== "") {
+          //console.log("componentDidMount will setState for email", email)
+          this.setState({ email: email }, this.completeSignInWithEmail());
         } else {
-          console.log(json.error);
+          this.setState({
+            error: "Please provide your email again for confirmation",
+          });
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    }
   }
 
   getRegProtocol() {
@@ -100,6 +122,7 @@ class RegisterFormBase extends React.Component {
 
   render() {
     if (!this.props.auth || !this.props.user) {
+      //console.log("RegisterPage loading circle 1")
       return <LoadingCircle />;
     }
     const policies = this.props.policies || [];
@@ -110,6 +133,7 @@ class RegisterFormBase extends React.Component {
     } else {
       page = 2;
     }
+    //console.log("Register page =", page)
     const [TOS] = policies.filter((x) => x.name === "Terms of Service") || "";
 
     const [PP] = policies.filter((x) => x.name === "Privacy Policy") || "";
@@ -121,6 +145,7 @@ class RegisterFormBase extends React.Component {
       this.props.auth.emailVerified &&
       this.props.user.accepts_terms_and_conditions
     ) {
+      //console.log("Redirecting to profile page")
       return <Redirect to={this.props.links.profile} />;
     }
 
@@ -187,28 +212,98 @@ class RegisterFormBase extends React.Component {
     } else if (page === 2) {
       return this.renderPage2();
     }
-    /*else if (page === 3) {
-			return this.renderPage3() 
-		}*/
   };
+
   renderPage1 = () => {
     const { email, passwordOne, passwordTwo, error } = this.state;
+
+    const pageData = this.props.registerPage;
+    //if (pageData == null) return <LoadingCircle />;
+
+    const title = pageData?.title
+      ? pageData.title
+      : "Enter your Email and a Password";
+    const description = pageData?.description
+      ? pageData.description
+      : "This helps us count your impact correctly, and avoid double counting. We collect no sensitive personal data, and do not share data.";
+
+    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+    const community_name = `${this.props.community.name}`;
+
+    const steps = [
+      {
+        target: "body",
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            Join the {community_name} community
+          </strong>
+        ),
+        content: (
+          <>
+            Be part of this amazing community. Enter your email and a password.
+            Use Google or Facebook for faster sign up. Together we make a
+            difference!
+            <div
+              style={{
+                position: "absolute",
+                top: 185,
+                left: 25,
+              }}
+            >
+              <Link
+                onClick={handleCloseTourWithBtn}
+                style={{ color: "black", cursor: "pointer", fontSize: 14 }}
+                to={this.props.links.home}
+              >
+                Back to Home
+              </Link>
+            </div>
+          </>
+        ),
+        locale: {
+          last: "End Tour & Sign Up",
+        },
+        placement: "center",
+        spotlightClicks: true,
+        disableBeacon: true,
+        hideFooter: false,
+      },
+    ];
+
     return (
       <div
         className="styled-form register-form"
         style={{ height: window.screen.height - 60, marginTop: 15 }}
       >
+        {seen_tour === "true" ? null : (
+          <ProductTour
+            steps={steps}
+            continuous
+            showSkipButton
+            disableScrolling={true}
+            callback={handleTourCallback}
+            getHelpers={this.getHelpers}
+            debug
+            styles={{
+              options: {
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                primaryColor: "#8CC43C",
+                textColor: "black",
+                width: 400,
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+
         <div
           className="z-depth-float me-anime-fade-in-up"
           style={{ padding: 46, borderRadius: 12 }}
         >
           <div className="section-title style-2">
-            <h3>Enter your Email and a Password</h3>
-            <p>
-              This helps us count your impact correctly, and avoid double
-              counting. We collect no sensitive personal data, and do not share
-              data.
-            </p>
+            <h3>{title}</h3>
+            <p> {description}</p>
           </div>
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
@@ -219,39 +314,41 @@ class RegisterFormBase extends React.Component {
                 id="email"
                 type="email"
                 name="email"
-                value={email}
+                value={email || ""}
                 onChange={this.onChange}
                 placeholder="Enter your email"
                 required
               />
             </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="password"
-                type="password"
-                name="passwordOne"
-                value={passwordOne}
-                onChange={this.onChange}
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <span className="adon-icon">
-                <span className="fa fa-unlock-alt"></span>
-              </span>
-              <input
-                id="confirm-password"
-                type="password"
-                name="passwordTwo"
-                value={passwordTwo}
-                onChange={this.onChange}
-                placeholder="Re-enter your password"
-                required
-              />
+            <div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="password"
+                  type="password"
+                  name="passwordOne"
+                  value={passwordOne}
+                  onChange={this.onChange}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <span className="adon-icon">
+                  <span className="fa fa-unlock-alt"></span>
+                </span>
+                <input
+                  id="confirm-password"
+                  type="password"
+                  name="passwordTwo"
+                  value={passwordTwo}
+                  onChange={this.onChange}
+                  placeholder="Re-enter your password"
+                  required
+                />
+              </div>
             </div>
             <br />
             {error && <p style={{ color: "red" }}> {error} </p>}
@@ -339,21 +436,13 @@ class RegisterFormBase extends React.Component {
     );
   };
   renderPage2 = () => {
-    const {
-      firstName,
-      lastName,
-      preferredName,
-      city,
-      state,
-      zip,
-      //serviceProvider,
-      //termsAndServices,
-    } = this.state;
+    const { firstName, lastName, preferredName, city, state, zip } = this.state;
 
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
     //loading circle to be skipped and to show the form
     if (!this.getRegProtocol()) {
+      //console.log("not getRegProtocal")
       return <LoadingCircle />;
     }
     return (
@@ -385,7 +474,7 @@ class RegisterFormBase extends React.Component {
                   </button>
                   <br />
                   <Link
-                  id="sign-in-anchor"
+                    id="sign-in-anchor"
                     to={this.props.links.signin}
                     onClick={() => this.props.firebase.auth().signOut()}
                   >
@@ -397,16 +486,19 @@ class RegisterFormBase extends React.Component {
             ) : (
               <>
                 <center>
-                  <p style={{ color: "red" }}>
+                  <p style={{ color: "blue" }}>
                     {" "}
-                    Please finish creating your profile before you continue
                     {this.state.specialUser ? (
                       <p>
                         Welcome! You have been invited by a community admin to
                         this MassEnergize Community.
                       </p>
                     ) : (
-                      <></>
+                      <>
+                        Hello, {this.props.auth.email}!
+                        <br />
+                        Please finish creating your profile before you continue
+                      </>
                     )}
                   </p>
                 </center>
@@ -532,7 +624,6 @@ class RegisterFormBase extends React.Component {
                     required
                   />
                 </div>
-
                 <ReCAPTCHA
                   sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
                   onChange={this.onReCaptchaChange}
@@ -607,7 +698,7 @@ class RegisterFormBase extends React.Component {
   sendVerificationEmail = () => {
     var str = window.location.href;
     var n = str.lastIndexOf("/");
-    const suffix = this.props.is_sandbox ? "?sandbox=true" : ""
+    const suffix = this.props.is_sandbox ? "?sandbox=true" : "";
     var redirect = str.substring(0, n) + "/signin" + suffix;
     var actionCodeSettings = {
       url: redirect,
@@ -662,8 +753,75 @@ class RegisterFormBase extends React.Component {
           });
       });
   }
-  //for generating the profile picture before the user can upload one when they go back to edit their profile
 
+  signInWithEmail = () => {
+    // console.log(window.location.href)
+    var actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.massenergize.com) for this
+      // URL must be in the authorized domains list in the Firebase Console.
+      url: window.location.href,
+      // This must be true.
+      handleCodeInApp: true,
+    };
+    this.props.firebase
+      .auth()
+      .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent.
+        // TODO: Inform the user.
+        alert("Please check your email for a new sign in link.");
+        console.log("Email sent!");
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem("emailForSignIn", this.state.email);
+        // ...
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ error: err.message });
+      });
+  };
+  completeSignInWithEmail = () => {
+    // Confirm the link is a sign-in with email link.
+    if (
+      this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+    ) {
+      // Additional state parameters can also be passed via URL.
+      // This can be used to continue the user's intended action before triggering
+      // the sign-in operation.
+      // Get the email if available. This should be available if the user completes
+      // the flow on the same device where they started it.
+      var { email } = this.state;
+      if (!email || email === "") {
+        email = window.localStorage.getItem("emailForSignIn");
+      }
+      // The client SDK will parse the code from the link for you.
+      this.props.firebase
+        .auth()
+        .signInWithEmailLink(email, window.location.href)
+        .then((auth) => {
+          // Clear email from storage.
+          window.localStorage.removeItem("emailForSignIn");
+
+          // You can access the new user via result.user
+          // Additional user info profile not available via:
+          // result.additionalUserInfo.profile == null
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+          // TODO: Redirect to home
+          this.fetchMassToken(auth.user._lat, auth.user.email);
+          this.setState({ ...INITIAL_STATE });
+          window.location.href = window.location.origin + this.props.links.home;
+        })
+        .catch((err) => {
+          // Some error occurred, you can inspect the code: error.code
+          // Common errors could be invalid email and invalid or expired OTPs.
+          console.log(err);
+        });
+    }
+  };
+
+  //for generating the profile picture before the user can upload one when they go back to edit their profile
   onFinalSubmit(event) {
     event.preventDefault();
     //if (!this.state.termsAndServices) {
@@ -704,7 +862,6 @@ class RegisterFormBase extends React.Component {
       this.setState({ creating: true });
       apiCall("users.create", body)
         .then((json) => {
-          console.log(body);
           var token = this.props.auth
             ? this.props.auth.stsTokenManager.accessToken
             : null;
@@ -749,6 +906,7 @@ class RegisterFormBase extends React.Component {
           });
       });
   };
+
   signInWithFacebook = (e) => {
     this.setState({ is_using_facebook: true });
     this.props.firebase
@@ -857,6 +1015,7 @@ const mapStoreToProps = (store) => {
     user: store.user,
     policies: store.page.policies,
     links: store.links,
+    registerPage: store.page.registerPage,
     community: store.page.community,
     is_sandbox: store.page.__is_sandbox,
   };

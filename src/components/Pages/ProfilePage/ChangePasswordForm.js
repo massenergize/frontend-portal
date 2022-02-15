@@ -7,6 +7,10 @@ import Tooltip from "../../Shared/Tooltip";
 import METextField from "../Widgets/METextField";
 import MEButton from "../Widgets/MEButton";
 import MECard from "../Widgets/MECard";
+import {
+  Auth,
+  FirebaseEmailAuthProvider,
+} from "../Auth/shared/firebase-helpers";
 
 class ChangePasswordFormBase extends React.Component {
   constructor(props) {
@@ -98,17 +102,16 @@ class ChangePasswordFormBase extends React.Component {
     if (this.state.password1 !== this.state.password2) {
       this.setState({ error: "New Passwords Must Match" });
     } else {
-      var cred = this.props.firebase.auth.EmailAuthProvider.credential(
+      var cred = FirebaseEmailAuthProvider.credential(
         this.props.user.email,
         this.state.old_password
       );
-      this.props.firebase
-        .auth()
-        .currentUser.reauthenticateWithCredential(cred)
+
+      Auth.currentUser
+        .reauthenticateWithCredential(cred)
         .then(() => {
-          this.props.firebase
-            .auth()
-            .currentUser.updatePassword(this.state.password1)
+          Auth.currentUser
+            .updatePassword(this.state.password1)
             .then(() => {
               this.props.closeForm("Thank you, your password has been changed");
             })
@@ -128,7 +131,6 @@ const ChangePasswordForm = compose(withFirebase)(ChangePasswordFormBase);
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    auth: store.firebase.auth,
   };
 };
 export default connect(mapStoreToProps, { reduxLogin })(ChangePasswordForm);

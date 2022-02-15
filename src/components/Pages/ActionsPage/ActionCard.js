@@ -1,14 +1,14 @@
 import React from "react";
 import "./PhotosensitiveCard.css";
 import { Link, withRouter } from "react-router-dom";
-import StoryForm from "../StoryForm";
+import StoryForm from "./StoryForm";
 import { connect } from "react-redux";
 import {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
-} from "../../../../redux/actions/userActions";
-import { apiCall } from "../../../../api/functions";
-import MEButton from "../../Widgets/MEButton";
+} from "../../../redux/actions/userActions";
+import { apiCall } from "../../../api/functions";
+import MEButton from "../Widgets/MEButton";
 import {
   DEFAULT_STATE,
   DONE,
@@ -16,9 +16,9 @@ import {
   IS_IN_TODO,
   NO_AUTH,
   TODO,
-} from "../ActionStateConstants";
-import MEChameleonButton from "../MEChameleonButton";
-import MEAnimation from "../../../Shared/Classes/MEAnimation";
+} from "./ActionStateConstants";
+import MEChameleonButton from "./MEChameleonButton";
+import MEAnimation from "../../Shared/Classes/MEAnimation";
 
 /**
  * Action Component is a single action for the action page,
@@ -35,7 +35,8 @@ import MEAnimation from "../../../Shared/Classes/MEAnimation";
  * @prop  match: match is passed from Route
  */
 
-class PhotoSensitiveAction extends React.Component {
+// was called PhotSensitiveAction
+class ActionCard extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -46,6 +47,8 @@ class PhotoSensitiveAction extends React.Component {
     };
   }
 
+  // NOTE: This routine currently duplicated in ActionCard, ChooseHHForm, OneActionPage, Cart
+  // any changes need to be same in all 4 locations
   removeFromCart = (actionRel) => {
     const status = actionRel.status;
     apiCall("users.actions.remove", { user_action_id: actionRel.id }).then(
@@ -55,7 +58,6 @@ class PhotoSensitiveAction extends React.Component {
           if (status === "DONE") {
             this.props.done.filter((item) => item.id !== actionRel.id);
             this.props.reduxRemoveFromDone(actionRel);
-            //this.props.reduxLoadDone(remainder);
           }
         }
       }
@@ -72,12 +74,7 @@ class PhotoSensitiveAction extends React.Component {
     var done = this.props.done ? this.props.done : [];
     return done.find((t) => t.action.id === action.id);
   }
-  checkTodo() {
-    var action = this.props.action;
-    var todo = this.props.todo ? this.props.todo : [];
-    return todo.find((t) => t.action.id === action.id);
-  }
-
+  
   getActionStateCase() {
     const { user } = this.props;
     if (!user) return NO_AUTH;
@@ -94,8 +91,11 @@ class PhotoSensitiveAction extends React.Component {
   }
 
   userHasManyHouseHolds() {
-    return this.props.user.households.length > 1;
+    //return this.props.user.households.length > 1;
+    // so that users can change the date
+    return this.props.user.households.length > 0;
   }
+
   runActionFunction(_for) {
     // const hasManyHouseHolds = this.props.user.households.length > 1;
     if (_for === "DONE") {
@@ -320,6 +320,7 @@ class PhotoSensitiveAction extends React.Component {
       </>
     );
   }
+
   render() {
     if (!this.props.HHFormOpen && this.state.status)
       this.setState({ status: null });
@@ -334,6 +335,7 @@ class PhotoSensitiveAction extends React.Component {
     this.props.openModal(this.props.action, status);
     // this.props.openHHForm(this.props.action.id);
   };
+
   closeForm = () => {
     this.setState({
       status: null,
@@ -465,4 +467,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(withRouter(PhotoSensitiveAction));
+)(withRouter(ActionCard));

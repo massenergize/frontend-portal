@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
+import {reduxLoadTestimonials} from "../../../redux/actions/pageActions"
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -20,6 +21,7 @@ const INITIAL_STATE = {
   message: "Already completed an action? Tell Us Your Story",
   limit: 9000,
 };
+
 
 class StoryForm extends React.Component {
   constructor(props) {
@@ -192,6 +194,8 @@ class StoryForm extends React.Component {
     //  this.setState({ preferredName: this.props.user.preferredName });
     return (
       <MEFormGenerator
+	    TriggerModal = {(bool) => this.props.TriggerModal(bool)}
+        inputData = {this.props.draftTestimonialData}
         style={{ background: "white", borderRadius: 10 }}
         className="z-depth-1"
         fields={this.getNeededFormFields()}
@@ -225,7 +229,7 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(event, data, resetForm) {
-    const { community } = this.props;
+    const { community, user } = this.props;
     event.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -238,7 +242,8 @@ class StoryForm extends React.Component {
       },
     });
     const communityID = community ? { community_id: community.id } : {};
-    const body = { ...data, rank: 0, ...communityID };
+    const userEmail = user ? { user_email: user.email } : {};
+    const body = { ...data, rank: 0, ...communityID, ...userEmail };
     if (this.count(this.state.body) > this.state.limit) {
       this.setState({
         formNotification: {
@@ -248,17 +253,46 @@ class StoryForm extends React.Component {
         },
       });
     } else {
-      apiCall(`testimonials.add`, body).then((json) => {
+      var Url = "testimonials.add"
+      //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
+      if (body.key) {
+        Url = "testimonials.update";
+        delete body.key;
+        //prevents front end fron submitting null data to back end causing the picture to be overwritten 
+        //also prepares the image to be deleted if another one is not uploaded to replace it
+				if (body?.image === null || body?.image === undefined || body?.image?.hasOwnProperty("url") ) {
+					//marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+          if (body?.ImgToDel) {
+						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id);
+					} else {
+						delete body.image;
+					}	
+				}
+				delete body?.ImgToDel;
+      }
+      console.log("testimonial body", body)
+      apiCall(Url, body).then((json) => {
         if (json && json.success) {
-          this.setState({
-            formNotification: {
-              icon: "fa fa-check",
-              type: "good",
-              text:
-                "Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
-            },
-          });
-          resetForm();
+			
+			if (this.props?.TriggerSuccessNotification) {
+				this.props.TriggerSuccessNotification(true)
+				this.props.TriggerModal(false)
+			} else {
+				this.setState({
+					formNotification: {
+					  icon: "fa fa-check",
+					  type: "good",
+					  text:
+						"Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
+					},
+				  });
+				  resetForm();		
+			}
+            //reloads the testimonials list to the user can see the updated testimonial
+              apiCall("testimonials.list", {subdomain: this.props.community.subdomain}).then(
+                (json) => {
+                  this.props.reduxLoadTestimonials(json.data)
+                })
         } else {
           this.setState({
             formNotification: {
@@ -282,5 +316,9 @@ const mapStoreToProps = (store) => {
     //tagCollections: store.page.tagCols
   };
 };
+
+const mapDispatchToProps = {
+  reduxLoadTestimonials
+}
 //composes the login form by using higher order components to make it have routing and firebase capabilities
-export default connect(mapStoreToProps)(StoryForm);
+export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
