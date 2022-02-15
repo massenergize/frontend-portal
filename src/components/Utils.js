@@ -4,17 +4,31 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 
-export const fetchParamsFromURLS = (location, paramName) => {
+export const findMatchingTag = (tagName, collections, collectionId) => {
+  if (!tagName || !collections?.length) return;
+
+  const col = collections.find((col) => col?.id === collectionId);
+  if (!col) return;
+  return col?.tags?.find((tag) => tag.name === tagName);
+};
+
+export const fetchParamsFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
   const obj = qs.parse(location.search, { ignoreQueryPrefix: true });
-  const value = obj[paramName];
+  const value = obj[paramName]?.toString();
   delete obj[paramName];
   return (
-    { [paramName]: value, rest: { object: obj, qs: qs.stringify(obj) } } || {}
+    {
+      [paramName]: value,
+      rest: { object: obj, qs: qs.stringify(obj) || "" },
+    } || {}
   );
 };
 
-const changeFiltersBackToString = (arr) => {};
+export const changeBackToQS = (obj) => {
+  return qs.stringify(obj);
+};
+const changeBackToQueryString = (arr) => {};
 /**
  *
  * @param {*} categoryString

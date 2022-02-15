@@ -275,7 +275,6 @@ export default function (state = initialState, action) {
         communities: action.payload,
       };
     case LOAD_TAG_COLS:
-      console.log("TAGS MISSTE", action.payload)
       return {
         ...state,
         tagCols: action.payload,

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { getPropsArrayFromJsonArray } from "../../Utils";
+import { findMatchingTag, getPropsArrayFromJsonArray } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -37,8 +37,9 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(value, type) {
-    const param = { collectionName: type, value };
+  onItemSelectedFromDropDown(value, type, categoryId) {
+    const tag = findMatchingTag(value, this.props.tagCols, categoryId);
+    const param = { collectionName: type, value, categoryId , tagId: tag?.id};
     this.props.boxClick(param);
     var { activeTags } = this.state;
     activeTags = (activeTags || []).filter(
@@ -116,6 +117,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
+              categoryId={set.id}
             />
           </div>
         );
@@ -181,6 +183,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
+              categoryId={set.id}
               menuTextClick={() => this.phoneMenuTextClick(set)}
             />
           </div>
@@ -269,18 +272,17 @@ class HorizontalFilterBox extends Component {
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
           this.props.user ? (
-	          <StoryFormButtonModal>
-                <div className="add-testimonial-container">
-                  <div className="add-testimonial touchable-opacity">
-                      <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                      <p>Add Testimonial</p>
-                  </div>
+            <StoryFormButtonModal>
+              <div className="add-testimonial-container">
+                <div className="add-testimonial touchable-opacity">
+                  <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                  <p>Add Testimonial</p>
                 </div>
-				</StoryFormButtonModal>
+              </div>
+            </StoryFormButtonModal>
           ) : (
             <div />
-        )
-        }
+          )}
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>

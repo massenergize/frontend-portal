@@ -19,7 +19,8 @@ import ActionCard from "./ActionCard";
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
-  fetchParamsFromURLS,
+  changeBackToQS,
+  fetchParamsFromURL,
   filterTagCollections,
   searchIsActiveFindContent,
   sumOfCarbonScores,
@@ -33,6 +34,7 @@ import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
+import { withRouter } from "react-router-dom";
 
 const INIT_STATE = {
   checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
@@ -93,8 +95,21 @@ class ActionsPage extends React.Component {
     this.setState({ showEqModal: value });
   }
 
+  handleURLFilterProcesses = (param) => {
+    var { filters, rest } = fetchParamsFromURL(this.props.location, "filters");
+    console.log("I am the filtesr before", filters);
+    filters = filters?.split(",") || [];
+    filters.push(`${param.categoryId}:${param.tagId}`);
+    console.log("I am the filtesr before", filters);
+    filters = filters?.join(",");
+    const qs = rest?.qs || "";
+    const newURL =
+      this.props.location.pathname +
+      `?${(filters && "filters=" + filters) || ""}${qs ? "&" : ""}${qs || ""}`;
+    this.props.history.push(newURL);
+  };
   addMeToSelected(param, reset = false) {
-    console.log("what is the param my gee", param)
+    this.handleURLFilterProcesses(param);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -163,10 +178,8 @@ class ActionsPage extends React.Component {
   }
 
   render() {
-    console.log("I am the RAW TAGS", this.props.rawTagCols)
-    console.log("I am the NORMAL TAGS", this.props.tagCols)
-    console.log("LE CHECKED VALUE", this.state.checked_values)
-    fetchParamsFromURLS(this.props.location, "filters");
+    console.log("I am the CHECKED THINGS", this.props.checked_values);
+
     // console.log("LOCATION", this.props.location);
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -496,4 +509,7 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
 };
-export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(ActionsPage));
