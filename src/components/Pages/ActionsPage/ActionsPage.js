@@ -94,6 +94,7 @@ class ActionsPage extends React.Component {
   }
 
   addMeToSelected(param, reset = false) {
+    console.log("what is the param my gee", param)
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -162,8 +163,11 @@ class ActionsPage extends React.Component {
   }
 
   render() {
-    fetchParamsFromURLS(this.props.location, "box");
-    console.log("LOCATION", this.props.location);
+    console.log("I am the RAW TAGS", this.props.rawTagCols)
+    console.log("I am the NORMAL TAGS", this.props.tagCols)
+    console.log("LE CHECKED VALUE", this.state.checked_values)
+    fetchParamsFromURLS(this.props.location, "filters");
+    // console.log("LOCATION", this.props.location);
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 

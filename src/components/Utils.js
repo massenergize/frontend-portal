@@ -4,11 +4,35 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 
-export const fetchParamsFromURLS = (location) => {
+export const fetchParamsFromURLS = (location, paramName) => {
   if (!location || !location.search) return "";
-  const { filters, categories } = qs.parse(location.search, { ignoreQueryPrefix: true });
-  console.log("i am the box bro ::-->", filters, categories);
+  const obj = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const value = obj[paramName];
+  delete obj[paramName];
+  return (
+    { [paramName]: value, rest: { object: obj, qs: qs.stringify(obj) } } || {}
+  );
+};
 
+const changeFiltersBackToString = (arr) => {};
+/**
+ *
+ * @param {*} categoryString
+ * @returns {object} {categoryId : tagId}
+ */
+const breakIntoCategoryAndTags = (categoryString) => {
+  const arr = categoryString?.split(":") || [];
+  return { [arr[0]]: arr[1] };
+};
+
+export const changeFilterStringToUsableContent = (filterString) => {
+  if (!filterString) return {};
+  const categories = filterString.split(",");
+  return (
+    categories?.map((categoryString) =>
+      breakIntoCategoryAndTags(categoryString)
+    ) || []
+  );
 };
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
@@ -159,6 +183,7 @@ export const filterTagCollections = (actions, cols) => {
           }
         } else {
           collections[name] = {
+            id: original?.id,
             name: name,
             tags: [tag],
             alreadyIn: [tag.id],
