@@ -8,12 +8,17 @@ import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
 import {
   getFilterVersionFromURL,
-  getTakeTourFromURL,
   handleTourCallback,
+  TOUR_STORAGE_KEY,
 } from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
-import ProductTour from "react-joyride";
-import { Link } from "react-router-dom";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
+import { Link, withRouter } from "react-router-dom";
+import {
+  FIRST_SET,
+  reduxSetTourState,
+  SECOND_SET,
+} from "../../../redux/actions/pageActions";
 
 /*'
  * The Home Page of the MassEnergize
@@ -24,20 +29,30 @@ class HomePage extends React.Component {
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
 
+  closeTourCompletely() {
+    const { setTourValueInRedux } = this.props;
+    setTourValueInRedux(false);
+    window.localStorage.setItem(TOUR_STORAGE_KEY, false);
+  }
+  tourCallback = (data) => {
+    const { history, links } = this.props;
+
+    handleTourCallback(data, ({ action, index, status, step }) => {
+      const userHasGoneFullCircle =
+        step?.identifier === "the-end" &&
+        action === ACTIONS.NEXT &&
+        status === STATUS.FINISHED;
+
+      if (action === ACTIONS.CLOSE || userHasGoneFullCircle)
+        return this.closeTourCompletely();
+
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        history.push(links?.actions); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   render() {
-    // Requesting tour from home menu adds a qualifier to the URL.
-    // It won't restart if it was already going, until you refresh the site.
-    const tourRequested = getTakeTourFromURL(window.location);
-    if (tourRequested === "true") {
-      window.localStorage.setItem("seen_community_portal_tour", "false");
-    } else if (tourRequested === "false")
-      window.localStorage.setItem("seen_community_portal_tour", "true");
-
-    const seen_tour =
-      tourRequested === "true"
-        ? false
-        : window.localStorage.getItem("seen_community_portal_tour");
-
+    const { showTour, tourInfo } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -80,7 +95,6 @@ class HomePage extends React.Component {
     const iconQuickLinks = this.props.pageData
       ? this.props.pageData.featured_links
       : [];
-    //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
     // Note: these titles aren't used - defined in Graphs
@@ -104,7 +118,7 @@ class HomePage extends React.Component {
       .filter((e) => e.link === "/actions")
       .map((e) => e.title);
 
-    const steps = [
+    const firstSet = [
       {
         target: "body",
         title: (
@@ -152,21 +166,57 @@ class HomePage extends React.Component {
         disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
-        hideFooter: false,
+      },
+    ];
+    const secondSet = [
+      {
+        target: ".tour-graph-pointer",
+        content:
+          "When you take an action, your household and action are added to the community total!",
+        locale: {
+          next: <span>Got it!</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "auto",
+        disableBeacon: true,
+        disableOverlayClose: true,
+        // disableScrolling: false,
+      },
+      {
+        target: ".new-sign-in",
+        title: (
+          <strong style={{ fontSize: 16 }}>It only takes a minute!</strong>
+        ),
+        content:
+          "Join our community, so that you can join teams, and your actions can be counted. Only your email is needed!",
+        locale: {
+          skip: <span>Skip Tour</span>,
+          last: <span style={{ color: "white" }}>Got it!</span>,
+        },
+        spotlightPadding: 20,
+        placement: "left-end",
+        offset: 100,
+        disableBeacon: true,
+        spotlightClicks: false,
+        disableOverlayClose: true,
+        disableScrolling: false,
+        identifier: "the-end",
       },
     ];
 
+    var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
+
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {showTour && (
           <ProductTour
-            steps={steps}
+            steps={steps[tourInfo.stage]}
             continuous
             showSkipButton
-            callback={handleTourCallback}
-            spotlightPadding={-40}
-            debug
-            disableScrolling={true}
+            callback={this.tourCallback}
+            spotlightPadding={-70}
+            disableScrolling={false}
+            scrollToFirstStep={true}
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -190,21 +240,20 @@ class HomePage extends React.Component {
           >
             <div className="text-center">
               {communityDescription ? (
-                <Tooltip
-                  text={communityDescription}
-                  paperStyle={{ maxWidth: "100vh" }}
-                >
-                  <h4
-                    align="center"
-                    className="cool-font mob-font-lg me-section-title"
-                  >
-                    {communityTagline}
-                    <span
-                      className="fa fa-info-circle"
-                      style={{ color: "#428a36", padding: "5px" }}
-                    ></span>
-                  </h4>
-                </Tooltip>
+                <>
+                  <Tooltip text={communityDescription} placement="top">
+                    <h4
+                      align="center"
+                      className="cool-font mob-font-lg me-section-title"
+                    >
+                      {communityTagline}
+                      <span
+                        className="fa fa-info-circle"
+                        style={{ color: "#428a36", padding: "5px" }}
+                      />
+                    </h4>
+                  </Tooltip>
+                </>
               ) : (
                 <h4
                   align="center"
@@ -257,6 +306,11 @@ const mapStoreToProps = (store) => {
     links: store.links,
     is_sandbox: store.page.__is_sandbox,
     __is_custom_site: store.page.__is_custom_site,
+    showTour: store.page.showTour,
+    tourInfo: store.page.tourInfo,
   };
 };
-export default connect(mapStoreToProps, null)(HomePage);
+
+export default connect(mapStoreToProps, {
+  setTourValueInRedux: reduxSetTourState,
+})(withRouter(HomePage));

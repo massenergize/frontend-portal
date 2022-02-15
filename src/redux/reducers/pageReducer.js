@@ -42,6 +42,8 @@ import {
   SET_IS_SANDBOX,
   LOAD_COMMUNITY_INFORMATION,
   SET_IS_CUSTOM_SITE,
+  SET_TOUR_STATE,
+  SET_TOUR_INFO,
 } from "../actions/types";
 
 import {
@@ -49,8 +51,10 @@ import {
   inSubTeam,
   inThisTeam,
 } from "../../components/Pages/TeamsPage/utils";
+import { FIRST_SET } from "../actions/pageActions";
 
 const initialState = {
+  tourInfo: { stage: FIRST_SET },
   //page data for each page
   homePage: null,
   actionsPage: null,
@@ -79,7 +83,7 @@ const initialState = {
   communityData: null,
   communityAdmins: null,
   __is_sandbox: false,
-  __is_custom_site: true
+  __is_custom_site: true,
 };
 
 function alreadyInSubTeam(state, action) {
@@ -98,6 +102,16 @@ export default function (state = initialState, action) {
   switch (action.type) {
     /**************************/
 
+    case SET_TOUR_INFO:
+      return {
+        ...state,
+        tourInfo: action.payload,
+      };
+    case SET_TOUR_STATE:
+      return {
+        ...state,
+        showTour: action.payload,
+      };
     case LOAD_EQUIVALENCES:
       return {
         ...state,
@@ -179,11 +193,20 @@ export default function (state = initialState, action) {
       };
 
     case LOAD_IMPACT_PAGE:
-      action.payload.display_prefs = {display_households: true, display_actions: true, display_carbon: true, 
-                                      platform_households: true, platform_actions: true, platform_carbon: true, 
-                                      state_households: true, state_actions: true, manual_households: false, manual_carbon: false}
+      action.payload.display_prefs = {
+        display_households: true,
+        display_actions: true,
+        display_carbon: true,
+        platform_households: true,
+        platform_actions: true,
+        platform_carbon: true,
+        state_households: true,
+        state_actions: true,
+        manual_households: false,
+        manual_carbon: false,
+      };
       if (action.payload.more_info)
-        action.payload.display_prefs = JSON.parse(action.payload.more_info)
+        action.payload.display_prefs = action.payload.more_info;
       return {
         ...state,
         impactPage: action.payload,
@@ -429,7 +452,7 @@ export default function (state = initialState, action) {
     case SET_IS_SANDBOX:
       return {
         ...state,
-        __is_sandbox:  action.payload,
+        __is_sandbox: action.payload,
       };
     case SET_IS_CUSTOM_SITE:
       return {

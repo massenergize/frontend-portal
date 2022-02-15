@@ -14,21 +14,17 @@ import ServicesPage from "./components/Pages/ServicesPage/ServicesPage";
 import OneServicePage from "./components/Pages/ServicesPage/OneServicePage";
 import StoriesPage from "./components/Pages/StoriesPage/StoriesPage";
 import OneTestimonialPage from "./components/Pages/StoriesPage/OneTestimonialPage";
-import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import EventsPage from "./components/Pages/EventsPage/EventsPageReal";
 import OneEventPage from "./components/Pages/EventsPage/OneEventPage";
 import ProfilePage from "./components/Pages/ProfilePage/ProfilePage";
 import ImpactPage from "./components/Pages/ImpactPage/ImpactPage";
 import TeamsPage from "./components/Pages/TeamsPage/TeamsPage";
 import OneTeamPage from "./components/Pages/TeamsPage/OneTeamPage";
-import RegisterPage from "./components/Pages/RegisterPage/RegisterPage";
 import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
 import Cookies from "universal-cookie";
 import { device_checkin } from "./api/functions";
-import firebase from "firebase/app";
-import "firebase/auth";
 
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
 
@@ -63,6 +59,7 @@ import {
   reduxLoadCommunityInformation,
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
+  reduxSetTourState,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -75,10 +72,12 @@ import { reduxLoadLinks } from "./redux/actions/linkActions";
 
 import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
-import { isLoaded } from "react-redux-firebase";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
+import AuthEntry from "./components/Pages/Auth/AuthEntry";
+import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
+import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -92,12 +91,56 @@ class AppRouter extends Component {
       footerLinks: null,
       prefix: "",
     };
-
-    this.userHasAnIncompleteRegistration =
-      this.userHasAnIncompleteRegistration.bind(this);
   }
 
+  cleanURL(string) {
+    if (!string) return "";
+    const noSlash = string.split("/").join("");
+    return noSlash.split("?")[0];
+  }
+
+  isHomepage(menu) {
+    const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
+    if (!main) return false;
+    const homeFxn = (m) => m.name === "Home";
+    const homegroup = main.content.find(homeFxn);
+    const home = homegroup?.children?.find(homeFxn);
+    var location = this.cleanURL(window.location.href);
+    var rebuilt = this.cleanURL(
+      window.location.protocol + window.location.host + home.link
+    );
+    return location === rebuilt;
+  }
+
+  /**
+   * IDEA: The idea is that we use this function to determine the value of the tour
+   * The first time the site loads. Only the first time!
+   * So, we check where the user is currently entering from first. If the user is not entering
+   * through the homepage, we wont bother finding the state of the tour, from the url or local storage,
+   * the tour will be set to never display inside redux.
+   * Otherwise, we go ahead and determine the tour state;
+   * By initially checking if anything is passed via url, or  checking local storage if nothing.
+   * In the end we either get a value of the current tour state from (url or localStorage), or we get nothing.
+   * Nothing means user is new, so show tour!
+   * @param {*} menu
+   * @returns
+   */
+  checkTourState = (menu) => {
+    if (!this.isHomepage(menu)) return this.props.setTourState(false);
+    var valueFromURL = getTakeTourFromURL();
+    var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
+    //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
+    valueFromURL = valueFromURL === "true" ? true : false;
+    if (valueFromURL) return this.props.setTourState(valueFromURL);
+
+    valueFromStorage = valueFromStorage === "false" ? false : true;
+    this.props.setTourState(valueFromStorage);
+  };
+
   componentDidMount() {
+    const cookies = new Cookies();
+    device_checkin(cookies).then(null, (err) => console.log(err));
+    this.props.checkFirebaseAuthentication();
     this.fetch();
   }
 
@@ -190,6 +233,7 @@ class AppRouter extends Component {
             prefix,
           });
           this.loadMenu(mainMenuResponse.data);
+          this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -253,78 +297,12 @@ class AppRouter extends Component {
           console.log(err);
         });
     }
-
-    if (!this.state.triedLogin && !this.props.user) {
-      this.getUser().then((success) => {
-        console.log(`User Logged in: ${success}`);
-      });
-    }
   }
 
   setStateAsync(state) {
     return new Promise((resolve) => {
       this.setState(state, resolve);
     });
-  }
-
-  async getUser() {
-    await this.setStateAsync({ triedLogin: true });
-    let { data } = await apiCall("auth.whoami");
-    let user = null;
-
-    const cookies = new Cookies();
-
-    device_checkin(cookies).then(
-      function (data) {},
-      function (err) {
-        console.log(err);
-      }
-    );
-
-    if (data && Object.keys(data).length > 0) {
-      user = data;
-    } else {
-      if (this.props.auth && firebase.auth().currentUser) {
-        const idToken = await firebase
-          .auth()
-          .currentUser.getIdToken(/* forceRefresh */ true);
-        const newLoggedInUserResponse = await apiCall("auth.login", {
-          idToken: idToken,
-        });
-        user = newLoggedInUserResponse.data;
-        if (!user && newLoggedInUserResponse.error === "authenticated_but_needs_registration") {
-          window.localStorage.setItem("reg_protocol", "show");
-          return false;
-        }
-      }
-    }
-
-    if (user) {
-      // set the user in the redux state
-      this.props.reduxLogin(user);
-
-      // we know that the user is already signed in so proceed
-      const [
-        userActionsTodoResponse,
-        userActionsCompletedResponse,
-        eventsRsvpListResponse,
-      ] = await Promise.all([
-        apiCall("users.actions.todo.list", { email: user.email }),
-        apiCall("users.actions.completed.list", { email: user.email }),
-        apiCall("users.events.list", { email: user.email }),
-      ]);
-
-      if (userActionsTodoResponse && userActionsCompletedResponse) {
-        this.props.reduxLoadTodo(userActionsTodoResponse.data);
-        this.props.reduxLoadDone(userActionsCompletedResponse.data);
-        this.props.reduxLoadRSVPs(eventsRsvpListResponse.data);
-
-        return true;
-      } else {
-        console.log(`no user with this email: ${user.email}`);
-        return false;
-      }
-    } else return false;
   }
 
   loadMenu(menus) {
@@ -346,6 +324,14 @@ class AppRouter extends Component {
       return menu.name === "PortalFooterQuickLinks";
     });
     const footerLinks = this.addPrefix(footerContent[0].content.links);
+
+    const communitiesLink = {
+      name: "All MassEnergize Community Sites",
+      link: URLS.COMMUNITIES, //"http://" + window.location.host,
+      special: true,
+    };
+
+    footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
   /**
@@ -443,43 +429,20 @@ class AppRouter extends Component {
   }
 
   saveCurrentPageURL() {
-    let host = window.location.host;
-    const loginURL = host + this.props.links.signin;
-    const registerURL = host + this.props.links.signup;
-    const profileURL = host + this.props.links.profile;
     const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
     const realRoute = window.location.pathname;
     if (
-      this.props.links.signup &&
-      this.props.links.signin &&
-      this.props.links.profile &&
-      currentURL !== loginURL &&
-      currentURL !== registerURL &&
-      currentURL !== profileURL
-    ) {
+      !currentURL?.includes("signin") &&
+      !currentURL?.includes("signup") &&
+      !currentURL?.includes("profile")
+    )
       window.localStorage.setItem("last_visited", realRoute);
-    }
-  }
-
-  userHasAnIncompleteRegistration() {
-    return (
-      (this.state.triedLogin && // we tried to check who this user is
-        !this.props.user && // we didnt find a profile
-        this.props.auth.uid) || // but we found a firebase userID.  This means they did not finish creating their profile
-      (this.props.auth.uid && // firebase userID is created
-        !this.props.auth.emailVerified) // but user did not verify their email yet
-    );
   }
 
   render() {
     const { community } = this.props;
-
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
-
-    if (!isLoaded(this.props.auth)) {
-      return <LoadingCircle />;
-    }
 
     /* error page if community isn't published */
     if (!community) {
@@ -491,10 +454,6 @@ class AppRouter extends Component {
       );
     }
 
-    if (this.props.user && !this.state.triedLogin) {
-      return <LoadingCircle />;
-    }
-
     const { links } = this.props;
 
     const communityInfo = community || {};
@@ -504,17 +463,10 @@ class AppRouter extends Component {
     }
     const navBarMenu = this.state.navBarMenu;
     const footerLinks = this.state.footerLinks;
-
-    const communitiesLink = {
-      name: "All MassEnergize Community Sites",
-      link: URLS.COMMUNITIES, //"http://" + window.location.host,
-      special: true,
-    };
     const footerInfo = {
       name: communityInfo.owner_name,
       phone: communityInfo.owner_phone_number,
       email: communityInfo.owner_email,
-      allCommunities: communitiesLink,
     };
 
     return (
@@ -538,52 +490,43 @@ class AppRouter extends Component {
           </div>
         ) : null}
         {
-          /**if theres a half finished account the only place a user can go is the register page */
-          this.userHasAnIncompleteRegistration() ? (
-            <Switch>
-              <Route component={RegisterPage} />
-            </Switch>
-          ) : (
-            <Switch>
-              {/* ---- This route is a facebook app requirement. -------- */}
-              <Route path={`/how-to-delete-my-data`} component={Help} />
-              <Route exact path="/" component={HomePage} />
-              <Route exact path={links.home} component={HomePage} />
-              <Route exact path={`${links.home}home`} component={HomePage} />
-              <Route exact path={links.actions} component={ActionsPage} />
-              <Route
-                exact
-                path={`${links.actions}/:id`}
-                component={OneActionPage}
-              />
+          <Switch>
+            {/* ---- This route is a facebook app requirement. -------- */}
+            <Route path={`/how-to-delete-my-data`} component={Help} />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path={links.home} component={HomePage} />
+            <Route exact path={`${links.home}home`} component={HomePage} />
+            <Route exact path={links.actions} component={ActionsPage} />
+            <Route
+              exact
+              path={`${links.actions}/:id`}
+              component={OneActionPage}
+            />
 
-              <Route path={links.aboutus} component={AboutUsPage} />
-              <Route exact path={links.services} component={ServicesPage} />
-              <Route
-                path={`${links.services}/:id`}
-                component={OneServicePage}
-              />
+            <Route path={links.aboutus} component={AboutUsPage} />
+            <Route exact path={links.services} component={ServicesPage} />
+            <Route path={`${links.services}/:id`} component={OneServicePage} />
 
-              <Route exact path={links.testimonials} component={StoriesPage} />
-              <Route
-                path={`${links.testimonials}/:id`}
-                component={OneTestimonialPage}
-              />
-              <Route exact path={links.teams} component={TeamsPage} />
-              <Route path={`${links.teams}/:id`} component={OneTeamPage} />
-              <Route path={links.impact} component={ImpactPage} />
-              <Route path={links.donate} component={DonatePage} />
-              <Route exact path={links.events} component={EventsPage} />
-              <Route path={`${links.events}/:id`} component={OneEventPage} />
-              <Route path={links.signin} component={LoginPage} />
-              <Route path={links.signup} component={RegisterPage} />
-              <Route path="/completeRegistration?" component={RegisterPage} />
-              <Route path={links.profile} component={ProfilePage} />
-              <Route path={links.policies} component={PoliciesPage} />
-              <Route path={links.contactus} component={ContactPage} />
-              <Route component={HomePage} />
-            </Switch>
-          )
+            <Route exact path={links.testimonials} component={StoriesPage} />
+            <Route
+              path={`${links.testimonials}/:id`}
+              component={OneTestimonialPage}
+            />
+            <Route exact path={links.teams} component={TeamsPage} />
+            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+            <Route path={links.impact} component={ImpactPage} />
+            <Route path={links.donate} component={DonatePage} />
+            <Route exact path={links.events} component={EventsPage} />
+            <Route path={`${links.events}/:id`} component={OneEventPage} />
+            <Route path={links.signin} component={AuthEntry} />
+            <Route path={links.signup} component={AuthEntry} />
+            <Route path={links.profile} component={ProfilePage} />
+            <Route path={links.policies} component={PoliciesPage} />
+            <Route path={links.contactus} component={ContactPage} />
+            <Route component={HomePage} />
+            {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
+          </Switch>
+          // )
         }
         {footerLinks ? (
           <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
@@ -598,10 +541,10 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     __is_custom_site: store.page.__is_custom_site,
     community: store.page.community,
-    auth: store.firebase.auth,
     menu: store.page.menu,
     links: store.links,
     eq: store.page.equivalences,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {
@@ -641,5 +584,7 @@ const mapDispatchToProps = {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetPreferredEquivalence,
+  checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
+  setTourState: reduxSetTourState,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

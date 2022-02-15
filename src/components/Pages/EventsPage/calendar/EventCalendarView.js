@@ -16,7 +16,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-export default function EventCalendarView({ events, openModal }) {
+export default function EventCalendarView({ events, onEventClick }) {
   return (
     <div className="event-calendar-container">
       <Calendar
@@ -25,8 +25,9 @@ export default function EventCalendarView({ events, openModal }) {
         startAccessor="start_date_and_time"
         titleAccessor="name"
         endAccessor="end_date_and_time"
+        messages={{ previous: "Previous" }}
         views={["month"]}
-        onSelectEvent={(obj) => openModal(obj)}
+        onSelectEvent={(obj) => onEventClick && onEventClick(obj)}
         popup={true}
         showMultiDayTimes={true}
         eventPropGetter={() => ({

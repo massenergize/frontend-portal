@@ -225,13 +225,14 @@ class AddingHouseholdForm extends React.Component {
             this.props.addHousehold(json.data);
             this.props.closeForm();
           } else {
-            this.props.editHousehold(json.data);
-            this.props.closeForm();
+            this.setState({error: json?.error?.toString()})
+            // this.props.editHousehold(json.data);
+            // this.props.closeForm();
           }
         })
         .catch((error) => {
           console.log(error);
-          this.props.closeForm();
+          // this.props.closeForm();
         });
     }
   };
@@ -239,7 +240,6 @@ class AddingHouseholdForm extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     community: store.page.community,
   };

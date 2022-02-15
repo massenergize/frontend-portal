@@ -610,6 +610,7 @@
 
 #act-item-Container {
   display: flex;
+  align-items: center;
 }
 
 #act-item-Container_SingleHouse {
@@ -621,6 +622,7 @@
 
 /*fixed CSS issue with dropdown related to action completion date */
 #CompletionDate {
+  padding: 5px;
   margin-left: auto;
   /* position: absolute; */
   /* right: 0; */
@@ -950,10 +952,10 @@
 }
 .bottom-date-area {
   /* padding: 13px; */
-  background-color: var(--app-theme-orange);
+  background-color: #f9f9f9; /* var(--app-theme-orange); */
   display: flex;
   flex-direction: row;
-  color: white;
+  color: #75ab2d;
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
@@ -1370,6 +1372,9 @@
   background: gray;
   color: white;
   border-color: gray;
+}
+.me-universal-btn[disabled] span {
+  color: white !important;
 }
 
 .me-universal-btn:hover .me-btn-icon {
@@ -1873,6 +1878,40 @@
     margin-right: 20%;
     margin-left: 20%;
   }
+
+  .SuccessNotification {
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 99;
+    position: fixed;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+
+  .SuccessNotification_Header {
+    justify-content: space-between;
+  }
+
+  .submit-testimonial-button {
+      background-color: green;
+      color: white;  
+  }
+
+  .submit-testimonial-button:hover {
+    background-color: lightgreen;
+  }
+
+  .close-testimonial-modal-button {
+    background-color: red;
+    color: white;
+  }
+
+  .close-testimonial-modal-button:hover {
+      background-color: lightcoral;
+  }
+
   .hori-filter-container {
     position: relative;
     text-align: center;
@@ -1884,6 +1923,8 @@
     border-left-width: 0px;
     border-right-width: 0px;
   }
+
+  .snackbar-success
   .mob-modal-correction {
     margin-top: -5vh !important;
   }

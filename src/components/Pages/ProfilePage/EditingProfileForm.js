@@ -46,18 +46,19 @@ class EditingProfileForm extends React.Component {
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
-        profile_picture: this.state.image,
         preferred_name: this.state.preferred_name,
       };
+      if (this.state.imageReset) {
+        body.profile_picture = this.state.image;
+      }
       this.setState({ loading: true });
-
       /** Collects the form data and sends it to the backend */
       apiCall("users.update", body)
         .then((json) => {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            this.setState({ loading: false });
+            this.setState({ loading: false, imageReset: null});
           }
         })
         .catch((error) => {
@@ -71,6 +72,7 @@ class EditingProfileForm extends React.Component {
 
   render() {
     const { loading } = this.state;
+    console.log(this.state)
     return (
       <form onSubmit={this.onSubmit}>
         <div
@@ -151,7 +153,6 @@ class EditingProfileForm extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
-    auth: store.firebase.auth,
   };
 };
 export default connect(mapStoreToProps, { reduxLogin })(EditingProfileForm);

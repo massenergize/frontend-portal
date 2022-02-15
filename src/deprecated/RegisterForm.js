@@ -52,6 +52,10 @@ function getRandomColor() {
   return color;
 }
 
+/**
+ * WE DONT USE THIS ANYMORE
+ * @deprecated
+ */
 class RegisterFormBase extends React.Component {
   constructor(props) {
     super(props);
@@ -90,19 +94,23 @@ class RegisterFormBase extends React.Component {
         .catch((err) => {
           console.log(err);
         });
-    };
+    }
     var { email } = this.state;
     if (!email || email === "") {
-      if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
-        email = window.localStorage.getItem('emailForSignIn');
+      if (
+        this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+      ) {
+        email = window.localStorage.getItem("emailForSignIn");
         if (email && email !== "") {
           //console.log("componentDidMount will setState for email", email)
-          this.setState({email:email}, this.completeSignInWithEmail());
+          this.setState({ email: email }, this.completeSignInWithEmail());
         } else {
-          this.setState({ error: "Please provide your email again for confirmation" });
-        };
-      };
-    };
+          this.setState({
+            error: "Please provide your email again for confirmation",
+          });
+        }
+      }
+    }
   }
 
   getRegProtocol() {
@@ -428,14 +436,7 @@ class RegisterFormBase extends React.Component {
     );
   };
   renderPage2 = () => {
-    const {
-      firstName,
-      lastName,
-      preferredName,
-      city,
-      state,
-      zip,
-    } = this.state;
+    const { firstName, lastName, preferredName, city, state, zip } = this.state;
 
     //before the app gets here, the reg protocol would have been set to indicate whether or not the user is registering or just logging in
     //if they are login in, the loading circle will show, otherwise, the appropriate value will be set to allow the
@@ -494,9 +495,9 @@ class RegisterFormBase extends React.Component {
                       </p>
                     ) : (
                       <>
-                    Hello, {this.props.auth.email}!
-                    <br/>
-                    Please finish creating your profile before you continue
+                        Hello, {this.props.auth.email}!
+                        <br />
+                        Please finish creating your profile before you continue
                       </>
                     )}
                   </p>
@@ -552,7 +553,7 @@ class RegisterFormBase extends React.Component {
                   <select
                     value={state}
                     className="form-control"
-                    onChange={(event) => 
+                    onChange={(event) =>
                       this.setState({ state: event.target.value })
                     }
                     placeholder="State"
@@ -724,10 +725,12 @@ class RegisterFormBase extends React.Component {
 
   isInvalid() {
     const { passwordOne, email, name, passwordTwo } = this.state;
-    return passwordOne !== passwordTwo ||
+    return (
+      passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
-      name === "";
+      name === ""
+    );
   }
 
   onSubmit(event) {
@@ -748,7 +751,7 @@ class RegisterFormBase extends React.Component {
           .catch((err) => {
             this.setState({ error: err.message });
           });
-    });    
+      });
   }
 
   signInWithEmail = () => {
@@ -764,13 +767,13 @@ class RegisterFormBase extends React.Component {
       .auth()
       .sendSignInLinkToEmail(this.state.email, actionCodeSettings)
       .then(() => {
-        // The link was successfully sent. 
+        // The link was successfully sent.
         // TODO: Inform the user.
         alert("Please check your email for a new sign in link.");
-        console.log("Email sent!")
+        console.log("Email sent!");
         // Save the email locally so you don't need to ask the user for it again
         // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', this.state.email);
+        window.localStorage.setItem("emailForSignIn", this.state.email);
         // ...
       })
       .catch((err) => {
@@ -780,7 +783,9 @@ class RegisterFormBase extends React.Component {
   };
   completeSignInWithEmail = () => {
     // Confirm the link is a sign-in with email link.
-    if (this.props.firebase.auth().isSignInWithEmailLink(window.location.href)) {
+    if (
+      this.props.firebase.auth().isSignInWithEmailLink(window.location.href)
+    ) {
       // Additional state parameters can also be passed via URL.
       // This can be used to continue the user's intended action before triggering
       // the sign-in operation.
@@ -788,13 +793,15 @@ class RegisterFormBase extends React.Component {
       // the flow on the same device where they started it.
       var { email } = this.state;
       if (!email || email === "") {
-        email = window.localStorage.getItem('emailForSignIn');
-      };
+        email = window.localStorage.getItem("emailForSignIn");
+      }
       // The client SDK will parse the code from the link for you.
-      this.props.firebase.auth().signInWithEmailLink(email, window.location.href)
+      this.props.firebase
+        .auth()
+        .signInWithEmailLink(email, window.location.href)
         .then((auth) => {
           // Clear email from storage.
-          window.localStorage.removeItem('emailForSignIn');
+          window.localStorage.removeItem("emailForSignIn");
 
           // You can access the new user via result.user
           // Additional user info profile not available via:
@@ -813,7 +820,6 @@ class RegisterFormBase extends React.Component {
         });
     }
   };
-
 
   //for generating the profile picture before the user can upload one when they go back to edit their profile
   onFinalSubmit(event) {

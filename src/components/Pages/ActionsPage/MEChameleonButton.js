@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import CustomTooltip from "../Widgets/CustomTooltip";
-// import PropTypes from "prop-types";
 import MEButton from "../Widgets/MEButton";
 import { CASE_PROPS, DEFAULT_STATE, TODO } from "./ActionStateConstants";
 /**
@@ -35,19 +34,18 @@ class MECameleonButton extends Component {
     props = { ...props, ...passed, className: classes };
     if (props.hasPopover) {
       return (
-        <CustomTooltip
-          text={props.popoverText}
-          contentStyle={{ marginLeft: "-9vw" }}
-        >
+        <>
           <MEButton
             className={`cam-btn-defaults ${props.className}`}
             style={props.style}
             onClick={this.handleOnClick}
             {...(passed.id ? { id: passed.id } : {})}
           >
-            {props.text}
+            <CustomTooltip text={props.popoverText}>
+              <span>{props.text}</span>
+            </CustomTooltip>
           </MEButton>
-        </CustomTooltip>
+        </>
       );
     }
     return (

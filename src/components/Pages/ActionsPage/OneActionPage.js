@@ -1,7 +1,7 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import ErrorPage from "./../Errors/ErrorPage";
 import Cart from "../../Shared/Cart";
@@ -19,6 +19,8 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxSetTourInformation,
+  SECOND_SET,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -37,7 +39,7 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
-import ProductTour from "react-joyride";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 
 /**
@@ -256,7 +258,6 @@ class OneActionPage extends React.Component {
     return null;
   }
 
-
   /**
    * renders the action on the page
    */
@@ -362,7 +363,9 @@ class OneActionPage extends React.Component {
             content={this.getMyAction()}
             user={this.props.user}
             status={this.state.status}
-            addToCart={(aid, hid, status, date_completed) => this.addToCart(aid, hid, status, date_completed)}
+            addToCart={(aid, hid, status, date_completed) =>
+              this.addToCart(aid, hid, status, date_completed)
+            }
             inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
             closeModal={this.closeModal}
             moveToDone={this.moveToDoneByActionId}
@@ -398,6 +401,18 @@ class OneActionPage extends React.Component {
     return {};
   }
 
+  continueTour() {
+    const { history, links, reduxSetTourInformation } = this.props;
+    reduxSetTourInformation({ stage: SECOND_SET });
+    history.push(links?.home || "");
+  }
+  tourCallback = (data) => {
+    handleTourCallback(data, ({ action, index, status }) => {
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        return this.continueTour(); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -421,7 +436,7 @@ class OneActionPage extends React.Component {
       ? community.id === action.community.id
       : true;
     const actionStateCase = this.getActionStateCase();
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
+
     const steps = [
       {
         target: "#test-actions-tabs",
@@ -449,11 +464,7 @@ class OneActionPage extends React.Component {
           </>
         ),
         locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.impact}>
-              Got it!
-            </Link>
-          ),
+          last: <span style={{ color: "white" }}>Got it!</span>,
         },
         placement: "top",
         spotlightClicks: false,
@@ -467,14 +478,13 @@ class OneActionPage extends React.Component {
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             continuous
             showSkipButton
-            debug
             disableScrolling={true}
-            callback={handleTourCallback}
+            callback={this.tourCallback}
             styles={{
               options: {
                 arrowColor: "#eee",
@@ -1007,7 +1017,6 @@ class OneActionPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -1016,6 +1025,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.communityData,
     links: store.links,
     collection: store.page.collection,
+    showTour: store.page.showTour,
   };
 };
 const mapDispatchToProps = {
@@ -1026,6 +1036,10 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
+  reduxSetTourInformation,
 };
 
-export default connect(mapStoreToProps, mapDispatchToProps)(OneActionPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneActionPage));

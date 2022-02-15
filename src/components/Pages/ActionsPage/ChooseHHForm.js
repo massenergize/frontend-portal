@@ -74,7 +74,7 @@ class ChooseHHForm extends React.Component {
           <div className="act-modal-body">
             {this.props.open ? (
               <div>
-                {this.state.error ? (
+                {this.state.error && (
                   <METextView
                     mediaType="icon"
                     icon="fa fa-exclamation"
@@ -83,12 +83,15 @@ class ChooseHHForm extends React.Component {
                   >
                     {this.state.error}
                   </METextView>
-                ) : null}
+                )}
                 <form
-                className="choose-hh-form"
+                  className="choose-hh-form"
                   onSubmit={this.handleSubmit}
                   style={{ paddingBottom: 10 }}
                 >
+                  <small style={{ padding: "10px 15px", color: "grey" }}>
+                    Click "Submit" if you want your changes to be saved{" "}
+                  </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
                     <h4
@@ -432,14 +435,18 @@ class ChooseHHForm extends React.Component {
     const { status } = this.props;
     const { Dates } = this.state;
     const month = moment().format("MM");
+    const IS_DONE = status === "DONE";
+    const IS_IN_TODO = status === "TODO";
 
     if (!households) return <div />;
     var filteredHH = households;
-    if (status === "TODO") {
-      filteredHH = households.filter(
-        (household) => !this.props.inCart(this.props.aid, household.id, "DONE")
-      );
-    }
+    const userHasOnlyOneHouse = households?.length === 1;
+    // if (IS_DONE) {
+    //   filteredHH = households.filter(
+    //     (household) => !this.props.inCart(this.props.aid, household.id, "DONE")
+    //   );
+    // }
+
     const names = getPropsArrayFromJsonArray(filteredHH, "name");
     //fixes a UI bug where if there are multiple houses, the last house gets cut off by the submitt button
     names.push("TestData");
@@ -456,83 +463,88 @@ class ChooseHHForm extends React.Component {
           </div>
         );
       }
+      const toolTipText = IS_IN_TODO
+        ? "When are you planning to complete the action?"
+        : "When did you complete this action?";
+
       return (
         <div id="act-item-Container">
-          <div
-            className={`act-item`}
-            onClick={() => this.onChange(values[index])}
-            key={index.toString()}
-          >
-            <div className={`act-rect ${selected ? "act-selected" : ""}`}></div>
-            <p>{name}</p>
+          {userHasOnlyOneHouse && !selected ? (
+            <div className={`act-item`} key={index.toString()}>
+              <p>{toolTipText}</p>
+            </div>
+          ) : (
+            <div
+              className={`act-item`}
+              onClick={() => this.onChange(values[index])}
+              key={index.toString()}
+            >
+              <div
+                className={`act-rect ${selected ? "act-selected" : ""}`}
+              ></div>
+              <p>{userHasOnlyOneHouse ? "Uncheck this to remove" : name}</p>
+            </div>
+          )}
+          {IS_DONE || IS_IN_TODO ? (
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>{toolTipText}</Tooltip>}
+            >
+              <div id="CompletionDate">
+                <Dropdown>
+                  <Dropdown.Toggle
+                    id="dropdown-button-dark-example1"
+                    variant="success"
+                    style={{ fontSize: 13 }}
+                  >
+                    {/*Show choice if value not -1 (selected choice but no selected date) or choice wasnt selected */}
+                    {[-1, undefined, null].includes(Dates[values[index]])
+                      ? "Completion Date"
+                      : Dates[values[index]][1]}
+                  </Dropdown.Toggle>
 
-            {status === "TODO" || status === "DONE" ? (
-              <OverlayTrigger
-                placement="top"
-                overlay={
-                  <Tooltip>
-                    {" "}
-                    {status === "TODO"
-                      ? "When are you planning complete the action?"
-                      : "When did you complete this action?"}{" "}
-                  </Tooltip>
-                }
-              >
-                <div id="CompletionDate">
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      id="dropdown-button-dark-example1"
-                      variant="success"
+                  <Dropdown.Menu variant="dark">
+                    <Dropdown.Item
+                      onClick={() =>
+                        this.ChangeCompDate(Choice1, values[index])
+                      }
                     >
-                      {/*Show choice if value not -1 (selected choice but no selected date) or choice wasnt selected */}
-                      {[-1, undefined, null].includes(Dates[values[index]])
-                        ? "Completion Date"
-                        : Dates[values[index]][1]}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu variant="dark">
+                      {" "}
+                      {Choice1}{" "}
+                    </Dropdown.Item>
+                    {(IS_DONE && month === "01") ||
+                    (IS_IN_TODO && month === "12") ? (
+                      <div />
+                    ) : (
                       <Dropdown.Item
                         onClick={() =>
-                          this.ChangeCompDate(Choice1, values[index])
+                          this.ChangeCompDate(Choice2, values[index])
                         }
                       >
-                        {" "}
-                        {Choice1}{" "}
+                        {Choice2}
                       </Dropdown.Item>
-                      {(status === "DONE" && month === "01") ||
-                      (status === "TODO" && month === "12") ? (
-                        <div />
-                      ) : (
-                        <Dropdown.Item
-                          onClick={() =>
-                            this.ChangeCompDate(Choice2, values[index])
-                          }
-                        >
-                          {Choice2}
-                        </Dropdown.Item>
-                      )}
-                      <Dropdown.Item
-                        onClick={() =>
-                          this.ChangeCompDate(Choice3, values[index])
-                        }
-                      >
-                        {Choice3}{" "}
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() =>
-                          this.ChangeCompDate(Choice4, values[index])
-                        }
-                      >
-                        {Choice4}
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </OverlayTrigger>
-            ) : (
-              <div />
-            )}
-          </div>
+                    )}
+                    <Dropdown.Item
+                      onClick={() =>
+                        this.ChangeCompDate(Choice3, values[index])
+                      }
+                    >
+                      {Choice3}{" "}
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() =>
+                        this.ChangeCompDate(Choice4, values[index])
+                      }
+                    >
+                      {Choice4}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+            </OverlayTrigger>
+          ) : (
+            <div />
+          )}
         </div>
       );
     });

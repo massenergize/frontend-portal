@@ -13,6 +13,8 @@ export const fetchParamsFromURLS = (location) => {
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+
+export const TOUR_STORAGE_KEY = "SHOW_TOUR";
 export const stateAbbreviation = (stateName) => {
   const index = meStatesData.indexOf(stateName);
   if (index > -1) {
@@ -69,7 +71,7 @@ export const getIsSandboxFromURL = (location) => {
   return sandbox;
 };
 
-export const getTakeTourFromURL = (location) => {
+export const getTakeTourFromURL = (location = window.location) => {
   if (!location || !location.search) return "";
   const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
   return tour?.toLowerCase();
@@ -77,21 +79,21 @@ export const getTakeTourFromURL = (location) => {
 
 //TODO: how to stop second step once seen tour is set to true? setTimeOut???
 //TODO: why home first step isn't closing when X is clicked?
-export const handleTourCallback = (data) => {
+export const handleTourCallback = (data, cb) => {
+  if (cb) return cb(data);
   const { status, action, index } = data;
-  //console.log("dataTourCallBack", data);
-
   if (
     (index > 0 && action === ACTIONS.CLOSE) ||
     [STATUS.FINISHED, STATUS.SKIPPED].includes(status)
   ) {
-    window.localStorage.setItem("seen_community_portal_tour", "true");
+    window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
   }
+
   return true;
 };
 
 export const handleCloseTourWithBtn = () => {
-  window.localStorage.setItem("seen_community_portal_tour", "true");
+  window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
   return true;
 };
 

@@ -188,29 +188,28 @@ class ActionsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.actions, this.state.checked_values);
 
-    const seen_tour = window.localStorage.getItem("seen_community_portal_tour");
     const steps = [
       {
-        target: "#test-action-cards-wrapper",
+        target: ".test-action-card-item",
         title: (
           <strong style={{ fontSize: 16 }}>
             All these actions were chosen by your neighbors!
           </strong>
         ),
         content:
-          "You can filter these actions by category, impact or cost. Click on any card to continue.",
-        placement: "auto",
+          "You can filter these actions by category, impact or cost. Click on the card to continue.",
+        placement: "right",
+        spotlightPadding: 10,
         spotlightClicks: true,
         disableBeacon: true,
         hideFooter: true,
         disableOverlayClose: true,
       },
-      // ...
     ];
 
     return (
       <>
-        {seen_tour === "true" ? null : (
+        {this.props.showTour && (
           <ProductTour
             steps={steps}
             showSkipButton
@@ -470,7 +469,6 @@ class ActionsPage extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -482,6 +480,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     pref_eq: store.user.pref_equivalence,
     eq: store.page.equivalences,
+    showTour: store.page.showTour,
   };
 };
 
