@@ -181,9 +181,6 @@ class ActionsPage extends React.Component {
     return null;
   };
   render() {
-    console.log("I am the CHECKED THINGS", this.state.checked_values);
-
-    // console.log("LOCATION", this.props.location);
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
 
@@ -291,6 +288,8 @@ class ActionsPage extends React.Component {
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
+                filtersFromURL={this.state.checked_values}
+                doneProcessingURLFilter={this.state.mounted}
               />
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}

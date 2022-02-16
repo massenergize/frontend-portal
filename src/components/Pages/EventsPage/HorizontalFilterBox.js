@@ -20,6 +20,7 @@ class HorizontalFilterBox extends Component {
       showSearch: false,
       longHeight: false,
       selected_collection: null,
+      mounted: false,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
@@ -39,7 +40,7 @@ class HorizontalFilterBox extends Component {
   }
   onItemSelectedFromDropDown(value, type, collectionId) {
     const tag = findMatchingTag(value, this.props.tagCols, collectionId);
-    const param = { collectionName: type, value, collectionId , tagId: tag?.id};
+    const param = { collectionName: type, value, collectionId, tagId: tag?.id };
     this.props.boxClick(param);
     var { activeTags } = this.state;
     activeTags = (activeTags || []).filter(
@@ -90,6 +91,16 @@ class HorizontalFilterBox extends Component {
     const { activeTags } = this.state;
     if (!activeTags) return;
     return activeTags.filter((item) => item.collectionName === set.name)[0];
+  };
+
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted)
+      return {
+        activeTags: props.filtersFromURL,
+        mounted: props.doneProcessingURLFilter,
+      };
+
+    return null;
   };
 
   renderDifferentCollections = (style = { display: "inline-block" }) => {
