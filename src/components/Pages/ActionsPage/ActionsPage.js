@@ -19,9 +19,9 @@ import ActionCard from "./ActionCard";
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
-  changeBackToQS,
-  fetchParamsFromURL,
   filterTagCollections,
+  processFiltersAndUpdateURL,
+  recreateFiltersForState,
   searchIsActiveFindContent,
   sumOfCarbonScores,
 } from "../../Utils";
@@ -56,6 +56,7 @@ const INIT_STATE = {
   actions: [],
   status: null,
   showEqModal: false,
+  mounted: false,
 };
 
 /**
@@ -95,21 +96,8 @@ class ActionsPage extends React.Component {
     this.setState({ showEqModal: value });
   }
 
-  handleURLFilterProcesses = (param) => {
-    var { filters, rest } = fetchParamsFromURL(this.props.location, "filters");
-    console.log("I am the filtesr before", filters);
-    filters = filters?.split(",") || [];
-    filters.push(`${param.categoryId}:${param.tagId}`);
-    console.log("I am the filtesr before", filters);
-    filters = filters?.join(",");
-    const qs = rest?.qs || "";
-    const newURL =
-      this.props.location.pathname +
-      `?${(filters && "filters=" + filters) || ""}${qs ? "&" : ""}${qs || ""}`;
-    this.props.history.push(newURL);
-  };
   addMeToSelected(param, reset = false) {
-    this.handleURLFilterProcesses(param);
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -177,8 +165,23 @@ class ActionsPage extends React.Component {
     );
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+        };
+    }
+
+    return null;
+  };
   render() {
-    console.log("I am the CHECKED THINGS", this.props.checked_values);
+    console.log("I am the CHECKED THINGS", this.state.checked_values);
 
     // console.log("LOCATION", this.props.location);
     const pageData = this.props.pageData;

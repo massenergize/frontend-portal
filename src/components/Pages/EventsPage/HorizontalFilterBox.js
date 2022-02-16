@@ -37,9 +37,9 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(value, type, categoryId) {
-    const tag = findMatchingTag(value, this.props.tagCols, categoryId);
-    const param = { collectionName: type, value, categoryId , tagId: tag?.id};
+  onItemSelectedFromDropDown(value, type, collectionId) {
+    const tag = findMatchingTag(value, this.props.tagCols, collectionId);
+    const param = { collectionName: type, value, collectionId , tagId: tag?.id};
     this.props.boxClick(param);
     var { activeTags } = this.state;
     activeTags = (activeTags || []).filter(
@@ -117,7 +117,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
-              categoryId={set.id}
+              collectionId={set.id}
             />
           </div>
         );
@@ -161,7 +161,6 @@ class HorizontalFilterBox extends Component {
   renderPhoneCollections = (style = { display: "inline-block" }) => {
     const { version } = this.props;
     var col = this.getCollectionSetAccordingToPage();
-    // col = (col || []).length > 3 ? col.slice(0, 2) : col;
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
@@ -183,7 +182,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
-              categoryId={set.id}
+              collectionId={set.id}
               menuTextClick={() => this.phoneMenuTextClick(set)}
             />
           </div>

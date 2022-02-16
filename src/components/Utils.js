@@ -4,6 +4,48 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 
+export const recreateFiltersForState = (cols, propsLocation) => {
+  if (!cols?.length) return null;
+  var { filters } = fetchParamsFromURL(propsLocation, "filters");
+  if (!filters) return null;
+  const arr = [];
+  filters = filters?.split(",")?.map((f) => f.split(":")) || [];
+  filters.forEach((fArr) => {
+    const collection = cols.find((c) => c.id?.toString() === fArr[0]);
+    const tag = collection?.tags?.find((t) => t.id?.toString() === fArr[1]);
+    arr.push({
+      collectionName: collection?.name,
+      collectionId: collection?.id,
+      tagId: tag?.id,
+      value: tag?.name,
+    });
+  });
+  return arr;
+};
+
+export const processFiltersAndUpdateURL = (param, props) => {
+  var newURL;
+  var { filters, rest } = fetchParamsFromURL(props.location, "filters");
+  if (!param)
+    return props.history.push(
+      props.location.pathname + rest.qs && "?" + rest.qs
+    );
+  const filtersToArr = filters?.split(",") || [];
+  const withoutFilterFromChangedCategory = filtersToArr.filter(
+    (f) => f.split(":")[0] !== param.collectionId?.toString()
+  );
+  const newFilter = `${param.collectionId}:${param.tagId}`;
+  withoutFilterFromChangedCategory.push(newFilter);
+  const filtersConvertedToString = withoutFilterFromChangedCategory?.join(",");
+  const qs = rest?.qs || "";
+  newURL =
+    props.location.pathname +
+    `?${
+      (filtersConvertedToString && "filters=" + filtersConvertedToString) || ""
+    }${qs ? "&" : ""}${qs || ""}`;
+  props.history.push(newURL);
+};
+
 export const findMatchingTag = (tagName, collections, collectionId) => {
   if (!tagName || !collections?.length) return;
 
@@ -28,11 +70,11 @@ export const fetchParamsFromURL = (location, paramName) => {
 export const changeBackToQS = (obj) => {
   return qs.stringify(obj);
 };
-const changeBackToQueryString = (arr) => {};
+
 /**
  *
  * @param {*} categoryString
- * @returns {object} {categoryId : tagId}
+ * @returns {object} {collectionId : tagId}
  */
 const breakIntoCategoryAndTags = (categoryString) => {
   const arr = categoryString?.split(":") || [];
