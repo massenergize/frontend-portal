@@ -65,7 +65,11 @@ class HorizontalFilterBox extends Component {
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
           onClick={() =>
-            this.onItemSelectedFromDropDown(NONE, tagObj.collectionName)
+            this.onItemSelectedFromDropDown(
+              NONE,
+              tagObj.collectionName,
+              tagObj?.collectionId
+            )
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -236,7 +240,8 @@ class HorizontalFilterBox extends Component {
           onClick={() =>
             this.onItemSelectedFromDropDown(
               NONE,
-              selected && selected.collectionName
+              selected && selected.collectionName,
+              selected?.collectionId
             )
           }
         >

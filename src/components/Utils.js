@@ -3,6 +3,7 @@ import React from "react";
 import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
+import { NONE } from "./Pages/Widgets/MELightDropDown";
 
 export const recreateFiltersForState = (cols, propsLocation) => {
   if (!cols?.length) return null;
@@ -23,27 +24,45 @@ export const recreateFiltersForState = (cols, propsLocation) => {
   return arr;
 };
 
+const makeNewUrlWithFilters = (props, filterString, qs) => {
+  return (
+    props.location.pathname +
+    `?${(filterString && "filters=" + filterString) || ""}${qs ? "&" : ""}${
+      qs || ""
+    }`
+  );
+};
 export const processFiltersAndUpdateURL = (param, props) => {
-  var newURL;
   var { filters, rest } = fetchParamsFromURL(props.location, "filters");
+  // ------------------ WHEN USER CLEARS ALL FILTERS ----------------
   if (!param)
     return props.history.push(
-      props.location.pathname + rest.qs && "?" + rest.qs
+      props.location.pathname + (rest?.qs && "?" + rest?.qs) || ""
     );
+  // -----------------------------------------------------------------
+
   const filtersToArr = filters?.split(",") || [];
+  // --------------- WHEN USER CLEARS JUST ONE CATEGORY ------------
+  if (param.value === NONE) {
+    var withoutCurrentCollection = filtersToArr.filter(
+      (f) => f[0] !== param?.collectionId?.toString()
+    );
+    withoutCurrentCollection = withoutCurrentCollection.join(",");
+    return props.history.push(
+      makeNewUrlWithFilters(props, withoutCurrentCollection, rest?.qs)
+    );
+  }
+
+  // ----------------------------------------------------------------
   const withoutFilterFromChangedCategory = filtersToArr.filter(
     (f) => f.split(":")[0] !== param.collectionId?.toString()
   );
   const newFilter = `${param.collectionId}:${param.tagId}`;
   withoutFilterFromChangedCategory.push(newFilter);
   const filtersConvertedToString = withoutFilterFromChangedCategory?.join(",");
-  const qs = rest?.qs || "";
-  newURL =
-    props.location.pathname +
-    `?${
-      (filtersConvertedToString && "filters=" + filtersConvertedToString) || ""
-    }${qs ? "&" : ""}${qs || ""}`;
-  props.history.push(newURL);
+  props.history.push(
+    makeNewUrlWithFilters(props, filtersConvertedToString, rest?.qs)
+  );
 };
 
 export const findMatchingTag = (tagName, collections, collectionId) => {
