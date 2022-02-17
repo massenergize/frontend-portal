@@ -11,7 +11,6 @@ import {
   getHumanFriendlyDate,
   getRandomIntegerInRange,
   searchIsActiveFindContent,
-  makeFilterDescription,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
