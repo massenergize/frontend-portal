@@ -21,6 +21,7 @@ import {
   applyTagsAndGetContent,
   collectSearchTextValueFromURL,
   filterTagCollections,
+  makeFilterDescription,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
@@ -36,6 +37,7 @@ import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
+import ShareButtons from "../../Shared/ShareButtons";
 
 const INIT_STATE = {
   checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
@@ -182,8 +184,10 @@ class ActionsPage extends React.Component {
 
     return null;
   };
+
   render() {
     const pageData = this.props.pageData;
+    const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.actions) {
@@ -320,6 +324,23 @@ class ActionsPage extends React.Component {
                         toggleEQModal={this.toggleEQModal}
                       />
                     </div>
+                    <center style={{ padding: 10 }}>
+                      <p style={{ color: "black" }}>Share this page</p>
+                      <ShareButtons
+                        include={["facebook"]}
+                        url={window.location.href}
+                        pageTitle={`Actions to take in ${
+                          this.props?.communityData?.community?.name ||
+                          "your community"
+                        }`}
+                        pageDescription={
+                          (filterDescription &&
+                            `Take a look at actions under the following categories: ${filterDescription} 
+                        `) ||
+                          ""
+                        }
+                      />
+                    </center>
                   </div>
                 </div>
                 {/* renders the actions */}

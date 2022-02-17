@@ -5,6 +5,11 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
+export const makeFilterDescription = (checkedValues) => {
+  if (!checkedValues?.length) return "";
+  return checkedValues?.map((v) => v.value)?.join(",");
+};
+
 export const recreateFiltersForState = (cols, propsLocation) => {
   if (!cols?.length) return null;
   var { filters } = fetchParamsFromURL(propsLocation, "filters");

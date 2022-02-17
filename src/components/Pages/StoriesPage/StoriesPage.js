@@ -11,6 +11,7 @@ import {
   getHumanFriendlyDate,
   getRandomIntegerInRange,
   searchIsActiveFindContent,
+  makeFilterDescription,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
 import { NONE } from "../Widgets/MELightDropDown";
@@ -19,6 +20,7 @@ import StorySheet from "./Story Sheet/StorySheet";
 import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
+import ShareButtons from "./../../Shared/ShareButtons";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -111,7 +113,7 @@ class StoriesPage extends React.Component {
       (story, word) =>
         story?.title?.toLowerCase().includes(word) ||
         story?.body?.toLowerCase().includes(word) ||
-        story?.preferred_name?.toLowerCase().includes(word) 
+        story?.preferred_name?.toLowerCase().includes(word)
     );
   }
 
@@ -239,6 +241,17 @@ class StoriesPage extends React.Component {
                       </MELink>
                     </p>
                   ) : null}
+                </center>
+
+                <center style={{ padding: 10 }}>
+                  <p style={{ color: "black" }}>Share this page</p>
+                  <ShareButtons
+                    include={["facebook"]}
+                    url={window.location.href}
+                    pageTitle={`Stories people have about actions they have taken in ${
+                      this.props?.pageData?.community?.name || "your community"
+                    }`}
+                  />
                 </center>
               </div>
             </div>

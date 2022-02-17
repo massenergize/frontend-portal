@@ -14,6 +14,7 @@ import {
   recreateFiltersForState,
   collectSearchTextValueFromURL,
   processFiltersAndUpdateURL,
+  makeFilterDescription,
 } from "../../Utils";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
@@ -22,6 +23,7 @@ import Tooltip from "../Widgets/CustomTooltip";
 import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
+import ShareButtons from "../../Shared/ShareButtons";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -95,6 +97,7 @@ class EventsPage extends React.Component {
   render() {
     const pageData = this.props.pageData;
     const { history, links } = this.props;
+    const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.events || !this.props.tagCols) {
@@ -214,6 +217,24 @@ class EventsPage extends React.Component {
                         />
                       </div>
                     )}
+
+                    <center style={{ padding: 10 }}>
+                      <p style={{ color: "black" }}>Share this page</p>
+                      <ShareButtons
+                        include={["facebook"]}
+                        url={window.location.href}
+                        pageTitle={`Events happening in ${
+                          this.props?.pageData?.community?.name ||
+                          "your community"
+                        }`}
+                        pageDescription={
+                          (filterDescription &&
+                            `Take a look at events under the following categories: ${filterDescription} 
+                        `) ||
+                          ""
+                        }
+                      />
+                    </center>
                   </div>
                 </div>
               </div>
