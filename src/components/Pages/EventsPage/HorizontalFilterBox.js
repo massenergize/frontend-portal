@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { findMatchingTag, getPropsArrayFromJsonArray } from "../../Utils";
+import {
+  findMatchingTag,
+  getPropsArrayFromJsonArray,
+  putSearchTextFilterInURL,
+} from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
@@ -258,6 +262,11 @@ class HorizontalFilterBox extends Component {
     if (version === OPTION2) return 2;
     return 1;
   }
+  handleSearchTyping = (e) => {
+    if (!this.props.search) return;
+    this.props.search(e);
+    putSearchTextFilterInURL(this.props, e.target.value);
+  };
   render() {
     const { longHeight } = this.state;
     return (
@@ -274,10 +283,8 @@ class HorizontalFilterBox extends Component {
               fontSize: "medium",
               marginLeft: 31,
             }}
-            onChange={(event) => {
-              if (!this.props.search) return;
-              this.props.search(event);
-            }}
+            onChange={this.handleSearchTyping}
+            value={this.props.searchText}
             icon="fa fa-search"
             iconColor="rgb(210 210 210)"
             containerStyle={{ display: "inline-block", position: "relative" }}
@@ -305,10 +312,8 @@ class HorizontalFilterBox extends Component {
             id="test-filter-box-id"
             className="phone-search-input "
             placeholder="Search..."
-            onChange={(event) => {
-              if (!this.props.search) return;
-              this.props.search(event);
-            }}
+            onChange={this.handleSearchTyping}
+            value={this.props.searchText}
           />
 
           <div

@@ -5,6 +5,7 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
+
 export const recreateFiltersForState = (cols, propsLocation) => {
   if (!cols?.length) return null;
   var { filters } = fetchParamsFromURL(propsLocation, "filters");
@@ -24,12 +25,33 @@ export const recreateFiltersForState = (cols, propsLocation) => {
   return arr;
 };
 
-const makeNewUrlWithFilters = (props, filterString, qs) => {
+export const putSearchTextFilterInURL = (props, text) => {
+  if (!text)
+    return props.history.push(
+      makeNewUrlWithFilters(props, "", rest?.qs, "search_text")
+    );
+  const { rest } = fetchParamsFromURL(props?.location, "search_text");
+  props.history.push(
+    makeNewUrlWithFilters(props, text, rest?.qs, "search_text")
+  );
+};
+
+export const collectSearchTextValueFromURL = (location) => {
+  const { search_text } = fetchParamsFromURL(location, "search_text");
+  return search_text || "";
+};
+
+const makeNewUrlWithFilters = (
+  props,
+  filterString,
+  qs,
+  identifier = "filters"
+) => {
   return (
     props.location.pathname +
-    `?${(filterString && "filters=" + filterString) || ""}${qs ? "&" : ""}${
-      qs || ""
-    }`
+    `?${(filterString && identifier + "=" + filterString) || ""}${
+      qs ? "&" : ""
+    }${qs || ""}`
   );
 };
 export const processFiltersAndUpdateURL = (param, props) => {
@@ -73,6 +95,12 @@ export const findMatchingTag = (tagName, collections, collectionId) => {
   return col?.tags?.find((tag) => tag.name === tagName);
 };
 
+/**
+ *
+ * @param {*} location : Props Location
+ * @param {*} paramName
+ * @returns
+ */
 export const fetchParamsFromURL = (location, paramName) => {
   if (!location || !location.search) return "";
   const obj = qs.parse(location.search, { ignoreQueryPrefix: true });

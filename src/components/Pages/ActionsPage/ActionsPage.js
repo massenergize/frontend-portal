@@ -19,6 +19,7 @@ import ActionCard from "./ActionCard";
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
+  collectSearchTextValueFromURL,
   filterTagCollections,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
@@ -175,6 +176,7 @@ class ActionsPage extends React.Component {
             props.location
           ),
           mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
         };
     }
 
@@ -283,6 +285,7 @@ class ActionsPage extends React.Component {
                 </center>
               </div>
               <HorizontalFilterBox
+                searchText={this.state.searchText}
                 type="action"
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
