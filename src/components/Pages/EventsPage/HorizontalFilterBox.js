@@ -193,7 +193,7 @@ class HorizontalFilterBox extends Component {
               style={{ background: "transparent", marginBottom: 4 }}
               label={
                 <span className="h-f-label" style={{ textDecoration: "none" }}>
-                  {cat.length > 10 ? cat.slice(0, 7) + "..." : cat}
+                  {cat?.length > 10 ? cat.slice(0, 7) + "..." : cat}
                   {/* {this.renderIcon(selected)} */}
                 </span>
               }
@@ -214,6 +214,7 @@ class HorizontalFilterBox extends Component {
     e.preventDefault();
     this.setState({ activeTags: [] });
     this.props.boxClick(null, true);
+    putSearchTextFilterInURL(this.props, "");
   };
   renderClearFilter() {
     const { activeTags } = this.state;
@@ -223,7 +224,6 @@ class HorizontalFilterBox extends Component {
           className="filter-close me-open-in"
           href="#void"
           onClick={this.clearFilters}
-          // style={{ position: "absolute", left: 28, top: -5 }}
         >
           Clear Filters{" "}
           <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>

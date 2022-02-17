@@ -5,7 +5,6 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
-
 export const recreateFiltersForState = (cols, propsLocation) => {
   if (!cols?.length) return null;
   var { filters } = fetchParamsFromURL(propsLocation, "filters");
@@ -15,22 +14,24 @@ export const recreateFiltersForState = (cols, propsLocation) => {
   filters.forEach((fArr) => {
     const collection = cols.find((c) => c.id?.toString() === fArr[0]);
     const tag = collection?.tags?.find((t) => t.id?.toString() === fArr[1]);
-    arr.push({
-      collectionName: collection?.name,
-      collectionId: collection?.id,
-      tagId: tag?.id,
-      value: tag?.name,
-    });
+    if (collection && tag)
+      arr.push({
+        collectionName: collection?.name,
+        collectionId: collection?.id,
+        tagId: tag?.id,
+        value: tag?.name,
+      });
   });
   return arr;
 };
 
 export const putSearchTextFilterInURL = (props, text) => {
+  const { rest } = fetchParamsFromURL(props?.location, "search_text");
   if (!text)
     return props.history.push(
       makeNewUrlWithFilters(props, "", rest?.qs, "search_text")
     );
-  const { rest } = fetchParamsFromURL(props?.location, "search_text");
+
   props.history.push(
     makeNewUrlWithFilters(props, text, rest?.qs, "search_text")
   );
@@ -229,7 +230,7 @@ export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
   word = word.toLowerCase();
   const content = applyTagsAndGetContent(data, activeFilters) || data;
   if (!func) return null;
-  return content.filter((action) => func(action, word));
+  return content?.filter((action) => func(action, word)) || [];
 };
 
 export const changeToProperURL = (url) => {

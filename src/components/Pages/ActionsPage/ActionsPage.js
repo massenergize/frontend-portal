@@ -285,12 +285,12 @@ class ActionsPage extends React.Component {
                 </center>
               </div>
               <HorizontalFilterBox
-                searchText={this.state.searchText}
                 type="action"
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
+                searchText={this.state.searchText}
                 filtersFromURL={this.state.checked_values}
                 doneProcessingURLFilter={this.state.mounted}
               />
