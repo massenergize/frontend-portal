@@ -93,6 +93,9 @@ class EventsPage extends React.Component {
         event.featured_summary.toLowerCase().includes(word)
     );
   }
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
 
   render() {
     const pageData = this.props.pageData;
@@ -168,6 +171,7 @@ class EventsPage extends React.Component {
                       searchText={this.state.searchText}
                       filtersFromURL={this.state.checked_values}
                       doneProcessingURLFilter={this.state.mounted}
+                      onSearchTextChange={this.onSearchTextChange.bind(this)}
                     />
                     <div className="event-view-togglers">
                       {Object.keys(VIEW_MODES).map((key, index) => {

@@ -55,7 +55,9 @@ function ShareButtons({ label, url, pageTitle, pageDescription, include }) {
 
   const cherryPick = () => {
     if (!include?.length) return;
-    return include?.map((key) => SharingButtons[key]);
+    return include?.map((key) => (
+      <React.Fragment key={key}> {SharingButtons[key]}</React.Fragment>
+    ));
   };
   return (
     <>
@@ -63,7 +65,9 @@ function ShareButtons({ label, url, pageTitle, pageDescription, include }) {
 
       <div className="row justify-content-center">
         {cherryPick() ||
-          Object.keys(SharingButtons).map((key) => SharingButtons[key])}
+          Object.keys(SharingButtons).map((key) => (
+            <React.Fragment key={key}> {SharingButtons[key]}</React.Fragment>
+          ))}
       </div>
     </>
   );

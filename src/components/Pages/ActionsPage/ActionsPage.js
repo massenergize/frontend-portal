@@ -109,6 +109,9 @@ class ActionsPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
   renderModal() {
     if (this.state.openModalForm) {
       return (
@@ -297,6 +300,7 @@ class ActionsPage extends React.Component {
                 searchText={this.state.searchText}
                 filtersFromURL={this.state.checked_values}
                 doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
               />
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}

@@ -5,6 +5,23 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
+/**
+ *
+ * @param {*} props: React component props with router
+ * @returns
+ */
+export const removeAllFiltersFromURL = (props) => {
+  const location = props.location;
+  if (!location || !props) return;
+  const { rest } = fetchParamsFromURL(location, null, [
+    "filters",
+    "search_text",
+  ]);
+  const { pathname } = location;
+  const qs = rest?.qs;
+  props.history.push(window.location.host + pathname + qs ? `?${qs}` : "");
+};
+
 export const makeFilterDescription = (checkedValues) => {
   if (!checkedValues?.length) return "";
   return checkedValues?.map((v) => v.value)?.join(",");
@@ -107,13 +124,21 @@ export const findMatchingTag = (tagName, collections, collectionId) => {
  * @param {*} paramName
  * @returns
  */
-export const fetchParamsFromURL = (location, paramName) => {
+export const fetchParamsFromURL = (location, paramName, names) => {
   if (!location || !location.search) return "";
   const obj = qs.parse(location.search, { ignoreQueryPrefix: true });
   const value = obj[paramName]?.toString();
   delete obj[paramName];
+  const params = {};
+  if (names?.length) {
+    names.forEach((n) => {
+      params[n] = obj[n];
+      delete obj[n];
+    });
+  }
   return (
     {
+      params,
       [paramName]: value,
       rest: { object: obj, qs: qs.stringify(obj) || "" },
     } || {}

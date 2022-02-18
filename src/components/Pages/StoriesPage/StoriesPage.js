@@ -145,6 +145,9 @@ class StoriesPage extends React.Component {
     });
   }
 
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
   render() {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -201,6 +204,7 @@ class StoriesPage extends React.Component {
                 search={this.handleSearch}
                 searchText={this.state.searchText}
                 doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>

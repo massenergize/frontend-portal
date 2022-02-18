@@ -5,6 +5,7 @@ import {
   findMatchingTag,
   getPropsArrayFromJsonArray,
   putSearchTextFilterInURL,
+  removeAllFiltersFromURL,
 } from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
@@ -214,7 +215,8 @@ class HorizontalFilterBox extends Component {
     e.preventDefault();
     this.setState({ activeTags: [] });
     this.props.boxClick(null, true);
-    putSearchTextFilterInURL(this.props, "");
+    this.props.onSearchTextChange("");
+    removeAllFiltersFromURL(this.props);
   };
   renderClearFilter() {
     const { activeTags } = this.state;
@@ -264,6 +266,7 @@ class HorizontalFilterBox extends Component {
   }
   handleSearchTyping = (e) => {
     if (!this.props.search) return;
+    this.props.onSearchTextChange(e.target.value);
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
