@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 // import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import {reduxLoadTestimonials} from "../../../redux/actions/pageActions"
+import { reduxLoadTestimonials } from "../../../redux/actions/pageActions";
+import MEButton from "../Widgets/MEButton";
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -21,7 +22,6 @@ const INITIAL_STATE = {
   message: "Already completed an action? Tell Us Your Story",
   limit: 9000,
 };
-
 
 class StoryForm extends React.Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class StoryForm extends React.Component {
       notificationState: null,
       spinner: false,
       formNotification: null,
+      formReset: null,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -118,7 +119,7 @@ class StoryForm extends React.Component {
         data: ["--", ...actionTitles],
         dataValues: ["--", ...actionIds],
         value: "--",
-        resetKey:"--"
+        resetKey: "--",
       },
       {
         name: "vendor_id",
@@ -129,7 +130,7 @@ class StoryForm extends React.Component {
         data: ["--", ...vendorTitles],
         dataValues: ["--", ...vendorIds],
         value: "--",
-        resetKey:"--" 
+        resetKey: "--",
       },
       {
         type: "input",
@@ -164,11 +165,11 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label:
           "You can add an image to your testimonial. It should be your own picture, or one you are sure is not copyrighted material",
-        modalContainerClassName:"me-f-c-pos-correction",
-        showOverlay:false,
-        maxHeight:1000, 
-        maxWidth:1000,
-        },
+        modalContainerClassName: "me-f-c-pos-correction",
+        showOverlay: false,
+        maxHeight: 1000,
+        maxWidth: 1000,
+      },
       {
         type: "textarea",
         name: "body",
@@ -190,24 +191,58 @@ class StoryForm extends React.Component {
       );
     if (this.state.vid !== "other" && this.state.vendor !== "")
       this.setState({ vendor: "" });
-    //if (this.state.preferredName === "")
-    //  this.setState({ preferredName: this.props.user.preferredName });
     return (
       <MEFormGenerator
-	    TriggerModal = {(bool) => this.props.TriggerModal(bool)}
-        inputData = {this.props.draftTestimonialData}
+        TriggerModal={(bool) => this.props.TriggerModal(bool)}
+        inputData={this.props.draftTestimonialData}
         style={{ background: "white", borderRadius: 10 }}
         className="z-depth-1"
         fields={this.getNeededFormFields()}
         title={this.state.message}
         onSubmit={this.onSubmit}
         info={this.state.formNotification}
+        onMount={(reset) => this.setState({ formReset: reset })}
+        moreActions={
+          <>
+            <MEButton
+              style={{
+                background: "rgb(209 70 70)",
+                color: "white",
+                borderColor: "rgb(209 70 70)",
+              }}
+              className="touchable-opacity"
+              type="button"
+              onClick={() => {
+                this.state.formReset && this.state.formReset();
+              }}
+              containerStyle={{
+                padding: "10px 12px",
+                fontSize: 18,
+              }}
+            >
+              Cancel
+            </MEButton>
+            <MEButton
+              variation="accent"
+              type="button"
+              onClick={() => {
+                this.state.formReset && this.state.formReset();
+              }}
+              containerStyle={{
+                padding: "10px 12px",
+                fontSize: 18,
+              }}
+            >
+              Clear
+            </MEButton>
+          </>
+        }
       />
     );
   }
   count = (words) => {
     // return words.split(' ').length //word count
-    return words.length; //char count 
+    return words.length; //char count
   };
   //updates the state when form elements are changed
   onChange(event) {
@@ -253,46 +288,48 @@ class StoryForm extends React.Component {
         },
       });
     } else {
-      var Url = "testimonials.add"
+      var Url = "testimonials.add";
       //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
       if (body.key) {
         Url = "testimonials.update";
         delete body.key;
-        //prevents front end fron submitting null data to back end causing the picture to be overwritten 
+        //prevents front end fron submitting null data to back end causing the picture to be overwritten
         //also prepares the image to be deleted if another one is not uploaded to replace it
-				if (body?.image === null || body?.image === undefined || body?.image?.hasOwnProperty("url") ) {
-					//marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+        if (
+          body?.image === null ||
+          body?.image === undefined ||
+          body?.image?.hasOwnProperty("url")
+        ) {
+          //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
           if (body?.ImgToDel) {
-						body.image = "ImgToDel ---"  + String(body?.ImgToDel.id);
-					} else {
-						delete body.image;
-					}	
-				}
-				delete body?.ImgToDel;
+            body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+          } else {
+            delete body.image;
+          }
+        }
+        delete body?.ImgToDel;
       }
-      console.log("testimonial body", body)
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
-			
-			if (this.props?.TriggerSuccessNotification) {
-				this.props.TriggerSuccessNotification(true)
-				this.props.TriggerModal(false)
-			} else {
-				this.setState({
-					formNotification: {
-					  icon: "fa fa-check",
-					  type: "good",
-					  text:
-						"Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
-					},
-				  });
-				  resetForm();		
-			}
-            //reloads the testimonials list to the user can see the updated testimonial
-              apiCall("testimonials.list", {subdomain: this.props.community.subdomain}).then(
-                (json) => {
-                  this.props.reduxLoadTestimonials(json.data)
-                })
+          if (this.props?.TriggerSuccessNotification) {
+            this.props.TriggerSuccessNotification(true);
+            this.props.TriggerModal(false);
+          } else {
+            this.setState({
+              formNotification: {
+                icon: "fa fa-check",
+                type: "good",
+                text: "Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
+              },
+            });
+            resetForm();
+          }
+          //reloads the testimonials list to the user can see the updated testimonial
+          apiCall("testimonials.list", {
+            subdomain: this.props.community.subdomain,
+          }).then((json) => {
+            this.props.reduxLoadTestimonials(json.data);
+          });
         } else {
           this.setState({
             formNotification: {
@@ -318,7 +355,7 @@ const mapStoreToProps = (store) => {
 };
 
 const mapDispatchToProps = {
-  reduxLoadTestimonials
-}
+  reduxLoadTestimonials,
+};
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
