@@ -213,7 +213,7 @@ class StoryForm extends React.Component {
               className="touchable-opacity"
               type="button"
               onClick={() => {
-                this.state.formReset && this.state.formReset();
+                this.props.close && this.props.close();
               }}
               containerStyle={{
                 padding: "10px 12px",
