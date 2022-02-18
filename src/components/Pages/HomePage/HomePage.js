@@ -6,10 +6,19 @@ import IconBoxTable from "./IconBoxTable";
 import Events from "./EventHomepageSection";
 import Tooltip from "../Widgets/CustomTooltip";
 import { connect } from "react-redux";
-import { getFilterVersionFromURL } from "../../Utils";
+import {
+  getFilterVersionFromURL,
+  handleTourCallback,
+  TOUR_STORAGE_KEY,
+} from "../../Utils";
 import { FILTER_BAR_VERSION } from "../EventsPage/HorizontalFilterBox";
-import ProductTour from "react-joyride";
-import { Link } from "react-router-dom";
+import ProductTour, { ACTIONS, STATUS } from "react-joyride";
+import { Link, withRouter } from "react-router-dom";
+import {
+  FIRST_SET,
+  reduxSetTourState,
+  SECOND_SET,
+} from "../../../redux/actions/pageActions";
 
 /*'
  * The Home Page of the MassEnergize
@@ -20,7 +29,30 @@ class HomePage extends React.Component {
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
   }
 
+  closeTourCompletely() {
+    const { setTourValueInRedux } = this.props;
+    setTourValueInRedux(false);
+    window.localStorage.setItem(TOUR_STORAGE_KEY, false);
+  }
+  tourCallback = (data) => {
+    const { history, links } = this.props;
+
+    handleTourCallback(data, ({ action, index, status, step }) => {
+      const userHasGoneFullCircle =
+        step?.identifier === "the-end" &&
+        action === ACTIONS.NEXT &&
+        status === STATUS.FINISHED;
+
+      if (action === ACTIONS.CLOSE || userHasGoneFullCircle)
+        return this.closeTourCompletely();
+
+      if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
+        history.push(links?.actions); // This is triggered when user presses enter on "got it" instead of clicking
+    });
+  };
+
   render() {
+    const { showTour, tourInfo } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -63,7 +95,6 @@ class HomePage extends React.Component {
     const iconQuickLinks = this.props.pageData
       ? this.props.pageData.featured_links
       : [];
-    //const header = section(pageData, "HomeHeader");
 
     const goals = this.props.community ? this.props.community.goal : null;
     // Note: these titles aren't used - defined in Graphs
@@ -81,15 +112,29 @@ class HomePage extends React.Component {
       });
     }
 
-    const steps = [
+    const about_community = `${this.props.community.about_community}`;
+    const community_name = `${this.props.community.name}`;
+    const actionName = iconQuickLinks
+      .filter((e) => e.link === "/actions")
+      .map((e) => e.title);
+
+    const firstSet = [
       {
         target: "body",
-        title: `Welcome to ${this.props.community.name}`,
-        content: `${this.props.community.about_community}. This website is where you and your neighbors can take climate action
-            together. There’s so much YOU can do, so let us show you around!
-            We’ll take only two minutes.`,
+        title: (
+          <strong style={{ fontSize: 16 }}>Welcome to {community_name}</strong>
+        ),
+        content: (
+          <div>
+            {about_community}
+            <br />
+            This website is where you and your neighbors can take climate action
+            together. There’s so much YOU can do, so let us show you around!{" "}
+            {""}It’ll take only two minutes.
+          </div>
+        ),
         locale: {
-          next: <span>Got it!</span>,
+          next: <span>Show me!</span>,
           skip: <span>Skip Tour</span>,
         },
         placement: "center",
@@ -98,64 +143,93 @@ class HomePage extends React.Component {
       },
       {
         target: ".icon-panel",
-        title: "Start taking action right away!",
-        //TODO: I need to select always the quick link that matches with /actions. Maye I can use conditionals
-        content: (
-          <div>
-            Clicking on these boxes will take you places! The one called{" "}
-            {iconQuickLinks[2].title} will take you straight to tons of actions
-            that you can take.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.actions}>
-                Got it!
-              </Link>
-            </div>
-          </div>
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            Start taking action right away!
+          </strong>
         ),
+        content: (
+          <>
+            These 4 buttons take you places. The one called "{actionName}" will
+            show you many good actions to take.
+          </>
+        ),
+        locale: {
+          skip: <span>Skip Tour</span>,
+          last: (
+            <Link style={{ color: "white" }} to={this.props.links.actions}>
+              Got it!
+            </Link>
+          ),
+        },
         placement: "auto",
+        disableBeacon: true,
         spotlightClicks: false,
         disableOverlayClose: true,
-        hideFooter: true,
+      },
+    ];
+    const secondSet = [
+      {
+        target: ".tour-graph-pointer",
+        content:
+          "When you take an action, your household and action are added to the community total!",
+        locale: {
+          next: <span>Got it!</span>,
+          skip: <span>Skip Tour</span>,
+        },
+        placement: "auto",
+        disableBeacon: true,
+        disableOverlayClose: true,
+        // disableScrolling: false,
+      },
+      {
+        target: ".new-sign-in",
+        title: (
+          <strong style={{ fontSize: 16 }}>It only takes a minute!</strong>
+        ),
+        content:
+          "Join our community, so that you can join teams, and your actions can be counted. Only your email is needed!",
+        locale: {
+          skip: <span>Skip Tour</span>,
+          last: <span style={{ color: "white" }}>Got it!</span>,
+        },
+        spotlightPadding: 20,
+        placement: "left-end",
+        offset: 100,
+        disableBeacon: true,
+        spotlightClicks: false,
+        disableOverlayClose: true,
+        disableScrolling: false,
+        identifier: "the-end",
       },
     ];
 
+    var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
+
     return (
       <>
-        <ProductTour
-          steps={steps}
-          continuous
-          showSkipButton
-          spotlightPadding={-40}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
+        {showTour && (
+          <ProductTour
+            steps={steps[tourInfo.stage]}
+            continuous
+            showSkipButton
+            callback={this.tourCallback}
+            spotlightPadding={-70}
+            disableScrolling={false}
+            scrollToFirstStep={true}
+            styles={{
+              options: {
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                primaryColor: "#8CC43C",
+                textColor: "black",
+                width: 400,
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
+
         <div className="boxed_wrapper">
           {welcomeImagesData ? (
             <WelcomeImages data={welcomeImagesData} title={title} />
@@ -166,21 +240,20 @@ class HomePage extends React.Component {
           >
             <div className="text-center">
               {communityDescription ? (
-                <Tooltip
-                  text={communityDescription}
-                  paperStyle={{ maxWidth: "100vh" }}
-                >
-                  <h4
-                    align="center"
-                    className="cool-font mob-font-lg me-section-title"
-                  >
-                    {communityTagline}
-                    <span
-                      className="fa fa-info-circle"
-                      style={{ color: "#428a36", padding: "5px" }}
-                    ></span>
-                  </h4>
-                </Tooltip>
+                <>
+                  <Tooltip text={communityDescription} placement="top">
+                    <h4
+                      align="center"
+                      className="cool-font mob-font-lg me-section-title"
+                    >
+                      {communityTagline}
+                      <span
+                        className="fa fa-info-circle"
+                        style={{ color: "#428a36", padding: "5px" }}
+                      />
+                    </h4>
+                  </Tooltip>
+                </>
               ) : (
                 <h4
                   align="center"
@@ -233,6 +306,11 @@ const mapStoreToProps = (store) => {
     links: store.links,
     is_sandbox: store.page.__is_sandbox,
     __is_custom_site: store.page.__is_custom_site,
+    showTour: store.page.showTour,
+    tourInfo: store.page.tourInfo,
   };
 };
-export default connect(mapStoreToProps, null)(HomePage);
+
+export default connect(mapStoreToProps, {
+  setTourValueInRedux: reduxSetTourState,
+})(withRouter(HomePage));

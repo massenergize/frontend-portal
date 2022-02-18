@@ -23,7 +23,7 @@ class ActionModal extends Component {
         }
         
         inCart={(aid, hid, cart) => this.props.inCart(aid, hid, cart)}
-        moveToDone={(aid, hid) => this.props.moveToDone(aid, hid)}
+        moveToDone={(aid, hid, date) => this.props.moveToDone(aid, hid, date)}
         closeForm={this.props.closeModal}
       />
     );

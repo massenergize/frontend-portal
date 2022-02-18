@@ -8,9 +8,10 @@ import {
   getPropsArrayFromJsonArrayAdv,
   getRandomIntegerInRange,
 } from "../Utils";
+import { ME_STATES } from "../States";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
 import { withRouter } from "react-router";
-import { ME_STATES } from "./ProfilePage/States";
+
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");

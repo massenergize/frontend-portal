@@ -14,7 +14,6 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
-import ProductTour from "react-joyride";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -123,70 +122,9 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
-    const steps = [
-      {
-        target: "body",
-        title: "Accomplish more by working in teams",
-        content: (
-          <>
-            Here's a list of teams in your community. A team can be about
-            anything you are interested in.
-            <br />
-            <div
-              style={{
-                backgroundColor: "#8DC53F",
-                padding: "10px",
-                color: "black",
-                display: "inline-block",
-                borderRadius: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <Link style={{ color: "white" }} to={this.props.links.signup}>
-                Got it!
-              </Link>
-            </div>{" "}
-          </>
-        ),
-        locale: {
-          skip: <span>Skip Tour</span>,
-          next: <span>Got it!</span>,
-        },
-        placement: "center",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: true,
-      },
-    ];
-
     return (
       <>
-        <ProductTour
-          steps={steps}
-          showSkipButton
-          // spotlightPadding={5}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              // overlayColor: "transparent",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
-
         {createTeamModalOpen && (
           <TeamInfoModal
             onComplete={this.onTeamCreate}

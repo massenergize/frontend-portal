@@ -3,7 +3,11 @@ import LoginForm from "./LoginForm";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-
+/**
+ *
+ * WE DONT USE THIS ANYMORE
+ * @deprecated
+ */
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +22,7 @@ class LoginPage extends React.Component {
     // const returnpath = params.get('returnpath');
     const last_visited = localStorage.getItem("last_visited");
     if (!this.state.tryingToLogin) {
-      if (this.props.user.info) {
+      if (this.props.user.info && last_visited !== this.props.links.signin) {
         return (
           <Redirect
             to={last_visited ? last_visited : this.props.links.profile}

@@ -70,6 +70,44 @@ function _getCurrentCommunityContext(){
     return { __community: subdomain, __is_sandbox }
 }
 
+export function set_cookie(cookies, key, value) {
+  cookies.set(key, value, { path: '/' });
+}
+
+export function get_cookie(cookies, key) {
+  let cookie = cookies.get(key);
+  return cookie;
+}
+
+function log_device(cookies) {
+  // TODO: Get IP address and other info
+  let device = get_cookie(cookies, "device");
+  let body;
+  let response;
+  if (device === undefined) {
+    body = {};
+  } else {
+    body = { id: device };
+  }
+
+  response = apiCall('/device.log', body).then(function(result) {
+    try {
+      if (result.data)
+        set_cookie(cookies, "device", result.data.id);
+    } catch (error) {
+      console.log(error); // Debug
+      return { success: false, error };
+    }
+  }, function(error) {
+    // console.log(error);
+  });
+  return response;
+}
+
+export async function device_checkin(cookies) {
+  log_device(cookies);  
+}
+
 
 /**
  * Takes out the section that matches with the name given

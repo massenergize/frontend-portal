@@ -1,19 +1,25 @@
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router'
-import history from '../history';
-import { firebaseReducer } from 'react-redux-firebase'
+import { combineReducers } from "redux";
+import { connectRouter } from "connected-react-router";
+import history from "../history";
 
-import userReducer from './userReducer';
-import pageReducer from './pageReducer';
-import linkReducer from './linkReducer';
+import userReducer from "./userReducer";
+import pageReducer from "./pageReducer";
+import linkReducer from "./linkReducer";
+import {
+  reducerforSettingAuthNotification,
+  reducerForSettingAuthState,
+  reducerForSettingFirebaseUser,
+} from "./authReducer";
 
 export default combineReducers({
   user: userReducer,
   page: pageReducer,
   links: linkReducer,
   router: connectRouter(history),
-  firebase: firebaseReducer
+  fireAuth: reducerForSettingFirebaseUser,
+  authNotification: reducerforSettingAuthNotification,
+  authState: reducerForSettingAuthState,
+  // firebase: firebaseReducer
 });
 
- 
 // export default rootReducer;

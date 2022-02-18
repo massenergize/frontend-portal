@@ -1,6 +1,68 @@
 :root {
   --app-theme-orange: #f57b34;
   --app-theme-green: #8dc443;
+  --app-theme-green-darker: #75ab2d;
+  --app-theme-orange-lighter: #fba930;
+}
+
+.underline-me {
+  border: solid 0px black;
+  border-bottom-width: 1px;
+  padding-bottom: 5px;
+}
+.calendar-modal img {
+  object-fit: cover;
+}
+.calendar-modal-btn {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 15px;
+  background-color: var(--app-theme-green);
+  text-align: center;
+  color: white;
+}
+.calendar-modal {
+  display: flex;
+  width: 100%;
+  flex: 2;
+}
+
+.c-event-mark {
+  background: var(--app-theme-orange) !important;
+  color: white;
+
+  border-radius: 0px !important;
+  font-size: 14px !important;
+  cursor: pointer;
+}
+.c-event-mark:hover {
+  background-color: var(--app-theme-green) !important;
+  transition: 0.2s ease-out;
+}
+.event-view-togglers {
+  display: flex;
+  flex-direction: row;
+}
+.event-view-togglers div {
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.event-view-togglers div:hover {
+  background-color: var(--app-theme-green);
+  color: white;
+  transition: 0.2s ease-out;
+}
+
+.event-view-togglers div > i {
+  margin-right: 6px;
+}
+.event-view-toggler-active {
+  background-color: var(--app-theme-green);
+  color: white;
 }
 
 .word-wrap {
@@ -344,6 +406,41 @@
   position: absolute; 
   transform: translateX(50)
 } */
+
+.touchable-opacity {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.touchable-opacity:hover {
+  opacity: 0.8;
+  transition: 0.2s ease-out;
+}
+.add-testimonial-container {
+  padding-right: 15px;
+  position: absolute;
+  right: -16px;
+  top: -1px;
+  display: inline-block;
+}
+.add-testimonial {
+  cursor: pointer;
+  height: 100%;
+  background: #fba930;
+  color: white;
+  padding: 13px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.add-testimonial p {
+  margin: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .hori-search-box {
   display: inline-block !important;
   border-width: 0px !important;
@@ -491,24 +588,29 @@
   transform: scale(1.06);
   transition: 0.2s ease-in-out;
 }
+
+.choose-hh-form {
+  padding-bottom: 10px;
+  min-height: 220px;
+  max-height: 220px;
+  overflow-y: scroll;
+}
 .act-rect {
   width: 17px;
   height: 17px;
   border: solid 2px green;
   display: inline-block;
   margin-right: 10px;
-  position: absolute;
-  top: 27%;
 }
 
 .act-selected {
   background: #18c125;
-  border-style: dotted;
   border-color: #ccf3cc;
 }
 
 #act-item-Container {
   display: flex;
+  align-items: center;
 }
 
 #act-item-Container_SingleHouse {
@@ -517,7 +619,18 @@
   border: dotted 0px #e2e2e2;
   border-bottom-width: 2px;
 }
+
+/*fixed CSS issue with dropdown related to action completion date */
+#CompletionDate {
+  padding: 5px;
+  margin-left: auto;
+  /* position: absolute; */
+  /* right: 0; */
+  /* margin:10px 15px; */
+}
 .act-item {
+  display: flex;
+  align-items: center;
   width: 100%;
   padding: 10px 20px;
   border: dotted 0px #e2e2e2;
@@ -532,14 +645,11 @@
 .act-item:hover {
   background: #f7f9f7;
   color: black;
-  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
-    0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   transition: 0.2s ease-out;
 }
 
 .act-item:active {
-  transform: scale(0.95);
+  /* transform: scale(0.95); */
 }
 
 .act-error {
@@ -556,10 +666,9 @@
   font-size: 15px;
   color: #282828;
   display: inline-block;
-  margin-left: 7%;
 }
 .act-title-bar {
-  padding: 15px 20px;
+  padding: 14px 20px;
   width: 100%;
   background: green;
   margin-bottom: 10px;
@@ -567,9 +676,15 @@
 
 .act-title-bar h3 {
   color: white;
+  font-size: 18px;
   margin-bottom: 0px;
 }
 
+/*limits modal width on parents page */
+.parent-act-modal-whole {
+  max-width: 500px;
+  margin: auto;
+}
 .act-modal-whole {
   min-height: 33vh;
   max-height: 90vh;
@@ -585,7 +700,8 @@
   position: absolute;
   bottom: 0px;
   width: 100%;
-  height: 64px;
+  /* height: 64px; */
+  height: 54px;
   background: #fbf9f9;
   left: 0px;
   border-bottom-left-radius: 10px;
@@ -611,7 +727,7 @@
 }
 
 .flat-btn {
-  padding: 20px 30px;
+  padding: 15px 30px;
   color: #282828;
   cursor: pointer;
   display: inline-block;
@@ -836,7 +952,7 @@
 }
 .bottom-date-area {
   /* padding: 13px; */
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* var(--app-theme-orange); */
   display: flex;
   flex-direction: row;
   color: #75ab2d;
@@ -844,6 +960,8 @@
   /* min-height: 70px; */
   align-items: center;
   font-size: 0.9rem !important;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .me-testimonial-img {
@@ -1255,6 +1373,9 @@
   color: white;
   border-color: gray;
 }
+.me-universal-btn[disabled] span {
+  color: white !important;
+}
 
 .me-universal-btn:hover .me-btn-icon {
   color: white !important;
@@ -1283,6 +1404,22 @@
   color: #db3236 !important;
 
   border-color: #db3236 !important;
+  border-top-color: #3cba54 !important;
+  border-bottom-color: #f4c20d !important;
+  border-right-color: #4885ed !important;
+  transition: 0.2s ease-in-out;
+}
+.me-email-btn {
+  /* border-width:0px; */
+  background: #8dc343 !important;
+  border-color: #8dc343 !important;
+  color: white !important;
+}
+.me-email-btn:hover {
+  background: white !important;
+  color: #8dc343 !important;
+
+  border-color: #8dc343 !important;
   border-top-color: #3cba54 !important;
   border-bottom-color: #f4c20d !important;
   border-right-color: #4885ed !important;
@@ -1741,16 +1878,53 @@
     margin-right: 20%;
     margin-left: 20%;
   }
+
+  .SuccessNotification {
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 99;
+    position: fixed;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+
+  .SuccessNotification_Header {
+    justify-content: space-between;
+  }
+
+  .submit-testimonial-button {
+      background-color: green;
+      color: white;  
+  }
+
+  .submit-testimonial-button:hover {
+    background-color: lightgreen;
+  }
+
+  .close-testimonial-modal-button {
+    background-color: red;
+    color: white;
+  }
+
+  .close-testimonial-modal-button:hover {
+      background-color: lightcoral;
+  }
+
   .hori-filter-container {
+    position: relative;
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 16px;
     border-radius: -22px;
     margin-top: -20px;
-    border: solid 2px #fba930;
+    border: solid 2px var(--app-theme-orange);
     border-left-width: 0px;
     border-right-width: 0px;
   }
+
+  .snackbar-success
   .mob-modal-correction {
     margin-top: -5vh !important;
   }
@@ -1833,17 +2007,60 @@
   .pc-vanish {
     display: none !important;
   }
+  .event-calendar-container {
+    height: 500px;
+  }
+  .c-event-mark {
+    padding: 5px !important;
+  }
+  .calendar-modal {
+    flex-direction: row;
+    height: 350px;
+  }
 
-  /* ------------------------------- TABLETS ----------------------------- */
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .tablet-vanish {
-      display: none !important;
-    }
+  .calendar-modal img {
+    width: 50%;
+    height: 100%;
+  }
+  .calendar-modal * {
+    flex: 1;
+  }
+  .event-view-togglers div {
+    padding: 15px 25px;
+    font-size: 15px;
+  }
+}
+/* ------------------------------- TABLETS ----------------------------- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-vanish {
+    display: none !important;
   }
 }
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .event-view-togglers div {
+    padding: 10px;
+    font-size: 14px;
+  }
+  .c-m-info {
+    height: 100%;
+  }
+  .calendar-modal img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .calendar-modal {
+    flex-direction: column;
+    height: 500px;
+  }
+  .event-calendar-container {
+    height: 300px;
+  }
+  .event-view-togglers {
+    margin-top: 100px;
+  }
   .data-explanation-dialog {
     border: solid 1px green;
     margin: 5px;

@@ -14,7 +14,7 @@ import {
   reduxTeamAddAction,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import Action from "./PhotosensitiveCard/PhotoSensitiveAction";
+import ActionCard from "./ActionCard";
 
 import PageTitle from "../../Shared/PageTitle";
 import {
@@ -31,6 +31,7 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
+import { handleTourCallback } from "../../Utils";
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -67,7 +68,7 @@ class ActionsPage extends React.Component {
       status: null,
       showEqModal: false,
     };
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
@@ -99,15 +100,11 @@ class ActionsPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
-  handleBoxClick(id) {
-    // var id = event.target.value;
-    this.addMeToSelected(id);
-  }
-
   renderModal() {
     if (this.state.openModalForm) {
       return (
         <MEModal
+          className="parent-act-modal-whole"
           showCloseBtn={false}
           closeModal={this.closeModal}
           size="sm"
@@ -189,54 +186,44 @@ class ActionsPage extends React.Component {
 
     const steps = [
       {
-        target: "body",
-        title: "Actions chosen by your neighbors",
-        content: (
-          <>
-            There are a lot of them! You can filter by category, impact or cost.{" "}
-            Interested in an action?{" "}
-            <spam style={{ color: "#F67B61" }}>
-              Click on any card for more info.
-            </spam>
-          </>
+        target: ".test-action-card-item",
+        title: (
+          <strong style={{ fontSize: 16 }}>
+            All these actions were chosen by your neighbors!
+          </strong>
         ),
-        locale: {
-          close: <span>Got it!</span>,
-        },
-        placement: "center",
+        content:
+          "You can filter these actions by category, impact or cost. Click on the card to continue.",
+        placement: "right",
+        spotlightPadding: 10,
         spotlightClicks: true,
-        disableBeacon: false,
-        hideFooter: false,
+        disableBeacon: true,
+        hideFooter: true,
+        disableOverlayClose: true,
       },
-      // ...
     ];
 
     return (
       <>
-        <ProductTour
-          steps={steps}
-          showSkipButton
-          // spotlightPadding={-5}
-          // disableOverlay
-          // showProgress
-          styles={{
-            options: {
-              // modal arrow and background color
-              arrowColor: "#eee",
-              backgroundColor: "#eee",
-              // page overlay color
-              //  overlayColor: "rgba(79, 26, 0, 0.1)",
-              //button color
-              primaryColor: "#8CC43C",
-              //text color
-              textColor: "black",
-              //width of modal
-              width: 500,
-              //zindex of modal
-              zIndex: 1000,
-            },
-          }}
-        />
+        {this.props.showTour && (
+          <ProductTour
+            steps={steps}
+            showSkipButton
+            disableScrolling={true}
+            callback={handleTourCallback}
+            spotlightPadding={-12}
+            styles={{
+              options: {
+                arrowColor: "#eee",
+                backgroundColor: "#eee",
+                primaryColor: "#8CC43C",
+                textColor: "black",
+                width: 400,
+                zIndex: 1000,
+              },
+            }}
+          />
+        )}
         {this.renderEQModal()}
         {this.renderModal()}
         <div
@@ -329,9 +316,9 @@ class ActionsPage extends React.Component {
   }
 
   // on change in any category or tag checkbox update the actionsPage
-  handleChange() {
-    this.forceUpdate();
-  }
+  //handleChange() {
+  //  this.forceUpdate();
+  //}
 
   // };
   // renders all the actions
@@ -355,7 +342,7 @@ class ActionsPage extends React.Component {
     return Object.keys(actions).map((key) => {
       var action = actions[key];
       return (
-        <Action
+        <ActionCard
           className="test-action-card-item"
           key={key}
           action={action}
@@ -365,7 +352,7 @@ class ActionsPage extends React.Component {
           addToCart={(aid, hid, status, date_completed) =>
             this.addToCart(aid, hid, status, date_completed)
           }
-          inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
+          //inCart={(aid, hid, cart) => this.inCart(aid, hid, cart)}
           moveToDone={(aid, hid) => this.moveToDoneByActionId(aid, hid)}
           modalIsOpen={this.state.openModalForm === action.id}
           showTestimonialLink={this.state.testimonialLink === action.id}
@@ -409,18 +396,21 @@ class ActionsPage extends React.Component {
 
     return checkTodo.length > 0 || checkDone.length > 0;
   };
-  moveToDone = (actionRel) => {
+
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDone = (actionRel, date_completed) => {
     const body = {
-      user_id: this.props.user.id,
       action_id: actionRel.action.id,
       household_id: actionRel.real_estate_unit.id,
     };
+    // only include if user specified this
+    if (date_completed) {
+      body.date_completed = date_completed;
+    }
     apiCall("users.actions.completed.add", body)
       .then((json) => {
-        console.log("api called here");
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
-          // this.addToImpact(json.data.action);
           this.setState({
             testimonialLink: actionRel.action.id,
             showTodoMsg: false,
@@ -428,30 +418,32 @@ class ActionsPage extends React.Component {
         } else {
           console.log(json.error);
         }
-        //just update the state here
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  moveToDoneByActionId(aid, hid) {
+
+  // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
+  moveToDoneByActionId(aid, hid, date) {
     const actionRel = this.props.todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
       );
     })[0];
-    if (actionRel) this.moveToDone(actionRel);
+    if (actionRel) this.moveToDone(actionRel, date);
   }
+
+  // NOTE: Routine currently duplicated in ActionsPage and OneActionPage - preserve same functionality in each
   addToCart = (aid, hid, status, date_completed) => {
     const body = {
-      user_id: this.props.user.id,
       action_id: aid,
       household_id: hid,
     };
     // only include if user specified this
     if (date_completed) {
-      body.date_completed = date_completed + "-01";
+      body.date_completed = date_completed;
     }
     const path =
       status === "DONE"
@@ -467,7 +459,6 @@ class ActionsPage extends React.Component {
             this.setState({ showTodoMsg: aid });
           } else if (status === "DONE") {
             this.props.reduxAddToDone(json.data);
-            // this.addToImpact(json.data.action);
             this.setState({ testimonialLink: aid, showTodoMsg: false });
           }
         }
@@ -476,69 +467,11 @@ class ActionsPage extends React.Component {
         console.log(error);
       });
   };
-
-  addToImpact(action) {
-    this.changeDataByName("ActionsCompletedData", 1);
-    action.tags.forEach((tag) => {
-      if (tag.tag_collection && tag.tag_collection.name === "Category") {
-        this.changeData(tag.id, 1);
-      }
-    });
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamAddAction(this.props.user.teams[key]);
-    });
-  }
-
-  changeDataByName(name, number) {
-    const communityData = this.props.communityData || [];
-    var data = communityData.filter((data) => {
-      return data.name === name;
-    })[0];
-
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
-
-  changeData(tagid, number) {
-    var data = this.props.communityData.filter((data) => {
-      if (data.tag) {
-        return data.tag === tagid;
-      }
-      return false;
-    })[0];
-    if (!data) {
-      return;
-    }
-    const body = {
-      data_id: data.id,
-      value: data.value + number > 0 ? data.value + number : 0,
-    };
-    apiCall("data.update", body).then((json) => {
-      if (json.success) {
-        data = {
-          ...data,
-          value: data.value + number > 0 ? data.value + number : 0,
-        };
-        this.props.reduxChangeData(data);
-      }
-    });
-  }
 }
+
 const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
-    auth: store.firebase.auth,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -550,6 +483,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     pref_eq: store.user.pref_equivalence,
     eq: store.page.equivalences,
+    showTour: store.page.showTour,
   };
 };
 

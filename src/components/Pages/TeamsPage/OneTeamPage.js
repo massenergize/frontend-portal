@@ -441,7 +441,6 @@ class OneTeamPage extends React.Component {
       isBigText,
     } = props;
 
-    // console.log("i am the team text", team.description?.length);
     return (
       <>
         <div className="row phone-vanish" style={{ minHeight: 142 }}>

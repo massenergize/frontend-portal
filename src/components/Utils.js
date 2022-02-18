@@ -1,8 +1,21 @@
 import * as moment from "moment";
 import React from "react";
-import qs from 'qs'
+import qs from "qs";
+import { ME_STATES } from "./States";
+import { STATUS, ACTIONS } from "react-joyride";
+const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
+const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
+
+export const TOUR_STORAGE_KEY = "SHOW_TOUR";
+export const stateAbbreviation = (stateName) => {
+  const index = meStatesData.indexOf(stateName);
+  if (index > -1) {
+    return meStatesDataValues[index];
+  }
+  return stateName;
+};
+
 export const PREFERRED_EQ = "PREFERRED_EQ";
-export const IS_SANDBOX = 'is_sandbox';
 
 /**
  * For equivalences with a common formular, this function is used to determine the value
@@ -19,8 +32,8 @@ export const calcEQ = (carbonFootprint, constantPerYearInPounds) => {
 export const PREF_EQ_DEFAULT = {
   name: "Trees",
   icon: "fa-tree",
-  value: 2200./16.535,
-}
+  value: 2200 / 16.535,
+};
 
 /**
  * Collects saved content from local storage and parses it into json, or string
@@ -38,16 +51,42 @@ export const fetchAndParseStorageContent = (key, isJson = true) => {
   return null;
 };
 
-export const getFilterVersionFromURL = (location, paramName) => {
+export const getFilterVersionFromURL = (location) => {
   if (!location || !location.search) return "";
-  const { filter } = qs.parse(location.search, { ignoreQueryPrefix: true })
+  const { filter } = qs.parse(location.search, { ignoreQueryPrefix: true });
   return filter;
 };
 
 export const getIsSandboxFromURL = (location) => {
   if (!location || !location.search) return "";
-  const { sandbox } = qs.parse(location.search, { ignoreQueryPrefix: true })
-  return sandbox
+  const { sandbox } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return sandbox;
+};
+
+export const getTakeTourFromURL = (location = window.location) => {
+  if (!location || !location.search) return "";
+  const { tour } = qs.parse(location.search, { ignoreQueryPrefix: true });
+  return tour?.toLowerCase();
+};
+
+//TODO: how to stop second step once seen tour is set to true? setTimeOut???
+//TODO: why home first step isn't closing when X is clicked?
+export const handleTourCallback = (data, cb) => {
+  if (cb) return cb(data);
+  const { status, action, index } = data;
+  if (
+    (index > 0 && action === ACTIONS.CLOSE) ||
+    [STATUS.FINISHED, STATUS.SKIPPED].includes(status)
+  ) {
+    window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
+  }
+
+  return true;
+};
+
+export const handleCloseTourWithBtn = () => {
+  window.localStorage.setItem(TOUR_STORAGE_KEY, "false");
+  return true;
 };
 
 export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
@@ -277,42 +316,56 @@ export function dateFormatString(startDate, endDate) {
  * @param location
  */
 export function locationFormatJSX(location) {
-  let firstLine = location.unit
-    ? `${location.unit || ""}${location.unit || ","} ${location.address || ""}`
-    : `${location.address || ""}`;
-
+  if (!location) return;
+  let firstLine =
+    location.unit && location.unit !== ""
+      ? `${location.address || ""}, ${location.unit}`
+      : `${location.address || ""}`;
+  const state = location.state ? stateAbbreviation(location.state) : "";
   return (
     <span>
       <b>{firstLine}</b>
       {location.city ? `, ${location.city}` : ""}
-      {location.state ? `, ${location.state}` : ""}
+      {state ? `, ${state}` : ""}
     </span>
   );
 }
 
-export function getCircleGraphData(goalObj, which, pref_eq=null ) {
+export function getCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs = {}
+) {
   if (goalObj === null) return 0;
+  let value = 0;
   switch (which) {
     case "households": {
-      let value =
-        goalObj.initial_number_of_households +
-        goalObj.attained_number_of_households +
-        goalObj.organic_attained_number_of_households;
+      if (display_prefs.manual_households)
+        value += goalObj.initial_number_of_households;
+      if (display_prefs.state_households)
+        value += goalObj.attained_number_of_households;
+      if (display_prefs.platform_households)
+        value += goalObj.organic_attained_number_of_households;
       return value;
     }
     case "actions-completed": {
-      let value =
-        goalObj.initial_number_of_actions +
-        goalObj.attained_number_of_actions +
-        goalObj.organic_attained_number_of_actions;
+      if (display_prefs.manual_actions)
+        value += goalObj.initial_number_of_actions;
+      if (display_prefs.state_actions)
+        value += goalObj.attained_number_of_actions;
+      if (display_prefs.platform_actions)
+        value += goalObj.organic_attained_number_of_actions;
       return value;
     }
     case "carbon-reduction": {
-      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;     // hard coding tree equivalence if none chosen
-      let value =
-        goalObj.initial_carbon_footprint_reduction +
-        goalObj.attained_carbon_footprint_reduction +
-        goalObj.organic_attained_carbon_footprint_reduction;
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
+      if (display_prefs.manual_carbon)
+        value += goalObj.initial_carbon_footprint_reduction;
+      if (display_prefs.state_carbon)
+        value += goalObj.attained_carbon_footprint_reduction;
+      if (display_prefs.platform_carbon)
+        value += goalObj.organic_attained_carbon_footprint_reduction;
       value = calcEQ(value, factor);
       return value;
     }
@@ -321,15 +374,20 @@ export function getCircleGraphData(goalObj, which, pref_eq=null ) {
   }
 }
 
-export function createCircleGraphData(goalObj, which, pref_eq=null) {
+export function createCircleGraphData(
+  goalObj,
+  which,
+  pref_eq = null,
+  display_prefs
+) {
   if (goalObj === null) return {};
 
-  const value = getCircleGraphData(goalObj, which, pref_eq);  
+  const value = getCircleGraphData(goalObj, which, pref_eq, display_prefs);
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
       const target = goalObj.target_number_of_households;
-      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
+      const rest = value === 0 ? 100 : value < target ? target - value : 0;
       return {
         labels: ["Households Engaged", "Remaining"],
         datasets: [
@@ -343,7 +401,7 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
     }
     case "actions-completed": {
       const target = goalObj.target_number_of_actions;
-      const rest = (value === 0) ? 100 : (value < target) ? target - value : 0;
+      const rest = value === 0 ? 100 : value < target ? target - value : 0;
       return {
         labels: ["Actions Completed", "Remaining"],
         datasets: [
@@ -356,11 +414,13 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
       };
     }
     case "carbon-reduction": {
-      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value;    // hard coding tree equivalence if none chosen
-      const target = Number(calcEQ(goalObj.target_carbon_footprint_reduction, factor));
-      const unit = pref_eq?.name || PREF_EQ_DEFAULT.name;   // hardcode Tree equivalence if none chosen
-      const diff = (value < target) ? target - value : 0;
-      const rest = (value === 0) ? 100 : diff;
+      const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
+      const target = Number(
+        calcEQ(goalObj.target_carbon_footprint_reduction, factor)
+      );
+      const unit = pref_eq?.name || PREF_EQ_DEFAULT.name; // hardcode Tree equivalence if none chosen
+      const diff = value < target ? target - value : 0;
+      const rest = value === 0 ? 100 : diff;
       return {
         labels: [unit, "Remaining"],
         datasets: [
@@ -381,16 +441,15 @@ export function createCircleGraphData(goalObj, which, pref_eq=null) {
 }
 
 /**
- * 
- * @param {String} htmlText 
+ *
+ * @param {String} htmlText
  * @returns the text from an html string
  */
-export function extractTextFromHTML(htmlText){
-  return htmlText && htmlText.replace(/<[^>]+>/g, '')
+export function extractTextFromHTML(htmlText) {
+  return htmlText && htmlText.replace(/<[^>]+>/g, "");
 }
 
 export function recurringDetails(event) {
-
   if (!event?.recurring_details) {
     return "";
   }

@@ -12,7 +12,7 @@ export default class ActionBoxCounter extends Component {
       <>
         {useCounter ? (
           <CountUp
-            end={end}
+            end={typeof end === 'string' ? Number(end) : end }
             duration={1}
             decimals={1}
             style={{
