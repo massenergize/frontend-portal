@@ -11,6 +11,10 @@ import {
   filterTagCollections,
   applyTagsAndGetContent,
   searchIsActiveFindContent,
+  recreateFiltersForState,
+  collectSearchTextValueFromURL,
+  processFiltersAndUpdateURL,
+  makeFilterDescription,
 } from "../../Utils";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
@@ -19,6 +23,7 @@ import Tooltip from "../Widgets/CustomTooltip";
 import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
+import ShareButtons from "../../Shared/ShareButtons";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -41,10 +46,29 @@ class EventsPage extends React.Component {
       searchText: null,
       view_mode: savedView || VIEW_MODES.NORMAL.key,
       showModal: false,
+      mounted: false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
+
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
+        };
+    }
+
+    return null;
+  };
   addMeToSelected(param, reset = false) {
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -69,10 +93,14 @@ class EventsPage extends React.Component {
         event.featured_summary.toLowerCase().includes(word)
     );
   }
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
 
   render() {
     const pageData = this.props.pageData;
     const { history, links } = this.props;
+    const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.events || !this.props.tagCols) {
@@ -140,6 +168,10 @@ class EventsPage extends React.Component {
                       tagCols={this.props.tagCols}
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
+                      searchText={this.state.searchText}
+                      filtersFromURL={this.state.checked_values}
+                      doneProcessingURLFilter={this.state.mounted}
+                      onSearchTextChange={this.onSearchTextChange.bind(this)}
                     />
                     <div className="event-view-togglers">
                       {Object.keys(VIEW_MODES).map((key, index) => {
@@ -189,6 +221,24 @@ class EventsPage extends React.Component {
                         />
                       </div>
                     )}
+
+                    <center style={{ padding: 10 }}>
+                      <p style={{ color: "black" }}>Share this page</p>
+                      <ShareButtons
+                        include={["facebook"]}
+                        url={window.location.href}
+                        pageTitle={`Events happening in ${
+                          this.props?.pageData?.community?.name ||
+                          "your community"
+                        }`}
+                        pageDescription={
+                          (filterDescription &&
+                            `Take a look at events under the following categories: ${filterDescription} 
+                        `) ||
+                          ""
+                        }
+                      />
+                    </center>
                   </div>
                 </div>
               </div>

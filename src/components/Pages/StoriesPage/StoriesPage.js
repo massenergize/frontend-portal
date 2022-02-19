@@ -6,6 +6,7 @@ import PageTitle from "../../Shared/PageTitle";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
+  collectSearchTextValueFromURL,
   filterTagCollections,
   getHumanFriendlyDate,
   getRandomIntegerInRange,
@@ -18,6 +19,7 @@ import StorySheet from "./Story Sheet/StorySheet";
 import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
+import ShareButtons from "./../../Shared/ShareButtons";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +36,7 @@ class StoriesPage extends React.Component {
       },
       stories: [],
       searchText: null,
+      mounted: false,
     };
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -86,6 +89,16 @@ class StoriesPage extends React.Component {
     });
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      return {
+        mounted: true,
+        searchText: collectSearchTextValueFromURL(props.location),
+      };
+    }
+
+    return null;
+  };
   handleSearch(e) {
     e.preventDefault();
     this.setState({ searchText: e.target.value });
@@ -99,8 +112,7 @@ class StoriesPage extends React.Component {
       (story, word) =>
         story?.title?.toLowerCase().includes(word) ||
         story?.body?.toLowerCase().includes(word) ||
-        story?.user?.preferred_name?.toLowerCase().includes(word) ||
-        story?.user?.full_name?.toLowerCase().includes(word)
+        story?.preferred_name?.toLowerCase().includes(word)
     );
   }
 
@@ -140,6 +152,9 @@ class StoriesPage extends React.Component {
     });
   }
 
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
   render() {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -194,6 +209,9 @@ class StoriesPage extends React.Component {
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
+                searchText={this.state.searchText}
+                doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -233,6 +251,17 @@ class StoriesPage extends React.Component {
                       </MELink>
                     </p>
                   ) : null}
+                </center>
+
+                <center style={{ padding: 10 }}>
+                  <p style={{ color: "black" }}>Share this page</p>
+                  <ShareButtons
+                    include={["facebook"]}
+                    url={window.location.href}
+                    pageTitle={`Stories people have about actions they have taken in ${
+                      this.props?.pageData?.community?.name || "your community"
+                    }`}
+                  />
                 </center>
               </div>
             </div>

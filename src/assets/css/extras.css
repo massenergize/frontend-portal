@@ -1895,8 +1895,8 @@
   }
 
   .submit-testimonial-button {
-      background-color: green;
-      color: white;  
+    background-color: green;
+    color: white;
   }
 
   .submit-testimonial-button:hover {
@@ -1909,7 +1909,7 @@
   }
 
   .close-testimonial-modal-button:hover {
-      background-color: lightcoral;
+    background-color: lightcoral;
   }
 
   .hori-filter-container {
@@ -1924,8 +1924,7 @@
     border-right-width: 0px;
   }
 
-  .snackbar-success
-  .mob-modal-correction {
+  .snackbar-success .mob-modal-correction {
     margin-top: -5vh !important;
   }
   .me-modal-md {

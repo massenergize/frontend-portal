@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { getPropsArrayFromJsonArray } from "../../Utils";
+import {
+  findMatchingTag,
+  getPropsArrayFromJsonArray,
+  putSearchTextFilterInURL,
+  removeAllFiltersFromURL,
+} from "../../Utils";
 import MELightDropDown, { NONE } from "../Widgets/MELightDropDown";
 import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal"
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -20,6 +25,7 @@ class HorizontalFilterBox extends Component {
       showSearch: false,
       longHeight: false,
       selected_collection: null,
+      mounted: false,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
@@ -37,8 +43,9 @@ class HorizontalFilterBox extends Component {
     if (!tagCols) return [];
     return tagCols;
   }
-  onItemSelectedFromDropDown(value, type) {
-    const param = { collectionName: type, value };
+  onItemSelectedFromDropDown(value, type, collectionId) {
+    const tag = findMatchingTag(value, this.props.tagCols, collectionId);
+    const param = { collectionName: type, value, collectionId, tagId: tag?.id };
     this.props.boxClick(param);
     var { activeTags } = this.state;
     activeTags = (activeTags || []).filter(
@@ -63,7 +70,11 @@ class HorizontalFilterBox extends Component {
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
           onClick={() =>
-            this.onItemSelectedFromDropDown(NONE, tagObj.collectionName)
+            this.onItemSelectedFromDropDown(
+              NONE,
+              tagObj.collectionName,
+              tagObj?.collectionId
+            )
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -91,6 +102,16 @@ class HorizontalFilterBox extends Component {
     return activeTags.filter((item) => item.collectionName === set.name)[0];
   };
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted)
+      return {
+        activeTags: props.filtersFromURL,
+        mounted: props.doneProcessingURLFilter,
+      };
+
+    return null;
+  };
+
   renderDifferentCollections = (style = { display: "inline-block" }) => {
     var { version } = this.props;
     version = this.getVersionToShow() || version;
@@ -116,6 +137,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
+              collectionId={set.id}
             />
           </div>
         );
@@ -159,7 +181,6 @@ class HorizontalFilterBox extends Component {
   renderPhoneCollections = (style = { display: "inline-block" }) => {
     const { version } = this.props;
     var col = this.getCollectionSetAccordingToPage();
-    // col = (col || []).length > 3 ? col.slice(0, 2) : col;
     if (col) {
       return col.map((set, index) => {
         const selected = this.currentSelectedVal(set);
@@ -173,7 +194,7 @@ class HorizontalFilterBox extends Component {
               style={{ background: "transparent", marginBottom: 4 }}
               label={
                 <span className="h-f-label" style={{ textDecoration: "none" }}>
-                  {cat.length > 10 ? cat.slice(0, 7) + "..." : cat}
+                  {cat?.length > 10 ? cat.slice(0, 7) + "..." : cat}
                   {/* {this.renderIcon(selected)} */}
                 </span>
               }
@@ -181,6 +202,7 @@ class HorizontalFilterBox extends Component {
               data={data}
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
+              collectionId={set.id}
               menuTextClick={() => this.phoneMenuTextClick(set)}
             />
           </div>
@@ -193,6 +215,8 @@ class HorizontalFilterBox extends Component {
     e.preventDefault();
     this.setState({ activeTags: [] });
     this.props.boxClick(null, true);
+    this.props.onSearchTextChange("");
+    removeAllFiltersFromURL(this.props);
   };
   renderClearFilter() {
     const { activeTags } = this.state;
@@ -202,7 +226,6 @@ class HorizontalFilterBox extends Component {
           className="filter-close me-open-in"
           href="#void"
           onClick={this.clearFilters}
-          // style={{ position: "absolute", left: 28, top: -5 }}
         >
           Clear Filters{" "}
           <i className="fa fa-times-circle" style={{ marginLeft: 2 }}></i>
@@ -223,7 +246,8 @@ class HorizontalFilterBox extends Component {
           onClick={() =>
             this.onItemSelectedFromDropDown(
               NONE,
-              selected && selected.collectionName
+              selected && selected.collectionName,
+              selected?.collectionId
             )
           }
         >
@@ -240,6 +264,12 @@ class HorizontalFilterBox extends Component {
     if (version === OPTION2) return 2;
     return 1;
   }
+  handleSearchTyping = (e) => {
+    if (!this.props.search) return;
+    this.props.onSearchTextChange(e.target.value);
+    this.props.search(e);
+    putSearchTextFilterInURL(this.props, e.target.value);
+  };
   render() {
     const { longHeight } = this.state;
     return (
@@ -256,10 +286,8 @@ class HorizontalFilterBox extends Component {
               fontSize: "medium",
               marginLeft: 31,
             }}
-            onChange={(event) => {
-              if (!this.props.search) return;
-              this.props.search(event);
-            }}
+            onChange={this.handleSearchTyping}
+            value={this.props.searchText}
             icon="fa fa-search"
             iconColor="rgb(210 210 210)"
             containerStyle={{ display: "inline-block", position: "relative" }}
@@ -269,18 +297,17 @@ class HorizontalFilterBox extends Component {
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
           this.props.user ? (
-	          <StoryFormButtonModal>
-                <div className="add-testimonial-container">
-                  <div className="add-testimonial touchable-opacity">
-                      <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                      <p>Add Testimonial</p>
-                  </div>
+            <StoryFormButtonModal>
+              <div className="add-testimonial-container">
+                <div className="add-testimonial touchable-opacity">
+                  <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                  <p>Add Testimonial</p>
                 </div>
-				</StoryFormButtonModal>
+              </div>
+            </StoryFormButtonModal>
           ) : (
             <div />
-        )
-        }
+          )}
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
@@ -288,10 +315,8 @@ class HorizontalFilterBox extends Component {
             id="test-filter-box-id"
             className="phone-search-input "
             placeholder="Search..."
-            onChange={(event) => {
-              if (!this.props.search) return;
-              this.props.search(event);
-            }}
+            onChange={this.handleSearchTyping}
+            value={this.props.searchText}
           />
 
           <div
