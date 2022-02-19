@@ -131,7 +131,14 @@ class StoriesPage extends React.Component {
               className="extra-story-cards me-anime-move-from-left-fast"
               style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
             >
-              {story.title} {story.is_published ? "" : "(Pending Appr.)"}
+              {story.title}{" "}
+              {story.is_published ? (
+                ""
+              ) : (
+                <span style={{ color: "var(--app-theme-orange)" }}>
+                  (Pending Appr.)
+                </span>
+              )}
               <br />
               <small style={{ color: "green" }}>
                 <b>
