@@ -33,6 +33,7 @@ export const GOOD = "good";
  * @prop {bool} elevate | should the form be elevated or not?
  * @prop {bool} animate | should the form be animated or not?
  * @prop {object} info | any notification you would like to display below the form {icon, type ("good|bad"), text}
+ * @prop {function}  onMount | A function that exports some utility fxns and values from the form generator
  * @returns HTML Form event && form Content (e, content)
  *
  */
@@ -206,7 +207,8 @@ export default class FormGenerator extends Component {
     );
   }
   componentDidMount() {
-    const { fields } = this.props;
+    const { fields, onMount } = this.props;
+    onMount && onMount(this.resetForm)
     if (!fields) return;
     this.setDefaultValues();
     //sets props for form data when in edit mode 
@@ -429,39 +431,9 @@ export default class FormGenerator extends Component {
             <div>{this.displayInformation()}</div>
             <div>{this.displayImageWarning()}</div>
             <div style={{ display: "flex" }}>
-              <div style={{ margin: "auto" }}>
+              <div style={{ marginLeft: "auto" }}>
                 {moreActions}
-
-                {/*Added a clear form button because when you click edit testimonial button,
-                        you can edit the testimonial but there is no way to clear the form to submit a new
-                         testimonial with out refreshing the page */}   
                 <MEButton
-                  type="button"
-                  onClick={() => {this.resetForm()}}
-                  containerStyle={{
-                    padding: "10px 12px",
-                    fontSize: 18,
-                  }}
-                >
-                  Clear Form
-                </MEButton>
-
-				
-                <MEButton
-                  type="button"
-                  onClick={() => {this.props.TriggerModal(false)}}
-                  className="close-testimonial-modal-button"
-                  containerStyle={{
-                    padding: "10px 12px",
-                    fontSize: 18,
-                  }}
-                >
-                  Cancel 
-                </MEButton>
-
-
-                <MEButton
-                  className="submit-testimonial-button"
                   containerStyle={{
                     padding: "10px 12px",
                     fontSize: 18,

@@ -16,8 +16,8 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import StorySheet from "./Story Sheet/StorySheet";
 import MECard from "../Widgets/MECard";
-import MEButton from "../Widgets/MEButton"
-import StoryFormButtonModal from "./StoryFormButtonModal"
+import MEButton from "../Widgets/MEButton";
+import StoryFormButtonModal from "./StoryFormButtonModal";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +49,6 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
-
   renderAddTestmonialBtn() {
     if (this.props.user) {
       return (
@@ -73,11 +72,11 @@ class StoriesPage extends React.Component {
   renderTestimonialForm() {
     if (this.props.user) {
       return (
-    <div className="every-day-flex">
-      <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
-    </div>
-	  )
-	     }
+        <div className="every-day-flex">
+          <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+        </div>
+      );
+    }
   }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
@@ -113,14 +112,21 @@ class StoriesPage extends React.Component {
           : story.user.preferred_name; //"...";
       // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
-        <div  key={index.toString()}>
+        <div key={index.toString()}>
           <div key={index.toString()}>
             <MECard
               href={`${this.props.links.testimonials}#sheet-content-${story.id}`}
               className="extra-story-cards me-anime-move-from-left-fast"
               style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
             >
-              {story.title} {story.is_published? "" : "(Pending Appr.)"}
+              {story.title}{" "}
+              {story.is_published ? (
+                ""
+              ) : (
+                <span style={{ color: "var(--app-theme-orange)" }}>
+                  (Pending Appr.)
+                </span>
+              )}
               <br />
               <small style={{ color: "green" }}>
                 <b>
@@ -210,7 +216,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-				  <div>{this.renderTestimonialForm()}</div>
+                  <div>{this.renderTestimonialForm()}</div>
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>
@@ -268,9 +274,7 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet 
-        {...story} 
-        links={this.props.links} />
+        <StorySheet {...story} links={this.props.links} />
       </div>
     ));
   }
