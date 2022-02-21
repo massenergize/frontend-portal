@@ -1,12 +1,28 @@
 import React from "react";
-
+import loader from "./../../assets/images/other/loader.gif";
 /**
  * Renders the loading screen that shows when server is still responding
  */
 class LoadingCircle extends React.Component {
   render() {
-    var { width, height, id, style } = this.props;
-  
+    var { width, height, id, style, simple, label } = this.props;
+
+    if (simple)
+      return (
+        <center>
+          <img
+            src={loader}
+            alt="Loading..."
+            style={{
+              display: "block",
+              margin: "auto",
+              width: "150px",
+              height: "150px",
+            }}
+          />
+          {label && <span>{label}</span>}
+        </center>
+      );
 
     if (width && height) {
       style = { width, height, ...style };

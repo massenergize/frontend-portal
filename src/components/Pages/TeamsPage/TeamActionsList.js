@@ -2,7 +2,7 @@ import React from "react";
 import { apiCall } from "../../../api/functions";
 import loader from "../../../assets/images/other/loader.gif";
 import DataTable from "react-data-table-component";
-import { smartString } from "../../Utils";
+import { removeDuplicates, smartString } from "../../Utils";
 
 class TeamActionsList extends React.Component {
   constructor(props) {
@@ -19,7 +19,9 @@ class TeamActionsList extends React.Component {
         team_id: id,
       });
       if (json.success) {
-        this.setState({ listResponse: json.data });
+        this.setState({
+          listResponse: removeDuplicates(json.data, (a) => a.id),
+        });
       } else {
         this.setState({ error: json.error });
       }

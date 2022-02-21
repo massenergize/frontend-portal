@@ -68,7 +68,7 @@ class OneTeamPage extends React.Component {
     this.setState({ showOption: "Graph" });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const { id } = this.props.match.params;
     // if (id !== prevProps.match.params.id) {
     if (this.props.teamsStats && !this.state.teamData && !this.state.error) {
@@ -330,7 +330,7 @@ class OneTeamPage extends React.Component {
                   )}
                   <METabView
                     tabs={this.makeTabs({ subTeams, remountForcer, team })}
-                    defaultTab="list"
+                    defaultTab="graph"
                   />
                   <center style={{ width: "100%" }}>
                     <MEButton

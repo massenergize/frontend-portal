@@ -15,6 +15,9 @@ import {
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
 import { isMobile } from "react-device-detect";
+import ImpactCommunityActionList from "./ImpactCommunityActionList";
+import TabView from "../Widgets/METabView/METabView";
+import { withRouter } from "react-router-dom";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
@@ -93,7 +96,7 @@ class ImpactPage extends React.Component {
                         marginRight: 7,
                       }}
                     >
-                      <b> {values[0].toLocaleString()}</b>
+                      <b> {values[0]?.toLocaleString()}</b>
                     </span>
                     Households &nbsp; ({percents[0]}% of goal)
                   </p>
@@ -181,6 +184,34 @@ class ImpactPage extends React.Component {
     );
   }
 
+  makeTabs = ({ graph2Series, graph2Categories, phoneImpact }) => {
+    return [
+      {
+        key: "graph",
+        icon: "fa-bar-chart",
+        name: "Graph",
+        component: (
+          <ImpactGraphWrapper
+            graph2Categories={graph2Categories}
+            graph2Series={graph2Series}
+            phoneImpact={phoneImpact}
+          />
+        ),
+      },
+      {
+        key: "list",
+        icon: "fa-list",
+        name: "List",
+        component: (
+          <ImpactCommunityActionList
+            list={this.props.communityActionList}
+            history={this.props.history}
+            links={this.props.links}
+          />
+        ),
+      },
+    ];
+  };
   render() {
     if (!this.props.comData) {
       return (
@@ -322,65 +353,15 @@ class ImpactPage extends React.Component {
                 <div style={{ padding: 10 }}>
                   <ExplanationDialog display_prefs={display_prefs} />
                 </div>
-                <div
-                  className="card rounded-0 mb-4 z-depth-float phone-vanish"
-                  style={{ marginTop: 15, border: 0 }}
-                >
-                  <div
-                    className="card-header text-center bg-white "
-                    style={{ marginTop: 5 }}
-                  >
-                    <h4 className="cool-font phone-medium-title">
-                      Number Of Actions Completed
-                    </h4>
-                  </div>
-                  <div className="card-body   me-anime-open-in">
-                    {/* ------- BAR GRAPH BY APEXCHARTS  ON PC -------- */}
-                    <BarGraph
-                      categories={graph2Categories}
-                      series={graph2Series}
-                      stacked={false}
-                      colors={["rgba(251, 85, 33, 0.85)", "#ff9a9a"]}
-                    />
-                  </div>
-                </div>
 
-                {isMobile && (
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "46vh",
-                      padding: 10,
-                      marginBottom: 25,
-                    }}
-                    className=" pc-vanish"
-                  >
-                    <div
-                      className="card-header text-center bg-white "
-                      style={{ marginTop: 5 }}
-                    >
-                      <h4 className="cool-font phone-medium-title">
-                        Number Of Actions Completed
-                      </h4>
-                    </div>
-                    {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
-                    <HorizontalBar
-                      options={{
-                        plugins: {
-                          datalabels: false,
-                          color: "#fff",
-                        },
-                        maintainAspectRatio: false,
-                        scales: {
-                          xAxes: [{ stacked: false }],
-                          yAxes: [{ stacked: false }],
-                        },
-                      }}
-                      data={phoneImpact}
-                    />
-                  </div>
-                )}
+                <TabView
+                  tabs={this.makeTabs({
+                    graph2Categories,
+                    graph2Series,
+                    phoneImpact,
+                  })}
+                  defaultTab="graph"
+                />
               </div>
               {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
               {isMobile && (
@@ -417,13 +398,83 @@ const mapStoreToProps = (store) => {
     impactPage: store.page.impactPage,
     pref_eq: store.user.pref_equivalence,
     links: store.links,
+    communityActionList: store.page.communityActionList,
   };
 };
 
 export default connect(mapStoreToProps, { reduxLoadCommunitiesStats })(
-  ImpactPage
+  withRouter(ImpactPage)
 );
 
+export const ImpactGraphWrapper = ({
+  graph2Series,
+  graph2Categories,
+  phoneImpact,
+}) => {
+  return (
+    <>
+      <div
+        className="card  mb-4 z-depth-float phone-vanish"
+        style={{ marginTop: 15, border: 0, borderRadius: 10 }}
+      >
+        <div
+          className="card-header text-center bg-white "
+          style={{ marginTop: 5 }}
+        >
+          <h4 className="cool-font phone-medium-title">
+            Number Of Actions Completed
+          </h4>
+        </div>
+        <div className="card-body   me-anime-open-in">
+          {/* ------- BAR GRAPH BY APEXCHARTS  ON PC -------- */}
+          <BarGraph
+            categories={graph2Categories}
+            series={graph2Series}
+            stacked={false}
+            colors={["rgba(251, 85, 33, 0.85)", "#ff9a9a"]}
+          />
+        </div>
+      </div>
+
+      {isMobile && (
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "46vh",
+            padding: 10,
+            marginBottom: 25,
+          }}
+          className=" pc-vanish"
+        >
+          <div
+            className="card-header text-center bg-white "
+            style={{ marginTop: 5 }}
+          >
+            <h4 className="cool-font phone-medium-title">
+              Number Of Actions Completed
+            </h4>
+          </div>
+          {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
+          <HorizontalBar
+            options={{
+              plugins: {
+                datalabels: false,
+                color: "#fff",
+              },
+              maintainAspectRatio: false,
+              scales: {
+                xAxes: [{ stacked: false }],
+                yAxes: [{ stacked: false }],
+              },
+            }}
+            data={phoneImpact}
+          />
+        </div>
+      )}
+    </>
+  );
+};
 const ExplanationDialog = ({ display_prefs }) => {
   const [showDialog, setShowDialog] = useState(false);
   return (
@@ -445,7 +496,7 @@ const ExplanationDialog = ({ display_prefs }) => {
         Dont know what the graph means? See explanation here.
       </a>
       {showDialog && (
-        <div className="data-explanation-dialog">
+        <div className="data-explanation-dialog me-anime-open-in z-depth-float">
           <div style={{ display: "flex", width: "100%" }}>
             <i
               onClick={() => setShowDialog(false)}

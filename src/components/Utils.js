@@ -5,8 +5,20 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
-
 export const TOUR_STORAGE_KEY = "SHOW_TOUR";
+
+export const removeDuplicates = (list, func) => {
+  if (!list) return [];
+  const tracker = [];
+  const arr = [];
+  list.forEach((action) => {
+    if (!tracker.includes(func(action))) {
+      arr.push(action);
+      tracker.push(func(action.id));
+    }
+  });
+  return arr;
+};
 export const smartString = (string, charLimit) => {
   if (!string) return "";
   if (!charLimit) return string;

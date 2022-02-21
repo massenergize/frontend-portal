@@ -5,11 +5,10 @@
   --app-theme-orange-lighter: #fba930;
 }
 
-.me-team-table-cell { 
-  text-decoration: underline;
-  color:var(--app-theme-green-darker); 
+.me-team-table-cell {
+  color: var(--app-theme-green-darker);
   cursor: pointer;
-  margin:5px 0px;
+  margin: 5px 0px;
 }
 .underline-me {
   border: solid 0px black;
@@ -1839,7 +1838,7 @@
 
 .data-explanation-dialog {
   padding: 20px;
-  border: solid 4px green;
+  /* border: solid 4px green; */
   border-radius: 10px;
   margin-bottom: 35px;
 }
@@ -1901,8 +1900,8 @@
   }
 
   .submit-testimonial-button {
-      background-color: green;
-      color: white;  
+    background-color: green;
+    color: white;
   }
 
   .submit-testimonial-button:hover {
@@ -1915,7 +1914,7 @@
   }
 
   .close-testimonial-modal-button:hover {
-      background-color: lightcoral;
+    background-color: lightcoral;
   }
 
   .hori-filter-container {
@@ -1930,8 +1929,7 @@
     border-right-width: 0px;
   }
 
-  .snackbar-success
-  .mob-modal-correction {
+  .snackbar-success .mob-modal-correction {
     margin-top: -5vh !important;
   }
   .me-modal-md {
