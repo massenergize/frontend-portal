@@ -10,7 +10,10 @@ import error_png from "./../../Pages/Errors/oops.png";
 import { Link } from "react-router-dom";
 import {
   applyTagsAndGetContent,
+  collectSearchTextValueFromURL,
   filterTagCollections,
+  processFiltersAndUpdateURL,
+  recreateFiltersForState,
   searchIsActiveFindContent,
 } from "../../Utils";
 import { NONE } from "../Widgets/MELightDropDown";
@@ -30,6 +33,7 @@ class ServicesPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
   addMeToSelected(param, reset = false) {
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -42,6 +46,10 @@ class ServicesPage extends React.Component {
     e.preventDefault();
     this.setState({ searchText: e.target.value });
   }
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
+
   searchIsActiveSoFindContentThatMatch() {
     return searchIsActiveFindContent(
       this.props.serviceProviders,
@@ -53,6 +61,22 @@ class ServicesPage extends React.Component {
     );
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
+        };
+    }
+
+    return null;
+  };
   render() {
     var { serviceProviders, pageData } = this.props;
     if (!serviceProviders) {
@@ -149,6 +173,10 @@ class ServicesPage extends React.Component {
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
+                    searchText={this.state.searchText}
+                    filtersFromURL={this.state.checked_values}
+                    doneProcessingURLFilter={this.state.mounted}
+                    onSearchTextChange={this.onSearchTextChange.bind(this)}
                   />
                 </div>
 
