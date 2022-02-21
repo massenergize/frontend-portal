@@ -43,7 +43,7 @@ class HomePage extends React.Component {
         action === ACTIONS.NEXT &&
         status === STATUS.FINISHED;
 
-      if (action === ACTIONS.CLOSE || userHasGoneFullCircle)
+      if (action === ACTIONS.CLOSE || action === ACTIONS.SKIP || userHasGoneFullCircle)
         return this.closeTourCompletely();
 
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
