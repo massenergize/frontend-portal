@@ -1,7 +1,8 @@
 import React from "react";
 import { apiCall } from "../../../api/functions";
 import loader from "../../../assets/images/other/loader.gif";
-import DataTable from 'react-data-table-component';
+import DataTable from "react-data-table-component";
+import { smartString } from "../../Utils";
 
 class TeamActionsList extends React.Component {
   constructor(props) {
@@ -42,42 +43,51 @@ class TeamActionsList extends React.Component {
 
   render() {
     const { loading, listResponse } = this.state;
+    const { history, links } = this.props;
     const columns = [
       {
-          name: 'Action Name',
-          selector: row => row.name,
-          sortable: true,
-          width: 40,
+        name: "Action Name",
+        selector: (row) => row.name,
+        sortable: true,
+        width: 40,
+        cell: ({ name, id }) => (
+          <span
+            className="touchable-opacity me-team-table-cell"
+            onClick={() => history?.push(links?.actions + "/" + id)}
+          >
+            {smartString(name, 40)}
+          </span>
+        ),
       },
       {
-        name: 'Category',
-        selector: row => row.category,
+        name: "Category",
+        selector: (row) => row.category,
         sortable: true,
         width: 20,
       },
       {
-        name: '# Done',
-        selector: row => row.done_count,
+        name: "# Done",
+        selector: (row) => row.done_count,
         sortable: true,
         center: true,
         width: 6,
       },
       {
-        name: 'Carbon savings',
-        selector: row => row.carbon_total,
+        name: "Carbon savings",
+        selector: (row) => row.carbon_total,
         sortable: true,
         center: true,
         width: 12,
       },
       {
-        name: '# Todo',
-        selector: row => row.todo_count,
+        name: "# Todo",
+        selector: (row) => row.todo_count,
         sortable: true,
         center: true,
         width: 6,
       },
     ];
-  
+
     if (loading)
       return (
         <img
@@ -101,14 +111,9 @@ class TeamActionsList extends React.Component {
 
     return (
       <div>
-        <DataTable
-            columns={columns}
-            data={listResponse}
-            selectableRows
-            dense
-        />
+        <DataTable columns={columns} data={listResponse} dense />
       </div>
-    )
+    );
   }
 }
 

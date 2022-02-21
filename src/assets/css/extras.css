@@ -5,6 +5,12 @@
   --app-theme-orange-lighter: #fba930;
 }
 
+.me-team-table-cell { 
+  text-decoration: underline;
+  color:var(--app-theme-green-darker); 
+  cursor: pointer;
+  margin:5px 0px;
+}
 .underline-me {
   border: solid 0px black;
   border-bottom-width: 1px;
