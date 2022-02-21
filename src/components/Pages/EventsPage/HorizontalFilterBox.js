@@ -266,7 +266,7 @@ class HorizontalFilterBox extends Component {
   }
   handleSearchTyping = (e) => {
     if (!this.props.search) return;
-    this.props.onSearchTextChange(e.target.value);
+    this.props.onSearchTextChange(e.target.value,e);
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
