@@ -20,6 +20,7 @@ import MESectionWrapper from "../Widgets/MESectionWrapper";
 import URLS from "../../../api/urls";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import METabView from "../Widgets/METabView/METabView";
+import MEModal from "../Widgets/MEModal";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -105,6 +106,7 @@ class OneTeamPage extends React.Component {
               teamID={team.id}
               history={this.props.history}
               links={this.props.links}
+              community={this.props.community}
             />
           </TeamsTabWrapper>
         ),
@@ -204,6 +206,7 @@ class OneTeamPage extends React.Component {
           <meta property="og:description" content={team.tagline} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
+        <MEModal>Here we go again my gree</MEModal>
 
         {contactEditModalOpen &&
           (isAdmin ? (
@@ -330,7 +333,7 @@ class OneTeamPage extends React.Component {
                   )}
                   <METabView
                     tabs={this.makeTabs({ subTeams, remountForcer, team })}
-                    defaultTab="graph"
+                    defaultTab="list"
                   />
                   <center style={{ width: "100%" }}>
                     <MEButton

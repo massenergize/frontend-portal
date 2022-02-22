@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { removeDuplicates, smartString } from "../../Utils";
+import { smartString } from "../../Utils";
 
 const LOADING = "LOADING";
 function ImpactCommunityActionList({ list, history, links }) {
   const [listResponse, setListResponse] = useState(LOADING);
 
   useEffect(() => {
-    setListResponse(removeDuplicates(list, (a) => a.id));
+    setListResponse(list);
   }, [list]);
 
   if (listResponse === LOADING) return <LoadingCircle simple />;
