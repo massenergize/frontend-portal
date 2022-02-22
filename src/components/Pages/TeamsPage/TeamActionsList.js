@@ -3,7 +3,6 @@ import { apiCall } from "../../../api/functions";
 import loader from "../../../assets/images/other/loader.gif";
 import DataTable from "react-data-table-component";
 import { smartString } from "../../Utils";
-import MEModal from "../Widgets/MEModal";
 
 class TeamActionsList extends React.Component {
   constructor(props) {

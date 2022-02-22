@@ -206,7 +206,6 @@ class OneTeamPage extends React.Component {
           <meta property="og:description" content={team.tagline} />
           <meta property="og:url" content={window.location.href} />
         </Helmet>
-        <MEModal>Here we go again my gree</MEModal>
 
         {contactEditModalOpen &&
           (isAdmin ? (
@@ -246,7 +245,7 @@ class OneTeamPage extends React.Component {
               </p>
             </center>
           )}
-
+          <MEModal v2>Here we go again my gree</MEModal>
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8 test-one-team-wrapper"
             data-has-big-text={isBigText && "true"}
