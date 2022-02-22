@@ -10,7 +10,7 @@ class TeamActionsList extends React.Component {
     this.state = {
       loading: true,
       listResponse: null,
-      show: false
+      show: false,
     };
   }
 
@@ -21,7 +21,6 @@ class TeamActionsList extends React.Component {
       });
       if (json.success) {
         this.setState({
-          // listResponse: removeDuplicates(json.data, (a) => a.id),
           listResponse: json.data,
         });
       } else {
@@ -46,12 +45,13 @@ class TeamActionsList extends React.Component {
   //}
 
   processAction({ id, community }) {
-    const { history, links } = this.props;
+    const { history, links, setConfirmationInfo } = this.props;
     const currentCommunity = this.props.community;
     const isNotFromThisCommunity = community?.id !== currentCommunity?.id;
     var func;
     if (isNotFromThisCommunity)
-      func = () => console.log("I am not from this community bro");
+      func = () =>
+        setConfirmationInfo({ modal: true, info: { id, community } });
     else func = () => history?.push(links?.actions + "/" + id);
     return [isNotFromThisCommunity, func];
   }

@@ -7,6 +7,7 @@
   background: black;
   opacity: 0.6;
   z-index: 999;
+  cursor: pointer;
 }
 
 .m-container {
@@ -45,7 +46,7 @@
 
   @media only screen and (min-width: 768px) {
     .m-content-wrapper{ 
-      min-height: 300px;
+      min-height: 200px;
     }
   }
 @media only screen and (max-width: 767px) {

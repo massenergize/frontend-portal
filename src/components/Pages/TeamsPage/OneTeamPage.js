@@ -32,6 +32,7 @@ class OneTeamPage extends React.Component {
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
       numOfSubTeams: 0,
+      show: null,
     };
     this.itemSelected = this.itemSelected.bind(this);
   }
@@ -107,6 +108,7 @@ class OneTeamPage extends React.Component {
               history={this.props.history}
               links={this.props.links}
               community={this.props.community}
+              setConfirmationInfo={(data) => this.setState({ show: data })}
             />
           </TeamsTabWrapper>
         ),
@@ -245,7 +247,16 @@ class OneTeamPage extends React.Component {
               </p>
             </center>
           )}
-          <MEModal v2>Here we go again my gree</MEModal>
+          <MEModal
+            show={this.state.show?.modal}
+            close={() => this.setState({ show: null })}
+            v2
+          >
+            <OutsideCommunityVisitConfirmation
+              info={this.state.show?.info}
+              close={() => this.setState({ show: null })}
+            />
+          </MEModal>
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8 test-one-team-wrapper"
             data-has-big-text={isBigText && "true"}
@@ -605,6 +616,63 @@ const TeamsTabWrapper = ({ children, links, subTeams }) => {
         </Link>
         !
       </p>
+    </div>
+  );
+};
+
+const OutsideCommunityVisitConfirmation = ({ info, close }) => {
+  const community = info?.community;
+  const url =
+    window.location.protocol +
+    "//" +
+    window.location.host +
+    "/" +
+    community?.subdomain +
+    "/actions/" +
+    info?.id;
+
+  return (
+    <div style={{ height: "100%", alignItems: "center" }}>
+      <div style={{ padding: 20 }}>
+        <p style={{ color: "black" }}>
+          This action is not in your community, its in{" "}
+          <b style={{ color: "var(--app-theme-orange)" }}>
+            "{community?.name}"
+          </b>
+          . Would you like to see this action on the{" "}
+          <b style={{ color: "var(--app-theme-orange)", marginRight: 3 }}>
+            "{community?.name}"
+          </b>
+          community site?
+        </p>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          background: "#fbfbfb",
+          borderRadius: 10,
+        }}
+      >
+        <div style={{ marginLeft: "auto" }}>
+          <button
+            className="flat-btn  flat-btn_submit btn-success"
+            onClick={() => {
+              window.open(url, "_blank");
+              close();
+            }}
+          >
+            Yes
+          </button>
+          <button className="flat-btn close-flat" onClick={() => close()}>
+            No
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

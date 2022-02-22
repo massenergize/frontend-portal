@@ -28,7 +28,10 @@ function Modal(props) {
     close,
     children,
     showOverlay,
+    show,
   } = props;
+
+  if (!show) return <></>;
   return (
     <>
       {showOverlay && <Curtain close={close} />}
