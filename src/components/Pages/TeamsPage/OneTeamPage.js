@@ -639,7 +639,7 @@ const OutsideCommunityVisitConfirmation = ({ info, close }) => {
           <b style={{ color: "var(--app-theme-orange)" }}>
             "{community?.name}"
           </b>
-          . Would you like to see this action on the{" "}
+          . Would you like to see it on the{" "}
           <b style={{ color: "var(--app-theme-orange)", marginRight: 3 }}>
             "{community?.name}"
           </b>
