@@ -14,9 +14,7 @@ import {
   calcEQ,
   PREF_EQ_DEFAULT,
 } from "./../../Utils";
-import ProductTour from "react-joyride";
-import { handleTourCallback } from "../../Utils";
-import { Link } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
@@ -61,7 +59,6 @@ class ImpactPage extends React.Component {
     percents,
     carbon_units,
     values,
-    maintainAspectRatio = false,
   }) {
     return (
       <>
@@ -70,81 +67,8 @@ class ImpactPage extends React.Component {
         </h5>
         <div id="two-graphs">
           {display_prefs.display_households ? (
-          <div
-            className="card  mb-4 z-depth-float me-anime-open-in"
-            style={{
-              borderRadius: 10,
-              background: "transparent",
-              borderColor: "#ecf3ee",
-            }}
-          >
-            <div className="card-body imp-chart-h">
-              <center>
-                <h4 className="impact-graph-heading">
-                  Households Taking Action
-                </h4>
-              </center>
-              {this.makeDoughnut(data[0])}
-            </div>
-            <div className="imp-desc-box">
-              <center>
-                <p className="impact-graph-title">
-                  <span
-                    style={{
-                      fontSize: "1rem",
-                      color: "black",
-                      marginRight: 7,
-                    }}
-                  >
-                    <b> {values[0].toLocaleString()}</b>
-                  </span>
-                  Households &nbsp; ({percents[0]}% of goal)
-                </p>
-              </center>
-            </div>
-          </div>
-          ) : null}
-          {display_prefs.display_actions ? (
-          <div
-              className="card z-depth-float mb-4 me-anime-open-in"
-              style={{
-                borderRadius: 10,
-                background: "transparent",
-                borderColor: "#ecf3ee",
-              }}
-          >
-            <div className="card-body imp-chart-h">
-              <center>
-                <h4 className="impact-graph-heading">
-                  Individual Actions Completed
-                </h4>
-              </center>
-              {this.makeDoughnut(data[1])}
-            </div>
-            <div className="imp-desc-box">
-              <center>
-                <p className="impact-graph-title">
-                  <span
-                    style={{
-                      fontSize: "1rem",
-                      color: "black",
-                      marginRight: 7,
-                    }}
-                  >
-                    <b> {values[1].toLocaleString()}</b>
-                  </span>
-                  Actions &nbsp; ({percents[1]}% of goal)
-                </p>
-              </center>
-            </div>
-          </div>
-        ) : null}
-        </div>
-        {display_prefs.display_carbon ? (
-        <div id="carbon-card">
-          {goal && goal.target_carbon_footprint_reduction > 0 ? (
             <div
-              className="card z-depth-float mb-4 me-anime-open-in"
+              className="card  mb-4 z-depth-float me-anime-open-in"
               style={{
                 borderRadius: 10,
                 background: "transparent",
@@ -154,10 +78,10 @@ class ImpactPage extends React.Component {
               <div className="card-body imp-chart-h">
                 <center>
                   <h4 className="impact-graph-heading">
-                    Carbon Reduction Impact
+                    Households Taking Action
                   </h4>
                 </center>
-                {this.makeDoughnut(data[2])}
+                {this.makeDoughnut(data[0])}
               </div>
               <div className="imp-desc-box">
                 <center>
@@ -169,20 +93,94 @@ class ImpactPage extends React.Component {
                         marginRight: 7,
                       }}
                     >
-                      <b> {values[2].toLocaleString()}</b>
+                      <b> {values[0].toLocaleString()}</b>
                     </span>
-                    {carbon_units}
-                    &nbsp; ({percents[2]}% of goal)
+                    Households &nbsp; ({percents[0]}% of goal)
+                  </p>
+                </center>
+              </div>
+            </div>
+          ) : null}
+          {display_prefs.display_actions ? (
+            <div
+              className="card z-depth-float mb-4 me-anime-open-in"
+              style={{
+                borderRadius: 10,
+                background: "transparent",
+                borderColor: "#ecf3ee",
+              }}
+            >
+              <div className="card-body imp-chart-h">
+                <center>
+                  <h4 className="impact-graph-heading">
+                    Individual Actions Completed
+                  </h4>
+                </center>
+                {this.makeDoughnut(data[1])}
+              </div>
+              <div className="imp-desc-box">
+                <center>
+                  <p className="impact-graph-title">
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        color: "black",
+                        marginRight: 7,
+                      }}
+                    >
+                      <b> {values[1].toLocaleString()}</b>
+                    </span>
+                    Actions &nbsp; ({percents[1]}% of goal)
                   </p>
                 </center>
               </div>
             </div>
           ) : null}
         </div>
+        {display_prefs.display_carbon ? (
+          <div id="carbon-card">
+            {goal && goal.target_carbon_footprint_reduction > 0 ? (
+              <div
+                className="card z-depth-float mb-4 me-anime-open-in"
+                style={{
+                  borderRadius: 10,
+                  background: "transparent",
+                  borderColor: "#ecf3ee",
+                }}
+              >
+                <div className="card-body imp-chart-h">
+                  <center>
+                    <h4 className="impact-graph-heading">
+                      Carbon Reduction Impact
+                    </h4>
+                  </center>
+                  {this.makeDoughnut(data[2])}
+                </div>
+                <div className="imp-desc-box">
+                  <center>
+                    <p className="impact-graph-title">
+                      <span
+                        style={{
+                          fontSize: "1rem",
+                          color: "black",
+                          marginRight: 7,
+                        }}
+                      >
+                        <b> {values[2].toLocaleString()}</b>
+                      </span>
+                      {carbon_units}
+                      &nbsp; ({percents[2]}% of goal)
+                    </p>
+                  </center>
+                </div>
+              </div>
+            ) : null}
+          </div>
         ) : null}
       </>
     );
   }
+
   render() {
     if (!this.props.comData) {
       return (
@@ -288,118 +286,8 @@ class ImpactPage extends React.Component {
       ),
     ];
 
-    const steps = [
-      {
-        target: "#two-graphs",
-        content:
-          "When you take an action, your household and action are added to the community total!",
-        locale: {
-          skip: <span>Skip Tour</span>,
-          next:
-            goal && goal.target_carbon_footprint_reduction > 0 ? (
-              <span>Got it!</span>
-            ) : (
-              <Link style={{ color: "white" }} to={this.props.links.teams}>
-                Got it!
-              </Link>
-            ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-        disableScrolling: false,
-      },
-      {
-        target: "#tour-on-mobile",
-        content:
-          "When you take an action, your household and action are added to the community total!",
-        locale: {
-          back: <span style={{ color: "transparent" }}>Skip Tour</span>,
-          skip: <span>Skip Tour</span>,
-          next:
-            goal && goal.target_carbon_footprint_reduction > 0 ? (
-              <span>Got it!</span>
-            ) : (
-              <Link style={{ color: "white" }} to={this.props.links.teams}>
-                Got it!
-              </Link>
-            ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-      },
-      {
-        target: "#carbon-card",
-        content: (
-          <>
-            Your actions help your community reduce carbon emissions, which can
-            be shown as trees planted, cars on the road, or other units.
-          </>
-        ),
-        locale: {
-          skip: <span>Skip Tour</span>,
-          next: (
-            <Link style={{ color: "white" }} to={this.props.links.teams}>
-              Got it!
-            </Link>
-          ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-      },
-      {
-        target: "#tour-on-mobile",
-        content: (
-          <>
-            Your actions help your community reduce carbon emissions, which can
-            be shown as trees planted, cars on the road, or other units.
-          </>
-        ),
-        locale: {
-          last: (
-            <Link style={{ color: "white" }} to={this.props.links.teams}>
-              Got it!
-            </Link>
-          ),
-        },
-        placement: "auto",
-        spotlightClicks: false,
-        disableBeacon: true,
-        hideFooter: false,
-        styles: {
-          options: {
-            backgroundColor: "white",
-          },
-        },
-      },
-    ];
-
     return (
       <>
-        {this.props.showTour &&  (
-          <ProductTour
-            steps={steps}
-            continuous
-            showSkipButton
-            spotlightPadding={10}
-            disableScrolling={true}
-            debug
-            callback={handleTourCallback}
-            styles={{
-              options: {
-                primaryColor: "#8CC43C",
-                textColor: "black",
-                width: 400,
-                zIndex: 1000,
-              },
-            }}
-          />
-        )}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -432,7 +320,7 @@ class ImpactPage extends React.Component {
                   ) : null}
                 </center>
                 <div style={{ padding: 10 }}>
-                  <ExplanationDialog display_prefs={display_prefs}/>
+                  <ExplanationDialog display_prefs={display_prefs} />
                 </div>
                 <div
                   className="card rounded-0 mb-4 z-depth-float phone-vanish"
@@ -457,56 +345,60 @@ class ImpactPage extends React.Component {
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "46vh",
-                    padding: 10,
-                    marginBottom: 25,
-                  }}
-                  className=" pc-vanish"
-                >
+                {isMobile && (
                   <div
-                    className="card-header text-center bg-white "
-                    style={{ marginTop: 5 }}
-                  >
-                    <h4 className="cool-font phone-medium-title">
-                      Number Of Actions Completed
-                    </h4>
-                  </div>
-                  {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
-                  <HorizontalBar
-                    options={{
-                      plugins: {
-                        datalabels: false,
-                        color: "#fff",
-                      },
-                      maintainAspectRatio: false,
-                      scales: {
-                        xAxes: [{ stacked: false }],
-                        yAxes: [{ stacked: false }],
-                      },
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "46vh",
+                      padding: 10,
+                      marginBottom: 25,
                     }}
-                    data={phoneImpact}
-                  />
-                </div>
+                    className=" pc-vanish"
+                  >
+                    <div
+                      className="card-header text-center bg-white "
+                      style={{ marginTop: 5 }}
+                    >
+                      <h4 className="cool-font phone-medium-title">
+                        Number Of Actions Completed
+                      </h4>
+                    </div>
+                    {/* ------------ BAR GRAPH BY REACT JS 2 , ON MOBILE ( Cos its more responsive) */}
+                    <HorizontalBar
+                      options={{
+                        plugins: {
+                          datalabels: false,
+                          color: "#fff",
+                        },
+                        maintainAspectRatio: false,
+                        scales: {
+                          xAxes: [{ stacked: false }],
+                          yAxes: [{ stacked: false }],
+                        },
+                      }}
+                      data={phoneImpact}
+                    />
+                  </div>
+                )}
               </div>
               {/* ------- SHOW DOUGHNUTS HERE WHEN IN PHONE MODE ------------ */}
-              <div
-                id="tour-on-mobile"
-                className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
-              >
-                {this.renderGraphs({
-                  display_prefs,
-                  goal,
-                  data,
-                  community,
-                  values,
-                  percents,
-                  carbon_units,
-                })}
-              </div>
+              {isMobile && (
+                <div
+                  id="tour-on-mobile"
+                  className="col-12 col-lg-4 mob-impact-pad-fix pc-vanish"
+                >
+                  {this.renderGraphs({
+                    display_prefs,
+                    goal,
+                    data,
+                    community,
+                    values,
+                    percents,
+                    carbon_units,
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -525,7 +417,6 @@ const mapStoreToProps = (store) => {
     impactPage: store.page.impactPage,
     pref_eq: store.user.pref_equivalence,
     links: store.links,
-    showTour: store.page.showTour
   };
 };
 
@@ -572,50 +463,80 @@ const ExplanationDialog = ({ display_prefs }) => {
           </p>
           <ol type="a">
             <li>Actions reported by community members</li>
-            <li>Actions from State or Parner databases or previous community programs.</li>
+            <li>
+              Actions from State or Parner databases or previous community
+              programs.
+            </li>
           </ol>
 
           <p className="exp-title">
-          Data shown in the "donut" graphs is calculated using guidance from the Community Admin:
+            Data shown in the "donut" graphs is calculated using guidance from
+            the Community Admin:
           </p>
           <ol>
-          { display_prefs.display_actions ? (
-            <div>
-              <li>
-                The Actions graph is an estimate of the number of actions taken by community members.  It includes:
-                <ol type="a">
-                  { display_prefs.platform_actions ? (<li>Actions reported by community members</li>) : null }                  
-                  { display_prefs.state_actions ? (<li>Actions from State or Partner databases or previous community members</li>) : null }
-                </ol>
-              </li>
-              <br/>
-            </div>
-            ) : null }
-          { display_prefs.display_households ? (
-            <div>
-              <li>
-                The Households graph is an estimate of the number of households that have taken action.  It includes:
-                <ol type="a">
-                  { display_prefs.platform_households ? (<li>Households reporting actions on this website</li>) : null }
-                  { display_prefs.state_households ? (<li>Households that installed solar arrays from the State database.</li>) : null }
-                  { display_prefs.manual_households ? (<li>Households that participated in previous community programs.</li>) : null }
-                </ol>
-              </li>
-              <br/>
-            </div>
-            ) : null }
-          { display_prefs.display_carbon ? (
-            <div>
-              <li>
-                The Carbon Reduction graph is an estimate of the annual CO2 emissions reduced by the actions taken, 
-                using best available data. It includes CO2 reductions from:
-                <ol type="a">
-                  { display_prefs.platform_carbon ? (<li>Actions reported by community members.</li>) : null }
-                  { display_prefs.manual_households ? (<li>Actions taken during previous community programs.</li>) : null }
-                </ol>
-              </li>
-            </div>
-            ) : null }
+            {display_prefs.display_actions ? (
+              <div>
+                <li>
+                  The Actions graph is an estimate of the number of actions
+                  taken by community members. It includes:
+                  <ol type="a">
+                    {display_prefs.platform_actions ? (
+                      <li>Actions reported by community members</li>
+                    ) : null}
+                    {display_prefs.state_actions ? (
+                      <li>
+                        Actions from State or Partner databases or previous
+                        community members
+                      </li>
+                    ) : null}
+                  </ol>
+                </li>
+                <br />
+              </div>
+            ) : null}
+            {display_prefs.display_households ? (
+              <div>
+                <li>
+                  The Households graph is an estimate of the number of
+                  households that have taken action. It includes:
+                  <ol type="a">
+                    {display_prefs.platform_households ? (
+                      <li>Households reporting actions on this website</li>
+                    ) : null}
+                    {display_prefs.state_households ? (
+                      <li>
+                        Households that installed solar arrays from the State
+                        database.
+                      </li>
+                    ) : null}
+                    {display_prefs.manual_households ? (
+                      <li>
+                        Households that participated in previous community
+                        programs.
+                      </li>
+                    ) : null}
+                  </ol>
+                </li>
+                <br />
+              </div>
+            ) : null}
+            {display_prefs.display_carbon ? (
+              <div>
+                <li>
+                  The Carbon Reduction graph is an estimate of the annual CO2
+                  emissions reduced by the actions taken, using best available
+                  data. It includes CO2 reductions from:
+                  <ol type="a">
+                    {display_prefs.platform_carbon ? (
+                      <li>Actions reported by community members.</li>
+                    ) : null}
+                    {display_prefs.manual_households ? (
+                      <li>Actions taken during previous community programs.</li>
+                    ) : null}
+                  </ol>
+                </li>
+              </div>
+            ) : null}
           </ol>
         </div>
       )}

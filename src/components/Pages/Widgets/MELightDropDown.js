@@ -13,10 +13,14 @@ export default class MELightDropDown extends Component {
     const { onItemSelected, dataValues, data } = this.props;
     if (!onItemSelected) return;
     if (!dataValues || dataValues.length === 0) {
-      onItemSelected(child, this.props.categoryType);
+      onItemSelected(child, this.props.categoryType, this.props.collectionId);
       return;
     }
-    onItemSelected(dataValues[data.indexOf(child)], this.props.categoryType);
+    onItemSelected(
+      dataValues[data.indexOf(child)],
+      this.props.categoryType,
+      this.props.collectionId
+    );
   }
 
   renderChildren(data) {
