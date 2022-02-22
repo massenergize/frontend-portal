@@ -19,7 +19,11 @@ import ActionCard from "./ActionCard";
 import PageTitle from "../../Shared/PageTitle";
 import {
   applyTagsAndGetContent,
+  collectSearchTextValueFromURL,
   filterTagCollections,
+  makeFilterDescription,
+  processFiltersAndUpdateURL,
+  recreateFiltersForState,
   searchIsActiveFindContent,
   sumOfCarbonScores,
 } from "../../Utils";
@@ -32,6 +36,31 @@ import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
 import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
+import { withRouter } from "react-router-dom";
+import ShareButtons from "../../Shared/ShareButtons";
+
+const INIT_STATE = {
+  checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
+  loaded: false,
+  openAddForm: null,
+  testimonialLink: null,
+  openModalForm: null,
+  modal_content: {
+    //tbd
+    image: null,
+    title: null,
+    desc: null,
+    ano: null,
+    user: null,
+  },
+  actionModal: false, //tbd
+  mirror_actions: [],
+  showTodoMsg: false,
+  actions: [],
+  status: null,
+  showEqModal: false,
+  mounted: false,
+};
 
 /**
  * The Actions Page renders all the actions and a sidebar with action filters
@@ -47,28 +76,7 @@ class ActionsPage extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.moveToDoneByActionId = this.moveToDoneByActionId.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.state = {
-      checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
-      loaded: false,
-      openAddForm: null,
-      testimonialLink: null,
-      openModalForm: null,
-      modal_content: {
-        //tbd
-        image: null,
-        title: null,
-        desc: null,
-        ano: null,
-        user: null,
-      },
-      actionModal: false, //tbd
-      mirror_actions: [],
-      showTodoMsg: false,
-      actions: [],
-      status: null,
-      showEqModal: false,
-    };
-    //this.handleChange = this.handleChange.bind(this);
+    this.state = { ...INIT_STATE };
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
@@ -92,6 +100,7 @@ class ActionsPage extends React.Component {
   }
 
   addMeToSelected(param, reset = false) {
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -100,6 +109,9 @@ class ActionsPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
   renderModal() {
     if (this.state.openModalForm) {
       return (
@@ -159,8 +171,26 @@ class ActionsPage extends React.Component {
     );
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
+        };
+    }
+
+    return null;
+  };
+
   render() {
     const pageData = this.props.pageData;
+    const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.actions) {
@@ -265,8 +295,12 @@ class ActionsPage extends React.Component {
                 type="action"
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
-                boxClick={this.addMeToSelected}
+                boxClick={this.addMeToSelected} 
                 search={this.handleSearch}
+                searchText={this.state.searchText}
+                filtersFromURL={this.state.checked_values}
+                doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
               />
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}
@@ -294,6 +328,23 @@ class ActionsPage extends React.Component {
                         toggleEQModal={this.toggleEQModal}
                       />
                     </div>
+                    <center style={{ padding: 10 }}>
+                      <p style={{ color: "black" }}>Share this page</p>
+                      <ShareButtons
+                        include={["facebook"]}
+                        url={window.location.href}
+                        pageTitle={`Actions to take in ${
+                          this.props?.communityData?.community?.name ||
+                          "your community"
+                        }`}
+                        pageDescription={
+                          (filterDescription &&
+                            `Take a look at actions under the following categories: ${filterDescription} 
+                        `) ||
+                          ""
+                        }
+                      />
+                    </center>
                   </div>
                 </div>
                 {/* renders the actions */}
@@ -314,13 +365,6 @@ class ActionsPage extends React.Component {
       </>
     );
   }
-
-  // on change in any category or tag checkbox update the actionsPage
-  //handleChange() {
-  //  this.forceUpdate();
-  //}
-
-  // };
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -495,4 +539,7 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
 };
-export default connect(mapStoreToProps, mapDispatchToProps)(ActionsPage);
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(ActionsPage));

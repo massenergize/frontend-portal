@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 
-
 //refactored the submit testimonial form so now you can have a modal version of it
 class StoryFormButtonModal extends Component {
   constructor() {
@@ -45,8 +44,8 @@ class StoryFormButtonModal extends Component {
             this.TriggerModal(false);
           }}
         >
-
           <StoryForm
+            close={() => this.setState({ OpenModal: false })}
             draftTestimonialData={this.props.draftTestimonialData}
             TriggerSuccessNotification={(bool) =>
               this.TriggerSuccessNotification(bool)
