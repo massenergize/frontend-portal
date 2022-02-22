@@ -79,7 +79,7 @@ export function get_cookie(cookies, key) {
   return cookie;
 }
 
-function log_device(cookies) {
+function log_device(cookies, community_id) {
   // TODO: Get IP address and other info
   let device = get_cookie(cookies, "device");
   let body;
@@ -89,11 +89,16 @@ function log_device(cookies) {
   } else {
     body = { id: device };
   }
+  if (community_id) {
+    body = { ...body, community_id:community_id };
+  }
 
   response = apiCall('/device.log', body).then(function(result) {
     try {
-      if (result.data)
-        set_cookie(cookies, "device", result.data.id);
+      if (result.data) {
+        // David: do we want to set_cookie again if get_cookie indicated already was a cookie?
+        if (!device || device === undefined) set_cookie(cookies, "device", result.data.id);
+      }
     } catch (error) {
       console.log(error); // Debug
       return { success: false, error };
@@ -104,8 +109,8 @@ function log_device(cookies) {
   return response;
 }
 
-export async function device_checkin(cookies) {
-  log_device(cookies);  
+export async function device_checkin(cookies, community_id=null) {
+  log_device(cookies, community_id);  
 }
 
 
