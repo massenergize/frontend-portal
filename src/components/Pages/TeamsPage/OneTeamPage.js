@@ -343,7 +343,7 @@ class OneTeamPage extends React.Component {
                   )}
                   <METabView
                     tabs={this.makeTabs({ subTeams, remountForcer, team })}
-                    defaultTab="list"
+                    defaultTab="graph"
                   />
                   <center style={{ width: "100%" }}>
                     <MEButton
