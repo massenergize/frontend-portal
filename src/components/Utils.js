@@ -171,8 +171,14 @@ export const changeFilterStringToUsableContent = (filterString) => {
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
-
 export const TOUR_STORAGE_KEY = "SHOW_TOUR";
+
+export const smartString = (string, charLimit) => {
+  if (!string) return "";
+  if (!charLimit) return string;
+  if (string.length > charLimit) return string.substr(0, charLimit) + "...";
+  return string;
+};
 export const stateAbbreviation = (stateName) => {
   const index = meStatesData.indexOf(stateName);
   if (index > -1) {

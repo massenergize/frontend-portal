@@ -6,6 +6,7 @@ import { apiCall } from "../../../api/functions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TeamStatsBars, { PACKED } from "./TeamStatsBars";
 import TeamActionsGraph from "./TeamActionsGraph";
+import TeamActionsList from "./TeamActionsList";
 import TeamMembersList from "./TeamMembersList";
 import JoinLeaveTeamModal from "./JoinLeaveTeamModal";
 import TeamInfoModal from "./TeamInfoModal";
@@ -13,10 +14,13 @@ import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
 import { getTeamData, inTeam, inThisTeam } from "./utils.js";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import URLS from "../../../api/urls";
+import MELightDropDown from "../Widgets/MELightDropDown";
+import METabView from "../Widgets/METabView/METabView";
+import MEModal from "../Widgets/MEModal";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -28,7 +32,9 @@ class OneTeamPage extends React.Component {
       joinLeaveModalOpen: false,
       contactEditModalOpen: false,
       numOfSubTeams: 0,
+      show: null,
     };
+    this.itemSelected = this.itemSelected.bind(this);
   }
 
   async fetch(id) {
@@ -60,14 +66,54 @@ class OneTeamPage extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.fetch(id);
+    // TODO: get show option from local storage
+    this.setState({ showOption: "Graph" });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const { id } = this.props.match.params;
     // if (id !== prevProps.match.params.id) {
     if (this.props.teamsStats && !this.state.teamData && !this.state.error) {
       this.fetch(id);
     }
+  }
+
+  itemSelected(status) {
+    if (status === MELightDropDown.NONE) return;
+    // TODO: update localStorage to record choice
+    this.setState({ showOption: status });
+  }
+
+  makeTabs({ subTeams, remountForcer, team }) {
+    return [
+      {
+        icon: "fa-bar-chart",
+        name: "Graph",
+        key: "graph",
+        component: (
+          <TeamsTabWrapper subTeams={subTeams} links={this.props.links}>
+            <TeamActionsGraph key={remountForcer} teamID={team.id} />
+          </TeamsTabWrapper>
+        ),
+      },
+      {
+        icon: "fa-list",
+        name: "List",
+        key: "list",
+        component: (
+          <TeamsTabWrapper subTeams={subTeams} links={this.props.links}>
+            <TeamActionsList
+              key={remountForcer}
+              teamID={team.id}
+              history={this.props.history}
+              links={this.props.links}
+              community={this.props.community}
+              setConfirmationInfo={(data) => this.setState({ show: data })}
+            />
+          </TeamsTabWrapper>
+        ),
+      },
+    ];
   }
 
   render() {
@@ -201,7 +247,16 @@ class OneTeamPage extends React.Component {
               </p>
             </center>
           )}
-
+          <MEModal
+            show={this.state.show?.modal}
+            close={() => this.setState({ show: null })}
+            v2
+          >
+            <OutsideCommunityVisitConfirmation
+              info={this.state.show?.info}
+              close={() => this.setState({ show: null })}
+            />
+          </MEModal>
           <div
             className="col-12 col-sm-11 col-md-11 col-lg-10 col-xl-8 test-one-team-wrapper"
             data-has-big-text={isBigText && "true"}
@@ -286,31 +341,13 @@ class OneTeamPage extends React.Component {
                       dangerouslySetInnerHTML={{ __html: team.description }}
                     />
                   )}
-                  <div className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless">
-                    <h5>
-                      <b>Actions Completed</b>
-                      <br />
-                      {subTeams && (
-                        <>
-                          <small>Contains actions of sub-teams</small>
-                        </>
-                      )}
-                    </h5>
-
-                    <TeamActionsGraph key={remountForcer} teamID={team.id} />
-
-                    <p style={{ textAlign: "center", marginTop: 15 }}>
-                      Complete{" "}
-                      <Link to={links.actions} className="me-link">
-                        more actions
-                      </Link>
-                      !
-                    </p>
-                  </div>
+                  <METabView
+                    tabs={this.makeTabs({ subTeams, remountForcer, team })}
+                    defaultTab="graph"
+                  />
                   <center style={{ width: "100%" }}>
                     <MEButton
                       style={{ padding: "8px 21px" }}
-                      // className="btn round-me contact-admin-btn-new raise"
                       onClick={() => {
                         this.setState({ contactEditModalOpen: true });
                       }}
@@ -554,4 +591,88 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence,
   };
 };
-export default connect(mapStoreToProps, null)(OneTeamPage);
+export default connect(mapStoreToProps, null)(withRouter(OneTeamPage));
+
+const TeamsTabWrapper = ({ children, links, subTeams }) => {
+  return (
+    <div
+      className="one-team-content-section z-depth-float-half me-anime-open-in mob-zero-padding mob-borderless"
+      style={{ width: "100%" }}
+    >
+      <h5>
+        <b>Actions Completed</b>
+        <br />
+        {subTeams && (
+          <>
+            <small>Contains actions of sub-teams</small>
+          </>
+        )}
+      </h5>
+      <div style={{ width: "100%" }}>{children}</div>
+      <p style={{ textAlign: "center", marginTop: 15 }}>
+        Complete{" "}
+        <Link to={links.actions} className="me-link">
+          more actions
+        </Link>
+        !
+      </p>
+    </div>
+  );
+};
+
+const OutsideCommunityVisitConfirmation = ({ info, close }) => {
+  const community = info?.community;
+  const url =
+    window.location.protocol +
+    "//" +
+    window.location.host +
+    "/" +
+    community?.subdomain +
+    "/actions/" +
+    info?.id;
+
+  return (
+    <div style={{ height: "100%", alignItems: "center" }}>
+      <div style={{ padding: 20 }}>
+        <p style={{ color: "black" }}>
+          This action is not in your community, its in{" "}
+          <b style={{ color: "var(--app-theme-orange)" }}>
+            "{community?.name}"
+          </b>
+          . Would you like to see it on the{" "}
+          <b style={{ color: "var(--app-theme-orange)", marginRight: 3 }}>
+            "{community?.name}"
+          </b>
+          community site?
+        </p>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          background: "#fbfbfb",
+          borderRadius: 10,
+        }}
+      >
+        <div style={{ marginLeft: "auto" }}>
+          <button
+            className="flat-btn  flat-btn_submit btn-success"
+            onClick={() => {
+              window.open(url, "_blank");
+              close();
+            }}
+          >
+            Yes
+          </button>
+          <button className="flat-btn close-flat" onClick={() => close()}>
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
