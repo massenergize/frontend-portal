@@ -2,7 +2,7 @@ import StoryForm from "../ActionsPage/StoryForm";
 import Toast from "react-bootstrap/Toast";
 import Modal from "react-bootstrap/Modal";
 import React, { Component } from "react";
-import Button from "react-bootstrap/Button";
+import MEButton from "../Widgets/MEButton";
 
 //refactored the submit testimonial form so now you can have a modal version of it
 class StoryFormButtonModal extends Component {
@@ -27,15 +27,14 @@ class StoryFormButtonModal extends Component {
   render() {
     return (
       <>
-        <Button
+        <MEButton
           className={this.props.ButtonClasses}
           onClick={() => {
             this.TriggerModal(true);
           }}
-          variant="outline-dark"
         >
           {this.props.children}
-        </Button>
+        </MEButton>
 
         <Modal
           size="lg"
@@ -63,13 +62,8 @@ class StoryFormButtonModal extends Component {
               this.setState({ OpenSuccessNotification: false });
             }}
           >
-            <Toast.Header className="SuccessNotification_Header">
-              <h4>
-                <b>Success!!</b>{" "}
-              </h4>
-            </Toast.Header>
             <Toast.Body className={"Success"}>
-              <h6>The Testimonial has been submitted! </h6>
+              <h6>Your testimonial has been submitted! </h6>
             </Toast.Body>
           </Toast>
         </div>

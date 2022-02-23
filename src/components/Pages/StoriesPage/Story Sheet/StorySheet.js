@@ -176,9 +176,9 @@ export default class StorySheet extends Component {
             </h4>
             <div className="sheet-details">
               <p>{date}</p>
-              <div>
+              <div style={{ display: "flex" }}>
                 <Link
-                  style={{ marginLeft: "auto" }}
+                  style={{ marginLeft: "auto", marginRight: 10 }}
                   className="sheet-link test-story-sheet-full-view-link"
                   to={`${this.props.links.testimonials}/${id}`}
                 >
@@ -191,7 +191,7 @@ export default class StorySheet extends Component {
                   <div />
                 ) : (
                   <StoryFormButtonModal
-                    ButtonClasses="testimonial_edit_button"
+                    ButtonClasses="me-testi-btn-reset touchable-opacity"
                     draftTestimonialData={testimonialData}
                   >
                     Edit
