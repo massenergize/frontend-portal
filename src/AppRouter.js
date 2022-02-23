@@ -139,8 +139,10 @@ class AppRouter extends Component {
   };
 
   componentDidMount() {
+    const { community } = this.props;
+    const community_id = community?.id;
     const cookies = new Cookies();
-    device_checkin(cookies).then(null, (err) => console.log(err));
+    device_checkin(cookies, community_id).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthentication();
     this.fetch();
   }

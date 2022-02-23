@@ -58,14 +58,15 @@ export const oneEventPageComponentsRenderProperly = () => {
     if (venue) cy.get(".test-event-venue").first().should("exist");
     else cy.log("Does not have any venue...");
   });
-  it("Found the event recurring status", () => {
-    if (rec) cy.get(".test-event-recurring-status").first().should("exist");
-    else cy.log("Does not have any recurring string...");
-  });
+  // it("Found the event recurring status", () => {
+  //   if (rec) cy.get(".test-event-recurring-status").first().should("exist");
+  //   else cy.log("Does not have any recurring string...");
+  // });
 };
 
 export const showThatAllEventCardsDisplayProperly = () => {
   var numberOfEvents;
+  before(() => cy.cleanUp());
   it("Got number of available events", function () {
     cy.get(".test-events-page-wrapper").then(
       ($el) => (numberOfEvents = $el.attr("data-number-of-events"))
@@ -129,7 +130,8 @@ export const checkForRelevantComponentsOnOneServicePage = () => {
 };
 
 export const typeInsideFilterbox = (text) => {
-  cy.get("#test-filter-box-id").type(text, { delay: 150 });
+  cy.get("#test-filter-box-id").type(text, { delay: 150, force: true });
+  cy.get("#test-filter-box-id").scrollIntoView({ offset: { top: -550 } });
 };
 
 export const testimonialsShowProperly = () => {

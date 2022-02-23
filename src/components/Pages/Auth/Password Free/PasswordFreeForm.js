@@ -111,8 +111,9 @@ export default function PasswordFreeForm({
                       marginBottom: 6,
                       fontSize: "large",
                     }}
-                    className=" energize-link"
+                    className="energize-link"
                     onClick={usePassword}
+                    id="email-password-link"
                   >
                     I want to use Email and Password
                   </button>

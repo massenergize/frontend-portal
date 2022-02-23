@@ -72,7 +72,6 @@ class EditingProfileForm extends React.Component {
 
   render() {
     const { loading } = this.state;
-    console.log(this.state)
     return (
       <form onSubmit={this.onSubmit}>
         <div

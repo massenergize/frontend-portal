@@ -3,6 +3,172 @@ import React from "react";
 import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
+import { NONE } from "./Pages/Widgets/MELightDropDown";
+
+/**
+ *
+ * @param {*} props: React component props with router
+ * @returns
+ */
+export const removeAllFiltersFromURL = (props) => {
+  const location = props.location;
+  if (!location || !props) return;
+  const { rest } = fetchParamsFromURL(location, null, [
+    "filters",
+    "search_text",
+  ]);
+  const { pathname } = location;
+  const qs = rest?.qs;
+  props.history.push(window.location.host + pathname + qs ? `?${qs}` : "");
+};
+
+export const makeFilterDescription = (checkedValues) => {
+  if (!checkedValues?.length) return "";
+  return checkedValues?.map((v) => v.value)?.join(",");
+};
+
+export const recreateFiltersForState = (cols, propsLocation) => {
+  if (!cols?.length) return null;
+  var { filters } = fetchParamsFromURL(propsLocation, "filters");
+  if (!filters) return null;
+  const arr = [];
+  filters = filters?.split(",")?.map((f) => f.split(":")) || [];
+  filters.forEach((fArr) => {
+    const collection = cols.find((c) => c.id?.toString() === fArr[0]);
+    const tag = collection?.tags?.find((t) => t.id?.toString() === fArr[1]);
+    if (collection && tag)
+      arr.push({
+        collectionName: collection?.name,
+        collectionId: collection?.id,
+        tagId: tag?.id,
+        value: tag?.name,
+      });
+  });
+  return arr;
+};
+
+export const putSearchTextFilterInURL = (props, text) => {
+  const { rest } = fetchParamsFromURL(props?.location, "search_text");
+  if (!text)
+    return props.history.push(
+      makeNewUrlWithFilters(props, "", rest?.qs, "search_text")
+    );
+
+  props.history.push(
+    makeNewUrlWithFilters(props, text, rest?.qs, "search_text")
+  );
+};
+
+export const collectSearchTextValueFromURL = (location) => {
+  const { search_text } = fetchParamsFromURL(location, "search_text");
+  return search_text || "";
+};
+
+const makeNewUrlWithFilters = (
+  props,
+  filterString,
+  qs,
+  identifier = "filters"
+) => {
+  return (
+    props.location.pathname +
+    `?${(filterString && identifier + "=" + filterString) || ""}${
+      qs ? "&" : ""
+    }${qs || ""}`
+  );
+};
+export const processFiltersAndUpdateURL = (param, props) => {
+  var { filters, rest } = fetchParamsFromURL(props.location, "filters");
+  // ------------------ WHEN USER CLEARS ALL FILTERS ----------------
+  if (!param)
+    return props.history.push(
+      props.location.pathname + (rest?.qs && "?" + rest?.qs) || ""
+    );
+  // -----------------------------------------------------------------
+
+  const filtersToArr = filters?.split(",") || [];
+  // --------------- WHEN USER CLEARS JUST ONE CATEGORY ------------
+  if (param.value === NONE) {
+    var withoutCurrentCollection = filtersToArr.filter(
+      (f) => f[0] !== param?.collectionId?.toString()
+    );
+    withoutCurrentCollection = withoutCurrentCollection.join(",");
+    return props.history.push(
+      makeNewUrlWithFilters(props, withoutCurrentCollection, rest?.qs)
+    );
+  }
+
+  // ----------------------------------------------------------------
+  const withoutFilterFromChangedCategory = filtersToArr.filter(
+    (f) => f.split(":")[0] !== param.collectionId?.toString()
+  );
+  const newFilter = `${param.collectionId}:${param.tagId}`;
+  withoutFilterFromChangedCategory.push(newFilter);
+  const filtersConvertedToString = withoutFilterFromChangedCategory?.join(",");
+  props.history.push(
+    makeNewUrlWithFilters(props, filtersConvertedToString, rest?.qs)
+  );
+};
+
+export const findMatchingTag = (tagName, collections, collectionId) => {
+  if (!tagName || !collections?.length) return;
+
+  const col = collections.find((col) => col?.id === collectionId);
+  if (!col) return;
+  return col?.tags?.find((tag) => tag.name === tagName);
+};
+
+/**
+ *
+ * @param {*} location : Props Location
+ * @param {*} paramName
+ * @returns
+ */
+export const fetchParamsFromURL = (location, paramName, names) => {
+  if (!location || !location.search) return "";
+  const obj = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const value = obj[paramName]?.toString();
+  delete obj[paramName];
+  const params = {};
+  if (names?.length) {
+    names.forEach((n) => {
+      params[n] = obj[n];
+      delete obj[n];
+    });
+  }
+  return (
+    {
+      params,
+      [paramName]: value,
+      rest: { object: obj, qs: qs.stringify(obj) || "" },
+    } || {}
+  );
+};
+
+export const changeBackToQS = (obj) => {
+  return qs.stringify(obj);
+};
+
+/**
+ *
+ * @param {*} categoryString
+ * @returns {object} {collectionId : tagId}
+ */
+const breakIntoCategoryAndTags = (categoryString) => {
+  const arr = categoryString?.split(":") || [];
+  return { [arr[0]]: arr[1] };
+};
+
+export const changeFilterStringToUsableContent = (filterString) => {
+  if (!filterString) return {};
+  const categories = filterString.split(",");
+  return (
+    categories?.map((categoryString) =>
+      breakIntoCategoryAndTags(categoryString)
+    ) || []
+  );
+};
+
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
 export const TOUR_STORAGE_KEY = "SHOW_TOUR";
@@ -100,7 +266,7 @@ export const searchIsActiveFindContent = (data, activeFilters, word, func) => {
   word = word.toLowerCase();
   const content = applyTagsAndGetContent(data, activeFilters) || data;
   if (!func) return null;
-  return content.filter((action) => func(action, word));
+  return content?.filter((action) => func(action, word)) || [];
 };
 
 export const changeToProperURL = (url) => {
@@ -157,6 +323,7 @@ export const filterTagCollections = (actions, cols) => {
           }
         } else {
           collections[name] = {
+            id: original?.id,
             name: name,
             tags: [tag],
             alreadyIn: [tag.id],
