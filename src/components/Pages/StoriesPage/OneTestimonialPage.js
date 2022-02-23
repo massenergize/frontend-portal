@@ -67,7 +67,10 @@ class OneTestimonialPage extends React.Component {
     const otherStories = this.getSomeOtherTestimonials();
     const content = otherStories.map((story, index) => {
       const creatorName =
-        story?.preferred_name || story?.user?.preferred_name || story.user?.full_name || "...";
+        story?.preferred_name ||
+        story?.user?.preferred_name ||
+        story.user?.full_name ||
+        "...";
       return (
         <div key={index.toString()}>
           <MECard
@@ -91,7 +94,11 @@ class OneTestimonialPage extends React.Component {
         <div className="phone-vanish">
           <MELink
             to={this.props.links.testimonials}
-            style={{ textDecoration: "underline", marginBottom: 0 }}
+            style={{
+              textDecoration: "underline",
+              marginBottom: 5,
+              marginTop: 15,
+            }}
           >
             {" "}
             Read Other Testimonials
@@ -106,7 +113,7 @@ class OneTestimonialPage extends React.Component {
     const action = this.state.story ? this.state.story.action : {};
     if (action) {
       return (
-        <div>
+        <div style={{ marginTop: 20 }}>
           <small style={{ color: "#7d7d7d" }}>
             This testimonial is related to
           </small>
@@ -143,9 +150,9 @@ class OneTestimonialPage extends React.Component {
 
   render() {
     const story = this.state.story ? this.state.story : {};
-    const { community } = story || {}
-    const { subdomain } = community || {}
-    
+    const { community } = story || {};
+    const { subdomain } = community || {};
+
     if (this.state.loading) {
       return <LoadingCircle />;
     }
@@ -205,7 +212,10 @@ class OneTestimonialPage extends React.Component {
   renderStory(story = {}) {
     let dateString = getHumanFriendlyDate(story.created_at);
     const creatorName =
-      story.preferred_name || story?.user?.preferred_name || story?.user?.full_name || "...";
+      story.preferred_name ||
+      story?.user?.preferred_name ||
+      story?.user?.full_name ||
+      "...";
     return (
       <section className="event-section style-3">
         <div className="container">
@@ -231,7 +241,6 @@ class OneTestimonialPage extends React.Component {
                     }}
                     className="z-depth-1 me-anime-open-in"
                     src={story && story.file ? story.file.url : notFound}
-                    // src={photo}
                     alt=""
                   />
                 </div>
@@ -276,13 +285,17 @@ class OneTestimonialPage extends React.Component {
               </div>
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
-                  <p
+                  <div
+                    className="one-story-html-view"
+                    dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
+                  />
+                  {/* <p
                     className="cool-font test-story-body"
                     data-story-body={story?.body}
                     style={{ color: "black", textAlign: "justify" }}
                   >
                     {story && story.body}
-                  </p>
+                  </p> */}
                   {this.renderRelatedAction()}
                 </div>
               </div>
@@ -314,7 +327,14 @@ class OneTestimonialPage extends React.Component {
     const vendor = story && story.vendor;
     const logo = vendor && vendor.logo;
     const title = (
-      <p style={{ margin: "10px 0px", fontWeight: "bold", color: "black" }}>
+      <p
+        style={{
+          margin: "10px 0px",
+          fontWeight: "bold",
+          color: "black",
+          marginTop: 20,
+        }}
+      >
         Related Vendor
       </p>
     );

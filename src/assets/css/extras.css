@@ -5,6 +5,14 @@
   --app-theme-orange-lighter: #fba930;
 }
 
+.one-story-html-view p {
+  color: black;
+}
+.element-in-space {
+  position: absolute;
+  top: -100000000;
+  left: -100000000000;
+}
 .me-team-table-cell {
   color: var(--app-theme-green-darker);
   cursor: pointer;
