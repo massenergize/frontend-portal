@@ -493,7 +493,7 @@ const ExplanationDialog = ({ display_prefs }) => {
           setShowDialog(true);
         }}
       >
-        Dont know what the graph means? See explanation here.
+        For an explanation of the impact graphs and data, click here.
       </a>
       {showDialog && (
         <div className="data-explanation-dialog me-anime-open-in z-depth-float">

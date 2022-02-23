@@ -70,6 +70,7 @@ function ImpactCommunityActionList({ list, history, links }) {
       className="z-depth-float me-anime-open-in"
       style={{ padding: 15, borderRadius: 10 }}
     >
+      <center><h4>Actions Completed by Community Members</h4></center>
       <DataTable columns={columns} data={listResponse} dense />
     </div>
   );
