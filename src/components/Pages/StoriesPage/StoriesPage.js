@@ -10,6 +10,7 @@ import {
   filterTagCollections,
   getHumanFriendlyDate,
   getRandomIntegerInRange,
+  makeStringFromArrOfObjects,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -296,6 +297,7 @@ class StoriesPage extends React.Component {
     return stories.map((story, index) => (
       <div
         key={index.toString()}
+        data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
         style={{
           width: "100%",
           "--sheet-anime-delay": getRandomIntegerInRange(500),

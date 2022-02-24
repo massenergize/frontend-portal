@@ -5,6 +5,15 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
+export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
+  if (!func)
+    return console.warn(
+      "You did not pass a function to extract the field that will be used to generate your string"
+    );
+  if (!arr?.length) return "";
+  // console.log("EMONDG", arr);
+  return arr.map((item) => func(item)).join(separator);
+};
 /**
  *
  * @param {*} props: React component props with router

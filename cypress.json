@@ -2,6 +2,6 @@
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 6000,
   "projectId": "eu6sim",
-  "retries":2,
-  "video":false
+  "retries": { "openMode": 0, "runMode": 2 },
+  "video": false
 }
