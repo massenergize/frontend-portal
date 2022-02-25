@@ -66,7 +66,7 @@ class ChooseHHForm extends React.Component {
     // Remove this check; if all households had action done, allow setting date.  this.checkHouseholds();
     return (
       <>
-        <div className="act-modal-whole">
+        <div className="act-modal-whole test-action-modal">
           <div className="act-title-bar">
             <h3>{this.props.action.title}</h3>
           </div>
@@ -107,7 +107,7 @@ class ChooseHHForm extends React.Component {
                     </h4>
                     <div style={{ marginLeft: "auto", marginRight: 0 }}>
                       <button
-                        className="flat-btn  flat-btn_submit btn-success"
+                        className="flat-btn  flat-btn_submit btn-success test-modal-submit"
                         type="submit"
                         disabled={
                           this.state.error
@@ -475,7 +475,7 @@ class ChooseHHForm extends React.Component {
             </div>
           ) : (
             <div
-              className={`act-item`}
+              className={`act-item test-one-house`}
               onClick={() => this.onChange(values[index])}
               key={index.toString()}
             >
@@ -493,6 +493,7 @@ class ChooseHHForm extends React.Component {
               <div id="CompletionDate">
                 <Dropdown>
                   <Dropdown.Toggle
+                    className="test-modal-dropdown"
                     id="dropdown-button-dark-example1"
                     variant="success"
                     style={{ fontSize: 13 }}
@@ -505,6 +506,7 @@ class ChooseHHForm extends React.Component {
 
                   <Dropdown.Menu variant="dark">
                     <Dropdown.Item
+                    className="test-one-modal-drop-item"
                       onClick={() =>
                         this.ChangeCompDate(Choice1, values[index])
                       }
