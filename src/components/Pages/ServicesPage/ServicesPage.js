@@ -12,6 +12,7 @@ import {
   applyTagsAndGetContent,
   collectSearchTextValueFromURL,
   filterTagCollections,
+  makeStringFromArrOfObjects,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
@@ -226,6 +227,10 @@ class ServicesPage extends React.Component {
     return vendors.map((vendor, index) => {
       return (
         <div
+          data-tag-names={makeStringFromArrOfObjects(
+            vendor?.tags,
+            (v) => v.name
+          )}
           className={`col-12 col-md-4 col-lg-4 test-vendor-card`}
           key={index.toString()}
         >

@@ -11,6 +11,8 @@ import {
   getHumanFriendlyDate,
   getRandomIntegerInRange,
   makeStringFromArrOfObjects,
+  processFiltersAndUpdateURL,
+  recreateFiltersForState,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -45,6 +47,7 @@ class StoriesPage extends React.Component {
   }
 
   addMeToSelected(param, reset = false) {
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -92,12 +95,17 @@ class StoriesPage extends React.Component {
 
   static getDerivedStateFromProps = (props, state) => {
     if (!state.mounted) {
-      return {
-        mounted: true,
-        searchText: collectSearchTextValueFromURL(props.location),
-      };
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
+        };
     }
-
     return null;
   };
   handleSearch(e) {
@@ -213,6 +221,7 @@ class StoriesPage extends React.Component {
                 searchText={this.state.searchText}
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
+                filtersFromURL={this.state.checked_values}
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
