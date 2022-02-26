@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@sentry/react": "^5.21.3",
+    "@tinymce/tinymce-react": "^3.13.0",
     "apexcharts": "^3.28.1",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
@@ -25,6 +26,7 @@
     "react-bootstrap": "^1.6.3",
     "react-chartjs-2": "^2.9.0",
     "react-countup": "^4.3.2",
+    "react-data-table-component": "^7.4.6",
     "react-datepicker": "^2.11.0",
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.12.0",
@@ -54,6 +56,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "cypress open",
+    "test-and-record": "cypress run --record --key bc66b892-4075-42c4-8180-2c7259c6c246",
+    "test-non-auth-user": "cypress run --config integrationFolder=cypress/integration/non-auth-user-tests",
+    "test-auth-user": "cypress open --config integrationFolder=cypress/integration/auth-user-tests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

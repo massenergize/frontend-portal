@@ -47,11 +47,19 @@ import {
   LOAD_COMMUNITY_INFORMATION,
   SET_TOUR_STATE,
   SET_TOUR_INFO,
+  LOAD_COMMUNITY_ACTION_LIST,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
+
+export const reduxLoadCommunityActionList = (list) => (dispatch) => {
+  return dispatch({
+    type: LOAD_COMMUNITY_ACTION_LIST,
+    payload: list,
+  });
+};
 export const reduxSetTourInformation = (data = { stage: FIRST_SET }) => {
   return { type: SET_TOUR_INFO, payload: data };
 };

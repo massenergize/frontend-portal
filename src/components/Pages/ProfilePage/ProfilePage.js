@@ -838,7 +838,6 @@ class ProfilePage extends React.Component {
     if (!this.state.addedDefaultHouse) {
       apiCall("communities.join", body)
         .then((json) => {
-          console.log(json);
           if (json.success) {
             this.props.reduxLoadUserCommunities(json.data.communities);
           }

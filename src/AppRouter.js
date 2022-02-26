@@ -60,6 +60,7 @@ import {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetTourState,
+  reduxLoadCommunityActionList,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -138,8 +139,10 @@ class AppRouter extends Component {
   };
 
   componentDidMount() {
+    const { community } = this.props;
+    const community_id = community?.id;
     const cookies = new Cookies();
-    device_checkin(cookies).then(null, (err) => console.log(err));
+    device_checkin(cookies, community_id).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthentication();
     this.fetch();
   }
@@ -187,6 +190,7 @@ class AppRouter extends Component {
         apiCall("teams_page_settings.info", body),
         apiCall("testimonials_page_settings.info", body),
         apiCall("vendors_page_settings.info", body),
+        apiCall("communities.actions.completed", body),
       ])
         .then((res) => {
           const [
@@ -203,10 +207,10 @@ class AppRouter extends Component {
             teamsPageResponse,
             testimonialsPageResponse,
             vendorsPageResponse,
+            communityActionList,
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
-
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
           this.props.reduxLoadActionsPage(actionsPageResponse.data);
           this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
@@ -218,6 +222,7 @@ class AppRouter extends Component {
           this.props.reduxLoadTeamsPage(teamsPageResponse.data);
           this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
+          this.props.setCommunityActionListInRedux(communityActionList?.data);
           this.setState({
             pagesEnabled: {
               aboutUsPage: aboutUsPageResponse.data.is_published,
@@ -586,5 +591,6 @@ const mapDispatchToProps = {
   reduxSetPreferredEquivalence,
   checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
   setTourState: reduxSetTourState,
+  setCommunityActionListInRedux: reduxLoadCommunityActionList,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

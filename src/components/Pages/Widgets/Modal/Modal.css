@@ -1,0 +1,58 @@
+.ghost-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.6;
+  z-index: 999;
+  cursor: pointer;
+}
+
+.m-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute; 
+  top:0;
+  /* background-color:blue; */
+}
+
+.m-content-wrapper {
+  background: white;
+  border-radius: 6px;
+  width: var(--modal-width-size);
+  z-index: 1000;
+  opacity: 0;
+}
+
+@keyframes ml-anime-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.ml-modal-scale-in {
+  animation: ml-anime-scale-in 0.5s forwards;
+}
+
+  @media only screen and (min-width: 768px) {
+    .m-content-wrapper{ 
+      min-height: 200px;
+    }
+  }
+@media only screen and (max-width: 767px) {
+
+  .m-content-wrapper { 
+    width: 90% !important; 
+    min-height: 150px;
+  }
+}

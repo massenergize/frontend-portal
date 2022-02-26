@@ -7,6 +7,7 @@
   gap: 10px;
   margin-bottom: 20px;
   height: var(--sheet-height-state);
+  min-height: 300px;
   overflow-y: hidden;
 }
 
@@ -24,7 +25,7 @@
 
 .sheet-content-area h4 {
   padding: 10px 0px;
-  border: solid 0px #282828;
+  border: solid 0px #ededed;
   border-bottom-width: 2px;
 }
 
@@ -32,6 +33,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.me-testi-btn-reset {
+  box-shadow: 0 0 0;
+  margin: 0px;
+  padding: 0px;
+  color: var(--app-theme-green) !important;
+  font-weight: bold;
+  border-width: 0px;
+  transform: scale(1) !important;
+}
+.me-testi-btn-reset:hover {
+  background-color: white !important;
+  color: var(--app-theme-green);
+  border-width: 0px;
+}
+.me-testi-btn-reset:active,
+.me-testi-btn-reset:focus {
+  padding: 0px !important;
 }
 
 /*css for edit button on the testimonial page*/
@@ -57,6 +77,10 @@
 
 .sheet-text {
   font-size: 1rem;
+  color: black;
+}
+
+.sheet-text p {
   color: black;
 }
 
@@ -93,4 +117,18 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .sheet-text p {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .sheet-text p {
+    font-size: 0.8rem !important;
+  }
+  .me-testi-btn-reset {
+    font-size: 16px !important;
+  }
 }

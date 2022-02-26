@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MECard from "./MECard";
 import MEButton from "./MEButton";
 import PropTypes from "prop-types";
+import Modal from "./Modal/Modal";
 const SMALL = "sm";
 const MEDIUM = "md";
 const LARGE = "lg";
@@ -43,9 +44,12 @@ export default class MEModal extends Component {
       showCloseBtn,
       showCloseBtnOnPC,
       showCloseBtnOnMobile,
+      v2,
     } = this.props;
     const defaults = { background: "white", marginTop: -4, borderRadius: 7 };
     const overlayStyle = showOverlay ? {} : { display: "none" };
+
+    if (v2) return <Modal {...this.props} />;
     return (
       <div>
         <div

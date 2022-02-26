@@ -3,7 +3,8 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
-import StoryFormButtonModal from "../StoryFormButtonModal"
+import StoryFormButtonModal from "../StoryFormButtonModal";
+import { isMobile } from "react-device-detect";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -15,6 +16,29 @@ const hasLargeText = (body) => {
   return [false, body, body];
 };
 
+const getHeightOfHTMLBody = (_body) => {
+  const div = document.createElement("div");
+  div.innerHTML = _body;
+  div.classList.add("element-in-space");
+  const body = document.querySelector("body");
+  body.append(div);
+  const height = div.offsetHeight;
+  body.removeChild(div);
+  return height;
+};
+const checkIfTextIsShort = (body) => {
+  const height = getHeightOfHTMLBody(body);
+  if (isMobile)
+    return [height < Heights.WhenCollapsed.mobile.cutoff, height + "px"];
+  return [height < Heights.WhenCollapsed.pc.cutoff, height + "px"];
+};
+const Heights = {
+  WhenCollapsed: {
+    pc: { cutoff: 100, cssHeight: "300px" },
+    mobile: { cutoff: 100, cssHeight: "300px" },
+    forBothScreens: ["300px", "300px"],
+  },
+};
 export default class StorySheet extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +47,7 @@ export default class StorySheet extends Component {
       showImage: false,
       readMore: false,
       textIsShort: true,
-      fallbackImg: null
+      fallbackImg: null,
     };
     this.setDefaultImage = this.setDefaultImage.bind(this);
   }
@@ -34,28 +58,23 @@ export default class StorySheet extends Component {
 
   getUser() {
     const { preferred_name, user } = this.props;
-    //if (anonymous) return "Anonymous";
     return preferred_name || user?.preferred_name || user?.full_name || "...";
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props) {
+    const [textIsShort] = checkIfTextIsShort(props.body);
     const [yes] = hasLargeText(props.body);
-    if (yes) return { textIsShort: false };
-
+    if (yes) return { textIsShort };
     return null;
-  }
-
-  getBody() {
-    const { body } = this.props;
-    const [yes, substring, fullBody] = hasLargeText(body);
-    if (yes && !this.state.readMore) return substring;
-    return fullBody;
   }
 
   getProperHeight() {
     const { textIsShort, readMore } = this.state;
     if (textIsShort || (!textIsShort && readMore)) return ["auto", "auto"];
-    return ["400px", "530px"];
+    return [
+      Heights.WhenCollapsed.mobile.cssHeight,
+      Heights.WhenCollapsed.mobile.cssHeight,
+    ];
   }
 
   setDefaultImage(e) {
@@ -96,11 +115,14 @@ export default class StorySheet extends Component {
     const creatorName = this.getUser();
 
     const noImageProps = !file ? { display: "block", width: "100%" } : {};
-    const [pcHeight, mobileHeight] = this.getProperHeight();
+    const [pcHeight, mobileHeight] = this.getProperHeight(body);
     return (
       <div
+        className="z-depth-float"
         style={{
           width: "100%",
+          paddingBottom: 10,
+          marginBottom: 15,
         }}
         id={`sheet-content-${id}`}
       >
@@ -127,7 +149,7 @@ export default class StorySheet extends Component {
         )}
         {/* ------------------------------------------------------------- */}
         <div
-          className="root-story-sheet z-depth-float"
+          className="root-story-sheet"
           style={{
             "--sheet-height-state": pcHeight,
             "--sheet-height-state-mobile": mobileHeight,
@@ -154,35 +176,27 @@ export default class StorySheet extends Component {
             </h4>
             <div className="sheet-details">
               <p>{date}</p>
-              <div>
+              <div style={{ display: "flex" }}>
                 <Link
-                  style={{ marginLeft: "auto" }}
+                  style={{ marginLeft: "auto", marginRight: 10 }}
                   className="sheet-link test-story-sheet-full-view-link"
                   to={`${this.props.links.testimonials}/${id}`}
                 >
                   {" "}
-                  <i
-                    className="fa fa-copy"
-                    style={{ marginRight: 6 }}
-                    onClick={() => {
-                      document.execCommand("copy");
-                    }}
-                  ></i>{" "}
-                  Full View
+                  <i className="fa fa-copy" style={{ marginRight: 6 }}></i> Full
+                  View
                 </Link>
 
-                {
-                    is_published ? (
-                        <div />
-                    ) : (
-                        <StoryFormButtonModal
-                        ButtonClasses="testimonial_edit_button"
-                        draftTestimonialData={testimonialData}
-                        >
-                        Edit
-                        </StoryFormButtonModal>
-                    )
-                }
+                {is_published ? (
+                  <div />
+                ) : (
+                  <StoryFormButtonModal
+                    ButtonClasses="me-testi-btn-reset touchable-opacity"
+                    draftTestimonialData={testimonialData}
+                  >
+                    Edit
+                  </StoryFormButtonModal>
+                )}
               </div>
             </div>
             <div>
@@ -229,38 +243,47 @@ export default class StorySheet extends Component {
               >
                 {title}
               </h6>
-              <p className="sheet-text">{this.getBody()}</p>
-            </div>
-            <div style={{ display: "flex" }}>
-              {!this.state.textIsShort && (
-                <>
-                  {!this.state.readMore ? (
-                    <a
-                      href="#void"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ readMore: true });
-                      }}
-                      className="sheet-link"
-                    >
-                      Read more...
-                    </a>
-                  ) : (
-                    <a
-                      href="#void"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({ readMore: false });
-                      }}
-                      className="sheet-link"
-                    >
-                      Close
-                    </a>
-                  )}
-                </>
-              )}
+              <p
+                className="sheet-text"
+                // style={{ "--story-body-height": "300px" }}
+                dangerouslySetInnerHTML={{ __html: body }}
+              ></p>
             </div>
           </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            padding: !this.state.textIsShort ? "10px 25px" : 0,
+          }}
+        >
+          {!this.state.textIsShort && (
+            <>
+              {!this.state.readMore ? (
+                <a
+                  href="#void"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({ readMore: true });
+                  }}
+                  className="sheet-link"
+                >
+                  Read more...
+                </a>
+              ) : (
+                <a
+                  href="#void"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    this.setState({ readMore: false });
+                  }}
+                  className="sheet-link"
+                >
+                  Close
+                </a>
+              )}
+            </>
+          )}
         </div>
       </div>
     );
