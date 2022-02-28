@@ -295,7 +295,7 @@ class ActionsPage extends React.Component {
                 type="action"
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
-                boxClick={this.addMeToSelected} 
+                boxClick={this.addMeToSelected}
                 search={this.handleSearch}
                 searchText={this.state.searchText}
                 filtersFromURL={this.state.checked_values}

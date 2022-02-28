@@ -7,6 +7,7 @@ const urlParams = "?tour=false"; // useful, dont remove
 
 export default {
   api: { root: URLS["ROOT"] + "/api/" },
+  subdomain: COMMUNITY,
   emailToUse: "mrfimpong+30@gmail.com",
   passwordToUse: "123456",
   params: urlParams,

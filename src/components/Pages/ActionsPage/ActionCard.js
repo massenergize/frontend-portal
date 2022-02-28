@@ -19,6 +19,7 @@ import {
 } from "./ActionStateConstants";
 import MEChameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
+import { makeStringFromArrOfObjects } from "../../Utils";
 
 /**
  * Action Component is a single action for the action page,
@@ -145,8 +146,11 @@ class ActionCard extends React.Component {
 
   newFlexRender() {
     const actionStateCase = this.getActionStateCase();
+    const { action } = this.props;
+    const tagNames = makeStringFromArrOfObjects(action?.tags, (t) => t.name);
     return (
       <div
+        data-tag-names={tagNames}
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()} test-action-card-item`}
         key={this.props.key?.toString()}
         data-action-state={actionStateCase}
