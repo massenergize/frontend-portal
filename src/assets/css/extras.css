@@ -1858,6 +1858,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .footer-column-mod {
+    margin: 0px 40px;
+  }
   .cameleon-correct {
     font-weight: bold;
     padding: 4px 15px !important;
@@ -2051,6 +2054,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .temp-mob-footer-fix{ 
+    justify-content: center;
+    text-align: center;
+  }
   .event-view-togglers div {
     padding: 10px;
     font-size: 14px;

@@ -51,7 +51,7 @@ class Footer extends React.Component {
             <div className="container">
               {/* <!--Big Column--> */}
               <div className="big-column">
-                <div className="row clearfix">
+                <div className="row clearfix temp-mob-footer-fix">
                   {/* <!--Footer Column--> */}
                   <FooterInfo
                     info={this.props.footerInfo ? this.props.footerInfo : {}}
@@ -62,7 +62,7 @@ class Footer extends React.Component {
                     links={this.props.footerLinks}
                   />
                   {/* <!--Footer Column--> */}
-                  <div className="col-12 col-md-4">
+                  <div className="col-12 col-md-4 footer-column-mod">
                     {moreInfo.wants_socials ==="true" ? (
                       <CommunitySocials community={this.props.community} moreInfo={moreInfo} />
                     ) : (

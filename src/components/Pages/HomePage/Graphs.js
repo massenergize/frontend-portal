@@ -188,7 +188,6 @@ class Graphs extends React.Component {
             </Link>
           </center>
         ) : null}
-        ;
       </section>
     );
   }
