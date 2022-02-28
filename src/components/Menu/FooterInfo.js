@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../../logo.png';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -17,9 +16,6 @@ import { connect } from 'react-redux'
 class FooterInfo extends React.Component {
 
 	render() {
-		const { pageData } = this.props;
-		const { community } = pageData || {};
-		var communitylogo = community && community.logo && community.logo.url;
 		const adminTitle = "Community Admin";
 		return (
 			<div className="col-7 col-md-4">
