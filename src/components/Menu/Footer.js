@@ -48,7 +48,8 @@ class Footer extends React.Component {
         <footer className="main-footer m-footer-color">
           {/* <!--Widgets Section--> */}
           <div className="widgets-section">
-            <div className="container">
+            {/* <div className="container"> */}
+            <div className="temp-f-container">
               {/* <!--Big Column--> */}
               <div className="big-column">
                 <div className="row clearfix temp-mob-footer-fix">
@@ -75,7 +76,8 @@ class Footer extends React.Component {
           </div>
         </footer>
         <section className="footer-bottom m-footer-color">
-          <div className="container">
+          {/* <div className="container"> */}
+          <div className="temp-f-donate-area">
             <div className="pull-left copy-text">
               <p className="cool-font">
                 <a
@@ -96,7 +98,7 @@ class Footer extends React.Component {
               </p>
             </div>
             {donateEnabled ? (
-            <div className="pull-right get-text">
+            <div className="pull-right get-text temp-dn-fix" >
               <Link to={this.props.links.donate}>Donate Now</Link>
             </div>
             ) : null }
