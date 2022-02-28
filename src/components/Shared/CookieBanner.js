@@ -66,7 +66,6 @@ class CookieBanner extends React.Component {
                   onClick={this.acceptCookies}
                   className="cool-font new-sign-in float-right round-me z-depth-float"
                   style={{ background: "white", color: "black" }}
-                  id="test-cookie-banner-okay"
                 >
                   Okay
                 </button>
