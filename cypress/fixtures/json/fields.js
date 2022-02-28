@@ -1,9 +1,12 @@
+import URLS from "../../../src/api/urls";
+
 const DOMAIN = "http://localhost:3000/";
 const COMMUNITY = "wayland";
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
 
 export default {
+  api: { root: URLS["ROOT"] + "/api/" },
   emailToUse: "mrfimpong+30@gmail.com",
   passwordToUse: "123456",
   params: urlParams,

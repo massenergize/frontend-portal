@@ -19,13 +19,25 @@ Cypress.Commands.add(
     cy.get("#sign-in-btn").click();
   }
 );
+
 Cypress.Commands.add(
   "authenticateWithoutUI",
   function (email = fields.emailToUse, password = fields.passwordToUse) {
     Auth.signOut();
     return Auth.signInWithEmailAndPassword(email, password);
+    // console.log("I am the shit my geee", auth);
+    // cy.request({
+    //   method: "POST",
+    //   url: "http://massenergize.test:8000/api/auth.login",
+    //   body: {
+    //     idToken: auth.user._lat,
+    //   },
+    // }).then((response) => {
+    //   console.log("I am also the me response", response);
+    // });
   }
 );
+
 Cypress.Commands.add("deactivateTour", function () {
   cy.get("[aria-label='Skip Tour']").click();
 });

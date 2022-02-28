@@ -3,5 +3,8 @@
   "defaultCommandTimeout": 6000,
   "projectId": "eu6sim",
   "retries": { "openMode": 0, "runMode": 2 },
-  "video": false
+  "video": false,
+  "viewportHeight":1600, 
+  "viewportWidth":1800
+
 }

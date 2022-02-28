@@ -9,7 +9,7 @@ describe("Marking action as 'DONE' works", function () {
       .scrollIntoView({ offset: { top: -200 } })
       .then(($btn) => {
         cy.wrap($btn).click();
-      });
+      }); 
   });
 
   it("Opens up action modal", function () {

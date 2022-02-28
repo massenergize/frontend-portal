@@ -163,3 +163,9 @@ export const showThatTestimonialPageComponentsLoadWell = () => {
         cy.wrap($el).should("have.text", "By " + $el.attr("data-user-name"))
       ));
 };
+
+export const fromJsonToForm = (obj) => {
+  const form = new FormData();
+  Object.keys((key) => form.append(key, obj[key]));
+  return form;
+};

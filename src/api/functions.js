@@ -41,8 +41,6 @@ export async function apiCall(
     method: 'POST',
     body: formData
   });
-
-
   try {
     const json = await response.json();
     if (relocationPage && json && json.success) {
