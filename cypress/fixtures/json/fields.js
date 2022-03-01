@@ -4,6 +4,7 @@ const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
 
 export default {
+  subdomain: COMMUNITY,
   emailToUse: "mrfimpong+30@gmail.com",
   passwordToUse: "123456",
   params: urlParams,

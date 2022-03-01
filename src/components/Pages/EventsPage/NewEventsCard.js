@@ -8,6 +8,7 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { apiCall } from "../../../api/functions";
 import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
+import { makeStringFromArrOfObjects } from "../../Utils";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -146,11 +147,13 @@ export default class NewEventsCard extends Component {
       customDropAnimation,
       dropDirection,
       rsvp_enabled,
+      tags,
     } = this.props;
     const { rsvpStatus, loading, error } = this.state;
     const title = this.getEventTitle();
     return (
       <div
+        data-tag-names={makeStringFromArrOfObjects(tags, (e) => e.name)}
         className="test-one-event-card"
         data-is-logged-in={this.props.user}
         data-rsvp-status={this.state.rsvpStatus}
