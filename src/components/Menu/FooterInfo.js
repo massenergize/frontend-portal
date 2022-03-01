@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../../logo.png';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -17,16 +16,13 @@ import { connect } from 'react-redux'
 class FooterInfo extends React.Component {
 
 	render() {
-		const { pageData } = this.props;
-		const { community } = pageData || {};
-		var communitylogo = community && community.logo && community.logo.url;
 		const adminTitle = "Community Admin";
 		return (
 			<div className="col-7 col-md-4">
 				<div className="footer-widget about-column">
-					<figure><Link to={this.props.links.home}>
-						<img src={communitylogo ? communitylogo : logo} alt="LOGO" style={{ display: "inline-block" }} className='header-logo' />
-					</Link></figure>
+				<div className="section-title">
+							<b className="text-white">Community Administrator</b>
+						</div>
 					<ul className="contact-info">
 						<li><span className="icon-people3"></span>{this.props.info.name}, <i>{'  '}{adminTitle}</i></li>
 						{this.props.info.email &&
