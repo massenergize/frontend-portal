@@ -72,7 +72,7 @@ class FooterLinks extends React.Component {
 			return (
 				<div>
 				  <div className="footer-widget link-column">
-					  <div className="section-title d-none d-md-block">
+					  <div className="section-title">
 						  <b className="text-white">{this.props.title}</b>
 					  </div>
 					  <div className="row">

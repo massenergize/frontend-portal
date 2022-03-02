@@ -6,9 +6,13 @@ import PageTitle from "../../Shared/PageTitle";
 import MELink from "../Widgets/MELink";
 import {
   applyTagsAndGetContent,
+  collectSearchTextValueFromURL,
   filterTagCollections,
   getHumanFriendlyDate,
   getRandomIntegerInRange,
+  makeStringFromArrOfObjects,
+  processFiltersAndUpdateURL,
+  recreateFiltersForState,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -16,8 +20,9 @@ import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import StorySheet from "./Story Sheet/StorySheet";
 import MECard from "../Widgets/MECard";
-import MEButton from "../Widgets/MEButton"
-import StoryFormButtonModal from "./StoryFormButtonModal"
+import MEButton from "../Widgets/MEButton";
+import StoryFormButtonModal from "./StoryFormButtonModal";
+import ShareButtons from "./../../Shared/ShareButtons";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +39,7 @@ class StoriesPage extends React.Component {
       },
       stories: [],
       searchText: null,
+      mounted: false,
     };
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -41,6 +47,7 @@ class StoriesPage extends React.Component {
   }
 
   addMeToSelected(param, reset = false) {
+    processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
     var arr = this.state.checked_values ? this.state.checked_values : [];
     // remove previously selected tag of selected category and put the new one
@@ -48,7 +55,6 @@ class StoriesPage extends React.Component {
     if (!param || param.value !== NONE) arr.push(param);
     this.setState({ checked_values: arr });
   }
-
 
   renderAddTestmonialBtn() {
     if (this.props.user) {
@@ -73,11 +79,11 @@ class StoriesPage extends React.Component {
   renderTestimonialForm() {
     if (this.props.user) {
       return (
-    <div className="every-day-flex">
-      <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
-    </div>
-	  )
-	     }
+        <div className="every-day-flex">
+          <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+        </div>
+      );
+    }
   }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
@@ -87,6 +93,21 @@ class StoriesPage extends React.Component {
     });
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    if (!state.mounted) {
+      const oneCollection = props?.tagCols && props.tagCols[0];
+      if (oneCollection?.id)
+        return {
+          checked_values: recreateFiltersForState(
+            props.tagCols,
+            props.location
+          ),
+          mounted: true,
+          searchText: collectSearchTextValueFromURL(props.location),
+        };
+    }
+    return null;
+  };
   handleSearch(e) {
     e.preventDefault();
     this.setState({ searchText: e.target.value });
@@ -100,8 +121,7 @@ class StoriesPage extends React.Component {
       (story, word) =>
         story?.title?.toLowerCase().includes(word) ||
         story?.body?.toLowerCase().includes(word) ||
-        story?.user?.preferred_name?.toLowerCase().includes(word) ||
-        story?.user?.full_name?.toLowerCase().includes(word)
+        story?.preferred_name?.toLowerCase().includes(word)
     );
   }
 
@@ -113,14 +133,21 @@ class StoriesPage extends React.Component {
           : story.user.preferred_name; //"...";
       // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
-        <div  key={index.toString()}>
+        <div key={index.toString()}>
           <div key={index.toString()}>
             <MECard
               href={`${this.props.links.testimonials}#sheet-content-${story.id}`}
               className="extra-story-cards me-anime-move-from-left-fast"
               style={{ fontSize: "0.9rem", textTransform: "capitalise" }}
             >
-              {story.title} {story.is_published? "" : "(Pending Appr.)"}
+              {story.title}{" "}
+              {story.is_published ? (
+                ""
+              ) : (
+                <span style={{ color: "var(--app-theme-orange)" }}>
+                  (Pending Appr.)
+                </span>
+              )}
               <br />
               <small style={{ color: "green" }}>
                 <b>
@@ -134,6 +161,9 @@ class StoriesPage extends React.Component {
     });
   }
 
+  onSearchTextChange(text) {
+    this.setState({ searchText: text || "" });
+  }
   render() {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -188,6 +218,10 @@ class StoriesPage extends React.Component {
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
+                searchText={this.state.searchText}
+                doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
+                filtersFromURL={this.state.checked_values}
               />
               <div className="row phone-marg-top-90">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -210,7 +244,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-				  <div>{this.renderTestimonialForm()}</div>
+                  <div>{this.renderTestimonialForm()}</div>
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>
@@ -227,6 +261,17 @@ class StoriesPage extends React.Component {
                       </MELink>
                     </p>
                   ) : null}
+                </center>
+
+                <center style={{ padding: 10 }}>
+                  <p style={{ color: "black" }}>Share this page</p>
+                  <ShareButtons
+                    include={["facebook"]}
+                    url={window.location.href}
+                    pageTitle={`Stories people have about actions they have taken in ${
+                      this.props?.pageData?.community?.name || "your community"
+                    }`}
+                  />
                 </center>
               </div>
             </div>
@@ -261,6 +306,7 @@ class StoriesPage extends React.Component {
     return stories.map((story, index) => (
       <div
         key={index.toString()}
+        data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
         style={{
           width: "100%",
           "--sheet-anime-delay": getRandomIntegerInRange(500),
@@ -268,9 +314,7 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet 
-        {...story} 
-        links={this.props.links} />
+        <StorySheet {...story} links={this.props.links} />
       </div>
     ));
   }

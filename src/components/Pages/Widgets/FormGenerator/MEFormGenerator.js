@@ -11,6 +11,7 @@ import MECheckBoxes from "../MECheckBoxGroup";
 // import MEUploader from "../MEUploader";
 import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
+import MERichTextEditor from "../MERichTextEditor/MERichTextEditor";
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -21,6 +22,8 @@ const CHECKBOXES = "checkbox-group";
 const SECTION = "section-creator";
 const CHIPS = "chips";
 const FILE = "file";
+const HTMLFIELD = "html-field";
+
 export const BAD = "bad";
 export const GOOD = "good";
 
@@ -33,6 +36,7 @@ export const GOOD = "good";
  * @prop {bool} elevate | should the form be elevated or not?
  * @prop {bool} animate | should the form be animated or not?
  * @prop {object} info | any notification you would like to display below the form {icon, type ("good|bad"), text}
+ * @prop {function}  onMount | A function that exports some utility fxns and values from the form generator
  * @returns HTML Form event && form Content (e, content)
  *
  */
@@ -117,6 +121,7 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
   getCheckBoxes(formObject, key) {
     return (
       <div key={key} className="small-form-spacing">
@@ -130,6 +135,7 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
   getRadioGroup(formObject, key) {
     return (
       <div key={key} className="small-form-spacing">
@@ -165,7 +171,7 @@ export default class FormGenerator extends Component {
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MEUploader
-				  ImageToDelete={(ImgToDel) => this.ImageToDelete(ImgToDel)}
+          ImageToDelete={(ImgToDel) => this.ImageToDelete(ImgToDel)}
           formData={this.state.formData}
           {...formObject}
           onFileSelected={(file, removeFxn) => {
@@ -206,14 +212,15 @@ export default class FormGenerator extends Component {
     );
   }
   componentDidMount() {
-    const { fields } = this.props;
+    const { fields, onMount } = this.props;
+    onMount && onMount(this.resetForm);
     if (!fields) return;
     this.setDefaultValues();
-    //sets props for form data when in edit mode 
-    if (this.props.inputData) { 
+    //sets props for form data when in edit mode
+    if (this.props.inputData) {
       this.setState({
-        formData: this.props.inputData
-      })
+        formData: this.props.inputData,
+      });
     }
   }
   getDropDownDefault(formItem) {
@@ -248,6 +255,26 @@ export default class FormGenerator extends Component {
       formData: defaults,
     });
   }
+
+  getRichTextEditor(formItem, key) {
+    const hasResetFxnInStateAlready = this.state.resetors[formItem.name];
+    return (
+      <React.Fragment key={key}>
+        {this.labelOrNot(formItem)}
+        <MERichTextEditor
+          onChange={(text) => this.handleFields(formItem.name, text)}
+          defaultValue={this.state.formData[formItem.name]}
+          onMount={(resetor) =>
+            !hasResetFxnInStateAlready &&
+            this.setState({
+              resetors: { ...this.state.resetors, [formItem.name]: resetor },
+            })
+          }
+        />
+      </React.Fragment>
+    );
+  }
+
   createAndEjectForm() {
     const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
@@ -272,6 +299,8 @@ export default class FormGenerator extends Component {
           return this.getSectionCreator(formItem, index);
         case CHIPS:
           return this.getChipMaker(formItem, index);
+        case HTMLFIELD:
+          return this.getRichTextEditor(formItem, index);
         default:
           return <div></div>;
       }
@@ -400,80 +429,47 @@ export default class FormGenerator extends Component {
     }
   }
 
-    //this function keeps track of what  image  to delete should the user remove the image from the post and submit it without an image 
-	ImageToDelete(ImgToDel) {
-    var Data = this.state.formData
-    Data["ImgToDel"] = ImgToDel 
+  //this function keeps track of what  image  to delete should the user remove the image from the post and submit it without an image
+  ImageToDelete(ImgToDel) {
+    var Data = this.state.formData;
+    Data["ImgToDel"] = ImgToDel;
     this.setState({
-            formData : Data
-        })
-
-	}
+      formData: Data,
+    });
+  }
   render() {
     var { animate, className, style, title, elevate, moreActions } = this.props;
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
-      
-        <MECard className={`${animationClass} ${className}`} style={style}>
-          <METextView
-            containerStyle={{ width: "100%" }}
-            style={{ color: "black", fontSize: 18, textAlign: "center" }}
-          >
-            {title}
-          </METextView>
-          <form onSubmit={this.onSubmit }>
-            {this.createAndEjectForm()}
+      <MECard className={`${animationClass} ${className}`} style={style}>
+        <METextView
+          containerStyle={{ width: "100%" }}
+          style={{ color: "black", fontSize: 18, textAlign: "center" }}
+        >
+          {title}
+        </METextView>
+        <form onSubmit={this.onSubmit}>
+          {this.createAndEjectForm()}
 
-            <br />
-            <div>{this.displayInformation()}</div>
-            <div>{this.displayImageWarning()}</div>
-            <div style={{ display: "flex" }}>
-              <div style={{ margin: "auto" }}>
-                {moreActions}
-
-                {/*Added a clear form button because when you click edit testimonial button,
-                        you can edit the testimonial but there is no way to clear the form to submit a new
-                         testimonial with out refreshing the page */}   
-                <MEButton
-                  type="button"
-                  onClick={() => {this.resetForm()}}
-                  containerStyle={{
-                    padding: "10px 12px",
-                    fontSize: 18,
-                  }}
-                >
-                  Clear Form
-                </MEButton>
-
-				
-                <MEButton
-                  type="button"
-                  onClick={() => {this.props.TriggerModal(false)}}
-                  className="close-testimonial-modal-button"
-                  containerStyle={{
-                    padding: "10px 12px",
-                    fontSize: 18,
-                  }}
-                >
-                  Cancel 
-                </MEButton>
-
-
-                <MEButton
-                  className="submit-testimonial-button"
-                  containerStyle={{
-                    padding: "10px 12px",
-                    fontSize: 18,
-                  }}
-                >
-                  {this.props.actionText}
-                </MEButton>
-              </div>
+          <br />
+          <div>{this.displayInformation()}</div>
+          <div>{this.displayImageWarning()}</div>
+          <div style={{ display: "flex" }}>
+            <div style={{ marginLeft: "auto" }}>
+              {moreActions}
+              <MEButton
+                containerStyle={{
+                  padding: "10px 12px",
+                  fontSize: 18,
+                }}
+              >
+                {this.props.actionText}
+              </MEButton>
             </div>
-          </form>
-        </MECard>
-      
+          </div>
+        </form>
+      </MECard>
     );
   }
 }

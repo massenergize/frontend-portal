@@ -1,0 +1,39 @@
+:root {
+  --app-theme-color: #8dc443;
+  --app-theme-accent: #f57b34;
+}
+
+.me-tab-container {
+  width: 100%;
+}
+.me-tab-header-area {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.me-tab-header {
+  padding: 15px 25px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0px;
+}
+
+.me-tab-is-selected {
+  background-color: var(--app-theme-color);
+  box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84), 0 2px 10px 0 rgba(0, 0, 0, 0.1) !important;
+  -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
+    0 2px 10px 0 rgba(0, 0, 0, 0.1) !important;
+  color: white;
+}
+.me-tab-is-selected:hover {
+  opacity: 0.8;
+  transition: 0.2s ease-out;
+}
+
+@media only screen and (max-width: 767px) {
+  .me-tab-header {
+    padding: 10px;
+    font-size: 13px;
+  }
+}

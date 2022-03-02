@@ -5,6 +5,19 @@
   --app-theme-orange-lighter: #fba930;
 }
 
+.one-story-html-view p {
+  color: black;
+}
+.element-in-space {
+  position: absolute;
+  top: -100000000;
+  left: -100000000000;
+}
+.me-team-table-cell {
+  color: var(--app-theme-green-darker);
+  cursor: pointer;
+  margin: 5px 0px;
+}
 .underline-me {
   border: solid 0px black;
   border-bottom-width: 1px;
@@ -426,7 +439,7 @@
 .add-testimonial {
   cursor: pointer;
   height: 100%;
-  background: #fba930;
+  background: #f57b34;
   color: white;
   padding: 13px 20px;
   display: flex;
@@ -1833,7 +1846,7 @@
 
 .data-explanation-dialog {
   padding: 20px;
-  border: solid 4px green;
+  /* border: solid 4px green; */
   border-radius: 10px;
   margin-bottom: 35px;
 }
@@ -1845,6 +1858,26 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .temp-dn-fix {
+    margin-right: 3%;
+  }
+  .temp-f-donate-area {
+    margin: 0px 10%;
+  }
+  .temp-f-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 3;
+    padding: 10px 10%;
+  }
+
+  .temp-f-container div {
+    flex: 1;
+  }
+  .footer-column-mod {
+    margin: 0px 40px;
+  }
   .cameleon-correct {
     font-weight: bold;
     padding: 4px 15px !important;
@@ -1886,7 +1919,7 @@
     transform: translateX(-50%);
     z-index: 99;
     position: fixed;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     border-radius: 10px;
   }
 
@@ -1895,8 +1928,8 @@
   }
 
   .submit-testimonial-button {
-      background-color: green;
-      color: white;  
+    background-color: green;
+    color: white;
   }
 
   .submit-testimonial-button:hover {
@@ -1909,7 +1942,7 @@
   }
 
   .close-testimonial-modal-button:hover {
-      background-color: lightcoral;
+    background-color: lightcoral;
   }
 
   .hori-filter-container {
@@ -1924,8 +1957,7 @@
     border-right-width: 0px;
   }
 
-  .snackbar-success
-  .mob-modal-correction {
+  .snackbar-success .mob-modal-correction {
     margin-top: -5vh !important;
   }
   .me-modal-md {
@@ -2039,6 +2071,16 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .temp-f-donate-area {
+    padding:15px;
+  }
+  .temp-f-container {
+    padding:15px
+  }
+  .temp-mob-footer-fix {
+    justify-content: center;
+    text-align: center;
+  }
   .event-view-togglers div {
     padding: 10px;
     font-size: 14px;
