@@ -480,7 +480,7 @@ class ChooseHHForm extends React.Component {
               key={index.toString()}
             >
               <div
-                className={`act-rect ${selected ? "act-selected" : ""}`}
+                className={`act-rect ${selected ? "act-selected" : ""} test-household-uncheck-div`}
               ></div>
               <p>{userHasOnlyOneHouse ? "Uncheck this to remove" : name}</p>
             </div>

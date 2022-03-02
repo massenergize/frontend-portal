@@ -1,12 +1,15 @@
 import URLS from "../../../src/api/urls";
 
 const DOMAIN = "http://localhost:3000/";
-const COMMUNITY = "wayland";
+const COMMUNITY = "Demo2";
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
-
+const API_ROOT = URLS["ROOT"] + "/api/";
 export default {
-  api: { root: URLS["ROOT"] + "/api/" },
+  api: {
+    root: API_ROOT,
+    urls: { authenticate: API_ROOT + "auth.login.testmode" },
+  },
   subdomain: COMMUNITY,
   emailToUse: "mrfimpong+30@gmail.com",
   passwordToUse: "123456",

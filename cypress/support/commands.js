@@ -1,6 +1,8 @@
 import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
 import fields from "../fixtures/json/fields";
+import { apiCall } from "../../src/api/functions";
+const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 const removeCookieBanner = () => {
   // This is just a function to always close the banner, not for testing the cookie banner
   cy.get("#test-cookie-banner-okay").then(($banner) => {
@@ -25,16 +27,6 @@ Cypress.Commands.add(
   function (email = fields.emailToUse, password = fields.passwordToUse) {
     Auth.signOut();
     return Auth.signInWithEmailAndPassword(email, password);
-    // console.log("I am the shit my geee", auth);
-    // cy.request({
-    //   method: "POST",
-    //   url: "http://massenergize.test:8000/api/auth.login",
-    //   body: {
-    //     idToken: auth.user._lat,
-    //   },
-    // }).then((response) => {
-    //   console.log("I am also the me response", response);
-    // });
   }
 );
 

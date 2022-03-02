@@ -1,6 +1,7 @@
 import URLS from "./urls";
 import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from '../redux/store';
+import Cookies from "universal-cookie";
 
 
 /**
@@ -33,8 +34,11 @@ export async function apiCall(
     destinationUrl = "api/" + destinationUrl;
   }
   
+  const authToken =  get_cookie(new Cookies(), "token") // This is need because in tests, cypress doesnt pass the token directly in the headers
   const formData = new FormData();
+  
   Object.keys(dataToSend).map(k => (formData.append(k, dataToSend[k])));
+  formData.append("__token", authToken)
 
   const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, {
     credentials: 'include',
