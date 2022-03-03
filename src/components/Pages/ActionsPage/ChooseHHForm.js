@@ -172,41 +172,43 @@ class ChooseHHForm extends React.Component {
     }
 
     if (this.props.status === "TODO") {
-      choices.forEach((choice) => {
-        const dateChanged =
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice];
-        if (!this.props.inCart(actionId, choice) || dateChanged) {
-          //if user selects diff date, it will submit to backend
+      choices &&
+        choices.forEach((choice) => {
+          const dateChanged =
+            this.state.Dates[choice] !== this.state.DatesOnStart[choice];
+          if (!this.props.inCart(actionId, choice) || dateChanged) {
+            //if user selects diff date, it will submit to backend
+            const date =
+              this.state.Dates[choice] !== undefined
+                ? this.state.Dates[choice][0]
+                : "";
+            this.props.addToCart(actionId, choice, this.props.status, date);
+            this.props.closeForm();
+          }
+        });
+    } else if (this.props.status === "DONE") {
+      choices &&
+        choices.forEach((choice) => {
           const date =
             this.state.Dates[choice] !== undefined
               ? this.state.Dates[choice][0]
               : "";
-          this.props.addToCart(actionId, choice, this.props.status, date);
-          this.props.closeForm();
-        }
-      });
-    } else if (this.props.status === "DONE") {
-      choices.forEach((choice) => {
-        const date =
-          this.state.Dates[choice] !== undefined
-            ? this.state.Dates[choice][0]
-            : "";
-        const dateChanged =
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice];
-        const wasInDone = this.props.inCart(actionId, choice, "DONE");
+          const dateChanged =
+            this.state.Dates[choice] !== this.state.DatesOnStart[choice];
+          const wasInDone = this.props.inCart(actionId, choice, "DONE");
 
-        if (
-          !this.props.inCart(actionId, choice) ||
-          (wasInDone && dateChanged)
-        ) {
-          //if user selects diff date, it will submit to backend
-          this.props.addToCart(actionId, choice, this.props.status, date);
-          this.props.closeForm();
-        } else if (this.props.inCart(actionId, choice, "TODO")) {
-          this.props.moveToDone(actionId, choice, date);
-          this.props.closeForm();
-        }
-      });
+          if (
+            !this.props.inCart(actionId, choice) ||
+            (wasInDone && dateChanged)
+          ) {
+            //if user selects diff date, it will submit to backend
+            this.props.addToCart(actionId, choice, this.props.status, date);
+            this.props.closeForm();
+          } else if (this.props.inCart(actionId, choice, "TODO")) {
+            this.props.moveToDone(actionId, choice, date);
+            this.props.closeForm();
+          }
+        });
     }
 
     this.removeHouseholdsThatWereUnselected();
@@ -255,74 +257,77 @@ class ChooseHHForm extends React.Component {
     const choice = [];
     const Dates = {};
 
-    households.forEach((house) => {
-      this.props.inCart(aid, house.id, status) &&
-        choice.push(house.id) &&
-        BuildDates(house.id);
-    });
+    households &&
+      households.forEach((house) => {
+        this.props.inCart(aid, house.id, status) &&
+          choice.push(house.id) &&
+          BuildDates(house.id);
+      });
     if (status === "TODO") {
-      todo.forEach((todo) => {
-        //this if statement populates the data only for the selected action and households
-        if (
-          todo.date_completed &&
-          Dates[todo.real_estate_unit.id] === -1 &&
-          aid === todo.action.id
-        ) {
-          //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
-          //different value
-          var DropdownHeader = () => {
-            var Diff = moment().diff(todo.date_completed, "days");
-            var CompYear = moment(todo.date_completed).year();
-            var CurrYear = moment().year();
-            if (Diff <= 90 && Diff >= 0 && CompYear === CurrYear) {
-              return Choice1;
-            } else if (Diff < 0 && CompYear === CurrYear) {
-              return Choice2;
-            } else if (CompYear - CurrYear === 1) {
-              return Choice3;
-            } else if (CompYear - CurrYear >= 2) {
-              return Choice4;
-            }
-          };
-          Dates[todo.real_estate_unit.id] = [
-            todo.date_completed.substring(0, todo.date_completed.length),
-            DropdownHeader(),
-          ];
-        }
-      });
+      todo &&
+        todo.forEach((todo) => {
+          //this if statement populates the data only for the selected action and households
+          if (
+            todo.date_completed &&
+            Dates[todo.real_estate_unit.id] === -1 &&
+            aid === todo.action.id
+          ) {
+            //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
+            //different value
+            var DropdownHeader = () => {
+              var Diff = moment().diff(todo.date_completed, "days");
+              var CompYear = moment(todo.date_completed).year();
+              var CurrYear = moment().year();
+              if (Diff <= 90 && Diff >= 0 && CompYear === CurrYear) {
+                return Choice1;
+              } else if (Diff < 0 && CompYear === CurrYear) {
+                return Choice2;
+              } else if (CompYear - CurrYear === 1) {
+                return Choice3;
+              } else if (CompYear - CurrYear >= 2) {
+                return Choice4;
+              }
+            };
+            Dates[todo.real_estate_unit.id] = [
+              todo.date_completed.substring(0, todo.date_completed.length),
+              DropdownHeader(),
+            ];
+          }
+        });
     } else {
-      done.forEach((done) => {
-        //this if statement populates the date data only for a the selected action and households
-        if (
-          done.date_completed &&
-          Dates[done.real_estate_unit.id] === -1 &&
-          aid === done.action.id
-        ) {
-          //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
-          //different value
-          var DropdownHeader = () => {
-            var Diff = moment().diff(done.date_completed, "days");
-            var CompYear = moment(done.date_completed).year();
-            var CurrYear = moment().year();
-            if (Diff <= 2 && CompYear === CurrYear) {
-              return Choice1;
-            } else if (
-              (Diff > 90 && CompYear === CurrYear) ||
-              done.date_completed === "2022-01-01"
-            ) {
-              return Choice2;
-            } else if (CurrYear - CompYear === 1) {
-              return Choice3;
-            } else if (CurrYear - CompYear <= 2) {
-              return Choice4;
-            }
-          };
-          Dates[done.real_estate_unit.id] = [
-            done.date_completed.substring(0, done.date_completed.length),
-            DropdownHeader(),
-          ];
-        }
-      });
+      done &&
+        done.forEach((done) => {
+          //this if statement populates the date data only for a the selected action and households
+          if (
+            done.date_completed &&
+            Dates[done.real_estate_unit.id] === -1 &&
+            aid === done.action.id
+          ) {
+            //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
+            //different value
+            var DropdownHeader = () => {
+              var Diff = moment().diff(done.date_completed, "days");
+              var CompYear = moment(done.date_completed).year();
+              var CurrYear = moment().year();
+              if (Diff <= 2 && CompYear === CurrYear) {
+                return Choice1;
+              } else if (
+                (Diff > 90 && CompYear === CurrYear) ||
+                done.date_completed === "2022-01-01"
+              ) {
+                return Choice2;
+              } else if (CurrYear - CompYear === 1) {
+                return Choice3;
+              } else if (CurrYear - CompYear <= 2) {
+                return Choice4;
+              }
+            };
+            Dates[done.real_estate_unit.id] = [
+              done.date_completed.substring(0, done.date_completed.length),
+              DropdownHeader(),
+            ];
+          }
+        });
     }
 
     //creates an orginal for comparison later to determine what dates changed to submit to backend
@@ -458,7 +463,7 @@ class ChooseHHForm extends React.Component {
       //when its done rendering the household lines, this puts some padding at the end so the submit button does not cut off the last house
       if (name === "TestData") {
         return (
-          <div>
+          <div key={index?.toString()}>
             <br /> <br /> <br /> <br />
           </div>
         );
@@ -480,7 +485,9 @@ class ChooseHHForm extends React.Component {
               key={index.toString()}
             >
               <div
-                className={`act-rect ${selected ? "act-selected" : ""} test-household-uncheck-div`}
+                className={`act-rect ${
+                  selected ? "act-selected" : ""
+                } test-household-uncheck-div`}
               ></div>
               <p>{userHasOnlyOneHouse ? "Uncheck this to remove" : name}</p>
             </div>
@@ -506,7 +513,7 @@ class ChooseHHForm extends React.Component {
 
                   <Dropdown.Menu variant="dark">
                     <Dropdown.Item
-                    className="test-one-modal-drop-item"
+                      className="test-one-modal-drop-item"
                       onClick={() =>
                         this.ChangeCompDate(Choice1, values[index])
                       }

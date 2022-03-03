@@ -1,11 +1,11 @@
-import { DEFAULT_STATE, IS_DONE } from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
+import {
+  DEFAULT_STATE,
+  IS_IN_TODO,
+} from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
 import fields from "../../fixtures/json/fields";
 import "./authenticate-user-with-token.spec";
 
-/**
- * @TODO: Make DRY later
- */
-describe("Marking action as 'DONE' works", function () {
+describe("Adding action to TODO list", function () {
   beforeEach(() => {
     Cypress.Cookies.preserveOnce("token");
   });
@@ -15,9 +15,9 @@ describe("Marking action as 'DONE' works", function () {
     cy.removeBanner();
   });
 
-  it("Clicks on 'done' on action card", function () {
+  it("Clicks on 'todo' on action card", function () {
     cy.wait(1000); // helps wait for authentication params to load in
-    cy.get(".test-btn-for-done")
+    cy.get(".test-btn-for-todo")
       .first()
       .then(($btn) => {
         cy.wrap($btn).click();
@@ -35,22 +35,22 @@ describe("Marking action as 'DONE' works", function () {
     cy.wait(1000);
   });
 
-  it("Action card shows properties that it has been done", function () {
-    cy.get(".test-btn-for-done").then(($btn) => {
-      expect($btn.attr("data-action-state", IS_DONE));
+  it("Action card shows properties that it has been added to 'todo' ", function () {
+    cy.get(".test-btn-for-todo").then(($btn) => {
+      expect($btn.attr("data-action-state", IS_IN_TODO));
       expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
     });
   });
   it("Reverse process", function () {
-    cy.get(".test-btn-for-done")
+    cy.get(".test-btn-for-todo")
       .first()
       .then(($btn) => {
         cy.wrap($btn).click();
       })
-      .as("done-button");
+      .as("todo-button");
     cy.get(".test-one-house").click();
     cy.get(".test-modal-submit").click();
-    cy.get("@done-button").then(($btn) => {
+    cy.get("@todo-button").then(($btn) => {
       expect($btn.attr("data-action-state", DEFAULT_STATE));
       expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
     });

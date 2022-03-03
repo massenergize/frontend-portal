@@ -1,6 +1,6 @@
 import URLS from "../../../src/api/urls";
 
-const DOMAIN = "http://localhost:3000/";
+var DOMAIN = "http://localhost:3000/";
 const COMMUNITY = "Demo2";
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
@@ -8,7 +8,10 @@ const API_ROOT = URLS["ROOT"] + "/api/";
 export default {
   api: {
     root: API_ROOT,
-    urls: { authenticate: API_ROOT + "auth.login.testmode" },
+    urls: {
+      authenticate: API_ROOT + "auth.login.testmode",
+      fetchActions: API_ROOT + "actions.list",
+    },
   },
   subdomain: COMMUNITY,
   emailToUse: "mrfimpong+30@gmail.com",

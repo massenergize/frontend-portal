@@ -1,7 +1,7 @@
 import fields from "../../fixtures/json/fields";
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 
-describe("Signs in and enters all actions page", function () {
+describe("Authenticates in the background", function () {
   before(function () {
     cy.authenticateWithoutUI().then((auth) => {
       cy.request({
@@ -14,4 +14,9 @@ describe("Signs in and enters all actions page", function () {
       });
     });
   });
+  beforeEach(() => {
+    Cypress.Cookies.preserveOnce("token");
+  });
+
+  it("Authentication complete", () => {});
 });
