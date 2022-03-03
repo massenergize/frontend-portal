@@ -15,8 +15,10 @@ describe("Adding action to TODO list", function () {
     cy.removeBanner();
   });
 
-  it("Clicks on 'todo' on action card", function () {
-    cy.wait(1000); // helps wait for authentication params to load in
+  it("Clicks on 'todo' on action card", { retries: 9 }, function () {
+    cy.get(".test-action-card-item").then(($div) => {
+      expect($div.attr("data-action-auth-state")).to.equal("authenticated");
+    });
     cy.get(".test-btn-for-todo")
       .first()
       .then(($btn) => {

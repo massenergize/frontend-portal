@@ -1,4 +1,7 @@
-import { DEFAULT_STATE, IS_DONE } from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
+import {
+  DEFAULT_STATE,
+  IS_DONE,
+} from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
 import fields from "../../fixtures/json/fields";
 import "./authenticate-user-with-token.spec";
 
@@ -15,8 +18,10 @@ describe("Marking action as 'DONE' works", function () {
     cy.removeBanner();
   });
 
-  it("Clicks on 'done' on action card", function () {
-    cy.wait(1000); // helps wait for authentication params to load in
+  it("Clicks on 'done' on action card", { retries: 9 }, function () {
+    cy.get(".test-action-card-item").then(($div) => {
+      expect($div.attr("data-action-auth-state")).to.equal("authenticated");
+    });
     cy.get(".test-btn-for-done")
       .first()
       .then(($btn) => {
