@@ -1858,6 +1858,26 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .temp-dn-fix {
+    margin-right: 3%;
+  }
+  .temp-f-donate-area {
+    margin: 0px 10%;
+  }
+  .temp-f-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 3;
+    padding: 10px 10%;
+  }
+
+  .temp-f-container div {
+    flex: 1;
+  }
+  .footer-column-mod {
+    margin: 0px 40px;
+  }
   .cameleon-correct {
     font-weight: bold;
     padding: 4px 15px !important;
@@ -2051,6 +2071,16 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .temp-f-donate-area {
+    padding:15px;
+  }
+  .temp-f-container {
+    padding:15px
+  }
+  .temp-mob-footer-fix {
+    justify-content: center;
+    text-align: center;
+  }
   .event-view-togglers div {
     padding: 10px;
     font-size: 14px;

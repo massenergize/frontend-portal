@@ -22,7 +22,7 @@ class SubscribeForm extends React.Component {
 
     render() {
         return (
-            <div className="footer-widget contact-column text-center text-md-left">
+            <div className="footer-widget contact-column text-center text-md-left" style={{}}>
                 <div className="section-title">
                     <b className="text-white">Subscribe to Newsletter</b>
                 </div>
