@@ -48,6 +48,7 @@ import {
 import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
+import AddPassword from "./AddPassword";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -146,16 +147,6 @@ class ProfilePage extends React.Component {
   }
   render() {
     const { fireAuth } = this.props;
-    // if (!this.props.user) {
-    //   return <Redirect to={this.props.links.signin}> </Redirect>;
-    // }
-
-    // if (!this.props.user) {
-    //   // can this execute?
-    //   this.props.firebase.auth().signOut();
-    //   this.props.reduxLogout();
-
-    // }
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -181,6 +172,7 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+
     const { user } = this.props;
     const [eqLabels, eqValues] = this.getEqData();
     return (
@@ -434,6 +426,9 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
+    const { settings } = this.props;
+    const { usesOnlyPasswordless } = settings?.signInConfig || {};
+
     return (
       <>
         <h4>
@@ -458,6 +453,16 @@ class ProfilePage extends React.Component {
               }}
               className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
             >
+              {usesOnlyPasswordless && (
+                <Dropdown.Item
+                  onClick={() =>
+                    this.setState({ editingProfileForm: "add-password" })
+                  }
+                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+                >
+                  Add Password
+                </Dropdown.Item>
+              )}
               <Dropdown.Item
                 onClick={() => this.setState({ editingProfileForm: "edit" })}
                 className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
@@ -467,7 +472,8 @@ class ProfilePage extends React.Component {
               {/* {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
               this.props.auth.providerData[0].providerId === "password" ? ( */}
-              {usesOnlyPasswordAuth(this.props.fireAuth) ? (
+              {usesOnlyPasswordAuth(this.props.fireAuth) &&
+              !usesOnlyPasswordless ? (
                 <>
                   <Dropdown.Item
                     onClick={() =>
@@ -498,7 +504,23 @@ class ProfilePage extends React.Component {
           &nbsp;&nbsp;
         </h4>
         <p> {this.state.message ? this.state.message : ""} </p>
-        {form === "edit" ? (
+        {form === "add-password" && (
+          <AddPassword
+            email={this.props.user.email}
+            full_name={this.props.user.full_name}
+            preferred_name={this.props.user.preferred_name}
+            image={this.props.user.profile_picture}
+            settings={settings}
+            fireAuth={this.props.fireAuth}
+            closeForm={(message = "") =>
+              this.setState({
+                editingProfileForm: null,
+                message: message ? message : null,
+              })
+            }
+          />
+        )}
+        {form === "edit" && (
           <EditingProfileForm
             email={this.props.user.email}
             full_name={this.props.user.full_name}
@@ -511,8 +533,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "delete" ? (
+        )}
+        {form === "delete" && (
           <DeleteAccountForm
             closeForm={(message = "") =>
               this.setState({
@@ -521,8 +543,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "password" ? (
+        )}
+        {form === "password" && (
           <ChangePasswordForm
             closeForm={(message = "") =>
               this.setState({
@@ -531,8 +553,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "email" ? (
+        )}
+        {form === "email" && (
           <ChangeEmailForm
             closeForm={(message = "") =>
               this.setState({
@@ -542,7 +564,7 @@ class ProfilePage extends React.Component {
             }
             email={this.props.user.email}
           />
-        ) : null}
+        )}
       </>
     );
   };
@@ -599,7 +621,6 @@ class ProfilePage extends React.Component {
       (team) => team.team.id
     );
 
-    //console.log("currentCommunityTeamIDs",currentCommunityTeamIDs)
     const inThisCommunity = (team) =>
       currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 
@@ -893,6 +914,7 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence,
     fireAuth: store.fireAuth,
     authState: store.authState,
+    settings: store.user.userFirebaseSettings,
   };
 };
 const mapDispatchToProps = {

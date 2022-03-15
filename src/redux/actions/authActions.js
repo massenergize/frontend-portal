@@ -2,9 +2,11 @@ import { apiCall } from "../../api/functions";
 import {
   checkFirebaseAuthenticationState,
   deleteAccountFromFirebase,
+  fetchUserSignInMethods,
   firebaseAuthenticationWithFacebook,
   firebaseAuthenticationWithGoogle,
   firebaseAuthenticationWithNoPassword,
+  FirebaseEmailAuthProvider,
   registerWithEmailAndPassword,
   signOutOfFirebase,
   withEmailAndPassword,
@@ -18,6 +20,12 @@ export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
 export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
+export const SET_FIREBASE_SETTINGS = "SET_FIREBASE_SETTINGS";
+
+export const setFirebaseSettings = (settings = {}) => {
+  console.log(" See me I did come here", settings);
+  return { type: SET_FIREBASE_SETTINGS, payload: settings };
+};
 
 export const completeUserDeletion = (user_id, cb) => (dispatch) => {
   apiCall("users.delete", { user_id })
@@ -147,8 +155,28 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
     // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
+    dispatch(setFirebaseUser(user))
     dispatch(fetchTokenFromMassEnergize(user?._lat));
-    dispatch(setFirebaseUser(user));
+    dispatch(breakdownFirebaseSettings(user));
+  });
+};
+
+export const breakdownFirebaseSettings = (user) => (dispatch) => {
+  fetchUserSignInMethods(user.email, (methods) => {
+    const isPasswordless = methods.includes(
+      FirebaseEmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+    );
+    const usesOnlyPasswordless = methods?.length === 1 && isPasswordless;
+    const usesEmailAndPassword = methods.includes(
+      FirebaseEmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
+    );
+
+    const settings = {
+      usesOnlyPasswordless,
+      isPasswordless,
+      usesEmailAndPassword,
+    };
+    dispatch(setFirebaseSettings({ signInConfig: settings }));
   });
 };
 

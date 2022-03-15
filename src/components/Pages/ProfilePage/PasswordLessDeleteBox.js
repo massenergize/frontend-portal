@@ -13,7 +13,7 @@ export default function PasswordLessDeleteBox({ user, onChange }) {
   };
   return (
     <div>
-      <p>
+      <p style={{color:"black"}}>
         We noticed that you registered with the <b>password-free</b> method.{" "}
         <br />
         <b

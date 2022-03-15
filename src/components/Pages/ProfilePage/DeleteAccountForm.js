@@ -44,7 +44,7 @@ class DeleteAccountFormBase extends React.Component {
     return (
       <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
         <form onSubmit={this.onSubmit}>
-          <METextView>
+          <METextView style={{color:"black"}}>
             The current email assosciated with your account is
             <span
               style={{

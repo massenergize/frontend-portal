@@ -176,6 +176,7 @@ export const checkFirebaseAuthenticationState = (cb) => {
   });
 };
 
+
 export const registerWithEmailAndPassword = (email, password, cb) => {
   Auth.createUserWithEmailAndPassword(email, password)
     .then((response) => {
