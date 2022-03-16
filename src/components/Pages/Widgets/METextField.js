@@ -63,7 +63,7 @@ class METextField extends Component {
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
     const ID = id ? id : getRandomIntegerInRange(9999999).toString();
-    if (inputType === "input") {
+    if (["input","date"].includes(inputType)) {
       return (
         <input
           id={ID}

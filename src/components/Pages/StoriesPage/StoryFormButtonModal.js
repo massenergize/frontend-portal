@@ -2,7 +2,14 @@ import StoryForm from "../ActionsPage/StoryForm";
 import Toast from "react-bootstrap/Toast";
 import Modal from "react-bootstrap/Modal";
 import React, { Component } from "react";
-import MEButton from "../Widgets/MEButton";
+
+//import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
+
+//../Widgets/FormGenerator/MEFormGenerator";
+
+
+
+
 
 //refactored the submit testimonial form so now you can have a modal version of it
 class StoryFormButtonModal extends Component {
@@ -20,21 +27,24 @@ class StoryFormButtonModal extends Component {
     });
   };
 
+
   //opens modal for the testimonial to be submitted
   TriggerModal = (bool) => {
     this.setState({ OpenModal: bool });
   };
+
+
   render() {
     return (
       <>
-        <MEButton
+        <div
           className={this.props.ButtonClasses}
           onClick={() => {
             this.TriggerModal(true);
           }}
         >
           {this.props.children}
-        </MEButton>
+        </div>
 
         <Modal
           size="lg"
@@ -43,14 +53,19 @@ class StoryFormButtonModal extends Component {
             this.TriggerModal(false);
           }}
         >
-          <StoryForm
-            close={() => this.setState({ OpenModal: false })}
-            draftTestimonialData={this.props.draftTestimonialData}
-            TriggerSuccessNotification={(bool) =>
-              this.TriggerSuccessNotification(bool)
-            }
-            TriggerModal={(bool) => this.TriggerModal(bool)}
-          />
+
+
+        <StoryForm
+        ModalType={this.props.ModalType}
+        close={() => this.setState({ OpenModal: false })}
+        draftTestimonialData={this.props.draftTestimonialData}
+        TriggerSuccessNotification={(bool) =>
+          this.TriggerSuccessNotification(bool)
+        }
+        TriggerModal={(bool) => this.TriggerModal(bool)}
+      />
+
+
         </Modal>
 
         <div className="SuccessNotification">
@@ -63,7 +78,7 @@ class StoryFormButtonModal extends Component {
             }}
           >
             <Toast.Body className={"Success"}>
-              <h6>Your testimonial has been submitted! </h6>
+              <h6>Submission was successful </h6>
             </Toast.Body>
           </Toast>
         </div>

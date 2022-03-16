@@ -23,6 +23,7 @@ const SECTION = "section-creator";
 const CHIPS = "chips";
 const FILE = "file";
 const HTMLFIELD = "html-field";
+const DATE = "date"
 
 export const BAD = "bad";
 export const GOOD = "good";
@@ -275,6 +276,8 @@ export default class FormGenerator extends Component {
     );
   }
 
+ 
+
   createAndEjectForm() {
     const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
@@ -283,6 +286,8 @@ export default class FormGenerator extends Component {
       switch (formItem.type.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
+        case DATE:
+          return this.getInput(formItem, index);  
         case TEXTAREA:
           return this.getInput(formItem, index);
         case DROPDOWN:

@@ -270,6 +270,68 @@ class HorizontalFilterBox extends Component {
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
+
+
+  renderAddButton = () => {
+      if (this.props.user) {
+
+        var ButtonText = ""
+        var ModalType = ""
+
+        if (window.location.pathname.includes("testimonial")) {
+          ButtonText = "Add Testimonial"
+          ModalType = "testimonial"
+        }
+
+        if (window.location.pathname.includes("action")) {
+          ButtonText = "Add Action"
+          ModalType = "action"
+        }
+
+
+        if (window.location.pathname.includes("events")) {
+          ButtonText = "Add an Event"
+          ModalType = "events"
+        }
+
+        if (window.location.pathname.includes("services")) {
+          ButtonText = "Add a Vendor"
+          ModalType = "vendors"
+        }
+
+        if (ButtonText === "") {
+          return
+        }
+
+        return (
+
+          <StoryFormButtonModal
+          ModalType={ModalType}
+          >
+            <div className="add-testimonial-container">
+              <div className="add-testimonial touchable-opacity">
+                <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                <p>{ButtonText}</p>
+              </div>
+            </div>
+          </StoryFormButtonModal>
+    
+    
+
+        )
+      } else {
+        return <div />
+      }
+
+
+
+
+
+
+
+
+
+  }
   render() {
     const { longHeight } = this.state;
     return (
@@ -295,19 +357,9 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-          {window.location.pathname.includes("testimonial") &&
-          this.props.user ? (
-            <StoryFormButtonModal>
-              <div className="add-testimonial-container">
-                <div className="add-testimonial touchable-opacity">
-                  <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                  <p>Add Testimonial</p>
-                </div>
-              </div>
-            </StoryFormButtonModal>
-          ) : (
-            <div />
-          )}
+
+          {this.renderAddButton()}
+          
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>

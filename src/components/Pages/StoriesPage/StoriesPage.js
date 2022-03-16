@@ -80,7 +80,9 @@ class StoriesPage extends React.Component {
     if (this.props.user) {
       return (
         <div className="every-day-flex">
-          <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+          <StoryFormButtonModal
+          ModalType="testimonial"
+          >Add Testimonial</StoryFormButtonModal>
         </div>
       );
     }

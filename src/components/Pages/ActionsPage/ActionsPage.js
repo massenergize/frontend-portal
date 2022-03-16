@@ -292,7 +292,6 @@ class ActionsPage extends React.Component {
                 </center>
               </div>
               <HorizontalFilterBox
-                type="action"
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}

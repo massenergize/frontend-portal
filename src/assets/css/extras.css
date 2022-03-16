@@ -430,10 +430,11 @@
   transition: 0.2s ease-out;
 }
 .add-testimonial-container {
+  height: 100%;
   padding-right: 15px;
   position: absolute;
   right: -16px;
-  top: -1px;
+  top: 0px;
   display: inline-block;
 }
 .add-testimonial {
