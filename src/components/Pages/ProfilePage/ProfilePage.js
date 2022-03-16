@@ -511,22 +511,6 @@ class ProfilePage extends React.Component {
           &nbsp;&nbsp;
         </h4>
         <p> {this.state.message ? this.state.message : ""} </p>
-        {/* {form === "add-password" && (
-          <AddPassword
-            email={this.props.user.email}
-            full_name={this.props.user.full_name}
-            preferred_name={this.props.user.preferred_name}
-            image={this.props.user.profile_picture}
-            settings={settings}
-            fireAuth={this.props.fireAuth}
-            closeForm={(message = "") =>
-              this.setState({
-                editingProfileForm: null,
-                message: message ? message : null,
-              })
-            }
-          />
-        )} */}
         {form === "edit" && (
           <EditingProfileForm
             email={this.props.user.email}
