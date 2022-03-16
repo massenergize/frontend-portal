@@ -9,28 +9,27 @@ import MECard from "../Widgets/MECard";
 import METextField from "../Widgets/METextField";
 import METextView from "../Widgets/METextView";
 
-function AddPassword({ email, closeForm, fireAuth }) {
-  const [error, setError] = useState(null);
+function AddPassword({ closeForm, fireAuth, setError, setSuccess }) {
+  //   const [error, setError] = useState(null);
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
+  //   const [sent, setSent] = useState(false);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   const onSubmit = (e) => {
     e.preventDefault();
-    const { password, confirmPassword, magicLink } = form;
+    const { password, confirmPassword } = form;
     if (!password)
       return setError("Please make sure you have entered a valid password");
     if (password !== confirmPassword)
       return setError("Please make sure your passwords match!");
-    if (!magicLink)
-      return setError("We need your special link to know its you!");
 
     setLoading(true);
-    console.log("I amt he email", magicLink);
+    setError(null);
+
     const cred = FirebaseEmailAuthProvider.credentialWithLink(
       fireAuth?.email,
-      magicLink
+      window.location.href
     );
     fireAuth
       .reauthenticateWithCredential(cred)
@@ -38,10 +37,19 @@ function AddPassword({ email, closeForm, fireAuth }) {
         fireAuth
           .updatePassword(password)
           .then((response) => {
-            console.log("I am teh response that came after", response);
+            setSuccess(true);
+            console.log("I am teh response", response);
             setLoading(false);
           })
           .catch((e) => {
+            console.log("I aim the error boy", e);
+            if (e.code === "auth/requires-recent-login") {
+              setError(
+                "Hi, we need to re-verify you. Please click the link above to re-send the special link. "
+              );
+              setLoading(false);
+              return;
+            }
             setError(e?.toString());
             setLoading(false);
           });
@@ -51,28 +59,9 @@ function AddPassword({ email, closeForm, fireAuth }) {
       });
   };
 
-  const sendEmail = () => {
-    setSent(false);
-    sendSignInLinkToEmail(fireAuth?.email, () => {
-      setSent(true);
-    });
-  };
-
   return (
     <form onSubmit={onSubmit}>
-      <METextView style={{ color: "black" }}>
-        You email <b style={{ color: "var(--app-theme-orange)" }}>{email}</b> is
-        currently using passwordless authentication, you may use the form below
-        to add a password.
-        <br />
-      </METextView>
       <MECard className="me-anime-open-in">
-        {error ? (
-          <p className="text-danger" style={{ fontSize: 14 }}>
-            {error}
-          </p>
-        ) : null}
-
         <small>
           Enter Password <span className="text-danger">*</span>
         </small>
@@ -97,8 +86,8 @@ function AddPassword({ email, closeForm, fireAuth }) {
             required
           />
         </Tooltip>
-        <br />
-        <METextView style={{ color: "black" }}>
+        {/* <br /> */}
+        {/* <METextView style={{ color: "black" }}>
           Just so we know its still you,{" "}
           <span className="touchable-opacity">
             <b
@@ -118,8 +107,8 @@ function AddPassword({ email, closeForm, fireAuth }) {
             </small>
             <br />
           </>
-        )}
-        <small>
+        )} */}
+        {/* <small>
           Paste your special link <span className="text-danger">*</span>
         </small>
 
@@ -130,10 +119,16 @@ function AddPassword({ email, closeForm, fireAuth }) {
           onChange={onChange}
           placeholder="Paste your special link here..."
           required
+          history = {false}
         />
 
-        <br />
-        <MEButton loading={loading} disabled={loading}>
+        <br /> */}
+        <div style={{ marginTop: 30 }}></div>
+        <MEButton
+          loading={loading}
+          disabled={loading}
+          style={{ marginRight: 10 }}
+        >
           {"Submit"}
         </MEButton>
         <MEButton

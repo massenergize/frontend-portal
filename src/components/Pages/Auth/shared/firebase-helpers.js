@@ -114,9 +114,9 @@ export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {
     });
 };
 
-export const sendSignInLinkToEmail = (email, cb) => {
+export const sendSignInLinkToEmail = (email, cb, url) => {
   var settings = {
-    url: window.location.href,
+    url: url || window.location.href,
     handleCodeInApp: true,
   };
   Auth.sendSignInLinkToEmail(email, settings)

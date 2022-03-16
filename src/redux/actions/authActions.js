@@ -23,7 +23,6 @@ export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
 export const SET_FIREBASE_SETTINGS = "SET_FIREBASE_SETTINGS";
 
 export const setFirebaseSettings = (settings = {}) => {
-  console.log(" See me I did come here", settings);
   return { type: SET_FIREBASE_SETTINGS, payload: settings };
 };
 

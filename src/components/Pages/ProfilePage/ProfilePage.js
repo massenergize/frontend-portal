@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -456,7 +456,9 @@ class ProfilePage extends React.Component {
               {usesOnlyPasswordless && (
                 <Dropdown.Item
                   onClick={() =>
-                    this.setState({ editingProfileForm: "add-password" })
+                    this.history.push(
+                      this.props.links?.profile + "/password-less/manage"
+                    )
                   }
                   className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
                 >
@@ -504,7 +506,7 @@ class ProfilePage extends React.Component {
           &nbsp;&nbsp;
         </h4>
         <p> {this.state.message ? this.state.message : ""} </p>
-        {form === "add-password" && (
+        {/* {form === "add-password" && (
           <AddPassword
             email={this.props.user.email}
             full_name={this.props.user.full_name}
@@ -519,7 +521,7 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        )}
+        )} */}
         {form === "edit" && (
           <EditingProfileForm
             email={this.props.user.email}
@@ -936,4 +938,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(withFirebase(ProfilePage));
+)(withFirebase(withRouter(ProfilePage)));
