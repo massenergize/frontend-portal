@@ -49,7 +49,6 @@ import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 
-
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -496,7 +495,13 @@ class ProfilePage extends React.Component {
                 </>
               ) : null}
               <Dropdown.Item
-                onClick={() => this.setState({ editingProfileForm: "delete" })}
+                onClick={() => {
+                  if (usesOnlyPasswordless)
+                    return this.props.history.push(
+                      this.props.links.profile + "/password-less/manage"
+                    );
+                  this.setState({ editingProfileForm: "delete" });
+                }}
                 className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
               >
                 Delete Profile
