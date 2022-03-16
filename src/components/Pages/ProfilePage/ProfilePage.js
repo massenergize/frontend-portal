@@ -48,7 +48,7 @@ import {
 import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
-import AddPassword from "./AddPassword";
+
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -456,7 +456,7 @@ class ProfilePage extends React.Component {
               {usesOnlyPasswordless && (
                 <Dropdown.Item
                   onClick={() =>
-                    this.history.push(
+                    this.props.history.push(
                       this.props.links?.profile + "/password-less/manage"
                     )
                   }

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import Tooltip from "../../Shared/Tooltip";
-import {
-  FirebaseEmailAuthProvider,
-  sendSignInLinkToEmail,
-} from "../Auth/shared/firebase-helpers";
+import { FirebaseEmailAuthProvider } from "../Auth/shared/firebase-helpers";
 import MEButton from "../Widgets/MEButton";
 import MECard from "../Widgets/MECard";
 import METextField from "../Widgets/METextField";
-import METextView from "../Widgets/METextView";
 
-function AddPassword({ closeForm, fireAuth, setError, setSuccess }) {
-  //   const [error, setError] = useState(null);
+function AddPassword({
+  closeForm,
+  fireAuth,
+  setError,
+  setSuccess,
+  loading,
+  setLoading,
+  links,
+}) {
   const [form, setForm] = useState({});
-  const [loading, setLoading] = useState(false);
-  //   const [sent, setSent] = useState(false);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   const onSubmit = (e) => {
@@ -27,10 +28,17 @@ function AddPassword({ closeForm, fireAuth, setError, setSuccess }) {
     setLoading(true);
     setError(null);
 
-    const cred = FirebaseEmailAuthProvider.credentialWithLink(
-      fireAuth?.email,
-      window.location.href
-    );
+    var cred;
+    try {
+      cred = FirebaseEmailAuthProvider.credentialWithLink(
+        fireAuth?.email,
+        window.location.href
+      );
+    } catch (e) {
+      setError(e.toString());
+      setLoading(false);
+    }
+
     fireAuth
       .reauthenticateWithCredential(cred)
       .then(() => {
@@ -38,8 +46,8 @@ function AddPassword({ closeForm, fireAuth, setError, setSuccess }) {
           .updatePassword(password)
           .then((response) => {
             setSuccess(true);
-            console.log("I am teh response", response);
             setLoading(false);
+            window.location.href = links?.profile;
           })
           .catch((e) => {
             console.log("I aim the error boy", e);

@@ -59,9 +59,13 @@ export const firebaseDeleteEmailPasswordAccount = (data, cb) => {
   const { isPasswordFree, password, email, emailLink } = data;
   var cred;
 
-  if (isPasswordFree)
-    cred = FirebaseEmailAuthProvider.credentialWithLink(email, emailLink);
-  else cred = FirebaseEmailAuthProvider.credential(email, password);
+  try {
+    if (isPasswordFree)
+      cred = FirebaseEmailAuthProvider.credentialWithLink(email, emailLink);
+    else cred = FirebaseEmailAuthProvider.credential(email, password);
+  } catch (e) {
+    cb && cb(null, e.toString());
+  }
 
   Auth.currentUser
     .reauthenticateWithCredential(cred)
@@ -175,7 +179,6 @@ export const checkFirebaseAuthenticationState = (cb) => {
     if (cb) cb(user);
   });
 };
-
 
 export const registerWithEmailAndPassword = (email, password, cb) => {
   Auth.createUserWithEmailAndPassword(email, password)

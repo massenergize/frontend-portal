@@ -1,38 +1,82 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { completeUserDeletion } from "../../../redux/actions/authActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { fetchParamsFromURL } from "../../Utils";
-import { sendSignInLinkToEmail } from "../Auth/shared/firebase-helpers";
+import {
+  firebaseDeleteEmailPasswordAccount,
+  sendSignInLinkToEmail,
+} from "../Auth/shared/firebase-helpers";
 import TabView from "../Widgets/METabView/METabView";
 import METextView from "../Widgets/METextView";
 import Notification from "../Widgets/Notification/Notification";
 import AddPassword from "./AddPassword";
 import PasswordLessDeleteBox from "./PasswordLessDeleteBox";
 const VERIFIED = "verfied";
-function ProfilePasswordlessRedirectPage({ user, fireAuth, location }) {
+const ADD_PASSWORD = "add-password";
+const DELETE_ACCOUNT = "delete-account";
+function ProfilePasswordlessRedirectPage({
+  user,
+  fireAuth,
+  location,
+  deleteUserFromMEAndLogout,
+  settings,
+  links,
+}) {
+  // const { signInConfig } = settings || {};
   const [error, setError] = useState(null);
   const [sent, setSent] = useState(false);
-  const [success, setSuccess] = useState(true);
-
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState(ADD_PASSWORD);
   const { params } = fetchParamsFromURL(location, null, ["page", "status"]);
 
-  const TABS = [
+  const deletePasswordlessAccount = () => {
+    const data = {
+      isPasswordFree: true,
+      emailLink: window.location.href,
+      email: user?.email,
+    };
+    setError(false);
+    setLoading(true);
+    return firebaseDeleteEmailPasswordAccount(data, (done, error) => {
+      if (error) {
+        setError(error);
+        setLoading(false);
+        setActiveTab(DELETE_ACCOUNT);
+      }
+      if (done) {
+        deleteUserFromMEAndLogout();
+      }
+    });
+  };
+
+  const Tabs = [
     {
-      key: "add-password",
+      key: ADD_PASSWORD,
       component: (
         <AddPassword
           error={error}
           setError={setError}
           fireAuth={fireAuth}
           setSuccess={setSuccess}
+          loading={loading}
+          setLoading={setLoading}
+          links={links}
         />
       ),
       name: "Add A Password",
     },
     {
-      key: "delete-account",
-      component: <PasswordLessDeleteBox />,
+      key: DELETE_ACCOUNT,
+      component: (
+        <PasswordLessDeleteBox
+          deleteAccount={deletePasswordlessAccount}
+          loading={loading}
+        />
+      ),
       name: "Delete My Account",
     },
   ];
@@ -40,6 +84,7 @@ function ProfilePasswordlessRedirectPage({ user, fireAuth, location }) {
   const sendEmail = () => {
     const urlToThisPage = window.location.href + "?status=" + VERIFIED;
     setSent(false);
+    setError(false);
     sendSignInLinkToEmail(
       fireAuth?.email,
       () => {
@@ -108,7 +153,7 @@ function ProfilePasswordlessRedirectPage({ user, fireAuth, location }) {
                 </>
               )}
               {/* ---------------------------------------------------- */}
-              {/* {userHasComeFromEmail && (
+              {userHasComeFromEmail && (
                 <>
                   <METextView
                     className="z-depth-float"
@@ -120,16 +165,12 @@ function ProfilePasswordlessRedirectPage({ user, fireAuth, location }) {
                       borderRadius: 5,
                     }}
                   >
-                    NB: You are now free to either add a password, or delete
-                    your account as you wish. However, you do not have much
-                    time, please proceed quickly. If you take too long, you may
-                    be asked to re-verify.
-                    <br />
-                    This is only a safety precaution to protect your account.
+                    You are now free to either add a password, or delete your
+                    account as you wish
                   </METextView>
                   <br />
                 </>
-              )} */}
+              )}
               {/* --------------------------------------------------------- */}
 
               {error && (
@@ -148,7 +189,11 @@ function ProfilePasswordlessRedirectPage({ user, fireAuth, location }) {
                 </>
               )}
 
-              <TabView tabs={TABS} />
+              <TabView
+                tabs={Tabs}
+                // onMount={(changer) => setChanger(changer)}
+                defaultTab={activeTab}
+              />
             </div>
           </div>
         </div>
@@ -161,9 +206,20 @@ const mapStateToProps = (store) => {
   return {
     user: store.user.info,
     fireAuth: store.fireAuth,
+    links: store.links,
+    settings: store.user.userFirebaseSettings,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      deleteUserFromMEAndLogout: completeUserDeletion,
+    },
+    dispatch
+  );
+};
 
-export default connect(mapStateToProps)(
-  withRouter(ProfilePasswordlessRedirectPage)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProfilePasswordlessRedirectPage));
