@@ -95,7 +95,9 @@ function ProfilePasswordlessRedirectPage({
   };
 
   const userHasComeFromEmail = params?.status === VERIFIED;
-
+  const styles = !userHasComeFromEmail
+    ? { opacity: "0.2", pointerEvents: "none" }
+    : {};
   return (
     <>
       <div
@@ -136,12 +138,26 @@ function ProfilePasswordlessRedirectPage({
                 Before you take any of the actions below, we need to know its
                 you.
                 <br />
-                <span className="touchable-opacity" onClick={() => sendEmail()}>
-                  <b style={{ color: "var(--app-theme-orange)" }}>Click here</b>
-                </span>{" "}
-                for a <b style={{ color: "var(--app-theme-green)" }}>special</b>{" "}
-                link. Check your email, and click the link we sent you, it
-                should bring you back to this page.
+                <ol>
+                  <li>
+                    <span
+                      className="touchable-opacity"
+                      onClick={() => sendEmail()}
+                    >
+                      <b style={{ color: "var(--app-theme-orange)" }}>
+                        Click here
+                      </b>
+                    </span>{" "}
+                    for a{" "}
+                    <b style={{ color: "var(--app-theme-green)" }}>special</b>{" "}
+                    link.
+                  </li>
+                  <li>Check your email.</li>
+                  <li>
+                    Then click the link we sent you. It should bring you back to
+                    this page.
+                  </li>
+                </ol>
               </METextView>
               <br />
               {sent && (
@@ -156,7 +172,6 @@ function ProfilePasswordlessRedirectPage({
               {userHasComeFromEmail && (
                 <>
                   <METextView
-                    className="z-depth-float"
                     style={{
                       color: "black",
                       fontWeight: "bold",
@@ -189,11 +204,13 @@ function ProfilePasswordlessRedirectPage({
                 </>
               )}
 
-              <TabView
-                tabs={Tabs}
-                // onMount={(changer) => setChanger(changer)}
-                defaultTab={activeTab}
-              />
+              <div style={styles}>
+                <TabView
+                  tabs={Tabs}
+                  // onMount={(changer) => setChanger(changer)}
+                  defaultTab={activeTab}
+                />
+              </div>
             </div>
           </div>
         </div>
