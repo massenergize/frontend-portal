@@ -79,6 +79,7 @@ import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
+import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -498,6 +499,11 @@ class AppRouter extends Component {
           <Switch>
             {/* ---- This route is a facebook app requirement. -------- */}
             <Route path={`/how-to-delete-my-data`} component={Help} />
+            <Route
+              exact
+              path={`${links.profile}/password-less/manage`}
+              component={ProfilePasswordlessRedirectPage}
+            />
             <Route exact path="/" component={HomePage} />
             <Route exact path={links.home} component={HomePage} />
             <Route exact path={`${links.home}home`} component={HomePage} />
