@@ -417,6 +417,7 @@ class AppRouter extends Component {
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
+
       if (
         this.state.prefix !== "" &&
         m.link &&
