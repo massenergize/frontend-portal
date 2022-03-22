@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: row;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .me-tab-header {

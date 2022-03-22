@@ -51,7 +51,9 @@ class OneEventPage extends React.Component {
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
-    if (!pastEvent && this.props.user) this.getRSVPStatus(id); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
+    // was a problem if you go diretly to the event page, this.props.user can be undefined
+    //if (!pastEvent && this.props.user) this.getRSVPStatus(id); 
+    if (!pastEvent) this.getRSVPStatus(id); 
   }
 
   render() {
@@ -313,7 +315,7 @@ class OneEventPage extends React.Component {
                           <MELightDropDown
                             style={{ width: "100%", padding: 11 }}
                             containerStyle={{ display: "block", padding: 0 }}
-                            direction="bottom"
+                            direction="down"
                             onItemSelected={(status) => this.updateRSVP(status)}
                             animate={false}
                             customAnimation="rsvp-drop-from-left-anime"
@@ -345,7 +347,7 @@ class OneEventPage extends React.Component {
                           {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
                           {this.state.rsvpStatus && (
                             <div className="test-rsvp-status-div">
-                              {this.state.rsvpStatus}
+                              {/* this does show to the user this.state.rsvpStatus */}
                             </div>
 
                           )}
