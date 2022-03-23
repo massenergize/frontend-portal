@@ -23,6 +23,7 @@ const SECTION = "section-creator";
 const CHIPS = "chips";
 const FILE = "file";
 const HTMLFIELD = "html-field";
+//added field for date types
 const DATE = "date"
 
 export const BAD = "bad";
@@ -275,8 +276,6 @@ export default class FormGenerator extends Component {
       </React.Fragment>
     );
   }
-
- 
 
   createAndEjectForm() {
     const { fields } = this.props;

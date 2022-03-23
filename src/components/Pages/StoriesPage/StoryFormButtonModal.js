@@ -3,13 +3,6 @@ import Toast from "react-bootstrap/Toast";
 import Modal from "react-bootstrap/Modal";
 import React, { Component } from "react";
 
-//import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
-
-//../Widgets/FormGenerator/MEFormGenerator";
-
-
-
-
 
 //refactored the submit testimonial form so now you can have a modal version of it
 class StoryFormButtonModal extends Component {

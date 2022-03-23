@@ -271,7 +271,7 @@ class HorizontalFilterBox extends Component {
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
-
+//changes text of button depending on the page that its on
   renderAddButton = () => {
       if (this.props.user) {
 
@@ -304,7 +304,6 @@ class HorizontalFilterBox extends Component {
         }
 
         return (
-
           <StoryFormButtonModal
           ModalType={ModalType}
           >
@@ -316,20 +315,10 @@ class HorizontalFilterBox extends Component {
             </div>
           </StoryFormButtonModal>
     
-    
-
         )
       } else {
         return <div />
       }
-
-
-
-
-
-
-
-
 
   }
   render() {

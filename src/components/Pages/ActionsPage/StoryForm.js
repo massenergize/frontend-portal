@@ -24,7 +24,7 @@ const INITIAL_STATE = {
 };
 
 
-
+//form fields for the action page
 var ActionFormData = [	  {
   type: "input",
   name: "title",
@@ -69,7 +69,7 @@ var ActionFormData = [	  {
 
 
 
-
+//form fields for the events page
 var EventsFormData = 	[
   {
     type: "input",
@@ -151,7 +151,7 @@ var EventsFormData = 	[
   },
 ]
 
-
+//form fields for the vendors page
 var VendorFormData = [
   {
     type: "input",
@@ -242,7 +242,17 @@ class StoryForm extends React.Component {
     var message = "Already completed an action? Tell Us Your Story";
     if (props.aid)
       message = "Already completed this action? Tell Us Your Story";
-    // if (props.vid) message = "Already used this vendor? Tell Us Your Story";
+    //   changes modal title depending on  the page its on
+    if (props.ModalType  === "testimonial") {
+      message = "Already completed a testimonial? Tell Us Your Story"
+    }
+    if (props.ModalType  === "events") {
+      message = "Already completed an event? Tell Us Your Story"
+    }
+
+    if (props.ModalType  === "vendors") {
+      message = "Add a vendor"
+    }
 
     this.state = {
       ...INITIAL_STATE,
@@ -315,7 +325,7 @@ class StoryForm extends React.Component {
 
   getNeededFormFields() {
 
-
+    //returns the proper fields depending on the page being loaded 
     if (this.props.ModalType  === "action") {
         return ActionFormData
     }
@@ -505,6 +515,7 @@ class StoryForm extends React.Component {
     var Url = ""
     var body = ""
     const communityID = community ? { community_id: community.id } : {};
+    //makes api call for actions page
     if (this.props.ModalType  === "action") {
       body = {...data,...communityID }
       Url = "actions.add";
@@ -533,7 +544,7 @@ class StoryForm extends React.Component {
 
 
     } 
-    
+    //makes api call for events page
     else if (this.props.ModalType  === "events") {
       Url = "events.add"
       body = {...data,...communityID, ...{"have_address": true} }
@@ -557,6 +568,18 @@ class StoryForm extends React.Component {
         });
         return 
       }
+
+            
+      if (Date.parse(body.end_date_and_time) - Date.parse(body.start_date_and_time) < 0 ) {
+        this.setState({
+          formNotification: {
+            icon: "fa fa-times",
+            type: "bad",
+            text: "Sorry, the end date cannot be past start date..",
+          },
+        });
+        return 
+      }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
           if (this.props?.TriggerSuccessNotification) {
@@ -567,7 +590,7 @@ class StoryForm extends React.Component {
       });
     }
 
-
+    //makes api call for vendors page
     else if (this.props.ModalType === "vendors") {
       Url = "vendors.add"
       body = {...data,...communityID}
