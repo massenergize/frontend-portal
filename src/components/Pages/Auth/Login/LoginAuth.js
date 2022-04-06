@@ -59,7 +59,7 @@ export default function LoginAuth(props) {
       if (error) return setNotification({ good: false, message: error });
       setNotification({
         good: true,
-        message: `We have sent a  special link to ${email}, check it out.`,
+        message: `MassEnergize has sent a special link to ${email}.  Please follow the link to set up your profile.`,
       });
     });
   };
