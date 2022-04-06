@@ -1855,9 +1855,18 @@
   color: green;
   font-weight: bold;
 }
+
+.email-helpers-div {
+  flex-direction: row;
+  display: flex;
+ 
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .email-helpers-div {
+    padding: 15px 0px;
+  }
   .temp-dn-fix {
     margin-right: 3%;
   }
@@ -2071,11 +2080,19 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .email-helpers-div {
+    padding: 15px 0px;
+    margin-bottom: 30px;
+  }
+  .email-helpers-div a {
+    margin-top: 5px;
+    font-size: 14px;
+  }
   .temp-f-donate-area {
-    padding:15px;
+    padding: 15px;
   }
   .temp-f-container {
-    padding:15px
+    padding: 15px;
   }
   .temp-mob-footer-fix {
     justify-content: center;
