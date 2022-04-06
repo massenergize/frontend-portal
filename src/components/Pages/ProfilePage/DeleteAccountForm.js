@@ -11,7 +11,6 @@ import {
   firebaseDeleteEmailPasswordAccount,
   firebaseDeleteFacebookAuthAccount,
   firebaseDeleteGoogleAuthAccount,
-  usesEmailLinkProvider,
   usesEmailProvider,
   usesFacebookProvider,
   usesGoogleProvider,
@@ -20,7 +19,6 @@ import {
   completeUserDeletion,
   signMeOut,
 } from "../../../redux/actions/authActions";
-import PasswordLessDeleteBox from "./PasswordLessDeleteBox";
 import Notification from "../Widgets/Notification/Notification";
 class DeleteAccountFormBase extends React.Component {
   constructor(props) {
@@ -31,20 +29,14 @@ class DeleteAccountFormBase extends React.Component {
       error: null,
       usesEmailLink: false,
       loading: false,
-      specialLink: "",
     };
   }
 
-  componentDidMount() {
-    usesEmailLinkProvider(null, (state) => {
-      this.setState({ usesEmailLink: state });
-    });
-  }
   render() {
     return (
       <MECard className="me-anime-open-in" style={{ borderRadius: 10 }}>
         <form onSubmit={this.onSubmit}>
-          <METextView>
+          <METextView style={{ color: "black" }}>
             The current email assosciated with your account is
             <span
               style={{
@@ -93,13 +85,7 @@ class DeleteAccountFormBase extends React.Component {
               {" "}
               No
             </label>
-            {this.state.askForSpecialLink && (
-              <PasswordLessDeleteBox
-                onChange={(e) => this.setState({ speciaLink: e.target.value })}
-                user={this.props.user}
-              />
-            )}
-            {usesEmailProvider() && !this.state.usesEmailLink ? (
+            {usesEmailProvider() && (
               <>
                 <br />
                 <small>
@@ -114,7 +100,7 @@ class DeleteAccountFormBase extends React.Component {
                   required
                 />
               </>
-            ) : null}
+            )}
           </div>
           <MEButton type="submit" loading={this.state.loading}>
             {this.state.loading ? "Deleting..." : "Submit"}
@@ -144,31 +130,11 @@ class DeleteAccountFormBase extends React.Component {
       this.setState({ error });
     });
   }
-  deletePasswordlessAccount() {
-    const { speciaLink } = this.state;
-    const { deleteUserFromMEAndLogout, user } = this.props;
-    if (!speciaLink)
-      return this.setState({
-        error: "We need that special link we sent you! ",
-      });
 
-    const data = {
-      isPasswordFree: true,
-      emailLink: speciaLink,
-      email: user?.email,
-    };
-    this.setState({ error: false, loading: true });
-    return firebaseDeleteEmailPasswordAccount(data, (done, error) => {
-      if (error) return this.setState({ error, loading: false });
-      if (done) deleteUserFromMEAndLogout();
-    });
-  }
   onSubmit = (event) => {
     event.preventDefault();
-    const { are_you_sure, usesEmailLink, askForSpecialLink } = this.state;
-    if (askForSpecialLink) return this.deletePasswordlessAccount();
+    const { are_you_sure } = this.state;
     if (are_you_sure) {
-      if (usesEmailLink) return this.setState({ askForSpecialLink: true });
       this.setState({ error: null, loading: true });
       this.deleteAccount();
       return;
