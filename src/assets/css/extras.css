@@ -5,6 +5,12 @@
   --app-theme-orange-lighter: #fba930;
 }
 
+.link-groups{ 
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+ 
+}
 .one-story-html-view p {
   color: black;
 }
@@ -1858,7 +1864,14 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
- 
+  
+  .mob-f-text{ 
+    color:black;
+  }
+  .register-form-content{ 
+    padding:46px; 
+    border-radius: 12px;
+  }
   .temp-dn-fix {
     margin-right: 3%;
   }
@@ -2072,6 +2085,25 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+
+  .link-groups { 
+    width: 100%;
+    justify-content: center;
+  
+  }
+  .register-form-content{ 
+    box-shadow: 0px 0px 0px 0px !important;
+  }
+  .col-content{ 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .col-link-btns button { 
+    font-size:14px !important;
+    margin-bottom: 0px  !important;
+  }
   .mob-log-submit { 
     padding:8px 12px  !important;
   }
@@ -2083,7 +2115,8 @@
     align-items: center;
   }
   .mob-f-text { 
-    font-size:16px
+    font-size:16px;
+    color:black;
   }
   .temp-f-donate-area {
     padding:15px;

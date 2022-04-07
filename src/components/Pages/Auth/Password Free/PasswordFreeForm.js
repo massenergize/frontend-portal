@@ -97,8 +97,9 @@ export default function PasswordFreeForm({
             </div>
 
             <div className="row">
-              <div className="col">
+              <div className="col col-link-btns">
                 <div
+                className="col-content"
                   style={{
                     display: "flex",
                     flexDirection: "row",
