@@ -125,14 +125,7 @@ class NavBarBurger extends React.Component {
                 <Link to={links.home}>
                   <div
                     style={{
-                      display: "table-cell",
-                      verticalAlign: "middle",
-                      fontFamily: "verdana",
-                      fontSize: "30px",
-                      textTransform: "uppercase",
-                      fontWeight: "bold",
-                      height: "35px",
-                      color: "#8dc63f",
+                      display: "flex",
                     }}
                   >
                     <img

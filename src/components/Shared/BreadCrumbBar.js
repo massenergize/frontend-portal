@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class BreadCrumbBar extends React.Component {
 	render() {
 		return (
-			<div className="breadcumb-wrapper" style={{marginBottom:31,background:'rgb(245, 255, 222)'}}>
+			<div className="breadcumb-wrapper responsive-bread-crumb" >
 				<div className="container">
 					<div className="pull-left">
 						<ul className="list-inline link-list">
