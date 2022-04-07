@@ -17,14 +17,9 @@ class AboutUsPage extends React.Component {
     return (
       url && (
         <img
+        className="about-us-img"
           alt="about-us media"
           src={url}
-          style={{
-            width: "100%",
-            minHeight: 300,
-            objectFit: "contain",
-            margin: 10,
-          }}
         />
       )
     );
@@ -73,14 +68,14 @@ class AboutUsPage extends React.Component {
             }
           >
             <center>
-              <h2 className="cool-font" style={{ padding: 10 }}>
+              <h2 className="cool-font solid-font" style={{ padding: 10 }}>
                 {title}
               </h2>
             </center>
             {subtitle ? (
               <div>
                 <center>
-                  <h4 className="cool-font" style={{ padding: 10 }}>
+                  <h4 className="cool-font " style={{ padding: 10 }}>
                     {subtitle}
                   </h4>
                 </center>
@@ -109,7 +104,7 @@ class AboutUsPage extends React.Component {
 
           <div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
             <center>
-              <h2 className="cool-font" style={{ padding: 10 }}>
+              <h2 className="cool-font solid-font" style={{ padding: 10 }}>
                 About MassEnergize
               </h2>
             </center>
