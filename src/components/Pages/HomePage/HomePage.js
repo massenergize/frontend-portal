@@ -17,6 +17,7 @@ import { Link, withRouter } from "react-router-dom";
 import {
   FIRST_SET,
   reduxSetTourState,
+  reduxToggleGuestAuthDialog,
   SECOND_SET,
 } from "../../../redux/actions/pageActions";
 
@@ -43,7 +44,11 @@ class HomePage extends React.Component {
         action === ACTIONS.NEXT &&
         status === STATUS.FINISHED;
 
-      if (action === ACTIONS.CLOSE || action === ACTIONS.SKIP || userHasGoneFullCircle)
+      if (
+        action === ACTIONS.CLOSE ||
+        action === ACTIONS.SKIP ||
+        userHasGoneFullCircle
+      )
         return this.closeTourCompletely();
 
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
@@ -52,7 +57,7 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const { showTour, tourInfo } = this.props;
+    const { showTour, tourInfo, toggleGuestDialog } = this.props;
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
@@ -234,6 +239,15 @@ class HomePage extends React.Component {
           {welcomeImagesData ? (
             <WelcomeImages data={welcomeImagesData} title={title} />
           ) : null}
+
+          <div>
+            <div
+              className="try-guest-mode touchable-opacity z-depth-1"
+              onClick={() => toggleGuestDialog({ show: true })}
+            >
+              <p>New Here? Try Things Out As A Guest!</p>
+            </div>
+          </div>
           <div
             className=""
             style={{ padding: 30, background: "white", color: "#383838" }}
@@ -313,4 +327,5 @@ const mapStoreToProps = (store) => {
 
 export default connect(mapStoreToProps, {
   setTourValueInRedux: reduxSetTourState,
+  toggleGuestDialog: reduxToggleGuestAuthDialog
 })(withRouter(HomePage));

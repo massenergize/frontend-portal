@@ -60,6 +60,7 @@ import {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetTourState,
+  reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
 } from "./redux/actions/pageActions";
 import {
@@ -80,6 +81,7 @@ import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
+import GuestAuthenticationDialog from "./components/Shared/GuestAuthenticationDialog";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -446,7 +448,7 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community } = this.props;
+    const { community, guestDialog, toggleGuestDialog, links } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -459,8 +461,6 @@ class AppRouter extends Component {
         />
       );
     }
-
-    const { links } = this.props;
 
     const communityInfo = community || {};
 
@@ -478,7 +478,15 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-
+        <GuestAuthenticationDialog
+          {...(guestDialog || {})}
+          close={() =>
+            toggleGuestDialog({
+              ...(guestDialog || {}),
+              show: !guestDialog?.show,
+            })
+          }
+        />
         {Seo({
           title: community.name,
           description: community.about,
@@ -556,6 +564,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    guestDialog: store.page.guestDialog,
   };
 };
 const mapDispatchToProps = {
@@ -598,5 +607,6 @@ const mapDispatchToProps = {
   checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
   setTourState: reduxSetTourState,
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
+  toggleGuestDialog: reduxToggleGuestAuthDialog,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

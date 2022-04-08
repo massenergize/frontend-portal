@@ -23,9 +23,11 @@ import {
   LEAVE_TEAM,
   SHOW_REG,
   SET_PREFERRED_EQUIVALENCE,
+
 } from "./types";
 
 import { apiCall } from "../../api/functions";
+
 
 export const reduxSetPreferredEquivalence = (value) => {
   return {

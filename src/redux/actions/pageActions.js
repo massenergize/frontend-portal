@@ -48,12 +48,16 @@ import {
   SET_TOUR_STATE,
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
+  TOGGLE_GUEST_MODE_DIALOG,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
 
+export const reduxToggleGuestAuthDialog = (data ={show: false}) => {
+  return { type: TOGGLE_GUEST_MODE_DIALOG, payload: data };
+}
 export const reduxLoadCommunityActionList = (list) => (dispatch) => {
   return dispatch({
     type: LOAD_COMMUNITY_ACTION_LIST,
