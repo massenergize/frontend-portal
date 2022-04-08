@@ -67,7 +67,7 @@ class CookieBanner extends React.Component {
                   style={{ background: "white", color: "black" }}
                   id="test-cookie-banner-okay"
                 >
-                  Okay
+                  Accept
                 </button>
               </div>
             </div>
