@@ -10,6 +10,7 @@ import {
   dateFormatString,
   recurringDetails,
   locationFormatJSX,
+  smartString,
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
@@ -17,6 +18,7 @@ import URLS from "../../../api/urls";
 import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
+import { isMobile } from "react-device-detect";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -52,8 +54,8 @@ class OneEventPage extends React.Component {
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
     // was a problem if you go diretly to the event page, this.props.user can be undefined
-    //if (!pastEvent && this.props.user) this.getRSVPStatus(id); 
-    if (!pastEvent) this.getRSVPStatus(id); 
+    //if (!pastEvent && this.props.user) this.getRSVPStatus(id);
+    if (!pastEvent) this.getRSVPStatus(id);
   }
 
   render() {
@@ -93,7 +95,10 @@ class OneEventPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              { name: event ? event.name : "..." },
+              {
+                name:
+                  (isMobile && smartString(event?.name, 20)) || event.name || "...",
+              },
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
@@ -238,7 +243,7 @@ class OneEventPage extends React.Component {
         data-venue={event?.location}
       >
         <div className="container">
-          <h3 className="cool-font text-center test-event-title">
+          <h3 className="cool-font text-center solid-font test-event-title">
             {event.name}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
@@ -325,7 +330,8 @@ class OneEventPage extends React.Component {
                                 <i className="fa fa-spinner fa-spin"></i>
                               ) : (
                                 <span style={{ marginRight: 6 }}>
-                                  {this.state.rsvpStatus || "RSVP for this event"}
+                                  {this.state.rsvpStatus ||
+                                    "RSVP for this event"}
                                 </span>
                               )
                             }
@@ -349,21 +355,22 @@ class OneEventPage extends React.Component {
                             <div className="test-rsvp-status-div">
                               {/* this does show to the user this.state.rsvpStatus */}
                             </div>
-
                           )}
-                        </div> 
-                        ):(
-                          <div>
-                            <small style={{ fontSize: "90%" }}>
-                              <Link className="test-sign-in-to-rsvp" to={this.props.links.signin}>
-                                Sign In to RSVP
-                              </Link>
-                            </small>
-                          </div>
-                        )}
-
+                        </div>
+                      ) : (
+                        <div>
+                          <small style={{ fontSize: "90%" }}>
+                            <Link
+                              className="test-sign-in-to-rsvp"
+                              to={this.props.links.signin}
+                            >
+                              Sign In to RSVP
+                            </Link>
+                          </small>
+                        </div>
+                      )}
                     </div>
-                  ): null }
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-lg-8">

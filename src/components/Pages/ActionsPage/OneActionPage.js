@@ -40,7 +40,8 @@ import {
 import Seo from "../../Shared/Seo";
 // import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+import { handleTourCallback, smartString } from "../../Utils";
+import { isMobile } from "react-device-detect";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -134,7 +135,12 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: action ? action.title : "..." },
+              {
+                name:
+                  (isMobile && smartString(action?.title, 15)) ||
+                  action?.title ||
+                  "...",
+              },
             ]}
           />
 
@@ -506,14 +512,14 @@ class OneActionPage extends React.Component {
                 <div className="content-box">
                   <h2
                     id="test-action-title"
-                    className="cool-font"
-                    style={{ padding: "20px 0px 0px 0px" }}
+                    className="cool-font solid-font "
+                    style={{ padding: "20px 0px 0px 0px", textAlign:"center" }}
                   >
                     {action.title}
                   </h2>
                 </div>
                 {/* displays the action's info: impact, difficulty, tags and categories*/}
-                <div style={{ padding: 15, position: "relative" }}>
+                <div style={{ padding: 15, position: "relative", width:"80%", margin:"auto" }}>
                   <div className="" style={{ display: "inline-block" }}>
                     <Tooltip
                       text="Shows the level of impact this action makes relative to the other actions."
@@ -525,7 +531,7 @@ class OneActionPage extends React.Component {
                       {this.renderTagBar(this.getTag("impact"), "impact")}
                     </span>
                   </div>
-                  <div className="float_right" style={{ marginRight: 50 }}>
+                  <div className="float_right" >
                     Cost
                     <span>
                       {" "}
@@ -618,7 +624,7 @@ class OneActionPage extends React.Component {
                 ) : null}
               </div>
               {/* action image */}
-              <div className="col-lg-6 col-md-12">
+              <div className="col-lg-6 col-md-12 mob-reset-padding">
                 <div className="img-box action-pic-fix">
                   <img
                     src={action.image ? action.image.url : null}
@@ -634,8 +640,8 @@ class OneActionPage extends React.Component {
 
           {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
-          <div className="product-tab-box">
-            <ul className="nav nav-tabs tab-menu" id="test-actions-tabs">
+          <div className="product-tab-box ">
+            <ul className="nav nav-tabs tab-menu mob-tab-box-fix" id="test-actions-tabs">
               {/* tab switching system, may be a better way to do this */}
               <li
                 id="desctab"
