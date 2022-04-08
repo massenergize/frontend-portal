@@ -485,7 +485,10 @@ class AppRouter extends Component {
               ...(guestDialog || {}),
               show: !guestDialog?.show,
             })
+            
           }
+          community = {community}
+          show
         />
         {Seo({
           title: community.name,
