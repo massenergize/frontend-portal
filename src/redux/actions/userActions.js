@@ -23,12 +23,11 @@ import {
   LEAVE_TEAM,
   SHOW_REG,
   SET_PREFERRED_EQUIVALENCE,
-
+  USER_IS_GUEST,
 } from "./types";
 
 import { apiCall } from "../../api/functions";
-
-
+const GUEST_USER = "guest_user";
 export const reduxSetPreferredEquivalence = (value) => {
   return {
     type: SET_PREFERRED_EQUIVALENCE,
@@ -44,6 +43,13 @@ export const reduxShowReg = (value) => (dispatch) => {
 };
 /** stores the user data when a user logs in */
 export const reduxLogin = (user) => (dispatch) => {
+  const { user_info } = user || {};
+  if (user_info) {
+    dispatch({
+      type: USER_IS_GUEST,
+      payload: user_info?.user_type === GUEST_USER,
+    });
+  }
   return dispatch({
     type: LOGIN,
     payload: user,

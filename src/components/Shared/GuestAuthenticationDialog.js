@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { apiCall } from "../../api/functions";
+import { fetchUserContent } from "../../redux/actions/authActions";
+import { reduxLogin } from "../../redux/actions/userActions";
 import { emailIsInvalid, GUEST_USER_KEY } from "../Pages/Auth/shared/utils";
 import MEButton from "../Pages/Widgets/MEButton";
 import MEModal from "../Pages/Widgets/MEModal";
 import METextField from "../Pages/Widgets/METextField";
 
 function GuestAuthenticationDialog(props) {
-  const { community } = props;
+  const { community, putUserInRedux } = props;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,13 +30,16 @@ function GuestAuthenticationDialog(props) {
     setLoading(true);
     apiCall("/users.create", data)
       .then((response) => {
+        const data = response.data; 
         setLoading(false);
-        console.log("I am the response", response);
+        if(!response.success) return setError(response?.error?.message)
+        console.log("I am the response my gee", response);
+        putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
       })
       .catch((e) => {
         setLoading(false);
-        console.log("I am teh exception", e);
+        console.log("GUEST_AUTHENTICATION_ERROR", e);
       });
   };
 
@@ -68,4 +75,12 @@ function GuestAuthenticationDialog(props) {
   );
 }
 
-export default GuestAuthenticationDialog;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      putUserInRedux: reduxLogin,
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(GuestAuthenticationDialog);

@@ -20,6 +20,7 @@ import {
   LEAVE_TEAM,
   SHOW_REG,
   SET_PREFERRED_EQUIVALENCE,
+  USER_IS_GUEST,
 } from "../actions/types";
 
 const initialState = {
@@ -33,7 +34,11 @@ export default function (state = initialState, action) {
   switch (action.type) {
 
    
-    case SET_FIREBASE_SETTINGS:
+    case USER_IS_GUEST:
+      return {
+        ...state,
+        isGuest: action.payload,
+      };
       return {
         ...state,
         userFirebaseSettings: action.payload,
