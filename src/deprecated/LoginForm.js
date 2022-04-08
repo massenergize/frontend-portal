@@ -349,7 +349,7 @@ class LoginFormBase extends React.Component {
         .then(() => {
           // The link was successfully sent. 
           // TODO: Inform the user.
-          alert("Please check your email for a new sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
+          alert("MassEnergize has sent you an e-mail with a sign in link.\n\nIf you don't see it right away it may have been put in your spam folder.");
           console.log("Email sent!")
           // Save the email locally so you don't need to ask the user for it again
           // if they open the link on the same device.
