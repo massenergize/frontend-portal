@@ -21,6 +21,7 @@ import {
   reduxTeamAddAction,
   reduxSetTourInformation,
   SECOND_SET,
+  reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -313,8 +314,12 @@ class OneActionPage extends React.Component {
   userHasManyHouseHolds() {
     return this.props.user.households.length > 1;
   }
+  runGuestAuthentication() {
+    this.props.toggleGuestAuthDialog(true);
+  }
   runActionFunction(_for) {
-    // const hasManyHouseHolds = this.props.user.households.length > 1;
+    const { user } = this.props;
+    if (!user) return this.runGuestAuthentication();
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
       if (isDone) {
@@ -513,13 +518,20 @@ class OneActionPage extends React.Component {
                   <h2
                     id="test-action-title"
                     className="cool-font solid-font "
-                    style={{ padding: "20px 0px 0px 0px", textAlign:"center" }}
+                    style={{ padding: "20px 0px 0px 0px", textAlign: "center" }}
                   >
                     {action.title}
                   </h2>
                 </div>
                 {/* displays the action's info: impact, difficulty, tags and categories*/}
-                <div style={{ padding: 15, position: "relative", width:"80%", margin:"auto" }}>
+                <div
+                  style={{
+                    padding: 15,
+                    position: "relative",
+                    width: "80%",
+                    margin: "auto",
+                  }}
+                >
                   <div className="" style={{ display: "inline-block" }}>
                     <Tooltip
                       text="Shows the level of impact this action makes relative to the other actions."
@@ -531,7 +543,7 @@ class OneActionPage extends React.Component {
                       {this.renderTagBar(this.getTag("impact"), "impact")}
                     </span>
                   </div>
-                  <div className="float_right" >
+                  <div className="float_right">
                     Cost
                     <span>
                       {" "}
@@ -557,7 +569,6 @@ class OneActionPage extends React.Component {
                             id="test-todo-btn"
                             _case={actionStateCase}
                             type={TODO}
-                            {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("TODO")}
                             {...this.getTodoPopoverInfo()}
                           />
@@ -566,7 +577,6 @@ class OneActionPage extends React.Component {
                             id="test-done-btn"
                             _case={actionStateCase}
                             type={DONE}
-                            {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("DONE")}
                           />
                         </>
@@ -641,7 +651,10 @@ class OneActionPage extends React.Component {
           {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
           <div className="product-tab-box ">
-            <ul className="nav nav-tabs tab-menu mob-tab-box-fix" id="test-actions-tabs">
+            <ul
+              className="nav nav-tabs tab-menu mob-tab-box-fix"
+              id="test-actions-tabs"
+            >
               {/* tab switching system, may be a better way to do this */}
               <li
                 id="desctab"
@@ -1043,6 +1056,7 @@ const mapDispatchToProps = {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
   reduxSetTourInformation,
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
 };
 
 export default connect(
