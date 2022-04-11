@@ -216,7 +216,7 @@ class StoriesPage extends React.Component {
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
               </div>
               <HorizontalFilterBox
-                type="testimonials"
+                ModalType="testimonial"
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}

@@ -71,7 +71,7 @@ class StoryFormButtonModal extends Component {
             }}
           >
             <Toast.Body className={"Success"}>
-              <h6>Submission was successful </h6>
+              <h6>Your {this.props.ModalType} has been submitted! </h6>
             </Toast.Body>
           </Toast>
         </div>

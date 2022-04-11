@@ -276,27 +276,22 @@ class HorizontalFilterBox extends Component {
       if (this.props.user) {
 
         var ButtonText = ""
-        var ModalType = ""
 
-        if (window.location.pathname.includes("testimonial")) {
+        if (this.props.ModalType === "testimonial") {
           ButtonText = "Add Testimonial"
-          ModalType = "testimonial"
         }
 
-        if (window.location.pathname.includes("action")) {
+        if (this.props.ModalType === "action") {
           ButtonText = "Add Action"
-          ModalType = "action"
         }
 
 
-        if (window.location.pathname.includes("events")) {
+        if (this.props.ModalType === "event") {
           ButtonText = "Add an Event"
-          ModalType = "events"
         }
 
-        if (window.location.pathname.includes("services")) {
+        if (this.props.ModalType === "vendor") {
           ButtonText = "Add a Vendor"
-          ModalType = "vendors"
         }
 
         if (ButtonText === "") {
@@ -305,7 +300,7 @@ class HorizontalFilterBox extends Component {
 
         return (
           <StoryFormButtonModal
-          ModalType={ModalType}
+          ModalType={this.props.ModalType}
           >
             <div className="add-testimonial-container">
               <div className="add-testimonial touchable-opacity">

@@ -246,11 +246,11 @@ class StoryForm extends React.Component {
     if (props.ModalType  === "testimonial") {
       message = "Already completed a testimonial? Tell Us Your Story"
     }
-    if (props.ModalType  === "events") {
+    if (props.ModalType  === "event") {
       message = "Already completed an event? Tell Us Your Story"
     }
 
-    if (props.ModalType  === "vendors") {
+    if (props.ModalType  === "vendor") {
       message = "Add a vendor"
     }
 
@@ -329,11 +329,11 @@ class StoryForm extends React.Component {
     if (this.props.ModalType  === "action") {
         return ActionFormData
     }
-    if (this.props.ModalType  === "events") {
+    if (this.props.ModalType  === "event") {
         return EventsFormData
     }
 
-    if (this.props.ModalType  === "vendors") {
+    if (this.props.ModalType  === "vendor") {
         return VendorFormData
     }
     const actionTitles = getPropsArrayFromJsonArray(
@@ -545,7 +545,7 @@ class StoryForm extends React.Component {
 
     } 
     //makes api call for events page
-    else if (this.props.ModalType  === "events") {
+    else if (this.props.ModalType  === "event") {
       Url = "events.add"
       body = {...data,...communityID, ...{"have_address": true} }
       var location = {
@@ -591,7 +591,7 @@ class StoryForm extends React.Component {
     }
 
     //makes api call for vendors page
-    else if (this.props.ModalType === "vendors") {
+    else if (this.props.ModalType === "vendor") {
       Url = "vendors.add"
       body = {...data,...communityID}
       
