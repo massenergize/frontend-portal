@@ -46,6 +46,7 @@ import {
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_GUEST_MODE_DIALOG,
+  TOGGLE_UNIVERSAL_MODAL,
 } from "../actions/types";
 
 import {
@@ -105,10 +106,10 @@ export default function (state = initialState, action) {
     /**************************/
 
     
-    case TOGGLE_GUEST_MODE_DIALOG:
+    case TOGGLE_UNIVERSAL_MODAL:
       return {
         ...state,
-        guestDialog: action.payload,
+        modalOptions: action.payload,
       };
     case LOAD_COMMUNITY_ACTION_LIST:
       return {

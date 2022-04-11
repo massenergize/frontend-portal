@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../api/functions";
 import { fetchUserContent } from "../../redux/actions/authActions";
+import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
-import { emailIsInvalid, GUEST_USER_KEY } from "../Pages/Auth/shared/utils";
+import {
+  emailIsInvalid,
+  GUEST_USER_KEY,
+  ifEnterKeyIsPressed,
+} from "../Pages/Auth/shared/utils";
 import MEButton from "../Pages/Widgets/MEButton";
 import MEModal from "../Pages/Widgets/MEModal";
 import METextField from "../Pages/Widgets/METextField";
 
 function GuestAuthenticationDialog(props) {
-  const { community, putUserInRedux } = props;
+  const { community, putUserInRedux, user, links, close, history } = props;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [proceedAsGuest, setProceedAsGuest] = useState(false);
+  const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
+
   const authenticateGuest = () => {
     setError("");
     if (emailIsInvalid(email))
@@ -26,16 +36,21 @@ function GuestAuthenticationDialog(props) {
       community_id: community?.id,
       accepts_terms_and_conditions: false,
       is_vendor: false,
+      is_guest: true,
     };
     setLoading(true);
     apiCall("/users.create", data)
       .then((response) => {
-        const data = response.data; 
         setLoading(false);
-        if(!response.success) return setError(response?.error?.message)
-        console.log("I am the response my gee", response);
+        if (!response.success) return setError(response?.error?.message);
+        console.log("I am the response my bro", response);
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
+        fetchUserContent(email);
+        setGuestAuthIsDone(true);
+        setTimeout(() => {
+          close && close();
+        }, 2000); // close modal after 2 seconds
       })
       .catch((e) => {
         setLoading(false);
@@ -43,44 +58,136 @@ function GuestAuthenticationDialog(props) {
       });
   };
 
+  useEffect(() => {}, [user]);
+
+  const whenUserTypes = (e) => {
+    if (ifEnterKeyIsPressed(e)) return authenticateGuest();
+  };
+
+  const createProfileNow = () => {
+    close && close();
+    history.push(links?.signin);
+  };
+
+  if (guestAuthIsDone) return <CongratulatoryMessage />;
   return (
-    <MEModal {...props} v2>
+    <>
       <div className="guest-dialog-container">
-        <div className="guest-dialog-content">
+        <div>
           <p className="responsive-p">
-            Please input your{" "}
-            <span style={{ color: "var(--app-theme-orange)" }}>email</span>{" "}
-            below. That's all you would have to do for now.
+            {!proceedAsGuest ? (
+              <span>
+                Hi there, please choose one of the options below to continue
+              </span>
+            ) : (
+              <span>
+                Please provide an
+                <span
+                  style={{ color: "var(--app-theme-orange)", marginLeft: 5 }}
+                >
+                  email
+                </span>{" "}
+                below. That's all you would have to do for now.
+              </span>
+            )}
           </p>
 
-          <METextField
-            placeholder="example@gmail.com"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          {proceedAsGuest && (
+            <METextField
+              placeholder="example@gmail.com"
+              onChange={(e) => setEmail(e.target.value)}
+              genericProps={{ onKeyUp: whenUserTypes }}
+            />
+          )}
+
           {error && (
             <small style={{ color: "maroon", marginTop: 5 }}>{error}</small>
           )}
         </div>
-        <div className="guest-dialog-footer">
-          <MEButton
-            loading={loading}
-            onClick={() => authenticateGuest()}
-            containerStyle={{ marginLeft: "auto" }}
-          >
-            Start As Guest
-          </MEButton>
-        </div>
+
+        {!proceedAsGuest ? (
+          <div className="guest-dialog-footer">
+            <div style={{ marginLeft: "auto" }}>
+              <Cancel close={close} />
+              <MEButton
+                loading={loading}
+                onClick={() => setProceedAsGuest(true)}
+              >
+                {!isMobile ? "Proceed As Guest" : "As Guest"}
+              </MEButton>
+              <MEButton
+                loading={loading}
+                onClick={createProfileNow}
+                variation="union"
+              >
+                {!isMobile ? "Create a Profile Now" : "With Profile"}
+              </MEButton>
+            </div>
+          </div>
+        ) : (
+          <div className="guest-dialog-footer">
+            <Cancel close={close} />
+            <MEButton
+              loading={loading}
+              onClick={() => setProceedAsGuest(true)}
+              containerStyle={{ marginLeft: "auto" }}
+            >
+              Continue
+            </MEButton>
+          </div>
+        )}
       </div>
-    </MEModal>
+    </>
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    community: state.page.community,
+    links: state.links,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       putUserInRedux: reduxLogin,
+      close: () => reduxToggleGuestAuthDialog(false),
     },
     dispatch
   );
 };
-export default connect(null, mapDispatchToProps)(GuestAuthenticationDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(GuestAuthenticationDialog));
+
+const Cancel = ({ close }) => {
+  return (
+    <Link
+      onClick={(e) => {
+        e.preventDefault();
+        close && close();
+      }}
+      style={{ marginRight: 20 }}
+    >
+      Cancel
+    </Link>
+  );
+};
+
+const CongratulatoryMessage = () => {
+  return (
+    <div className="guest-congrats me-anime-open-in">
+      <i
+        className="fa fa-check-circle"
+        style={{
+          fontSize: 30,
+          color: "var(--app-theme-green)",
+          marginRight: 6,
+        }}
+      ></i>{" "}
+      <span>Congratulations! You can now proceed as a guest. 🎊 </span>
+    </div>
+  );
+};

@@ -32,16 +32,10 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-
-   
     case USER_IS_GUEST:
       return {
         ...state,
         isGuest: action.payload,
-      };
-      return {
-        ...state,
-        userFirebaseSettings: action.payload,
       };
     case SET_PREFERRED_EQUIVALENCE:
       return {

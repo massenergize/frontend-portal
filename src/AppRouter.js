@@ -62,6 +62,7 @@ import {
   reduxSetTourState,
   reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
+  reduxToggleUniversalModal,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -82,6 +83,7 @@ import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import GuestAuthenticationDialog from "./components/Shared/GuestAuthenticationDialog";
+import UniversalModal from "./components/Shared/UniversalModal";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -448,7 +450,7 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community, guestDialog, toggleGuestDialog, links } = this.props;
+    const { community, modalOptions, toggleUniversalModal, links } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -478,17 +480,15 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-        <GuestAuthenticationDialog
-          {...(guestDialog || {})}
+        <UniversalModal
+          {...(modalOptions || {})}
           close={() =>
-            toggleGuestDialog({
-              ...(guestDialog || {}),
-              show: !guestDialog?.show,
+            toggleUniversalModal({
+              ...(modalOptions || {}),
+              show: !modalOptions?.show,
             })
             
           }
-          community = {community}
-          show
         />
         {Seo({
           title: community.name,
@@ -567,7 +567,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
-    guestDialog: store.page.guestDialog,
+    modalOptions: store.page.modalOptions,
   };
 };
 const mapDispatchToProps = {
@@ -611,5 +611,6 @@ const mapDispatchToProps = {
   setTourState: reduxSetTourState,
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
   toggleGuestDialog: reduxToggleGuestAuthDialog,
+  toggleUniversalModal: reduxToggleUniversalModal
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

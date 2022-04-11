@@ -11,7 +11,10 @@ import {
   signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
-import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
+import {
+  AUTH_STATES,
+  GUEST_USER_KEY,
+} from "../../components/Pages/Auth/shared/utils";
 import { getTakeTourFromURL } from "../../components/Utils";
 import { reduxSetTourState } from "./pageActions";
 import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
@@ -84,7 +87,11 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
     });
 };
 
+const signGuestOut = ()  => { 
+  localStorage.removeItem(GUEST_USER_KEY)
+}
 export const signMeOut = () => (dispatch) => {
+  signGuestOut();
   signOutOfFirebase();
   dispatch(setFirebaseUser(null));
   dispatch(setMassEnergizeUser(null));
@@ -141,20 +148,40 @@ export const authenticateWithFacebook = (cb) => (dispatch) => {
     dispatch(setFirebaseUser(user));
   });
 };
+
+export const authenticateAsGuest = () => async (dispatch) => {
+  const guestEmail = localStorage.getItem(GUEST_USER_KEY);
+  console.log("Currently testing guest", guestEmail);
+  if (!guestEmail) return; // User has not signed in as guest before in the particular  browser.
+  try {
+    const response = await apiCall("auth.signinasguest", { email: guestEmail });
+    if (!response || !response?.success) {
+      return console.log("COULD NOT AUTHENTICATE AS GUEST :", response?.error);
+    }
+    dispatch(reduxLogin(response.data));
+    dispatch(fetchUserContent(response.data?.email));
+  } catch (e) {
+    console.log("GUEST_AUTH_ERROR", e?.toString());
+  }
+};
 export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   const tour = getTakeTourFromURL();
   checkFirebaseAuthenticationState((user) => {
-    if (!user)
-      return dispatch(
-        setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED)
+    if (!user) {
+      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+      console.log(
+        "No firebase authentication available so we are trying guest innit!"
       );
+      // now we know user is not a authenticated user, try and see if user can be signed in as a guest
+      return dispatch(authenticateAsGuest());
+    }
 
     // ------------------------------------------------
     // Never show tour when user is signed. Overwrite tour state to false.
     // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
-    dispatch(setFirebaseUser(user))
+    dispatch(setFirebaseUser(user));
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(breakdownFirebaseSettings(user));
   });
