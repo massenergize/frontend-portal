@@ -50,7 +50,6 @@ import {
   SET_TOUR_STATE,
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
-  TOGGLE_GUEST_MODE_DIALOG,
   TOGGLE_UNIVERSAL_MODAL,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";

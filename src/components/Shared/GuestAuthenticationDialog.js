@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../api/functions";
-import { fetchUserContent } from "../../redux/actions/authActions";
 import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
 import {
@@ -13,7 +12,6 @@ import {
   ifEnterKeyIsPressed,
 } from "../Pages/Auth/shared/utils";
 import MEButton from "../Pages/Widgets/MEButton";
-import MEModal from "../Pages/Widgets/MEModal";
 import METextField from "../Pages/Widgets/METextField";
 
 function GuestAuthenticationDialog(props) {
@@ -23,7 +21,6 @@ function GuestAuthenticationDialog(props) {
   const [loading, setLoading] = useState(false);
   const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
-
   const authenticateGuest = () => {
     setError("");
     if (emailIsInvalid(email))
@@ -43,13 +40,12 @@ function GuestAuthenticationDialog(props) {
       .then((response) => {
         setLoading(false);
         if (!response.success) return setError(response?.error?.message);
-        console.log("I am the response my bro", response);
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
-        fetchUserContent(email);
         setGuestAuthIsDone(true);
         setTimeout(() => {
           close && close();
+          window.location.reload();
         }, 2000); // close modal after 2 seconds
       })
       .catch((e) => {
@@ -165,6 +161,7 @@ export default connect(
 const Cancel = ({ close }) => {
   return (
     <Link
+      to="#"
       onClick={(e) => {
         e.preventDefault();
         close && close();
@@ -187,7 +184,12 @@ const CongratulatoryMessage = () => {
           marginRight: 6,
         }}
       ></i>{" "}
-      <span>Congratulations! You can now proceed as a guest. 🎊 </span>
+      <span>
+        Congratulations! You can now proceed as a guest.{" "}
+        <span role="img" aria-label="Congrats">
+          🎊
+        </span>
+      </span>
     </div>
   );
 };

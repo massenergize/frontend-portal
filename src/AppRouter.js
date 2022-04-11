@@ -82,7 +82,6 @@ import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
-import GuestAuthenticationDialog from "./components/Shared/GuestAuthenticationDialog";
 import UniversalModal from "./components/Shared/UniversalModal";
 
 class AppRouter extends Component {
@@ -487,7 +486,6 @@ class AppRouter extends Component {
               ...(modalOptions || {}),
               show: !modalOptions?.show,
             })
-            
           }
         />
         {Seo({
@@ -611,6 +609,6 @@ const mapDispatchToProps = {
   setTourState: reduxSetTourState,
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
   toggleGuestDialog: reduxToggleGuestAuthDialog,
-  toggleUniversalModal: reduxToggleUniversalModal
+  toggleUniversalModal: reduxToggleUniversalModal,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

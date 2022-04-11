@@ -87,9 +87,9 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
     });
 };
 
-const signGuestOut = ()  => { 
-  localStorage.removeItem(GUEST_USER_KEY)
-}
+const signGuestOut = () => {
+  localStorage.removeItem(GUEST_USER_KEY);
+};
 export const signMeOut = () => (dispatch) => {
   signGuestOut();
   signOutOfFirebase();
@@ -149,9 +149,13 @@ export const authenticateWithFacebook = (cb) => (dispatch) => {
   });
 };
 
+/**
+ * The function collects guest email from local storage and tries to authenticate as guest
+ * It is called only if there if no firebase user. Meaning: user is not authenticated
+ * @returns
+ */
 export const authenticateAsGuest = () => async (dispatch) => {
   const guestEmail = localStorage.getItem(GUEST_USER_KEY);
-  console.log("Currently testing guest", guestEmail);
   if (!guestEmail) return; // User has not signed in as guest before in the particular  browser.
   try {
     const response = await apiCall("auth.signinasguest", { email: guestEmail });
@@ -169,9 +173,6 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   checkFirebaseAuthenticationState((user) => {
     if (!user) {
       dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
-      console.log(
-        "No firebase authentication available so we are trying guest innit!"
-      );
       // now we know user is not a authenticated user, try and see if user can be signed in as a guest
       return dispatch(authenticateAsGuest());
     }

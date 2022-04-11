@@ -1,4 +1,3 @@
-import { SET_FIREBASE_SETTINGS } from "../actions/authActions";
 import {
   LOGIN,
   LOGOUT,

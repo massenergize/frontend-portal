@@ -21,6 +21,8 @@ import URLS from "../../../api/urls";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import METabView from "../Widgets/METabView/METabView";
 import MEModal from "../Widgets/MEModal";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { bindActionCreators } from "redux";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -137,7 +139,7 @@ class OneTeamPage extends React.Component {
       isAdmin,
       teamData,
     } = this.state;
-    const { user, links } = this.props;
+    const { user, links, toggleGuestAuthDialog } = this.props;
 
     const isInTeam = inTeam(user, teamData);
     const isInThisTeam = inThisTeam(user, teamData.team);
@@ -148,6 +150,7 @@ class OneTeamPage extends React.Component {
           <MEButton
             style={{ fontSize: 14 }}
             onClick={() => {
+              if (!user) return toggleGuestAuthDialog(true);
               this.setState({ joinLeaveModalOpen: true });
             }}
           >
@@ -591,7 +594,16 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence,
   };
 };
-export default connect(mapStoreToProps, null)(withRouter(OneTeamPage));
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    { toggleGuestAuthDialog: reduxToggleGuestAuthDialog },
+    dispatch
+  );
+};
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneTeamPage));
 
 const TeamsTabWrapper = ({ children, links, subTeams }) => {
   return (
