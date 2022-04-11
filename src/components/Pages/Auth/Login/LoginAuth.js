@@ -59,7 +59,7 @@ export default function LoginAuth(props) {
       if (error) return setNotification({ good: false, message: error });
       setNotification({
         good: true,
-        message: `We have sent a  special link to ${email}, check it out.`,
+        message: `MassEnergize has sent a special link to ${email}.  Please follow the link to set up your profile.`,
       });
     });
   };
@@ -120,12 +120,12 @@ export default function LoginAuth(props) {
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
-            <h3 className="mog-title-fix">{title}</h3>
+            <h3 className="mob-title-fix">{title}</h3>
             <p> {description}</p>
           </div>
 
           <div>
-            <p>
+            <p className="mob-f-text">
               Fill in the form appropriately to activate the 'sign in' button
             </p>
           </div>
@@ -161,7 +161,7 @@ export default function LoginAuth(props) {
               />
             </div>
 
-            <div className="clearfix">
+            <div className="clearfix btn-grouping">
               <div className="form-group pull-left">
                 <MEButton
                   onClick={() => signUserIn(form)}
@@ -172,12 +172,13 @@ export default function LoginAuth(props) {
                   }
                   id="sign-in-btn"
                   loading={loading}
+                  className="mob-log-submit"
                 >
                   {loading ? "Working on it..." : "Sign In"}
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right">
+              <div className="form-group social-links-two padd-top-5 pull-right" style={{marginLeft:"auto"}}>
                 Or sign in with
                 <button
                   onClick={() => signInWithGoogle()}
@@ -199,7 +200,7 @@ export default function LoginAuth(props) {
             </div>
 
             <div className="row">
-              <div className="col">
+              <div className="col col-link-btns">
                 <div
                   style={{
                     display: "flex",
@@ -228,7 +229,8 @@ export default function LoginAuth(props) {
                     I Forgot my password
                   </button>
                 </div>
-                <p>
+                <br className="pc-vanish"/>
+                <p className="mob-f-text">
                   Don't have a profile?
                   <Link
                     style={{ marginLeft: 5 }}

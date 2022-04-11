@@ -9,6 +9,7 @@ import { apiCall } from "../../../api/functions";
 import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import { makeStringFromArrOfObjects } from "../../Utils";
+import { isMobile } from "react-device-detect";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -164,8 +165,9 @@ export default class NewEventsCard extends Component {
             position: "relative",
             borderRadius: 15,
             background: "white",
+           
           }}
-          className={`${MEAnimation.getAnimationClass()} ${className}`}
+          className={`${MEAnimation.getAnimationClass()} ${className} ${isMobile && "z-depth-1"}`}
         >
           <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }}>
             <img
