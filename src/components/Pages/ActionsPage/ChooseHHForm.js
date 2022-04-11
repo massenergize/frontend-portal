@@ -90,7 +90,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   <small style={{ padding: "10px 15px", color: "grey" }}>
-                    Click "Submit" if you want your changes to be saved{" "}
+                    Click "Add" if you want your changes to be saved{" "}
                   </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
@@ -117,7 +117,7 @@ class ChooseHHForm extends React.Component {
                             : false
                         }
                       >
-                        Submit
+                        Add
                       </button>
                       <button
                         className="flat-btn close-flat"
