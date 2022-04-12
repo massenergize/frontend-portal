@@ -39,7 +39,6 @@ import {
   TODO,
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
-// import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback, smartString } from "../../Utils";
 import { isMobile } from "react-device-detect";

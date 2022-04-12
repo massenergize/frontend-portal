@@ -1909,6 +1909,7 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+ 
   .responsive-p {
     font-size: large;
   }
@@ -2156,6 +2157,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .stories-row { 
+    margin-top: 100px;
+  }
   .guest-congrats {
     padding: 0px 10px;
     font-size: 14px;

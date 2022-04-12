@@ -140,22 +140,23 @@ class OneTeamPage extends React.Component {
       teamData,
     } = this.state;
     const { user, links, toggleGuestAuthDialog } = this.props;
-
     const isInTeam = inTeam(user, teamData);
     const isInThisTeam = inThisTeam(user, teamData.team);
 
     const buttonOrInTeam = (
       <>
         {!isInTeam ? (
-          <MEButton
-            style={{ fontSize: 14 }}
-            onClick={() => {
-              if (!user) return toggleGuestAuthDialog(true);
-              this.setState({ joinLeaveModalOpen: true });
-            }}
-          >
-            Join Team
-          </MEButton>
+          !user?.is_guest && (
+            <MEButton
+              style={{ fontSize: 14 }}
+              onClick={() => {
+                if (!user) return toggleGuestAuthDialog(true);
+                this.setState({ joinLeaveModalOpen: true });
+              }}
+            >
+              Join Team
+            </MEButton>
+          )
         ) : (
           <div className="" style={{ display: "inline-block" }}>
             <p
@@ -296,13 +297,15 @@ class OneTeamPage extends React.Component {
                           {team && team.name}
                         </span>
                         {!isInTeam ? (
-                          <i
-                            className="fa fa-long-arrow-left"
-                            style={{
-                              marginLeft: 17,
-                              color: isInTeam ? "black" : "#fd704c",
-                            }}
-                          ></i>
+                          !user?.is_guest && (
+                            <i
+                              className="fa fa-long-arrow-left"
+                              style={{
+                                marginLeft: 17,
+                                color: isInTeam ? "black" : "#fd704c",
+                              }}
+                            ></i>
+                          )
                         ) : (
                           <></>
                         )}

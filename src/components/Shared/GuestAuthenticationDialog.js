@@ -116,7 +116,7 @@ function GuestAuthenticationDialog(props) {
                 onClick={createProfileNow}
                 variation="union"
               >
-                {!isMobile ? "Create a Profile Now" : "With Profile"}
+                {!isMobile ? "Proceed With Profile" : "With Profile"}
               </MEButton>
             </div>
           </div>
@@ -125,7 +125,7 @@ function GuestAuthenticationDialog(props) {
             <Cancel close={close} />
             <MEButton
               loading={loading}
-              onClick={() => setProceedAsGuest(true)}
+              onClick={() => authenticateGuest()}
               containerStyle={{ marginLeft: "auto" }}
             >
               Continue

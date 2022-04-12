@@ -8,7 +8,7 @@ export const AUTH_STATES = {
 
 export const GUEST_USER_KEY ="GUEST_USER_EMAIL"
 export const emailIsInvalid =(email) => { 
-  return !email || !email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/);
+  return !email || !email.match(/^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$/);
 }
 export const translateFirebaseError = (error) => {
   if (!error) return;

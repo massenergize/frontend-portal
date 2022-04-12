@@ -165,9 +165,10 @@ export default class NewEventsCard extends Component {
             position: "relative",
             borderRadius: 15,
             background: "white",
-           
           }}
-          className={`${MEAnimation.getAnimationClass()} ${className} ${isMobile && "z-depth-1"}`}
+          className={`${MEAnimation.getAnimationClass()} ${className} ${
+            isMobile && "z-depth-1"
+          }`}
         >
           <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }}>
             <img
@@ -199,7 +200,14 @@ export default class NewEventsCard extends Component {
               {!user && rsvp_enabled && (
                 <>
                   <small style={{ fontSize: "90%" }}>
-                    <Link className="test-sign-in-to-rsvp" to={links.signin}>
+                    <Link
+                      className="test-sign-in-to-rsvp"
+                      to={links.signin}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.props.toggleGuestAuthDialog(true);
+                      }}
+                    >
                       Sign In to RSVP
                     </Link>
                   </small>
