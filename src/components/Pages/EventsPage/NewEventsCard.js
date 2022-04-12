@@ -149,7 +149,9 @@ export default class NewEventsCard extends Component {
       dropDirection,
       rsvp_enabled,
       tags,
+      toggleGuestAuthDialog,
     } = this.props;
+
     const { rsvpStatus, loading, error } = this.state;
     const title = this.getEventTitle();
     return (
@@ -205,7 +207,7 @@ export default class NewEventsCard extends Component {
                       to={links.signin}
                       onClick={(e) => {
                         e.preventDefault();
-                        this.props.toggleGuestAuthDialog(true);
+                        toggleGuestAuthDialog(true);
                       }}
                     >
                       Sign In to RSVP

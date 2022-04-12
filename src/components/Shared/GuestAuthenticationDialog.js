@@ -25,10 +25,9 @@ function GuestAuthenticationDialog(props) {
     setError("");
     if (emailIsInvalid(email))
       return setError("Please provide a valid email to proceed as guest");
-    const name = email.split("@")[0];
     const data = {
-      full_name: name,
-      preferred_name: name,
+      full_name: "Guest User",
+      preferred_name: "Guest",
       email,
       community_id: community?.id,
       accepts_terms_and_conditions: false,

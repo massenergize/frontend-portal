@@ -19,6 +19,7 @@ import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
 import { isMobile } from "react-device-detect";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -97,7 +98,9 @@ class OneEventPage extends React.Component {
               { link: this.props.links.events, name: "Events" },
               {
                 name:
-                  (isMobile && smartString(event?.name, 20)) || event.name || "...",
+                  (isMobile && smartString(event?.name, 20)) ||
+                  event.name ||
+                  "...",
               },
             ]}
           />
@@ -228,7 +231,7 @@ class OneEventPage extends React.Component {
     );
   }
   renderEvent(event) {
-    const { user } = this.props;
+    const { user, toggleGuestAuthDialog } = this.props;
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
@@ -363,6 +366,10 @@ class OneEventPage extends React.Component {
                             <Link
                               className="test-sign-in-to-rsvp"
                               to={this.props.links.signin}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleGuestAuthDialog(true);
+                              }}
                             >
                               Sign In to RSVP
                             </Link>
@@ -424,4 +431,6 @@ const mapStoreToProps = (store) => {
     links: store.links,
   };
 };
-export default connect(mapStoreToProps, null)(OneEventPage);
+export default connect(mapStoreToProps, {
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+})(OneEventPage);

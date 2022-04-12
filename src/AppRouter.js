@@ -112,7 +112,7 @@ class AppRouter extends Component {
     const home = homegroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
     var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home.link
+      window.location.protocol + window.location.host + home?.link
     );
     return location === rebuilt;
   }
