@@ -127,7 +127,6 @@ function GuestAuthenticationDialog(props) {
               >
                 Try signing in with this email on our sign in page.
               </Link>{" "}
-              Or use a different email to sign in as a guest!
             </small>
           )}
         </div>
