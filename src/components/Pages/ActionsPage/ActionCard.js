@@ -20,7 +20,8 @@ import {
 import MEChameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { makeStringFromArrOfObjects } from "../../Utils";
-
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+export const ACTION_TO_AUTO_START = "AUTO_START-";
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -97,8 +98,43 @@ class ActionCard extends React.Component {
     return this.props.user.households.length > 0;
   }
 
+  componentDidMount() {
+    this.checkIfActionShouldStartAutomatically();
+  }
+  checkIfActionShouldStartAutomatically() {
+    const { action } = this.props;
+    const actionToStart = localStorage.getItem(
+      ACTION_TO_AUTO_START + action?.id
+    );
+    if (!actionToStart) return;
+    const obj = JSON.parse(actionToStart);
+    if (action.id === obj.id) {
+      this.runActionFunction(obj.for);
+      localStorage.removeItem(ACTION_TO_AUTO_START + action?.id);
+    }
+  }
+
+  trackGuestAuthenticationStatus(isSuccessful, _for) {
+    if (!isSuccessful) return;
+    // if successful, take not of the just-clicked action
+    const { action } = this.props;
+    const obj = { for: _for, id: action?.id };
+    localStorage.setItem(
+      ACTION_TO_AUTO_START + action?.id,
+      JSON.stringify(obj)
+    );
+  }
+
+  runGuestAuthentication(_for) {
+    this.props.toggleGuestAuthDialog(true, {
+      callback: (isSuccessful) =>
+        this.trackGuestAuthenticationStatus(isSuccessful, _for),
+    });
+  }
+
   runActionFunction(_for) {
-    // const hasManyHouseHolds = this.props.user.households.length > 1;
+    const { user } = this.props;
+    if (!user) return this.runGuestAuthentication(_for);
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
       if (isDone) {
@@ -187,7 +223,7 @@ class ActionCard extends React.Component {
                   className="cameleon-correct"
                   _case={actionStateCase}
                   type={TODO}
-                  {...this.getNoAuthParams()}
+                  // {...this.getNoAuthParams()}
                   onClick={() => this.runActionFunction("TODO")}
                   {...this.getTodoPopoverInfo()}
                 />
@@ -196,7 +232,7 @@ class ActionCard extends React.Component {
                   className="cameleon-correct"
                   _case={actionStateCase}
                   type={DONE}
-                  {...this.getNoAuthParams()}
+                  // {...this.getNoAuthParams()}
                   onClick={() => this.runActionFunction("DONE")}
                 />
                 {/* ----- Show this button in phone mode --------- */}
@@ -467,6 +503,7 @@ const mapStoreToProps = (store) => {
 const mapDispatchToProps = {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
 };
 export default connect(
   mapStoreToProps,

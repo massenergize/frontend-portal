@@ -1,4 +1,3 @@
-import { SET_FIREBASE_SETTINGS } from "../actions/authActions";
 import {
   LOGIN,
   LOGOUT,
@@ -20,6 +19,7 @@ import {
   LEAVE_TEAM,
   SHOW_REG,
   SET_PREFERRED_EQUIVALENCE,
+  USER_IS_GUEST,
 } from "../actions/types";
 
 const initialState = {
@@ -31,11 +31,10 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-
-    case SET_FIREBASE_SETTINGS:
+    case USER_IS_GUEST:
       return {
         ...state,
-        userFirebaseSettings: action.payload,
+        isGuest: action.payload,
       };
     case SET_PREFERRED_EQUIVALENCE:
       return {
