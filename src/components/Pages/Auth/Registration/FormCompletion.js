@@ -67,7 +67,7 @@ export default function FormCompletion({
     <div>
       <div className="styled-form register-form z-depth-float shave-points">
         <div className="complete-form-header">
-          <p>Almost there, please tell us all of the following. Thank you!"</p>
+          <p>Almost there, please tell us all of the following. Thank you!</p>
         </div>
         <div className="c-f-inner-wrapper">
           <div className="form-group">

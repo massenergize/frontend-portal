@@ -94,7 +94,7 @@ function AuthEntry({
 
   // ------------------------------------------------------------------
 
-  var title = "Welcome,",
+  var title = "Welcome!",
     description = "",
     Page,
     PageTitle;
