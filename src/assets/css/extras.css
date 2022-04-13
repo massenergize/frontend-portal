@@ -1906,6 +1906,12 @@
   align-items: center;
   justify-content: center;
 }
+
+.email-helpers-div {
+  flex-direction: row;
+  display: flex;
+ 
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
@@ -1942,6 +1948,9 @@
   .register-form-content {
     padding: 46px;
     border-radius: 12px;
+  }
+  .email-helpers-div {
+    padding: 15px 0px;
   }
   .temp-dn-fix {
     margin-right: 3%;
@@ -2238,6 +2247,14 @@
   .mob-f-text {
     font-size: 16px;
     color: black;
+  }
+  .email-helpers-div {
+    padding: 15px 0px;
+    margin-bottom: 30px;
+  }
+  .email-helpers-div a {
+    margin-top: 5px;
+    font-size: 14px;
   }
   .temp-f-donate-area {
     padding: 15px;
