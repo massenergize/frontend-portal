@@ -118,7 +118,7 @@ function GuestAuthenticationDialog(props) {
                 marginTop: 5,
               }}
             >
-              Hi there, it looks like you already have an account with us
+              Hi there, it looks like you have an account with us
               already.
               <Link
                 to={links?.signin}
