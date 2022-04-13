@@ -81,17 +81,19 @@ export const CASE_PROPS = {
   NO_AUTH: {
     TODO_PROPS: {
       ...DEFAULT_CASE_PROPS,
-      className: "cam-gray-btn",
+      // className: "cam-gray-btn",
       text: "To Do",
       hasPopover: true,
-      popoverText: "Sign In to add to your To Do list",
+      // popoverText: "Sign In to add to your To Do list",
+      popoverText: "Add this to your To Do list",
     },
     DONE_IT_PROPS: {
       ...DEFAULT_CASE_PROPS,
-      className: "cam-gray-btn",
+      // className: "cam-gray-btn",
       text: "Done",
       hasPopover: true,
-      popoverText: "Sign In to mark this as done",
+      // popoverText: "Sign In to mark this as done",
+      popoverText: "Mark as Done",
     },
   },
 };

@@ -24,6 +24,7 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -147,7 +148,10 @@ class EventsPage extends React.Component {
                             text={description}
                             paperStyle={{ maxWidth: "100vh" }}
                           >
-                            <PageTitle className="solid-font" style={{ fontSize: 24 }}>
+                            <PageTitle
+                              className="solid-font"
+                              style={{ fontSize: 24 }}
+                            >
                               {title}
                               <span
                                 className="fa fa-info-circle"
@@ -156,7 +160,10 @@ class EventsPage extends React.Component {
                             </PageTitle>
                           </Tooltip>
                         ) : (
-                          <PageTitle className="solid-font" style={{ fontSize: 24 }}>
+                          <PageTitle
+                            className="solid-font"
+                            style={{ fontSize: 24 }}
+                          >
                             {title}
                           </PageTitle>
                         )}
@@ -317,6 +324,7 @@ class EventsPage extends React.Component {
               links={this.props.links}
               user={this.props.user}
               dropDirection="up"
+              toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
             />
           </div>
         );
@@ -351,4 +359,6 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
   };
 };
-export default connect(mapStoreToProps, null)(withRouter(EventsPage));
+export default connect(mapStoreToProps, {
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+})(withRouter(EventsPage));

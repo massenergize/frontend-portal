@@ -60,7 +60,9 @@ import {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetTourState,
+  reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
+  reduxToggleUniversalModal,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -80,6 +82,7 @@ import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
+import UniversalModal from "./components/Shared/UniversalModal";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -109,7 +112,7 @@ class AppRouter extends Component {
     const home = homegroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
     var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home.link
+      window.location.protocol + window.location.host + home?.link
     );
     return location === rebuilt;
   }
@@ -447,7 +450,7 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community } = this.props;
+    const { community, modalOptions, toggleUniversalModal, links } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -460,8 +463,6 @@ class AppRouter extends Component {
         />
       );
     }
-
-    const { links } = this.props;
 
     const communityInfo = community || {};
 
@@ -479,7 +480,15 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-
+        <UniversalModal
+          {...(modalOptions || {})}
+          close={() =>
+            toggleUniversalModal({
+              ...(modalOptions || {}),
+              show: !modalOptions?.show,
+            })
+          }
+        />
         {Seo({
           title: community.name,
           description: community.about,
@@ -557,6 +566,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    modalOptions: store.page.modalOptions,
   };
 };
 const mapDispatchToProps = {
@@ -599,5 +609,7 @@ const mapDispatchToProps = {
   checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
   setTourState: reduxSetTourState,
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
+  toggleGuestDialog: reduxToggleGuestAuthDialog,
+  toggleUniversalModal: reduxToggleUniversalModal,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

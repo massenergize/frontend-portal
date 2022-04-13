@@ -11,7 +11,6 @@ export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
       "You did not pass a function to extract the field that will be used to generate your string"
     );
   if (!arr?.length) return "";
-  // console.log("EMONDG", arr);
   return arr.map((item) => func(item)).join(separator);
 };
 /**
