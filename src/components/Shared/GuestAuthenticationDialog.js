@@ -15,13 +15,15 @@ import MEButton from "../Pages/Widgets/MEButton";
 import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
-  const { community, putUserInRedux, user, links, close, history } = props;
+  const { community, putUserInRedux, user, links, close, history, callback } =
+    props;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
+
   const authenticateGuest = () => {
     setError("");
     setNotGuest(false);
@@ -37,21 +39,26 @@ function GuestAuthenticationDialog(props) {
       is_guest: true,
     };
     setLoading(true);
+
     apiCall("/users.create", data)
       .then((response) => {
         setLoading(false);
         if (!response.success) return setError(response?.error?.message);
         const user = response.data;
+
         const userExistsAndIsNotAGuest =
           user?.user_info?.user_type !== GUEST_USER;
         if (userExistsAndIsNotAGuest) return setNotGuest(true);
+        
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
         setGuestAuthIsDone(true);
+        callback && callback(true);
+
         setTimeout(() => {
           close && close();
           window.location.reload();
-        }, 2000); // close modal after 2 seconds
+        }, 1500); // close modal after 1.5 seconds
       })
       .catch((e) => {
         setLoading(false);
@@ -182,12 +189,13 @@ export default connect(
   mapDispatchToProps
 )(withRouter(GuestAuthenticationDialog));
 
-const Cancel = ({ close }) => {
+const Cancel = ({ close, callback }) => {
   return (
     <Link
       to="#"
       onClick={(e) => {
         e.preventDefault();
+        callback && callback();
         close && close();
       }}
       style={{ marginRight: 20 }}

@@ -63,14 +63,17 @@ export const reduxToggleUniversalModal = (data) => {
     payload: data,
   };
 };
-export const reduxToggleGuestAuthDialog = (state) => (dispatch) => {
-  dispatch(
-    reduxToggleUniversalModal({
-      show: state,
-      component: <GuestAuthenticationDialog />,
-    })
-  );
-};
+export const reduxToggleGuestAuthDialog =
+  (state, componentProps, otherProps) => (dispatch) => {
+    componentProps = componentProps || {};
+    dispatch(
+      reduxToggleUniversalModal({
+        show: state,
+        component: <GuestAuthenticationDialog {...componentProps} />,
+        ...(otherProps || {}),
+      })
+    );
+  };
 
 export const reduxLoadCommunityActionList = (list) => (dispatch) => {
   return dispatch({

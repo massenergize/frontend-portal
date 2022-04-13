@@ -42,6 +42,7 @@ import Seo from "../../Shared/Seo";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback, smartString } from "../../Utils";
 import { isMobile } from "react-device-detect";
+import { ACTION_TO_AUTO_START } from "./ActionCard";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -73,9 +74,9 @@ class OneActionPage extends React.Component {
     this.runActionFunction = this.runActionFunction.bind(this);
   }
 
-  async componentDidMount() {
-    window.addEventListener("resize", this.chooseFontSize);
 
+  componentDidMount() {
+    window.addEventListener("resize", this.chooseFontSize);
     const { id } = this.props.match.params;
     this.fetch(id);
     this.chooseFontSize();
@@ -86,6 +87,7 @@ class OneActionPage extends React.Component {
       const json = await apiCall("actions.info", { action_id: id });
       if (json.success) {
         this.setState({ action: json.data });
+        this.checkIfActionShouldStartAutomatically(json.data)
       } else {
         this.setState({ error: json.error });
       }
@@ -313,12 +315,41 @@ class OneActionPage extends React.Component {
   userHasManyHouseHolds() {
     return this.props.user.households.length > 1;
   }
-  runGuestAuthentication() {
-    this.props.toggleGuestAuthDialog(true);
+
+  checkIfActionShouldStartAutomatically(action) {
+    const { user } = this.props;
+    const actionToStart = localStorage.getItem(
+      ACTION_TO_AUTO_START + action?.id
+    );
+    if (!actionToStart || !action || !user) return;
+    const obj = JSON.parse(actionToStart);
+    if (action.id?.toString() === obj.id?.toString()) {
+      this.runActionFunction(obj.for);
+      localStorage.removeItem(ACTION_TO_AUTO_START + action?.id);
+    }
   }
+
+  trackGuestAuthenticationStatus(isSuccessful, _for) {
+    if (!isSuccessful) return;
+    // if successful, take not of the just-clicked action
+    const action = this.getMyAction();
+    const obj = { for: _for, id: action?.id };
+    localStorage.setItem(
+      ACTION_TO_AUTO_START + action?.id,
+      JSON.stringify(obj)
+    );
+  }
+
+  runGuestAuthentication(_for) {
+    this.props.toggleGuestAuthDialog(true, {
+      callback: (isSuccessful) =>
+        this.trackGuestAuthenticationStatus(isSuccessful, _for),
+    });
+  }
+
   runActionFunction(_for) {
     const { user } = this.props;
-    if (!user) return this.runGuestAuthentication();
+    if (!user) return this.runGuestAuthentication(_for);
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
       if (isDone) {
