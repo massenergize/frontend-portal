@@ -261,7 +261,7 @@ class ChooseHHForm extends React.Component {
         BuildDates(house.id);
     });
     if (status === "TODO") {
-      todo.forEach((todo) => {
+      (todo || []).forEach((todo) => {
         //this if statement populates the data only for the selected action and households
         if (
           todo.date_completed &&
@@ -291,7 +291,7 @@ class ChooseHHForm extends React.Component {
         }
       });
     } else {
-      done.forEach((done) => {
+      (done || []).forEach((done) => {
         //this if statement populates the date data only for a the selected action and households
         if (
           done.date_completed &&

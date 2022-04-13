@@ -43,7 +43,11 @@ class HomePage extends React.Component {
         action === ACTIONS.NEXT &&
         status === STATUS.FINISHED;
 
-      if (action === ACTIONS.CLOSE || action === ACTIONS.SKIP || userHasGoneFullCircle)
+      if (
+        action === ACTIONS.CLOSE ||
+        action === ACTIONS.SKIP ||
+        userHasGoneFullCircle
+      )
         return this.closeTourCompletely();
 
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
@@ -234,6 +238,7 @@ class HomePage extends React.Component {
           {welcomeImagesData ? (
             <WelcomeImages data={welcomeImagesData} title={title} />
           ) : null}
+
           <div
             className=""
             style={{ padding: 30, background: "white", color: "#383838" }}

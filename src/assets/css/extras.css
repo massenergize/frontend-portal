@@ -1864,9 +1864,70 @@
   color: green;
   font-weight: bold;
 }
+
+.try-guest-mode {
+  /* margin:5px;  */
+  width: 100%;
+  background: var(--app-theme-green-darker);
+  text-align: center;
+  cursor: pointer;
+  margin: 10px 0px;
+}
+
+.try-guest-mode p {
+  margin: 0px;
+  font-weight: bold;
+  color: white;
+  text-decoration: underline;
+}
+
+.guest-dialog-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.responsive-p {
+  color: black;
+}
+
+.guest-dialog-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.guest-congrats {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.email-helpers-div {
+  flex-direction: row;
+  display: flex;
+ 
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+ 
+  .responsive-p {
+    font-size: large;
+  }
+  .guest-dialog-container {
+    padding: 20px;
+  }
+  .try-guest-mode {
+    padding: 30px 40px;
+  }
+  .try-guest-mode p {
+    font-size: 25px;
+  }
   .responsive-bread-crumb{ 
     margin-bottom: 31px;
 
@@ -1887,6 +1948,9 @@
   .register-form-content {
     padding: 46px;
     border-radius: 12px;
+  }
+  .email-helpers-div {
+    padding: 15px 0px;
   }
   .temp-dn-fix {
     margin-right: 3%;
@@ -2102,6 +2166,27 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .stories-row { 
+    margin-top: 100px;
+  }
+  .guest-congrats {
+    padding: 0px 10px;
+    font-size: 14px;
+    text-align: center;
+    flex-direction: column;
+  }
+  .responsive-p {
+    font-size: 15px;
+  }
+  .guest-dialog-container {
+    padding: 15px;
+  }
+  .try-guest-mode {
+    padding: 20px 10px;
+  }
+  .try-guest-mode p {
+    font-size: 14px;
+  }
   .product-tab-box { 
     padding:0px 20px !important;
   }
@@ -2162,6 +2247,14 @@
   .mob-f-text {
     font-size: 16px;
     color: black;
+  }
+  .email-helpers-div {
+    padding: 15px 0px;
+    margin-bottom: 30px;
+  }
+  .email-helpers-div a {
+    margin-top: 5px;
+    font-size: 14px;
   }
   .temp-f-donate-area {
     padding: 15px;
@@ -2575,7 +2668,7 @@
   .mob-login-card-fix {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
-    padding: 8px 5px !important;
+    padding: 30px 5px !important;
   }
   .mob-vendor-white-cleaner {
     margin-top: -100px !important;
