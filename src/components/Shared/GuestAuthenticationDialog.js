@@ -85,7 +85,7 @@ function GuestAuthenticationDialog(props) {
           <p className="responsive-p">
             {!proceedAsGuest ? (
               <span>
-                Hi there, please choose one of the options below to continue
+                Welcome! Please choose one of the options below to continue
               </span>
             ) : (
               <span>
