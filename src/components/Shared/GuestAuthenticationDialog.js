@@ -13,7 +13,7 @@ import {
 } from "../Pages/Auth/shared/utils";
 import MEButton from "../Pages/Widgets/MEButton";
 import METextField from "../Pages/Widgets/METextField";
-
+const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
   const { community, putUserInRedux, user, links, close, history } = props;
   const [email, setEmail] = useState("");
@@ -21,8 +21,10 @@ function GuestAuthenticationDialog(props) {
   const [loading, setLoading] = useState(false);
   const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
+  const [notGuest, setNotGuest] = useState(false);
   const authenticateGuest = () => {
     setError("");
+    setNotGuest(false);
     if (emailIsInvalid(email))
       return setError("Please provide a valid email to proceed as guest");
     const data = {
@@ -39,6 +41,10 @@ function GuestAuthenticationDialog(props) {
       .then((response) => {
         setLoading(false);
         if (!response.success) return setError(response?.error?.message);
+        const user = response.data;
+        const userExistsAndIsNotAGuest =
+          user?.user_info?.user_type !== GUEST_USER;
+        if (userExistsAndIsNotAGuest) return setNotGuest(true);
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
         setGuestAuthIsDone(true);
@@ -59,7 +65,7 @@ function GuestAuthenticationDialog(props) {
     if (ifEnterKeyIsPressed(e)) return authenticateGuest();
   };
 
-  const createProfileNow = () => {
+  const goToMainAuthPage = () => {
     close && close();
     history.push(links?.signin);
   };
@@ -98,6 +104,25 @@ function GuestAuthenticationDialog(props) {
           {error && (
             <small style={{ color: "maroon", marginTop: 5 }}>{error}</small>
           )}
+          {notGuest && (
+            <small
+              style={{
+                color: "maroon",
+                marginTop: 5,
+              }}
+            >
+              Hi there, it looks like you already have an account with us
+              already.
+              <Link
+                to={links?.signin}
+                onClick={goToMainAuthPage}
+                style={{ textDecoration: "underline", color: "maroon" }}
+              >
+                Try signing in with this email on our sign in page.
+              </Link>{" "}
+              Or use a different email to sign in as a guest!
+            </small>
+          )}
         </div>
 
         {!proceedAsGuest ? (
@@ -112,7 +137,7 @@ function GuestAuthenticationDialog(props) {
               </MEButton>
               <MEButton
                 loading={loading}
-                onClick={createProfileNow}
+                onClick={goToMainAuthPage}
                 variation="union"
               >
                 {!isMobile ? "Proceed With Profile" : "With Profile"}
