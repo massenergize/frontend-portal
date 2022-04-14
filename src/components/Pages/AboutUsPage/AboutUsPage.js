@@ -112,14 +112,12 @@ class AboutUsPage extends React.Component {
               className="cool-font make-me-dark"
               style={{ textAlign: "justify" }}
             >
-              Our mission is to provide communities with the tools and resources
+              This website is built on a web platform developed and maintained by our partner, MassEnergize. 
+              Their mission is to provide communities with the tools and resources
               to motivate and support their residents, businesses and
               non-profits in a wide array of actions to reduce greenhouse gas
-              emissions and prepare for a changing climate. We leverage the
-              collective expertise, experience and buying power of multiple
-              towns, cities and local organizations by collaborating with them
-              on tools, strategies, and resources. This community web platform
-              is one example of our work. For more information go to{" "}
+              emissions and prepare for a changing climate. This community web platform
+              is one example of their work. For more information go to{" "}
               <a
                 href="https://www.massenergize.org"
                 target="_blank"

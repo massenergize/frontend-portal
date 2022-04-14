@@ -23,6 +23,7 @@ import METabView from "../Widgets/METabView/METabView";
 import MEModal from "../Widgets/MEModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
+import { PREF_EQ_DEFAULT } from "../../Utils"
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -594,7 +595,7 @@ const mapStoreToProps = (store) => {
     community: store.page.comInformation,
     links: store.links,
     teamsStats: store.page.teams,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
   };
 };
 const mapDispatchToProps = (dispatch) => {

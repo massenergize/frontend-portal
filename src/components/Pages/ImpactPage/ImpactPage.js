@@ -295,7 +295,7 @@ class ImpactPage extends React.Component {
       }
     });
 
-    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT; // hardcode Tree equivalence if none chosen
+    const pref_eq = this.props.pref_eq ; // hardcode Tree equivalence if none chosen
     const carbon_units = pref_eq.name;
 
     const data = [
@@ -396,7 +396,7 @@ const mapStoreToProps = (store) => {
     comData: store.page.homePage,
     community: store.page.community,
     impactPage: store.page.impactPage,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     links: store.links,
     communityActionList: store.page.communityActionList,
   };

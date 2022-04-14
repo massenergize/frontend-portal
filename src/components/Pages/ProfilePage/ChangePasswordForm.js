@@ -69,7 +69,7 @@ class ChangePasswordFormBase extends React.Component {
             />
           </Tooltip>
 
-          <MEButton>{"Submit"}</MEButton>
+          <MEButton>{"Update"}</MEButton>
           <MEButton variation="accent" onClick={() => this.props.closeForm()}>
             {" "}
             Cancel{" "}
