@@ -6,10 +6,11 @@ export const AUTH_STATES = {
   USER_IS_AUTHENTICATED: "user_is_authenticated",
 };
 
-export const GUEST_USER_KEY ="GUEST_USER_EMAIL"
-export const emailIsInvalid =(email) => { 
+export const GUEST_USER_KEY = "GUEST_USER_EMAIL";
+export const emailIsInvalid = (email) => {
+  email = email?.toLowerCase();
   return !email || !email.match(/^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$/);
-}
+};
 export const translateFirebaseError = (error) => {
   if (!error) return;
   if (error.includes("auth/uid-already-exists"))

@@ -7,7 +7,7 @@ import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
 import { getTeamsData, inTeam, inThisTeam } from "./utils.js";
 import { Link, Redirect } from "react-router-dom";
-import { getRandomIntegerInRange } from "../../Utils";
+import { getRandomIntegerInRange, PREF_EQ_DEFAULT } from "../../Utils";
 import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
@@ -437,7 +437,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
   };
 };
 const mapDispatchToProps = {

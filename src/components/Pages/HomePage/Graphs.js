@@ -51,7 +51,7 @@ class Graphs extends React.Component {
       classes =
         "column col-lg-4 col-md-6 col-sm-6 col-xs-12 mob-homepage-chart-h";
 
-    const pref_eq = this.props.pref_eq || PREF_EQ_DEFAULT;
+    const pref_eq = this.props.pref_eq;
 
     const list = [
       {
@@ -196,7 +196,7 @@ const mapStoreToProps = (store) => {
   return {
     links: store.links,
     impactPageData: store.page.impactPage,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence  || PREF_EQ_DEFAULT,
   };
 };
 export default connect(mapStoreToProps)(Graphs);
