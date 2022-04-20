@@ -78,6 +78,7 @@ function GuestAuthenticationDialog(props) {
   };
 
   if (guestAuthIsDone) return <CongratulatoryMessage />;
+  window.scrollTo({ top: 0, behavior: "smooth" });
   return (
     <>
       <div className="guest-dialog-container">
