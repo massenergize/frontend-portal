@@ -1,3 +1,21 @@
+import URLS from "../../../../api/urls";
+
+export const siteUsesCustomDomain = (url) => {
+  url = url || window.location.href;
+  const hostname = new URL(url).hostname;
+  return !URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
+};
+
+export const browswerIsSafari = () => {
+  return (
+    navigator.vendor &&
+    navigator.vendor.indexOf("Apple") > -1 &&
+    navigator.userAgent &&
+    navigator.userAgent.indexOf("CriOS") === -1 &&
+    navigator.userAgent.indexOf("FxiOS") === -1
+  );
+};
+
 export const AUTH_STATES = {
   USER_IS_NOT_AUTHENTICATED: "user_is_not_authenticated",
   CHECKING_FIREBASE: "looking_for_firebase_authentication",
