@@ -4,7 +4,7 @@ import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
-import URLS, { isValidUrl } from "./api/urls";
+import URLS, { isValidUrl, MASSENERGIZE_PRODUCTION_URL } from "./api/urls";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -83,6 +83,10 @@ import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
+import {
+  browswerIsSafari,
+  siteUsesCustomDomain,
+} from "./components/Pages/Auth/shared/utils";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -143,6 +147,10 @@ class AppRouter extends Component {
   };
 
   componentDidMount() {
+    const { pathname } = new URL(window.location.href);
+    if (browswerIsSafari() && siteUsesCustomDomain()) {
+      window.location.href = MASSENERGIZE_PRODUCTION_URL + pathname;
+    }
     const { community } = this.props;
     const community_id = community?.id;
     const cookies = new Cookies();
