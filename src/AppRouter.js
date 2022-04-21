@@ -147,11 +147,14 @@ class AppRouter extends Component {
   };
 
   componentDidMount() {
-    const { pathname } = new URL(window.location.href);
-    if (browswerIsSafari() && siteUsesCustomDomain()) {
-      window.location.href = MASSENERGIZE_PRODUCTION_URL + pathname;
-    }
     const { community } = this.props;
+    const subdomain = community?.subdomain || 'undefined';
+    const { pathname } = new URL(window.location.href);
+
+    if (browswerIsSafari() && siteUsesCustomDomain()) {
+      const subd = pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1 ? '' : '/' + subdomain;
+      window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
+    }
     const community_id = community?.id;
     const cookies = new Cookies();
     device_checkin(cookies, community_id).then(null, (err) => console.log(err));
