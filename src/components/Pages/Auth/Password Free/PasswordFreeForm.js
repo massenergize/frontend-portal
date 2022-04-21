@@ -33,12 +33,12 @@ export default function PasswordFreeForm({
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
-            <h3 className="mog-title-fix">{title}</h3>
+            <h3 className="mob-title-fix">{title}</h3>
             {description && <p> {description}</p>}
           </div>
 
           <div>
-            <p>
+            <p className="mob-f-text">
               Enter your email address for{" "}
               <b style={{ color: "var(--app-theme-green)" }}>password-free</b>{" "}
               sign-in. We'll send you an email with verification link.
@@ -61,7 +61,7 @@ export default function PasswordFreeForm({
               />
             </div>
 
-            <div className="clearfix">
+            <div className="clearfix btn-grouping">
               <div className="form-group pull-left">
                 <MEButton
                   type="submit"
@@ -69,12 +69,13 @@ export default function PasswordFreeForm({
                   id="sign-in-btn"
                   onClick={() => sendLink()}
                   loading={loading}
+                  className="mob-log-submit"
                 >
                   {loading ? "Sending Link..." : "Continue"}
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right">
+              <div className="form-group social-links-two padd-top-5 pull-right" style={{marginLeft:"auto"}}>
                 Or sign in with
                 <button
                   onClick={() => signInWithGoogle()}
@@ -96,8 +97,9 @@ export default function PasswordFreeForm({
             </div>
 
             <div className="row">
-              <div className="col">
+              <div className="col col-link-btns">
                 <div
+                className="col-content"
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -115,7 +117,7 @@ export default function PasswordFreeForm({
                     onClick={usePassword}
                     id="email-password-link"
                   >
-                    I want to use Email and Password
+                    I want to use email and password
                   </button>
                 </div>
               </div>

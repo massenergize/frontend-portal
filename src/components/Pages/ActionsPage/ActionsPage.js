@@ -22,6 +22,7 @@ import {
   collectSearchTextValueFromURL,
   filterTagCollections,
   makeFilterDescription,
+  PREF_EQ_DEFAULT,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
@@ -525,7 +526,7 @@ const mapStoreToProps = (store) => {
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
   };

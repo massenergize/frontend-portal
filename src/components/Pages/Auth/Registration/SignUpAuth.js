@@ -8,7 +8,6 @@ import {
 import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 
-
 export default function SignUpAuth({
   description,
   title,
@@ -84,16 +83,12 @@ export default function SignUpAuth({
       />
     );
 
-
   return (
     <div className="styled-form register-form">
-      <div
-        className="z-depth-float me-anime-fade-in-up"
-        style={{ padding: 46, borderRadius: 12 }}
-      >
-        <div className="section-title style-2">
-          <h3>{title}</h3>
-          <p> {description}</p>
+      <div className="z-depth-float me-anime-fade-in-up register-form-content">
+        <div className=" style-2">
+          <h3 className="mob-title-fix">{title}</h3>
+          <p className="mob-f-text"> {description}</p>
         </div>
         <div>
           <div className="form-group">
@@ -144,23 +139,52 @@ export default function SignUpAuth({
           <br />
 
           <div className="clearfix">
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems:"center" }}>
               <MEButton
                 disabled={
                   isInvalid(getValue("email")) || invalidPassword() || loading
                 }
                 id="create-profile-btn"
+                className="mob-log-submit"
                 loading={loading}
                 onClick={() => registerUser(form)}
               >
                 {loading ? "Creating profile..." : " Create Profile"}
               </MEButton>
 
-              <div style={{ marginLeft: "auto" }}>
+              <div
+                className="form-group social-links-two padd-top-5 "
+                style={{ marginLeft: "auto", marginBottom:0 }}
+              >
                 <small style={{ margin: "0px 15px" }}>
                   <b>OR USE</b>
                 </small>
-                <MEButton
+
+                <button
+                  onClick={() => {
+                    registerWithGoogle((user) => {
+                      if (user) window.location.reload();
+                    });
+                  }}
+                  id="google"
+                  type="button"
+                  className="img-circle  round-me  me-google-btn z-depth-float"
+                >
+                  <span className="fa fa-google"></span>
+                </button>
+                <button
+                  onClick={() =>
+                    registerWithFacebook((user) => {
+                      if (user) window.location.reload();
+                    })
+                  }
+                  id="facebook"
+                  type="button"
+                  className="img-circle  round-me me-facebook-btn z-depth-float"
+                >
+                  <span className="fa fa-facebook"></span>
+                </button>
+                {/* <MEButton
                   onClick={() => {
                     registerWithGoogle((user) => {
                       if (user) window.location.reload();
@@ -180,12 +204,13 @@ export default function SignUpAuth({
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton>
+                </MEButton> */}
               </div>
             </div>
 
             <div
-              style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
+              className="link-groups"
+              // style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
             >
               <Link
                 style={{
@@ -194,7 +219,7 @@ export default function SignUpAuth({
                   marginBottom: 6,
                   fontSize: "large",
                 }}
-                className=" energize-link"
+                className="energize-link"
                 to={links.signin}
               >
                 I have an account already

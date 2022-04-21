@@ -43,6 +43,7 @@ import {
   calcEQ,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
+  PREF_EQ_DEFAULT,
   sumOfCarbonScores,
 } from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
@@ -902,7 +903,7 @@ const mapStoreToProps = (store) => {
     rsvps: store.page.rsvps,
     links: store.links,
     eq: store.page.equivalences,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence  || PREF_EQ_DEFAULT,
     fireAuth: store.fireAuth,
     authState: store.authState,
     settings: store.user.userFirebaseSettings,

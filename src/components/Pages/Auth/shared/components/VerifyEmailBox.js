@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import BreadCrumbBar from "../../../../Shared/BreadCrumbBar";
+import OpenEmailApp from "../OpenEmailApp";
 import { sendVerificationEmail } from "./../../../../../redux/actions/authActions";
 function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
   const [emailIsSent, setEmailSent] = useState(false);
@@ -50,6 +51,7 @@ function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
                     </p>
                   )}
                 </p>
+                <OpenEmailApp />
               </div>
             </div>
           </div>

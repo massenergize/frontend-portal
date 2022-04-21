@@ -1,3 +1,5 @@
+import GuestAuthenticationDialog from "../../components/Shared/GuestAuthenticationDialog";
+import React from "react";
 import {
   fetchAndParseStorageContent,
   PREFERRED_EQ,
@@ -48,11 +50,30 @@ import {
   SET_TOUR_STATE,
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
+  TOGGLE_UNIVERSAL_MODAL,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
+
+export const reduxToggleUniversalModal = (data) => {
+  return {
+    type: TOGGLE_UNIVERSAL_MODAL,
+    payload: data,
+  };
+};
+export const reduxToggleGuestAuthDialog =
+  (state, componentProps, otherProps) => (dispatch) => {
+    componentProps = componentProps || {};
+    dispatch(
+      reduxToggleUniversalModal({
+        show: state,
+        component: <GuestAuthenticationDialog {...componentProps} />,
+        ...(otherProps || {}),
+      })
+    );
+  };
 
 export const reduxLoadCommunityActionList = (list) => (dispatch) => {
   return dispatch({
