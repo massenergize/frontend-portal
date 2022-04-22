@@ -201,7 +201,7 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div style={{ marginBottom: 30 }}>
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
                     <Tooltip
@@ -221,6 +221,9 @@ class StoriesPage extends React.Component {
                   )}
                 </div>
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                <div className="pc-vanish" style={{ marginTop: 10 }}>
+                  {this.renderTestimonialForm()}
+                </div>
               </div>
               <HorizontalFilterBox
                 type="testimonials"

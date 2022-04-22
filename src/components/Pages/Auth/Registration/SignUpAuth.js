@@ -35,7 +35,7 @@ export default function SignUpAuth({
     history.push(links.signin);
   };
   const onChange = (e) => {
-    const newForm = { ...form, [e.target.name]: e.target.value };
+    const newForm = { ...form, [e.target.name]: e.target.value?.trim() };
     setForm(newForm);
   };
 
@@ -139,7 +139,13 @@ export default function SignUpAuth({
           <br />
 
           <div className="clearfix">
-            <div style={{ display: "flex", flexDirection: "row", alignItems:"center" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <MEButton
                 disabled={
                   isInvalid(getValue("email")) || invalidPassword() || loading
@@ -152,39 +158,40 @@ export default function SignUpAuth({
                 {loading ? "Creating profile..." : " Create Profile"}
               </MEButton>
 
-              <div
-                className="form-group social-links-two padd-top-5 "
-                style={{ marginLeft: "auto", marginBottom:0 }}
-              >
-                <small style={{ margin: "0px 15px" }}>
-                  <b>OR USE</b>
-                </small>
+              {!loading && (
+                <div
+                  className="form-group social-links-two padd-top-5 "
+                  style={{ marginLeft: "auto", marginBottom: 0 }}
+                >
+                  <small style={{ margin: "0px 15px" }}>
+                    <b>OR USE</b>
+                  </small>
 
-                <button
-                  onClick={() => {
-                    registerWithGoogle((user) => {
-                      if (user) window.location.reload();
-                    });
-                  }}
-                  id="google"
-                  type="button"
-                  className="img-circle  round-me  me-google-btn z-depth-float"
-                >
-                  <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={() =>
-                    registerWithFacebook((user) => {
-                      if (user) window.location.reload();
-                    })
-                  }
-                  id="facebook"
-                  type="button"
-                  className="img-circle  round-me me-facebook-btn z-depth-float"
-                >
-                  <span className="fa fa-facebook"></span>
-                </button>
-                {/* <MEButton
+                  <button
+                    onClick={() => {
+                      registerWithGoogle((user) => {
+                        if (user) window.location.reload();
+                      });
+                    }}
+                    id="google"
+                    type="button"
+                    className="img-circle  round-me  me-google-btn z-depth-float"
+                  >
+                    <span className="fa fa-google"></span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      registerWithFacebook((user) => {
+                        if (user) window.location.reload();
+                      })
+                    }
+                    id="facebook"
+                    type="button"
+                    className="img-circle  round-me me-facebook-btn z-depth-float"
+                  >
+                    <span className="fa fa-facebook"></span>
+                  </button>
+                  {/* <MEButton
                   onClick={() => {
                     registerWithGoogle((user) => {
                       if (user) window.location.reload();
@@ -205,7 +212,8 @@ export default function SignUpAuth({
                 >
                   Facebook
                 </MEButton> */}
-              </div>
+                </div>
+              )}
             </div>
 
             <div

@@ -1,4 +1,5 @@
 import React from "react";
+
 import MEButton from "../../Widgets/MEButton";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
@@ -75,31 +76,36 @@ export default function PasswordFreeForm({
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right" style={{marginLeft:"auto"}}>
-                Or sign in with
-                <button
-                  onClick={() => signInWithGoogle()}
-                  id="google"
-                  type="button"
-                  className="img-circle  round-me z-depth-float me-google-btn"
+              {!loading && (
+                <div
+                  className="form-group social-links-two padd-top-5 pull-right"
+                  style={{ marginLeft: "auto" }}
                 >
-                  <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={() => signInWithFacebook()}
-                  id="facebook"
-                  type="button"
-                  className="img-circle  round-me z-depth-float me-facebook-btn"
-                >
-                  <span className="fa fa-facebook"></span>
-                </button>
-              </div>
+                  Or sign in with
+                  <button
+                    onClick={() => signInWithGoogle()}
+                    id="google"
+                    type="button"
+                    className="img-circle  round-me z-depth-float me-google-btn"
+                  >
+                    <span className="fa fa-google"></span>
+                  </button>
+                  <button
+                    onClick={() => signInWithFacebook()}
+                    id="facebook"
+                    type="button"
+                    className="img-circle  round-me z-depth-float me-facebook-btn"
+                  >
+                    <span className="fa fa-facebook"></span>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="row">
               <div className="col col-link-btns">
                 <div
-                className="col-content"
+                  className="col-content"
                   style={{
                     display: "flex",
                     flexDirection: "row",
