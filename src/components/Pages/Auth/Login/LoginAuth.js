@@ -35,7 +35,7 @@ export default function LoginAuth(props) {
   ] = useState(false);
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value?.trim() });
   };
 
   const whenUserTypes = (e) => {
@@ -178,25 +178,30 @@ export default function LoginAuth(props) {
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right" style={{marginLeft:"auto"}}>
-                Or sign in with
-                <button
-                  onClick={() => signInWithGoogle()}
-                  id="google"
-                  type="button"
-                  className="img-circle  round-me  me-google-btn z-depth-float"
+              {!loading && (
+                <div
+                  className="form-group social-links-two padd-top-5 pull-right"
+                  style={{ marginLeft: "auto" }}
                 >
-                  <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={signInWithFacebook}
-                  id="facebook"
-                  type="button"
-                  className="img-circle  round-me me-facebook-btn z-depth-float"
-                >
-                  <span className="fa fa-facebook"></span>
-                </button>
-              </div>
+                  Or sign in with
+                  <button
+                    onClick={() => signInWithGoogle()}
+                    id="google"
+                    type="button"
+                    className="img-circle  round-me  me-google-btn z-depth-float"
+                  >
+                    <span className="fa fa-google"></span>
+                  </button>
+                  <button
+                    onClick={signInWithFacebook}
+                    id="facebook"
+                    type="button"
+                    className="img-circle  round-me me-facebook-btn z-depth-float"
+                  >
+                    <span className="fa fa-facebook"></span>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="row">
@@ -229,7 +234,7 @@ export default function LoginAuth(props) {
                     I Forgot my password
                   </button>
                 </div>
-                <br className="pc-vanish"/>
+                <br className="pc-vanish" />
                 <p className="mob-f-text">
                   Don't have a profile?
                   <Link

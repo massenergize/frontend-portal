@@ -32,7 +32,7 @@ function GuestAuthenticationDialog(props) {
     const data = {
       full_name: "Guest User",
       preferred_name: "Guest",
-      email,
+      email: email?.trim(),
       community_id: community?.id,
       accepts_terms_and_conditions: false,
       is_vendor: false,
@@ -49,7 +49,7 @@ function GuestAuthenticationDialog(props) {
         const userExistsAndIsNotAGuest =
           user?.user_info?.user_type !== GUEST_USER;
         if (userExistsAndIsNotAGuest) return setNotGuest(true);
-        
+
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
         setGuestAuthIsDone(true);
@@ -119,8 +119,7 @@ function GuestAuthenticationDialog(props) {
                 marginTop: 5,
               }}
             >
-              Hi there, it looks like you have an account with us
-              already.
+              Hi there, it looks like you have an account with us already.
               <Link
                 to={links?.signin}
                 onClick={goToMainAuthPage}

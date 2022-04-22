@@ -5,8 +5,17 @@
   --app-theme-orange-lighter: #fba930;
 }
 
-
-.responsive-bread-crumb{ 
+.me-auth-not {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 4px;
+  background: rgba(187, 235, 187, 0.56);
+  color: green;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.responsive-bread-crumb {
   background-color: rgb(245, 255, 222);
 }
 .link-groups {
@@ -293,11 +302,11 @@
 .phone-search-input {
   width: 100%;
   margin: 4px;
-  border: solid 2px grey;
+  border: solid 2px var(--app-theme-green);
   border-radius: 55px;
   padding: 10px 25px;
   margin-bottom: 30px;
-  margin-top: -25px;
+  /* margin-top: -25px; */
   font-size: 14px;
   box-shadow: 1px 1px 4px 0px rgb(0 0 0 / 7%), 0 2px 4px 0 rgb(0 0 0 / 3%);
   -webkit-box-shadow: 1px 1px 4px 0px rgb(0 0 0 / 7%),
@@ -1910,12 +1919,37 @@
 .email-helpers-div {
   flex-direction: row;
   display: flex;
- 
+}
+.all-actions-head-area { 
+  margin-top: -20px;
 }
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
- 
+  .all-actions-head-area { 
+    margin-bottom: 30px;
+  
+  }
+  .me-auth-not {
+    padding: 15px 20px;
+  }
+  .me-auth-not i {
+    margin-right: 20px;
+    font-size: 30px;
+  }
+  .cookie-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cookie-container .cookie-content {
+    flex: 8;
+  }
+  .cookie-content {
+    width: 70%;
+    padding: 10px 15px;
+  }
   .responsive-p {
     font-size: large;
   }
@@ -1928,11 +1962,10 @@
   .try-guest-mode p {
     font-size: 25px;
   }
-  .responsive-bread-crumb{ 
+  .responsive-bread-crumb {
     margin-bottom: 31px;
-
   }
-  .new-me-testimonial-img{
+  .new-me-testimonial-img {
     height: 242px;
   }
   .about-us-img {
@@ -2166,7 +2199,44 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .stories-row { 
+  .all-actions-head-area { 
+    margin-bottom: 20px;
+  
+  }
+  .action-mob-stats-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .act-stats-item {
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats-eq {
+    color: var(--app-theme-green-darker);
+  }
+  .me-auth-not {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .cookie-btn-area button {
+    margin: 10px 0px;
+    width: 100%;
+  }
+  .cookie-btn-area {
+    width: 100%;
+  }
+  .cookie-content {
+    width: 100%;
+    padding: 0px 5px;
+  }
+  .stories-row {
     margin-top: 100px;
   }
   .guest-congrats {
@@ -2187,23 +2257,22 @@
   .try-guest-mode p {
     font-size: 14px;
   }
-  .product-tab-box { 
-    padding:0px 20px !important;
+  .product-tab-box {
+    padding: 0px 20px !important;
   }
-  .mob-tab-box-fix { 
+  .mob-tab-box-fix {
     display: flex !important;
-    flex-direction: row; 
+    flex-direction: row;
     justify-content: center;
     width: 100vw !important;
   }
-  .mob-reset-padding { 
+  .mob-reset-padding {
     padding-right: 0px !important;
   }
-  .responsive-bread-crumb{ 
+  .responsive-bread-crumb {
     margin-bottom: 10px;
-
   }
-  .new-me-testimonial-img{
+  .new-me-testimonial-img {
     max-height: 220px;
   }
   .about-us-img {
@@ -2211,7 +2280,7 @@
     max-height: 300px;
     object-fit: contain;
     margin-bottom: 10px;
-    height:auto;
+    height: auto;
   }
   .solid-font {
     font-weight: bold;
