@@ -268,7 +268,7 @@ class ActionsPage extends React.Component {
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div className="all-actions-head-area">
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
                     <Tooltip

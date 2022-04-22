@@ -1920,13 +1920,13 @@
   flex-direction: row;
   display: flex;
 }
-.all-actions-head-area { 
+.all-head-area { 
   margin-top: -20px;
 }
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
-  .all-actions-head-area { 
+  .all-head-area { 
     margin-bottom: 30px;
   
   }
@@ -2199,7 +2199,7 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .all-actions-head-area { 
+  .all-head-area { 
     margin-bottom: 20px;
   
   }
