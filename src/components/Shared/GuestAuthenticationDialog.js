@@ -27,7 +27,7 @@ function GuestAuthenticationDialog(props) {
   const authenticateGuest = () => {
     setError("");
     setNotGuest(false);
-    if (emailIsInvalid(email))
+    if (emailIsInvalid(email.trim()))
       return setError("Please provide a valid email to proceed as guest");
     const data = {
       full_name: "Guest User",
