@@ -18,6 +18,7 @@ import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import SignUpAuth from "./Registration/SignUpAuth";
 import VerifyEmailBox from "./shared/components/VerifyEmailBox";
+import OpenEmailApp from "./shared/OpenEmailApp";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
 
 const SIGNIN = "signin";
@@ -93,7 +94,7 @@ function AuthEntry({
 
   // ------------------------------------------------------------------
 
-  var title = "Welcome,",
+  var title = "Welcome!",
     description = "",
     Page,
     PageTitle;
@@ -161,6 +162,10 @@ function AuthEntry({
                     <Notification {...notification}>
                       {notification?.message}
                     </Notification>
+                  )}
+
+                  {notification?.good && userWantsPasswordFree && (
+                    <OpenEmailApp />
                   )}
                   {Page}
                 </div>

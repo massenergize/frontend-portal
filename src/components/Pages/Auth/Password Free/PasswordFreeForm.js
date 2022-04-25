@@ -1,4 +1,5 @@
 import React from "react";
+
 import MEButton from "../../Widgets/MEButton";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
@@ -33,12 +34,12 @@ export default function PasswordFreeForm({
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
-            <h3 className="mog-title-fix">{title}</h3>
+            <h3 className="mob-title-fix">{title}</h3>
             {description && <p> {description}</p>}
           </div>
 
           <div>
-            <p>
+            <p className="mob-f-text">
               Enter your email address for{" "}
               <b style={{ color: "var(--app-theme-green)" }}>password-free</b>{" "}
               sign-in. We'll send you an email with verification link.
@@ -61,7 +62,7 @@ export default function PasswordFreeForm({
               />
             </div>
 
-            <div className="clearfix">
+            <div className="clearfix btn-grouping">
               <div className="form-group pull-left">
                 <MEButton
                   type="submit"
@@ -69,35 +70,42 @@ export default function PasswordFreeForm({
                   id="sign-in-btn"
                   onClick={() => sendLink()}
                   loading={loading}
+                  className="mob-log-submit"
                 >
                   {loading ? "Sending Link..." : "Continue"}
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right">
-                Or sign in with
-                <button
-                  onClick={() => signInWithGoogle()}
-                  id="google"
-                  type="button"
-                  className="img-circle  round-me z-depth-float me-google-btn"
+              {!loading && (
+                <div
+                  className="form-group social-links-two padd-top-5 pull-right"
+                  style={{ marginLeft: "auto" }}
                 >
-                  <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={() => signInWithFacebook()}
-                  id="facebook"
-                  type="button"
-                  className="img-circle  round-me z-depth-float me-facebook-btn"
-                >
-                  <span className="fa fa-facebook"></span>
-                </button>
-              </div>
+                  Or sign in with
+                  <button
+                    onClick={() => signInWithGoogle()}
+                    id="google"
+                    type="button"
+                    className="img-circle  round-me z-depth-float me-google-btn"
+                  >
+                    <span className="fa fa-google"></span>
+                  </button>
+                  <button
+                    onClick={() => signInWithFacebook()}
+                    id="facebook"
+                    type="button"
+                    className="img-circle  round-me z-depth-float me-facebook-btn"
+                  >
+                    <span className="fa fa-facebook"></span>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="row">
-              <div className="col">
+              <div className="col col-link-btns">
                 <div
+                  className="col-content"
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -115,7 +123,7 @@ export default function PasswordFreeForm({
                     onClick={usePassword}
                     id="email-password-link"
                   >
-                    I want to use Email and Password
+                    I want to use email and password
                   </button>
                 </div>
               </div>

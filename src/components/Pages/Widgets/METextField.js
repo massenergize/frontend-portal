@@ -59,6 +59,7 @@ class METextField extends Component {
       id,
       history,
       readonly,
+      genericProps
     } = this.props;
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
@@ -77,6 +78,7 @@ class METextField extends Component {
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
           readOnly={readonly}
+          {...(genericProps ||{})}
         />
       );
     } else if (inputType === "textarea") {
@@ -93,6 +95,7 @@ class METextField extends Component {
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
           readOnly={readonly}
+          {...(genericProps ||{})}
         />
       );
     }

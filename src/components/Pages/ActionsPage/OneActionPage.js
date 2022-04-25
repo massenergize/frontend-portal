@@ -21,6 +21,7 @@ import {
   reduxTeamAddAction,
   reduxSetTourInformation,
   SECOND_SET,
+  reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -38,9 +39,10 @@ import {
   TODO,
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
-// import { NEW_EDITOR_IDENTITY } from "../HTML/Konstants";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
-import { handleTourCallback } from "../../Utils";
+import { handleTourCallback, smartString } from "../../Utils";
+import { isMobile } from "react-device-detect";
+import { ACTION_TO_AUTO_START } from "./ActionCard";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -72,9 +74,9 @@ class OneActionPage extends React.Component {
     this.runActionFunction = this.runActionFunction.bind(this);
   }
 
-  async componentDidMount() {
-    window.addEventListener("resize", this.chooseFontSize);
 
+  componentDidMount() {
+    window.addEventListener("resize", this.chooseFontSize);
     const { id } = this.props.match.params;
     this.fetch(id);
     this.chooseFontSize();
@@ -85,6 +87,7 @@ class OneActionPage extends React.Component {
       const json = await apiCall("actions.info", { action_id: id });
       if (json.success) {
         this.setState({ action: json.data });
+        this.checkIfActionShouldStartAutomatically(json.data)
       } else {
         this.setState({ error: json.error });
       }
@@ -134,7 +137,12 @@ class OneActionPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.actions, name: "All Actions" },
-              { name: action ? action.title : "..." },
+              {
+                name:
+                  (isMobile && smartString(action?.title, 15)) ||
+                  action?.title ||
+                  "...",
+              },
             ]}
           />
 
@@ -307,8 +315,41 @@ class OneActionPage extends React.Component {
   userHasManyHouseHolds() {
     return this.props.user.households.length > 1;
   }
+
+  checkIfActionShouldStartAutomatically(action) {
+    const { user } = this.props;
+    const actionToStart = localStorage.getItem(
+      ACTION_TO_AUTO_START + action?.id
+    );
+    if (!actionToStart || !action || !user) return;
+    const obj = JSON.parse(actionToStart);
+    if (action.id?.toString() === obj.id?.toString()) {
+      this.runActionFunction(obj.for);
+      localStorage.removeItem(ACTION_TO_AUTO_START + action?.id);
+    }
+  }
+
+  trackGuestAuthenticationStatus(isSuccessful, _for) {
+    if (!isSuccessful) return;
+    // if successful, take not of the just-clicked action
+    const action = this.getMyAction();
+    const obj = { for: _for, id: action?.id };
+    localStorage.setItem(
+      ACTION_TO_AUTO_START + action?.id,
+      JSON.stringify(obj)
+    );
+  }
+
+  runGuestAuthentication(_for) {
+    this.props.toggleGuestAuthDialog(true, {
+      callback: (isSuccessful) =>
+        this.trackGuestAuthenticationStatus(isSuccessful, _for),
+    });
+  }
+
   runActionFunction(_for) {
-    // const hasManyHouseHolds = this.props.user.households.length > 1;
+    const { user } = this.props;
+    if (!user) return this.runGuestAuthentication(_for);
     if (_for === "DONE") {
       const isDone = this.actionIsDone();
       if (isDone) {
@@ -506,14 +547,21 @@ class OneActionPage extends React.Component {
                 <div className="content-box">
                   <h2
                     id="test-action-title"
-                    className="cool-font"
-                    style={{ padding: "20px 0px 0px 0px" }}
+                    className="cool-font solid-font "
+                    style={{ padding: "20px 0px 0px 0px", textAlign: "center" }}
                   >
                     {action.title}
                   </h2>
                 </div>
                 {/* displays the action's info: impact, difficulty, tags and categories*/}
-                <div style={{ padding: 15, position: "relative" }}>
+                <div
+                  style={{
+                    padding: 15,
+                    position: "relative",
+                    width: "80%",
+                    margin: "auto",
+                  }}
+                >
                   <div className="" style={{ display: "inline-block" }}>
                     <Tooltip
                       text="Shows the level of impact this action makes relative to the other actions."
@@ -525,7 +573,7 @@ class OneActionPage extends React.Component {
                       {this.renderTagBar(this.getTag("impact"), "impact")}
                     </span>
                   </div>
-                  <div className="float_right" style={{ marginRight: 50 }}>
+                  <div className="float_right">
                     Cost
                     <span>
                       {" "}
@@ -556,7 +604,6 @@ class OneActionPage extends React.Component {
                             id="test-todo-btn"
                             _case={actionStateCase}
                             type={TODO}
-                            {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("TODO")}
                             {...this.getTodoPopoverInfo()}
                           />
@@ -565,7 +612,6 @@ class OneActionPage extends React.Component {
                             id="test-done-btn"
                             _case={actionStateCase}
                             type={DONE}
-                            {...this.getNoAuthParams()}
                             onClick={() => this.runActionFunction("DONE")}
                           />
                         </>
@@ -623,7 +669,7 @@ class OneActionPage extends React.Component {
                 ) : null}
               </div>
               {/* action image */}
-              <div className="col-lg-6 col-md-12">
+              <div className="col-lg-6 col-md-12 mob-reset-padding">
                 <div className="img-box action-pic-fix">
                   <img
                     src={action.image ? action.image.url : null}
@@ -639,8 +685,11 @@ class OneActionPage extends React.Component {
 
           {/*  ------ @TODO: Remember to remake tabs into one component to remove repititions!!!!! */}
           {/* tab box holding description, steps to take, and stories about the action */}
-          <div className="product-tab-box">
-            <ul className="nav nav-tabs tab-menu" id="test-actions-tabs">
+          <div className="product-tab-box ">
+            <ul
+              className="nav nav-tabs tab-menu mob-tab-box-fix"
+              id="test-actions-tabs"
+            >
               {/* tab switching system, may be a better way to do this */}
               <li
                 id="desctab"
@@ -1042,6 +1091,7 @@ const mapDispatchToProps = {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
   reduxSetTourInformation,
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
 };
 
 export default connect(

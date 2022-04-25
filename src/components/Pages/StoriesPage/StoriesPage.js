@@ -23,6 +23,7 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,7 @@ class StoriesPage extends React.Component {
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.triggerGuestDialog = this.triggerGuestDialog.bind(this);
   }
 
   addMeToSelected(param, reset = false) {
@@ -56,6 +58,11 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
+  triggerGuestDialog(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.toggleGuestAuthDialog(true);
+  }
   renderAddTestmonialBtn() {
     if (this.props.user) {
       return (
@@ -71,7 +78,9 @@ class StoriesPage extends React.Component {
     }
     return (
       <center>
-        <MELink to={this.props.links.signin}>Sign In to submit a story</MELink>
+        <MELink to={this.props.links.signin} onClick={this.triggerGuestDialog}>
+          Sign In to submit a story
+        </MELink>
       </center>
     );
   }
@@ -192,7 +201,7 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div style={{ marginBottom: 30 }}>
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
                     <Tooltip
@@ -212,6 +221,9 @@ class StoriesPage extends React.Component {
                   )}
                 </div>
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                <div className="pc-vanish" style={{ marginTop: 10 }}>
+                  {this.renderTestimonialForm()}
+                </div>
               </div>
               <HorizontalFilterBox
                 type="testimonials"
@@ -223,7 +235,7 @@ class StoriesPage extends React.Component {
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
               />
-              <div className="row phone-marg-top-90">
+              <div className="row stories-row">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>
                     <h5>Jump to story</h5>
@@ -256,7 +268,10 @@ class StoriesPage extends React.Component {
                 <center>
                   {!this.props.user ? (
                     <p className="text-center">
-                      <MELink to={this.props.links.signin}>
+                      <MELink
+                        to={this.props.links.signin}
+                        onClick={this.triggerGuestDialog}
+                      >
                         Sign In to submit a story
                       </MELink>
                     </p>
@@ -328,4 +343,6 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
   };
 };
-export default connect(mapStoreToProps, null)(StoriesPage);
+export default connect(mapStoreToProps, {
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+})(StoriesPage);

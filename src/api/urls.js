@@ -1,6 +1,6 @@
 // Defining URLS object for manipulation...
 import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config";
-
+export const MASSENERGIZE_PRODUCTION_URL = "https://community.massenergize.org";
 let URLS = {};
 if (IS_LOCAL) {
   URLS["ROOT"] = "http://massenergize.test:8000";

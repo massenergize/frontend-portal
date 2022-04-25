@@ -30,3 +30,4 @@ v2.0/src/config/config.json
 node_modules
 package-lock.json
 cypress.env.json
+.env

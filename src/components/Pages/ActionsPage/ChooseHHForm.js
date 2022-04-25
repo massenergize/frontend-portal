@@ -90,7 +90,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   <small style={{ padding: "10px 15px", color: "grey" }}>
-                    Click "Submit" if you want your changes to be saved{" "}
+                    Click "Add" if you want your changes to be saved{" "}
                   </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
@@ -117,7 +117,7 @@ class ChooseHHForm extends React.Component {
                             : false
                         }
                       >
-                        Submit
+                        Add
                       </button>
                       <button
                         className="flat-btn close-flat"
@@ -257,77 +257,75 @@ class ChooseHHForm extends React.Component {
     const choice = [];
     const Dates = {};
 
-    households &&
-      households.forEach((house) => {
-        this.props.inCart(aid, house.id, status) &&
-          choice.push(house.id) &&
-          BuildDates(house.id);
-      });
+    households.forEach((house) => {
+      this.props.inCart(aid, house.id, status) &&
+        choice.push(house.id) &&
+        BuildDates(house.id);
+    });
     if (status === "TODO") {
-      todo &&
-        todo.forEach((todo) => {
-          //this if statement populates the data only for the selected action and households
-          if (
-            todo.date_completed &&
-            Dates[todo.real_estate_unit.id] === -1 &&
-            aid === todo.action.id
-          ) {
-            //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
-            //different value
-            var DropdownHeader = () => {
-              var Diff = moment().diff(todo.date_completed, "days");
-              var CompYear = moment(todo.date_completed).year();
-              var CurrYear = moment().year();
-              if (Diff <= 90 && Diff >= 0 && CompYear === CurrYear) {
-                return Choice1;
-              } else if (Diff < 0 && CompYear === CurrYear) {
-                return Choice2;
-              } else if (CompYear - CurrYear === 1) {
-                return Choice3;
-              } else if (CompYear - CurrYear >= 2) {
-                return Choice4;
-              }
-            };
-            Dates[todo.real_estate_unit.id] = [
-              todo.date_completed.substring(0, todo.date_completed.length),
-              DropdownHeader(),
-            ];
-          }
-        });
+      (todo || []).forEach((todo) => {
+        //this if statement populates the data only for the selected action and households
+        if (
+          todo.date_completed &&
+          Dates[todo.real_estate_unit.id] === -1 &&
+          aid === todo.action.id
+        ) {
+          //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
+          //different value
+          var DropdownHeader = () => {
+            var Diff = moment().diff(todo.date_completed, "days");
+            var CompYear = moment(todo.date_completed).year();
+            var CurrYear = moment().year();
+            if (Diff <= 90 && Diff >= 0 && CompYear === CurrYear) {
+              return Choice1;
+            } else if (Diff < 0 && CompYear === CurrYear) {
+              return Choice2;
+            } else if (CompYear - CurrYear === 1) {
+              return Choice3;
+            } else if (CompYear - CurrYear >= 2) {
+              return Choice4;
+            }
+          };
+          Dates[todo.real_estate_unit.id] = [
+            todo.date_completed.substring(0, todo.date_completed.length),
+            DropdownHeader(),
+          ];
+        }
+      });
+   
     } else {
-      done &&
-        done.forEach((done) => {
-          //this if statement populates the date data only for a the selected action and households
-          if (
-            done.date_completed &&
-            Dates[done.real_estate_unit.id] === -1 &&
-            aid === done.action.id
-          ) {
-            //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
-            //different value
-            var DropdownHeader = () => {
-              var Diff = moment().diff(done.date_completed, "days");
-              var CompYear = moment(done.date_completed).year();
-              var CurrYear = moment().year();
-              if (Diff <= 2 && CompYear === CurrYear) {
-                return Choice1;
-              } else if (
-                (Diff > 90 && CompYear === CurrYear) ||
-                done.date_completed === "2022-01-01"
-              ) {
-                return Choice2;
-              } else if (CurrYear - CompYear === 1) {
-                return Choice3;
-              } else if (CurrYear - CompYear <= 2) {
-                return Choice4;
-              }
-            };
-            Dates[done.real_estate_unit.id] = [
-              done.date_completed.substring(0, done.date_completed.length),
-              DropdownHeader(),
-            ];
-          }
-        });
+      (done || []).forEach((done) => {
+        //this if statement populates the date data only for a the selected action and households
+        if (
+          done.date_completed &&
+          Dates[done.real_estate_unit.id] === -1 &&
+          aid === done.action.id
+        ) {
+          //function that dynamicly updates the selected option. Reason being is because if a user selects just completed it, a year later that option would have to reflect a
+          //different value
+          var DropdownHeader = () => {
+            var Diff = moment().diff(done.date_completed, "days");
+            var CompYear = moment(done.date_completed).year();
+            var CurrYear = moment().year();
+            if (Diff <= 2 && CompYear === CurrYear) {
+              return Choice1;
+            } else if (
+              (Diff > 90 && CompYear === CurrYear) ||
+              done.date_completed === "2022-01-01"
+            ) {
+              return Choice2;
+            } else if (CurrYear - CompYear === 1) {
+              return Choice3;
+            } else if (CurrYear - CompYear <= 2) {
+              return Choice4;
+            }
+          };
+          Dates[done.real_estate_unit.id] = [
+            done.date_completed.substring(0, done.date_completed.length),
+            DropdownHeader(),
+          ];
+        }
+      });
     }
 
     //creates an orginal for comparison later to determine what dates changed to submit to backend
