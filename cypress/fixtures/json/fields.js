@@ -1,7 +1,7 @@
 import URLS from "../../../src/api/urls";
-
 var DOMAIN = "http://localhost:3000/";
-const COMMUNITY = "Demo2";
+
+var COMMUNITY = "wayland"; // Change this to a community that exists in your DB
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
 const API_ROOT = URLS["ROOT"] + "/api/";
@@ -11,6 +11,9 @@ export default {
     urls: {
       authenticate: API_ROOT + "auth.login.testmode",
       fetchActions: API_ROOT + "actions.list",
+      fetchEvents: API_ROOT + "events.list",
+      fetchTeams: API_ROOT + "teams.list",
+      fetchTestimonials: API_ROOT + "testimonials.list",
     },
   },
   subdomain: COMMUNITY,

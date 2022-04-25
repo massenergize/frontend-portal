@@ -43,18 +43,21 @@ describe("Adding action to TODO list", function () {
       expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
     });
   });
-  it("Reverse process", function () {
+  it("Reversed process", function () {
     cy.get(".test-btn-for-todo")
       .first()
       .then(($btn) => {
         cy.wrap($btn).click();
-      })
-      .as("todo-button");
+      });
     cy.get(".test-one-house").click();
     cy.get(".test-modal-submit").click();
-    cy.get("@todo-button").then(($btn) => {
-      expect($btn.attr("data-action-state", DEFAULT_STATE));
-      expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
-    });
+  });
+  it("Checked for default state", { retries: 2 }, function () {
+    cy.get(".test-btn-for-todo")
+      .first()
+      .then(($btn) => {
+        expect($btn.attr("data-action-state", DEFAULT_STATE));
+        expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
+      });
   });
 });

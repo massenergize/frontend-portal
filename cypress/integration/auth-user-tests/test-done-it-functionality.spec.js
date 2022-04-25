@@ -40,24 +40,28 @@ describe("Marking action as 'DONE' works", function () {
     cy.wait(1000);
   });
 
-  it("Action card shows properties that it has been done", function () {
+  it("Action card shows properties that it is done", function () {
     cy.get(".test-btn-for-done").then(($btn) => {
       expect($btn.attr("data-action-state", IS_DONE));
       expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
     });
   });
-  it("Reverse process", function () {
+  it("Reversed process", function () {
     cy.get(".test-btn-for-done")
       .first()
       .then(($btn) => {
         cy.wrap($btn).click();
-      })
-      .as("done-button");
+      });
     cy.get(".test-one-house").click();
     cy.get(".test-modal-submit").click();
-    cy.get("@done-button").then(($btn) => {
-      expect($btn.attr("data-action-state", DEFAULT_STATE));
-      expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
-    });
+  });
+
+  it("Checked for default state", { retries: 2 }, function () {
+    cy.get(".test-btn-for-done")
+      .first()
+      .then(($btn) => {
+        expect($btn.attr("data-action-state", DEFAULT_STATE));
+        expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
+      });
   });
 });
