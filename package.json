@@ -71,7 +71,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cypress": "^8.5.0",
+    "cypress": "^9.6.0",
     "cypress-localstorage-commands": "^1.5.0",
     "immutable": "^4.0.0-rc.12",
     "style-loader": "^0.23.1"
