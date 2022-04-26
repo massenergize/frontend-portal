@@ -13,7 +13,7 @@ describe("Renders one service provider correctly", function () {
     }).then((response) => {
       const data = response.body.data;
       if (!data || !data.length) cy.log("The backend did not return any teams");
-      const firstOne = response.body.data[0];
+      const firstOne = data[0];
       cy.visit(fields.urls.services.raw + "/" + firstOne.id + fields.params);
     });
     cy.cleanUp();

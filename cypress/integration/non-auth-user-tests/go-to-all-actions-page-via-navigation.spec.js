@@ -1,5 +1,4 @@
-
-import fields from "./../../fixtures/json/fields"
+import fields from "./../../fixtures/json/fields";
 
 describe("Visits all actions page via navigation", function () {
   before(() => {
@@ -7,8 +6,12 @@ describe("Visits all actions page via navigation", function () {
     cy.cleanUp();
   });
 
-  it("Clicks actions on navigation bar and chooses all actions page", function () {
-    cy.get("#menu-actions-id").click();
-    cy.get(".test-me-nav-drop-item").first().click();
-  });
+  it(
+    "Clicks actions on navigation bar and chooses all actions page",
+    { retries: 2 },
+    function () {
+      cy.get("#menu-actions-id").click();
+      cy.get(".test-me-nav-drop-item").first().click();
+    }
+  );
 });

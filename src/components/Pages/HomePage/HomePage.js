@@ -209,7 +209,6 @@ class HomePage extends React.Component {
     ];
 
     var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
-    console.log("I think I am the show tour right here my gee", showTour)
     return (
       <>
         {showTour && (

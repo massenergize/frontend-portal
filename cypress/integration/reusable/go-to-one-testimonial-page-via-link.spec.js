@@ -12,7 +12,7 @@ describe("Renders one testimonials page via link", function () {
       const data = response.body.data;
       if (!data || !data.length)
         cy.log("The backend did not return any testimonials");
-      const firstOne = response.body.data[0];
+      const firstOne = data[0];
       cy.visit(
         fields.urls.testimonials.raw + "/" + firstOne.id + fields.params
       );

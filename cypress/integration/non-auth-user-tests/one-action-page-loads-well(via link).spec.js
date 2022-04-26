@@ -12,7 +12,7 @@ describe("One action page loads correctly", function () {
       const data = response.body.data;
       if (!data || !data.length)
         cy.log("The backend did not return any actions");
-      const firstOne = response.body.data[0];
+      const firstOne = data[0];
       cy.visit(fields.urls.actions.raw + "/" + firstOne.id + fields.params);
     });
     cy.cleanUp();

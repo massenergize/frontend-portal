@@ -11,7 +11,7 @@ describe("Renders individual team full-view page with a known team id", function
     }).then((response) => {
       const data = response.body.data;
       if (!data || !data.length) cy.log("The backend did not return any teams");
-      const firstOne = response.body.data[0];
+      const firstOne = data[0].team;
       cy.visit(fields.urls.teams.raw + "/" + firstOne.id + fields.params);
     });
     cy.cleanUp();

@@ -172,7 +172,7 @@ export default class NewEventsCard extends Component {
             isMobile && "z-depth-1"
           }`}
         >
-          <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }}>
+          <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }} className="test-one-event-card-clickable">
             <img
               src={this.getPhoto()}
               className="new-me-testimonial-img"

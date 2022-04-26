@@ -12,7 +12,7 @@ export default {
       authenticate: API_ROOT + "auth.login.testmode",
       fetchActions: API_ROOT + "actions.list",
       fetchEvents: API_ROOT + "events.list",
-      fetchTeams: API_ROOT + "teams.list",
+      fetchTeams: API_ROOT + "teams.stats",
       fetchTestimonials: API_ROOT + "testimonials.list",
       fetchVendors: API_ROOT + "vendors.list",
     },

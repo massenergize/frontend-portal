@@ -37,15 +37,17 @@ export const rsvpWithDropdown = () => {
 };
 export const oneEventPageComponentsRenderProperly = () => {
   var rec, venue, date;
-  it("Got the details of recurring status, venue, and date from the event object itself", () => {
-    cy.get(".test-one-event-wrapper")
-      .first()
-      .then(($el) => {
-        rec = $el.attr("data-is-recurring");
-        venue = $el.attr("data-venue");
-        date = $el.attr("data-date");
-      });
-  });
+  // recurring details has become optional and can be changed from admin portal. So it will be tested
+  // with a different logic now
+  // it("Got the details of recurring status, venue, and date from the event object itself", () => {
+  //   cy.get(".test-one-event-wrapper")
+  //     .first()
+  //     .then(($el) => {
+  //       rec = $el.attr("data-is-recurring");
+  //       venue = $el.attr("data-venue");
+  //       date = $el.attr("data-date");
+  //     });
+  // });
   it("Found event title", () => cy.get(".test-event-title").should("exist"));
   it("Found event description", () =>
     cy.get(".test-event-body").first().should("exist"));
@@ -151,11 +153,7 @@ export const showThatTestimonialPageComponentsLoadWell = () => {
         cy.wrap($title).should("have.text", $title.attr("data-story-title"))
       ));
   it("Shows description properly", () =>
-    cy
-      .get(".test-story-body")
-      .then(($body) =>
-        cy.wrap($body).should("have.text", $body.attr("data-story-body"))
-      ));
+    cy.get(".test-story-body").should("be.visible"));
   it("Shows username properly", () =>
     cy
       .get(".test-story-user-name")

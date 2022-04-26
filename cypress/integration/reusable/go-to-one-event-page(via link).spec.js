@@ -12,7 +12,7 @@ describe("Visits one event page with a known url", function () {
       const data = response.body.data;
       if (!data || !data.length)
         cy.log("The backend did not return any list of events");
-      const firstOne = response.body.data[0];
+      const firstOne = data[0];
       cy.visit(fields.urls.events.raw + "/" + firstOne.id + fields.params);
     });
     cy.cleanUp();
