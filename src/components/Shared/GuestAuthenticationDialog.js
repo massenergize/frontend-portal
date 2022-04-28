@@ -103,6 +103,7 @@ function GuestAuthenticationDialog(props) {
 
           {proceedAsGuest && (
             <METextField
+              id="test-guest-email"
               placeholder="example@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
               genericProps={{ onKeyUp: whenUserTypes }}
@@ -136,12 +137,14 @@ function GuestAuthenticationDialog(props) {
             <div style={{ marginLeft: "auto" }}>
               <Cancel close={close} />
               <MEButton
+                id="test-proceed-as-guest"
                 loading={loading}
                 onClick={() => setProceedAsGuest(true)}
               >
                 {!isMobile ? "Proceed As Guest" : "As Guest"}
               </MEButton>
               <MEButton
+                id="test-proceed-with-profile"
                 loading={loading}
                 onClick={goToMainAuthPage}
                 variation="union"
@@ -154,6 +157,7 @@ function GuestAuthenticationDialog(props) {
           <div className="guest-dialog-footer">
             <Cancel close={close} />
             <MEButton
+              id="test-continue-button"
               loading={loading}
               onClick={() => authenticateGuest()}
               containerStyle={{ marginLeft: "auto" }}

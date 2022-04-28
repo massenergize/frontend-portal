@@ -135,6 +135,9 @@ export const typeInsideFilterbox = (text) => {
   cy.get("#test-filter-box-id").type(text, { delay: 150, force: true });
   cy.get("#test-filter-box-id").scrollIntoView({ offset: { top: -550 } });
 };
+export const typeInTextBox = (id, text, delay) => {
+  cy.get(id).type(text, { delay: delay || 150, force: true });
+};
 
 export const testimonialsShowProperly = () => {
   cy.get(".test-stories-wrapper").then(function ($div) {
@@ -166,4 +169,31 @@ export const fromJsonToForm = (obj) => {
   const form = new FormData();
   Object.keys((key) => form.append(key, obj[key]));
   return form;
+};
+
+export const testUserAuthenticationAsGuest = (email) => {
+  it("Clicked button to proceed as guest", function () {
+    cy.get("#test-proceed-as-guest").click();
+  });
+
+  it("Typed guest email to to be used", function () {
+    typeInTextBox("#test-guest-email", email || fields.emailToUse, 50);
+  });
+
+  it("Submitted guest email for authentication", function () {
+    cy.get("#test-continue-button").click();
+  });
+
+  it(
+    "User is authenticated 'sign in' button is showing user initials or image",
+    { retries: 2 },
+    function () {
+      cy.get("#test-auth-user-dropdown");
+    }
+  );
+
+  it("Reversed entire process", { retries: 2 }, function () {
+    cy.get("#test-auth-user-dropdown").click();
+    cy.get("#test-dropdown-signout").click();
+  });
 };
