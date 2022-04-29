@@ -9,15 +9,6 @@ describe("User trying to set equivalence", function () {
     cy.authenticateWithoutUI();
     cy.visit(fields.urls.homepage.raw + "profile");
   });
-  // it("Renders login page", function () {
-  //   cy.visit(fields.urls.homepage);
-  //   cy.cleanUp();
-  // });
-
-  // it("Types login details and signs in", function () {
-  //   // cy.loginWithDetails();
-  //   // cy.authenticateWithoutUI();
-  // });
 
   it("Renders profile page", function () {
     cy.get("#profile-page-component");

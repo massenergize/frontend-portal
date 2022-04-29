@@ -196,6 +196,7 @@ const Cancel = ({ close, callback }) => {
   return (
     <Link
       to="#"
+      id="test-guest-cancel-btn"
       onClick={(e) => {
         e.preventDefault();
         callback && callback();
