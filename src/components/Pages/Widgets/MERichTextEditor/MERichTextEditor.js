@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-const TINY_MCE_API_KEY = "6pg5u1ebssmbyjcba68sak0bfhx28w247y9lcdnq1m5q94t1";
+const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY
 
 function MERichTextEditor({
   onChange,
