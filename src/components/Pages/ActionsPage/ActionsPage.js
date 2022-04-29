@@ -39,6 +39,7 @@ import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
+import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
   checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
@@ -267,7 +268,7 @@ class ActionsPage extends React.Component {
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div style={{ marginBottom: 30, marginTop: -20 }}>
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
                     <Tooltip
@@ -292,6 +293,13 @@ class ActionsPage extends React.Component {
                   ) : null}
                 </center>
               </div>
+              <ActionMobileStats
+                todo={this.props.todo}
+                done={this.props.done}
+                user={this.props.user}
+                pref_eq={this.props.pref_eq}
+                eq={this.props.eq}
+              />
               <HorizontalFilterBox
                 type="action"
                 foundNumber={this.state.mirror_actions}
