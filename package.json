@@ -58,7 +58,7 @@
     "test": "cypress open",
     "test-and-record": "cypress run --record --key bc66b892-4075-42c4-8180-2c7259c6c246",
     "test-non-auth-user": "cypress run --config integrationFolder=cypress/integration/non-auth-user-tests",
-    "test-auth-user": "cypress open --config integrationFolder=cypress/integration/auth-user-tests",
+    "test-auth-user": "cypress run --config integrationFolder=cypress/integration/auth-user-tests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
