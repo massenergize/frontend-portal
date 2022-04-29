@@ -32,7 +32,7 @@ export async function apiCall(
     destinationUrl = "api/" + destinationUrl;
   }
 
-  const authToken = get_cookie(new Cookies(), "token"); // This is need because in tests, cypress doesnt pass the token directly in the headers
+  const authToken = get_cookie(new Cookies(), "token"); // This is needed because in tests, cypress doesnt pass the token directly in the headers
   const formData = new FormData();
 
   Object.keys(dataToSend).map((k) => formData.append(k, dataToSend[k]));
