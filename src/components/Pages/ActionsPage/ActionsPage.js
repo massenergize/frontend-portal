@@ -39,7 +39,7 @@ import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import ActionMobileStats from "./ActionMobileStats";
+//import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
   checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
@@ -293,13 +293,15 @@ class ActionsPage extends React.Component {
                   ) : null}
                 </center>
               </div>
+              {/*  This code blowing up - not ready for prime time.  Shouldn't be called on laptop
+             
               <ActionMobileStats
                 todo={this.props.todo}
                 done={this.props.done}
                 user={this.props.user}
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
-              />
+              /> */}
               <HorizontalFilterBox
                 type="action"
                 foundNumber={this.state.mirror_actions}
