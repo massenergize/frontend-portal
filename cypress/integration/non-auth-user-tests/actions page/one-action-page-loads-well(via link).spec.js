@@ -1,5 +1,5 @@
-import fields from "./../../fixtures/json/fields";
-import { ONE_ACTION_COMPONENT_CHECKLIST } from "./../reusable/values";
+import fields from "../../../fixtures/json/fields";
+import { ONE_ACTION_COMPONENT_CHECKLIST } from "../../reusable/values";
 
 describe("One action page loads correctly", function () {
   before(function () {

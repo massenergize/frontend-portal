@@ -1,5 +1,5 @@
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 /**
  * Proc:
  * Render actions page and check to see if action cards are visible.

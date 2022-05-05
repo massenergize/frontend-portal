@@ -1,4 +1,4 @@
-import fields from "./../../fixtures/json/fields";
+import fields from "../../../fixtures/json/fields";
 
 describe("Visits all actions page via navigation", function () {
   before(() => {

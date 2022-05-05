@@ -1,7 +1,7 @@
-import { typeInsideFilterbox } from "../../support/M.E/utils";
+import { typeInsideFilterbox } from "../../../support/M.E/utils";
 
 
-import "./../reusable/go-to-all-testimonials-page-via-navigation.spec";
+import "../../reusable/go-to-all-testimonials-page-via-navigation.spec";
 
 /**
  * Get the title of the first testimonial

@@ -1,6 +1,6 @@
-import { checkForRelevantComponentsOnOneServicePage } from "../../support/M.E/utils";
+import { checkForRelevantComponentsOnOneServicePage } from "../../../support/M.E/utils";
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 
 const idOfKnownVendor = 3;
 describe("Renders one service provider correctly", function () {

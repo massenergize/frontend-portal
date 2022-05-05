@@ -1,6 +1,6 @@
-import { showThatServicesDisplayProperly } from "../../support/M.E/utils";
+import { showThatServicesDisplayProperly } from "../../../support/M.E/utils";
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 
 describe("Visit all services page via navigation", function () {
   before("Renders services page", () => {

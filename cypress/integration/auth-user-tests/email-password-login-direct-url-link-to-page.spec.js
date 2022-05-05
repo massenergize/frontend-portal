@@ -1,5 +1,5 @@
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../fixtures/json/fields"
 describe("Authenticates user and redirects to profile page", function () {
   it("Cleared any previous authentication", () => {
     cy.clearAuthentication();

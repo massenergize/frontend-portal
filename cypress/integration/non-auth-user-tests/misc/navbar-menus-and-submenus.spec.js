@@ -1,5 +1,5 @@
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 /**
  * Proc:
  * Look for a particular class that all navigation links have.

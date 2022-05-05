@@ -1,5 +1,5 @@
 
-import fields from "./../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 
 describe("Locates user portal", function () {
   before(function () {

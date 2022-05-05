@@ -1,5 +1,5 @@
-import { typeInsideFilterbox } from "../../support/M.E/utils";
-import "./../reusable/go-to-all-events-page(via link).spec";
+import { typeInsideFilterbox } from "../../../support/M.E/utils";
+import "../../reusable/go-to-all-events-page(via link).spec";
 
 var title;
 describe("Filtering on all events page works well", function () {

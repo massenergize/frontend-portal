@@ -1,9 +1,9 @@
-import fields from "../../fixtures/json/fields";
+import fields from "../../../fixtures/json/fields";
 import {
   createFilterContentFromCollection,
   loadTestimonials,
   onlyRelevantTags,
-} from "../../support/M.E/handy";
+} from "../../../support/M.E/handy";
 
 var filterObject;
 /**

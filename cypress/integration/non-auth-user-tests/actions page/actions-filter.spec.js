@@ -1,5 +1,5 @@
-import { typeInsideFilterbox } from "../../support/M.E/utils";
-import fields from "./../../fixtures/json/fields"
+import { typeInsideFilterbox } from "../../../support/M.E/utils";
+import fields from "../../../fixtures/json/fields"
 
 
 /**
