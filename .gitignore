@@ -31,3 +31,5 @@ node_modules
 package-lock.json
 cypress.env.json
 .env
+cypress/screenshots
+cypress/reports
