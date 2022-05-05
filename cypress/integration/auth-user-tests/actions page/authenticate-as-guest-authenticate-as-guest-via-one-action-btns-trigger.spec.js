@@ -1,6 +1,6 @@
 import fields from "../../../fixtures/json/fields";
 import "cypress-localstorage-commands";
-import "./../non-auth-user-tests/one-action-page-loads-well(via link).spec";
+import "./../../non-auth-user-tests/actions page/one-action-page-loads-well(via link).spec";
 describe("Done and Todo buttons trigger guest authentication dialog on ONE action page", function () {
   it(
     "Trigered guest auth dialog with todo button",

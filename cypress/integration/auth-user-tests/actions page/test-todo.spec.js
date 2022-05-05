@@ -57,7 +57,7 @@ describe("Adding action to TODO list", function () {
       .first()
       .then(($btn) => {
         expect($btn.attr("data-action-state", DEFAULT_STATE));
-        expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
+        expect($btn).to.have.css("background-color", "rgb(255, 255, 255)"); // NB: look into testing this with Cypress Visual Testing instead
       });
   });
 });

@@ -3,7 +3,7 @@ import {
   IS_DONE,
 } from "../../../../src/components/Pages/ActionsPage/ActionStateConstants";
 import fields from "../../../fixtures/json/fields";
-import "../authenticate-user-with-token.spec";
+import "../reusable/authenticate-user-with-token.spec";
 
 /**
  * @TODO: Make DRY later
