@@ -1,14 +1,14 @@
 import {
   DEFAULT_STATE,
-  IS_DONE,
-} from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
-import fields from "../../fixtures/json/fields";
-import "./authenticate-user-with-token.spec";
+  IS_IN_TODO,
+} from "../../../../src/components/Pages/ActionsPage/ActionStateConstants";
+import fields from "../../../fixtures/json/fields";
+import "../authenticate-user-with-token.spec";
 
 /**
  * @TODO: Make DRY later
  */
-describe("Test 'DONE' functionality on one action page as authenticated user", function () {
+describe("Test 'TODO' functionality on one action page as authenticated user", function () {
   beforeEach(() => {
     Cypress.Cookies.preserveOnce("token");
   });
@@ -24,12 +24,11 @@ describe("Test 'DONE' functionality on one action page as authenticated user", f
     });
   });
 
-  it("Click on DONE button", { retries: 7 }, function () {
-    // cy.wait(2000);
+  it("Click on TODO button", { retries: 9 }, function () {
     cy.get("#todo-btns").then(($div) => {
       expect($div.attr("data-page-state")).to.equal("authenticated");
     });
-    cy.get("#test-done-btn").click();
+    cy.get("#test-todo-btn").click();
   });
 
   it("Opens up action modal", function () {
@@ -43,22 +42,22 @@ describe("Test 'DONE' functionality on one action page as authenticated user", f
     cy.wait(1000);
   });
 
-  it("Action card shows properties that it has been done", function () {
-    cy.get("#test-done-btn").then(($btn) => {
-      expect($btn.attr("data-action-state", IS_DONE));
+  it("Action card shows properties that its in todo list", function () {
+    cy.get("#test-todo-btn").then(($btn) => {
+      expect($btn.attr("data-action-state", IS_IN_TODO));
       expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
     });
   });
   it("Reverse process", function () {
-    cy.get("#test-done-btn")
+    cy.get("#test-todo-btn")
       .first()
       .then(($btn) => {
         cy.wrap($btn).click();
       })
-      .as("done-btn");
+      .as("todo-btn");
     cy.get("#todo-btns").then(($div) => {
       expect($div.attr("data-action-state", DEFAULT_STATE));
-      cy.get("@done-btn").then(($btn) => {
+      cy.get("@todo-btn").then(($btn) => {
         expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
       });
     });

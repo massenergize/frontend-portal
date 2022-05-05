@@ -1,12 +1,16 @@
-import fields from "../../fixtures/json/fields";
+import fields from "../../../fixtures/json/fields";
 import "cypress-localstorage-commands";
-import "./../non-auth-user-tests/one-action-page-loads-well(via link).spec";
-describe("Done and Todo buttons trigger guest authentication dialog on ONE action page", function () {
+
+describe("Done and Todo buttons trigger guest authentication dialog on all actions page", function () {
+  before(function () {
+    cy.visit(fields.urls.actions.withParams);
+    cy.cleanUp();
+  });
   it(
     "Trigered guest auth dialog with todo button",
     { retries: 2 },
     function () {
-      cy.get("#test-todo-btn").click();
+      cy.get(".test-btn-for-todo").first().click();
     }
   );
   it("Reversed Process", function () {
@@ -16,7 +20,7 @@ describe("Done and Todo buttons trigger guest authentication dialog on ONE actio
     "Trigered guest auth dialog with done button",
     { retries: 2 },
     function () {
-      cy.get("#test-done-btn").click();
+      cy.get(".test-btn-for-done").first().click();
     }
   );
   it("Reversed Process", function () {

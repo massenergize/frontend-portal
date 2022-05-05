@@ -1,6 +1,6 @@
 import "cypress-localstorage-commands";
 
-import fields from "../../fixtures/json/fields"
+import fields from "../../../fixtures/json/fields"
 
 describe("User trying to set equivalence", function () {
   before(() => {

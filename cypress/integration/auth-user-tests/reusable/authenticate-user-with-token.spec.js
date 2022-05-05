@@ -1,4 +1,4 @@
-import fields from "../../fixtures/json/fields";
+import fields from "../../../fixtures/json/fields";
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 describe("Authenticates in the background", function () {
   before(function () {

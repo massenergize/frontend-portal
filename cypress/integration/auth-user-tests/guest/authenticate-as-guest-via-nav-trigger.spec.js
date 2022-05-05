@@ -1,8 +1,8 @@
-import fields from "../../fixtures/json/fields";
+import fields from "../../../fixtures/json/fields";
 import {
   testUserAuthenticationAsGuest,
   typeInTextBox,
-} from "../../support/M.E/utils";
+} from "../../../support/M.E/utils";
 import "cypress-localstorage-commands";
 describe("Use navigation 'sign in' button to trigger guest authentication", function () {
   before(function () {

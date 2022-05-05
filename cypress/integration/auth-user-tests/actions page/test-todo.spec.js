@@ -1,9 +1,9 @@
 import {
   DEFAULT_STATE,
   IS_IN_TODO,
-} from "../../../src/components/Pages/ActionsPage/ActionStateConstants";
-import fields from "../../fixtures/json/fields";
-import "./authenticate-user-with-token.spec";
+} from "../../../../src/components/Pages/ActionsPage/ActionStateConstants";
+import fields from "../../../fixtures/json/fields";
+import "../authenticate-user-with-token.spec";
 
 describe("Adding action to TODO list", function () {
   beforeEach(() => {
