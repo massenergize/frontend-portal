@@ -1,5 +1,7 @@
 import URLS from "../../../src/api/urls";
+import { IS_LOCAL } from "../../../src/config";
 var DOMAIN = "http://localhost:3000/";
+if (!IS_LOCAL) DOMAIN = "https://community.massenergize.dev/";
 
 var COMMUNITY = "wayland"; // Only Change this to a community that exists in your DB (wayland exists everywhere, so this should work everywhere)
 const BASE_URL = DOMAIN + COMMUNITY + "/";
