@@ -1,6 +1,5 @@
 import fields from "../../../fixtures/json/fields";
 import {
-  testUserAuthenticationAsGuest,
   typeInTextBox,
 } from "../../../support/M.E/utils";
 import "cypress-localstorage-commands";

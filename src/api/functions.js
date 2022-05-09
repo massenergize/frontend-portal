@@ -2,6 +2,7 @@ import URLS from "./urls";
 import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from "../redux/store";
 import Cookies from "universal-cookie";
+import { AUTH_TOKEN } from "../components/Pages/Auth/shared/utils";
 
 /**
  * Handles making a POST request to the backend as a form submission
@@ -33,10 +34,12 @@ export async function apiCall(
   }
 
   const authToken = get_cookie(new Cookies(), "token"); // This is needed because in tests, cypress doesnt pass the token directly in the headers
+  const authTokenInLocalStorage = localStorage.getItem(AUTH_TOKEN); // This is also only used in test. Its a fallback method to retrieve token
   const formData = new FormData();
 
   Object.keys(dataToSend).map((k) => formData.append(k, dataToSend[k]));
-  if (authToken) formData.append("__token", authToken);
+  if (authToken)
+    formData.append("__token", authToken || authTokenInLocalStorage || null);
 
   const response = await fetch(`${URLS.ROOT}/${destinationUrl}`, {
     credentials: "include",

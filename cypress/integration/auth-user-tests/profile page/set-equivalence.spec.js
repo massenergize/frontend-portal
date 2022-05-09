@@ -2,7 +2,7 @@ import "cypress-localstorage-commands";
 
 import fields from "../../../fixtures/json/fields"
 
-describe("User trying to set equivalence", function () {
+describe("User is able to set equivalence", function () {
   before(() => {
     cy.visit(fields.urls.homepage.withParams);
     cy.cleanUp();

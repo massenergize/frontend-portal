@@ -2,16 +2,39 @@ import {
   DEFAULT_STATE,
   IS_IN_TODO,
 } from "../../../../src/components/Pages/ActionsPage/ActionStateConstants";
+import { AUTH_TOKEN } from "../../../../src/components/Pages/Auth/shared/utils";
 import fields from "../../../fixtures/json/fields";
-import "../reusable/authenticate-user-with-token.spec";
-
+import "cypress-localstorage-commands";
+// import "../reusable/authenticate-user-with-token.spec";
+const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 /**
  * @TODO: Make DRY later
  */
 describe("Test 'TODO' functionality on one action page as authenticated user", function () {
+  before(function () {
+    cy.authenticateWithoutUI().then((auth) => {
+      cy.request({
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        url: fields.api.urls.authenticate,
+        body: { email: auth.user.email, passport_key: PASSPORT_KEY },
+      }).then((response) => {
+        const token = response.body.data;
+        cy.setCookie("token", token);
+        cy.setLocalStorage(AUTH_TOKEN, token);
+      });
+    });
+  });
+
+  afterEach(function () {
+    cy.saveLocalStorage();
+  });
+
   beforeEach(() => {
+    cy.restoreLocalStorage();
     Cypress.Cookies.preserveOnce("token");
   });
+
   it("Request action list from api, and choose one to visit directly", function () {
     cy.request({
       method: "POST",
@@ -48,17 +71,17 @@ describe("Test 'TODO' functionality on one action page as authenticated user", f
       expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
     });
   });
-  it("Reverse process", function () {
+  it("Reverse process", { retries: 2 }, function () {
     cy.get("#test-todo-btn")
       .first()
       .then(($btn) => {
-        cy.wrap($btn).click();
-      })
-      .as("todo-btn");
+        cy.wrap($btn).click({ force: true });
+      });
+
     cy.get("#todo-btns").then(($div) => {
       expect($div.attr("data-action-state", DEFAULT_STATE));
-      cy.get("@todo-btn").then(($btn) => {
-        expect($btn).to.have.css("background-color", "rgb(255, 118, 0)");
+      cy.get("#test-todo-btn").then(($btn) => {
+        expect($btn).to.have.css("background-color", "rgb(255, 255, 255)");
       });
     });
   });

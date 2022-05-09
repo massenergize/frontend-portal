@@ -1,3 +1,4 @@
+import { AUTH_TOKEN } from "../../../../src/components/Pages/Auth/shared/utils";
 import fields from "../../../fixtures/json/fields";
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 describe("Authenticates in the background", function () {
@@ -9,7 +10,9 @@ describe("Authenticates in the background", function () {
         url: fields.api.urls.authenticate,
         body: { email: auth.user.email, passport_key: PASSPORT_KEY },
       }).then((response) => {
-        cy.setCookie("token", response.body.data);
+        const token = response.body.data; 
+        cy.setCookie("token", token);
+        localStorage.setItem(AUTH_TOKEN,token);
       });
     });
   });
