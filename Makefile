@@ -54,3 +54,7 @@ run-local:
 	python deployment/prepare_to_deploy.py dev 1
 	npm start
 .PHONY: run-prod
+
+test:
+	npm test
+.PHONY: test
