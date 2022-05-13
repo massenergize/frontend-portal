@@ -8,20 +8,13 @@ export default function Notification({ children, good = true, onClick }) {
   const icon = good ? "fa-check-circle" : "fa-times";
   return (
     <div
-      className="me-anime-open-in touchable-opacity "
+      className="me-anime-open-in touchable-opacity me-auth-not"
       style={{
-        padding: "15px 20px",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        borderRadius: 4,
         ...theme,
-        cursor: "pointer",
-        marginBottom: 6,
       }}
       onClick={() => onClick && onClick()}
     >
-      <i className={`fa ${icon}`} style={{ marginRight: 5 }}></i>
+      <i className={`fa ${icon} phone-vanish`} ></i>
       {children || "Or this is the notification"}
     </div>
   );

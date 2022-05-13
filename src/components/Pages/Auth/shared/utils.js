@@ -1,3 +1,21 @@
+import URLS from "../../../../api/urls";
+
+export const siteUsesCustomDomain = (url) => {
+  url = url || window.location.href;
+  const hostname = new URL(url).hostname;
+  return !URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
+};
+
+export const browswerIsSafari = () => {
+  return (
+    navigator.vendor &&
+    navigator.vendor.indexOf("Apple") > -1 &&
+    navigator.userAgent &&
+    navigator.userAgent.indexOf("CriOS") === -1 &&
+    navigator.userAgent.indexOf("FxiOS") === -1
+  );
+};
+
 export const AUTH_STATES = {
   USER_IS_NOT_AUTHENTICATED: "user_is_not_authenticated",
   CHECKING_FIREBASE: "looking_for_firebase_authentication",
@@ -6,6 +24,11 @@ export const AUTH_STATES = {
   USER_IS_AUTHENTICATED: "user_is_authenticated",
 };
 
+export const GUEST_USER_KEY = "GUEST_USER_EMAIL";
+export const emailIsInvalid = (email) => {
+  email = email?.toLowerCase();
+  return !email || !email.match(/^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$/);
+};
 export const translateFirebaseError = (error) => {
   if (!error) return;
   if (error.includes("auth/uid-already-exists"))

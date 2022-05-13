@@ -2,14 +2,19 @@ import { apiCall } from "../../api/functions";
 import {
   checkFirebaseAuthenticationState,
   deleteAccountFromFirebase,
+  fetchUserSignInMethods,
   firebaseAuthenticationWithFacebook,
   firebaseAuthenticationWithGoogle,
   firebaseAuthenticationWithNoPassword,
+  FirebaseEmailAuthProvider,
   registerWithEmailAndPassword,
   signOutOfFirebase,
   withEmailAndPassword,
 } from "../../components/Pages/Auth/shared/firebase-helpers";
-import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
+import {
+  AUTH_STATES,
+  GUEST_USER_KEY,
+} from "../../components/Pages/Auth/shared/utils";
 import { getTakeTourFromURL } from "../../components/Utils";
 import { reduxSetTourState } from "./pageActions";
 import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
@@ -18,6 +23,11 @@ export const AUTH_NOTIFICATION = "AUTH_ERROR";
 export const SET_CURRENT_AUTH_STATE = "SET_AUTH_STATE";
 export const SET_FIREBASE_USER = "SET_FIREBASE_USER";
 export const SET_MASSENERGIZE_USER = "SET_MASSENERGIZE_USER";
+export const SET_FIREBASE_SETTINGS = "SET_FIREBASE_SETTINGS";
+
+export const setFirebaseSettings = (settings = {}) => {
+  return { type: SET_FIREBASE_SETTINGS, payload: settings };
+};
 
 export const completeUserDeletion = (user_id, cb) => (dispatch) => {
   apiCall("users.delete", { user_id })
@@ -77,7 +87,11 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
     });
 };
 
+const signGuestOut = () => {
+  localStorage.removeItem(GUEST_USER_KEY);
+};
 export const signMeOut = () => (dispatch) => {
+  signGuestOut();
   signOutOfFirebase();
   dispatch(setFirebaseUser(null));
   dispatch(setMassEnergizeUser(null));
@@ -134,21 +148,62 @@ export const authenticateWithFacebook = (cb) => (dispatch) => {
     dispatch(setFirebaseUser(user));
   });
 };
+
+/**
+ * The function collects guest email from local storage and tries to authenticate as guest
+ * It is called only if there if no firebase user. Meaning: user is not authenticated
+ * @returns
+ */
+export const authenticateAsGuest = () => async (dispatch) => {
+  const guestEmail = localStorage.getItem(GUEST_USER_KEY);
+  if (!guestEmail) return; // User has not signed in as guest before in the particular  browser.
+  try {
+    const response = await apiCall("auth.signinasguest", { email: guestEmail });
+    if (!response || !response?.success) {
+      return console.log("COULD NOT AUTHENTICATE AS GUEST :", response?.error);
+    }
+    dispatch(reduxLogin(response.data));
+    dispatch(fetchUserContent(response.data?.email));
+  } catch (e) {
+    console.log("GUEST_AUTH_ERROR", e?.toString());
+  }
+};
 export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   const tour = getTakeTourFromURL();
   checkFirebaseAuthenticationState((user) => {
-    if (!user)
-      return dispatch(
-        setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED)
-      );
+    if (!user) {
+      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+      // now we know user is not a authenticated user, try and see if user can be signed in as a guest
+      return dispatch(authenticateAsGuest());
+    }
 
     // ------------------------------------------------
     // Never show tour when user is signed. Overwrite tour state to false.
     // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
-    dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(setFirebaseUser(user));
+    dispatch(fetchTokenFromMassEnergize(user?._lat));
+    dispatch(breakdownFirebaseSettings(user));
+  });
+};
+
+export const breakdownFirebaseSettings = (user) => (dispatch) => {
+  fetchUserSignInMethods(user.email, (methods) => {
+    const isPasswordless = methods.includes(
+      FirebaseEmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+    );
+    const usesOnlyPasswordless = methods?.length === 1 && isPasswordless;
+    const usesEmailAndPassword = methods.includes(
+      FirebaseEmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
+    );
+
+    const settings = {
+      usesOnlyPasswordless,
+      isPasswordless,
+      usesEmailAndPassword,
+    };
+    dispatch(setFirebaseSettings({ signInConfig: settings }));
   });
 };
 

@@ -4,7 +4,7 @@ import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
-import URLS, { isValidUrl } from "./api/urls";
+import URLS, { isValidUrl, MASSENERGIZE_PRODUCTION_URL } from "./api/urls";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -60,7 +60,9 @@ import {
   reduxLoadCommunityAdmins,
   reduxLoadEquivalences,
   reduxSetTourState,
+  reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
+  reduxToggleUniversalModal,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -79,6 +81,12 @@ import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
+import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
+import UniversalModal from "./components/Shared/UniversalModal";
+import {
+  browswerIsSafari,
+  siteUsesCustomDomain,
+} from "./components/Pages/Auth/shared/utils";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -108,7 +116,7 @@ class AppRouter extends Component {
     const home = homegroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
     var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home.link
+      window.location.protocol + window.location.host + home?.link
     );
     return location === rebuilt;
   }
@@ -140,6 +148,13 @@ class AppRouter extends Component {
 
   componentDidMount() {
     const { community } = this.props;
+    const subdomain = community?.subdomain || 'undefined';
+    const { pathname } = new URL(window.location.href);
+
+    if (browswerIsSafari() && siteUsesCustomDomain()) {
+      const subd = pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1 ? '' : '/' + subdomain;
+      window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
+    }
     const community_id = community?.id;
     const cookies = new Cookies();
     device_checkin(cookies, community_id).then(null, (err) => console.log(err));
@@ -416,6 +431,7 @@ class AppRouter extends Component {
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
+
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -445,7 +461,7 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community } = this.props;
+    const { community, modalOptions, toggleUniversalModal, links } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -458,8 +474,6 @@ class AppRouter extends Component {
         />
       );
     }
-
-    const { links } = this.props;
 
     const communityInfo = community || {};
 
@@ -477,7 +491,15 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
-
+        <UniversalModal
+          {...(modalOptions || {})}
+          close={() =>
+            toggleUniversalModal({
+              ...(modalOptions || {}),
+              show: !modalOptions?.show,
+            })
+          }
+        />
         {Seo({
           title: community.name,
           description: community.about,
@@ -498,6 +520,11 @@ class AppRouter extends Component {
           <Switch>
             {/* ---- This route is a facebook app requirement. -------- */}
             <Route path={`/how-to-delete-my-data`} component={Help} />
+            <Route
+              exact
+              path={`${links.profile}/password-less/manage`}
+              component={ProfilePasswordlessRedirectPage}
+            />
             <Route exact path="/" component={HomePage} />
             <Route exact path={links.home} component={HomePage} />
             <Route exact path={`${links.home}home`} component={HomePage} />
@@ -550,6 +577,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    modalOptions: store.page.modalOptions,
   };
 };
 const mapDispatchToProps = {
@@ -592,5 +620,7 @@ const mapDispatchToProps = {
   checkFirebaseAuthentication: subscribeToFirebaseAuthChanges,
   setTourState: reduxSetTourState,
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
+  toggleGuestDialog: reduxToggleGuestAuthDialog,
+  toggleUniversalModal: reduxToggleUniversalModal,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

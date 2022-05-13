@@ -21,6 +21,9 @@ import URLS from "../../../api/urls";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import METabView from "../Widgets/METabView/METabView";
 import MEModal from "../Widgets/MEModal";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { bindActionCreators } from "redux";
+import { PREF_EQ_DEFAULT } from "../../Utils"
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -137,22 +140,24 @@ class OneTeamPage extends React.Component {
       isAdmin,
       teamData,
     } = this.state;
-    const { user, links } = this.props;
-
+    const { user, links, toggleGuestAuthDialog } = this.props;
     const isInTeam = inTeam(user, teamData);
     const isInThisTeam = inThisTeam(user, teamData.team);
 
     const buttonOrInTeam = (
       <>
         {!isInTeam ? (
-          <MEButton
-            style={{ fontSize: 14 }}
-            onClick={() => {
-              this.setState({ joinLeaveModalOpen: true });
-            }}
-          >
-            Join Team
-          </MEButton>
+          !user?.is_guest && (
+            <MEButton
+              style={{ fontSize: 14 }}
+              onClick={() => {
+                if (!user) return toggleGuestAuthDialog(true);
+                this.setState({ joinLeaveModalOpen: true });
+              }}
+            >
+              Join Team
+            </MEButton>
+          )
         ) : (
           <div className="" style={{ display: "inline-block" }}>
             <p
@@ -293,13 +298,15 @@ class OneTeamPage extends React.Component {
                           {team && team.name}
                         </span>
                         {!isInTeam ? (
-                          <i
-                            className="fa fa-long-arrow-left"
-                            style={{
-                              marginLeft: 17,
-                              color: isInTeam ? "black" : "#fd704c",
-                            }}
-                          ></i>
+                          !user?.is_guest && (
+                            <i
+                              className="fa fa-long-arrow-left"
+                              style={{
+                                marginLeft: 17,
+                                color: isInTeam ? "black" : "#fd704c",
+                              }}
+                            ></i>
+                          )
                         ) : (
                           <></>
                         )}
@@ -588,10 +595,19 @@ const mapStoreToProps = (store) => {
     community: store.page.comInformation,
     links: store.links,
     teamsStats: store.page.teams,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
   };
 };
-export default connect(mapStoreToProps, null)(withRouter(OneTeamPage));
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    { toggleGuestAuthDialog: reduxToggleGuestAuthDialog },
+    dispatch
+  );
+};
+export default connect(
+  mapStoreToProps,
+  mapDispatchToProps
+)(withRouter(OneTeamPage));
 
 const TeamsTabWrapper = ({ children, links, subTeams }) => {
   return (

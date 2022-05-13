@@ -90,7 +90,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   <small style={{ padding: "10px 15px", color: "grey" }}>
-                    Click "Submit" if you want your changes to be saved{" "}
+                    Click "Add" if you want your changes to be saved{" "}
                   </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
@@ -117,7 +117,7 @@ class ChooseHHForm extends React.Component {
                             : false
                         }
                       >
-                        Submit
+                        Add
                       </button>
                       <button
                         className="flat-btn close-flat"
@@ -261,7 +261,7 @@ class ChooseHHForm extends React.Component {
         BuildDates(house.id);
     });
     if (status === "TODO") {
-      todo.forEach((todo) => {
+      (todo || []).forEach((todo) => {
         //this if statement populates the data only for the selected action and households
         if (
           todo.date_completed &&
@@ -291,7 +291,7 @@ class ChooseHHForm extends React.Component {
         }
       });
     } else {
-      done.forEach((done) => {
+      (done || []).forEach((done) => {
         //this if statement populates the date data only for a the selected action and households
         if (
           done.date_completed &&
