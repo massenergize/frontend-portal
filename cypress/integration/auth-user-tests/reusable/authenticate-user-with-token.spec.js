@@ -1,5 +1,7 @@
 import fields from "../../../fixtures/json/fields";
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
+
+console.log("PASSPORT_KEY", PASSPORT_KEY);
 describe("Authenticates in the background", function () {
   before(function () {
     cy.authenticateWithoutUI().then((auth) => {
@@ -7,8 +9,12 @@ describe("Authenticates in the background", function () {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         url: fields.api.urls.authenticate,
-        body: { email: auth.user.email, passport_key: PASSPORT_KEY },
+        body: {
+          email: auth.user.email,
+          passport_key: PASSPORT_KEY,
+        },
       }).then((response) => {
+        console.log("==== RESPONSE ====", response);
         cy.setCookie("token", response.body.data);
       });
     });
