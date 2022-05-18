@@ -105,7 +105,7 @@ function GuestAuthenticationDialog(props) {
             <METextField
               id="test-guest-email"
               placeholder="example@gmail.com"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
               genericProps={{ onKeyUp: whenUserTypes }}
             />
           )}
