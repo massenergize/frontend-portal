@@ -16,7 +16,7 @@ So that ______ (Why/What is the result)
 What do you think the value of adding this feature is? Help managers and developers know how this should be prioritized.
 
 **Additional details/context**
-Add any other details, UI mockups, examples from other products, context or anything else that might help the developers know what to make.
+Add any other details, context, UI mockups, examples from other products, or anything else that might help the developers know what to make.
 
 **Acceptance criteria.**
 The conditions that must be met for this to be done. For example, for a login feature: User is securely and reliably logged in until timeout or manual sign-out.
