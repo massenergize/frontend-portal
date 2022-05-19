@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve our community platform
 title: "[Bug]"
 labels: bug, Community Ptl
-assignees: Davidjwkinghorn
+assignees: ''
 
 ---
 
