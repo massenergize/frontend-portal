@@ -9,7 +9,7 @@
 * [ ] I've tested my changes manually.
 * [ ] I've added unit tests to my PR.
 
-##### Transparency (Project board: https://github.com/orgs/massenergize/projects/7/views/2)
+##### Transparency ([Project board](https://github.com/orgs/massenergize/projects/7/views/2))
 * [ ] I've given my PR a meaningful title.
 * [ ] I linked this PR to the relevant issue.
 * [ ] I moved the linked issue from the "Sprint backlog" to "In progress" when I started this.
