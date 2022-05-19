@@ -9,7 +9,7 @@ class ContactUsPage extends React.Component {
     if (location) {
       return (
         <div id="test-location-name">
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex"}}>
             <i
               class="fas fa-map-marker-alt"
               style={{ fontSize: "1.5rem", marginRight: "10px" }}
@@ -105,7 +105,18 @@ class ContactUsPage extends React.Component {
                     </p>
                   </div>
 
-                  <div style={{ marginBottom: "1.5rem" }}>
+                  <div style={{ marginBottom: "2rem" }}>
+                    <div style={{ display: "flex", marginBottom: "10px", alignItems:'center' }}>
+                      <i
+                        class="fad fa-user-shield"
+                        style={{
+                          fontSize: "1.5rem",
+                          marginRight: "5px",
+                          paddingBottom: "15px",
+                        }}
+                      ></i>
+                      <h3>Community Administrator</h3>
+                    </div>
                     <div style={{ display: "flex" }}>
                       {getCAdmin && getCAdmin.profile_picture ? (
                         <img
@@ -114,34 +125,14 @@ class ContactUsPage extends React.Component {
                           height={60}
                           width={60}
                           style={{
+                            objectFit: "cover",
                             borderRadius: "100%",
                             marginRight: 10,
                             border: "3px solid  #8dc63f",
                           }}
                         />
                       ) : null}
-                      <div>
-                        {getCAdmin && getCAdmin.profile_picture ? (
-                          <div>
-                            <h5>{owner_name}</h5>
-                            <p>Community Admin</p>
-                          </div>
-                        ) : (
-                          <>
-                            <div style={{ display: "flex" }}>
-                              <i
-                                class="fad fa-user-shield"
-                                style={{
-                                  fontSize: "1.5rem",
-                                  marginRight: "5px",
-                                }}
-                              ></i>
-                              <h3>Community Admin</h3>
-                            </div>
-                            <p>{owner_name}</p>
-                          </>
-                        )}
-                      </div>
+                      <p style={{ marginTop: getCAdmin && getCAdmin.profile_picture ? 13:0 }}>{owner_name}</p>
                     </div>
                   </div>
                   {this.ejectLocation(location)}
