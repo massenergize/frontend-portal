@@ -1,9 +1,24 @@
-const DOMAIN = "http://localhost:3000/";
-const COMMUNITY = "wayland";
+import URLS from "../../../src/api/urls";
+import { IS_LOCAL } from "../../../src/config";
+var DOMAIN = "http://localhost:3000/";
+if (!IS_LOCAL) DOMAIN = "https://community.massenergize.dev/";
+
+var COMMUNITY = "wayland"; // Only Change this to a community that exists in your DB (wayland exists everywhere, so this should work everywhere)
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
-
+const API_ROOT = URLS["ROOT"] + "/api/";
 export default {
+  api: {
+    root: API_ROOT,
+    urls: {
+      authenticate: API_ROOT + "auth.login.testmode",
+      fetchActions: API_ROOT + "actions.list",
+      fetchEvents: API_ROOT + "events.list",
+      fetchTeams: API_ROOT + "teams.stats",
+      fetchTestimonials: API_ROOT + "testimonials.list",
+      fetchVendors: API_ROOT + "vendors.list",
+    },
+  },
   subdomain: COMMUNITY,
   emailToUse: "mrfimpong+30@gmail.com",
   passwordToUse: "123456",

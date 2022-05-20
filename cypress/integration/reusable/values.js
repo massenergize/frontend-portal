@@ -6,6 +6,6 @@ export const ONE_ACTION_COMPONENT_CHECKLIST = [
   "desc",
   "steps",
   "deep",
-  "deeptab",
   "stepstab",
+  // "deeptab", // the deep tab is also optional now ( different test logic will be used)
 ];
