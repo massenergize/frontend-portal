@@ -120,7 +120,7 @@ class ContactUsPage extends React.Component {
                     <div style={{ display: "flex" }}>
                       {getCAdmin && getCAdmin.profile_picture ? (
                         <img
-                          src={getCAdmin.profile_picture}
+                          src={getCAdmin.profile_picture.url}
                           alt=" "
                           height={60}
                           width={60}
