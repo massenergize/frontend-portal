@@ -115,8 +115,8 @@ class ContactAdminModal extends React.Component {
   }
 
   sendMessage = async (body) => {
-    const { team, onClose } = this.props;
-    body = { ...body, team_id: team && team.id };
+    const { user, team, onClose } = this.props;
+    body = { ...body, team_id: team && team.id, user_name: user.full_name };
     try {
       // this.setState({ loading: true });
       const json = await apiCall(`teams.contactAdmin`, body);
