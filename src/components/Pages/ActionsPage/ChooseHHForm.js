@@ -66,7 +66,7 @@ class ChooseHHForm extends React.Component {
     // Remove this check; if all households had action done, allow setting date.  this.checkHouseholds();
     return (
       <>
-        <div className="act-modal-whole">
+        <div className="act-modal-whole test-action-modal">
           <div className="act-title-bar">
             <h3>{this.props.action.title}</h3>
           </div>
@@ -107,7 +107,7 @@ class ChooseHHForm extends React.Component {
                     </h4>
                     <div style={{ marginLeft: "auto", marginRight: 0 }}>
                       <button
-                        className="flat-btn  flat-btn_submit btn-success"
+                        className="flat-btn  flat-btn_submit btn-success test-modal-submit"
                         type="submit"
                         disabled={
                           this.state.error
@@ -172,41 +172,43 @@ class ChooseHHForm extends React.Component {
     }
 
     if (this.props.status === "TODO") {
-      choices.forEach((choice) => {
-        const dateChanged =
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice];
-        if (!this.props.inCart(actionId, choice) || dateChanged) {
-          //if user selects diff date, it will submit to backend
+      choices &&
+        choices.forEach((choice) => {
+          const dateChanged =
+            this.state.Dates[choice] !== this.state.DatesOnStart[choice];
+          if (!this.props.inCart(actionId, choice) || dateChanged) {
+            //if user selects diff date, it will submit to backend
+            const date =
+              this.state.Dates[choice] !== undefined
+                ? this.state.Dates[choice][0]
+                : "";
+            this.props.addToCart(actionId, choice, this.props.status, date);
+            this.props.closeForm();
+          }
+        });
+    } else if (this.props.status === "DONE") {
+      choices &&
+        choices.forEach((choice) => {
           const date =
             this.state.Dates[choice] !== undefined
               ? this.state.Dates[choice][0]
               : "";
-          this.props.addToCart(actionId, choice, this.props.status, date);
-          this.props.closeForm();
-        }
-      });
-    } else if (this.props.status === "DONE") {
-      choices.forEach((choice) => {
-        const date =
-          this.state.Dates[choice] !== undefined
-            ? this.state.Dates[choice][0]
-            : "";
-        const dateChanged =
-          this.state.Dates[choice] !== this.state.DatesOnStart[choice];
-        const wasInDone = this.props.inCart(actionId, choice, "DONE");
+          const dateChanged =
+            this.state.Dates[choice] !== this.state.DatesOnStart[choice];
+          const wasInDone = this.props.inCart(actionId, choice, "DONE");
 
-        if (
-          !this.props.inCart(actionId, choice) ||
-          (wasInDone && dateChanged)
-        ) {
-          //if user selects diff date, it will submit to backend
-          this.props.addToCart(actionId, choice, this.props.status, date);
-          this.props.closeForm();
-        } else if (this.props.inCart(actionId, choice, "TODO")) {
-          this.props.moveToDone(actionId, choice, date);
-          this.props.closeForm();
-        }
-      });
+          if (
+            !this.props.inCart(actionId, choice) ||
+            (wasInDone && dateChanged)
+          ) {
+            //if user selects diff date, it will submit to backend
+            this.props.addToCart(actionId, choice, this.props.status, date);
+            this.props.closeForm();
+          } else if (this.props.inCart(actionId, choice, "TODO")) {
+            this.props.moveToDone(actionId, choice, date);
+            this.props.closeForm();
+          }
+        });
     }
 
     this.removeHouseholdsThatWereUnselected();
@@ -290,6 +292,7 @@ class ChooseHHForm extends React.Component {
           ];
         }
       });
+   
     } else {
       (done || []).forEach((done) => {
         //this if statement populates the date data only for a the selected action and households
@@ -458,7 +461,7 @@ class ChooseHHForm extends React.Component {
       //when its done rendering the household lines, this puts some padding at the end so the submit button does not cut off the last house
       if (name === "TestData") {
         return (
-          <div>
+          <div key={index?.toString()}>
             <br /> <br /> <br /> <br />
           </div>
         );
@@ -475,12 +478,14 @@ class ChooseHHForm extends React.Component {
             </div>
           ) : (
             <div
-              className={`act-item`}
+              className={`act-item test-one-house`}
               onClick={() => this.onChange(values[index])}
               key={index.toString()}
             >
               <div
-                className={`act-rect ${selected ? "act-selected" : ""}`}
+                className={`act-rect ${
+                  selected ? "act-selected" : ""
+                } test-household-uncheck-div`}
               ></div>
               <p>{userHasOnlyOneHouse ? "Uncheck this to remove" : name}</p>
             </div>
@@ -493,6 +498,7 @@ class ChooseHHForm extends React.Component {
               <div id="CompletionDate">
                 <Dropdown>
                   <Dropdown.Toggle
+                    className="test-modal-dropdown"
                     id="dropdown-button-dark-example1"
                     variant="success"
                     style={{ fontSize: 13 }}
@@ -505,6 +511,7 @@ class ChooseHHForm extends React.Component {
 
                   <Dropdown.Menu variant="dark">
                     <Dropdown.Item
+                      className="test-one-modal-drop-item"
                       onClick={() =>
                         this.ChangeCompDate(Choice1, values[index])
                       }

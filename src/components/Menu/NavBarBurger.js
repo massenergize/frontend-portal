@@ -307,6 +307,7 @@ class NavBarBurger extends React.Component {
       return (
         <Dropdown onSelect={() => null} className="d-flex h-auto">
           <Dropdown.Toggle
+          id  ="test-auth-user-dropdown"
             style={{ backgroundColor: "white", borderColor: "white" }}
             className="remove-toggle-outline"
           >
@@ -339,6 +340,7 @@ class NavBarBurger extends React.Component {
               My Profile
             </Link>
             <button
+        
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => {
                 this.props.signOut();
@@ -352,6 +354,7 @@ class NavBarBurger extends React.Component {
     } else {
       return (
         <Link
+        id="test-nav-auth-trigger"
           className="cool-font new-sign-in float-right round-me z-depth-float"
           to={links.signin}
           onClick={(e) => {

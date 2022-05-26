@@ -16,7 +16,7 @@ if (IS_LOCAL) {
   URLS["SHARE"] = "https://share.massenergize.org";
 } else {
   URLS["ROOT"] = "https://api.massenergize.dev";
-  URLS["COMMUNITIES"] = "https://communities.massenergize.dev";
+  URLS["COMMUNITIES"] = "https://community.massenergize.dev";
   URLS["SHARE"] = "https://share.massenergize.dev";
 }
 

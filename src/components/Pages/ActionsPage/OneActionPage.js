@@ -593,7 +593,12 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      <div className="btn-envelope" id="todo-btns">
+                      <div
+                        className="btn-envelope"
+                        id="todo-btns"
+                        data-page-state={this.props.user && "authenticated"}
+                        data-action-state = {actionStateCase}
+                      >
                         <>
                           <MECameleonButton
                             id="test-todo-btn"
