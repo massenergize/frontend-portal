@@ -4,39 +4,37 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { connect } from "react-redux";
 import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
+
 class ContactUsPage extends React.Component {
+  prepareLocationText = (location) => {
+    let locationText = "";
+    if (location) {
+      locationText = location.location? location.location +`${location.city || location.state || location.zipcode ? ", " : ""}`: "";
+      locationText += location.city? location.city + `${location.state || location.zipcode ? ", " : ""}`: "";
+      locationText += location.state? location.state + `${location.zipcode ? ", " : ""}` : "";
+      locationText += location.zipcode ? location.zipcode : "";
+    }
+    return locationText;
+  };
+
   ejectLocation(location) {
     if (location) {
       return (
         <div id="test-location-name">
-          <div style={{ display: "flex"}}>
+          <div style={{ display: "flex" }}>
             <i
               class="fas fa-map-marker-alt"
               style={{ fontSize: "1.5rem", marginRight: "10px" }}
             ></i>
             <h4>Location</h4>
           </div>
-          <p className="make-me-dak" style={{ color: "grey" }}>
-            {location.address ? location.address + ",\n" : ""}
-            {location.city ? location.city : ""}
-            {location.state ? `, ${location.state}` : ""}
-            {location.zipcode ? `, ${location.zipcode}` : ""}
+          <p className="make-me-dak" style={{ color: "grey", marginTop: 10 }}>
+            {this.prepareLocationText(location)}
           </p>
         </div>
       );
     } else {
       return <></>;
-      // <div>
-      //   <div style={{ display: "flex" }}>
-      //     <i
-      //       class="fas fa-map-marker-alt"
-      //       style={{ fontSize: "1.3rem", marginRight: "5px" }}
-      //     ></i>
-      //     <h4>Location</h4>
-      //   </div>
-      //   <p id="test-no-location-name">No location was provided by admin!</p>
-      // </div>
-      // );
     }
   }
   render() {
@@ -90,14 +88,17 @@ class ContactUsPage extends React.Component {
 
             <div className="container mob-contact-white-cleaner">
               <div className="row">
-                <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 ">
+                <div
+                  className="col-md-6 col-lg-6 col-sm-12 col-xs-12"
+                  style={{ marginBottom: "1.5rem" }}
+                >
                   <div style={{ marginBottom: "2rem" }}>
                     <h3>{title}</h3>
                     <p
                       className="make-me-dar"
                       style={{
                         color: "grey",
-                        marginTop: "1rem",
+                        marginTop: "10px",
                         textAlign: "justify",
                       }}
                     >
@@ -106,7 +107,13 @@ class ContactUsPage extends React.Component {
                   </div>
 
                   <div style={{ marginBottom: "2rem" }}>
-                    <div style={{ display: "flex", marginBottom: "10px", alignItems:'center' }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        marginBottom: "10px",
+                        alignItems: "center",
+                      }}
+                    >
                       <i
                         class="fad fa-user-shield"
                         style={{
@@ -132,11 +139,28 @@ class ContactUsPage extends React.Component {
                           }}
                         />
                       ) : null}
-                      <p style={{ marginTop: getCAdmin && getCAdmin.profile_picture ? 13:0 }}>{owner_name}</p>
+                      <p
+                        style={{
+                          marginTop:
+                            getCAdmin && getCAdmin.profile_picture ? 13 : 0,
+                        }}
+                      >
+                        {owner_name}
+                      </p>
                     </div>
                   </div>
                   {this.ejectLocation(location)}
+                  <div
+                    className="pc-vanish"
+                    style={{
+                      width: "100%",
+                      height: 1,
+                      backgroundColor: "whitesmoke",
+                      marginTop: "2rem",
+                    }}
+                  />
                 </div>
+
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 mob-zero-padding">
                   <ContactPageForm community_id={id} />
                 </div>
