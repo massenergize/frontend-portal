@@ -24,8 +24,14 @@ export default class MiniTestimonial extends Component {
     if (!story.anononymous) {
       creatorName = story.preferred_name ? story.preferred_name : creatorName;
     }
-    
     const url = story ? this.props.links.testimonials+"/" + story.id :""; 
+    var body =  story.body 
+    //creates div element 
+    var div = document.createElement("div")
+    //browser parses the html string
+    div.innerHTML = body
+    //modify text accordingly
+    body = div.innerText.substring(0, this.state.limit) 
     return (
       <div style={{ padding: 0 }}>
         <MECard className="me-anime-open-in" style={{ borderRadius: 10 }} to={url}>
@@ -66,8 +72,9 @@ export default class MiniTestimonial extends Component {
                 </h6>
                 <p>
                   {this.state.expanded && this.state.expanded === story.id
-                    ? story.body
-                    : story.body.substring(0, this.state.limit)}
+                    ? 
+                    story.body
+                    : body}
                   {this.state.limit < story.body.length &&
                     this.state.expanded !== story.id ? (
                       <button
