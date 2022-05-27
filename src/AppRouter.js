@@ -139,9 +139,8 @@ class AppRouter extends Component {
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
-    valueFromURL = valueFromURL === "true" ? true : false;
-    if (valueFromURL) return this.props.setTourState(valueFromURL);
-
+    const evaluated = valueFromURL === "true" ? true : false;
+    if (valueFromURL) return this.props.setTourState(evaluated);
     valueFromStorage = valueFromStorage === "false" ? false : true;
     this.props.setTourState(valueFromStorage);
   };

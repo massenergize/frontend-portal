@@ -2,6 +2,7 @@ import "./../non-auth-user-tests/all-events-page-renders-properly(via-navigation
 
 describe("Visits one event page by using navigation menu and clicks", function () {
   it("Rendered one event page after clicking first event card ", function () {
-    cy.get(".test-one-event-card").first().click({force:true});
+    cy.get(".test-one-event-card-clickable").first().click({force:true});
   });
 });
+ 

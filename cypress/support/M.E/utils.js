@@ -37,15 +37,17 @@ export const rsvpWithDropdown = () => {
 };
 export const oneEventPageComponentsRenderProperly = () => {
   var rec, venue, date;
-  it("Got the details of recurring status, venue, and date from the event object itself", () => {
-    cy.get(".test-one-event-wrapper")
-      .first()
-      .then(($el) => {
-        rec = $el.attr("data-is-recurring");
-        venue = $el.attr("data-venue");
-        date = $el.attr("data-date");
-      });
-  });
+  // recurring details has become optional and can be changed from admin portal. So it will be tested
+  // with a different logic now
+  // it("Got the details of recurring status, venue, and date from the event object itself", () => {
+  //   cy.get(".test-one-event-wrapper")
+  //     .first()
+  //     .then(($el) => {
+  //       rec = $el.attr("data-is-recurring");
+  //       venue = $el.attr("data-venue");
+  //       date = $el.attr("data-date");
+  //     });
+  // });
   it("Found event title", () => cy.get(".test-event-title").should("exist"));
   it("Found event description", () =>
     cy.get(".test-event-body").first().should("exist"));
@@ -133,6 +135,9 @@ export const typeInsideFilterbox = (text) => {
   cy.get("#test-filter-box-id").type(text, { delay: 150, force: true });
   cy.get("#test-filter-box-id").scrollIntoView({ offset: { top: -550 } });
 };
+export const typeInTextBox = (id, text, delay) => {
+  cy.get(id).type(text, { delay: delay || 150, force: true });
+};
 
 export const testimonialsShowProperly = () => {
   cy.get(".test-stories-wrapper").then(function ($div) {
@@ -151,15 +156,44 @@ export const showThatTestimonialPageComponentsLoadWell = () => {
         cy.wrap($title).should("have.text", $title.attr("data-story-title"))
       ));
   it("Shows description properly", () =>
-    cy
-      .get(".test-story-body")
-      .then(($body) =>
-        cy.wrap($body).should("have.text", $body.attr("data-story-body"))
-      ));
+    cy.get(".test-story-body").should("be.visible"));
   it("Shows username properly", () =>
     cy
       .get(".test-story-user-name")
       .then(($el) =>
         cy.wrap($el).should("have.text", "By " + $el.attr("data-user-name"))
       ));
+};
+
+export const fromJsonToForm = (obj) => {
+  const form = new FormData();
+  Object.keys((key) => form.append(key, obj[key]));
+  return form;
+};
+
+export const testUserAuthenticationAsGuest = (email) => {
+  it("Clicked button to proceed as guest", function () {
+    cy.get("#test-proceed-as-guest").click();
+  });
+
+  it("Typed guest email to to be used", function () {
+    typeInTextBox("#test-guest-email", email || fields.emailToUse, 50);
+  });
+
+  it("Submitted guest email for authentication", function () {
+    cy.get("#test-continue-button").click();
+  });
+
+  it(
+    "User is authenticated 'sign in' button is showing user initials or image",
+    { retries: 2 },
+    function () {
+      cy.get("#test-auth-user-dropdown");
+    }
+  );
+
+  it("Reversed entire process", { retries: 2 }, function () {
+    cy.get("#test-auth-user-dropdown").click();
+    cy.get("#test-dropdown-signout").click();
+  });
 };

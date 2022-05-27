@@ -189,6 +189,8 @@ class ActionCard extends React.Component {
         data-tag-names={tagNames}
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()} test-action-card-item`}
         key={this.props.key?.toString()}
+        data-action-state={actionStateCase}
+        data-action-auth-state = {this.props.user && "authenticated"}
       >
         <div
           className="every-day-flex z-depth-1"
@@ -220,7 +222,7 @@ class ActionCard extends React.Component {
               >
                 <MEChameleonButton
                   style={{ flex: "3" }}
-                  className="cameleon-correct"
+                  className={`cameleon-correct test-btn-for-todo`}
                   _case={actionStateCase}
                   type={TODO}
                   // {...this.getNoAuthParams()}
@@ -229,7 +231,7 @@ class ActionCard extends React.Component {
                 />
                 <MEChameleonButton
                   style={{ flex: "3" }}
-                  className="cameleon-correct"
+                  className={`cameleon-correct test-btn-for-done`}
                   _case={actionStateCase}
                   type={DONE}
                   // {...this.getNoAuthParams()}

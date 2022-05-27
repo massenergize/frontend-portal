@@ -1,5 +1,5 @@
 import URLS from "../../../../api/urls";
-
+export const AUTH_TOKEN = "AUTH_TOKEN";
 export const siteUsesCustomDomain = (url) => {
   url = url || window.location.href;
   const hostname = new URL(url).hostname;

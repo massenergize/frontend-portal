@@ -286,7 +286,7 @@ class OneTestimonialPage extends React.Component {
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
                   <div
-                    className="one-story-html-view"
+                    className="one-story-html-view test-story-body"
                     dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
                   />
                   {/* <p
