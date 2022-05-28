@@ -9,7 +9,7 @@ class ContactUsPage extends React.Component {
   prepareLocationText = (location) => {
     let locationText = "";
     if (location) {
-      locationText = location.location? location.location +`${location.city || location.state || location.zipcode ? ", " : ""}`: "";
+      locationText = location.address? location.address +`${location.city || location.state || location.zipcode ? ", " : ""}`: "";
       locationText += location.city? location.city + `${location.state || location.zipcode ? ", " : ""}`: "";
       locationText += location.state? location.state + `${location.zipcode ? ", " : ""}` : "";
       locationText += location.zipcode ? location.zipcode : "";
