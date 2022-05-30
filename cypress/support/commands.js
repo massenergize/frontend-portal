@@ -1,6 +1,7 @@
 import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
 import fields from "../fixtures/json/fields";
+import 'cypress-wait-until';
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 const removeCookieBanner = () => {
   // This is just a function to always close the banner, not for testing the cookie banner
