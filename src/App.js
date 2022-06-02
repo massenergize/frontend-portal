@@ -42,10 +42,10 @@ function App() {
         const slash = pathname.indexOf("/", 1);
         const subdomain =
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
-        const { origin } = new URL(window.location.href);
 
         // if no subdomain found, redirect to all communities page (NB: The all communities page does not exist on this side of the application. It is a page on the backend)
-        if ([undefined, "", "/"].indexOf(subdomain) > -1) {
+        const thereIsNoSubdomain = [undefined, "", "/"].indexOf(subdomain) > -1;
+        if (thereIsNoSubdomain) {
           window.location.href = IS_DEV ? DEV_URL : URLS.COMMUNITIES;
           return;
         }
