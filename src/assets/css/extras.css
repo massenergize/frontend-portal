@@ -3,8 +3,18 @@
   --app-theme-green: #8dc443;
   --app-theme-green-darker: #75ab2d;
   --app-theme-orange-lighter: #fba930;
+  --app-theme-error: #d44b4b;
 }
 
+.cancel-process {
+  margin-left: auto;
+  color: var(--app-theme-error);
+  text-transform: capitalize;
+}
+.cancel-process:hover {
+  text-decoration: underline;
+  color: maroon;
+}
 .me-auth-not {
   display: flex;
   flex-direction: row;
@@ -1920,15 +1930,14 @@
   flex-direction: row;
   display: flex;
 }
-.all-head-area { 
+.all-head-area {
   margin-top: -20px;
 }
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
-  .all-head-area { 
+  .all-head-area {
     margin-bottom: 30px;
-  
   }
   .me-auth-not {
     padding: 15px 20px;
@@ -2199,9 +2208,8 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
-  .all-head-area { 
+  .all-head-area {
     margin-bottom: 20px;
-  
   }
   .action-mob-stats-container {
     margin-bottom: 20px;

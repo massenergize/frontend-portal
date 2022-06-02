@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { signMeOut } from "../../../../redux/actions/authActions";
 
-function OpenEmailApp() {
+function OpenEmailApp({ signMeOut }) {
   return (
     <div className="email-helpers-div">
       <a target="_blank" href="mailto:" rel="noopener noreferrer">
@@ -16,8 +19,27 @@ function OpenEmailApp() {
       >
         Open Gmail Online{" "}
       </a>
+
+      <a
+        href="#void"
+        className="cancel-process"
+        onClick={(e) => {
+          e.preventDefault();
+          signMeOut();
+        }}
+      >
+        Cancel this process
+      </a>
     </div>
   );
 }
 
-export default OpenEmailApp;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      signMeOut: signMeOut,
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(OpenEmailApp);
