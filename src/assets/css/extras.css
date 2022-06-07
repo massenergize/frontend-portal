@@ -6,6 +6,29 @@
   --app-theme-error: #d44b4b;
 }
 
+.become-valid-from-guest {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  /* border: solid 2px green; */
+  background-color: #ffe9dc;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: bold;
+  align-items: center;
+}
+.become-valid-from-guest i {
+  margin-left: auto;
+  color: var(--app-theme-orange);
+  font-size: 35px;
+}
+
+.become-valid-from-guest p {
+  color: #e0631a;
+  font-weight: bold;
+  margin: 0px;
+}
+
 .cancel-process {
   margin-left: auto;
   color: var(--app-theme-error);
@@ -1936,6 +1959,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .become-valid-from-guest {
+    padding: 20px 30px;
+  }
   .all-head-area {
     margin-bottom: 30px;
   }
@@ -2208,6 +2234,12 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .become-valid-from-guest p {
+    font-size: 15px;
+  }
+  .become-valid-from-guest {
+    padding: 15px 20px;
+  }
   .all-head-area {
     margin-bottom: 20px;
   }

@@ -49,6 +49,7 @@ import {
 import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
+import BecomeAValidUser from "./BecomeAValidUser";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -64,13 +65,9 @@ class ProfilePage extends React.Component {
       editingProfileForm: null,
       printing: false,
       message: "",
+      wantsToBecomeValidUser: false,
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
-  }
-
-  componentDidMount() {
-    // disable the registration protocol to prevent the form from ever showing again, until enabled
-    // localStorage.removeItem("reg_protocol");
   }
 
   getEqData() {
@@ -147,6 +144,7 @@ class ProfilePage extends React.Component {
   }
   render() {
     const { fireAuth } = this.props;
+    const { wantsToBecomeValidUser } = this.state;
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -172,8 +170,11 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+    if (wantsToBecomeValidUser) return <BecomeAValidUser />;
 
     const { user } = this.props;
+    const userIsAGuest = user && user.is_guest;
+
     const [eqLabels, eqValues] = this.getEqData();
     return (
       <>
@@ -230,15 +231,6 @@ class ProfilePage extends React.Component {
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={"lbs CO2"}
-                              icon={"fa fa-leaf"}
-                              title={"Impact"}
-                              info={
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
@@ -283,21 +275,26 @@ class ProfilePage extends React.Component {
                             className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2"
                           >
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={!pref_eq ?? "lbs CO2"}
-                              icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
-                              title={`Number of ${pref_eq?.name}`}
-                              info={
-                                pref_eq?.explanation ||
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
                     </div>
                   </section>
+
+                  {userIsAGuest && (
+                    <div
+                      className="become-valid-from-guest touchable-opacity"
+                      onClick={() =>
+                        this.setState({ wantsToBecomeValidUser: true })
+                      }
+                    >
+                      <p>
+                        You are currently a guest, take these easy steps to
+                        become a valid user! 🎊{" "}
+                      </p>{" "}
+                      <i className=" fa fa-angle-right"></i>
+                    </div>
+                  )}
                   <div
                     id="eq-list-dropdown-wrapper"
                     data-number-of-eq-items={this.props.eq?.length}
@@ -426,8 +423,9 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    const { settings } = this.props;
+    const { settings, user } = this.props;
     const { usesOnlyPasswordless } = settings?.signInConfig || {};
+    const userIsAGuest = user && user.is_guest;
 
     return (
       <>
@@ -453,6 +451,16 @@ class ProfilePage extends React.Component {
               }}
               className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
             >
+              {userIsAGuest && (
+                <Dropdown.Item
+                  onClick={() => {
+                    this.setState({ wantsToBecomeValidUser: true });
+                  }}
+                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+                >
+                  Become A Valid User 🎊
+                </Dropdown.Item>
+              )}
               {usesOnlyPasswordless && (
                 <Dropdown.Item
                   onClick={() =>
@@ -903,7 +911,7 @@ const mapStoreToProps = (store) => {
     rsvps: store.page.rsvps,
     links: store.links,
     eq: store.page.equivalences,
-    pref_eq: store.user.pref_equivalence  || PREF_EQ_DEFAULT,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     fireAuth: store.fireAuth,
     authState: store.authState,
     settings: store.user.userFirebaseSettings,
