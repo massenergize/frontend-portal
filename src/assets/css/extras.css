@@ -5,6 +5,47 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+.stepper-line {
+  flex-basis: 20%;
+  border: solid 2px #f1f1f1;
+}
+.step-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.step-name {
+  margin-top: 6px;
+  font-weight: bold;
+}
+.stepper-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.stepper-ball-has-state {
+  border: solid 2px green;
+  background-color: #0f922b;
+  color: white;
+}
+.stepper-ball {
+  cursor: pointer;
+  margin: 4px;
+  border-radius: 100%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-ball small {
+  font-size: 16px;
+  font-weight: bold;
+}
 
 .become-valid-from-guest {
   display: flex;
@@ -1959,6 +2000,11 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .stepper-ball {
+    padding: 20px;
+    height: 40px;
+    width: 40px;
+  }
   .become-valid-from-guest {
     padding: 20px 30px;
   }
@@ -2218,7 +2264,7 @@
     height: 100%;
   }
   .calendar-modal * {
-    flex: 1;
+    flex: 1; 
   }
   .event-view-togglers div {
     padding: 15px 25px;
@@ -2234,6 +2280,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .stepper-ball {
+    width: 35px;
+    height: 35px;
+  }
   .become-valid-from-guest p {
     font-size: 15px;
   }

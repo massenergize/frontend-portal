@@ -290,7 +290,7 @@ class ProfilePage extends React.Component {
                     >
                       <p>
                         You are currently a guest, take these easy steps to
-                        become a valid user! 🎊{" "}
+                        become a valid user<span>🎊</span>{" "}
                       </p>{" "}
                       <i className=" fa fa-angle-right"></i>
                     </div>
@@ -458,7 +458,7 @@ class ProfilePage extends React.Component {
                   }}
                   className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
                 >
-                  Become A Valid User 🎊
+                  Become A Valid User <span>🎊</span>
                 </Dropdown.Item>
               )}
               {usesOnlyPasswordless && (
