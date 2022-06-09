@@ -1,75 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { useHistory, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { apiCall } from "../../../api/functions";
 import {
   sendVerificationEmail,
   setFirebaseUser,
-  setMassEnergizeUser,
 } from "../../../redux/actions/authActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import FormCompletion from "../Auth/Registration/FormCompletion";
-import { getRandomColor } from "../Auth/shared/utils";
 import Notification from "../Widgets/Notification/Notification";
 import AddGuestToFirebase from "./AddGuestToFirebase";
-import AddPassword from "./AddPassword";
 import Stepper from "./MEStepper";
 
-function BecomeAValidUser({
-  community,
-  policies,
-  user,
-  setMassEnergizeUser,
-  setFirebaseUser,
-  fireAuth,
-  sendVerificationEmail,
-}) {
+function BecomeAValidUser({ user, setFirebaseUser, sendVerificationEmail }) {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({});
-  const history = useHistory();
   const [checked, setChecked] = useState([]);
   const [active, setActive] = useState("provide-pass");
   const [error, setError] = useState(null);
-
-  const finaliseFormAndRegister = () => {
-    const location = " , " + form.city + ", " + form.state + ", " + form.zip;
-    const body = {
-      id: user && user.id,
-      full_name: form.firstName + " " + form.lastName,
-      preferred_name: form.preferred_name || form.firstName,
-      email: user && user.email,
-      location: location,
-      is_vendor: false,
-      accepts_terms_and_conditions: true,
-      subdomain: community && community.subdomain,
-      color: getRandomColor(),
-    };
-
-    setLoading(true);
-    apiCall("/users.make.guest.permanent", body)
-      .then((response) => {
-        setLoading(false);
-        console.log("I think I am the response bro", response);
-        if (!response.success) setError(response && response.error);
-      })
-      .catch((e) => {
-        console.log("ERROR_UPDATING_GUEST_USER_", e.toString());
-      });
-  };
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const cancel = () => {
-    history.goBack();
-  };
-
-  useEffect(() => {
-    // In the where a guest adds a password but leaves the page,
-    // This step will help them start from the next form when they come back
-    if (fireAuth) setChecked("form-completion");
-  }, []);
 
   const steps = {
     "provide-pass": {
@@ -90,20 +36,11 @@ function BecomeAValidUser({
         />
       ),
     },
+    // Just to give the user an idea of the steps to take in general, but its never used
     "form-completion": {
       name: "About You",
       key: "form-completion",
-      component: (
-        <FormCompletion
-          getValue={(name) => form[name] || ""}
-          onChange={onChange}
-          createMyAccountNow={finaliseFormAndRegister}
-          policies={policies}
-          customCancel={cancel}
-          disableDeleteNotification={true}
-          loading={loading}
-        />
-      ),
+      component: <></>,
     },
   };
 
@@ -143,7 +80,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       setFirebaseUser,
-      setMassEnergizeUser,
       sendVerificationEmail: sendVerificationEmail,
     },
     dispatch

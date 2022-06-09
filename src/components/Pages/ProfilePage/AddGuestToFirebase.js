@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { sendVerificationEmail } from "../../../redux/actions/authActions";
 import { registerWithEmailAndPassword } from "../Auth/shared/firebase-helpers";
 import { ifEnterKeyIsPressed } from "../Auth/shared/utils";
 import MEButton from "../Widgets/MEButton";
@@ -8,7 +7,6 @@ import METextField from "../Widgets/METextField";
 function AddGuestToFirebase({
   email,
   setError,
-  nextStep,
   setFirebaseUser,
   loading,
   setLoading,

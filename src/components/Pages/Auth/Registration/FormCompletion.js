@@ -189,8 +189,7 @@ export default function FormCompletion({
               style={{ marginRight: 8, padding: "11px 40px" }}
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
-              // disabled={!captchaIsValid || formNeedsWorks()}
-              disabled={ formNeedsWorks()}
+              disabled={!captchaIsValid || formNeedsWorks()}
               onClick={() => createMyAccountNow()}
               loading={loading}
             >
