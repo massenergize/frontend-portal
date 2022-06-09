@@ -1,10 +1,11 @@
 import React from "react";
 
 function MEStepper({ steps, checked, active }) {
+  steps = Object.entries(steps);
   if (!steps || !steps.length) return <> </>;
   return (
     <div className="stepper-container">
-      {steps.map((step, index) => {
+      {steps.map(([_, step], index) => {
         const lastItem = index === steps.length - 1;
         const isActive = step.key === active;
         const isChecked = (checked || []).includes(step.key);

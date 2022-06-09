@@ -67,7 +67,7 @@ export default function FormCompletion({
 
   return (
     <div>
-      <div className="styled-form register-form z-depth-float shave-points">
+      <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
         <div className="complete-form-header">
           <p>Almost there, please tell us all of the following. Thank you!</p>
         </div>

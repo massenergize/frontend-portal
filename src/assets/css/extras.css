@@ -5,6 +5,12 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+
+.g-f-bottom-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 .stepper-line {
   flex-basis: 20%;
   border: solid 2px #f1f1f1;
@@ -33,7 +39,7 @@
   color: white;
 }
 .stepper-ball {
-  cursor: pointer;
+  /* cursor: pointer; */
   margin: 4px;
   border-radius: 100%;
   font-weight: bold;
@@ -2000,6 +2006,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .g-f-bottom-footer {
+    padding: 10px 20px;
+  }
   .stepper-ball {
     padding: 20px;
     height: 40px;
@@ -2264,7 +2273,7 @@
     height: 100%;
   }
   .calendar-modal * {
-    flex: 1; 
+    flex: 1;
   }
   .event-view-togglers div {
     padding: 15px 25px;
@@ -2280,6 +2289,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .g-f-bottom-footer {
+    padding: 10px;
+  }
   .stepper-ball {
     width: 35px;
     height: 35px;
