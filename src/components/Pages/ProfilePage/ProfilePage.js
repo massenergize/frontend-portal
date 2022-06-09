@@ -160,7 +160,7 @@ class ProfilePage extends React.Component {
 
     if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-    const myHouseholds = this.props.user.households || [];
+    const myHouseholds = this.props.user?.households || [];
 
     if (!this.props.teams) {
       return <LoadingCircle />;
