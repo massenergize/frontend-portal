@@ -172,9 +172,9 @@ class ProfilePage extends React.Component {
     }
     if (wantsToBecomeValidUser) return <BecomeAValidUser />;
 
-    const { user } = this.props;
+    const { user, community } = this.props;
     const userIsAGuest = user && user.is_guest;
-
+    console.log("I am the community", community);
     const [eqLabels, eqValues] = this.getEqData();
     return (
       <>
@@ -289,8 +289,8 @@ class ProfilePage extends React.Component {
                       }
                     >
                       <p>
-                        You are currently a guest, take these easy steps to
-                        become a valid user
+                        You are currently a guest of {community?.name || ""},
+                        click here to become a registered member
                         <span role="img" aria-label="image">
                           🎊
                         </span>{" "}
@@ -461,7 +461,7 @@ class ProfilePage extends React.Component {
                   }}
                   className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
                 >
-                  Become A Valid User{" "}
+                  Become A Registered Member{" "}
                   <span role="img" aria-label="image">
                     🎊
                   </span>

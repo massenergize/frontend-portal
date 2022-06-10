@@ -73,6 +73,7 @@
 .become-valid-from-guest p {
   color: #e0631a;
   font-weight: bold;
+  font-size: medium;
   margin: 0px;
 }
 
