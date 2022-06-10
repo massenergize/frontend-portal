@@ -6,6 +6,92 @@
   --app-theme-error: #d44b4b;
 }
 
+.g-f-bottom-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.stepper-line {
+  flex-basis: 20%;
+  border: solid 2px #f1f1f1;
+}
+.step-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.step-name {
+  margin-top: 6px;
+  font-weight: bold;
+}
+.stepper-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.stepper-ball-has-state {
+  border: solid 2px green;
+  background-color: #0f922b;
+  color: white;
+}
+.stepper-ball {
+  /* cursor: pointer; */
+  margin: 4px;
+  border-radius: 100%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-ball small {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.become-valid-from-guest {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  /* border: solid 2px green; */
+  background-color: #ffe9dc;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: bold;
+  align-items: center;
+}
+.become-valid-from-guest i {
+  margin-left: auto;
+  color: var(--app-theme-orange);
+  font-size: 35px;
+}
+
+.become-valid-from-guest p {
+  color: #e0631a;
+  font-weight: bold;
+  font-size: medium;
+  margin: 0px;
+}
+
+.sandbox-ribbon {
+  background-color: var(--app-theme-orange);
+  z-index: 20000;
+  position: fixed;
+  top: 130px;
+  right: 0px;
+  border-top-left-radius: 55px;
+  border-bottom-left-radius: 55px;
+}
+
+.sandbox-ribbon small {
+  font-weight: bold;
+  color: white;
+  font-size: medium;
+}
 .cancel-process {
   margin-left: auto;
   color: var(--app-theme-error);
@@ -1936,6 +2022,20 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .g-f-bottom-footer {
+    padding: 10px 20px;
+  }
+  .stepper-ball {
+    padding: 20px;
+    height: 40px;
+    width: 40px;
+  }
+  .become-valid-from-guest {
+    padding: 20px 30px;
+  }
+  .sandbox-ribbon {
+    padding: 10px 20px;
+  }
   .all-head-area {
     margin-bottom: 30px;
   }
@@ -2208,6 +2308,22 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .g-f-bottom-footer {
+    padding: 10px;
+  }
+  .stepper-ball {
+    width: 35px;
+    height: 35px;
+  }
+  .become-valid-from-guest p {
+    font-size: 15px;
+  }
+  .become-valid-from-guest {
+    padding: 15px 20px;
+  }
+  .sandbox-ribbon {
+    padding: 15px;
+  }
   .all-head-area {
     margin-bottom: 20px;
   }
