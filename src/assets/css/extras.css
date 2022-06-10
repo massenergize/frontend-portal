@@ -6,6 +6,21 @@
   --app-theme-error: #d44b4b;
 }
 
+.sandbox-ribbon {
+  background-color: var(--app-theme-orange);
+  z-index: 20000;
+  position: fixed;
+  top: 130px;
+  right: 0px;
+  border-top-left-radius: 55px;
+  border-bottom-left-radius: 55px;
+}
+
+.sandbox-ribbon small {
+  font-weight: bold;
+  color: white;
+  font-size: medium;
+}
 .cancel-process {
   margin-left: auto;
   color: var(--app-theme-error);
@@ -1936,6 +1951,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .sandbox-ribbon {
+    padding: 10px 20px;
+  }
   .all-head-area {
     margin-bottom: 30px;
   }
@@ -2208,6 +2226,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .sandbox-ribbon {
+    padding: 15px;
+  }
   .all-head-area {
     margin-bottom: 20px;
   }
