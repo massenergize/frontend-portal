@@ -16,6 +16,7 @@ import ErrorPage from "./components/Pages/Errors/ErrorPage";
 import URLS, { DEV_URL } from "./api/urls";
 import { IS_LOCAL, IS_PROD, IS_CANARY } from "./config";
 const IS_DEV = !IS_LOCAL && !IS_PROD && !IS_CANARY;
+const IS_SANDBOX = "IS_SANDBOX";
 function App() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
@@ -23,9 +24,12 @@ function App() {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     // first let's determine if its a sandbox request
-    const is_sandbox = getIsSandboxFromURL(window.location);
+    const is_sandbox =
+      getIsSandboxFromURL(window.location) ||
+      Boolean(window.sessionStorage.getItem(IS_SANDBOX));
     if (is_sandbox) {
       console.log("Sandbox: ", is_sandbox);
+      window.sessionStorage.setItem(IS_SANDBOX, true);
     }
 
     dispatch({
