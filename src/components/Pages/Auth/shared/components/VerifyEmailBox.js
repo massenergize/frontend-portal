@@ -56,7 +56,7 @@ function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
                     </p>
                   )}
                 </p>
-                {/* <OpenEmailApp /> */}
+                <OpenEmailApp showCancel = {true} />
               </div>
             </div>
           </div>
