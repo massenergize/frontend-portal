@@ -147,11 +147,14 @@ class AppRouter extends Component {
 
   componentDidMount() {
     const { community } = this.props;
-    const subdomain = community?.subdomain || 'undefined';
+    const subdomain = community?.subdomain || "undefined";
     const { pathname } = new URL(window.location.href);
 
     if (browswerIsSafari() && siteUsesCustomDomain()) {
-      const subd = pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1 ? '' : '/' + subdomain;
+      const subd =
+        pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1
+          ? ""
+          : "/" + subdomain;
       window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
     }
     const community_id = community?.id;
@@ -430,7 +433,6 @@ class AppRouter extends Component {
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
-
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -460,7 +462,8 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community, modalOptions, toggleUniversalModal, links } = this.props;
+    const { community, modalOptions, toggleUniversalModal, links, is_sandbox } =
+      this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -490,6 +493,11 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
+        {is_sandbox && (
+          <div className="sandbox-ribbon z-depth-1">
+            <small>SANDBOX</small>
+          </div>
+        )}
         <UniversalModal
           {...(modalOptions || {})}
           close={() =>
@@ -577,6 +585,7 @@ const mapStoreToProps = (store) => {
     eq: store.page.equivalences,
     showTour: store.page.showTour,
     modalOptions: store.page.modalOptions,
+    is_sandbox: store.page.__is_sandbox,
   };
 };
 const mapDispatchToProps = {

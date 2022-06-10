@@ -427,7 +427,8 @@ class ProfilePage extends React.Component {
 
   renderForm = (form) => {
     const { settings, user } = this.props;
-    const { usesOnlyPasswordless } = settings?.signInConfig || {};
+    const { firebaseAuthSettings } = this.props;
+    const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
     const userIsAGuest = user && user.is_guest;
 
     return (
@@ -920,7 +921,7 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     fireAuth: store.fireAuth,
     authState: store.authState,
-    settings: store.user.userFirebaseSettings,
+    firebaseAuthSettings: store.firebaseAuthSettings,
   };
 };
 const mapDispatchToProps = {

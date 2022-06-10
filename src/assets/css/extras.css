@@ -77,6 +77,21 @@
   margin: 0px;
 }
 
+.sandbox-ribbon {
+  background-color: var(--app-theme-orange);
+  z-index: 20000;
+  position: fixed;
+  top: 130px;
+  right: 0px;
+  border-top-left-radius: 55px;
+  border-bottom-left-radius: 55px;
+}
+
+.sandbox-ribbon small {
+  font-weight: bold;
+  color: white;
+  font-size: medium;
+}
 .cancel-process {
   margin-left: auto;
   color: var(--app-theme-error);
@@ -2018,6 +2033,9 @@
   .become-valid-from-guest {
     padding: 20px 30px;
   }
+  .sandbox-ribbon {
+    padding: 10px 20px;
+  }
   .all-head-area {
     margin-bottom: 30px;
   }
@@ -2302,6 +2320,9 @@
   }
   .become-valid-from-guest {
     padding: 15px 20px;
+  }
+  .sandbox-ribbon {
+    padding: 15px;
   }
   .all-head-area {
     margin-bottom: 20px;
