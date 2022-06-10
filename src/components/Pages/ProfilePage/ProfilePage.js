@@ -426,7 +426,7 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    const { settings, user } = this.props;
+    const { user } = this.props;
     const { firebaseAuthSettings } = this.props;
     const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
     const userIsAGuest = user && user.is_guest;
