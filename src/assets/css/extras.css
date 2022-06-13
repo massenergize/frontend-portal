@@ -2353,6 +2353,10 @@
     align-items: center;
   }
 
+  .act-stats-item small { 
+    font-weight: bold;
+  }
+
   .stats-eq {
     color: var(--app-theme-green-darker);
   }

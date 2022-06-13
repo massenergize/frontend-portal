@@ -5,8 +5,8 @@ function ActionMobileStats({ todo, done, user, eq }) {
   const thereHasBeenNoActivity = !todo?.length && !done?.length;
   if (!user || thereHasBeenNoActivity) return <></>;
 
-  const doneCount = done.length || 0;
-  const todoCount = todo.length || 0;
+  const doneCount = done?.length || 0;
+  const todoCount = todo?.length || 0;
   const treeEq = eq?.find((_eq) => _eq.name.toLowerCase().trim() === "trees");
   const doneValue = calcEQ(sumOfCarbonScores(done), treeEq?.value) || 0;
   const todoValue = calcEQ(sumOfCarbonScores(todo), treeEq?.value) || 0;
