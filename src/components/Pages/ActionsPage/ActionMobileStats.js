@@ -12,7 +12,7 @@ function ActionMobileStats({ todo, done, user, eq }) {
   const todoValue = calcEQ(sumOfCarbonScores(todo), treeEq?.value) || 0;
 
   return (
-    <div className="action-mob-stats-container pc-vanish">
+    <div className="action-mob-stats-container pc-vanish stick-mob-stats z-depth-1">
       <div className="act-stats-item">
         <small>
           DONE: <b>{doneCount}</b>
