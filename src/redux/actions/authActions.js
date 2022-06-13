@@ -258,7 +258,7 @@ export const setAuthNotification = (notification) => {
 
 export const setMassEnergizeUser = (user) => {
   return { type: SET_FIREBASE_USER, payload: user };
-};
+}; 
 export const setFirebaseUser = (user) => {
   return { type: SET_FIREBASE_USER, payload: user };
 };

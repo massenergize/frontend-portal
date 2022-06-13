@@ -14,6 +14,8 @@ export default function FormCompletion({
   createMyAccountNow,
   loading,
   policies,
+  disableDeleteNotification,
+  customCancel
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
@@ -65,7 +67,7 @@ export default function FormCompletion({
 
   return (
     <div>
-      <div className="styled-form register-form z-depth-float shave-points">
+      <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
         <div className="complete-form-header">
           <p>Almost there, please tell us all of the following. Thank you!</p>
         </div>
@@ -174,7 +176,10 @@ export default function FormCompletion({
             <div>
               <MEButton
                 variation="accent"
-                onClick={() => setDeleteConfirmation(true)}
+                onClick={() => {
+                  if (customCancel) return customCancel();
+                  setDeleteConfirmation(true);
+                }}
                 style={{ marginLeft: 10 }}
               >
                 Cancel
@@ -191,9 +196,11 @@ export default function FormCompletion({
               {loading ? "Creating Profile..." : "Finish Creating Profile"}
             </MEButton>
           </div>
-          <small>
-            If you cancel, you will delete your account, and all your progress
-          </small>
+          {!disableDeleteNotification && (
+            <small>
+              If you cancel, you will delete your account, and all your progress
+            </small>
+          )}
         </div>
       </div>
     </div>
