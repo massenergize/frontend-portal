@@ -31,6 +31,10 @@ class HomePage extends React.Component {
 
   closeTourCompletely() {
     const { setTourValueInRedux } = this.props;
+
+    console.log(window.history);
+    window.history.replaceState({}, document.title, window.location.href.split("?")[0]);
+
     setTourValueInRedux(false);
     window.localStorage.setItem(TOUR_STORAGE_KEY, false);
   }
