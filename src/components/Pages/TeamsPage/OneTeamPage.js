@@ -121,7 +121,6 @@ class OneTeamPage extends React.Component {
 
   render() {
     const { team, loading, error } = this.state;
-    console.log("I am the team", team);
 
     if (loading || !this.props.teamsStats) {
       return <LoadingCircle />;
