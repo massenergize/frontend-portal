@@ -306,11 +306,18 @@ class MEFileSelector extends Component {
     }
   }
 
- 
   switchStates() {
     const { file, croppedImageUrl, showPrev, modal, defaultRemoved, src } =
       this.state;
-    const { previewStyle, defaultValue, name, allowCrop, formData, ImageToDelete } = this.props;
+    const {
+      previewClassName,
+      previewStyle,
+      defaultValue,
+      name,
+      allowCrop,
+      formData,
+      ImageToDelete,
+    } = this.props;
 
     if (!file && defaultValue && !defaultRemoved) {
       return (
@@ -319,7 +326,9 @@ class MEFileSelector extends Component {
             src={defaultValue}
             alt={`${name}`}
             onClick={(e) => this.searchForImage(e)}
-            className="image-chooser-default z-depth-float"
+            className={`image-chooser-default z-depth-float ${
+              previewClassName || ""
+            }`}
             style={previewStyle}
           />
           <br />
@@ -389,41 +398,46 @@ class MEFileSelector extends Component {
         </div>
       );
     }
-    //this.props.formData can have the following 3 states this.props.formData = {} 
+    //this.props.formData can have the following 3 states this.props.formData = {}
     //this.props.formData.image = null or this.props.formData.image.img ,
-    //if the img url  property does not exist then it will return a null/undefined which will be set to an empty string 
-    var EditImageSrc = this.props.formData?.image?.url
-     if (typeof EditImageSrc !== 'string') {
-      EditImageSrc = ""
+    //if the img url  property does not exist then it will return a null/undefined which will be set to an empty string
+    var EditImageSrc = this.props.formData?.image?.url;
+    if (typeof EditImageSrc !== "string") {
+      EditImageSrc = "";
     }
     return (
       <center>
-        {this.state.file || EditImageSrc === "" ?
+        {this.state.file || EditImageSrc === "" ? (
           <>
             <span className="fa fa-upload" style={{ fontSize: "4rem" }} />
-            <p style={{ margin: 15, color: "#d2cfcf" }}>{this.props.placeholder}</p>
+            <p style={{ margin: 15, color: "#d2cfcf" }}>
+              {this.props.placeholder}
+            </p>
           </>
-          :
-					<>
-          <div>
-            <img src={EditImageSrc} width="50%" height="50%" alt="testimonial" />
-          </div>
-					
-					<MEButton
-					type="button"
-          className="g-uploader-btn-class"
-          onClick={async () => {
-						//waits for the state to be updated or the imgdel property will be deleted if added too early
-						await this.removeImage()
-						ImageToDelete(formData?.image)
+        ) : (
+          <>
+            <div>
+              <img
+                src={EditImageSrc}
+                width="50%"
+                height="50%"
+                alt="testimonial"
+              />
+            </div>
 
-					}}
-        >
-          Delete Image
-        </MEButton>
-				
-				</>
-				}
+            <MEButton
+              type="button"
+              className="g-uploader-btn-class"
+              onClick={async () => {
+                //waits for the state to be updated or the imgdel property will be deleted if added too early
+                await this.removeImage();
+                ImageToDelete(formData?.image);
+              }}
+            >
+              Delete Image
+            </MEButton>
+          </>
+        )}
         <MEButton
           className="g-uploader-btn-class"
           onClick={(e) => this.searchForImage(e)}
