@@ -145,7 +145,7 @@ class ProfilePage extends React.Component {
     );
   }
   render() {
-    const { fireAuth, toggleModal } = this.props;
+    const { fireAuth } = this.props;
     const { wantsToBecomeValidUser } = this.state;
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
