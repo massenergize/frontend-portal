@@ -6,6 +6,11 @@
   --app-theme-error: #d44b4b;
 }
 
+.household-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .g-f-bottom-footer {
   display: flex;
@@ -2023,6 +2028,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .household-confirmation {
+    min-height: 100%;
+  }
   .g-f-bottom-footer {
     padding: 10px 20px;
   }
@@ -2309,6 +2317,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .household-confirmation {
+    min-height: 230px;
+  }
   .g-f-bottom-footer {
     padding: 10px;
   }
