@@ -174,7 +174,7 @@ class ProfilePage extends React.Component {
 
     const { user, community } = this.props;
     const userIsAGuest = user && user.is_guest;
-    console.log("I am the community", community);
+
     const [eqLabels, eqValues] = this.getEqData();
     return (
       <>
