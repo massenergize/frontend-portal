@@ -28,6 +28,7 @@ import {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -50,6 +51,7 @@ import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
+import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -176,6 +178,7 @@ class ProfilePage extends React.Component {
     const userIsAGuest = user && user.is_guest;
 
     const [eqLabels, eqValues] = this.getEqData();
+
     return (
       <>
         <div
@@ -678,6 +681,7 @@ class ProfilePage extends React.Component {
     });
   }
   renderHouseholds(households) {
+    const { toggleModal } = this.props;
     const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
@@ -734,7 +738,21 @@ class ProfilePage extends React.Component {
                 />
                 {isNotLastHouse && (
                   <MEButton
-                    onClick={() => this.deleteHousehold(house)}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      toggleModal({
+                        show: true,
+                        component: (
+                          <HouseholdDeleteConfirmation
+                            household={house}
+                            onConfirm={() => this.deleteHousehold(house)}
+                            cancel={() => toggleModal({ show: false })}
+                            todos={this.props.todo}
+                          />
+                        ),
+                      });
+                      // this.deleteHousehold(house);
+                    }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
                     iconStyle={{ margin: 0 }}
@@ -939,6 +957,7 @@ const mapDispatchToProps = {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
   reduxSetPreferredEquivalence,
+  toggleModal: reduxToggleUniversalModal,
 };
 export default connect(
   mapStoreToProps,
