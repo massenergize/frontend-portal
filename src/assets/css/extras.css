@@ -6,6 +6,22 @@
   --app-theme-error: #d44b4b;
 }
 
+.me-light-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background: #fafafa;
+}
+.edit-profile-root {
+  border: solid 1px 1px solid rgb(243, 243, 243);
+  border-radius: 10px;
+}
+.household-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .g-f-bottom-footer {
   display: flex;
   flex-direction: row;
@@ -854,7 +870,6 @@
 }
 
 .flat-btn {
-  padding: 15px 30px;
   color: #282828;
   cursor: pointer;
   display: inline-block;
@@ -2022,6 +2037,15 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .flat-btn {
+    padding: 15px 30px;
+  }
+  .edit-profile-content {
+    padding: 30px;
+  }
+  .household-confirmation {
+    min-height: 100%;
+  }
   .g-f-bottom-footer {
     padding: 10px 20px;
   }
@@ -2298,6 +2322,17 @@
     padding: 15px 25px;
     font-size: 15px;
   }
+  .profile-pic-preview {
+    width: 200px;
+    height: 200px;
+  }
+  .me-light-footer {
+    margin-top: 20px;
+  }
+}
+.profile-pic-preview {
+  border-radius: 100%;
+  object-fit: cover;
 }
 /* ------------------------------- TABLETS ----------------------------- */
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -2308,6 +2343,23 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-light-footer {
+    margin-top: 10px;
+  }
+  .profile-pic-preview {
+    width: 120px;
+    height: 120px;
+  }
+  .flat-btn {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+  .edit-profile-content {
+    padding: 15px;
+  }
+  .household-confirmation {
+    min-height: 230px;
+  }
   .g-f-bottom-footer {
     padding: 10px;
   }
@@ -2327,8 +2379,18 @@
   .all-head-area {
     margin-bottom: 20px;
   }
+  .stick-mob-stats {
+    background: white;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 100000;
+    left: 0px;
+    padding: 14px;
+    margin-bottom: 0px;
+  }
   .action-mob-stats-container {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -2340,6 +2402,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .act-stats-item small {
+    font-weight: bold;
   }
 
   .stats-eq {
