@@ -6,6 +6,16 @@
   --app-theme-error: #d44b4b;
 }
 
+.me-light-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background: #fafafa;
+}
+.edit-profile-root {
+  border: solid 1px 1px solid rgb(243, 243, 243);
+  border-radius: 10px;
+}
 .household-confirmation {
   display: flex;
   align-items: center;
@@ -860,7 +870,6 @@
 }
 
 .flat-btn {
-  padding: 15px 30px;
   color: #282828;
   cursor: pointer;
   display: inline-block;
@@ -2028,6 +2037,12 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .flat-btn {
+    padding: 15px 30px;
+  }
+  .edit-profile-content {
+    padding: 30px;
+  }
   .household-confirmation {
     min-height: 100%;
   }
@@ -2307,6 +2322,17 @@
     padding: 15px 25px;
     font-size: 15px;
   }
+  .profile-pic-preview {
+    width: 200px;
+    height: 200px;
+  }
+  .me-light-footer {
+    margin-top: 20px;
+  }
+}
+.profile-pic-preview {
+  border-radius: 100%;
+  object-fit: cover;
 }
 /* ------------------------------- TABLETS ----------------------------- */
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -2317,6 +2343,20 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-light-footer {
+    margin-top: 10px;
+  }
+  .profile-pic-preview {
+    width: 120px;
+    height: 120px;
+  }
+  .flat-btn {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+  .edit-profile-content {
+    padding: 15px;
+  }
   .household-confirmation {
     min-height: 230px;
   }
@@ -2339,7 +2379,7 @@
   .all-head-area {
     margin-bottom: 20px;
   }
-  .stick-mob-stats { 
+  .stick-mob-stats {
     background: white;
     position: fixed;
     bottom: 0px;
@@ -2364,7 +2404,7 @@
     align-items: center;
   }
 
-  .act-stats-item small { 
+  .act-stats-item small {
     font-weight: bold;
   }
 
