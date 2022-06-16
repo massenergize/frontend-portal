@@ -35,6 +35,7 @@ export default function SignUpAuth({
     history.push(links.signin);
   };
   const onChange = (e) => {
+    console.log(e);
     const newForm = { ...form, [e.target.name]: e.target.value?.trim() };
     setForm(newForm);
   };
@@ -56,9 +57,11 @@ export default function SignUpAuth({
 
   const finaliseFormAndRegister = () => {
     const location = " , " + form.city + ", " + form.state + ", " + form.zip;
+    console.log("user name: ", form.userName);
+    console.log("form: ", form);
     const body = {
       full_name: form.firstName + " " + form.lastName,
-      preferred_name: form.preferred_name || form.firstName,
+      preferred_name: form.userName || form.firstName,
       email: fireAuth.email,
       location: location,
       is_vendor: false,
@@ -80,6 +83,7 @@ export default function SignUpAuth({
         createMyAccountNow={finaliseFormAndRegister}
         loading={loading}
         policies={policies}
+        community={community}
       />
     );
 

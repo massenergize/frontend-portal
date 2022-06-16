@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import MEButton from "../../Widgets/MEButton";
-import { US_STATES } from "./values";
 import ReCAPTCHA from "react-google-recaptcha";
 import "./FormCompletion.css";
 import { isInvalid } from "../shared/utils";
 import { onReCaptchaChange } from "../../../../redux/actions/authActions";
 import InformationBoard from "./InformationBoard";
 import DeleteConfirmation from "./DeleteConfirmation";
+import { apiCall } from "../../../../api/functions";
 export default function FormCompletion({
   onChange,
   getValue,
@@ -15,21 +15,20 @@ export default function FormCompletion({
   loading,
   policies,
   disableDeleteNotification,
-  customCancel
+  customCancel,
+  community
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [showTOS, setShowTOS] = useState(false);
   const [showPP, setShowPP] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
   const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
 
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
-  const preferredName = getValue("preferred_name");
-  const city = getValue("city");
-  const state = getValue("state");
   const zip = getValue("zip");
 
   const checkCaptcha = (value) => {
@@ -37,13 +36,33 @@ export default function FormCompletion({
   };
 
   const formNeedsWorks = () => {
-    const fieldVals = [firstName, lastName, city, state, zip];
+    const fieldVals = [firstName, lastName, zip];
     for (let i = 0; i < fieldVals.length; i++) {
       const field = fieldVals[i];
       if (isInvalid(field)) return true;
     }
     return false;
   };
+
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+  }
+
+  const suggestUsername = () => {
+    if (!firstName || !lastName) return;
+
+    let suggestion = firstName + "-" + lastName;
+    let number = 0;
+    
+    while (!apiCall("users.validate.username", 
+                    {suggestion: suggestion, 
+                    community: community['id']})) {
+        suggestion = firstName + "-" + lastName + "-" + number;
+        number += 1;
+    }
+
+    setUserName(suggestion);
+  }
 
   if (showTOS)
     return (
@@ -104,38 +123,14 @@ export default function FormCompletion({
             </span>
             <input
               type="text"
-              name="preferred_name"
-              value={preferredName}
-              onChange={onChange}
-              placeholder="Preferred Name (visible to others)"
+              name="userName"
+              value={userName}
+              onChange={(e) => handleUserNameChange(e.target.value)}
+              placeholder="User Name (unique)"
             />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              name="city"
-              value={city}
-              onChange={onChange}
-              placeholder="City / Town"
-            />
-          </div>
-
-          <div className="form-group">
-            <select
-              value={state}
-              className="form-control"
-              name="state"
-              onChange={onChange}
-              placeholder="State"
-            >
-              {US_STATES.map((s, index) => {
-                return (
-                  <option key={index?.toString()} value={s.value}>
-                    {s.name}
-                  </option>
-                );
-              })}
-            </select>
+            <MEButton onClick={() => suggestUsername()}>
+              User Name Suggestion
+            </MEButton>
           </div>
           <div className="form-group">
             <input
@@ -147,6 +142,9 @@ export default function FormCompletion({
               required
             />
           </div>
+          <p style={{marginTop: 10 }}>
+            Explanation for why we need ZIP code...
+          </p>
           <ReCAPTCHA
             sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
             onChange={checkCaptcha}
