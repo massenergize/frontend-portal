@@ -16,7 +16,8 @@ export default function FormCompletion({
   policies,
   disableDeleteNotification,
   customCancel,
-  community
+  community,
+  onUsernameChange
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
@@ -46,22 +47,38 @@ export default function FormCompletion({
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
+    onUsernameChange(e.target.value);
+    console.log(community);
   }
 
-  const suggestUsername = () => {
+  const suggestUsername = async () => {
     if (!firstName || !lastName) return;
 
     let suggestion = firstName + "-" + lastName;
     let number = 0;
+    let is_valid;
     
-    while (!apiCall("users.validate.username", 
-                    {suggestion: suggestion, 
-                    community: community['id']})) {
+    await apiCall("users.validate.username", {suggestion: suggestion}).then(json => {
+        if (json.success) 
+            is_valid = json.data;
+        else
+            console.log(json.error);
+    });
+
+    while (!is_valid) {
         suggestion = firstName + "-" + lastName + "-" + number;
         number += 1;
+
+        await apiCall("users.validate.username", {suggestion: suggestion}).then(json => {
+            if (json.success) 
+                is_valid = json.data;
+            else
+                console.log(json.error);
+        });
     }
 
     setUserName(suggestion);
+    onUsernameChange(suggestion);
   }
 
   if (showTOS)
@@ -87,9 +104,20 @@ export default function FormCompletion({
   return (
     <div>
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
-        <div className="complete-form-header">
+        {/* <div className="complete-form-header">
           <p>Almost there, please tell us all of the following. Thank you!</p>
-        </div>
+        </div> */}
+
+        <img src={ community.logo.url } alt="Welcome" align="center" style={{ height: 100, width: 100, margin: "auto",display: "block", marginTop: 10 }} />
+        <br />
+        <h3 align="center" className="cool-font mob-font-lg me-section-title">
+          Welcome to { community.name }
+        </h3>
+        <h5 align="center" className="cool-font mob-font-lg me-section-title">
+            Almost there! Please tell us all of the following
+        </h5>
+
+
         <div className="c-f-inner-wrapper">
           <div className="form-group">
             <span className="adon-icon">
@@ -117,6 +145,11 @@ export default function FormCompletion({
               required
             />
           </div>
+          <p style={{marginTop: 10 }}>
+            We don't share your full name with others.
+            <br />
+            We don't make your full name public on the site, so please create a username below.
+          </p>
           <div className="form-group">
             <span className="adon-icon">
               <span className="fa fa-user"></span>
@@ -125,10 +158,10 @@ export default function FormCompletion({
               type="text"
               name="userName"
               value={userName}
-              onChange={(e) => handleUserNameChange(e.target.value)}
+              onChange={(e) => handleUserNameChange(e)}
               placeholder="User Name (unique)"
             />
-            <MEButton onClick={() => suggestUsername()}>
+            <MEButton style={{marginTop: 20 }} onClick={() => suggestUsername()}>
               User Name Suggestion
             </MEButton>
           </div>
@@ -138,12 +171,12 @@ export default function FormCompletion({
               name="zip"
               value={zip}
               onChange={onChange}
-              placeholder="Home ZIP Code"
+              placeholder="Household ZIP Code"
               required
             />
           </div>
           <p style={{marginTop: 10 }}>
-            Explanation for why we need ZIP code...
+            Your ZIP code is used to make your action count towards { community.name }'s collective goal.
           </p>
           <ReCAPTCHA
             sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
@@ -191,7 +224,7 @@ export default function FormCompletion({
               onClick={() => createMyAccountNow()}
               loading={loading}
             >
-              {loading ? "Creating Profile..." : "Finish Creating Profile"}
+              {loading ? "Creating Profile..." : "Finish Signing Up!"}
             </MEButton>
           </div>
           {!disableDeleteNotification && (
