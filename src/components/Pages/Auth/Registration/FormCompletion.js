@@ -48,7 +48,6 @@ export default function FormCompletion({
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
     onUsernameChange(e.target.value);
-    console.log(community);
   }
 
   const suggestUsername = async () => {
@@ -108,7 +107,7 @@ export default function FormCompletion({
           <p>Almost there, please tell us all of the following. Thank you!</p>
         </div> */}
 
-        <img src={ community.logo.url } alt="Welcome" align="center" style={{ height: 100, width: 100, margin: "auto",display: "block", marginTop: 10 }} />
+        <img src={ community.logo.url } alt="Welcome" align="center" style={{ margin: "auto",display: "block", marginTop: 10 }} />
         <br />
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
           Welcome to { community.name }
@@ -146,9 +145,8 @@ export default function FormCompletion({
             />
           </div>
           <p style={{marginTop: 10 }}>
-            We don't share your full name with others.
-            <br />
-            We don't make your full name public on the site, so please create a username below.
+            What username would you like? {" "} 
+            You can use the suggestion or create your own.
           </p>
           <div className="form-group">
             <span className="adon-icon">
@@ -159,12 +157,16 @@ export default function FormCompletion({
               name="userName"
               value={userName}
               onChange={(e) => handleUserNameChange(e)}
-              placeholder="User Name (unique)"
+              placeholder="Username"
+              style={{ width: "50%" }}
             />
-            <MEButton style={{marginTop: 20 }} onClick={() => suggestUsername()}>
+            <MEButton style={{marginTop: 20, display: "inline" }} onClick={() => suggestUsername()}>
               User Name Suggestion
             </MEButton>
           </div>
+          <p style={{marginTop: 10 }}>
+            Your ZIP code is used to count your actions towards { community.name }'s collective goal.
+          </p>
           <div className="form-group">
             <input
               type="text"
@@ -175,9 +177,6 @@ export default function FormCompletion({
               required
             />
           </div>
-          <p style={{marginTop: 10 }}>
-            Your ZIP code is used to make your action count towards { community.name }'s collective goal.
-          </p>
           <ReCAPTCHA
             sitekey="6LcLsLUUAAAAAL1MkpKSBX57JoCnPD389C-c-O6F"
             onChange={checkCaptcha}
