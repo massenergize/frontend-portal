@@ -23,7 +23,13 @@ export default function FormCompletion({
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [showTOS, setShowTOS] = useState(false);
   const [showPP, setShowPP] = useState(false);
+
   const [userName, setUserName] = useState("");
+  const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
+
+  const [firstColor, setFirstColor] = useState("");
+  const [secondColor, setSecondColor] = useState("");
+  const [thirdColor, setThirdColor] = useState("");
 
   const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
   const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
@@ -45,39 +51,44 @@ export default function FormCompletion({
     return false;
   };
 
+  const validateUserName = async (username) => {
+    await apiCall("users.validate.username", {username: username}).then(json => {
+        if (json.success) return json.data;
+        else {
+            console.log(json.error);
+            return false; }
+    });
+  }
+
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
     onUsernameChange(e.target.value);
   }
 
   const suggestUsername = async () => {
-    if (!firstName || !lastName) return;
-
-    let suggestion = firstName + "-" + lastName;
+    let suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
     let number = 0;
-    let is_valid;
     
-    await apiCall("users.validate.username", {suggestion: suggestion}).then(json => {
-        if (json.success) 
-            is_valid = json.data;
-        else
-            console.log(json.error);
-    });
-
-    while (!is_valid) {
-        suggestion = firstName + "-" + lastName + "-" + number;
-        number += 1;
-
-        await apiCall("users.validate.username", {suggestion: suggestion}).then(json => {
-            if (json.success) 
-                is_valid = json.data;
-            else
-                console.log(json.error);
-        });
+    while (!validateUserName(suggestion)) {
+        suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1) + "-" + number;
     }
 
     setUserName(suggestion);
     onUsernameChange(suggestion);
+    setThirdColor("green");
+    setInvalidUsernameDisplay("none");
+  }
+
+  const autoSetSuggestion = () => {
+    if (firstName && lastName) {
+        suggestUsername();
+        setThirdColor("green");
+    }
+  }
+
+  const invalidUsername = () => {
+    setThirdColor("red");
+    setInvalidUsernameDisplay("block");
   }
 
   if (showTOS)
@@ -103,10 +114,6 @@ export default function FormCompletion({
   return (
     <div>
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
-        {/* <div className="complete-form-header">
-          <p>Almost there, please tell us all of the following. Thank you!</p>
-        </div> */}
-
         <img src={ community.logo.url } alt="Welcome" align="center" style={{ margin: "auto",display: "block", marginTop: 10 }} />
         <br />
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
@@ -120,26 +127,28 @@ export default function FormCompletion({
         <div className="c-f-inner-wrapper">
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: firstColor}}></span>
             </span>
             <input
               type="text"
               name="firstName"
               value={firstName}
               onChange={onChange}
+              onBlur={() => { if (firstName) setFirstColor("green"); else setFirstColor("") }}
               placeholder="First Name"
               required
             />
           </div>
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: secondColor}}></span>
             </span>
             <input
               type="text"
               name="lastName"
               value={lastName}
               onChange={onChange}
+              onBlur={() => { autoSetSuggestion(); if (lastName) setSecondColor("green"); else setSecondColor("") }}
               placeholder="Last Name"
               required
             />
@@ -150,19 +159,24 @@ export default function FormCompletion({
           </p>
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: thirdColor}}></span>
             </span>
             <input
               type="text"
               name="userName"
               value={userName}
               onChange={(e) => handleUserNameChange(e)}
+              onBlur={() => { if (userName) setThirdColor("green"); else setThirdColor("") }}
               placeholder="Username"
-              style={{ width: "50%" }}
+              style={{ width: "50%", display: "inline-block" }}
             />
-            <MEButton style={{marginTop: 20, display: "inline" }} onClick={() => suggestUsername()}>
-              User Name Suggestion
+            <MEButton 
+                style={{marginTop: 20, display: "inline", marginLeft: "25%", whiteSpace: "nowrap" }} 
+                onClick={() => suggestUsername()} 
+                disabled={!getValue("firstName") || !getValue("lastName")}>
+              Username Suggestion
             </MEButton>
+            <div style={{ color: "red", display: invalidUsernameDisplay }}>Username is taken!</div>
           </div>
           <p style={{marginTop: 10 }}>
             Your ZIP code is used to count your actions towards { community.name }'s collective goal.
@@ -220,7 +234,7 @@ export default function FormCompletion({
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
               disabled={!captchaIsValid || formNeedsWorks()}
-              onClick={() => createMyAccountNow()}
+              onClick={async () => await validateUserName(userName) ? createMyAccountNow() : invalidUsername()}
               loading={loading}
             >
               {loading ? "Creating Profile..." : "Finish Signing Up!"}
