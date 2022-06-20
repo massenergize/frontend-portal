@@ -14,6 +14,7 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
+const STANDARD_USER = "standard_user";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -98,7 +99,7 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats, communityData, links, pageData } = this.props;
+    const { teamsStats, communityData, links, pageData, user } = this.props;
     if (pageData == null) return <LoadingCircle />;
     if (teamsStats === null) {
       return (
@@ -121,6 +122,8 @@ class TeamsPage extends React.Component {
     const description = pageData.description ? pageData.description : null;
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
+
+   const userType =  user && user.user_info  && user.user_info.user_type
 
     return (
       <>
@@ -189,15 +192,17 @@ class TeamsPage extends React.Component {
                   className="col-3"
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
                 >
-                  <MEButton
-                    style={{ width: "100%", margin: 0 }}
-                    onClick={() => {
-                      this.setState({ createTeamModalOpen: true });
-                    }}
-                    className="phone-vanish"
-                  >
-                    Start Team
-                  </MEButton>
+                  {userType === STANDARD_USER && (
+                    <MEButton
+                      style={{ width: "100%", margin: 0 }}
+                      onClick={() => {
+                        this.setState({ createTeamModalOpen: true });
+                      }}
+                      className="phone-vanish"
+                    >
+                      Start Team
+                    </MEButton>
+                  )}
                 </div>
               </div>
             </center>
