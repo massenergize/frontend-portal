@@ -14,7 +14,6 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
-const STANDARD_USER = "standard_user";
 
 class TeamsPage extends React.Component {
   constructor(props) {
