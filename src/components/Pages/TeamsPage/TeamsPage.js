@@ -123,8 +123,6 @@ class TeamsPage extends React.Component {
 
     const { createTeamModalOpen, redirectID, teamsData } = this.state;
 
-   const userType =  user && user.user_info  && user.user_info.user_type
-
     return (
       <>
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
@@ -192,7 +190,7 @@ class TeamsPage extends React.Component {
                   className="col-3"
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
                 >
-                  {userType === STANDARD_USER && (
+                  {user && user.isStandardUser && (
                     <MEButton
                       style={{ width: "100%", margin: 0 }}
                       onClick={() => {
