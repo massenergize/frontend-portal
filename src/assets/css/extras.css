@@ -6,6 +6,10 @@
   --app-theme-error: #d44b4b;
 }
 
+.settings-p {
+  margin-bottom: 5px;
+  color:black;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
@@ -1168,7 +1172,7 @@
   height: 24px;
   width: 24px;
   background: #f7f5f5;
-  margin-right: 6px;
+  margin-right: 10px;
   vertical-align: center;
   margin-bottom: -6px;
   border-radius: 3px;

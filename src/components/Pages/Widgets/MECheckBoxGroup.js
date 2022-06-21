@@ -22,6 +22,17 @@ export default class MECheckBoxGroup extends Component {
     };
   }
 
+  valueOf(item) {
+    const { valueExtractor } = this.props;
+    if (valueExtractor) return valueExtractor(item);
+    return item?.name || item?.toString();
+  }
+
+  nameOf(item) {
+    const { labelExtractor } = this.props;
+    if (labelExtractor) return labelExtractor(item);
+    return item?.name || item?.toString();
+  }
   componentDidUpdate(prevProps) {
     const { value } = this.props;
     if (prevProps.value !== value) {
@@ -31,25 +42,27 @@ export default class MECheckBoxGroup extends Component {
   handleOnClick(child) {
     const { onItemSelected, data, dataValues } = this.props;
     const { selected } = this.state;
-    child = dataValues[data.indexOf(child)];
+    const value = this.valueOf(child);
+    // child = dataValues[data.indexOf(child)];
     var allItems;
-    if (!selected || !selected.includes(child)) {
-      allItems = [...selected, child];
+    if (!selected || !selected.includes(value)) {
+      allItems = [...selected, value];
       this.setState({ selected: allItems });
     } else {
-      allItems = selected.filter((itm) => itm !== child);
+      allItems = selected.filter((itm) => itm !== value);
       this.setState({ selected: allItems });
     }
 
     if (!onItemSelected) return;
-    onItemSelected(allItems, child);
+    onItemSelected(allItems, value);
   }
 
   checked(child) {
     const { selected } = this.state;
     var { data, dataValues } = this.props;
-    dataValues = dataValues || data;
-    const value = dataValues[data.indexOf(child)];
+    // dataValues = dataValues || data;
+    const value = this.valueOf(child) 
+    // dataValues[data.indexOf(child)];
     if (selected && selected.includes(value)) return true;
     return false;
   }
@@ -81,7 +94,7 @@ export default class MECheckBoxGroup extends Component {
             style={fineTuneSquare}
           ></div>
           <div className={`me-check-square ${squareActive}`}></div>
-          <span>{child}</span>
+          <span>{this.nameOf(child)}</span>
         </div>
       );
     });
@@ -97,7 +110,6 @@ MECheckBoxGroup.propTypes = {
   containerClassName: PropTypes.string,
   containerStyle: PropTypes.object,
   data: PropTypes.array.isRequired,
-  dataValues: PropTypes.array,
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
   onItemSelected: PropTypes.func.isRequired,
