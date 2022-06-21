@@ -1,29 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 
 function Settings({ user, settings }) {
-
+  const settingsTabKey = useRef(null);
+  const userDefaults = user?.preferences?.user_nudge_settings || {};
   const TABS = Object.entries(settings).map(([key, { name, options }]) => ({
     key,
     name,
-    component: <RenderOptions options={options} />,
+    component: (
+      <RenderOptions
+        options={options}
+        userDefaults={userDefaults}
+        settingsTabKey={settingsTabKey}
+      />
+    ),
   }));
 
-  // [
-  //   {
-  //     name: "Advanced Settigns",
-  //     component: <h1>Whether Good or Bad</h1>,
-  //     key: "advanced-settings",
-  //   },
-  //   {
-  //     name: "Other Settings",
-  //     component: <h1>Some other new pages</h1>,
-  //     key: "some other-settings",
-  //   },
-  // ];
   return (
     <div>
       <div
@@ -45,7 +40,10 @@ function Settings({ user, settings }) {
                 receive notifications, and what topics to receive notifications
                 on, if you do want notifications.
               </p>
-              <TabView tabs={TABS} />
+              <TabView
+                onChange={(tabKey) => (settingsTabKey.current = tabKey)}
+                tabs={TABS}
+              />
             </div>
           </div>
         </div>

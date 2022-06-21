@@ -88,8 +88,9 @@ MERadio.propTypes = {
   className: PropTypes.string,
   containerClassName: PropTypes.string,
   containerStyle: PropTypes.object,
-  data: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // dataValues: PropTypes.arrayOf(PropTypes.string),
+  data: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  ).isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   onItemSelected: PropTypes.func.isRequired,

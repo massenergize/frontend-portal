@@ -10,6 +10,7 @@ function TabView({
   onMount,
   containerStyle,
   containerClassName,
+  onChange,
 }) {
   const [activeTab, setActiveTab] = useState(null);
 
@@ -31,6 +32,10 @@ function TabView({
       </div>
     );
   };
+
+  useEffect(() => {
+    onChange && onChange(activeTab);
+  }, [activeTab]);
 
   useEffect(() => {
     const tab = defaultTab || (tabs && tabs[0]?.key);

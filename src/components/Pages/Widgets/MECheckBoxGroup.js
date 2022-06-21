@@ -43,7 +43,6 @@ export default class MECheckBoxGroup extends Component {
     const { onItemSelected, data, dataValues } = this.props;
     const { selected } = this.state;
     const value = this.valueOf(child);
-    // child = dataValues[data.indexOf(child)];
     var allItems;
     if (!selected || !selected.includes(value)) {
       allItems = [...selected, value];
@@ -59,10 +58,7 @@ export default class MECheckBoxGroup extends Component {
 
   checked(child) {
     const { selected } = this.state;
-    var { data, dataValues } = this.props;
-    // dataValues = dataValues || data;
-    const value = this.valueOf(child) 
-    // dataValues[data.indexOf(child)];
+    const value = this.valueOf(child);
     if (selected && selected.includes(value)) return true;
     return false;
   }
@@ -109,7 +105,9 @@ MECheckBoxGroup.propTypes = {
   className: PropTypes.string,
   containerClassName: PropTypes.string,
   containerStyle: PropTypes.object,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  ).isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.array,
   onItemSelected: PropTypes.func.isRequired,

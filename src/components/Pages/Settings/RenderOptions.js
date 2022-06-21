@@ -3,8 +3,9 @@ import RenderCheckboxes from "./RenderCheckboxes";
 import RenderRadios from "./RenderRadios";
 
 const CHECKBOX = "checkbox";
-function RenderOptions({ options }) {
+function RenderOptions({ options, userDefaults, settingsTabKey }) {
   const list = Object.entries(options);
+  console.log("I think I am the user defaults", settingsTabKey);
 
   return (
     <div>
