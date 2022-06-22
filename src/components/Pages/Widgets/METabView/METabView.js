@@ -35,7 +35,7 @@ function TabView({
 
   useEffect(() => {
     onChange && onChange(activeTab); // In case you need to make the tabview a controlled component
-  }, [activeTab]);
+  }, [activeTab, onChange]);
 
   useEffect(() => {
     const tab = defaultTab || (tabs && tabs[0]?.key);

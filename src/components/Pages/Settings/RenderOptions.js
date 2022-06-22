@@ -12,9 +12,7 @@ function RenderOptions({
 }) {
   userDefaults = userDefaults || {};
   const list = Object.entries(options);
-  // console.log("I think I am the user defaults", settingsTabKey);
-  // console.log("PREF", user?.preferences);
-
+  
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
     var readyToBeSaved = {
@@ -39,6 +37,7 @@ function RenderOptions({
             </p>
             {isCheckbox ? (
               <RenderCheckboxes
+                defaultFromUser={userDefaults[questionItemKey] || {}}
                 values={values}
                 onItemSelected={(objectOfSelectedItem) =>
                   whenSettingItemIsToggled(

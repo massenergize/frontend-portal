@@ -1,14 +1,12 @@
 import React from "react";
 import RadioButtons from "./../Widgets/MERadio";
 function RenderRadios({ values, onItemSelected, defaultFromUser }) {
-  // console.log("here is the default From User", defaultFromUser);
   const options = Object.entries(values).map(([key, items]) => ({
     ...items,
     key,
   }));
   var userCurrentDefault = Object.entries(defaultFromUser || {})[0];
   const [defaultValue] = userCurrentDefault || [];
-  // console.log("le defaultValue", defaultValue, userCurrentDefault);
   const transfer = (keyOfOption) => {
     onItemSelected && onItemSelected({ [keyOfOption]: { value: true } });
   };

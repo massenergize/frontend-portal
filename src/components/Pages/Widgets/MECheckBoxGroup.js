@@ -35,12 +35,13 @@ export default class MECheckBoxGroup extends Component {
   }
   componentDidUpdate(prevProps) {
     const { value } = this.props;
-    if (prevProps.value !== value) {
+
+    if (prevProps?.value?.length !== value?.length) {
       this.setState({ selected: value });
     }
   }
   handleOnClick(child) {
-    const { onItemSelected, data, dataValues } = this.props;
+    const { onItemSelected } = this.props;
     const { selected } = this.state;
     const value = this.valueOf(child);
     var allItems;

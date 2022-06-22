@@ -8,7 +8,7 @@
 
 .settings-p {
   margin-bottom: 5px;
-  color:black;
+  color: black;
 }
 .me-light-footer {
   width: 100%;
@@ -2347,6 +2347,12 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .settings-wrapper h1 {
+    font-size: x-large;
+  }
+  .settings-wrapper {
+    padding: 10px 20px;
+  }
   .me-light-footer {
     margin-top: 10px;
   }
