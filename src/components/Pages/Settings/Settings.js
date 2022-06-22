@@ -7,7 +7,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 
-function Settings({ user, settings, updateUser }) {
+function Settings({ user, settings, updateUserInRedux }) {
   const [currentTab, setCurrentTab] = useState(null);
   const userDefaults = user?.preferences?.user_portal_settings || {};
 
@@ -16,7 +16,7 @@ function Settings({ user, settings, updateUser }) {
       ...(user?.preferences || {}),
       user_portal_settings: { ...userDefaults, ...content },
     };
-    updateUser({
+    updateUserInRedux({
       ...user,
       preferences,
     });
@@ -32,19 +32,26 @@ function Settings({ user, settings, updateUser }) {
         console.log("Error updating user settings: ", e.toString())
       );
   };
-  const TABS = Object.entries(settings).map(([key, { name, options }]) => ({
-    key,
-    name,
-    component: (
-      <RenderOptions
-        options={options}
-        userDefaults={userDefaults[key]}
-        settingsTabKey={key}
-        updateUser={updateSettingsForUser}
-        user={user}
-      />
-    ),
-  }));
+
+  const TABS = Object.entries(settings).map(
+    ([key, { name, live, options }]) => {
+      if (live)
+        return {
+          key,
+          name,
+          component: (
+            <RenderOptions
+              options={options}
+              userDefaults={userDefaults[key]} // based on the setting question right now, this will hold the user's chosen value if available
+              settingsTabKey={key}
+              updateUser={updateSettingsForUser}
+              user={user}
+            />
+          ),
+        };
+      return null;
+    }
+  );
 
   return (
     <div>
@@ -61,6 +68,7 @@ function Settings({ user, settings, updateUser }) {
           >
             <div className="col-lg-9 col-md-9 col-12 offset-md-1 settings-wrapper">
               <h1>Settings</h1>
+              {/*  TODO: The text here is just a placeholder. Text description from Kaat or Brad will be used here... */}
               <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics
                 to receive notifications on. Use the toggles below to manage the
@@ -84,6 +92,6 @@ const mapStateToProps = (store) => {
   return { user: store.user.info, settings: store.page.settings };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ updateUser: reduxLogin }, dispatch);
+  return bindActionCreators({ updateUserInRedux: reduxLogin }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

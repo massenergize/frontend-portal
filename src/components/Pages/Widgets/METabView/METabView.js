@@ -15,6 +15,7 @@ function TabView({
   const [activeTab, setActiveTab] = useState(null);
 
   const renderHeader = (tab) => {
+    if (!tab) return;
     const isSelected = activeTab === tab?.key;
     if (render) return render(tab, isSelected);
     return (

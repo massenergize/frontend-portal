@@ -12,7 +12,7 @@ function RenderOptions({
 }) {
   userDefaults = userDefaults || {};
   const list = Object.entries(options);
-  
+
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
     var readyToBeSaved = {
@@ -28,7 +28,7 @@ function RenderOptions({
   return (
     <div>
       {list.map(([questionItemKey, { text, live, type, values }], index) => {
-        // if (!live) return <></>;
+        if (!live) return <></>;
         const isCheckbox = type === CHECKBOX;
         return (
           <div key={questionItemKey} style={{ marginBottom: 25 }}>
