@@ -21,6 +21,12 @@ export default class MERadio extends Component {
       selected: this.props.value,
     };
   }
+  componentDidUpdate(prevProps) {
+    const { value } = this.props;
+    if (prevProps.value !== value) {
+      this.setState({ selected: value });
+    }
+  }
   handleOnClick(child) {
     var { onItemSelected } = this.props;
     this.setState({ selected: this.valueOf(child) });

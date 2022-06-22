@@ -1,15 +1,16 @@
 import React from "react";
 import RadioButtons from "./../Widgets/MERadio";
-function RenderRadios({ values, onItemSelected }) {
+function RenderRadios({ values, onItemSelected, defaultFromUser }) {
+  // console.log("here is the default From User", defaultFromUser);
   const options = Object.entries(values).map(([key, items]) => ({
     ...items,
     key,
   }));
-  // console.log("HEre the values", values);
+  var userCurrentDefault = Object.entries(defaultFromUser || {})[0];
+  const [defaultValue] = userCurrentDefault || [];
+  // console.log("le defaultValue", defaultValue, userCurrentDefault);
   const transfer = (keyOfOption) => {
-    const selectedOptionObj = (values || {})[keyOfOption] || {};
-    onItemSelected &&
-      onItemSelected({ [keyOfOption]: { ...selectedOptionObj, value: true } });
+    onItemSelected && onItemSelected({ [keyOfOption]: { value: true } });
   };
 
   return (
@@ -19,7 +20,7 @@ function RenderRadios({ values, onItemSelected }) {
         valueExtractor={(it) => it.key}
         labelExtractor={(it) => it.name}
         onItemSelected={transfer}
-        // value={"as_posted"}
+        value={defaultValue}
       />
     </div>
   );

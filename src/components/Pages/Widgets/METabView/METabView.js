@@ -34,7 +34,7 @@ function TabView({
   };
 
   useEffect(() => {
-    onChange && onChange(activeTab);
+    onChange && onChange(activeTab); // In case you need to make the tabview a controlled component
   }, [activeTab]);
 
   useEffect(() => {

@@ -1,20 +1,36 @@
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 
-function Settings({ user, settings }) {
-  const settingsTabKey = useRef(null);
+function Settings({ user, settings, updateUser }) {
+  // const settingsTabKey = useRef(null);
+  const [currentTab, setCurrentTab] = useState(null);
   const userDefaults = user?.preferences?.user_nudge_settings || {};
+  // console.log("PREFERENCES", user?.preferences);
+
+  const updateSettingsForUser = (content) => {
+    updateUser({
+      ...user,
+      preferences: {
+        ...user.preferences,
+        user_nudge_settings: { ...userDefaults, ...content },
+      },
+    });
+  };
   const TABS = Object.entries(settings).map(([key, { name, options }]) => ({
     key,
     name,
     component: (
       <RenderOptions
         options={options}
-        userDefaults={userDefaults}
-        settingsTabKey={settingsTabKey}
+        userDefaults={userDefaults[key]}
+        settingsTabKey={key}
+        updateUser={updateSettingsForUser}
+        user={user}
       />
     ),
   }));
@@ -41,8 +57,9 @@ function Settings({ user, settings }) {
                 on, if you do want notifications.
               </p>
               <TabView
-                onChange={(tabKey) => (settingsTabKey.current = tabKey)}
+                onChange={(tabKey) => setCurrentTab(tabKey)}
                 tabs={TABS}
+                defaultTab={currentTab}
               />
             </div>
           </div>
@@ -55,4 +72,7 @@ function Settings({ user, settings }) {
 const mapStateToProps = (store) => {
   return { user: store.user.info, settings: store.page.settings };
 };
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ updateUser: reduxLogin }, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);
