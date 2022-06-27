@@ -25,6 +25,7 @@ export default function FormCompletion({
   const [showPP, setShowPP] = useState(false);
 
   const [userName, setUserName] = useState("");
+  const [userNameValid, setUserNameValid] = useState(false);
   const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
 
   const [firstColor, setFirstColor] = useState("");
@@ -53,7 +54,10 @@ export default function FormCompletion({
 
   const validateUserName = async (username) => {
     await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success) return json.data;
+        if (json.success){
+            console.log(username, json.data);
+            return json.data;
+        } 
         else {
             console.log(json.error);
             return false; }
@@ -63,9 +67,10 @@ export default function FormCompletion({
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
     onUsernameChange(e.target.value);
+    setUserNameValid(false);
   }
 
-  const suggestUsername = async () => {
+  const suggestUsername = () => {
     let suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
     let number = 0;
     
@@ -74,21 +79,21 @@ export default function FormCompletion({
     }
 
     setUserName(suggestion);
+    setUserNameValid(true);
     onUsernameChange(suggestion);
     setThirdColor("green");
     setInvalidUsernameDisplay("none");
   }
 
   const autoSetSuggestion = () => {
-    if (firstName && lastName) {
+    if (firstName && lastName && !userName) {
         suggestUsername();
-        setThirdColor("green");
     }
   }
 
-  const invalidUsername = () => {
-    setThirdColor("red");
-    setInvalidUsernameDisplay("block");
+  const invalidUsername = display => {
+    display === "block" ? setThirdColor("red") : setThirdColor("green");
+    setInvalidUsernameDisplay(display);
   }
 
   if (showTOS)
@@ -153,12 +158,12 @@ export default function FormCompletion({
               required
             />
           </div>
-          <p style={{marginTop: 10 }}>
+          <p style={{marginTop: 10, marginBottom: 0 }}>
             What username would you like? {" "} 
-            You can use the suggestion or create your own.
+            You can use our suggestion or create your own.
           </p>
-          <div className="form-group">
-            <span className="adon-icon">
+          <div className="form-group" style={{ marginBottom: 10 }}>
+            <span className="adon-icon" style={{right: 0, left: "46%", marginTop: -3}}>
               <span className="fa fa-user" style={{color: thirdColor}}></span>
             </span>
             <input
@@ -166,7 +171,32 @@ export default function FormCompletion({
               name="userName"
               value={userName}
               onChange={(e) => handleUserNameChange(e)}
-              onBlur={() => { if (userName) setThirdColor("green"); else setThirdColor("") }}
+              onBlur={async () => { 
+                if (!userName) {
+                    console.log("here1");
+                    invalidUsername("none");
+                    setThirdColor("");
+                    return;
+                }
+
+                // this returns undefined for some reason, so "here2" is never hit
+                // result: valid (and technically all) usernames are treated as invalid, unless 
+                // "Username Suggestion" button is pressed
+                console.log(await validateUserName(userName));
+
+                if (userNameValid || await validateUserName(userName)) {
+                    console.log("here2");
+                    setThirdColor("green");
+                    setUserNameValid(true);
+                    invalidUsername("none");
+                }
+                else {
+                    console.log("here3", userName);
+                    setThirdColor("red");
+                    setUserNameValid(false);
+                    invalidUsername("block");
+                }
+              }}
               placeholder="Username"
               style={{ width: "50%", display: "inline-block" }}
             />
@@ -176,8 +206,8 @@ export default function FormCompletion({
                 disabled={!getValue("firstName") || !getValue("lastName")}>
               Username Suggestion
             </MEButton>
-            <div style={{ color: "red", display: invalidUsernameDisplay }}>Username is taken!</div>
           </div>
+          <div style={{ color: "red", display: invalidUsernameDisplay }}>Username is taken!</div>
           <p style={{marginTop: 10 }}>
             Your ZIP code is used to count your actions towards { community.name }'s collective goal.
           </p>
@@ -233,8 +263,8 @@ export default function FormCompletion({
               style={{ marginRight: 8, padding: "11px 40px" }}
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
-              disabled={!captchaIsValid || formNeedsWorks()}
-              onClick={async () => await validateUserName(userName) ? createMyAccountNow() : invalidUsername()}
+              disabled={!captchaIsValid || formNeedsWorks() || !userNameValid}
+              onClick={async () => createMyAccountNow()}
               loading={loading}
             >
               {loading ? "Creating Profile..." : "Finish Signing Up!"}
