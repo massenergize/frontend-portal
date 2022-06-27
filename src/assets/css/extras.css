@@ -2041,9 +2041,15 @@
 .all-head-area {
   margin-top: -20px;
 }
+.me-subtitle {
+  color: black;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .me-subtitle {
+    font-size: large;
+  }
   .flat-btn {
     padding: 15px 30px;
   }
@@ -2353,6 +2359,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-subtitle {
+    font-size: medium;
+  }
   .me-light-footer {
     margin-top: 10px;
   }
