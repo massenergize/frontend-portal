@@ -285,7 +285,7 @@ class OneTeamPage extends React.Component {
                           textAlign: "center",
                           fontWeight: "bold",
                         }}
-                        className="cool-font team-card-content"
+                        className="cool-font team-name-container"
                       >
                         {hasLogo && ( //img only shows in mobile view
                           <img
@@ -294,28 +294,15 @@ class OneTeamPage extends React.Component {
                             alt=""
                           />
                         )}
-                        <span className="test-team-name">
+                        <div className="test-team-name">
                           {team && team.name}
-                        </span>
-                        {!isInTeam ? (
-                          !user?.is_guest && (
-                            <i
-                              className="fa fa-long-arrow-left"
-                              style={{
-                                marginLeft: 17,
-                                color: isInTeam ? "black" : "#fd704c",
-                              }}
-                            ></i>
-                          )
-                        ) : (
-                          <></>
-                        )}
-                        <span
+                        </div>
+                        <div
                           style={{ margin: "0px 15px" }}
                           id="test-join-team-btn"
                         >
                           {buttonOrInTeam}
-                        </span>
+                        </div>
                       </h2>
                     </div>
                   </>
