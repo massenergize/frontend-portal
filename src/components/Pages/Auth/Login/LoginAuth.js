@@ -60,6 +60,7 @@ export default function LoginAuth(props) {
       setNotification({
         good: true,
         message: `MassEnergize has sent a special link to ${email}.  Please follow the link to set up your profile.`,
+        resendFunction: sendLink,
       });
     });
   };
