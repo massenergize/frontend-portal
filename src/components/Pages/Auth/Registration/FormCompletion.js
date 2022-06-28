@@ -53,11 +53,8 @@ export default function FormCompletion({
   };
 
   const validateUserName = async (username) => {
-    await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success){
-            console.log(username, json.data);
-            return json.data;
-        } 
+    return await apiCall("users.validate.username", {username: username}).then(json => {
+        if (json.success) return json.data; 
         else {
             console.log(json.error);
             return false; }
@@ -70,12 +67,13 @@ export default function FormCompletion({
     setUserNameValid(false);
   }
 
-  const suggestUsername = () => {
+  const suggestUsername = async () => {
     let suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
     let number = 0;
     
-    while (!validateUserName(suggestion)) {
+    while (! await validateUserName(suggestion)) {
         suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1) + "-" + number;
+        number += 1;
     }
 
     setUserName(suggestion);
@@ -119,7 +117,7 @@ export default function FormCompletion({
   return (
     <div>
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
-        <img src={ community.logo.url } alt="Welcome" align="center" style={{ margin: "auto",display: "block", marginTop: 10 }} />
+        <img src={ community?.logo?.url } alt="Welcome" align="center" style={{ margin: "auto",display: "block", marginTop: 10 }} />
         <br />
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
           Welcome to { community.name }
@@ -173,29 +171,21 @@ export default function FormCompletion({
               onChange={(e) => handleUserNameChange(e)}
               onBlur={async () => { 
                 if (!userName) {
-                    console.log("here1");
                     invalidUsername("none");
                     setThirdColor("");
                     return;
                 }
 
-                // this returns undefined for some reason, so "here2" is never hit
-                // result: valid (and technically all) usernames are treated as invalid, unless 
-                // "Username Suggestion" button is pressed
-                console.log(await validateUserName(userName));
-
                 if (userNameValid || await validateUserName(userName)) {
-                    console.log("here2");
                     setThirdColor("green");
                     setUserNameValid(true);
                     invalidUsername("none");
+                    return;
                 }
-                else {
-                    console.log("here3", userName);
-                    setThirdColor("red");
-                    setUserNameValid(false);
-                    invalidUsername("block");
-                }
+                
+                setThirdColor("red");
+                setUserNameValid(false);
+                invalidUsername("block");
               }}
               placeholder="Username"
               style={{ width: "50%", display: "inline-block" }}
