@@ -28,6 +28,7 @@ import {
 
 import { apiCall } from "../../api/functions";
 const GUEST_USER = "guest_user";
+const STANDARD_USER = "standard_user";
 export const reduxSetPreferredEquivalence = (value) => {
   return {
     type: SET_PREFERRED_EQUIVALENCE,
@@ -59,7 +60,10 @@ export const reduxLogin = (user) => (dispatch) => {
   }
   return dispatch({
     type: LOGIN,
-    payload: user,
+    payload: {
+      ...user,
+      isStandardUser: user && user.user_info && user.user_info.user_type === STANDARD_USER ? true:false
+    },
   });
 };
 
