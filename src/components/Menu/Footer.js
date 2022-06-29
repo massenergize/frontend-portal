@@ -4,11 +4,7 @@ import FooterLinks from "./FooterLinks";
 import { Link } from "react-router-dom";
 import SubscribeForm from "./SubscribeForm";
 import { connect } from "react-redux";
-import {
-  IS_PROD,
-  IS_CANARY,
-  BUILD_VERSION,
-} from "../../config/config";
+import { IS_PROD, IS_CANARY, BUILD_VERSION } from "../../config/config";
 import CommunitySocials from "./CommunitySocials";
 /**
  * Footer section has place for links,
@@ -28,7 +24,8 @@ class Footer extends React.Component {
   render() {
     // console.log("I am the community", this.props.community);
     let BUILD_VERSION_TEXT = BUILD_VERSION;
-    if (IS_PROD) {      //prod main
+    if (IS_PROD) {
+      //prod main
       BUILD_VERSION_TEXT = "Production Build " + BUILD_VERSION_TEXT;
     } else if (IS_CANARY) {
       //prod main
@@ -41,7 +38,10 @@ class Footer extends React.Component {
     const moreInfo = this.getMoreInfo();
 
     const donatePageData = this.props.donatePageData;
-    const donateEnabled = donatePageData && donatePageData.is_published ? donatePageData.is_published : null;
+    const donateEnabled =
+      donatePageData && donatePageData.is_published
+        ? donatePageData.is_published
+        : null;
 
     return (
       <div className="d-flex flex-column">
@@ -64,8 +64,11 @@ class Footer extends React.Component {
                   />
                   {/* <!--Footer Column--> */}
                   <div className="col-12 col-md-4 footer-column-mod">
-                    {moreInfo.wants_socials ==="true" ? (
-                      <CommunitySocials community={this.props.community} moreInfo={moreInfo} />
+                    {moreInfo.wants_socials === "true" ? (
+                      <CommunitySocials
+                        community={this.props.community}
+                        moreInfo={moreInfo}
+                      />
                     ) : (
                       <SubscribeForm />
                     )}
@@ -79,7 +82,7 @@ class Footer extends React.Component {
           {/* <div className="container"> */}
           <div className="temp-f-donate-area">
             <div className="pull-left copy-text">
-              <p className="cool-font">
+              <p className="cool-font" style={{ color: "#999" }}>
                 <a
                   target="_blank"
                   href="https://massenergize.org"
@@ -98,27 +101,15 @@ class Footer extends React.Component {
               </p>
             </div>
             {donateEnabled ? (
-            <div className="pull-right get-text temp-dn-fix" >
-              <Link to={this.props.links.donate}>Donate Now</Link>
-            </div>
-            ) : null }
+              <div className="pull-right get-text temp-dn-fix">
+                <Link to={this.props.links.donate}>Donate Now</Link>
+              </div>
+            ) : null}
           </div>
         </section>
         <section className="coders " style={{ background: "black" }}>
           <div className="container">
-            <p className="m-0" style={{ fontSize: "12px" }}>
-              Made with &nbsp;
-              <span className="fa fa-heart text-danger"></span> by &nbsp;
-              <u>Samuel Opoku-Agyemang</u>
-              &nbsp;&nbsp;
-              <u>Kieran O'Day</u>
-              &nbsp;&nbsp;
-              <u>Mingle Li</u>
-              &nbsp;&nbsp;
-              <u>Frimpong Opoku-Agyemang</u>
-              &nbsp;&nbsp;
-              <u>Josh Katofsky</u>
-              <br />
+            <p className="m-0" style={{ fontSize: "12px", color: "#999" }}>
               <u>{BUILD_VERSION_TEXT}</u>
             </p>
           </div>
