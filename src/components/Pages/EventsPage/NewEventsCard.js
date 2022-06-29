@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import { makeStringFromArrOfObjects } from "../../Utils";
 import { isMobile } from "react-device-detect";
+import MEButton from "../Widgets/MEButton";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -172,7 +173,11 @@ export default class NewEventsCard extends Component {
             isMobile && "z-depth-1"
           }`}
         >
-          <Link to={`${links.events + "/" + id}`} style={{ width: "100%" }} className="test-one-event-card-clickable">
+          <Link
+            to={`${links.events + "/" + id}`}
+            style={{ width: "100%" }}
+            className="test-one-event-card-clickable"
+          >
             <img
               src={this.getPhoto()}
               className="new-me-testimonial-img"
@@ -199,23 +204,6 @@ export default class NewEventsCard extends Component {
             <div style={{ padding: 13 }}>
               <span className="date-string">{dateString}</span>
               <br />
-              {!user && rsvp_enabled && (
-                <>
-                  <small style={{ fontSize: "90%" }}>
-                    <Link
-                      className="test-sign-in-to-rsvp"
-                      to={links.signin}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleGuestAuthDialog(true);
-                      }}
-                    >
-                      Sign In to RSVP
-                    </Link>
-                  </small>
-                  <br />
-                </>
-              )}
 
               {recurringDetailString && (
                 <METextView type="small" style={{ color: "green" }}>
@@ -224,9 +212,23 @@ export default class NewEventsCard extends Component {
               )}
             </div>
 
-            {user && rsvp_enabled && !this.state.pastEvent && (
+            {!user && rsvp_enabled && (
+              <div style={{ marginLeft: "auto" }}>
+                <MEButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleGuestAuthDialog(true);
+                  }}
+                  flat
+                >
+                  RSVP
+                </MEButton>
+              </div>
+            )}
+            {user && rsvp_enabled && true && (
               <div style={{ marginLeft: "auto" }}>
                 <MELightDropDown
+                  containerStyle={{ padding: 0 }}
                   direction={dropDirection}
                   onItemSelected={this.itemSelected}
                   animate={false}
@@ -237,7 +239,7 @@ export default class NewEventsCard extends Component {
                     rsvpStatus ||
                     "RSVP"
                   }
-                  labelClassNames="me-rsvp-btn z-depth-float test-card-rsvp-toggler"
+                  labelClassNames="me-rsvp-btn test-card-rsvp-toggler"
                   data={[
                     RSVP_STATUS.INTERESTED,
                     RSVP_STATUS.GOING,

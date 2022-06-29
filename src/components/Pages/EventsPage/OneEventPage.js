@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
-import { Link } from "react-router-dom";
 import notFound from "./not-found.jpg";
 import {
   dateFormatString,
@@ -20,6 +19,7 @@ import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
 import { isMobile } from "react-device-detect";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import MEButton from "../Widgets/MEButton";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -321,7 +321,7 @@ class OneEventPage extends React.Component {
                       {user ? (
                         <div style={{ position: "relative" }}>
                           <MELightDropDown
-                            style={{ width: "100%", padding: 11 }}
+                            style={{ width: "100%", padding: 13 }}
                             containerStyle={{ display: "block", padding: 0 }}
                             direction="down"
                             onItemSelected={(status) => this.updateRSVP(status)}
@@ -362,18 +362,18 @@ class OneEventPage extends React.Component {
                         </div>
                       ) : (
                         <div>
-                          <small style={{ fontSize: "90%" }}>
-                            <Link
-                              className="test-sign-in-to-rsvp"
-                              to={this.props.links.signin}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                toggleGuestAuthDialog(true);
-                              }}
-                            >
-                              Sign In to RSVP
-                            </Link>
-                          </small>
+                          <MEButton
+                            containerStyle={{ width: "100%" }}
+                            style={{ width: "100%" }}
+                            wrapperStyle={{ width: "100%" }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleGuestAuthDialog(true);
+                            }}
+                            flat
+                          >
+                            RSVP
+                          </MEButton>
                         </div>
                       )}
                     </div>
