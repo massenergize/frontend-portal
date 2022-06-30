@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../logo.png";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
@@ -338,6 +338,13 @@ class NavBarBurger extends React.Component {
             >
               My Profile
             </Link>
+            <Link
+              to={`${links.profile}/settings`}
+              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
+              onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+            >
+              Settings
+            </Link>
             <button
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => {
@@ -379,7 +386,7 @@ export default connect(mapStoreToProps, {
   reduxLogout,
   signOut: signMeOut,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
-})(withFirebase(NavBarBurger));
+})(withRouter(withFirebase(NavBarBurger)));
 // export default NavBarBurger;
 
 // ======================== BURGERED vvv =========================== //
