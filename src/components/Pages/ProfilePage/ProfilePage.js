@@ -28,6 +28,7 @@ import {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -50,6 +51,7 @@ import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
+import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -174,8 +176,9 @@ class ProfilePage extends React.Component {
 
     const { user, community } = this.props;
     const userIsAGuest = user && user.is_guest;
-    console.log("I am the community", community);
+
     const [eqLabels, eqValues] = this.getEqData();
+
     return (
       <>
         <div
@@ -486,6 +489,7 @@ class ProfilePage extends React.Component {
               >
                 Edit Profile
               </Dropdown.Item>
+
               {/* {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
               this.props.auth.providerData[0].providerId === "password" ? ( */}
@@ -510,6 +514,16 @@ class ProfilePage extends React.Component {
                   </Dropdown.Item>
                 </>
               ) : null}
+              <Dropdown.Item
+                onClick={() =>
+                  this.props.history.push(
+                    `${this.props.links.profile}/settings`
+                  )
+                }
+                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+              >
+                Settings
+              </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
                   if (usesOnlyPasswordless)
@@ -678,6 +692,7 @@ class ProfilePage extends React.Component {
     });
   }
   renderHouseholds(households) {
+    const { toggleModal } = this.props;
     const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
@@ -734,7 +749,21 @@ class ProfilePage extends React.Component {
                 />
                 {isNotLastHouse && (
                   <MEButton
-                    onClick={() => this.deleteHousehold(house)}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      toggleModal({
+                        show: true,
+                        component: (
+                          <HouseholdDeleteConfirmation
+                            household={house}
+                            onConfirm={() => this.deleteHousehold(house)}
+                            cancel={() => toggleModal({ show: false })}
+                            todos={this.props.todo}
+                          />
+                        ),
+                      });
+                      // this.deleteHousehold(house);
+                    }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
                     iconStyle={{ margin: 0 }}
@@ -939,6 +968,7 @@ const mapDispatchToProps = {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
   reduxSetPreferredEquivalence,
+  toggleModal: reduxToggleUniversalModal,
 };
 export default connect(
   mapStoreToProps,

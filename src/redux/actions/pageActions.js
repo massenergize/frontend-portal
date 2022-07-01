@@ -51,12 +51,19 @@ import {
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
+  LOAD_SETTINGS,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
 
+export const reduxLoadSettings = (data) => {
+  return {
+    type: LOAD_SETTINGS,
+    payload: data,
+  };
+};
 export const reduxToggleUniversalModal = (data) => {
   return {
     type: TOGGLE_UNIVERSAL_MODAL,
