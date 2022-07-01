@@ -54,7 +54,7 @@ export default function FormCompletion({
 
   const validateUserName = async (username) => {
     return await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success) return json.data; 
+        if (json.success) return [json.data[0], json.data[1]];
         else {
             console.log(json.error);
             return false; }
@@ -68,15 +68,10 @@ export default function FormCompletion({
   }
 
   const suggestUsername = async () => {
-    let suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
-    let number = 0;
-    
-    while (! await validateUserName(suggestion)) {
-        suggestion = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1) + "-" + number;
-        number += 1;
-    }
+    const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
+    const [is_valid, suggestion] = await validateUserName(template);
 
-    setUserName(suggestion);
+    is_valid ? setUserName(template) : setUserName(suggestion);
     setUserNameValid(true);
     onUsernameChange(suggestion);
     setThirdColor("green");
@@ -176,7 +171,8 @@ export default function FormCompletion({
                     return;
                 }
 
-                if (userNameValid || await validateUserName(userName)) {
+                const [is_valid, _] = await validateUserName(userName);
+                if (userNameValid || is_valid) {
                     setThirdColor("green");
                     setUserNameValid(true);
                     invalidUsername("none");

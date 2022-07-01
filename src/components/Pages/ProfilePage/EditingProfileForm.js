@@ -54,7 +54,9 @@ class EditingProfileForm extends React.Component {
       this.deleteAccount();
     } else {
       
-      if (!await this.validateUsername(this.state.preferred_name)){
+
+
+      if (!await this.validateUsername(this.state.preferred_name)[0]){
         this.setState({invalid_username_visibility: "visible"});
         return;
       }
