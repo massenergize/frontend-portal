@@ -54,7 +54,7 @@ export default function FormCompletion({
 
   const validateUserName = async (username) => {
     return await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success) return [json.data[0], json.data[1]];
+        if (json.success) return json.data;
         else {
             console.log(json.error);
             return false; }
@@ -69,11 +69,12 @@ export default function FormCompletion({
 
   const suggestUsername = async () => {
     const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
-    const [is_valid, suggestion] = await validateUserName(template);
+    const data = await validateUserName(template);
+    console.log("data: ", data);
 
-    is_valid ? setUserName(template) : setUserName(suggestion);
+    data[0] ? setUserName(template) : setUserName(data[1]);
     setUserNameValid(true);
-    onUsernameChange(suggestion);
+    onUsernameChange(data[1]);
     setThirdColor("green");
     setInvalidUsernameDisplay("none");
   }
@@ -162,7 +163,7 @@ export default function FormCompletion({
             <input
               type="text"
               name="userName"
-              value={userName}
+              value={userName || ""}
               onChange={(e) => handleUserNameChange(e)}
               onBlur={async () => { 
                 if (!userName) {
@@ -170,9 +171,15 @@ export default function FormCompletion({
                     setThirdColor("");
                     return;
                 }
+                
+                if (userNameValid) {
+                    setThirdColor("green");
+                    invalidUsername("none");
+                    return;
+                }
 
                 const [is_valid, _] = await validateUserName(userName);
-                if (userNameValid || is_valid) {
+                if (is_valid) {
                     setThirdColor("green");
                     setUserNameValid(true);
                     invalidUsername("none");
