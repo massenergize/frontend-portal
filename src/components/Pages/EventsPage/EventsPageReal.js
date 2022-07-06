@@ -25,6 +25,7 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import Subtitle from "../Widgets/Subtitle";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -168,7 +169,9 @@ class EventsPage extends React.Component {
                           </PageTitle>
                         )}
                       </div>
-                      <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                      <center>
+                        <Subtitle>{sub_title}</Subtitle>
+                      </center>
                     </div>
                     <HorizontalFilterBox
                       type="events"

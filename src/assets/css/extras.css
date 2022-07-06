@@ -6,6 +6,10 @@
   --app-theme-error: #d44b4b;
 }
 
+.settings-p {
+  margin-bottom: 5px;
+  color: black;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
@@ -250,13 +254,13 @@
   font-size: 0.85rem;
 }
 .me-rsvp-btn {
-  padding: 8px 15px;
+  padding: 12px 18px;
   font-size: 0.9rem;
   background: var(--app-theme-orange);
   color: white;
   height: 100%;
   /* margin-right: -20px; */
-  border-radius: 5px;
+  border-radius: 0px;
   cursor: pointer;
   border: 0px;
   font-weight: bold;
@@ -869,6 +873,10 @@
   color: white !important;
 }
 
+.me-flat-btn {
+  box-shadow: 0 0 0 !important;
+}
+
 .flat-btn {
   color: #282828;
   cursor: pointer;
@@ -1168,7 +1176,7 @@
   height: 24px;
   width: 24px;
   background: #f7f5f5;
-  margin-right: 6px;
+  margin-right: 10px;
   vertical-align: center;
   margin-bottom: -6px;
   border-radius: 3px;
@@ -1590,12 +1598,15 @@
   /* color:#adabab; */
   color: #282828;
 }
+.me-undefault-btn {
+  padding: 10px 20px;
+}
 .me-undefault-btn,
 .me-undefault-btn:active,
 .me-undefault-btn:focus {
   display: inline-block;
   outline: 0;
-  padding: 10px 20px;
+
   background: white;
   border-color: white;
   border-style: solid;
@@ -2034,11 +2045,20 @@
 .all-head-area {
   margin-top: -20px;
 }
+.me-subtitle {
+  color: black;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .me-subtitle {
+    font-size: large;
+  }
   .flat-btn {
     padding: 15px 30px;
+  }
+  .me-flat-btn {
+    padding: 13px 30px;
   }
   .edit-profile-content {
     padding: 30px;
@@ -2343,12 +2363,25 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-subtitle {
+    font-size: medium;
+  }
+  .settings-wrapper h1 {
+    font-size: x-large;
+  }
+  .settings-wrapper {
+    padding: 10px 20px;
+  }
   .me-light-footer {
     margin-top: 10px;
   }
   .profile-pic-preview {
     width: 120px;
     height: 120px;
+  }
+  .me-flat-btn {
+    padding: 13px 23px !important;
+    font-size: small !important;
   }
   .flat-btn {
     padding: 15px 20px;
