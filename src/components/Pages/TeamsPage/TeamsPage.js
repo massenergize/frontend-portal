@@ -98,7 +98,7 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats, communityData, links, pageData } = this.props;
+    const { teamsStats, communityData, links, pageData, user } = this.props;
     if (pageData == null) return <LoadingCircle />;
     if (teamsStats === null) {
       return (
@@ -189,15 +189,17 @@ class TeamsPage extends React.Component {
                   className="col-3"
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
                 >
-                  <MEButton
-                    style={{ width: "100%", margin: 0 }}
-                    onClick={() => {
-                      this.setState({ createTeamModalOpen: true });
-                    }}
-                    className="phone-vanish"
-                  >
-                    Start Team
-                  </MEButton>
+                  {user && user.isStandardUser && (
+                    <MEButton
+                      style={{ width: "100%", margin: 0 }}
+                      onClick={() => {
+                        this.setState({ createTeamModalOpen: true });
+                      }}
+                      className="phone-vanish"
+                    >
+                      Start Team
+                    </MEButton>
+                  )}
                 </div>
               </div>
             </center>
