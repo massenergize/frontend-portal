@@ -254,13 +254,13 @@
   font-size: 0.85rem;
 }
 .me-rsvp-btn {
-  padding: 8px 15px;
+  padding: 12px 18px;
   font-size: 0.9rem;
   background: var(--app-theme-orange);
   color: white;
   height: 100%;
   /* margin-right: -20px; */
-  border-radius: 5px;
+  border-radius: 0px;
   cursor: pointer;
   border: 0px;
   font-weight: bold;
@@ -871,6 +871,10 @@
 
 .flat-btn_submit {
   color: white !important;
+}
+
+.me-flat-btn {
+  box-shadow: 0 0 0 !important;
 }
 
 .flat-btn {
@@ -1594,12 +1598,15 @@
   /* color:#adabab; */
   color: #282828;
 }
+.me-undefault-btn {
+  padding: 10px 20px;
+}
 .me-undefault-btn,
 .me-undefault-btn:active,
 .me-undefault-btn:focus {
   display: inline-block;
   outline: 0;
-  padding: 10px 20px;
+
   background: white;
   border-color: white;
   border-style: solid;
@@ -2050,6 +2057,9 @@
   .flat-btn {
     padding: 15px 30px;
   }
+  .me-flat-btn {
+    padding: 13px 30px;
+  }
   .edit-profile-content {
     padding: 30px;
   }
@@ -2368,6 +2378,10 @@
   .profile-pic-preview {
     width: 120px;
     height: 120px;
+  }
+  .me-flat-btn {
+    padding: 13px 23px !important;
+    font-size: small !important;
   }
   .flat-btn {
     padding: 15px 20px;
