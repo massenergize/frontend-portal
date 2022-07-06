@@ -14,6 +14,7 @@ import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
+import Subtitle from "../Widgets/Subtitle";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -158,7 +159,7 @@ class TeamsPage extends React.Component {
             </div>
 
             <center>
-              {sub_title ? <p className="phone-font-15">{sub_title}</p> : null}
+              <Subtitle>{sub_title}</Subtitle>
             </center>
             <center>
               <div
