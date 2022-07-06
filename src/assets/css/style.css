@@ -9686,6 +9686,13 @@ button.as-link:hover {
   display: block;
   margin: auto;
 }
+.team-name-container {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 
 .info-section {
   border-radius: 4px;
