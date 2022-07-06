@@ -40,6 +40,7 @@ import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
+import Subtitle from "../Widgets/Subtitle";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -289,20 +290,17 @@ class ActionsPage extends React.Component {
                   )}
                 </div>
                 <center>
-                  {pageData.sub_title ? (
-                    <small>{pageData.sub_title}</small>
-                  ) : null}
+                  <Subtitle>{pageData.sub_title}</Subtitle>
                 </center>
               </div>
-             
-             
+
               <ActionMobileStats
                 todo={this.props.todo}
                 done={this.props.done}
                 user={this.props.user}
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
-              /> 
+              />
               <HorizontalFilterBox
                 type="action"
                 foundNumber={this.state.mirror_actions}

@@ -26,6 +26,7 @@ class EditingProfileForm extends React.Component {
       image: props.user?.profile_picture?.url,
       color: props.user?.preferences?.color || "#fd7e14",
       imageReset: null,
+      invalid_username_visibility: "hidden",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -38,11 +39,26 @@ class EditingProfileForm extends React.Component {
     });
   }
 
-  onSubmit = (event) => {
+  validateUsername = async (username) => {
+    return await apiCall("users.validate.username", {username: username}).then(json => {
+        if (json.success) return json.data; 
+        else {
+            console.log(json.error);
+            return false; }
+    });
+  }
+
+  onSubmit = async (event) => {
     event && event.preventDefault();
     if (this.state.delete_account && this.state.are_you_sure) {
       this.deleteAccount();
     } else {
+      
+      if (!await this.validateUsername(this.state.preferred_name)){
+        this.setState({invalid_username_visibility: "visible"});
+        return;
+      }
+      
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
@@ -91,36 +107,42 @@ class EditingProfileForm extends React.Component {
               required={true}
             />
 
-            <small>
-              Preferred Name <span className="text-danger">*</span>
-            </small>
-            <METextField
-              type="text"
-              name="preferred_name"
-              defaultValue={this.state.preferred_name}
-              onChange={this.onChange}
-              required={true}
-            />
-            <br />
-            {/* <small>Profile Picture</small> */}
-            <MEFileSelector
-              placeholder="Choose a profile picture"
-              onFileSelected={(data, reset) =>
-                this.setState({
-                  image: data?.file?.data || "reset",
-                  imageReset: reset,
-                })
-              }
-              name="Your profile pic..."
-              allowCrop
-              circleCrop
-              ratioWidth={1}
-              ratioHeight={1}
-              previewClassName="profile-pic-preview"
-              defaultValue={this.state.image !== "reset" && this.state.image}
-            />
+          <small>
+            Preferred Name <span className="text-danger">*</span>
+          </small>
+          <METextField
+            type="text"
+            name="preferred_name"
+            defaultValue={this.state.preferred_name}
+            onChange={this.onChange}
+            required={true}
+          />
+          <div style={{visibility:this.state.invalid_username_visibility, color:"red"}}>
+            Username is taken!
           </div>
-
+          <br />
+          <small>Profile Picture</small>
+          <MEFileSelector
+            placeholder="Choose a profile picture"
+            onFileSelected={(data, reset) =>
+              this.setState({
+                image: data?.file?.data || "reset",
+                imageReset: reset,
+              })
+            }
+            name="Your profile pic..."
+            allowCrop
+            circleCrop
+            ratioWidth={1}
+            ratioHeight={1}
+            previewStyle={{
+              borderRadius: "100%",
+              width: 200,
+              height: 200,
+              objectFit: "cover",
+            }}
+          />
+          </div>
           <MELightFooter
             okText={loading ? "UPDATING..." : "SUBMIT"}
             onConfirm={() => this.onSubmit()}
@@ -128,7 +150,7 @@ class EditingProfileForm extends React.Component {
               e.preventDefault();
               this.props.closeForm();
             }}
-          />
+            />
         </div>
       </form>
     );

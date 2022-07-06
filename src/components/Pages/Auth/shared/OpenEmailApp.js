@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { signMeOut } from "../../../../redux/actions/authActions";
 
 function OpenEmailApp({ signMeOut, showCancel }) {
+  if (!showCancel) return <></>;
   return (
     <div className="email-helpers-div">
       {/* <a target="_blank" href="mailto:" rel="noopener noreferrer">
