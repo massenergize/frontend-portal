@@ -58,15 +58,23 @@ class MEButton extends Component {
   }
   getClasses() {
     var classes;
-    var { className, variation } = this.props;
-    classes = `me-undefault-btn me-universal-btn me-btn-green ${className} me-btn-phone-mode`;
-    if (!variation || variation.toLowerCase === NORMAL) return classes;
-    if (variation.toLowerCase() === ACCENT) {
-      classes = `me-undefault-btn me-universal-btn me-btn-accent ${className} me-btn-phone-mode`;
+    var { className, variation, flat } = this.props;
+    classes = `me-undefault-btn ${
+      flat ? "me-flat-btn" : "me-universal-btn"
+    } me-btn-green ${className} me-btn-phone-mode`;
+
+    if (variation?.toLowerCase() === UNION || (flat && variation === NORMAL)) {
+      classes = `me-undefault-btn ${
+        flat ? "me-flat-btn" : "me-universal-btn"
+      } me-btn-union ${className} me-btn-phone-mode`;
       return classes;
     }
-    if (variation.toLowerCase() === UNION) {
-      classes = `me-undefault-btn me-universal-btn me-btn-union ${className} me-btn-phone-mode`;
+
+    if (!variation || variation.toLowerCase === NORMAL) return classes;
+    if (variation?.toLowerCase() === ACCENT) {
+      classes = `me-undefault-btn ${
+        flat ? "me-flat-btn" : "me-universal-btn"
+      } me-btn-accent ${className} me-btn-phone-mode`;
       return classes;
     }
 
@@ -88,7 +96,7 @@ class MEButton extends Component {
     const styles = style ? { ...style } : null;
     if (!href && !to) {
       return (
-        <div className={"put-me-inline"}>
+        <div className={"put-me-inline"} style={this.props.wrapperStyle}>
           <button
             id={id}
             type={type}
@@ -106,7 +114,7 @@ class MEButton extends Component {
 
     if (href)
       return (
-        <div className="put-me-inline">
+        <div className="put-me-inline" style={this.props.wrapperStyle}>
           <a
             id={id}
             disabled={disabled}
@@ -123,7 +131,7 @@ class MEButton extends Component {
       );
     if (to)
       return (
-        <div className="put-me-inline">
+        <div className="put-me-inline" style={this.props.wrapperStyle}>
           <Link
             id={id}
             disabled={disabled}
@@ -164,6 +172,8 @@ MEButton.defaultProps = {
   containerStyle: {},
   containerClassName: "",
   target: null,
+  flat: false,
+  wrapperStyle: {},
 };
 
 export default MEButton;

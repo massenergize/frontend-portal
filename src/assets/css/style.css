@@ -132,7 +132,7 @@ ul.normal li {
 p {
   font-family: "Google Sans", "Oxygen", "Open Sans", sans-serif;
   font-size: large;
-  color: #999;
+  color: black;
   line-height: 26px;
   font-weight: 400;
 }
@@ -9684,6 +9684,13 @@ button.as-link:hover {
 .team-card-content {
   width: 95%;
   display: block;
+  margin: auto;
+}
+.team-name-container {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: auto;
 }
 
