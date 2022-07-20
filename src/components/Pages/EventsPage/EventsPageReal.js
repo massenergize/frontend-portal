@@ -145,21 +145,20 @@ class EventsPage extends React.Component {
                     <div style={{ marginBottom: 30 }}>
                       <div className="text-center">
                         {description ? (
-                          <Tooltip
-                            text={description}
-                            paperStyle={{ maxWidth: "100vh" }}
+                          <PageTitle
+                            className="solid-font"
+                            style={{ fontSize: 24 }}
                           >
-                            <PageTitle
-                              className="solid-font"
-                              style={{ fontSize: 24 }}
+                            {title}
+                            <Tooltip
+                              text={description}
                             >
-                              {title}
                               <span
                                 className="fa fa-info-circle"
                                 style={{ color: "#428a36", padding: "5px" }}
                               ></span>
-                            </PageTitle>
-                          </Tooltip>
+                            </Tooltip>
+                          </PageTitle>
                         ) : (
                           <PageTitle
                             className="solid-font"
