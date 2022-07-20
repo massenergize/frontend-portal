@@ -11,7 +11,7 @@ function MERichTextEditor({
   _generics,
 }) {
   const editorRef = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text) => {
@@ -27,7 +27,7 @@ function MERichTextEditor({
   }, [onMount]);
 
   useEffect(() => {
-    if (content === "") setContent(value || defaultValue || initialValue || "");
+    if (content === undefined) setContent(value || defaultValue || initialValue || "");
   }, [value, defaultValue, initialValue, content]);
 
   return (
