@@ -126,7 +126,7 @@ class ServicesPage extends React.Component {
         ? pageData.sub_title
         : "Click to view each provider's services";
     const description =
-      pageData && pageData.description ? pageData.description : null;
+      pageData && pageData.description ? pageData.description : "Services my gee";
 
     var vendors =
       this.searchIsActiveSoFindContentThatMatch() ||
@@ -150,18 +150,15 @@ class ServicesPage extends React.Component {
                 <div style={{ marginBottom: 30 }}>
                   <div className="text-center">
                     {description ? (
-                      <Tooltip
-                        text={description}
-                        paperStyle={{ maxWidth: "100vh" }}
-                      >
-                        <PageTitle style={{ fontSize: 24 }}>
-                          {title}
+                      <PageTitle style={{ fontSize: 24 }}>
+                        {title}
+                        <Tooltip text={description}>
                           <span
                             className="fa fa-info-circle"
                             style={{ color: "#428a36", padding: "5px" }}
                           ></span>
-                        </PageTitle>
-                      </Tooltip>
+                        </Tooltip>
+                      </PageTitle>
                     ) : (
                       <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                     )}
