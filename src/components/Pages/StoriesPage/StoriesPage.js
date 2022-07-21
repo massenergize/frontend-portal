@@ -85,11 +85,28 @@ class StoriesPage extends React.Component {
     );
   }
 
+  toggleStoryForm() {
+    this.setState({ showStoryForm: !this.state.showStoryForm });
+  }
+  triggerFormForEdit({ data }) {
+    this.setState({
+      showEditModal: true,
+      draftTestimonialData: data,
+    });
+  }
   renderTestimonialForm() {
     if (this.props.user) {
       return (
         <div className="every-day-flex">
-          <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+          <StoryFormButtonModal
+            openModal={this.state.showEditModal}
+            draftTestimonialData={this.state.draftTestimonialData}
+            toggleExternalTrigger={() =>
+              this.setState({ showEditModal: false, draftTestimonialData: {} })
+            }
+          >
+            Add Testimonial
+          </StoryFormButtonModal>
         </div>
       );
     }
@@ -189,7 +206,6 @@ class StoriesPage extends React.Component {
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
-
     return (
       <>
         <div
@@ -326,7 +342,11 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet {...story} links={this.props.links} />
+        <StorySheet
+          {...story}
+          links={this.props.links}
+          triggerForEdit={this.triggerFormForEdit.bind(this)}
+        />
       </div>
     ));
   }

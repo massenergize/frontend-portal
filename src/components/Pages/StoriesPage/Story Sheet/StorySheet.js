@@ -80,6 +80,7 @@ export default class StorySheet extends Component {
   setDefaultImage(e) {
     this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
   }
+
   render() {
     const {
       action,
@@ -190,12 +191,14 @@ export default class StorySheet extends Component {
                 {is_published ? (
                   <div />
                 ) : (
-                  <StoryFormButtonModal
-                    ButtonClasses="me-testi-btn-reset touchable-opacity"
-                    draftTestimonialData={testimonialData}
+                  <button
+                    className="me-testi-btn-reset touchable-opacity"
+                    onClick={() =>
+                      this.props.triggerForEdit({ data: testimonialData })
+                    }
                   >
                     Edit
-                  </StoryFormButtonModal>
+                  </button>
                 )}
               </div>
             </div>
