@@ -3,7 +3,6 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
-import StoryFormButtonModal from "../StoryFormButtonModal";
 import { isMobile } from "react-device-detect";
 
 const hasLargeText = (body) => {
