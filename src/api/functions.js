@@ -3,6 +3,7 @@ import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from "../redux/store";
 import Cookies from "universal-cookie";
 import { AUTH_TOKEN } from "../components/Pages/Auth/shared/utils";
+import * as Sentry from "@sentry/react";
 
 /**
  * Handles making a POST request to the backend as a form submission
@@ -59,7 +60,17 @@ export async function apiCall(
     }
     return json;
   } catch (error) {
-    return { success: false, error };
+    const errorText = error.toString();
+    if (errorText.search("JSON")>-1) {
+      const errorMessage = "Invalid response to "+destinationUrl+" Data: "+JSON.stringify(dataToSend);
+      // this will send message to Sentry Slack channel
+      Sentry.captureMessage(errorMessage);
+      return { success: false, error: errorMessage };
+    }
+    else {
+      Sentry.captureException(error);
+      return { success: false, error: error.toString() };
+    }
   }
 }
 
