@@ -63,6 +63,7 @@ import {
   reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
+  reduxLoadSettings,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -87,6 +88,7 @@ import {
   browswerIsSafari,
   siteUsesCustomDomain,
 } from "./components/Pages/Auth/shared/utils";
+import Settings from "./components/Pages/Settings/Settings";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -147,11 +149,14 @@ class AppRouter extends Component {
 
   componentDidMount() {
     const { community } = this.props;
-    const subdomain = community?.subdomain || 'undefined';
+    const subdomain = community?.subdomain || "undefined";
     const { pathname } = new URL(window.location.href);
 
     if (browswerIsSafari() && siteUsesCustomDomain()) {
-      const subd = pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1 ? '' : '/' + subdomain;
+      const subd =
+        pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1
+          ? ""
+          : "/" + subdomain;
       window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
     }
     const community_id = community?.id;
@@ -205,6 +210,8 @@ class AppRouter extends Component {
         apiCall("testimonials_page_settings.info", body),
         apiCall("vendors_page_settings.info", body),
         apiCall("communities.actions.completed", body),
+        apiCall("settings.list", body),
+       
       ])
         .then((res) => {
           const [
@@ -222,6 +229,7 @@ class AppRouter extends Component {
             testimonialsPageResponse,
             vendorsPageResponse,
             communityActionList,
+            settings
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
@@ -237,6 +245,7 @@ class AppRouter extends Component {
           this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
           this.props.setCommunityActionListInRedux(communityActionList?.data);
+          this.props.reduxLoadSettings(settings.data); 
           this.setState({
             pagesEnabled: {
               aboutUsPage: aboutUsPageResponse.data.is_published,
@@ -310,6 +319,7 @@ class AppRouter extends Component {
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
           this.props.reduxLoadEquivalences(eqResponse.data);
           this.props.reduxLoadCommunities(listOfCommunitiesResponse.data);
+          
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -430,7 +440,6 @@ class AppRouter extends Component {
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
-
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -460,7 +469,8 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community, modalOptions, toggleUniversalModal, links } = this.props;
+    const { community, modalOptions, toggleUniversalModal, links, is_sandbox } =
+      this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -490,6 +500,11 @@ class AppRouter extends Component {
     return (
       <div className="boxed-wrapper">
         <div className="burger-menu-overlay"></div>
+        {is_sandbox && (
+          <div className="sandbox-ribbon z-depth-1">
+            <small>SANDBOX</small>
+          </div>
+        )}
         <UniversalModal
           {...(modalOptions || {})}
           close={() =>
@@ -551,7 +566,12 @@ class AppRouter extends Component {
             <Route path={`${links.events}/:id`} component={OneEventPage} />
             <Route path={links.signin} component={AuthEntry} />
             <Route path={links.signup} component={AuthEntry} />
-            <Route path={links.profile} component={ProfilePage} />
+            <Route
+              exact
+              path={`${links.profile}/settings`}
+              component={Settings}
+            />
+            <Route exact path={links.profile} component={ProfilePage} />
             <Route path={links.policies} component={PoliciesPage} />
             <Route path={links.contactus} component={ContactPage} />
             <Route component={HomePage} />
@@ -577,6 +597,7 @@ const mapStoreToProps = (store) => {
     eq: store.page.equivalences,
     showTour: store.page.showTour,
     modalOptions: store.page.modalOptions,
+    is_sandbox: store.page.__is_sandbox,
   };
 };
 const mapDispatchToProps = {
@@ -621,5 +642,6 @@ const mapDispatchToProps = {
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
+  reduxLoadSettings
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

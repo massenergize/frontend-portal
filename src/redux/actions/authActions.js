@@ -17,6 +17,7 @@ import {
 } from "../../components/Pages/Auth/shared/utils";
 import { getTakeTourFromURL } from "../../components/Utils";
 import { reduxSetTourState } from "./pageActions";
+import { LOGIN } from "./types";
 import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
 
 export const AUTH_NOTIFICATION = "AUTH_ERROR";
@@ -257,8 +258,8 @@ export const setAuthNotification = (notification) => {
 };
 
 export const setMassEnergizeUser = (user) => {
-  return { type: SET_FIREBASE_USER, payload: user };
-};
+  return { type: LOGIN, payload: user };
+}; 
 export const setFirebaseUser = (user) => {
   return { type: SET_FIREBASE_USER, payload: user };
 };

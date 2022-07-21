@@ -143,7 +143,10 @@ export const checkForPasswordFreeAuth = (cb) => {
 };
 
 export const sendPasswordResetEmail = (email, cb) => {
-  Auth.sendPasswordResetEmail(email)
+  Auth.sendPasswordResetEmail(email, {
+    url: window.location.href,
+    handleCodeInApp: false,
+  })
     .then(() => {
       cb && cb(true);
       console.log("Password reset Email sent!");

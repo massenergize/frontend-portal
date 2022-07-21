@@ -2,6 +2,7 @@ import { AUTH_STATES } from "../../components/Pages/Auth/shared/utils";
 import {
   AUTH_NOTIFICATION,
   SET_CURRENT_AUTH_STATE,
+  SET_FIREBASE_SETTINGS,
   SET_FIREBASE_USER,
 } from "../actions/authActions";
 
@@ -22,6 +23,12 @@ export const reducerforSettingAuthNotification = (state = null, action) => {
 };
 export const reducerForSettingFirebaseUser = (state = null, action) => {
   if (action.type === SET_FIREBASE_USER) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerForAddingFirebaseSettings = (state = null, action) => {
+  if (action.type === SET_FIREBASE_SETTINGS) {
     return action.payload;
   }
   return state;
