@@ -11,15 +11,18 @@
 }
 
 .m-container {
+  position: fixed !important;
+  z-index: 1000;
+  left:0;
+  top:0;
+  overflow-y: scroll;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: absolute; 
-  top:0;
-  /* background-color:blue; */
+  
 }
 
 .m-content-wrapper {

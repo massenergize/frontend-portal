@@ -3,7 +3,6 @@ import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
-import StoryFormButtonModal from "../StoryFormButtonModal";
 import { isMobile } from "react-device-detect";
 
 const hasLargeText = (body) => {
@@ -80,6 +79,7 @@ export default class StorySheet extends Component {
   setDefaultImage(e) {
     this.setState({ fallbackImg: DefaultClass.getTestimonialsDefaultPhoto() });
   }
+
   render() {
     const {
       action,
@@ -190,12 +190,14 @@ export default class StorySheet extends Component {
                 {is_published ? (
                   <div />
                 ) : (
-                  <StoryFormButtonModal
-                    ButtonClasses="me-testi-btn-reset touchable-opacity"
-                    draftTestimonialData={testimonialData}
+                  <button
+                    className="me-testi-btn-reset touchable-opacity"
+                    onClick={() =>
+                      this.props.triggerForEdit({ data: testimonialData })
+                    }
                   >
                     Edit
-                  </StoryFormButtonModal>
+                  </button>
                 )}
               </div>
             </div>
