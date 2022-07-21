@@ -1,10 +1,11 @@
 import StoryForm from "../ActionsPage/StoryForm";
 import Toast from "react-bootstrap/Toast";
-import Modal from "react-bootstrap/Modal";
 import React, { Component } from "react";
 import MEButton from "../Widgets/MEButton";
+import MEModal from "../Widgets/MEModal";
 
 //refactored the submit testimonial form so now you can have a modal version of it
+// TODO: We will have to refactor again, some structures and names cld work better in diff way. (Do when there is time)
 class StoryFormButtonModal extends Component {
   constructor() {
     super();
@@ -24,6 +25,10 @@ class StoryFormButtonModal extends Component {
   TriggerModal = (bool) => {
     this.setState({ OpenModal: bool });
   };
+  closeModal() {
+    this.props.toggleExternalTrigger && this.props.toggleExternalTrigger();
+    this.setState({ OpenModal: false });
+  }
   render() {
     return (
       <>
@@ -36,22 +41,23 @@ class StoryFormButtonModal extends Component {
           {this.props.children}
         </MEButton>
 
-        <Modal
-          size="lg"
-          show={this.state.OpenModal}
-          onHide={() => {
-            this.TriggerModal(false);
-          }}
+        <MEModal
+          v2
+          show={this.props.openModal || this.state.OpenModal}
+          size="md"
+          close={this.closeModal.bind(this)}
         >
-          <StoryForm
-            close={() => this.setState({ OpenModal: false })}
-            draftTestimonialData={this.props.draftTestimonialData}
-            TriggerSuccessNotification={(bool) =>
-              this.TriggerSuccessNotification(bool)
-            }
-            TriggerModal={(bool) => this.TriggerModal(bool)}
-          />
-        </Modal>
+          <div style={{ textAlign: "left" }}>
+            <StoryForm
+              close={this.closeModal.bind(this)}
+              draftTestimonialData={this.props.draftTestimonialData}
+              TriggerSuccessNotification={(bool) =>
+                this.TriggerSuccessNotification(bool)
+              }
+              TriggerModal={this.closeModal.bind(this)}
+            />
+          </div>
+        </MEModal>
 
         <div className="SuccessNotification">
           <Toast
