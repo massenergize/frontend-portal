@@ -55,7 +55,12 @@ export default class FormGenerator extends Component {
   labelOrNot(formObject) {
     if (!formObject.hasLabel) return <span></span>;
     return (
-      <METextView type="p" className="reset-margin" style={{ fontSize: 17 }}>
+      <METextView
+        type="p"
+        className="reset-margin"
+        style={{ fontSize: 17 }}
+        containerStyle={{ textAlign: "left", width: "100%" }}
+      >
         {formObject.label}
       </METextView>
     );

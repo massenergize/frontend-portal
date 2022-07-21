@@ -34,8 +34,8 @@ function Modal(props) {
   if (!show) return <></>;
   return (
     <>
-      {showOverlay && <Curtain close={close} />}
       <div className="m-container">
+        {showOverlay && <Curtain close={close} />}
         <div
           className={`m-content-wrapper z-depth-1 ml-modal-scale-in ${className}`}
           style={{
@@ -57,7 +57,9 @@ const Curtain = ({ close }) => {
   return (
     <div
       className="ghost-curtain"
-      onClick={() => (close ? close() : null)}
+      onClick={() => {
+        close && close();
+      }}
     ></div>
   );
 };
