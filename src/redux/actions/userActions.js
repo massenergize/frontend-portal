@@ -28,6 +28,7 @@ import {
 
 import { apiCall } from "../../api/functions";
 const GUEST_USER = "guest_user";
+const STANDARD_USER = "standard_user";
 export const reduxSetPreferredEquivalence = (value) => {
   return {
     type: SET_PREFERRED_EQUIVALENCE,
@@ -44,6 +45,13 @@ export const reduxShowReg = (value) => (dispatch) => {
 /** stores the user data when a user logs in */
 export const reduxLogin = (user) => (dispatch) => {
   const { user_info } = user || {};
+
+  // Hopefully this does exactly what we want
+  const user_type = user.is_super_admin ? 'super_admin' : 
+            user.is_community_admin ? 'community_admin' : 
+            user.user_info?.user_type === GUEST_USER ? 'guest_user' : 'standard_user';
+  window.gtag('set', 'user_properties', {user_type: user_type});
+
   if (user_info) {
     dispatch({
       type: USER_IS_GUEST,
@@ -52,12 +60,16 @@ export const reduxLogin = (user) => (dispatch) => {
   }
   return dispatch({
     type: LOGIN,
-    payload: user,
+    payload: {
+      ...user,
+      isStandardUser: user && user.user_info && user.user_info.user_type === STANDARD_USER ? true:false
+    },
   });
 };
 
 /** nulls the stored user after logout*/
 export const reduxLogout = () => async (dispatch) => {
+  window.gtag('set', 'user_properties', {user_type: 'anonymous'});
   await apiCall("auth.logout");
   return dispatch({
     type: LOGOUT,

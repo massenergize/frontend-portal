@@ -13,20 +13,23 @@ import {
   SET_IS_SANDBOX,
 } from "./redux/actions/types";
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
-import URLS from "./api/urls";
-
+import URLS, { DEV_URL } from "./api/urls";
+import { IS_LOCAL, IS_PROD, IS_CANARY } from "./config";
+const IS_DEV = !IS_LOCAL && !IS_PROD && !IS_CANARY;
+const IS_SANDBOX = "IS_SANDBOX";
 function App() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const community = useSelector((state) => state.page.community);
   const user = useSelector((state) => state.user);
-  
-
   useEffect(() => {
     // first let's determine if its a sandbox request
-    const is_sandbox = getIsSandboxFromURL(window.location);
+    const is_sandbox =
+      getIsSandboxFromURL(window.location) ||
+      Boolean(window.sessionStorage.getItem(IS_SANDBOX));
     if (is_sandbox) {
       console.log("Sandbox: ", is_sandbox);
+      window.sessionStorage.setItem(IS_SANDBOX, true);
     }
 
     dispatch({
@@ -45,8 +48,9 @@ function App() {
           slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
 
         // if no subdomain found, redirect to all communities page (NB: The all communities page does not exist on this side of the application. It is a page on the backend)
-        if ([undefined, "", "/"].indexOf(subdomain) > -1) {
-          window.location.href = URLS.COMMUNITIES;
+        const thereIsNoSubdomain = [undefined, "", "/"].indexOf(subdomain) > -1;
+        if (thereIsNoSubdomain) {
+          window.location.href = IS_DEV ? DEV_URL : URLS.COMMUNITIES;
           return;
         }
 

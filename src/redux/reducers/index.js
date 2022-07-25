@@ -6,6 +6,7 @@ import userReducer from "./userReducer";
 import pageReducer from "./pageReducer";
 import linkReducer from "./linkReducer";
 import {
+  reducerForAddingFirebaseSettings,
   reducerforSettingAuthNotification,
   reducerForSettingAuthState,
   reducerForSettingFirebaseUser,
@@ -19,6 +20,7 @@ export default combineReducers({
   fireAuth: reducerForSettingFirebaseUser,
   authNotification: reducerforSettingAuthNotification,
   authState: reducerForSettingAuthState,
+  firebaseAuthSettings: reducerForAddingFirebaseSettings
   // firebase: firebaseReducer
 });
 

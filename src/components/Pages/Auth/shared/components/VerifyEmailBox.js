@@ -40,7 +40,12 @@ function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
                   <strong style={{ color: "maroon", marginLeft: 4 }}>
                     <em>check your spam folder.</em>
                   </strong>
-                  <button type="button" className="as-link" onClick={sendEmail}>
+                  <button
+                    type="button"
+                    className="as-link"
+                    onClick={sendEmail}
+                    style={{ marginTop: 10 }}
+                  >
                     Didnt receive any verification email? Resend Verification
                     Email
                   </button>
@@ -51,7 +56,7 @@ function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
                     </p>
                   )}
                 </p>
-                <OpenEmailApp />
+                <OpenEmailApp showCancel = {true} />
               </div>
             </div>
           </div>

@@ -39,6 +39,8 @@ import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
+import ActionMobileStats from "./ActionMobileStats";
+import Subtitle from "../Widgets/Subtitle";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -271,37 +273,31 @@ class ActionsPage extends React.Component {
               <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
+                    <PageTitle style={{ fontSize: 24 }}>
+                      {title}
+                      <Tooltip text={description}>
                         <span
                           className="fa fa-info-circle"
                           style={{ color: "#428a36", padding: "5px" }}
                         ></span>
-                      </PageTitle>
-                    </Tooltip>
+                      </Tooltip>
+                    </PageTitle>
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
                 </div>
                 <center>
-                  {pageData.sub_title ? (
-                    <small>{pageData.sub_title}</small>
-                  ) : null}
+                  <Subtitle>{pageData.sub_title}</Subtitle>
                 </center>
               </div>
-              {/*  This code blowing up - not ready for prime time.  Shouldn't be called on laptop
-             
+
               <ActionMobileStats
                 todo={this.props.todo}
                 done={this.props.done}
                 user={this.props.user}
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
-              /> */}
+              />
               <HorizontalFilterBox
                 type="action"
                 foundNumber={this.state.mirror_actions}
