@@ -159,6 +159,14 @@ class AppRouter extends Component {
           : "/" + subdomain;
       window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
     }
+
+    // Hopefully this does exactly what we want
+    const user_type = user.is_super_admin ? 'super_admin' : 
+            user.is_community_admin ? 'community_admin' : 
+            user.user_info?.user_type === GUEST_USER ? 'guest_user' : 'standard_user';
+
+    window.gtag('set', 'community', {community: community.subdomain});
+
     const community_id = community?.id;
     const cookies = new Cookies();
     device_checkin(cookies, community_id).then(null, (err) => console.log(err));
