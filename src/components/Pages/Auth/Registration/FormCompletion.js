@@ -26,7 +26,9 @@ export default function FormCompletion({
 
   const [userName, setUserName] = useState("");
   const [userNameValid, setUserNameValid] = useState(false);
+
   const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
+  const [nonUniqueUsername, setNonUniqueUsername] = useState("")
 
   const [firstColor, setFirstColor] = useState("");
   const [secondColor, setSecondColor] = useState("");
@@ -65,16 +67,23 @@ export default function FormCompletion({
     setUserName(e.target.value);
     onUsernameChange(e.target.value);
     setUserNameValid(false);
+
+    console.log("USERNAME_VALID IS NOW FALSE: ", userNameValid);
   }
 
   const suggestUsername = async () => {
-    const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + lastName.charAt(0).toUpperCase() + lastName.substring(1);
+    let last = "";
+    for (let x of lastName.split('-')) {
+        last += x.charAt(0).toUpperCase()
+    }
+
+    const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + last;
     const data = await validateUserName(template);
     console.log("data: ", data);
 
-    data[0] ? setUserName(template) : setUserName(data[1]);
+    setUserName(data['suggested_username'])
     setUserNameValid(true);
-    onUsernameChange(data[1]);
+    onUsernameChange(data['suggested_username']);
     setThirdColor("green");
     setInvalidUsernameDisplay("none");
   }
@@ -83,11 +92,6 @@ export default function FormCompletion({
     if (firstName && lastName && !userName) {
         suggestUsername();
     }
-  }
-
-  const invalidUsername = display => {
-    display === "block" ? setThirdColor("red") : setThirdColor("green");
-    setInvalidUsernameDisplay(display);
   }
 
   if (showTOS)
@@ -113,8 +117,7 @@ export default function FormCompletion({
   return (
     <div>
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
-        <img src={ community?.logo?.url } alt="Welcome" align="center" style={{ margin: "auto",display: "block", marginTop: 10 }} />
-        <br />
+        {/* style={{marginTop: 20}} does no change */}
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
           Welcome to { community.name }
         </h3>
@@ -156,8 +159,8 @@ export default function FormCompletion({
             What username would you like? {" "} 
             You can use our suggestion or create your own.
           </p>
-          <div className="form-group" style={{ marginBottom: 10 }}>
-            <span className="adon-icon" style={{right: 0, left: "46%", marginTop: -3}}>
+          <div className="form-group" style={{ marginBottom: 20, marginTop: 10 }}>
+            <span className="adon-icon">
               <span className="fa fa-user" style={{color: thirdColor}}></span>
             </span>
             <input
@@ -167,40 +170,35 @@ export default function FormCompletion({
               onChange={(e) => handleUserNameChange(e)}
               onBlur={async () => { 
                 if (!userName) {
-                    invalidUsername("none");
+                    setInvalidUsernameDisplay("none");
                     setThirdColor("");
                     return;
                 }
                 
                 if (userNameValid) {
                     setThirdColor("green");
-                    invalidUsername("none");
+                    setInvalidUsernameDisplay("none");
                     return;
                 }
 
-                const [is_valid, _] = await validateUserName(userName);
-                if (is_valid) {
+                const data = await validateUserName(userName);
+                if (data['valid']) {
                     setThirdColor("green");
                     setUserNameValid(true);
-                    invalidUsername("none");
+                    setInvalidUsernameDisplay("none");
                     return;
                 }
-                
-                setThirdColor("red");
-                setUserNameValid(false);
-                invalidUsername("block");
+
+                setThirdColor("green");
+                setUserNameValid(true);
+                setNonUniqueUsername(userName)
+                setUserName(data['suggested_username'])
+                setInvalidUsernameDisplay("block");
               }}
-              placeholder="Username"
-              style={{ width: "50%", display: "inline-block" }}
+              placeholder="Username (what other users will see, must be unique)"
             />
-            <MEButton 
-                style={{marginTop: 20, display: "inline", marginLeft: "25%", whiteSpace: "nowrap" }} 
-                onClick={() => suggestUsername()} 
-                disabled={!getValue("firstName") || !getValue("lastName")}>
-              Username Suggestion
-            </MEButton>
           </div>
-          <div style={{ color: "red", display: invalidUsernameDisplay }}>Username is taken!</div>
+          <div style={{display: invalidUsernameDisplay }}>The username '{nonUniqueUsername}' is taken, how about '{userName}'?</div>
           <p style={{marginTop: 10 }}>
             Your ZIP code is used to count your actions towards { community.name }'s collective goal.
           </p>
