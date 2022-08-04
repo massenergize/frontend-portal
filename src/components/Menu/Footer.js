@@ -93,7 +93,7 @@ class Footer extends React.Component {
             </div>
              
             <div className="pull-right get-text temp-dn-fix" >
-              <p className="cool-font">
+              <p className="cool-font" style={{ color: "#999" }}>
               {BUILD_VERSION_TEXT}
               </p>
             </div>
