@@ -4,7 +4,7 @@ import FooterLinks from "./FooterLinks";
 import SubscribeForm from "./SubscribeForm";
 import { connect } from "react-redux";
 import {
-  BUILD_VERSION,
+  IS_PROD, IS_CANARY, BUILD_VERSION,
 } from "../../config/config";
 import CommunitySocials from "./CommunitySocials";
 /**
@@ -25,6 +25,16 @@ class Footer extends React.Component {
   render() {
     const moreInfo = this.getMoreInfo();
 
+    let BUILD_VERSION_TEXT = "MassEnergize Community Portal v" + BUILD_VERSION;
+    if (IS_PROD) {      //prod main
+      
+    } else if (IS_CANARY) {
+      //prod main
+      BUILD_VERSION_TEXT = BUILD_VERSION_TEXT + " (Canary)";
+    } else {
+      // dev sandbox
+      BUILD_VERSION_TEXT = BUILD_VERSION_TEXT + " (Development)";
+    }
 
     return (
       <div className="d-flex flex-column">
@@ -82,7 +92,9 @@ class Footer extends React.Component {
             </div>
              
             <div className="pull-right get-text temp-dn-fix" >
-              {BUILD_VERSION}
+              <p className="cool-font">
+              {BUILD_VERSION_TEXT}
+              </p>
             </div>
              
           </div>
