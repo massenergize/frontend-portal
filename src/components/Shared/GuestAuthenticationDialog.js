@@ -83,7 +83,7 @@ function GuestAuthenticationDialog(props) {
     <>
       <div className="guest-dialog-container">
         <div>
-          <p className="responsive-p">
+          <p className="responsive-p" style={{marginBottom:10}}>
             {!proceedAsGuest ? (
               <span>
                 Welcome! Please choose one of the options below to continue
@@ -96,7 +96,7 @@ function GuestAuthenticationDialog(props) {
                 >
                   email
                 </span>{" "}
-                below. That's all you would have to do for now.
+               address to verify that you are human
               </span>
             )}
           </p>

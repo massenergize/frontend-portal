@@ -3,9 +3,7 @@ import FooterInfo from "./FooterInfo";
 import FooterLinks from "./FooterLinks";
 import SubscribeForm from "./SubscribeForm";
 import { connect } from "react-redux";
-import {
-  IS_PROD, IS_CANARY, BUILD_VERSION,
-} from "../../config/config";
+import { IS_PROD, IS_CANARY, BUILD_VERSION } from "../../config/config";
 import CommunitySocials from "./CommunitySocials";
 /**
  * Footer section has place for links,
@@ -57,8 +55,11 @@ class Footer extends React.Component {
                   />
                   {/* <!--Footer Column--> */}
                   <div className="col-12 col-md-4 footer-column-mod">
-                    {moreInfo.wants_socials ==="true" ? (
-                      <CommunitySocials community={this.props.community} moreInfo={moreInfo} />
+                    {moreInfo.wants_socials === "true" ? (
+                      <CommunitySocials
+                        community={this.props.community}
+                        moreInfo={moreInfo}
+                      />
                     ) : (
                       <SubscribeForm />
                     )}
@@ -72,7 +73,7 @@ class Footer extends React.Component {
           {/* <div className="container"> */}
           <div className="temp-f-donate-area">
             <div className="pull-left copy-text">
-              <p className="cool-font">
+              <p className="cool-font" style={{ color: "#999" }}>
                 <a
                   target="_blank"
                   href="https://massenergize.org"

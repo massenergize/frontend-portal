@@ -28,6 +28,7 @@ import {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -49,6 +50,8 @@ import {
 import MEDropdown from "../Widgets/MEDropdown";
 import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
+import BecomeAValidUser from "./BecomeAValidUser";
+import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -64,13 +67,9 @@ class ProfilePage extends React.Component {
       editingProfileForm: null,
       printing: false,
       message: "",
+      wantsToBecomeValidUser: false,
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
-  }
-
-  componentDidMount() {
-    // disable the registration protocol to prevent the form from ever showing again, until enabled
-    // localStorage.removeItem("reg_protocol");
   }
 
   getEqData() {
@@ -147,6 +146,7 @@ class ProfilePage extends React.Component {
   }
   render() {
     const { fireAuth } = this.props;
+    const { wantsToBecomeValidUser } = this.state;
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -162,7 +162,7 @@ class ProfilePage extends React.Component {
 
     if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-    const myHouseholds = this.props.user.households || [];
+    const myHouseholds = this.props.user?.households || [];
 
     if (!this.props.teams) {
       return <LoadingCircle />;
@@ -172,9 +172,13 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
+    if (wantsToBecomeValidUser) return <BecomeAValidUser />;
 
-    const { user } = this.props;
+    const { user, community } = this.props;
+    const userIsAGuest = user && user.is_guest;
+
     const [eqLabels, eqValues] = this.getEqData();
+
     return (
       <>
         <div
@@ -230,15 +234,6 @@ class ProfilePage extends React.Component {
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={"lbs CO2"}
-                              icon={"fa fa-leaf"}
-                              title={"Impact"}
-                              info={
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
@@ -283,21 +278,29 @@ class ProfilePage extends React.Component {
                             className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2"
                           >
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={!pref_eq ?? "lbs CO2"}
-                              icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
-                              title={`Number of ${pref_eq?.name}`}
-                              info={
-                                pref_eq?.explanation ||
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
                     </div>
                   </section>
+
+                  {userIsAGuest && (
+                    <div
+                      className="become-valid-from-guest touchable-opacity"
+                      onClick={() =>
+                        this.setState({ wantsToBecomeValidUser: true })
+                      }
+                    >
+                      <p>
+                        You are currently a guest of {community?.name || ""},
+                        click here to become a registered member
+                        <span role="img" aria-label="image">
+                          🎊
+                        </span>{" "}
+                      </p>{" "}
+                      <i className=" fa fa-angle-right"></i>
+                    </div>
+                  )}
                   <div
                     id="eq-list-dropdown-wrapper"
                     data-number-of-eq-items={this.props.eq?.length}
@@ -426,8 +429,10 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    const { settings } = this.props;
-    const { usesOnlyPasswordless } = settings?.signInConfig || {};
+    const { user } = this.props;
+    const { firebaseAuthSettings } = this.props;
+    const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
+    const userIsAGuest = user && user.is_guest;
 
     return (
       <>
@@ -453,6 +458,19 @@ class ProfilePage extends React.Component {
               }}
               className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
             >
+              {userIsAGuest && (
+                <Dropdown.Item
+                  onClick={() => {
+                    this.setState({ wantsToBecomeValidUser: true });
+                  }}
+                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+                >
+                  Become A Registered Member{" "}
+                  <span role="img" aria-label="image">
+                    🎊
+                  </span>
+                </Dropdown.Item>
+              )}
               {usesOnlyPasswordless && (
                 <Dropdown.Item
                   onClick={() =>
@@ -471,6 +489,7 @@ class ProfilePage extends React.Component {
               >
                 Edit Profile
               </Dropdown.Item>
+
               {/* {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
               this.props.auth.providerData[0].providerId === "password" ? ( */}
@@ -495,6 +514,16 @@ class ProfilePage extends React.Component {
                   </Dropdown.Item>
                 </>
               ) : null}
+              <Dropdown.Item
+                onClick={() =>
+                  this.props.history.push(
+                    `${this.props.links.profile}/settings`
+                  )
+                }
+                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+              >
+                Settings
+              </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
                   if (usesOnlyPasswordless)
@@ -663,6 +692,7 @@ class ProfilePage extends React.Component {
     });
   }
   renderHouseholds(households) {
+    const { toggleModal } = this.props;
     const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
@@ -719,7 +749,21 @@ class ProfilePage extends React.Component {
                 />
                 {isNotLastHouse && (
                   <MEButton
-                    onClick={() => this.deleteHousehold(house)}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      toggleModal({
+                        show: true,
+                        component: (
+                          <HouseholdDeleteConfirmation
+                            household={house}
+                            onConfirm={() => this.deleteHousehold(house)}
+                            cancel={() => toggleModal({ show: false })}
+                            todos={this.props.todo}
+                          />
+                        ),
+                      });
+                      // this.deleteHousehold(house);
+                    }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
                     iconStyle={{ margin: 0 }}
@@ -903,10 +947,10 @@ const mapStoreToProps = (store) => {
     rsvps: store.page.rsvps,
     links: store.links,
     eq: store.page.equivalences,
-    pref_eq: store.user.pref_equivalence  || PREF_EQ_DEFAULT,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     fireAuth: store.fireAuth,
     authState: store.authState,
-    settings: store.user.userFirebaseSettings,
+    firebaseAuthSettings: store.firebaseAuthSettings,
   };
 };
 const mapDispatchToProps = {
@@ -924,6 +968,7 @@ const mapDispatchToProps = {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
   reduxSetPreferredEquivalence,
+  toggleModal: reduxToggleUniversalModal,
 };
 export default connect(
   mapStoreToProps,

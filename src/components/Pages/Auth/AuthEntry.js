@@ -163,7 +163,19 @@ function AuthEntry({
                       {notification?.message}
                     </Notification>
                   )}
-
+                  {notification?.resendFunction && (
+                    <a
+                      href="#void"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        notification.resendFunction();
+                      }}
+                      style={{ fontWeight: "bold" }}
+                      className="energize-link"
+                    >
+                      Resend Link
+                    </a>
+                  )}
                   {notification?.good && userWantsPasswordFree && (
                     <OpenEmailApp />
                   )}

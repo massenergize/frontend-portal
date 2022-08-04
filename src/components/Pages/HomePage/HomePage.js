@@ -20,6 +20,8 @@ import {
   SECOND_SET,
 } from "../../../redux/actions/pageActions";
 
+import ShareButtons from "../../Shared/ShareButtons";
+import URLS from "../../../api/urls";
 /*'
  * The Home Page of the MassEnergize
  */
@@ -31,6 +33,9 @@ class HomePage extends React.Component {
 
   closeTourCompletely() {
     const { setTourValueInRedux } = this.props;
+
+    window.history.replaceState({}, document.title, window.location.href.split("?")[0]);
+
     setTourValueInRedux(false);
     window.localStorage.setItem(TOUR_STORAGE_KEY, false);
   }
@@ -295,6 +300,14 @@ class HomePage extends React.Component {
               info={this.props.pageData.featured_events_description}
             />
           ) : null}
+          <br />
+          <ShareButtons
+              label="Share this community page!"
+              pageTitle={this.props.community.name}
+              pageDescription={this.props.community.about_community} // maybe revisit and add a better community description
+              url={`${URLS.SHARE}/${subdomain}`}
+          />
+          <br />
         </div>
       </>
     );

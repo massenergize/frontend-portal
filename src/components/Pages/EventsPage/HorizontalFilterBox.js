@@ -266,7 +266,7 @@ class HorizontalFilterBox extends Component {
   }
   handleSearchTyping = (e) => {
     if (!this.props.search) return;
-    this.props.onSearchTextChange(e.target.value,e);
+    this.props.onSearchTextChange(e.target.value, e);
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
@@ -297,14 +297,16 @@ class HorizontalFilterBox extends Component {
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
           this.props.user ? (
-            <StoryFormButtonModal>
-              <div className="add-testimonial-container">
-                <div className="add-testimonial touchable-opacity">
-                  <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                  <p>Add Testimonial</p>
+          
+              <StoryFormButtonModal>
+                <div className="add-testimonial-container">
+                  <div className="add-testimonial touchable-opacity">
+                    <i className="fa fa-plus" style={{ marginRight: 6 }} />
+                    <p>Add Testimonial</p>
+                  </div>
                 </div>
-              </div>
-            </StoryFormButtonModal>
+              </StoryFormButtonModal>
+             
           ) : (
             <div />
           )}

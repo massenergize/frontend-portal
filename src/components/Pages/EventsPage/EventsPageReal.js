@@ -25,6 +25,7 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import Subtitle from "../Widgets/Subtitle";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -144,21 +145,20 @@ class EventsPage extends React.Component {
                     <div style={{ marginBottom: 30 }}>
                       <div className="text-center">
                         {description ? (
-                          <Tooltip
-                            text={description}
-                            paperStyle={{ maxWidth: "100vh" }}
+                          <PageTitle
+                            className="solid-font"
+                            style={{ fontSize: 24 }}
                           >
-                            <PageTitle
-                              className="solid-font"
-                              style={{ fontSize: 24 }}
+                            {title}
+                            <Tooltip
+                              text={description}
                             >
-                              {title}
                               <span
                                 className="fa fa-info-circle"
                                 style={{ color: "#428a36", padding: "5px" }}
                               ></span>
-                            </PageTitle>
-                          </Tooltip>
+                            </Tooltip>
+                          </PageTitle>
                         ) : (
                           <PageTitle
                             className="solid-font"
@@ -168,7 +168,9 @@ class EventsPage extends React.Component {
                           </PageTitle>
                         )}
                       </div>
-                      <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                      <center>
+                        <Subtitle>{sub_title}</Subtitle>
+                      </center>
                     </div>
                     <HorizontalFilterBox
                       type="events"

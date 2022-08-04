@@ -6,6 +6,112 @@
   --app-theme-error: #d44b4b;
 }
 
+.settings-p {
+  margin-bottom: 5px;
+  color: black;
+}
+.me-light-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background: #fafafa;
+}
+.edit-profile-root {
+  border: solid 1px 1px solid rgb(243, 243, 243);
+  border-radius: 10px;
+}
+.household-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.g-f-bottom-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.stepper-line {
+  flex-basis: 20%;
+  border: solid 2px #f1f1f1;
+}
+.step-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.step-name {
+  margin-top: 6px;
+  font-weight: bold;
+}
+.stepper-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.stepper-ball-has-state {
+  border: solid 2px green;
+  background-color: #0f922b;
+  color: white;
+}
+.stepper-ball {
+  /* cursor: pointer; */
+  margin: 4px;
+  border-radius: 100%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-ball small {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.become-valid-from-guest {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  /* border: solid 2px green; */
+  background-color: #ffe9dc;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: bold;
+  align-items: center;
+}
+.become-valid-from-guest i {
+  margin-left: auto;
+  color: var(--app-theme-orange);
+  font-size: 35px;
+}
+
+.become-valid-from-guest p {
+  color: #e0631a;
+  font-weight: bold;
+  font-size: medium;
+  margin: 0px;
+}
+
+.sandbox-ribbon {
+  background-color: var(--app-theme-orange);
+  z-index: 20000;
+  position: fixed;
+  top: 130px;
+  right: 0px;
+  border-top-left-radius: 55px;
+  border-bottom-left-radius: 55px;
+}
+
+.sandbox-ribbon small {
+  font-weight: bold;
+  color: white;
+  font-size: medium;
+}
 .cancel-process {
   margin-left: auto;
   color: var(--app-theme-error);
@@ -148,13 +254,13 @@
   font-size: 0.85rem;
 }
 .me-rsvp-btn {
-  padding: 8px 15px;
+  padding: 12px 18px;
   font-size: 0.9rem;
   background: var(--app-theme-orange);
   color: white;
   height: 100%;
   /* margin-right: -20px; */
-  border-radius: 5px;
+  border-radius: 0px;
   cursor: pointer;
   border: 0px;
   font-weight: bold;
@@ -767,8 +873,11 @@
   color: white !important;
 }
 
+.me-flat-btn {
+  box-shadow: 0 0 0 !important;
+}
+
 .flat-btn {
-  padding: 15px 30px;
   color: #282828;
   cursor: pointer;
   display: inline-block;
@@ -1067,7 +1176,7 @@
   height: 24px;
   width: 24px;
   background: #f7f5f5;
-  margin-right: 6px;
+  margin-right: 10px;
   vertical-align: center;
   margin-bottom: -6px;
   border-radius: 3px;
@@ -1489,12 +1598,15 @@
   /* color:#adabab; */
   color: #282828;
 }
+.me-undefault-btn {
+  padding: 10px 20px;
+}
 .me-undefault-btn,
 .me-undefault-btn:active,
 .me-undefault-btn:focus {
   display: inline-block;
   outline: 0;
-  padding: 10px 20px;
+
   background: white;
   border-color: white;
   border-style: solid;
@@ -1933,9 +2045,41 @@
 .all-head-area {
   margin-top: -20px;
 }
+.me-subtitle {
+  color: black;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .me-subtitle {
+    font-size: large;
+  }
+  .flat-btn {
+    padding: 15px 30px;
+  }
+  .me-flat-btn {
+    padding: 13px 30px;
+  }
+  .edit-profile-content {
+    padding: 30px;
+  }
+  .household-confirmation {
+    min-height: 100%;
+  }
+  .g-f-bottom-footer {
+    padding: 10px 20px;
+  }
+  .stepper-ball {
+    padding: 20px;
+    height: 40px;
+    width: 40px;
+  }
+  .become-valid-from-guest {
+    padding: 20px 30px;
+  }
+  .sandbox-ribbon {
+    padding: 10px 20px;
+  }
   .all-head-area {
     margin-bottom: 30px;
   }
@@ -2198,6 +2342,17 @@
     padding: 15px 25px;
     font-size: 15px;
   }
+  .profile-pic-preview {
+    width: 200px;
+    height: 200px;
+  }
+  .me-light-footer {
+    margin-top: 20px;
+  }
+}
+.profile-pic-preview {
+  border-radius: 100%;
+  object-fit: cover;
 }
 /* ------------------------------- TABLETS ----------------------------- */
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -2208,11 +2363,67 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .me-subtitle {
+    font-size: medium;
+  }
+  .settings-wrapper h1 {
+    font-size: x-large;
+  }
+  .settings-wrapper {
+    padding: 10px 20px;
+  }
+  .me-light-footer {
+    margin-top: 10px;
+  }
+  .profile-pic-preview {
+    width: 120px;
+    height: 120px;
+  }
+  .me-flat-btn {
+    padding: 13px 23px !important;
+    font-size: small !important;
+  }
+  .flat-btn {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+  .edit-profile-content {
+    padding: 15px;
+  }
+  .household-confirmation {
+    min-height: 230px;
+  }
+  .g-f-bottom-footer {
+    padding: 10px;
+  }
+  .stepper-ball {
+    width: 35px;
+    height: 35px;
+  }
+  .become-valid-from-guest p {
+    font-size: 15px;
+  }
+  .become-valid-from-guest {
+    padding: 15px 20px;
+  }
+  .sandbox-ribbon {
+    padding: 15px;
+  }
   .all-head-area {
     margin-bottom: 20px;
   }
+  .stick-mob-stats {
+    background: white;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 100000;
+    left: 0px;
+    padding: 14px;
+    margin-bottom: 0px;
+  }
   .action-mob-stats-container {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -2224,6 +2435,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .act-stats-item small {
+    font-weight: bold;
   }
 
   .stats-eq {

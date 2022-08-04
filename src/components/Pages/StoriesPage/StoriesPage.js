@@ -85,11 +85,28 @@ class StoriesPage extends React.Component {
     );
   }
 
+  toggleStoryForm() {
+    this.setState({ showStoryForm: !this.state.showStoryForm });
+  }
+  triggerFormForEdit({ data }) {
+    this.setState({
+      showEditModal: true,
+      draftTestimonialData: data,
+    });
+  }
   renderTestimonialForm() {
     if (this.props.user) {
       return (
         <div className="every-day-flex">
-          <StoryFormButtonModal>Add Testimonial</StoryFormButtonModal>
+          <StoryFormButtonModal
+            openModal={this.state.showEditModal}
+            draftTestimonialData={this.state.draftTestimonialData}
+            toggleExternalTrigger={() =>
+              this.setState({ showEditModal: false, draftTestimonialData: {} })
+            }
+          >
+            Add Testimonial
+          </StoryFormButtonModal>
         </div>
       );
     }
@@ -189,7 +206,6 @@ class StoriesPage extends React.Component {
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
-
     return (
       <>
         <div
@@ -204,18 +220,15 @@ class StoriesPage extends React.Component {
               <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
+                    <PageTitle style={{ fontSize: 24 }}>
+                      {title}
+                      <Tooltip text={description}>
                         <span
                           className="fa fa-info-circle"
                           style={{ color: "#428a36", padding: "5px" }}
                         ></span>
-                      </PageTitle>
-                    </Tooltip>
+                      </Tooltip>
+                    </PageTitle>
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
@@ -329,7 +342,11 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet {...story} links={this.props.links} />
+        <StorySheet
+          {...story}
+          links={this.props.links}
+          triggerForEdit={this.triggerFormForEdit.bind(this)}
+        />
       </div>
     ));
   }

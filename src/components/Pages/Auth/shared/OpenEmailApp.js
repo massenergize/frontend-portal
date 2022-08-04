@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { signMeOut } from "../../../../redux/actions/authActions";
 
-function OpenEmailApp({ signMeOut }) {
+function OpenEmailApp({ signMeOut, showCancel }) {
+  if (!showCancel) return <></>;
   return (
     <div className="email-helpers-div">
-      <a target="_blank" href="mailto:" rel="noopener noreferrer">
+      {/* <a target="_blank" href="mailto:" rel="noopener noreferrer">
         Open Your Email App
       </a>
       <a
@@ -18,18 +19,20 @@ function OpenEmailApp({ signMeOut }) {
         rel="noopener noreferrer"
       >
         Open Gmail Online{" "}
-      </a>
+      </a> */}
 
-      <a
-        href="#void"
-        className="cancel-process"
-        onClick={(e) => {
-          e.preventDefault();
-          signMeOut();
-        }}
-      >
-        Cancel this process
-      </a>
+      {showCancel && (
+        <a
+          href="#void"
+          className="cancel-process"
+          onClick={(e) => {
+            e.preventDefault();
+            signMeOut();
+          }}
+        >
+          Cancel this process
+        </a>
+      )}
     </div>
   );
 }
