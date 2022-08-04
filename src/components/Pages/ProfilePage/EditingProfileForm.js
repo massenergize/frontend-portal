@@ -26,7 +26,9 @@ class EditingProfileForm extends React.Component {
       image: props.user?.profile_picture?.url,
       color: props.user?.preferences?.color || "#fd7e14",
       imageReset: null,
+
       invalid_username_visibility: "hidden",
+      nonUniqueUsername: "",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -54,8 +56,13 @@ class EditingProfileForm extends React.Component {
       this.deleteAccount();
     } else {
       const data = await this.validateUsername(this.state.preferred_name);
-      if (!data[0]){
-        this.setState({invalid_username_visibility: "visible"});
+      if (!data['valid']){
+        this.setState(prevState => ({
+            nonUniqueUsername: prevState.preferred_name,
+            preferred_name: data['suggested_username'],
+            invalid_username_visibility: "visible"
+        }));
+        
         return;
       }
       
@@ -108,7 +115,7 @@ class EditingProfileForm extends React.Component {
             />
 
           <small>
-            Preferred Name <span className="text-danger">*</span>
+            Username <span className="text-danger">*</span>
           </small>
           <METextField
             type="text"
@@ -117,8 +124,8 @@ class EditingProfileForm extends React.Component {
             onChange={this.onChange}
             required={true}
           />
-          <div style={{visibility:this.state.invalid_username_visibility, color:"red"}}>
-            Username is taken!
+          <div style={{visibility:this.state.invalid_username_visibility}}>
+          The username '{this.state.nonUniqueUsername}' is taken, how about '{this.state.preferred_name}'?
           </div>
           <br />
           <small>Profile Picture</small>
