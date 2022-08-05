@@ -50,22 +50,16 @@ class EditingProfileForm extends React.Component {
     });
   }
 
+  handleUserNameChange = (e) => {
+    this.setState({invalid_username_visibility: "hidden"});
+    this.onChange(e);
+  }
+
   onSubmit = async (event) => {
     event && event.preventDefault();
     if (this.state.delete_account && this.state.are_you_sure) {
       this.deleteAccount();
     } else {
-      const data = await this.validateUsername(this.state.preferred_name);
-      if (!data['valid']){
-        this.setState(prevState => ({
-            nonUniqueUsername: prevState.preferred_name,
-            preferred_name: data['suggested_username'],
-            invalid_username_visibility: "visible"
-        }));
-        
-        return;
-      }
-      
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
@@ -121,8 +115,19 @@ class EditingProfileForm extends React.Component {
             type="text"
             name="preferred_name"
             defaultValue={this.state.preferred_name}
-            onChange={this.onChange}
+            value={this.state.preferred_name || ""}
+            onChange={(e) => this.handleUserNameChange(e)}
             required={true}
+            onBlur = {async () => {
+                const data = await this.validateUsername(this.state.preferred_name);
+                if (!data['valid']){
+                  this.setState(prevState => ({
+                      nonUniqueUsername: prevState.preferred_name,
+                      preferred_name: data['suggested_username'],
+                      invalid_username_visibility: "visible"
+                  }));
+                }
+            }}
           />
           <div style={{visibility:this.state.invalid_username_visibility}}>
           The username '{this.state.nonUniqueUsername}' is taken, how about '{this.state.preferred_name}'?

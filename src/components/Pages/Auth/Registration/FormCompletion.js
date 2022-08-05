@@ -67,6 +67,7 @@ export default function FormCompletion({
     setUserName(e.target.value);
     onUsernameChange(e.target.value);
     setUserNameValid(false);
+    setInvalidUsernameDisplay("none");
 
     console.log("USERNAME_VALID IS NOW FALSE: ", userNameValid);
   }
@@ -122,7 +123,7 @@ export default function FormCompletion({
           Welcome to { community.name }
         </h3>
         <h5 align="center" className="cool-font mob-font-lg me-section-title">
-            Almost there! Please tell us all of the following
+            Almost there! Please tell us your name
         </h5>
 
 
@@ -195,12 +196,12 @@ export default function FormCompletion({
                 setUserName(data['suggested_username'])
                 setInvalidUsernameDisplay("block");
               }}
-              placeholder="Username (what other users will see, must be unique)"
+              placeholder="Username (unique)"
             />
           </div>
           <div style={{display: invalidUsernameDisplay }}>The username '{nonUniqueUsername}' is taken, how about '{userName}'?</div>
           <p style={{marginTop: 10 }}>
-            Your ZIP code is used to count your actions towards { community.name }'s collective goal.
+            Your ZIP code is used to count your actions properly towards the community goal.
           </p>
           <div className="form-group">
             <input
