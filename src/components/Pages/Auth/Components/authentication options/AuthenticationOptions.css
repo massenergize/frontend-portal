@@ -1,0 +1,15 @@
+.auth-options-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+}
+
+.auth-title {
+  font-size: 25px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 12px;
+}

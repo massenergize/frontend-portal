@@ -53,6 +53,7 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
+import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
@@ -69,7 +70,7 @@ export const reduxToggleGuestAuthDialog =
     dispatch(
       reduxToggleUniversalModal({
         show: state,
-        component: <GuestAuthenticationDialog {...componentProps} />,
+        component: <AuthenticationOptions {...componentProps} />,
         ...(otherProps || {}),
       })
     );
