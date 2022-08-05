@@ -55,12 +55,11 @@ export default function FormCompletion({
   };
 
   const validateUserName = async (username) => {
-    return await apiCall("users.validate.username", {username: username}).then(json => {
+    return await apiCall("users.validate.username", {username: username})
+      .then(json => {
         if (json.success) return json.data;
-        else {
-            console.log(json.error);
-            return false; }
-    });
+      })
+      .catch(error => console.log(error));
   }
 
   const handleUserNameChange = (e) => {

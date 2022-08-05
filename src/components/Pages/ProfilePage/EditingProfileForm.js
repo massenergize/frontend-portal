@@ -41,13 +41,12 @@ class EditingProfileForm extends React.Component {
     });
   }
 
-  validateUsername = async (username) => {
-    return await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success) return json.data; 
-        else {
-            console.log(json.error);
-            return false; }
-    });
+  validateUserName = async (username) => {
+    return await apiCall("users.validate.username", {username: username})
+      .then(json => {
+        if (json.success) return json.data;
+      })
+      .catch(error => console.log(error));
   }
 
   handleUserNameChange = (e) => {
