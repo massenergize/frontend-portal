@@ -54,7 +54,7 @@ function AuthEntry({
     authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
 
   const [loading, setLoading] = useState(false);
-  const [userWantsPasswordFree, setUsePasswordFree] = useState(true);
+  const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
   const [userWantsPasswordReset, setUserWantsPasswordReset] = useState(false);
 
   const clearSlate = () => {

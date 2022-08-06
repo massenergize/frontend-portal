@@ -7,6 +7,7 @@ import { apiCall } from "../../api/functions";
 import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
 import AuthFooter from "../Pages/Auth/Components/auth footer/AuthFooter";
+import TextBoxAndButtonCombo from "../Pages/Auth/Components/TextBoxAndButtonCombo";
 import {
   emailIsInvalid,
   GUEST_USER_KEY,
@@ -102,7 +103,14 @@ function GuestAuthenticationDialog(props) {
           <h1 className="auth-title">Sign in as a guest</h1>
 
           {/* {proceedAsGuest && ( */}
-          <div className="auth-text-btn">
+          <TextBoxAndButtonCombo
+            id="test-guest-email"
+            placeholder="Enter your email address"
+            onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
+            genericProps={{ onKeyUp: whenUserTypes }}
+            btnText="Continue"
+          />
+          {/* <div className="auth-text-btn">
             <input
               className="auth-textbox"
               id="test-guest-email"
@@ -121,7 +129,7 @@ function GuestAuthenticationDialog(props) {
             >
               Continue
             </button>
-          </div>
+          </div> */}
           <small className="auth-info" style={{ marginBottom: 5 }}>
             This will let you use some of the functions on this site, but we
             wont be able to count your actions toward your community's goals.

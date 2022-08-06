@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import AuthFooter from "../Components/auth footer/AuthFooter";
+import AuthHeader from "../Components/AuthHeader";
+import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import {
   getRandomColor,
   ifEnterKeyIsPressed,
@@ -31,7 +34,7 @@ export default function SignUpAuth({
 
   const onUsernameChange = (username) => {
     setUserName(username);
-  }
+  };
 
   const history = useHistory();
 
@@ -91,13 +94,65 @@ export default function SignUpAuth({
     );
 
   return (
-    <div className="styled-form register-form">
-      <div className="z-depth-float me-anime-fade-in-up register-form-content">
-        <div className=" style-2">
+    <div className=" register-form">
+      <div
+        className="z-depth-float me-anime-fade-in-up "
+        style={{ borderRadius: 12 }}
+      >
+        <div className="register-form-content">
+          <AuthHeader>Welcome!</AuthHeader>
+          <small className="auth-info">
+            When you join, we can count your impact. We do not collect sensitive
+            personal data and do not share data.
+          </small>
+          <div style={{ marginTop: 6 }}>
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your address"
+              className="auth-textbox"
+            />
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your password here"
+              type="password"
+              className="auth-textbox"
+            />
+
+            <TextBoxAndButtonCombo
+              placeholder="Re-enter the password"
+              genericProps={{ type: "password" }}
+              btnText="Join"
+            />
+          </div>
+        </div>
+        <AuthFooter>
+          {" "}
+          <button
+            className="auth-btns touchable-opacity"
+            style={{
+              background: "var(--app-theme-orange)",
+              borderBottomRightRadius: 5,
+              margin: 0,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            I have a profile already
+            <i
+              className="fa fa-long-arrow-right"
+              style={{ color: "white", marginLeft: 3 }}
+            />
+          </button>{" "}
+        </AuthFooter>
+
+        {/* <div className=" style-2">
           <h3 className="mob-title-fix">{title}</h3>
           <p className="mob-f-text"> {description}</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <div className="form-group">
             <span className="adon-icon">
               <span className="fa fa-envelope-o"></span>
@@ -198,7 +253,7 @@ export default function SignUpAuth({
                   >
                     <span className="fa fa-facebook"></span>
                   </button>
-                  {/* <MEButton
+                   <MEButton
                   onClick={() => {
                     registerWithGoogle((user) => {
                       if (user) window.location.reload();
@@ -218,7 +273,7 @@ export default function SignUpAuth({
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton> */}
+                </MEButton>
                 </div>
               )}
             </div>
@@ -241,7 +296,7 @@ export default function SignUpAuth({
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
