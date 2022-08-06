@@ -6,10 +6,14 @@
   --app-theme-error: #d44b4b;
 }
 
+.title-bar-close-btn {
+  background-color: var(--app-theme-green);
+  margin-left: auto;
+  color: white;
+}
 .auth-info {
   color: black;
   /* font-weight: bold; */
-  font-size: medium;
 }
 
 .auth-textbox {
@@ -40,19 +44,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0px 50px 50px 50px;
+
   height: 100%;
 }
 
 .auth-title {
-  font-size: 25px;
   font-weight: bold;
   color: black;
   margin-bottom: 12px;
 }
 
 .auth-btns {
-  padding: 13px 30px;
   box-shadow: 0 0 0;
   border: 0;
   cursor: pointer;
@@ -2127,6 +2129,24 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .auth-info {
+    font-size: medium;
+  }
+  .title-bar-close-btn {
+    padding: 10px 15px;
+  }
+  .dynamic-width {
+    width: var(--width);
+  }
+  .auth-btns {
+    padding: 13px 30px;
+  }
+  .auth-title {
+    font-size: 25px;
+  }
+  .auth-options-root {
+    padding: 0px 50px 50px 50px;
+  }
   .me-subtitle {
     font-size: large;
   }
@@ -2439,6 +2459,33 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .auth-info {
+    font-size: 13px;
+  }
+  .auth-textbox {
+    font-size: 14px;
+    height: 47px;
+  }
+  .title-bar-close-btn {
+    padding: 6px 13px;
+  }
+  .auth-title-bar {
+    position: absolute;
+    width: 100%;
+  }
+  .dynamic-width {
+    width: 90% !important;
+  }
+  .auth-btns {
+    padding: 13px 18px;
+    font-size: 14px;
+  }
+  .auth-title {
+    font-size: 22px;
+  }
+  .auth-options-root {
+    padding: 30px 20px 20px 20px;
+  }
   .me-subtitle {
     font-size: medium;
   }
@@ -2548,7 +2595,7 @@
     font-size: 15px;
   }
   .guest-dialog-container {
-    padding: 15px;
+    padding: 30px 15px 0px 15px;
   }
   .try-guest-mode {
     padding: 20px 10px;

@@ -7,10 +7,10 @@ function AuthenticationOptions() {
     <div className="auth-options-root">
       <h1 className="auth-title">Welcome! Sign in or Join</h1>
       <button
-        className="auth-btns touchable-opacity"
+        className="auth-btns touchable-opacity dynamic-width"
         style={{
           background: "var(--app-theme-green)",
-          width: "60%",
+          "--width": "60%",
           marginBottom: 6,
         }}
       >
@@ -18,10 +18,10 @@ function AuthenticationOptions() {
         With email only{" "}
       </button>
       <button
-        className="auth-btns touchable-opacity"
+        className="auth-btns touchable-opacity dynamic-width"
         style={{
           background: "black",
-          width: "60%",
+          "--width": "60%",
           marginBottom: 6,
         }}
       >
@@ -30,10 +30,11 @@ function AuthenticationOptions() {
       </button>
 
       <div
+      className="dynamic-width"
         style={{
           display: "flex",
           // flex: "2",
-          width: "60%",
+          "--width": "60%",
           flexDirection: "row",
           marginBottom: 10,
         }}
