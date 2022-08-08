@@ -19,7 +19,7 @@ export default function ResetPassword({ cancel }) {
         style={{ height: window.screen.height, marginTop: 40 }}
       >
         <div
-          className="z-depth-float force-no-elevation-on-mobile"
+          className="z-depth-float force-no-elevation-on-mobile me-anime-fade-in-up"
           style={{ borderRadius: 12 }}
         >
           {/* <div
@@ -32,9 +32,11 @@ export default function ResetPassword({ cancel }) {
             <AuthHeader>I forgot my password</AuthHeader>
 
             <TextBoxAndButtonCombo placeholder="Enter your email address and click send" />
-            <small className="auth-info" style={{ marginBottom: 5 }}>
-              We will send you a link to reset your password
-            </small>
+            <div style={{ margin: "7px 0px" }}>
+              <small className="auth-info" style={{ marginBottom: 5 }}>
+                We will send you a link to reset your password
+              </small>
+            </div>
 
             {/* <div>
             <p>
@@ -77,7 +79,7 @@ export default function ResetPassword({ cancel }) {
             </MEButton>
           </div> */}
           </div>
-          <AuthFooter />
+          <AuthFooter back={cancel} />
         </div>
       </div>
     </div>

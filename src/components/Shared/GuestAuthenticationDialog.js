@@ -17,8 +17,16 @@ import MEButton from "../Pages/Widgets/MEButton";
 import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
-  const { community, putUserInRedux, user, links, close, history, callback } =
-    props;
+  const {
+    community,
+    putUserInRedux,
+    user,
+    links,
+    close,
+    history,
+    callback,
+    back,
+  } = props;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -81,6 +89,8 @@ function GuestAuthenticationDialog(props) {
 
   if (guestAuthIsDone) return <CongratulatoryMessage />;
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const showWhenThereAreNoErrors = !error && !notGuest;
   return (
     <>
       <div className="guest-dialog-container">
@@ -109,6 +119,8 @@ function GuestAuthenticationDialog(props) {
             onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
             genericProps={{ onKeyUp: whenUserTypes }}
             btnText="Continue"
+            onClick={() => authenticateGuest()}
+            loading={loading}
           />
           {/* <div className="auth-text-btn">
             <input
@@ -130,20 +142,26 @@ function GuestAuthenticationDialog(props) {
               Continue
             </button>
           </div> */}
-          <small className="auth-info" style={{ marginBottom: 5 }}>
-            This will let you use some of the functions on this site, but we
-            wont be able to count your actions toward your community's goals.
-            <span
-              className="touchable-opacity"
-              style={{
-                color: "var(--app-theme-orange",
-                margin: "0px 2px",
-              }}
-            >
-              <b>Join</b>
-            </span>{" "}
-            if you want to be counted.
-          </small>
+          {showWhenThereAreNoErrors && (
+            <small className="auth-info" style={{ marginBottom: 5 }}>
+              This will let you use some of the functions on this site, but we
+              wont be able to count your actions toward your community's goals.
+              <span
+                onClick={() => {
+                  close && close();
+                  history.push(links?.signin);
+                }}
+                className="touchable-opacity"
+                style={{
+                  color: "var(--app-theme-orange",
+                  margin: "0px 2px",
+                }}
+              >
+                <b>Join</b>
+              </span>{" "}
+              if you want to be counted.
+            </small>
+          )}
           {/* // )} */}
 
           {error && (
@@ -203,7 +221,7 @@ function GuestAuthenticationDialog(props) {
           </div>
         )} */}
       </div>
-      <AuthFooter />
+      <AuthFooter back={back} />
     </>
   );
 }

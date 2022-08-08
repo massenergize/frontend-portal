@@ -23,7 +23,6 @@
   border: solid 1px #d7d3d3;
   padding: 0px 20px;
   flex: 7;
-  height: 50px;
 }
 .auth-text-btn:focus {
   outline: 0;
@@ -65,6 +64,9 @@
   color: white;
 }
 
+.auth-btns:disabled {
+  background-color: grey !important;
+}
 /* .auth-btns:focus {
   outline: 0px;
 } */
@@ -2129,9 +2131,17 @@
 .me-subtitle {
   color: black;
 }
+
+.combo-btn-tweak {
+  margin: 0px;
+  height: auto;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .auth-textbox {
+    height: 50px !important;
+  }
   .login-form-content {
     padding: 55px;
   }
@@ -2146,6 +2156,10 @@
   }
   .auth-btns {
     padding: 13px 30px;
+  }
+  .combo-btn-tweak {
+    min-width: 160px;
+    padding: 13px 10px !important;
   }
   .auth-title {
     font-size: 25px;
@@ -2475,8 +2489,9 @@
     box-shadow: 0 0 0 !important;
   }
   .auth-textbox {
-    font-size: 14px;
+    font-size: 13px;
     height: 47px;
+    padding:10px !important;
   }
   .title-bar-close-btn {
     padding: 6px 13px;
@@ -2492,6 +2507,10 @@
     padding: 13px 18px;
     font-size: 14px;
     min-width: 101px;
+  }
+  .combo-btn-tweak {
+    min-width: 120px !important;
+    padding: 13px 9px;
   }
   .auth-title {
     font-size: 22px;

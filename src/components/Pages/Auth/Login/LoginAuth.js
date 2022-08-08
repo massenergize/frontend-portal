@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
@@ -29,19 +29,26 @@ export default function LoginAuth(props) {
     setNotification,
     finaliseNoPasswordAuth,
     setLoading,
+    back,
   } = props;
 
   const [form, setForm] = useState({});
+  const history = useHistory();
+
   const [
     userContinuedPasswordFreeInDiffEnv,
     setUserContinuedPasswordFreeInDiffEnv,
   ] = useState(false);
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value?.trim() });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const hasInvalidContent = () => {
+    return isInvalid(getValue("password")) || isInvalid(getValue("email"));
+  };
   const whenUserTypes = (e) => {
+    if (hasInvalidContent()) return;
     if (ifEnterKeyIsPressed(e)) signUserIn(form);
   };
 
@@ -62,7 +69,7 @@ export default function LoginAuth(props) {
       if (error) return setNotification({ good: false, message: error });
       setNotification({
         good: true,
-        message: `MassEnergize has sent a special link to ${email}.  Please follow the link to set up your profile. Dont see the email? Check your Promotions and Spam folders for an email from MassEnergize.org.`,
+        message: `MassEnergize sent you an email with a link, please click the link to continue. If its not in your inbox, check your Promotions and Spam folder. Not there? Use the link below to resend`,
         resendFunction: sendLink,
       });
     });
@@ -124,16 +131,28 @@ export default function LoginAuth(props) {
             <AuthHeader>Sign in with email and password</AuthHeader>
             <input
               style={{ width: "100%", marginBottom: 6 }}
-              placeholder="Enter your address"
+              placeholder="Enter your email address"
+              name="email"
               className="auth-textbox"
+              value={getValue("email")}
+              onChange={onChange}
             />
             <TextBoxAndButtonCombo
+              value={getValue("password")}
+              name="password"
+              type="password"
+              onChange={onChange}
               btnText="Sign In"
               placeholder="Enter your secure password here"
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading={loading}
+              loadingText="Checking..."
+              disabled={hasInvalidContent() || loading}
             />
             <div
               className="auth-link touchable-opacity"
               style={{ marginTop: 10 }}
+              onClick={() => setPasswordReset(true)}
             >
               <p>Forgot my password</p>{" "}
               <i
@@ -143,7 +162,7 @@ export default function LoginAuth(props) {
             </div>
           </div>
 
-          <AuthFooter>
+          <AuthFooter back={back}>
             {" "}
             <button
               className="auth-btns touchable-opacity"
@@ -157,6 +176,7 @@ export default function LoginAuth(props) {
                 width: "100%",
                 justifyContent: "center",
               }}
+              onClick={() => history.push(links?.signup)}
             >
               Haven't joined yet? Join{" "}
               <i

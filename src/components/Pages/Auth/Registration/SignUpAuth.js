@@ -27,6 +27,7 @@ export default function SignUpAuth({
   registerWithGoogle,
   registerWithFacebook,
   showTour,
+  back,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
@@ -47,7 +48,11 @@ export default function SignUpAuth({
     setForm(newForm);
   };
 
+  const hasInvalidContent = () => {
+    return isInvalid(getValue("password")) || isInvalid(getValue("email"));
+  };
   const whenUserTypes = (e) => {
+    if (hasInvalidContent()) return;
     if (ifEnterKeyIsPressed(e)) registerUser(form);
   };
 
@@ -108,24 +113,39 @@ export default function SignUpAuth({
           <div style={{ marginTop: 6 }}>
             <input
               style={{ width: "100%", marginBottom: 6 }}
-              placeholder="Enter your address"
+              placeholder="Enter your email address"
               className="auth-textbox"
+              type="email"
+              name="email"
+              value={getValue("email")}
+              onChange={onChange}
             />
             <input
               style={{ width: "100%", marginBottom: 6 }}
               placeholder="Enter your password here"
               type="password"
+              name="password"
+              value={getValue("password")}
               className="auth-textbox"
+              onChange={onChange}
             />
 
             <TextBoxAndButtonCombo
               placeholder="Re-enter the password"
-              genericProps={{ type: "password" }}
+              name="confirm_password"
+              value={getValue("confirm_password")}
+              type="password"
+              onChange={onChange}
               btnText="Join"
+              disabled={
+                isInvalid(getValue("email")) || invalidPassword() || loading
+              }
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading = {loading}
             />
           </div>
         </div>
-        <AuthFooter>
+        <AuthFooter back={back}>
           {" "}
           <button
             className="auth-btns touchable-opacity"
@@ -139,11 +159,12 @@ export default function SignUpAuth({
               width: "100%",
               justifyContent: "center",
             }}
+            onClick = {() => history.push(links?.signin)}
           >
             I have a profile already
             <i
               className="fa fa-long-arrow-right"
-              style={{ color: "white", marginLeft: 3 }}
+              style={{ color: "white", marginLeft: 6 }}
             />
           </button>{" "}
         </AuthFooter>
