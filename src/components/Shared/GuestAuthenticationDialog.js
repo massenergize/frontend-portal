@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
+// import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -12,9 +12,10 @@ import {
   emailIsInvalid,
   GUEST_USER_KEY,
   ifEnterKeyIsPressed,
+  isInvalid,
 } from "../Pages/Auth/shared/utils";
-import MEButton from "../Pages/Widgets/MEButton";
-import METextField from "../Pages/Widgets/METextField";
+// import MEButton from "../Pages/Widgets/MEButton";
+// import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
   const {
@@ -30,7 +31,7 @@ function GuestAuthenticationDialog(props) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [proceedAsGuest, setProceedAsGuest] = useState(false);
+  // const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
 
@@ -115,12 +116,16 @@ function GuestAuthenticationDialog(props) {
           {/* {proceedAsGuest && ( */}
           <TextBoxAndButtonCombo
             id="test-guest-email"
+            name="email"
+            type="email"
             placeholder="Enter your email address"
+            value={email}
             onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
             genericProps={{ onKeyUp: whenUserTypes }}
             btnText="Continue"
             onClick={() => authenticateGuest()}
             loading={loading}
+            disabled={isInvalid(email) || loading}
           />
           {/* <div className="auth-text-btn">
             <input
@@ -143,24 +148,27 @@ function GuestAuthenticationDialog(props) {
             </button>
           </div> */}
           {showWhenThereAreNoErrors && (
-            <small className="auth-info" style={{ marginBottom: 5 }}>
-              This will let you use some of the functions on this site, but we
-              wont be able to count your actions toward your community's goals.
-              <span
-                onClick={() => {
-                  close && close();
-                  history.push(links?.signin);
-                }}
-                className="touchable-opacity"
-                style={{
-                  color: "var(--app-theme-orange",
-                  margin: "0px 2px",
-                }}
-              >
-                <b>Join</b>
-              </span>{" "}
-              if you want to be counted.
-            </small>
+            <div style={{ margin: "7px 0px" }}>
+              <small className="auth-info" style={{ marginBottom: 5 }}>
+                This will let you use some of the functions on this site, but we
+                wont be able to count your actions toward your community's
+                goals.
+                <span
+                  onClick={() => {
+                    close && close();
+                    history.push(links?.signin);
+                  }}
+                  className="touchable-opacity"
+                  style={{
+                    color: "var(--app-theme-orange",
+                    margin: "0px 2px",
+                  }}
+                >
+                  <b>Join</b>
+                </span>{" "}
+                if you want to be counted.
+              </small>
+            </div>
           )}
           {/* // )} */}
 
@@ -247,22 +255,22 @@ export default connect(
   mapDispatchToProps
 )(withRouter(GuestAuthenticationDialog));
 
-const Cancel = ({ close, callback }) => {
-  return (
-    <Link
-      to="#"
-      id="test-guest-cancel-btn"
-      onClick={(e) => {
-        e.preventDefault();
-        callback && callback();
-        close && close();
-      }}
-      style={{ marginRight: 20 }}
-    >
-      Cancel
-    </Link>
-  );
-};
+// const Cancel = ({ close, callback }) => {
+//   return (
+//     <Link
+//       to="#"
+//       id="test-guest-cancel-btn"
+//       onClick={(e) => {
+//         e.preventDefault();
+//         callback && callback();
+//         close && close();
+//       }}
+//       style={{ marginRight: 20 }}
+//     >
+//       Cancel
+//     </Link>
+//   );
+// };
 
 const CongratulatoryMessage = () => {
   return (

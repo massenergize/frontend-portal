@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
+import {
+  authenticateWithFacebook,
+  authenticateWithGoogle,
+} from "../../../../../redux/actions/authActions";
 import { reduxToggleGuestAuthDialog } from "../../../../../redux/actions/pageActions";
 import GuestAuthenticationDialog from "../../../../Shared/GuestAuthenticationDialog";
-import MEButton from "../../../Widgets/MEButton";
-import MELink from "../../../Widgets/MELink";
+// import MEButton from "../../../Widgets/MEButton";
+// import MELink from "../../../Widgets/MELink";
 import "./AuthenticationOptions.css";
-function AuthenticationOptions({ links, close }) {
+function AuthenticationOptions({
+  links,
+  close,
+  signInWithGoogle,
+  signInWithFacebook,
+}) {
   const [userWantsToUseGuestAuth, setUserWantsToUseGuestAuth] = useState(false);
   const history = useHistory();
   if (userWantsToUseGuestAuth) {
@@ -66,6 +75,7 @@ function AuthenticationOptions({ links, close }) {
             background: "#D72E2E",
             flex: "1",
           }}
+          onClick={() => signInWithGoogle(() => close())}
         >
           <i className="fa fa-google" />
           oogle
@@ -77,6 +87,7 @@ function AuthenticationOptions({ links, close }) {
             flex: "1",
             marginLeft: 6,
           }}
+          onClick={() => signInWithFacebook(() => close())}
         >
           <i className=" fa fa-facebook " />
           acebook
@@ -86,7 +97,7 @@ function AuthenticationOptions({ links, close }) {
         className="auth-link touchable-opacity"
         onClick={() => setUserWantsToUseGuestAuth(true)}
       >
-        <p>Let me try as guest</p>{" "}
+        <p>Let me try as a guest</p>{" "}
         <i
           className="fa fa-long-arrow-right"
           style={{ color: "var(--app-theme-green)" }}
@@ -104,6 +115,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
+      signInWithGoogle: authenticateWithGoogle,
+      signInWithFacebook: authenticateWithFacebook,
       close: () => reduxToggleGuestAuthDialog(false),
     },
     dispatch

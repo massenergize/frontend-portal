@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import BreadCrumbBar from "../../../../Shared/BreadCrumbBar";
 import AuthFooter from "../../Components/auth footer/AuthFooter";
 import AuthHeader from "../../Components/AuthHeader";
-import OpenEmailApp from "../OpenEmailApp";
+// import OpenEmailApp from "../OpenEmailApp";
 import {
   sendVerificationEmail,
   signMeOut,

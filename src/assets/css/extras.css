@@ -74,7 +74,7 @@
 .auth-link {
   border: solid 0px var(--app-theme-green);
   padding-bottom: 3px;
-  color:var(--app-theme-green);
+  color: var(--app-theme-green);
   display: inline-flex;
   flex-direction: row;
   cursor: pointer;
@@ -2113,7 +2113,6 @@
   /* height: 100%; */
 }
 .guest-congrats {
-  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -2139,6 +2138,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .guest-congrats {
+    height: 50%;
+  }
   .auth-textbox {
     height: 50px !important;
   }
@@ -2491,7 +2493,7 @@
   .auth-textbox {
     font-size: 13px;
     height: 47px;
-    padding:10px !important;
+    padding: 10px !important;
   }
   .title-bar-close-btn {
     padding: 6px 13px;
@@ -2622,6 +2624,7 @@
     font-size: 14px;
     text-align: center;
     flex-direction: column;
+    height: 100%;
   }
   .responsive-p {
     font-size: 15px;
