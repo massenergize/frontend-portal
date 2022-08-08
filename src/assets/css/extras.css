@@ -6,6 +6,9 @@
   --app-theme-error: #d44b4b;
 }
 
+.login-form-content {
+  border-radius: 12px;
+}
 .title-bar-close-btn {
   background-color: var(--app-theme-green);
   margin-left: auto;
@@ -2129,6 +2132,9 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .login-form-content {
+    padding: 55px;
+  }
   .auth-info {
     font-size: medium;
   }
@@ -2459,8 +2465,14 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .login-form-content {
+    padding: 0px;
+  }
   .auth-info {
     font-size: 13px;
+  }
+  .force-no-elevation-on-mobile {
+    box-shadow: 0 0 0 !important;
   }
   .auth-textbox {
     font-size: 14px;
@@ -2479,6 +2491,7 @@
   .auth-btns {
     padding: 13px 18px;
     font-size: 14px;
+    min-width: 101px;
   }
   .auth-title {
     font-size: 22px;

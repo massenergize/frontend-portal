@@ -33,7 +33,7 @@ export default function PasswordFreeForm({
           className="z-depth-float mob-login-card-fix"
           style={{ borderRadius: 12 }}
         >
-          <div style={{ padding: 55 }}>
+          <div className="login-form-content">
             <AuthHeader>Sign in or join with email</AuthHeader>
             <TextBoxAndButtonCombo placeholder="Enter your email address" />
             <small className="auth-info" style={{ marginBottom: 5 }}>
