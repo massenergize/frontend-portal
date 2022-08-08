@@ -67,8 +67,6 @@ export default function FormCompletion({
     onUsernameChange(e.target.value);
     setUserNameValid(false);
     setInvalidUsernameDisplay("none");
-
-    console.log("USERNAME_VALID IS NOW FALSE: ", userNameValid);
   }
 
   const suggestUsername = async () => {
@@ -79,7 +77,6 @@ export default function FormCompletion({
 
     const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + last;
     const data = await validateUserName(template);
-    console.log("data: ", data);
 
     setUserName(data['suggested_username'])
     setUserNameValid(true);
@@ -186,6 +183,7 @@ export default function FormCompletion({
                     setThirdColor("green");
                     setUserNameValid(true);
                     setInvalidUsernameDisplay("none");
+                    onUsernameChange(userName);
                     return;
                 }
 
@@ -193,6 +191,7 @@ export default function FormCompletion({
                 setUserNameValid(true);
                 setNonUniqueUsername(userName)
                 setUserName(data['suggested_username'])
+                onUsernameChange(data['suggested_username']);
                 setInvalidUsernameDisplay("block");
               }}
               placeholder="Username (unique)"
