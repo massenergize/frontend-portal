@@ -74,7 +74,7 @@
 .auth-link {
   border: solid 0px var(--app-theme-green);
   padding-bottom: 3px;
-
+  color:var(--app-theme-green);
   display: inline-flex;
   flex-direction: row;
   cursor: pointer;
