@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import MEButton from "../../Widgets/MEButton";
+import {  useHistory } from "react-router-dom";
+// import MEButton from "../../Widgets/MEButton";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
 import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
@@ -22,8 +22,8 @@ export default function LoginAuth(props) {
     links,
     description,
     title,
-    signInWithGoogle,
-    signInWithFacebook,
+    // signInWithGoogle,
+    // signInWithFacebook,
     setPasswordReset,
     userWantsToResetPassword,
     setNotification,

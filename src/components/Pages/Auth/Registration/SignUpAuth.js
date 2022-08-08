@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
 import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
@@ -8,12 +8,12 @@ import {
   ifEnterKeyIsPressed,
   isInvalid,
 } from "../shared/utils";
-import MEButton from "./../../../../components/Pages/Widgets/MEButton";
+// import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 
 export default function SignUpAuth({
-  description,
-  title,
+  // description,
+  // title,
   loading,
   registerUser,
   links,
@@ -24,9 +24,9 @@ export default function SignUpAuth({
   completeFormRegistrationInME,
   setLoading,
   policies,
-  registerWithGoogle,
-  registerWithFacebook,
-  showTour,
+  // registerWithGoogle,
+  // registerWithFacebook,
+  // showTour,
   back,
 }) {
   const [form, setForm] = useState({});

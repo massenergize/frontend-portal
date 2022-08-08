@@ -1,21 +1,21 @@
 import React from "react";
 
-import MEButton from "../../Widgets/MEButton";
+// import MEButton from "../../Widgets/MEButton";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
 import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function PasswordFreeForm({
-  description,
-  title,
-  usePassword,
+  // description,
+  // title,
+  // usePassword,
   onChange,
   getValue,
   sendLink,
   loading,
-  signInWithGoogle,
-  signInWithFacebook,
+  // signInWithGoogle,
+  // signInWithFacebook,
   back,
 }) {
   const email = getValue("email");
