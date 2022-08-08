@@ -74,12 +74,16 @@ class EditingProfileForm extends React.Component {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            this.setState({ loading: false, imageReset: null });
+            this.setState({ loading: false, imageReset: null }); 
+          } else {
+            // api call fails: TODO- show error message instead of the username sugggestion
+            this.setState({ loading: false})
           }
         })
         .catch((error) => {
           console.log(error);
         });
+   
     }
   };
   deleteAccount() {
@@ -118,7 +122,7 @@ class EditingProfileForm extends React.Component {
             onChange={(e) => this.handleUserNameChange(e)}
             required={true}
             onBlur = {async () => {
-                const data = await this.validateUsername(this.state.preferred_name);
+                const data = await this.validateUserName(this.state.preferred_name);
                 if (!data['valid']){
                   this.setState(prevState => ({
                       nonUniqueUsername: prevState.preferred_name,
