@@ -120,7 +120,7 @@ export default function LoginAuth(props) {
           className="z-depth-float mob-login-card-fix"
           style={{ borderRadius: 12 }}
         >
-          <div style={{ padding: 55, borderRadius: 12 }}>
+          <div className="login-form-content">
             <AuthHeader>Sign in with email and password</AuthHeader>
             <input
               style={{ width: "100%", marginBottom: 6 }}

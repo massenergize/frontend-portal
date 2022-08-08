@@ -18,7 +18,10 @@ export default function ResetPassword({ cancel }) {
         // className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"
         style={{ height: window.screen.height, marginTop: 40 }}
       >
-        <div className="z-depth-float " style={{ borderRadius: 12 }}>
+        <div
+          className="z-depth-float force-no-elevation-on-mobile"
+          style={{ borderRadius: 12 }}
+        >
           {/* <div
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}

@@ -93,7 +93,7 @@ export default function SignUpAuth({
   return (
     <div className=" register-form">
       <div
-        className="z-depth-float me-anime-fade-in-up "
+        className="z-depth-float me-anime-fade-in-up force-no-elevation-on-mobile"
         style={{ borderRadius: 12 }}
       >
         <div className="register-form-content">
