@@ -1,16 +1,34 @@
 import React, { useState } from "react";
 import MEButton from "../../Widgets/MEButton";
+import Notification from "../../Widgets/Notification/Notification";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
 import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
+import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 import { sendPasswordResetEmail } from "./../shared/firebase-helpers";
 export default function ResetPassword({ cancel }) {
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(false);
   const doReset = () => {
-    if (!email) return;
-    sendPasswordResetEmail(email, (isSent) => setSent(isSent));
+    if (!email) return console.log("Le gbemi");
+    setLoading(true);
+    setNotification(null);
+    sendPasswordResetEmail(email, (isSent, error) => {
+      setSent(true);
+      if (isSent)
+        setNotification({
+          message: " We have sent you a link, please check your email",
+          good: true,
+        });
+      else setNotification({ message: error, good: false });
+      setLoading(false);
+    });
+  };
+
+  const whenUserTypes = (e) => {
+    if (ifEnterKeyIsPressed(e)) doReset();
   };
   return (
     <div>
@@ -18,6 +36,12 @@ export default function ResetPassword({ cancel }) {
         // className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"
         style={{ height: window.screen.height, marginTop: 40 }}
       >
+        {notification && (
+          <Notification {...(notification || {})}>
+            {" "}
+            {notification?.message}
+          </Notification>
+        )}
         <div
           className="z-depth-float force-no-elevation-on-mobile me-anime-fade-in-up"
           style={{ borderRadius: 12 }}
@@ -31,7 +55,18 @@ export default function ResetPassword({ cancel }) {
           <div className="mob-login-card-fix" style={{ padding: 55 }}>
             <AuthHeader>I forgot my password</AuthHeader>
 
-            <TextBoxAndButtonCombo placeholder="Enter your email address and click send" />
+            <TextBoxAndButtonCombo
+              placeholder="Enter your email address and click send"
+              btnText={sent ? "Resend" : "Send"}
+              loading={loading}
+              loadingText="Sending..."
+              name="email"
+              value={email || ""}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isInvalid(email) || loading}
+              genericProps={{ onKeyUp: whenUserTypes }}
+              onClick={() => doReset()}
+            />
             <div style={{ margin: "7px 0px" }}>
               <small className="auth-info" style={{ marginBottom: 5 }}>
                 We will send you a link to reset your password
@@ -58,11 +93,11 @@ export default function ResetPassword({ cancel }) {
               placeholder="Enter your email here..."
             />
           </div> */}
-            {sent && (
+            {/* {sent && (
               <p style={{ color: "var(--app-theme-green)" }}>
-                Reset password is sent, check your email
+                We have sent you a link, check your email
               </p>
-            )}
+            )} */}
             {/* <div style={{ display: "flex" }}>
             <MEButton
               variation="accent"
