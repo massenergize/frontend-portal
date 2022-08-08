@@ -1,6 +1,6 @@
 import React from "react";
 
-function AuthFooter({ children, back }) {
+function AuthFooter({ children, back, buttonText }) {
   return (
     <div className="auth-footer-root">
       <button
@@ -12,7 +12,7 @@ function AuthFooter({ children, back }) {
           margin: 0,
         }}
       >
-        BACK
+        {buttonText ? buttonText : "BACK"}
       </button>
       {children}
     </div>
