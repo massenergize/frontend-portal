@@ -12,7 +12,7 @@ export default function ResetPassword({ cancel }) {
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState(false);
   const doReset = () => {
-    if (!email) return console.log("Le gbemi");
+    if (!email) return;
     setLoading(true);
     setNotification(null);
     sendPasswordResetEmail(email, (isSent, error) => {
