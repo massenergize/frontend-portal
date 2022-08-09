@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import AuthFooter from "../Components/auth footer/AuthFooter";
+import AuthHeader from "../Components/AuthHeader";
+import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import {
   getRandomColor,
   ifEnterKeyIsPressed,
   isInvalid,
 } from "../shared/utils";
-import MEButton from "./../../../../components/Pages/Widgets/MEButton";
+// import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 
 export default function SignUpAuth({
-  description,
-  title,
+  // description,
+  // title,
   loading,
   registerUser,
   links,
@@ -21,9 +24,10 @@ export default function SignUpAuth({
   completeFormRegistrationInME,
   setLoading,
   policies,
-  registerWithGoogle,
-  registerWithFacebook,
-  showTour,
+  // registerWithGoogle,
+  // registerWithFacebook,
+  // showTour,
+  back,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
@@ -31,7 +35,7 @@ export default function SignUpAuth({
 
   const onUsernameChange = (username) => {
     setUserName(username);
-  }
+  };
 
   const history = useHistory();
 
@@ -44,7 +48,11 @@ export default function SignUpAuth({
     setForm(newForm);
   };
 
+  const hasInvalidContent = () => {
+    return isInvalid(getValue("password")) || isInvalid(getValue("email"));
+  };
   const whenUserTypes = (e) => {
+    if (hasInvalidContent()) return;
     if (ifEnterKeyIsPressed(e)) registerUser(form);
   };
 
@@ -91,13 +99,81 @@ export default function SignUpAuth({
     );
 
   return (
-    <div className="styled-form register-form">
-      <div className="z-depth-float me-anime-fade-in-up register-form-content">
-        <div className=" style-2">
+    <div className=" register-form">
+      <div
+        className="z-depth-float me-anime-fade-in-up force-no-elevation-on-mobile"
+        style={{ borderRadius: 12 }}
+      >
+        <div className="register-form-content">
+          <AuthHeader>Welcome!</AuthHeader>
+          <small className="auth-info">
+            When you join, we can count your impact. We do not collect sensitive
+            personal data and do not share data.
+          </small>
+          <div style={{ marginTop: 6 }}>
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your email address"
+              className="auth-textbox"
+              type="email"
+              name="email"
+              value={getValue("email")}
+              onChange={onChange}
+            />
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your password here"
+              type="password"
+              name="password"
+              value={getValue("password")}
+              className="auth-textbox"
+              onChange={onChange}
+            />
+
+            <TextBoxAndButtonCombo
+              placeholder="Re-enter the password"
+              name="confirm_password"
+              value={getValue("confirm_password")}
+              type="password"
+              onChange={onChange}
+              btnText="Join"
+              disabled={
+                isInvalid(getValue("email")) || invalidPassword() || loading
+              }
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading = {loading}
+            />
+          </div>
+        </div>
+        <AuthFooter back={back}>
+          {" "}
+          <button
+            className="auth-btns touchable-opacity"
+            style={{
+              background: "var(--app-theme-orange)",
+              borderBottomRightRadius: 5,
+              margin: 0,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+            onClick = {() => history.push(links?.signin)}
+          >
+            I have a profile already
+            <i
+              className="fa fa-long-arrow-right"
+              style={{ color: "white", marginLeft: 6 }}
+            />
+          </button>{" "}
+        </AuthFooter>
+
+        {/* <div className=" style-2">
           <h3 className="mob-title-fix">{title}</h3>
           <p className="mob-f-text"> {description}</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <div className="form-group">
             <span className="adon-icon">
               <span className="fa fa-envelope-o"></span>
@@ -198,7 +274,7 @@ export default function SignUpAuth({
                   >
                     <span className="fa fa-facebook"></span>
                   </button>
-                  {/* <MEButton
+                   <MEButton
                   onClick={() => {
                     registerWithGoogle((user) => {
                       if (user) window.location.reload();
@@ -218,7 +294,7 @@ export default function SignUpAuth({
                   className="me-facebook-btn"
                 >
                   Facebook
-                </MEButton> */}
+                </MEButton>
                 </div>
               )}
             </div>
@@ -241,7 +317,7 @@ export default function SignUpAuth({
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
