@@ -68,7 +68,7 @@
   border: solid 0px var(--app-theme-green);
   padding-bottom: 3px;
 
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   cursor: pointer;
   border-bottom-width: 2px;

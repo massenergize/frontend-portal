@@ -1,6 +1,6 @@
 import React from "react";
 
-function AuthFooter() {
+function AuthFooter({children}) {
   return (
     <div className="auth-footer-root">
       <button
@@ -13,6 +13,7 @@ function AuthFooter() {
       >
         BACK
       </button>
+      {children}
     </div>
   );
 }

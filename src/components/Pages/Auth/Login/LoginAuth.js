@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MEButton from "../../Widgets/MEButton";
+import AuthFooter from "../Components/auth footer/AuthFooter";
+import AuthHeader from "../Components/AuthHeader";
+import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
 import ResetPassword from "../Reset/ResetPassword";
 import {
@@ -115,23 +118,68 @@ export default function LoginAuth(props) {
       >
         <div
           className="z-depth-float mob-login-card-fix"
-          style={{ padding: 55, borderRadius: 12 }}
+          style={{ borderRadius: 12 }}
         >
-          <div
+          <div style={{ padding: 55, borderRadius: 12 }}>
+            <AuthHeader>Sign in with email and password</AuthHeader>
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your address"
+              className="auth-textbox"
+            />
+            <TextBoxAndButtonCombo
+              btnText="Sign In"
+              placeholder="Enter your secure password here"
+            />
+            <div
+              className="auth-link touchable-opacity"
+              style={{ marginTop: 10 }}
+            >
+              <p>Forgot my password</p>{" "}
+              <i
+                className="fa fa-long-arrow-right"
+                style={{ color: "var(--app-theme-green)" }}
+              />
+            </div>
+          </div>
+
+          <AuthFooter>
+            {" "}
+            <button
+              className="auth-btns touchable-opacity"
+              style={{
+                background: "var(--app-theme-orange)",
+                borderBottomRightRadius: 5,
+                margin: 0,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              Haven't joined yet? Join{" "}
+              <i
+                className="fa fa-long-arrow-right"
+                style={{ color: "white", marginLeft: 3 }}
+              />
+            </button>
+          </AuthFooter>
+          {/* <div
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
             <h3 className="mob-title-fix">{title}</h3>
             <p> {description}</p>
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <p className="mob-f-text">
               Fill in the form appropriately to activate the 'sign in' button
             </p>
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-envelope-o"></span>
@@ -248,7 +296,7 @@ export default function LoginAuth(props) {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
