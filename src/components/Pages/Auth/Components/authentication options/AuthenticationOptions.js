@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useHistory, withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { reduxToggleGuestAuthDialog } from "../../../../../redux/actions/pageActions";
+import GuestAuthenticationDialog from "../../../../Shared/GuestAuthenticationDialog";
 import MEButton from "../../../Widgets/MEButton";
 import MELink from "../../../Widgets/MELink";
 import "./AuthenticationOptions.css";
-function AuthenticationOptions() {
+function AuthenticationOptions({ links, close }) {
+  const [userWantsToUseGuestAuth, setUserWantsToUseGuestAuth] = useState(false);
+  const history = useHistory();
+  if (userWantsToUseGuestAuth) {
+    return (
+      <GuestAuthenticationDialog
+        back={() => setUserWantsToUseGuestAuth(false)}
+      />
+    );
+  }
   return (
     <div className="auth-options-root">
       <h1 className="auth-title">Welcome! Sign in or Join</h1>
@@ -12,6 +26,10 @@ function AuthenticationOptions() {
           background: "var(--app-theme-green)",
           "--width": "60%",
           marginBottom: 6,
+        }}
+        onClick={() => {
+          close && close();
+          history.push(`${links?.signin}?noPassword=true`);
         }}
       >
         {" "}
@@ -24,16 +42,19 @@ function AuthenticationOptions() {
           "--width": "60%",
           marginBottom: 6,
         }}
+        onClick={() => {
+          close && close();
+          history.push(links?.signin);
+        }}
       >
         {" "}
         With email and password
       </button>
 
       <div
-      className="dynamic-width"
+        className="dynamic-width"
         style={{
           display: "flex",
-          // flex: "2",
           "--width": "60%",
           flexDirection: "row",
           marginBottom: 10,
@@ -61,7 +82,10 @@ function AuthenticationOptions() {
           acebook
         </button>
       </div>
-      <div className="auth-link touchable-opacity">
+      <div
+        className="auth-link touchable-opacity"
+        onClick={() => setUserWantsToUseGuestAuth(true)}
+      >
         <p>Let me try as guest</p>{" "}
         <i
           className="fa fa-long-arrow-right"
@@ -71,5 +95,21 @@ function AuthenticationOptions() {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    links: state.links,
+  };
+};
 
-export default AuthenticationOptions;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      close: () => reduxToggleGuestAuthDialog(false),
+    },
+    dispatch
+  );
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AuthenticationOptions));

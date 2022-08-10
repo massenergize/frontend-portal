@@ -1,9 +1,10 @@
 import React from "react";
 
-function AuthFooter({children}) {
+function AuthFooter({ children, back }) {
   return (
     <div className="auth-footer-root">
       <button
+        onClick={() => back && back()}
         className="auth-btns touchable-opacity"
         style={{
           background: "black",

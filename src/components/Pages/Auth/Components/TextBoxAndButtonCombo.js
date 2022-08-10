@@ -9,6 +9,13 @@ function TextBoxAndButtonCombo({
   btnStyle,
   btnText = "Continue",
   className,
+  onClick,
+  loading,
+  value,
+  name,
+  type,
+  loadingText,
+  disabled,
 }) {
   return (
     <div className="auth-text-btn">
@@ -17,20 +24,28 @@ function TextBoxAndButtonCombo({
         className={`auth-textbox ${className || ""}`}
         id={id}
         placeholder={placeholder}
-        onChange={() => onChange && onChange()}
+        onChange={(e) => onChange && onChange(e)}
+        value={value || ""}
+        name={name}
+        type={type || "text"}
         {...(genericProps || {})}
       />
 
       <button
-        className="auth-btns touchable-opacity"
+        className="auth-btns touchable-opacity combo-btn-tweak"
         style={{
           background: "var(--app-theme-green)",
           marginLeft: "auto",
           flex: "1",
           ...(btnStyle || {}),
         }}
+        onClick={() => onClick && onClick()}
+        disabled={disabled}
       >
-        {btnText}
+        {loading && (
+          <i className="fa fa-spinner fa-spin" style={{ marginRight: 5 }} />
+        )}
+        {loading ? loadingText || btnText : btnText}
       </button>
     </div>
   );

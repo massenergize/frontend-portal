@@ -16,6 +16,7 @@ export default function PasswordFreeForm({
   loading,
   signInWithGoogle,
   signInWithFacebook,
+  back,
 }) {
   const email = getValue("email");
 
@@ -35,12 +36,25 @@ export default function PasswordFreeForm({
         >
           <div className="login-form-content">
             <AuthHeader>Sign in or join with email</AuthHeader>
-            <TextBoxAndButtonCombo placeholder="Enter your email address" />
-            <small className="auth-info" style={{ marginBottom: 5 }}>
-              We will send you an email with a verification link
-            </small>
+            <TextBoxAndButtonCombo
+              id="login-email"
+              placeholder="Enter your email address"
+              name="email"
+              value={email}
+              type="email"
+              onChange={onChange}
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading={loading}
+              disabled={isInvalid(getValue("email")) || loading}
+              loadingText={"Sending..."}
+            />
+            <div style={{ margin: "7px 0px" }}>
+              <small className="auth-info">
+                We will send you an email with a verification link
+              </small>
+            </div>
           </div>
-          <AuthFooter />
+          <AuthFooter back={() => back && back()} />
           {/* <div
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}

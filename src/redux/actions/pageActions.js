@@ -59,6 +59,20 @@ import TitleBar from "../../components/Pages/Widgets/TitleBar";
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
 
+export const reduxLoadSettings = (data) => {
+  return {
+    type: LOAD_SETTINGS,
+    payload: data,
+  };
+};
+/**
+ *
+ * @param {*} data
+ * @data must be an object, and the object must have 2 fields at least (show, and component )
+ * component: The component that should be displayed
+ * show: Whether the modal should be shown or not
+ * @returns
+ */
 export const reduxToggleUniversalModal = (data) => {
   return {
     type: TOGGLE_UNIVERSAL_MODAL,
@@ -73,9 +87,15 @@ export const reduxToggleGuestAuthDialog =
         show: state,
         component: (
           <>
-            <TitleBar />
-            {/* <AuthenticationOptions {...componentProps} /> */}
-            <GuestAuthenticationDialog {...componentProps} />
+            <TitleBar
+              close={() =>
+                dispatch(
+                  reduxToggleUniversalModal({ show: false, component: <></> })
+                )
+              }
+            />
+            <AuthenticationOptions {...componentProps} />
+            {/* <GuestAuthenticationDialog {...componentProps} /> */}
           </>
         ),
         ...(otherProps || {}),
