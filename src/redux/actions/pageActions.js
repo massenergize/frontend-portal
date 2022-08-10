@@ -1,4 +1,4 @@
-import GuestAuthenticationDialog from "../../components/Shared/GuestAuthenticationDialog";
+// import GuestAuthenticationDialog from "../../components/Shared/GuestAuthenticationDialog";
 import React from "react";
 import {
   fetchAndParseStorageContent,
@@ -53,10 +53,26 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
+import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
+import TitleBar from "../../components/Pages/Widgets/TitleBar";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
 
+export const reduxLoadSettings = (data) => {
+  return {
+    type: LOAD_SETTINGS,
+    payload: data,
+  };
+};
+/**
+ *
+ * @param {*} data
+ * @data must be an object, and the object must have 2 fields at least (show, and component )
+ * component: The component that should be displayed
+ * show: Whether the modal should be shown or not
+ * @returns
+ */
 export const reduxToggleUniversalModal = (data) => {
   return {
     type: TOGGLE_UNIVERSAL_MODAL,
@@ -69,7 +85,19 @@ export const reduxToggleGuestAuthDialog =
     dispatch(
       reduxToggleUniversalModal({
         show: state,
-        component: <GuestAuthenticationDialog {...componentProps} />,
+        component: (
+          <>
+            <TitleBar
+              close={() =>
+                dispatch(
+                  reduxToggleUniversalModal({ show: false, component: <></> })
+                )
+              }
+            />
+            <AuthenticationOptions {...componentProps} />
+            {/* <GuestAuthenticationDialog {...componentProps} /> */}
+          </>
+        ),
         ...(otherProps || {}),
       })
     );

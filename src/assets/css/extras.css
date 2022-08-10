@@ -6,6 +6,93 @@
   --app-theme-error: #d44b4b;
 }
 
+.login-form-content {
+  border-radius: 12px;
+}
+.title-bar-close-btn {
+  background-color: var(--app-theme-green);
+  margin-left: auto;
+  color: white;
+}
+.auth-info {
+  color: black;
+  /* font-weight: bold; */
+}
+
+.auth-textbox {
+  border: solid 1px #d7d3d3;
+  padding: 0px 20px;
+  flex: 7;
+}
+.auth-text-btn:focus {
+  outline: 0;
+}
+.auth-text-btn {
+  display: flex;
+  flex-direction: row;
+  /* width: 90%; */
+}
+.auth-footer-root {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fffdfb;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+}
+.auth-options-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+
+.auth-title {
+  font-weight: bold;
+  color: black;
+  margin-bottom: 12px;
+}
+
+.auth-btns {
+  box-shadow: 0 0 0;
+  border: 0;
+  cursor: pointer;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.auth-btns:disabled {
+  background-color: grey !important;
+}
+/* .auth-btns:focus {
+  outline: 0px;
+} */
+
+.auth-link {
+  border: solid 0px var(--app-theme-green);
+  padding-bottom: 3px;
+  color: var(--app-theme-green);
+  display: inline-flex;
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom-width: 2px;
+  align-items: center;
+}
+.auth-link p {
+  margin: 0px;
+  font-size: medium;
+  font-weight: bold;
+  color: var(--app-theme-green);
+  margin-right: 5px;
+}
+
+.settings-p {
+  margin-bottom: 5px;
+  color: black;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
@@ -2021,12 +2108,11 @@
 .guest-dialog-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  height: 100%;
+  /* height: 100%; */
 }
 .guest-congrats {
-  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -2044,9 +2130,45 @@
 .me-subtitle {
   color: black;
 }
+
+.combo-btn-tweak {
+  margin: 0px;
+  height: auto;
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .guest-congrats {
+    height: 50%;
+  }
+  .auth-textbox {
+    height: 50px !important;
+  }
+  .login-form-content {
+    padding: 55px;
+  }
+  .auth-info {
+    font-size: medium;
+  }
+  .title-bar-close-btn {
+    padding: 10px 15px;
+  }
+  .dynamic-width {
+    width: var(--width);
+  }
+  .auth-btns {
+    padding: 13px 30px;
+  }
+  .combo-btn-tweak {
+    min-width: 160px;
+    padding: 13px 10px !important;
+  }
+  .auth-title {
+    font-size: 25px;
+  }
+  .auth-options-root {
+    padding: 0px 50px 50px 50px;
+  }
   .me-subtitle {
     font-size: large;
   }
@@ -2103,7 +2225,7 @@
     font-size: large;
   }
   .guest-dialog-container {
-    padding: 20px;
+    padding: 0px 20px 10px;
   }
   .try-guest-mode {
     padding: 30px 40px;
@@ -2359,6 +2481,45 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .login-form-content {
+    padding: 0px;
+  }
+  .auth-info {
+    font-size: 13px;
+  }
+  .force-no-elevation-on-mobile {
+    box-shadow: 0 0 0 !important;
+  }
+  .auth-textbox {
+    font-size: 13px;
+    height: 47px;
+    padding: 10px !important;
+  }
+  .title-bar-close-btn {
+    padding: 6px 13px;
+  }
+  .auth-title-bar {
+    position: absolute;
+    width: 100%;
+  }
+  .dynamic-width {
+    width: 90% !important;
+  }
+  .auth-btns {
+    padding: 13px 18px;
+    font-size: 14px;
+    min-width: 101px;
+  }
+  .combo-btn-tweak {
+    min-width: 120px !important;
+    padding: 13px 9px;
+  }
+  .auth-title {
+    font-size: 22px;
+  }
+  .auth-options-root {
+    padding: 30px 20px 20px 20px;
+  }
   .me-subtitle {
     font-size: medium;
   }
@@ -2457,12 +2618,13 @@
     font-size: 14px;
     text-align: center;
     flex-direction: column;
+    height: 100%;
   }
   .responsive-p {
     font-size: 15px;
   }
   .guest-dialog-container {
-    padding: 15px;
+    padding: 30px 15px 0px 15px;
   }
   .try-guest-mode {
     padding: 20px 10px;

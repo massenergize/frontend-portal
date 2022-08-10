@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
+// import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../api/functions";
 import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
+import AuthFooter from "../Pages/Auth/Components/auth footer/AuthFooter";
+import TextBoxAndButtonCombo from "../Pages/Auth/Components/TextBoxAndButtonCombo";
 import {
   emailIsInvalid,
   GUEST_USER_KEY,
   ifEnterKeyIsPressed,
+  isInvalid,
 } from "../Pages/Auth/shared/utils";
-import MEButton from "../Pages/Widgets/MEButton";
-import METextField from "../Pages/Widgets/METextField";
+// import MEButton from "../Pages/Widgets/MEButton";
+// import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
-  const { community, putUserInRedux, user, links, close, history, callback } =
-    props;
+  const {
+    community,
+    putUserInRedux,
+    user,
+    links,
+    close,
+    history,
+    callback,
+    back,
+  } = props;
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [proceedAsGuest, setProceedAsGuest] = useState(false);
+  // const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
 
@@ -79,36 +90,87 @@ function GuestAuthenticationDialog(props) {
 
   if (guestAuthIsDone) return <CongratulatoryMessage />;
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const showWhenThereAreNoErrors = !error && !notGuest;
   return (
     <>
       <div className="guest-dialog-container">
         <div>
-          <p className="responsive-p" style={{marginBottom:10}}>
+          {/* <p className="responsive-p" style={{ marginBottom: 10 }}>
             {!proceedAsGuest ? (
               <span>
                 Welcome! Please choose one of the options below to continue
               </span>
             ) : (
-              <span>
-                Please provide an
-                <span
-                  style={{ color: "var(--app-theme-orange)", marginLeft: 5 }}
-                >
-                  email
-                </span>{" "}
-               address to verify that you are human
-              </span>
+            <span>
+              Please provide an
+              <span style={{ color: "var(--app-theme-orange)", marginLeft: 5 }}>
+                email
+              </span>{" "}
+              address to verify that you are human
+            </span>
             )}
-          </p>
+          </p> */}
+          <h1 className="auth-title">Sign in as a guest</h1>
 
-          {proceedAsGuest && (
-            <METextField
+          {/* {proceedAsGuest && ( */}
+          <TextBoxAndButtonCombo
+            id="test-guest-email"
+            name="email"
+            type="email"
+            placeholder="Enter your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
+            genericProps={{ onKeyUp: whenUserTypes }}
+            btnText="Continue"
+            onClick={() => authenticateGuest()}
+            loading={loading}
+            disabled={isInvalid(email) || loading}
+          />
+          {/* <div className="auth-text-btn">
+            <input
+              className="auth-textbox"
               id="test-guest-email"
-              placeholder="example@gmail.com"
+              placeholder="Enter your email address"
               onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
               genericProps={{ onKeyUp: whenUserTypes }}
             />
+
+            <button
+              className="auth-btns touchable-opacity"
+              style={{
+                background: "var(--app-theme-green)",
+                marginLeft: "auto",
+                flex: "1",
+              }}
+            >
+              Continue
+            </button>
+          </div> */}
+          {showWhenThereAreNoErrors && (
+            <div style={{ margin: "7px 0px" }}>
+              <small className="auth-info" style={{ marginBottom: 5 }}>
+                This will let you use some of the functions on this site, but we
+                wont be able to count your actions toward your community's
+                goals.
+                <span
+                  onClick={() => {
+                    close && close();
+                    history.push(links?.signin);
+                  }}
+                  className="touchable-opacity"
+                  style={{
+                    color: "var(--app-theme-orange",
+                    margin: "0px 2px",
+                  }}
+                >
+                  <b>Join</b>
+                </span>{" "}
+                if you want to be counted.
+              </small>
+            </div>
           )}
+          {/* // )} */}
 
           {error && (
             <small style={{ color: "maroon", marginTop: 5 }}>{error}</small>
@@ -132,7 +194,7 @@ function GuestAuthenticationDialog(props) {
           )}
         </div>
 
-        {!proceedAsGuest ? (
+        {/* {!proceedAsGuest ? (
           <div className="guest-dialog-footer">
             <div style={{ marginLeft: "auto" }}>
               <Cancel close={close} />
@@ -165,8 +227,9 @@ function GuestAuthenticationDialog(props) {
               Continue
             </MEButton>
           </div>
-        )}
+        )} */}
       </div>
+      <AuthFooter back={back} />
     </>
   );
 }
@@ -192,22 +255,22 @@ export default connect(
   mapDispatchToProps
 )(withRouter(GuestAuthenticationDialog));
 
-const Cancel = ({ close, callback }) => {
-  return (
-    <Link
-      to="#"
-      id="test-guest-cancel-btn"
-      onClick={(e) => {
-        e.preventDefault();
-        callback && callback();
-        close && close();
-      }}
-      style={{ marginRight: 20 }}
-    >
-      Cancel
-    </Link>
-  );
-};
+// const Cancel = ({ close, callback }) => {
+//   return (
+//     <Link
+//       to="#"
+//       id="test-guest-cancel-btn"
+//       onClick={(e) => {
+//         e.preventDefault();
+//         callback && callback();
+//         close && close();
+//       }}
+//       style={{ marginRight: 20 }}
+//     >
+//       Cancel
+//     </Link>
+//   );
+// };
 
 const CongratulatoryMessage = () => {
   return (
