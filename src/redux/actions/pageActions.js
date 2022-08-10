@@ -54,6 +54,7 @@ import {
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
+import TitleBar from "../../components/Pages/Widgets/TitleBar";
 
 export const FIRST_SET = "first-set";
 export const SECOND_SET = "second-set";
@@ -70,7 +71,13 @@ export const reduxToggleGuestAuthDialog =
     dispatch(
       reduxToggleUniversalModal({
         show: state,
-        component: <AuthenticationOptions {...componentProps} />,
+        component: (
+          <>
+            <TitleBar />
+            {/* <AuthenticationOptions {...componentProps} /> */}
+            <GuestAuthenticationDialog {...componentProps} />
+          </>
+        ),
         ...(otherProps || {}),
       })
     );
