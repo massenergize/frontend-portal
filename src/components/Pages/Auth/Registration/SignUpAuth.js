@@ -31,6 +31,7 @@ export default function SignUpAuth({
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
+  const [userName, setUserName] = useState("");
 
   const onUsernameChange = (username) => {
     setUserName(username);
@@ -70,7 +71,7 @@ export default function SignUpAuth({
     const location = " , " + form.city + ", " + form.state + ", " + form.zip;
     const body = {
       full_name: form.firstName + " " + form.lastName,
-      preferred_name: form.preferred_name || form.firstName,
+      preferred_name: userName || form.firstName,
       email: fireAuth.email,
       location: location,
       is_vendor: false,
@@ -92,6 +93,8 @@ export default function SignUpAuth({
         createMyAccountNow={finaliseFormAndRegister}
         loading={loading}
         policies={policies}
+        community={community}
+        onUsernameChange={onUsernameChange}
       />
     );
 
@@ -138,7 +141,8 @@ export default function SignUpAuth({
                 isInvalid(getValue("email")) || invalidPassword() || loading
               }
               genericProps={{ onKeyUp: whenUserTypes }}
-              loading = {loading}
+              loading={loading}
+              onClick={() => registerUser(form)}
             />
           </div>
         </div>
@@ -156,7 +160,7 @@ export default function SignUpAuth({
               width: "100%",
               justifyContent: "center",
             }}
-            onClick = {() => history.push(links?.signin)}
+            onClick={() => history.push(links?.signin)}
           >
             I have a profile already
             <i

@@ -51,6 +51,7 @@ import {
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
+  LOAD_SETTINGS,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";

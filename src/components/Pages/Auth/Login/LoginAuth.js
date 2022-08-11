@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 // import MEButton from "../../Widgets/MEButton";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
@@ -139,6 +139,7 @@ export default function LoginAuth(props) {
             />
             <TextBoxAndButtonCombo
               value={getValue("password")}
+              onClick={() => signUserIn(form)}
               name="password"
               type="password"
               onChange={onChange}

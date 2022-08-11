@@ -489,6 +489,7 @@ class ProfilePage extends React.Component {
               >
                 Edit Profile
               </Dropdown.Item>
+
               {/* {this.props.auth.providerData &&
               this.props.auth.providerData.length === 1 &&
               this.props.auth.providerData[0].providerId === "password" ? ( */}
@@ -513,6 +514,16 @@ class ProfilePage extends React.Component {
                   </Dropdown.Item>
                 </>
               ) : null}
+              <Dropdown.Item
+                onClick={() =>
+                  this.props.history.push(
+                    `${this.props.links.profile}/settings`
+                  )
+                }
+                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
+              >
+                Settings
+              </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
                   if (usesOnlyPasswordless)
