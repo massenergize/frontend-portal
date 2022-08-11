@@ -138,7 +138,8 @@ export default function SignUpAuth({
                 isInvalid(getValue("email")) || invalidPassword() || loading
               }
               genericProps={{ onKeyUp: whenUserTypes }}
-              loading = {loading}
+              loading={loading}
+              onClick={() => registerUser(form)}
             />
           </div>
         </div>
@@ -156,7 +157,7 @@ export default function SignUpAuth({
               width: "100%",
               justifyContent: "center",
             }}
-            onClick = {() => history.push(links?.signin)}
+            onClick={() => history.push(links?.signin)}
           >
             I have a profile already
             <i
