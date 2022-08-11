@@ -47,6 +47,7 @@ export default function PasswordFreeForm({
               loading={loading}
               disabled={isInvalid(getValue("email")) || loading}
               loadingText={"Sending..."}
+              onClick={() => sendLink()}
             />
             <div style={{ margin: "7px 0px" }}>
               <small className="auth-info">
