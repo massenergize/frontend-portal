@@ -34,7 +34,7 @@ function AuthenticationOptions({
         style={{
           background: "var(--app-theme-green)",
           "--width": "60%",
-          marginBottom: 6,
+          marginBottom: 14,
         }}
         onClick={() => {
           close && close();
@@ -49,7 +49,7 @@ function AuthenticationOptions({
         style={{
           background: "black",
           "--width": "60%",
-          marginBottom: 6,
+          marginBottom: 14,
         }}
         onClick={() => {
           close && close();
@@ -65,7 +65,7 @@ function AuthenticationOptions({
         style={{
           display: "flex",
           "--width": "60%",
-          flexDirection: "row",
+          flexDirection: "column",
           marginBottom: 10,
         }}
       >
@@ -74,6 +74,7 @@ function AuthenticationOptions({
           style={{
             background: "#D72E2E",
             flex: "1",
+            marginBottom: 14,
           }}
           onClick={() => signInWithGoogle(() => close())}
         >
@@ -85,7 +86,7 @@ function AuthenticationOptions({
           style={{
             background: "#127FCE",
             flex: "1",
-            marginLeft: 6,
+            // marginLeft: 6,
           }}
           onClick={() => signInWithFacebook(() => close())}
         >
