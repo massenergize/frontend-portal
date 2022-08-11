@@ -7,15 +7,18 @@ import {
   authenticateWithGoogle,
 } from "../../../../../redux/actions/authActions";
 import { reduxToggleGuestAuthDialog } from "../../../../../redux/actions/pageActions";
+import Feature from "../../../FeatureFlags/Feature";
 import GuestAuthenticationDialog from "../../../../Shared/GuestAuthenticationDialog";
 // import MEButton from "../../../Widgets/MEButton";
 // import MELink from "../../../Widgets/MELink";
 import "./AuthenticationOptions.css";
+import { FLAGS } from "../../../FeatureFlags/flags";
 function AuthenticationOptions({
   links,
   close,
   signInWithGoogle,
   signInWithFacebook,
+
 }) {
   const [userWantsToUseGuestAuth, setUserWantsToUseGuestAuth] = useState(false);
   const history = useHistory();
@@ -93,16 +96,18 @@ function AuthenticationOptions({
           acebook
         </button>
       </div>
-      <div
-        className="auth-link touchable-opacity"
-        onClick={() => setUserWantsToUseGuestAuth(true)}
-      >
-        <p>Let me try as a guest</p>{" "}
-        <i
-          className="fa fa-long-arrow-right"
-          style={{ color: "var(--app-theme-green)" }}
-        />
-      </div>
+      <Feature name={FLAGS.GUEST_SIGN_IN}>
+        <div
+          className="auth-link touchable-opacity"
+          onClick={() => setUserWantsToUseGuestAuth(true)}
+        >
+          <p>Let me try as a guest</p>{" "}
+          <i
+            className="fa fa-long-arrow-right"
+            style={{ color: "var(--app-theme-green)" }}
+          />
+        </div>
+      </Feature>
     </div>
   );
 }
