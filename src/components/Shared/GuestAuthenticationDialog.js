@@ -14,6 +14,7 @@ import {
   ifEnterKeyIsPressed,
   isInvalid,
 } from "../Pages/Auth/shared/utils";
+import { FLAGS } from "../Pages/FeatureFlags/flags";
 // import MEButton from "../Pages/Widgets/MEButton";
 // import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
@@ -35,6 +36,14 @@ function GuestAuthenticationDialog(props) {
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
 
+  const isGuestSignInAllowed = () => {
+    let guestSignInFlag = community?.feature_flags?.find((flag) => flag?.key === FLAGS?.GUEST_SIGN_IN);
+    if (guestSignInFlag) {
+      return true;
+    }
+    return false;
+  }
+
   const authenticateGuest = () => {
     setError("");
     setNotGuest(false);
@@ -48,13 +57,14 @@ function GuestAuthenticationDialog(props) {
       accepts_terms_and_conditions: false,
       is_vendor: false,
       is_guest: true,
+      is_new_guest_allowed: isGuestSignInAllowed(),
     };
     setLoading(true);
 
     apiCall("/users.create", data)
       .then((response) => {
         setLoading(false);
-        if (!response.success) return setError(response?.error?.message);
+        if (!response.success) return setError(response?.error);
         const user = response.data;
 
         const userExistsAndIsNotAGuest =

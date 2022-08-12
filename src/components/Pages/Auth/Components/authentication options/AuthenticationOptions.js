@@ -96,7 +96,24 @@ function AuthenticationOptions({
           acebook
         </button>
       </div>
-      <Feature name={FLAGS.GUEST_SIGN_IN}>
+      <Feature
+        name={FLAGS.GUEST_SIGN_IN}
+        fallback={
+          <div>
+            <p>Guest Auth has been disable for new users</p>
+            <center
+              className="auth-link touchable-opacity"
+              onClick={() => setUserWantsToUseGuestAuth(true)}
+            >
+              <p>Proceed anyway </p>{" "}
+              <i
+                className="fa fa-long-arrow-right"
+                style={{ color: "var(--app-theme-green)" }}
+              />
+            </center>
+          </div>
+        }
+      >
         <div
           className="auth-link touchable-opacity"
           onClick={() => setUserWantsToUseGuestAuth(true)}
