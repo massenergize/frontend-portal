@@ -35,7 +35,7 @@ import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeEmailForm from "./ChangeEmailForm";
-import Dropdown from "react-bootstrap/Dropdown";
+// import Dropdown from "react-bootstrap/Dropdown";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
@@ -49,7 +49,7 @@ import {
   sumOfCarbonScores,
 } from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
-import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
+// import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
 import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
@@ -443,10 +443,10 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    const { user } = this.props;
-    const { firebaseAuthSettings } = this.props;
-    const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
-    const userIsAGuest = user && user.is_guest;
+    // const { user } = this.props;
+    // const { firebaseAuthSettings } = this.props;
+    // const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
+    // const userIsAGuest = user && user.is_guest;
 
     return (
       <>
