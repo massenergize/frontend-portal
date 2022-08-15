@@ -37,6 +37,10 @@ export default function SignUpAuth({
     setUserName(username);
   };
 
+  const onUsernameChange = (username) => {
+    setUserName(username);
+  };
+
   const history = useHistory();
 
   const yesDeleteMyAccount = () => {
