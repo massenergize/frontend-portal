@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -42,6 +42,7 @@ import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
 import {
   calcEQ,
+  fetchParamsFromURL,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
   PREF_EQ_DEFAULT,
@@ -64,10 +65,10 @@ class ProfilePage extends React.Component {
       editingHH: null,
       joiningCom: false,
       addingHH: false,
-      editingProfileForm: null,
+      editingProfileForm: undefined,
       printing: false,
       message: "",
-      wantsToBecomeValidUser: false,
+      // wantsToBecomeValidUser: false,
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
@@ -144,9 +145,22 @@ class ProfilePage extends React.Component {
       />
     );
   }
+
+  componentDidMount() {}
+  static getDerivedStateFromProps(props, state) {
+    const isMountingForTheFirst = state.editingProfileForm === undefined;
+    const { mode } = fetchParamsFromURL(props.location, "mode");
+    const path = props.location.search;
+    const userHasChangedModes = path !== state.path;
+    if (isMountingForTheFirst || userHasChangedModes)
+      return { editingProfileForm: mode, path };
+
+    return { editingProfileForm: state.editingProfileForm };
+  }
   render() {
     const { fireAuth } = this.props;
-    const { wantsToBecomeValidUser } = this.state;
+    const wantsToBecomeValidUser =
+      this.state.editingProfileForm === "become-valid";
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -288,7 +302,7 @@ class ProfilePage extends React.Component {
                     <div
                       className="become-valid-from-guest touchable-opacity"
                       onClick={() =>
-                        this.setState({ wantsToBecomeValidUser: true })
+                        this.setState({ editingProfileForm: "become-valid" })
                       }
                     >
                       <p>
@@ -445,7 +459,8 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
+          {/* ----- @frimpongopoku REMOVE THIS, WHEN APPROVED AND ALL IS WORKING WELL */}
+          {/* <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
             <Dropdown.Toggle
               style={{ padding: "9px 16px" }}
               className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
@@ -490,9 +505,6 @@ class ProfilePage extends React.Component {
                 Edit Profile
               </Dropdown.Item>
 
-              {/* {this.props.auth.providerData &&
-              this.props.auth.providerData.length === 1 &&
-              this.props.auth.providerData[0].providerId === "password" ? ( */}
               {usesOnlyPasswordAuth(this.props.fireAuth) &&
               !usesOnlyPasswordless ? (
                 <>
@@ -538,8 +550,18 @@ class ProfilePage extends React.Component {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          &nbsp;&nbsp;
+          &nbsp;&nbsp; */}
         </h4>
+        <div>
+          <Link
+            to={`${this.props.links.profile}/settings`}
+            className="link-to"
+            style={{ fontSize: 15 }}
+          >
+            <i className=" fa fa-cog" style={{ marginRight: 3 }} /> Change my
+            preferences
+          </Link>
+        </div>
         <p> {this.state.message ? this.state.message : ""} </p>
         {form === "edit" && (
           <EditingProfileForm
