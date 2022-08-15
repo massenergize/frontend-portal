@@ -6,6 +6,27 @@
   --app-theme-error: #d44b4b;
 }
 
+.delete-account {
+  color: red;
+}
+.delete-account:hover {
+  color: white;
+}
+.link-to {
+  border: solid 0px var(--app-theme-green);
+  padding-bottom: 3px;
+  color: var(--app-theme-green);
+  display: inline-flex;
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom-width: 2px;
+  align-items: center;
+}
+.link-to:hover {
+  color: var(--app-theme-green);
+  opacity: 0.7;
+  transition: 0.2s ease-out;
+}
 .login-form-content {
   border-radius: 12px;
 }
