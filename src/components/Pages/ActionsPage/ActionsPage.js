@@ -12,6 +12,7 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ActionCard from "./ActionCard";
@@ -323,6 +324,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -333,6 +337,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                     </div>
                     <center style={{ padding: 10 }}>
@@ -545,6 +552,7 @@ const mapDispatchToProps = {
   reduxChangeData,
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
+  signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
 };
 export default connect(
   mapStoreToProps,

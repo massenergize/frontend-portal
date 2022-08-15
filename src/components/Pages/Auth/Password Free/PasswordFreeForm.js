@@ -1,18 +1,22 @@
 import React from "react";
 
-import MEButton from "../../Widgets/MEButton";
+// import MEButton from "../../Widgets/MEButton";
+import AuthFooter from "../Components/auth footer/AuthFooter";
+import AuthHeader from "../Components/AuthHeader";
+import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function PasswordFreeForm({
-  description,
-  title,
-  usePassword,
+  // description,
+  // title,
+  // usePassword,
   onChange,
   getValue,
   sendLink,
   loading,
-  signInWithGoogle,
-  signInWithFacebook,
+  // signInWithGoogle,
+  // signInWithFacebook,
+  back,
 }) {
   const email = getValue("email");
 
@@ -28,25 +32,47 @@ export default function PasswordFreeForm({
       >
         <div
           className="z-depth-float mob-login-card-fix"
-          style={{ padding: 55, borderRadius: 12 }}
+          style={{ borderRadius: 12 }}
         >
-          <div
+          <div className="login-form-content">
+            <AuthHeader>Sign in or join with email</AuthHeader>
+            <TextBoxAndButtonCombo
+              id="login-email"
+              placeholder="Enter your email address"
+              name="email"
+              value={email}
+              type="email"
+              onChange={onChange}
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading={loading}
+              disabled={isInvalid(getValue("email")) || loading}
+              loadingText={"Sending..."}
+              onClick={() => sendLink()}
+            />
+            <div style={{ margin: "7px 0px" }}>
+              <small className="auth-info">
+                We will send you an email with a verification link
+              </small>
+            </div>
+          </div>
+          <AuthFooter back={() => back && back()} />
+          {/* <div
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
             <h3 className="mob-title-fix">{title}</h3>
             {description && <p> {description}</p>}
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <p className="mob-f-text">
               Enter your email address for{" "}
               <b style={{ color: "var(--app-theme-green)" }}>password-free</b>{" "}
               sign-in. We'll send you an email with verification link.
             </p>
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-envelope-o"></span>
@@ -128,7 +154,7 @@ export default function PasswordFreeForm({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

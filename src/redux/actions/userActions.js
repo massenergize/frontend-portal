@@ -43,7 +43,7 @@ export const reduxShowReg = (value) => (dispatch) => {
   });
 };
 /** stores the user data when a user logs in */
-export const reduxLogin = (user) => (dispatch) => {
+export const reduxLogin = (user) => (dispatch) => { 
   const { user_info } = user || {};
 
   // Hopefully this does exactly what we want
