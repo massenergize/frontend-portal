@@ -26,7 +26,9 @@ class EditingProfileForm extends React.Component {
       image: props.user?.profile_picture?.url,
       color: props.user?.preferences?.color || "#fd7e14",
       imageReset: null,
+
       invalid_username_visibility: "hidden",
+      nonUniqueUsername: "",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -39,13 +41,17 @@ class EditingProfileForm extends React.Component {
     });
   }
 
-  validateUsername = async (username) => {
-    return await apiCall("users.validate.username", {username: username}).then(json => {
-        if (json.success) return json.data; 
-        else {
-            console.log(json.error);
-            return false; }
-    });
+  validateUserName = async (username) => {
+    return await apiCall("users.validate.username", {username: username})
+      .then(json => {
+        if (json.success) return json.data;
+      })
+      .catch(error => console.log(error));
+  }
+
+  handleUserNameChange = (e) => {
+    this.setState({invalid_username_visibility: "hidden"});
+    this.onChange(e);
   }
 
   onSubmit = async (event) => {
@@ -53,12 +59,6 @@ class EditingProfileForm extends React.Component {
     if (this.state.delete_account && this.state.are_you_sure) {
       this.deleteAccount();
     } else {
-      
-      if (!await this.validateUsername(this.state.preferred_name)){
-        this.setState({invalid_username_visibility: "visible"});
-        return;
-      }
-      
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
@@ -74,12 +74,16 @@ class EditingProfileForm extends React.Component {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            this.setState({ loading: false, imageReset: null });
+            this.setState({ loading: false, imageReset: null }); 
+          } else {
+            // api call fails: TODO- show error message instead of the username sugggestion
+            this.setState({ loading: false})
           }
         })
         .catch((error) => {
           console.log(error);
         });
+   
     }
   };
   deleteAccount() {
@@ -108,17 +112,28 @@ class EditingProfileForm extends React.Component {
             />
 
           <small>
-            Preferred Name <span className="text-danger">*</span>
+            Username <span className="text-danger">*</span>
           </small>
           <METextField
             type="text"
             name="preferred_name"
             defaultValue={this.state.preferred_name}
-            onChange={this.onChange}
+            value={this.state.preferred_name || ""}
+            onChange={(e) => this.handleUserNameChange(e)}
             required={true}
+            onBlur = {async () => {
+                const data = await this.validateUserName(this.state.preferred_name);
+                if (!data['valid']){
+                  this.setState(prevState => ({
+                      nonUniqueUsername: prevState.preferred_name,
+                      preferred_name: data['suggested_username'],
+                      invalid_username_visibility: "visible"
+                  }));
+                }
+            }}
           />
-          <div style={{visibility:this.state.invalid_username_visibility, color:"red"}}>
-            Username is taken!
+          <div style={{visibility:this.state.invalid_username_visibility}}>
+          The username '{this.state.nonUniqueUsername}' is taken, how about '{this.state.preferred_name}'?
           </div>
           <br />
           <small>Profile Picture</small>
