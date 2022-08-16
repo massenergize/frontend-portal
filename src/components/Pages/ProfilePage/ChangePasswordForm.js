@@ -11,6 +11,7 @@ import {
   Auth,
   FirebaseEmailAuthProvider,
 } from "../Auth/shared/firebase-helpers";
+import MELightFooter from "../Widgets/MELightFooter";
 
 class ChangePasswordFormBase extends React.Component {
   constructor(props) {
@@ -25,57 +26,67 @@ class ChangePasswordFormBase extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <MECard className="me-anime-open-in">
-          {this.state.error ? (
-            <p className="text-danger" style={{ fontSize: 14 }}>
-              {this.state.error}
-            </p>
-          ) : null}
-          <small>
-            Old Password <span className="text-danger">*</span>
-          </small>
-          <METextField
-            type="password"
-            name="old_password"
-            value={this.state.old_password}
-            onChange={this.onChange}
-            placeholder="Enter old password here"
-            required
-          />
-
-          <small>
-            New Password <span className="text-danger">*</span>
-          </small>
-          <METextField
-            type="password"
-            name="password1"
-            value={this.state.password1}
-            onChange={this.onChange}
-            placeholder="Enter new password"
-            required
-          />
-          <small>
-            Confirm Password <span className="text-danger">*</span>
-          </small>
-          <Tooltip text="Re-type your new password to confirm it. Passwords must match">
+      <div>
+        <MECard className="me-anime-open-in" style={{ padding: 0 }}>
+          <div style={{ padding: 20 }}>
+            {this.state.error ? (
+              <p className="text-danger" style={{ fontSize: 14 }}>
+                {this.state.error}
+              </p>
+            ) : null}
+            <small>
+              Old Password <span className="text-danger">*</span>
+            </small>
             <METextField
               type="password"
-              name="password2"
-              value={this.state.password2}
+              name="old_password"
+              value={this.state.old_password}
               onChange={this.onChange}
-              placeholder="Confirm password"
+              placeholder="Enter old password here"
               required
             />
-          </Tooltip>
 
-          <MEButton>{"Update"}</MEButton>
+            <small>
+              New Password <span className="text-danger">*</span>
+            </small>
+            <METextField
+              type="password"
+              name="password1"
+              value={this.state.password1}
+              onChange={this.onChange}
+              placeholder="Enter new password"
+              required
+            />
+            <small>
+              Confirm Password <span className="text-danger">*</span>
+            </small>
+            <Tooltip text="Re-type your new password to confirm it. Passwords must match">
+              <METextField
+                type="password"
+                name="password2"
+                value={this.state.password2}
+                onChange={this.onChange}
+                placeholder="Confirm password"
+                required
+              />
+            </Tooltip>
+
+            {/* <MEButton>{"Update"}</MEButton>
           <MEButton variation="accent" onClick={() => this.props.closeForm()}>
             {" "}
             Cancel{" "}
-          </MEButton>
+          </MEButton> */}
+          </div>
+          <MELightFooter
+            okText="UPDATE"
+            onConfirm={() => this.onSubmit()}
+            onCancel={(e) => {
+              e.preventDefault();
+              this.props.closeForm();
+            }}
+          />
         </MECard>
-      </form>
+      </div>
     );
   }
 

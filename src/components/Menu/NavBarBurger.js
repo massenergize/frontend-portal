@@ -448,7 +448,7 @@ class NavBarBurger extends React.Component {
             toggleGuestAuthDialog(true);
           }}
         >
-          Sign In
+          <b> Sign In | Join</b>
         </Link>
       );
     }

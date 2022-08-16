@@ -4,10 +4,18 @@ import { bindActionCreators } from "redux";
 import { apiCall } from "../../../api/functions";
 import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import ProfileSettings from "../ProfilePage/ProfileSettings";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 
-function Settings({ user, settings, updateUserInRedux }) {
+function Settings({
+  user,
+  settings,
+  updateUserInRedux,
+  links,
+  fireAuth,
+  firebaseAuthSettings,
+}) {
   const [currentTab, setCurrentTab] = useState(null);
   const userDefaults = user?.preferences?.user_portal_settings || {};
 
@@ -33,25 +41,38 @@ function Settings({ user, settings, updateUserInRedux }) {
       );
   };
 
-  const TABS = Object.entries(settings).map(
-    ([key, { name, live, options }]) => {
-      if (live)
-        return {
-          key,
-          name,
-          component: (
-            <RenderOptions
-              options={options}
-              userDefaults={userDefaults[key]} // based on the setting question right now, this will hold the user's chosen value if available
-              settingsTabKey={key}
-              updateUser={updateSettingsForUser}
-              user={user}
-            />
-          ),
-        };
-      return null;
-    }
-  );
+  var TABS = Object.entries(settings).map(([key, { name, live, options }]) => {
+    if (live)
+      return {
+        key,
+        name,
+        component: (
+          <RenderOptions
+            options={options}
+            userDefaults={userDefaults[key]} // based on the setting question right now, this will hold the user's chosen value if available
+            settingsTabKey={key}
+            updateUser={updateSettingsForUser}
+            user={user}
+          />
+        ),
+      };
+    return null;
+  });
+  TABS = [
+    {
+      key: "profile",
+      name: "Profile",
+      component: (
+        <ProfileSettings
+          user={user}
+          fireAuth={fireAuth}
+          firebaseAuthSettings={firebaseAuthSettings}
+          links = {links}
+        />
+      ),
+    },
+    ...TABS,
+  ];
 
   return (
     <div>
@@ -67,7 +88,7 @@ function Settings({ user, settings, updateUserInRedux }) {
             style={{ paddingRight: "0px", marginRight: "0px" }}
           >
             <div className="col-lg-9 col-md-9 col-12 offset-md-1 settings-wrapper">
-              <h1>Settings</h1>
+              <h1>Preferences</h1>
               {/*  TODO: The text here is just a placeholder. Text description from Kaat or Brad will be used here... */}
               <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics
@@ -89,7 +110,13 @@ function Settings({ user, settings, updateUserInRedux }) {
 }
 
 const mapStateToProps = (store) => {
-  return { user: store.user.info, settings: store.page.settings };
+  return {
+    user: store.user.info,
+    settings: store.page.settings,
+    links: store.links,
+    firebaseAuthSettings: store.firebaseAuthSettings,
+    fireAuth: store.fireAuth,
+  };
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ updateUserInRedux: reduxLogin }, dispatch);
