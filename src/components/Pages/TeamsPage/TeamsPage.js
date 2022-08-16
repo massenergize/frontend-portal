@@ -144,15 +144,17 @@ class TeamsPage extends React.Component {
           >
             <div className="text-center">
               {description ? (
-                <Tooltip text={description} paperStyle={{ maxWidth: "100vh" }}>
-                  <PageTitle style={{ fontSize: 24 }}>
-                    {title}
+                <PageTitle style={{ fontSize: 24 }}>
+                  {title}
+                  <Tooltip
+                    text={description}
+                  >
                     <span
                       className="fa fa-info-circle"
                       style={{ color: "#428a36", padding: "5px" }}
                     ></span>
-                  </PageTitle>
-                </Tooltip>
+                  </Tooltip>
+                </PageTitle>
               ) : (
                 <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               )}

@@ -60,18 +60,6 @@ class DonatePage extends React.Component {
             </div>
             <div className="pc-vanish">{this.renderVideo(videoLink)}</div>
             <br />
-
-            <PageTitle style={{ fontSize: 24 }}>
-              Donate To MassEnergize
-            </PageTitle>
-            <center style={{ width: "100%" }}>
-              <MEButton
-                href="https://paypal.me/massenergize?locale.x=en_US"
-                target="_blank"
-              >
-                Donate via Paypal
-              </MEButton>
-            </center>
           </div>
         </div>
       </>

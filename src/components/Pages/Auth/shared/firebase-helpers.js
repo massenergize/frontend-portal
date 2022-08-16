@@ -152,7 +152,7 @@ export const sendPasswordResetEmail = (email, cb) => {
       console.log("Password reset Email sent!");
     })
     .catch((e) => {
-      cb && cb(false);
+      cb && cb(false,e?.toString());
       console.log("Could not send password reset email!", e?.toString());
     });
 };

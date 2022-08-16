@@ -37,6 +37,7 @@ class Events extends React.Component {
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
+        if (!event.is_published) return null;
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)

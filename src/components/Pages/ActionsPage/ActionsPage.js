@@ -12,6 +12,7 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ActionCard from "./ActionCard";
@@ -273,18 +274,15 @@ class ActionsPage extends React.Component {
               <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
+                    <PageTitle style={{ fontSize: 24 }}>
+                      {title}
+                      <Tooltip text={description}>
                         <span
                           className="fa fa-info-circle"
                           style={{ color: "#428a36", padding: "5px" }}
                         ></span>
-                      </PageTitle>
-                    </Tooltip>
+                      </Tooltip>
+                    </PageTitle>
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
@@ -326,6 +324,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -336,6 +337,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                     </div>
                     <center style={{ padding: 10 }}>
@@ -548,6 +552,7 @@ const mapDispatchToProps = {
   reduxChangeData,
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
+  signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
 };
 export default connect(
   mapStoreToProps,

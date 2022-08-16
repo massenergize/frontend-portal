@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import CountUp from "react-countup";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { calcEQ, sumOfCarbonScores } from "../../Utils";
 import Slider from "./../Widgets/Slider/Slider";
 const DONE = "DONE";
 // const TODO = "TODO";
-export default class ActionBoxCounter extends Component {
+class ActionBoxCounter extends Component {
   makeCounterWithCustomValue(end, eqItem, useCounter = false) {
     const { user } = this.props;
     return (
       <>
         {useCounter ? (
           <CountUp
-            end={typeof end === 'string' ? Number(end) : end }
+            end={typeof end === "string" ? Number(end) : end}
             duration={1}
             decimals={1}
             style={{
@@ -102,6 +102,14 @@ export default class ActionBoxCounter extends Component {
       </>
     );
   }
+
+  fullList(e) {
+    e.preventDefault();
+    const { signInWithAuthenticationDialog, link, user } = this.props;
+    if (!user)
+      return signInWithAuthenticationDialog && signInWithAuthenticationDialog();
+    this.props.history.push(link);
+  }
   render() {
     const { type, style, todo, done, user, pref_eq } = this.props;
     const data = type === DONE ? done : todo;
@@ -134,13 +142,19 @@ export default class ActionBoxCounter extends Component {
             <br />
           </center>
         </div>
-        <Link to={this.props.link} className="full-list-btn">
+        <Link
+          onClick={this.fullList.bind(this)}
+          to={this.props.link}
+          className="full-list-btn"
+        >
           {!user ? "Sign In" : "Full List"}
         </Link>
       </div>
     );
   }
 }
+
+export default withRouter(ActionBoxCounter);
 
 ActionBoxCounter.defaultProps = {
   type: DONE,

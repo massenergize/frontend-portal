@@ -5,7 +5,7 @@ import React from "react";
  */
 export default class PageTitle extends React.Component {
   render() {
-    const { style, className } = this.props;
+    const { style, className, tooltip } = this.props;
     return (
       <div className="row text-center justify-content-center mb-5 zero-margin-btm">
         <h2
@@ -14,6 +14,7 @@ export default class PageTitle extends React.Component {
         >
           {this.props.children}
         </h2>
+        {tooltip && tooltip}
       </div>
     );
   }
