@@ -52,6 +52,8 @@ import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
 import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -514,6 +516,8 @@ class ProfilePage extends React.Component {
                   </Dropdown.Item>
                 </>
               ) : null}
+              <Feature name={FLAGS.USER_PROFILE_SETTINGS}>
+
               <Dropdown.Item
                 onClick={() =>
                   this.props.history.push(
@@ -524,6 +528,7 @@ class ProfilePage extends React.Component {
               >
                 Settings
               </Dropdown.Item>
+              </Feature>
               <Dropdown.Item
                 onClick={() => {
                   if (usesOnlyPasswordless)

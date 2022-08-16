@@ -245,7 +245,7 @@ class AppRouter extends Component {
           this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
           this.props.setCommunityActionListInRedux(communityActionList?.data);
-          this.props.reduxLoadSettings(settings.data); 
+          this.props.reduxLoadSettings(settings?.data||{}); 
           this.setState({
             pagesEnabled: {
               aboutUsPage: aboutUsPageResponse.data.is_published,
