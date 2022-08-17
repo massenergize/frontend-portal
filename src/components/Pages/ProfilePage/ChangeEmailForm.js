@@ -58,27 +58,9 @@ class ChangeEmailFormBase extends React.Component {
               placeholder="Enter password"
               required
             />
-
-            {/* <MEButton>{"Submit"}</MEButton>
-
-          <MEButton variation="accent" onClick={() => this.props.closeForm()}>
-            {" "}
-            Cancel{" "}
-          </MEButton>
-          <br />
-          {loading && (
-            <small
-              style={{
-                fontSize: 16,
-                color: "var(--app-theme-green)",
-                margin: 10,
-              }}
-            >
-              <i className="fa fa-spinner fa-spin" /> Loading...
-            </small>
-          )} */}
           </div>
           <MELightFooter
+            loading={loading}
             okText={loading ? "CHANGING..." : "SUBMIT"}
             onCancel={(e) => {
               e.preventDefault();

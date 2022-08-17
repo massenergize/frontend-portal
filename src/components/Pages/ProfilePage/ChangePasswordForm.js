@@ -5,7 +5,6 @@ import { compose } from "recompose";
 import { withFirebase } from "react-redux-firebase";
 import Tooltip from "../../Shared/Tooltip";
 import METextField from "../Widgets/METextField";
-import MEButton from "../Widgets/MEButton";
 import MECard from "../Widgets/MECard";
 import {
   Auth,
@@ -21,6 +20,7 @@ class ChangePasswordFormBase extends React.Component {
       old_password: "",
       password1: "",
       password2: "",
+      loading: false,
     };
   }
 
@@ -70,16 +70,11 @@ class ChangePasswordFormBase extends React.Component {
                 required
               />
             </Tooltip>
-
-            {/* <MEButton>{"Update"}</MEButton>
-          <MEButton variation="accent" onClick={() => this.props.closeForm()}>
-            {" "}
-            Cancel{" "}
-          </MEButton> */}
           </div>
           <MELightFooter
-            okText="UPDATE"
-            onConfirm={() => this.onSubmit()}
+            loading={this.state.loading}
+            okText={this.state.loading ? "UPDATING..." : "UPDATE"}
+            onConfirm={(e) => this.onSubmit(e)}
             onCancel={(e) => {
               e.preventDefault();
               this.props.closeForm();
@@ -117,7 +112,7 @@ class ChangePasswordFormBase extends React.Component {
         this.props.user.email,
         this.state.old_password
       );
-
+      this.setState({ loading: true });
       Auth.currentUser
         .reauthenticateWithCredential(cred)
         .then(() => {
@@ -127,11 +122,17 @@ class ChangePasswordFormBase extends React.Component {
               this.props.closeForm("Thank you, your password has been changed");
             })
             .catch((err) => {
-              this.setState({ error: err.message ? err.message : err });
+              this.setState({
+                error: err.message ? err.message : err,
+                loading: false,
+              });
             });
         })
         .catch((err) => {
-          this.setState({ error: err.message ? err.message : err });
+          this.setState({
+            error: err.message ? err.message : err,
+            loading: false,
+          });
         });
     }
   };
