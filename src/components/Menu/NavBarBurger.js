@@ -298,11 +298,7 @@ class NavBarBurger extends React.Component {
     });
   }
   renderLogin() {
-    const { user, links, toggleGuestAuthDialog, firebaseAuthSettings } =
-      this.props;
-    const { usesOnlyPasswordless, usesEmailAndPassword } =
-      firebaseAuthSettings?.signInConfig || {};
-    const userIsAGuest = user && user.is_guest;
+    const { user, links, toggleGuestAuthDialog } = this.props;
 
     const btnColor =
       user.preferences && user.preferences.color
@@ -344,60 +340,6 @@ class NavBarBurger extends React.Component {
             >
               My Profile
             </Link>
-            {userIsAGuest && (
-              <Link
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.dispatchEvent(new MouseEvent("click"));
-                  this.props.history.push(`${links.profile}?mode=become-valid`);
-                }}
-                className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
-              >
-                Become A Registered Member{" "}
-                <span role="img" aria-label="image">
-                  🎊
-                </span>
-              </Link>
-            )}
-
-            <Link
-              to={`${links.profile}?mode=edit`}
-              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
-              onClick={() => document.dispatchEvent(new MouseEvent("click"))}
-            >
-              Edit My Profile
-            </Link>
-            {usesOnlyPasswordless && (
-              <Link
-                to={`${links.profile}/password-less/manage`}
-                className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
-                onClick={() => document.dispatchEvent(new MouseEvent("click"))}
-              >
-                Add Password
-              </Link>
-            )}
-            {usesEmailAndPassword && !usesOnlyPasswordless && (
-              <>
-                <Link
-                  to={`${links.profile}?mode=email`}
-                  className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
-                  onClick={() =>
-                    document.dispatchEvent(new MouseEvent("click"))
-                  }
-                >
-                  Change My Email
-                </Link>{" "}
-                <Link
-                  to={`${links.profile}?mode=password`}
-                  className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
-                  onClick={() =>
-                    document.dispatchEvent(new MouseEvent("click"))
-                  }
-                >
-                  Change My Password
-                </Link>
-              </>
-            )}
 
             <Link
               to={`${links.profile}/settings`}
@@ -406,24 +348,6 @@ class NavBarBurger extends React.Component {
             >
               Preferences
             </Link>
-            <Link
-              to="#"
-              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item delete-account"
-              onClick={(e) => {
-                e.preventDefault();
-                document.dispatchEvent(new MouseEvent("click"));
-                const link = `${links.profile}${
-                  usesOnlyPasswordless
-                    ? "/password-less/manage"
-                    : "?mode=delete"
-                }`;
-                this.props.history.push(link);
-              }}
-            >
-              Delete My Account
-            </Link>
-            {/* ------------------------------------------------------------------------------ */}
-
             {/* ------------------------------------------------------------------------------ */}
             <button
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../../api/functions";
 import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
+import LoadingCircle from "../../Shared/LoadingCircle";
+import VerifyEmailBox from "../Auth/shared/components/VerifyEmailBox";
+import { AUTH_STATES } from "../Auth/shared/utils";
 import ProfileSettings from "../ProfilePage/ProfileSettings";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
@@ -15,8 +19,25 @@ function Settings({
   links,
   fireAuth,
   firebaseAuthSettings,
+  authState,
 }) {
   const [currentTab, setCurrentTab] = useState(null);
+
+  const userIsNotAuthenticated =
+    authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
+  const appIsCheckingFirebase = authState === AUTH_STATES.CHECKING_FIREBASE;
+  const appIsCheckingMassEnergize =
+    authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
+
+  // -------------------------------------------------------------------
+  if (userIsNotAuthenticated) return <Redirect to={links.signin}> </Redirect>;
+
+  if (appIsCheckingFirebase || appIsCheckingMassEnergize)
+    return <LoadingCircle />;
+
+  if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
+  // -------------------------------------------------------------------
+
   const userDefaults = user?.preferences?.user_portal_settings || {};
 
   const updateSettingsForUser = (content) => {
@@ -67,7 +88,7 @@ function Settings({
           user={user}
           fireAuth={fireAuth}
           firebaseAuthSettings={firebaseAuthSettings}
-          links = {links}
+          links={links}
         />
       ),
     },
@@ -116,6 +137,7 @@ const mapStateToProps = (store) => {
     links: store.links,
     firebaseAuthSettings: store.firebaseAuthSettings,
     fireAuth: store.fireAuth,
+    authState: store.authState,
   };
 };
 const mapDispatchToProps = (dispatch) => {

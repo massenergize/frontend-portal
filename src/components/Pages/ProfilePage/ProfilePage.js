@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -443,14 +443,15 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    // const { user } = this.props;
-    // const { firebaseAuthSettings } = this.props;
-    // const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
-    // const userIsAGuest = user && user.is_guest;
-
     return (
       <>
-        <h4>
+        <h4
+          style={{
+            border: "solid 0px var(--app-theme-green)",
+            borderBottomWidth: 2,
+            paddingBottom: 15,
+          }}
+        >
           {this.props.user ? (
             <div style={{ display: "inline-block" }}>
               <span style={{ color: "#8dc63f" }}>Welcome</span>{" "}
@@ -459,109 +460,7 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          {/* ----- @frimpongopoku REMOVE THIS, WHEN APPROVED AND ALL IS WORKING WELL */}
-          {/* <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
-            <Dropdown.Toggle
-              style={{ padding: "9px 16px" }}
-              className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
-            ></Dropdown.Toggle>
-            <Dropdown.Menu
-              style={{
-                borderTop: "5px solid #8dc63f",
-                borderRadius: "0",
-                padding: "0",
-              }}
-              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
-            >
-              {userIsAGuest && (
-                <Dropdown.Item
-                  onClick={() => {
-                    this.setState({ wantsToBecomeValidUser: true });
-                  }}
-                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                >
-                  Become A Registered Member{" "}
-                  <span role="img" aria-label="image">
-                    🎊
-                  </span>
-                </Dropdown.Item>
-              )}
-              {usesOnlyPasswordless && (
-                <Dropdown.Item
-                  onClick={() =>
-                    this.props.history.push(
-                      this.props.links?.profile + "/password-less/manage"
-                    )
-                  }
-                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                >
-                  Add Password
-                </Dropdown.Item>
-              )}
-              <Dropdown.Item
-                onClick={() => this.setState({ editingProfileForm: "edit" })}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Edit Profile
-              </Dropdown.Item>
-
-              {usesOnlyPasswordAuth(this.props.fireAuth) &&
-              !usesOnlyPasswordless ? (
-                <>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "password" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Password
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "email" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Email
-                  </Dropdown.Item>
-                </>
-              ) : null}
-              <Dropdown.Item
-                onClick={() =>
-                  this.props.history.push(
-                    `${this.props.links.profile}/settings`
-                  )
-                }
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  if (usesOnlyPasswordless)
-                    return this.props.history.push(
-                      this.props.links.profile + "/password-less/manage"
-                    );
-                  this.setState({ editingProfileForm: "delete" });
-                }}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Delete Profile
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          &nbsp;&nbsp; */}
         </h4>
-        <div>
-          <Link
-            to={`${this.props.links.profile}/settings`}
-            className="link-to"
-            style={{ fontSize: 15 }}
-          >
-            <i className=" fa fa-cog" style={{ marginRight: 3 }} /> Change my
-            preferences
-          </Link>
-        </div>
         <p> {this.state.message ? this.state.message : ""} </p>
         {form === "edit" && (
           <EditingProfileForm

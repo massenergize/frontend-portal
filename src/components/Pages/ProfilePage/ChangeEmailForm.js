@@ -5,7 +5,6 @@ import { compose } from "recompose";
 import { withFirebase } from "react-redux-firebase";
 import { apiCall } from "../../../api/functions";
 import METextField from "../Widgets/METextField";
-import MEButton from "../Widgets/MEButton";
 import MECard from "../Widgets/MECard";
 import {
   Auth,
