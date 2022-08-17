@@ -51,7 +51,8 @@ function ProfileSettings(props) {
   // -------------------------------------------------------------
   const renderThisPage = (page) => <>{page}</>;
   const page = modes[mode || ""];
-  if (page) return renderThisPage(page);
+  if (page)
+    return <div style={{ marginBottom: 70 }}>{renderThisPage(page)}</div>;
   //   -----------------------------ELSE--------------------------------
   return (
     <div style={{ marginBottom: 50 }}>
