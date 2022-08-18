@@ -8,7 +8,6 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import VerifyEmailBox from "../Auth/shared/components/VerifyEmailBox";
 import { AUTH_STATES } from "../Auth/shared/utils";
-import ProfileSettings from "../ProfilePage/ProfileSettings";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 
@@ -18,7 +17,6 @@ function Settings({
   updateUserInRedux,
   links,
   fireAuth,
-  firebaseAuthSettings,
   authState,
 }) {
   const [currentTab, setCurrentTab] = useState(null);
@@ -79,21 +77,21 @@ function Settings({
       };
     return null;
   });
-  TABS = [
-    {
-      key: "profile",
-      name: "Profile",
-      component: (
-        <ProfileSettings
-          user={user}
-          fireAuth={fireAuth}
-          firebaseAuthSettings={firebaseAuthSettings}
-          links={links}
-        />
-      ),
-    },
-    ...TABS,
-  ];
+  // TABS = [
+  //   {
+  //     key: "profile",
+  //     name: "Profile",
+  //     component: (
+  //       <ProfileSettings
+  //         user={user}
+  //         fireAuth={fireAuth}
+  //         firebaseAuthSettings={firebaseAuthSettings}
+  //         links={links}
+  //       />
+  //     ),
+  //   },
+  //   ...TABS,
+  // ];
 
   return (
     <div>
@@ -109,7 +107,7 @@ function Settings({
             style={{ paddingRight: "0px", marginRight: "0px" }}
           >
             <div className="col-lg-9 col-md-9 col-12 offset-md-1 settings-wrapper">
-              <h1>Preferences</h1>
+              <h1>Communication Preferences</h1>
               {/*  TODO: The text here is just a placeholder. Text description from Kaat or Brad will be used here... */}
               <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics

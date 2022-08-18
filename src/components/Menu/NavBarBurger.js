@@ -342,7 +342,7 @@ class NavBarBurger extends React.Component {
             </Link>
 
             <Link
-              to={`${links.profile}/settings`}
+              to={`${links.profile}/changes`}
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => document.dispatchEvent(new MouseEvent("click"))}
             >

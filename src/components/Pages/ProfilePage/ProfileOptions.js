@@ -68,6 +68,14 @@ function ProfileOptions({
       )}
       <div
         className="link-to touchable-opacity"
+        onClick={() => history.push(`${links.profile}/settings`)}
+      >
+        <span className=" fa fa-bell" />
+        <p>Change communication preferences </p>
+        <i className=" fa fa-long-arrow-right" />
+      </div>
+      <div
+        className="link-to touchable-opacity"
         onClick={() => history.push(`${pathname}?mode=delete-account`)}
       >
         <span className=" fa fa-trash" />
