@@ -7,12 +7,14 @@ function MELightFooter({
   loading,
   cancelText = "CANCEL",
   okText = "OK",
+  disabled = false,
 }) {
   return (
     <div className="me-light-footer">
       {children}
       <div style={{ marginLeft: "auto" }}>
         <button
+          disabled={disabled}
           onClick={onConfirm}
           className="flat-btn  flat-btn_submit btn-success "
         >

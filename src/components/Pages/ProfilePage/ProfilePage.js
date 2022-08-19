@@ -42,6 +42,7 @@ import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
 import {
   calcEQ,
+  fetchParamsFromURL,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
   PREF_EQ_DEFAULT,
@@ -143,6 +144,11 @@ class ProfilePage extends React.Component {
         }
       />
     );
+  }
+  componentDidMount() {
+    const { mode } = fetchParamsFromURL(this.props.location, "mode");
+    if (mode === "become-valid")
+      this.setState({ wantsToBecomeValidUser: true });
   }
   render() {
     const { fireAuth } = this.props;

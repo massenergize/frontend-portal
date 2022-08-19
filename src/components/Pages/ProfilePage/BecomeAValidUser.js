@@ -11,11 +11,16 @@ import Notification from "../Widgets/Notification/Notification";
 import AddGuestToFirebase from "./AddGuestToFirebase";
 import Stepper from "./MEStepper";
 
-function BecomeAValidUser({ user, setFirebaseUser, sendVerificationEmail }) {
+function BecomeAValidUser({
+  user,
+  setFirebaseUser,
+  sendVerificationEmail,
+  links,
+}) {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState([]);
   const [active, setActive] = useState("provide-pass");
-  const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   const steps = {
     "provide-pass": {
@@ -23,7 +28,9 @@ function BecomeAValidUser({ user, setFirebaseUser, sendVerificationEmail }) {
       key: "provide-pass",
       component: (
         <AddGuestToFirebase
-          setError={setError}
+          links={links}
+          // setError={(err, state) => setNotification({ good: false, mesage: err })}
+          setNotification={setNotification}
           email={user.email}
           loading={loading}
           setLoading={setLoading}
@@ -58,7 +65,11 @@ function BecomeAValidUser({ user, setFirebaseUser, sendVerificationEmail }) {
         <div className="col-lg-19 col-md-10  col-12 offset-md-1">
           <Stepper steps={steps} active={active} checked={checked} />
 
-          {error && <Notification good={false}>{error}</Notification>}
+          {notification && (
+            <Notification good={notification.good}>
+              {notification.message}
+            </Notification>
+          )}
 
           {steps[active]?.component}
         </div>
@@ -74,6 +85,7 @@ const mapStateToProps = (store) => {
     communityData: store.page.communityData,
     policies: store.page.policies,
     user: store.user.info,
+    links: store.links,
   };
 };
 const mapDispatchToProps = (dispatch) => {
