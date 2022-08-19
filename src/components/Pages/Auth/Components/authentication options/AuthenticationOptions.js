@@ -9,8 +9,6 @@ import {
 import { reduxToggleGuestAuthDialog } from "../../../../../redux/actions/pageActions";
 import Feature from "../../../FeatureFlags/Feature";
 import GuestAuthenticationDialog from "../../../../Shared/GuestAuthenticationDialog";
-// import MEButton from "../../../Widgets/MEButton";
-// import MELink from "../../../Widgets/MELink";
 import "./AuthenticationOptions.css";
 import { FLAGS } from "../../../FeatureFlags/flags";
 function AuthenticationOptions({
@@ -99,21 +97,6 @@ function AuthenticationOptions({
       </div>
       <Feature
         name={FLAGS.GUEST_SIGN_IN}
-        fallback={
-          <div>
-            <p>Guest Auth has been disable for new users</p>
-            <center
-              className="auth-link touchable-opacity"
-              onClick={() => setUserWantsToUseGuestAuth(true)}
-            >
-              <p>Proceed anyway </p>{" "}
-              <i
-                className="fa fa-long-arrow-right"
-                style={{ color: "var(--app-theme-green)" }}
-              />
-            </center>
-          </div>
-        }
       >
         <div
           className="auth-link touchable-opacity"
