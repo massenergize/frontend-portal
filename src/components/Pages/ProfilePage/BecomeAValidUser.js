@@ -66,9 +66,11 @@ function BecomeAValidUser({
           <Stepper steps={steps} active={active} checked={checked} />
 
           {notification && (
-            <Notification good={notification.good}>
-              {notification.message}
-            </Notification>
+            <div style={{ marginBottom: 14 }}>
+              <Notification good={notification.good}>
+                {notification.message}
+              </Notification>
+            </div>
           )}
 
           {steps[active]?.component}

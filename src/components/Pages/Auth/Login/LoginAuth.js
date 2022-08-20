@@ -11,11 +11,7 @@ import {
   DIFFERENT_ENVIRONMENT,
   sendSignInLinkToEmail,
 } from "../shared/firebase-helpers";
-import {
-  GUEST_USER_KEY,
-  ifEnterKeyIsPressed,
-  isInvalid,
-} from "../shared/utils";
+import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 
 export default function LoginAuth(props) {
   const {
@@ -81,12 +77,8 @@ export default function LoginAuth(props) {
 
   const backgroundCheckForPasswordlessAuthentication = useCallback(() => {
     checkForPasswordFreeAuth((email, error) => {
-      if (!error) {
-        finaliseNoPasswordAuth(email, (_, error) => {
-          if (!error) localStorage.removeItem(GUEST_USER_KEY);
-        });
-        return;
-      }
+      if (!error) return finaliseNoPasswordAuth(email);
+
       if (error === DIFFERENT_ENVIRONMENT) {
         setNotification({
           good: false,

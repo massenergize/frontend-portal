@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory, withRouter } from "react-router-dom";
-import { fetchParamsFromURL } from "../../Utils";
+
 import {
-  firebaseAuthenticationWithNoPassword,
   PASSWORD_FREE_EMAIL,
   registerWithEmailAndPassword,
   sendSignInLinkToEmail,
@@ -12,8 +11,6 @@ import MECheckBoxGroup from "../Widgets/MECheckBoxGroup";
 import MELightFooter from "../Widgets/MELightFooter";
 import METextField from "../Widgets/METextField";
 
-const CONTINUE_AS_PASSWORDLESS = "continue-as-passwordless";
-// const EMAIL_FOR_SIGNIN = "emailForSignin";
 function AddGuestToFirebase({
   email,
   setNotification,
@@ -32,28 +29,10 @@ function AddGuestToFirebase({
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const completePasswordlessAuth = () => {
-  //   var email = localStorage.getItem(EMAIL_FOR_SIGNIN);
-  //   if (email) email = window.prompt("Please provide email for comfirmation");
-  //   firebaseAuthenticationWithNoPassword(email, (_, error) => {
-  //     if (error) return setNotification({ good: false, message: error });
-  //     const { protocol, host } = window.location;
-  //     const link = `${protocol}//${host}${links.profile}`;
-  //     window.location.href = link;
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   const { authstate } = fetchParamsFromURL(location, "authstate");
-  //   if (authstate === CONTINUE_AS_PASSWORDLESS)
-  //     return completePasswordlessAuth();
-  // }, []);
-
   const becomeValidWithNoPassword = () => {
     const { email } = form || {};
     const { protocol, host } = window.location;
     const link = `${protocol}//${host}${links.signin}`;
-    console.log("I think this is the link bro", link);
     if (!email)
       return setNotification({
         good: false,
@@ -107,7 +86,6 @@ function AddGuestToFirebase({
     setLoading(true);
     registerWithEmailAndPassword(email, form.password, (auth, error) => {
       setLoading(false);
-      console.log("I think I am the auth", auth);
       if (error) {
         setNotification({ good: false, message: error });
         console.log("ERROR_ADDING_ADDING_GUEST_TO_FIREBASE", error);
@@ -155,7 +133,6 @@ function AddGuestToFirebase({
           value={form.email}
           onChange={onChange}
           placeholder="Email"
-          //   genericProps={{ disabled: true }}
         />
         <div style={{ opacity: noPassword ? ".4" : "1" }}>
           <small>Enter Password</small>

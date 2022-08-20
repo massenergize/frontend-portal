@@ -8,6 +8,7 @@ import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
 import AuthFooter from "../Pages/Auth/Components/auth footer/AuthFooter";
 import TextBoxAndButtonCombo from "../Pages/Auth/Components/TextBoxAndButtonCombo";
+import { PASSWORD_FREE_EMAIL } from "../Pages/Auth/shared/firebase-helpers";
 import {
   emailIsInvalid,
   GUEST_USER_KEY,
@@ -73,6 +74,7 @@ function GuestAuthenticationDialog(props) {
 
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
+        localStorage.removeItem(PASSWORD_FREE_EMAIL);// If this value is somehow available in local storage at this time, remove it
         setGuestAuthIsDone(true);
         callback && callback(true);
 
