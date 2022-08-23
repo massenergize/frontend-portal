@@ -7,6 +7,7 @@ import {
   firebaseAuthenticationWithGoogle,
   firebaseAuthenticationWithNoPassword,
   FirebaseEmailAuthProvider,
+  PASSWORD_FREE_EMAIL,
   registerWithEmailAndPassword,
   signOutOfFirebase,
   withEmailAndPassword,
@@ -174,6 +175,11 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   checkFirebaseAuthenticationState((user) => {
     if (!user) {
       dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+      // If a guest is trying to become a valid user, but a passwordless one, this value will be set
+      // so hold off on reauthenticating as guest after the reload
+      const inGuestToPasswordlessTransition =
+        localStorage.getItem(PASSWORD_FREE_EMAIL);
+      if (inGuestToPasswordlessTransition) return;
       // now we know user is not a authenticated user, try and see if user can be signed in as a guest
       return dispatch(authenticateAsGuest());
     }

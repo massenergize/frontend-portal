@@ -145,8 +145,12 @@ class ProfilePage extends React.Component {
       />
     );
   }
+  componentDidMount() {
+    const { mode } = fetchParamsFromURL(this.props.location, "mode");
+    if (mode === "become-valid")
+      this.setState({ wantsToBecomeValidUser: true });
+  }
 
-  componentDidMount() {}
   static getDerivedStateFromProps(props, state) {
     const isMountingForTheFirst = state.editingProfileForm === undefined;
     const { mode } = fetchParamsFromURL(props.location, "mode");
