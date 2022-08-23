@@ -86,7 +86,6 @@ function AuthenticationOptions({
           style={{
             background: "#127FCE",
             flex: "1",
-            // marginLeft: 6,
           }}
           onClick={() => signInWithFacebook(() => close())}
         >

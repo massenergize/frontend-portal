@@ -32,12 +32,12 @@ export const setFirebaseSettings = (settings = {}) => {
 
 export const completeUserDeletion = (user_id, cb) => (dispatch) => {
   apiCall("users.delete", { user_id })
-    .then(() => {
-      cb && cb(true);
-      dispatch(signMeOut);
+    .then((response) => {
+      if (response.success) return dispatch(signMeOut());
+      else cb && cb(false, response.error);
     })
     .catch((e) => {
-      cb && cb(false);
+      cb && cb(false, e?.toString());
       console.log("DELETING_ME_USER_FAILED:", e?.toString());
     });
 };
@@ -259,7 +259,7 @@ export const setAuthNotification = (notification) => {
 
 export const setMassEnergizeUser = (user) => {
   return { type: LOGIN, payload: user };
-}; 
+};
 export const setFirebaseUser = (user) => {
   return { type: SET_FIREBASE_USER, payload: user };
 };
