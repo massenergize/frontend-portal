@@ -113,7 +113,7 @@ function Settings({
               <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics
                 to receive notifications on. Use the toggles below to manage the
-                behaviour of the application in a any manner that best suits
+                behavior of the application in the manner that best suits
                 you.
               </p>
               <TabView

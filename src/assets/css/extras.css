@@ -2171,6 +2171,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .new-sign-in {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
   .guest-congrats {
     height: 50%;
   }
@@ -2514,6 +2518,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .new-sign-in {
+    padding: 10px;
+    font-size: 13px;
+  }
   .login-form-content {
     padding: 0px;
   }
@@ -3555,8 +3563,7 @@
 .new-sign-in {
   border-radius: 200px;
   border: solid 2px #8dc63f;
-  padding: 10px 15px;
-  font-size: 14px;
+
   cursor: pointer;
   color: white;
   background: #8dc63f;
