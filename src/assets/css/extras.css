@@ -6,6 +6,39 @@
   --app-theme-error: #d44b4b;
 }
 
+.delete-account {
+  color: red;
+}
+.delete-account:hover {
+  color: white;
+}
+.link-to {
+  border: solid 0px var(--app-theme-green);
+  padding-bottom: 8px;
+  color: var(--app-theme-green);
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom-width: 2px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+.link-to p {
+  margin-bottom: 0px;
+  margin-left: 8px;
+  margin-right: 4px;
+  /* color: var(--app-theme-green); */
+}
+.link-to i {
+  margin-left: auto;
+}
+.link-to:hover p {
+  color: var(--app-theme-green-darker);
+  opacity: 0.8;
+  transition: 0.2s ease-out;
+}
 .login-form-content {
   border-radius: 12px;
 }
@@ -2138,6 +2171,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .new-sign-in {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
   .guest-congrats {
     height: 50%;
   }
@@ -2481,6 +2518,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .new-sign-in {
+    padding: 10px;
+    font-size: 13px;
+  }
   .login-form-content {
     padding: 0px;
   }
@@ -3522,8 +3563,7 @@
 .new-sign-in {
   border-radius: 200px;
   border: solid 2px #8dc63f;
-  padding: 10px 15px;
-  font-size: 14px;
+
   cursor: pointer;
   color: white;
   background: #8dc63f;

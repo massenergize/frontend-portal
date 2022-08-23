@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -15,9 +14,6 @@ import {
   ifEnterKeyIsPressed,
   isInvalid,
 } from "../Pages/Auth/shared/utils";
-import { FLAGS } from "../Pages/FeatureFlags/flags";
-// import MEButton from "../Pages/Widgets/MEButton";
-// import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
   const {
@@ -33,17 +29,8 @@ function GuestAuthenticationDialog(props) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
-
-  const isGuestSignInAllowed = () => {
-    let guestSignInFlag = community?.feature_flags?.find((flag) => flag?.key === FLAGS?.GUEST_SIGN_IN);
-    if (guestSignInFlag) {
-      return true;
-    }
-    return false;
-  }
 
   const authenticateGuest = () => {
     setError("");
@@ -58,7 +45,6 @@ function GuestAuthenticationDialog(props) {
       accepts_terms_and_conditions: false,
       is_vendor: false,
       is_guest: true,
-      is_new_guest_allowed: isGuestSignInAllowed(),
     };
     setLoading(true);
 
@@ -108,21 +94,6 @@ function GuestAuthenticationDialog(props) {
     <>
       <div className="guest-dialog-container">
         <div>
-          {/* <p className="responsive-p" style={{ marginBottom: 10 }}>
-            {!proceedAsGuest ? (
-              <span>
-                Welcome! Please choose one of the options below to continue
-              </span>
-            ) : (
-            <span>
-              Please provide an
-              <span style={{ color: "var(--app-theme-orange)", marginLeft: 5 }}>
-                email
-              </span>{" "}
-              address to verify that you are human
-            </span>
-            )}
-          </p> */}
           <h1 className="auth-title">Sign in as a guest</h1>
 
           {/* {proceedAsGuest && ( */}
@@ -139,26 +110,6 @@ function GuestAuthenticationDialog(props) {
             loading={loading}
             disabled={isInvalid(email) || loading}
           />
-          {/* <div className="auth-text-btn">
-            <input
-              className="auth-textbox"
-              id="test-guest-email"
-              placeholder="Enter your email address"
-              onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
-              genericProps={{ onKeyUp: whenUserTypes }}
-            />
-
-            <button
-              className="auth-btns touchable-opacity"
-              style={{
-                background: "var(--app-theme-green)",
-                marginLeft: "auto",
-                flex: "1",
-              }}
-            >
-              Continue
-            </button>
-          </div> */}
           {showWhenThereAreNoErrors && (
             <div style={{ margin: "7px 0px" }}>
               <small className="auth-info" style={{ marginBottom: 5 }}>
@@ -206,40 +157,6 @@ function GuestAuthenticationDialog(props) {
           )}
         </div>
 
-        {/* {!proceedAsGuest ? (
-          <div className="guest-dialog-footer">
-            <div style={{ marginLeft: "auto" }}>
-              <Cancel close={close} />
-              <MEButton
-                id="test-proceed-as-guest"
-                loading={loading}
-                onClick={() => setProceedAsGuest(true)}
-              >
-                {!isMobile ? "Proceed As Guest" : "As Guest"}
-              </MEButton>
-              <MEButton
-                id="test-proceed-with-profile"
-                loading={loading}
-                onClick={goToMainAuthPage}
-                variation="union"
-              >
-                {!isMobile ? "Proceed With Profile" : "With Profile"}
-              </MEButton>
-            </div>
-          </div>
-        ) : (
-          <div className="guest-dialog-footer">
-            <Cancel close={close} />
-            <MEButton
-              id="test-continue-button"
-              loading={loading}
-              onClick={() => authenticateGuest()}
-              containerStyle={{ marginLeft: "auto" }}
-            >
-              Continue
-            </MEButton>
-          </div>
-        )} */}
       </div>
       <AuthFooter back={back} />
     </>
@@ -266,23 +183,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(GuestAuthenticationDialog));
-
-// const Cancel = ({ close, callback }) => {
-//   return (
-//     <Link
-//       to="#"
-//       id="test-guest-cancel-btn"
-//       onClick={(e) => {
-//         e.preventDefault();
-//         callback && callback();
-//         close && close();
-//       }}
-//       style={{ marginRight: 20 }}
-//     >
-//       Cancel
-//     </Link>
-//   );
-// };
 
 const CongratulatoryMessage = () => {
   return (
