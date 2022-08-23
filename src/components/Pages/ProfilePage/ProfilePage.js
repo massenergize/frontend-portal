@@ -35,20 +35,21 @@ import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeEmailForm from "./ChangeEmailForm";
-import Dropdown from "react-bootstrap/Dropdown";
+// import Dropdown from "react-bootstrap/Dropdown";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
 import {
   calcEQ,
+  fetchParamsFromURL,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
   PREF_EQ_DEFAULT,
   sumOfCarbonScores,
 } from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
-import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
+// import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
 import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
@@ -64,10 +65,10 @@ class ProfilePage extends React.Component {
       editingHH: null,
       joiningCom: false,
       addingHH: false,
-      editingProfileForm: null,
+      editingProfileForm: undefined,
       printing: false,
       message: "",
-      wantsToBecomeValidUser: false,
+      // wantsToBecomeValidUser: false,
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
@@ -144,9 +145,26 @@ class ProfilePage extends React.Component {
       />
     );
   }
+  componentDidMount() {
+    const { mode } = fetchParamsFromURL(this.props.location, "mode");
+    if (mode === "become-valid")
+      this.setState({ wantsToBecomeValidUser: true });
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const isMountingForTheFirst = state.editingProfileForm === undefined;
+    const { mode } = fetchParamsFromURL(props.location, "mode");
+    const path = props.location.search;
+    const userHasChangedModes = path !== state.path;
+    if (isMountingForTheFirst || userHasChangedModes)
+      return { editingProfileForm: mode, path };
+
+    return { editingProfileForm: state.editingProfileForm };
+  }
   render() {
     const { fireAuth } = this.props;
-    const { wantsToBecomeValidUser } = this.state;
+    const wantsToBecomeValidUser =
+      this.state.editingProfileForm === "become-valid";
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -288,7 +306,7 @@ class ProfilePage extends React.Component {
                     <div
                       className="become-valid-from-guest touchable-opacity"
                       onClick={() =>
-                        this.setState({ wantsToBecomeValidUser: true })
+                        this.setState({ editingProfileForm: "become-valid" })
                       }
                     >
                       <p>
@@ -429,14 +447,15 @@ class ProfilePage extends React.Component {
   }
 
   renderForm = (form) => {
-    const { user } = this.props;
-    const { firebaseAuthSettings } = this.props;
-    const { usesOnlyPasswordless } = firebaseAuthSettings?.signInConfig || {};
-    const userIsAGuest = user && user.is_guest;
-
     return (
       <>
-        <h4>
+        <h4
+          style={{
+            border: "solid 0px var(--app-theme-green)",
+            borderBottomWidth: 2,
+            paddingBottom: 15,
+          }}
+        >
           {this.props.user ? (
             <div style={{ display: "inline-block" }}>
               <span style={{ color: "#8dc63f" }}>Welcome</span>{" "}
@@ -445,100 +464,6 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
-            <Dropdown.Toggle
-              style={{ padding: "9px 16px" }}
-              className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
-            ></Dropdown.Toggle>
-            <Dropdown.Menu
-              style={{
-                borderTop: "5px solid #8dc63f",
-                borderRadius: "0",
-                padding: "0",
-              }}
-              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
-            >
-              {userIsAGuest && (
-                <Dropdown.Item
-                  onClick={() => {
-                    this.setState({ wantsToBecomeValidUser: true });
-                  }}
-                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                >
-                  Become A Registered Member{" "}
-                  <span role="img" aria-label="image">
-                    🎊
-                  </span>
-                </Dropdown.Item>
-              )}
-              {usesOnlyPasswordless && (
-                <Dropdown.Item
-                  onClick={() =>
-                    this.props.history.push(
-                      this.props.links?.profile + "/password-less/manage"
-                    )
-                  }
-                  className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                >
-                  Add Password
-                </Dropdown.Item>
-              )}
-              <Dropdown.Item
-                onClick={() => this.setState({ editingProfileForm: "edit" })}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Edit Profile
-              </Dropdown.Item>
-
-              {/* {this.props.auth.providerData &&
-              this.props.auth.providerData.length === 1 &&
-              this.props.auth.providerData[0].providerId === "password" ? ( */}
-              {usesOnlyPasswordAuth(this.props.fireAuth) &&
-              !usesOnlyPasswordless ? (
-                <>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "password" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Password
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "email" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Email
-                  </Dropdown.Item>
-                </>
-              ) : null}
-              <Dropdown.Item
-                onClick={() =>
-                  this.props.history.push(
-                    `${this.props.links.profile}/settings`
-                  )
-                }
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  if (usesOnlyPasswordless)
-                    return this.props.history.push(
-                      this.props.links.profile + "/password-less/manage"
-                    );
-                  this.setState({ editingProfileForm: "delete" });
-                }}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Delete Profile
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          &nbsp;&nbsp;
         </h4>
         <p> {this.state.message ? this.state.message : ""} </p>
         {form === "edit" && (

@@ -7,6 +7,7 @@ import {
   firebaseAuthenticationWithGoogle,
   firebaseAuthenticationWithNoPassword,
   FirebaseEmailAuthProvider,
+  PASSWORD_FREE_EMAIL,
   registerWithEmailAndPassword,
   signOutOfFirebase,
   withEmailAndPassword,
@@ -32,12 +33,12 @@ export const setFirebaseSettings = (settings = {}) => {
 
 export const completeUserDeletion = (user_id, cb) => (dispatch) => {
   apiCall("users.delete", { user_id })
-    .then(() => {
-      cb && cb(true);
-      dispatch(signMeOut);
+    .then((response) => {
+      if (response.success) return dispatch(signMeOut());
+      else cb && cb(false, response.error);
     })
     .catch((e) => {
-      cb && cb(false);
+      cb && cb(false, e?.toString());
       console.log("DELETING_ME_USER_FAILED:", e?.toString());
     });
 };
@@ -174,6 +175,11 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   checkFirebaseAuthenticationState((user) => {
     if (!user) {
       dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+      // If a guest is trying to become a valid user, but a passwordless one, this value will be set
+      // so hold off on reauthenticating as guest after the reload
+      const inGuestToPasswordlessTransition =
+        localStorage.getItem(PASSWORD_FREE_EMAIL);
+      if (inGuestToPasswordlessTransition) return;
       // now we know user is not a authenticated user, try and see if user can be signed in as a guest
       return dispatch(authenticateAsGuest());
     }
@@ -259,7 +265,7 @@ export const setAuthNotification = (notification) => {
 
 export const setMassEnergizeUser = (user) => {
   return { type: LOGIN, payload: user };
-}; 
+};
 export const setFirebaseUser = (user) => {
   return { type: SET_FIREBASE_USER, payload: user };
 };

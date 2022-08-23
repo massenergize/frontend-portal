@@ -41,24 +41,28 @@ class EditingProfileForm extends React.Component {
     });
   }
 
-  validateUserName = async (username) => {
-    return await apiCall("users.validate.username", {username: username})
-      .then(json => {
-        if (json.success) return json.data;
-      })
-      .catch(error => console.log(error));
-  }
-
-  handleUserNameChange = (e) => {
-    this.setState({invalid_username_visibility: "hidden"});
-    this.onChange(e);
-  }
+  validateUsername = async (username) => {
+    return await apiCall("users.validate.username", {
+      username: username,
+    }).then((json) => {
+      if (json.success) return json.data;
+      else {
+        console.log(json.error);
+        return false;
+      }
+    });
+  };
 
   onSubmit = async (event) => {
     event && event.preventDefault();
     if (this.state.delete_account && this.state.are_you_sure) {
       this.deleteAccount();
     } else {
+      if (!(await this.validateUsername(this.state.preferred_name))) {
+        this.setState({ invalid_username_visibility: "visible" });
+        return;
+      }
+
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
@@ -111,61 +115,56 @@ class EditingProfileForm extends React.Component {
               required={true}
             />
 
-          <small>
-            Username <span className="text-danger">*</span>
-          </small>
-          <METextField
-            type="text"
-            name="preferred_name"
-            defaultValue={this.state.preferred_name}
-            value={this.state.preferred_name || ""}
-            onChange={(e) => this.handleUserNameChange(e)}
-            required={true}
-            onBlur = {async () => {
-                const data = await this.validateUserName(this.state.preferred_name);
-                if (!data['valid']){
-                  this.setState(prevState => ({
-                      nonUniqueUsername: prevState.preferred_name,
-                      preferred_name: data['suggested_username'],
-                      invalid_username_visibility: "visible"
-                  }));
-                }
-            }}
-          />
-          <div style={{visibility:this.state.invalid_username_visibility}}>
-          The username '{this.state.nonUniqueUsername}' is taken, how about '{this.state.preferred_name}'?
-          </div>
-          <br />
-          <small>Profile Picture</small>
-          <MEFileSelector
-            placeholder="Choose a profile picture"
-            onFileSelected={(data, reset) =>
-              this.setState({
-                image: data?.file?.data || "reset",
-                imageReset: reset,
-              })
-            }
-            name="Your profile pic..."
-            allowCrop
-            circleCrop
-            ratioWidth={1}
-            ratioHeight={1}
-            previewStyle={{
-              borderRadius: "100%",
-              width: 200,
-              height: 200,
-              objectFit: "cover",
-            }}
-          />
+            <small>
+              Preferred Name <span className="text-danger">*</span>
+            </small>
+            <METextField
+              type="text"
+              name="preferred_name"
+              defaultValue={this.state.preferred_name}
+              onChange={this.onChange}
+              required={true}
+            />
+            <div
+              style={{
+                visibility: this.state.invalid_username_visibility,
+                color: "red",
+              }}
+            >
+              Username is taken!
+            </div>
+            <br />
+            <small>Profile Picture</small>
+            <MEFileSelector
+              placeholder="Choose a profile picture"
+              onFileSelected={(data, reset) =>
+                this.setState({
+                  image: data?.file?.data || "reset",
+                  imageReset: reset,
+                })
+              }
+              name="Your profile pic..."
+              allowCrop
+              circleCrop
+              ratioWidth={1}
+              ratioHeight={1}
+              previewStyle={{
+                borderRadius: "100%",
+                width: 200,
+                height: 200,
+                objectFit: "cover",
+              }}
+            />
           </div>
           <MELightFooter
+            loading={loading}
             okText={loading ? "UPDATING..." : "SUBMIT"}
             onConfirm={() => this.onSubmit()}
             onCancel={(e) => {
               e.preventDefault();
               this.props.closeForm();
             }}
-            />
+          />
         </div>
       </form>
     );

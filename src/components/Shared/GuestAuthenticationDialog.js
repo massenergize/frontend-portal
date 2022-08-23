@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { isMobile } from "react-device-detect";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -8,14 +7,13 @@ import { reduxToggleGuestAuthDialog } from "../../redux/actions/pageActions";
 import { reduxLogin } from "../../redux/actions/userActions";
 import AuthFooter from "../Pages/Auth/Components/auth footer/AuthFooter";
 import TextBoxAndButtonCombo from "../Pages/Auth/Components/TextBoxAndButtonCombo";
+import { PASSWORD_FREE_EMAIL } from "../Pages/Auth/shared/firebase-helpers";
 import {
   emailIsInvalid,
   GUEST_USER_KEY,
   ifEnterKeyIsPressed,
   isInvalid,
 } from "../Pages/Auth/shared/utils";
-// import MEButton from "../Pages/Widgets/MEButton";
-// import METextField from "../Pages/Widgets/METextField";
 const GUEST_USER = "guest_user";
 function GuestAuthenticationDialog(props) {
   const {
@@ -31,7 +29,6 @@ function GuestAuthenticationDialog(props) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [proceedAsGuest, setProceedAsGuest] = useState(false);
   const [guestAuthIsDone, setGuestAuthIsDone] = useState(false);
   const [notGuest, setNotGuest] = useState(false);
 
@@ -54,7 +51,7 @@ function GuestAuthenticationDialog(props) {
     apiCall("/users.create", data)
       .then((response) => {
         setLoading(false);
-        if (!response.success) return setError(response?.error?.message);
+        if (!response.success) return setError(response?.error);
         const user = response.data;
 
         const userExistsAndIsNotAGuest =
@@ -63,6 +60,7 @@ function GuestAuthenticationDialog(props) {
 
         putUserInRedux(response.data);
         localStorage.setItem(GUEST_USER_KEY, email);
+        localStorage.removeItem(PASSWORD_FREE_EMAIL);// If this value is somehow available in local storage at this time, remove it
         setGuestAuthIsDone(true);
         callback && callback(true);
 
@@ -96,21 +94,6 @@ function GuestAuthenticationDialog(props) {
     <>
       <div className="guest-dialog-container">
         <div>
-          {/* <p className="responsive-p" style={{ marginBottom: 10 }}>
-            {!proceedAsGuest ? (
-              <span>
-                Welcome! Please choose one of the options below to continue
-              </span>
-            ) : (
-            <span>
-              Please provide an
-              <span style={{ color: "var(--app-theme-orange)", marginLeft: 5 }}>
-                email
-              </span>{" "}
-              address to verify that you are human
-            </span>
-            )}
-          </p> */}
           <h1 className="auth-title">Sign in as a guest</h1>
 
           {/* {proceedAsGuest && ( */}
@@ -127,26 +110,6 @@ function GuestAuthenticationDialog(props) {
             loading={loading}
             disabled={isInvalid(email) || loading}
           />
-          {/* <div className="auth-text-btn">
-            <input
-              className="auth-textbox"
-              id="test-guest-email"
-              placeholder="Enter your email address"
-              onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
-              genericProps={{ onKeyUp: whenUserTypes }}
-            />
-
-            <button
-              className="auth-btns touchable-opacity"
-              style={{
-                background: "var(--app-theme-green)",
-                marginLeft: "auto",
-                flex: "1",
-              }}
-            >
-              Continue
-            </button>
-          </div> */}
           {showWhenThereAreNoErrors && (
             <div style={{ margin: "7px 0px" }}>
               <small className="auth-info" style={{ marginBottom: 5 }}>
@@ -194,40 +157,6 @@ function GuestAuthenticationDialog(props) {
           )}
         </div>
 
-        {/* {!proceedAsGuest ? (
-          <div className="guest-dialog-footer">
-            <div style={{ marginLeft: "auto" }}>
-              <Cancel close={close} />
-              <MEButton
-                id="test-proceed-as-guest"
-                loading={loading}
-                onClick={() => setProceedAsGuest(true)}
-              >
-                {!isMobile ? "Proceed As Guest" : "As Guest"}
-              </MEButton>
-              <MEButton
-                id="test-proceed-with-profile"
-                loading={loading}
-                onClick={goToMainAuthPage}
-                variation="union"
-              >
-                {!isMobile ? "Proceed With Profile" : "With Profile"}
-              </MEButton>
-            </div>
-          </div>
-        ) : (
-          <div className="guest-dialog-footer">
-            <Cancel close={close} />
-            <MEButton
-              id="test-continue-button"
-              loading={loading}
-              onClick={() => authenticateGuest()}
-              containerStyle={{ marginLeft: "auto" }}
-            >
-              Continue
-            </MEButton>
-          </div>
-        )} */}
       </div>
       <AuthFooter back={back} />
     </>
@@ -254,23 +183,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(GuestAuthenticationDialog));
-
-// const Cancel = ({ close, callback }) => {
-//   return (
-//     <Link
-//       to="#"
-//       id="test-guest-cancel-btn"
-//       onClick={(e) => {
-//         e.preventDefault();
-//         callback && callback();
-//         close && close();
-//       }}
-//       style={{ marginRight: 20 }}
-//     >
-//       Cancel
-//     </Link>
-//   );
-// };
 
 const CongratulatoryMessage = () => {
   return (

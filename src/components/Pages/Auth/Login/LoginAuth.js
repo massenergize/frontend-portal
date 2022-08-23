@@ -77,10 +77,8 @@ export default function LoginAuth(props) {
 
   const backgroundCheckForPasswordlessAuthentication = useCallback(() => {
     checkForPasswordFreeAuth((email, error) => {
-      if (!error) {
-        finaliseNoPasswordAuth(email);
-        return;
-      }
+      if (!error) return finaliseNoPasswordAuth(email);
+
       if (error === DIFFERENT_ENVIRONMENT) {
         setNotification({
           good: false,
