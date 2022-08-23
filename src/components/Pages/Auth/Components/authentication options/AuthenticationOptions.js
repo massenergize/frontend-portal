@@ -110,38 +110,6 @@ function AuthenticationOptions({
       </Feature>
     </div>
   );
-
-  function renderGuestLoginFallback() {
-    return (
-      <div>
-        <p
-          style={{
-            fontSize: "0.9rem",
-            color: "maroon",
-          }}
-        >
-          Guest Auth has been disable for new users
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <center
-            className="auth-link touchable-opacity"
-            onClick={() => setUserWantsToUseGuestAuth(true)}
-          >
-            <p>Proceed anyway </p>{" "}
-            <i
-              className="fa fa-long-arrow-right"
-              style={{ color: "var(--app-theme-green)" }}
-            />
-          </center>
-        </div>
-      </div>
-    );
-  }
 }
 const mapStateToProps = (state) => {
   return {
