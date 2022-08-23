@@ -9,8 +9,6 @@ import {
 import { reduxToggleGuestAuthDialog } from "../../../../../redux/actions/pageActions";
 import Feature from "../../../FeatureFlags/Feature";
 import GuestAuthenticationDialog from "../../../../Shared/GuestAuthenticationDialog";
-// import MEButton from "../../../Widgets/MEButton";
-// import MELink from "../../../Widgets/MELink";
 import "./AuthenticationOptions.css";
 import { FLAGS } from "../../../FeatureFlags/flags";
 function AuthenticationOptions({
@@ -96,7 +94,9 @@ function AuthenticationOptions({
           acebook
         </button>
       </div>
-      <Feature name={FLAGS.GUEST_SIGN_IN} fallback={renderGuestLoginFallback()}>
+      <Feature
+        name={FLAGS.GUEST_SIGN_IN}
+      >
         <div
           className="auth-link touchable-opacity"
           onClick={() => setUserWantsToUseGuestAuth(true)}
@@ -110,38 +110,6 @@ function AuthenticationOptions({
       </Feature>
     </div>
   );
-
-  function renderGuestLoginFallback() {
-    return (
-      <div>
-        <p
-          style={{
-            fontSize: "0.9rem",
-            color: "maroon",
-          }}
-        >
-          Guest Auth has been disable for new users
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <center
-            className="auth-link touchable-opacity"
-            onClick={() => setUserWantsToUseGuestAuth(true)}
-          >
-            <p>Proceed anyway </p>{" "}
-            <i
-              className="fa fa-long-arrow-right"
-              style={{ color: "var(--app-theme-green)" }}
-            />
-          </center>
-        </div>
-      </div>
-    );
-  }
 }
 const mapStateToProps = (state) => {
   return {
