@@ -65,6 +65,7 @@ function Settings({
       return {
         key,
         name,
+        hideHeader:true,
         component: (
           <RenderOptions
             options={options}
