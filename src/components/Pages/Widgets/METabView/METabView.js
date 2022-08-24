@@ -10,10 +10,13 @@ function TabView({
   onMount,
   containerStyle,
   containerClassName,
+  onChange,
 }) {
   const [activeTab, setActiveTab] = useState(null);
 
   const renderHeader = (tab) => {
+    if (!tab || tab?.hideHeader) return;
+    
     const isSelected = activeTab === tab?.key;
     if (render) return render(tab, isSelected);
     return (
@@ -31,6 +34,10 @@ function TabView({
       </div>
     );
   };
+
+  useEffect(() => {
+    onChange && onChange(activeTab); // In case you need to make the tabview a controlled component
+  }, [activeTab, onChange]);
 
   useEffect(() => {
     const tab = defaultTab || (tabs && tabs[0]?.key);

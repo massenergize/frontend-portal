@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../logo.png";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withFirebase } from "react-redux-firebase";
 import { reduxLogout } from "../../redux/actions/userActions";
@@ -53,6 +53,7 @@ class NavBarBurger extends React.Component {
         : null;
     }
     const { links } = this.props;
+
     const styles = {
       container: {
         position: "relative",
@@ -298,6 +299,7 @@ class NavBarBurger extends React.Component {
   }
   renderLogin() {
     const { user, links, toggleGuestAuthDialog } = this.props;
+
     const btnColor =
       user.preferences && user.preferences.color
         ? user.preferences.color
@@ -338,11 +340,19 @@ class NavBarBurger extends React.Component {
             >
               My Profile
             </Link>
+
+            <Link
+              to={`${links.profile}/changes`}
+              className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
+              onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+            >
+              Preferences
+            </Link>
+            {/* ------------------------------------------------------------------------------ */}
             <button
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => {
                 this.props.signOut();
-                // console.log("I think I know what you are talking about")
               }}
             >
               Sign Out
@@ -362,7 +372,7 @@ class NavBarBurger extends React.Component {
             toggleGuestAuthDialog(true);
           }}
         >
-          Sign In
+          <b> Sign In | Join</b>
         </Link>
       );
     }
@@ -373,13 +383,15 @@ const mapStoreToProps = (store) => {
     user: store.user,
     pageData: store.page.homePage,
     links: store.links,
+    firebaseAuthSettings: store.firebaseAuthSettings,
+    fireAuth: store.fireAuth,
   };
 };
 export default connect(mapStoreToProps, {
   reduxLogout,
   signOut: signMeOut,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
-})(withFirebase(NavBarBurger));
+})(withRouter(withFirebase(NavBarBurger)));
 // export default NavBarBurger;
 
 // ======================== BURGERED vvv =========================== //

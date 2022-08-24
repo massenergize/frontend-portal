@@ -46,6 +46,7 @@ import {
   SET_TOUR_INFO,
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
+  LOAD_SETTINGS,
 } from "../actions/types";
 
 import {
@@ -105,6 +106,11 @@ export default function (state = initialState, action) {
     /**************************/
 
     
+    case LOAD_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
+      };
     case TOGGLE_UNIVERSAL_MODAL:
       return {
         ...state,

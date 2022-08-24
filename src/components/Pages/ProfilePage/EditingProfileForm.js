@@ -26,6 +26,9 @@ class EditingProfileForm extends React.Component {
       image: props.user?.profile_picture?.url,
       color: props.user?.preferences?.color || "#fd7e14",
       imageReset: null,
+
+      invalid_username_visibility: "hidden",
+      nonUniqueUsername: "",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -38,11 +41,28 @@ class EditingProfileForm extends React.Component {
     });
   }
 
-  onSubmit = (event) => {
+  validateUsername = async (username) => {
+    return await apiCall("users.validate.username", {
+      username: username,
+    }).then((json) => {
+      if (json.success) return json.data;
+      else {
+        console.log(json.error);
+        return false;
+      }
+    });
+  };
+
+  onSubmit = async (event) => {
     event && event.preventDefault();
     if (this.state.delete_account && this.state.are_you_sure) {
       this.deleteAccount();
     } else {
+      if (!(await this.validateUsername(this.state.preferred_name))) {
+        this.setState({ invalid_username_visibility: "visible" });
+        return;
+      }
+
       const body = {
         user_id: this.props.user.id,
         full_name: this.state.full_name,
@@ -58,12 +78,16 @@ class EditingProfileForm extends React.Component {
           if (json.success && json.data) {
             this.props.reduxLogin(json.data);
             this.props.closeForm();
-            this.setState({ loading: false, imageReset: null });
+            this.setState({ loading: false, imageReset: null }); 
+          } else {
+            // api call fails: TODO- show error message instead of the username sugggestion
+            this.setState({ loading: false})
           }
         })
         .catch((error) => {
           console.log(error);
         });
+   
     }
   };
   deleteAccount() {
@@ -101,8 +125,16 @@ class EditingProfileForm extends React.Component {
               onChange={this.onChange}
               required={true}
             />
+            <div
+              style={{
+                visibility: this.state.invalid_username_visibility,
+                color: "red",
+              }}
+            >
+              Username is taken!
+            </div>
             <br />
-            {/* <small>Profile Picture</small> */}
+            <small>Profile Picture</small>
             <MEFileSelector
               placeholder="Choose a profile picture"
               onFileSelected={(data, reset) =>
@@ -116,12 +148,16 @@ class EditingProfileForm extends React.Component {
               circleCrop
               ratioWidth={1}
               ratioHeight={1}
-              previewClassName="profile-pic-preview"
-              defaultValue={this.state.image !== "reset" && this.state.image}
+              previewStyle={{
+                borderRadius: "100%",
+                width: 200,
+                height: 200,
+                objectFit: "cover",
+              }}
             />
           </div>
-
           <MELightFooter
+            loading={loading}
             okText={loading ? "UPDATING..." : "SUBMIT"}
             onConfirm={() => this.onSubmit()}
             onCancel={(e) => {
