@@ -102,32 +102,7 @@ class AboutUsPage extends React.Component {
             </div>
           ) : null}
 
-          <div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
-            <center>
-              <h2 className="cool-font solid-font" style={{ padding: 10 }}>
-                About MassEnergize
-              </h2>
-            </center>
-            <p
-              className="cool-font make-me-dark"
-              style={{ textAlign: "justify" }}
-            >
-              This website is built on a web platform developed and maintained by our partner, MassEnergize. 
-              Their mission is to provide communities with the tools and resources
-              to motivate and support their residents, businesses and
-              non-profits in a wide array of actions to reduce greenhouse gas
-              emissions and prepare for a changing climate. This community web platform
-              is one example of their work. For more information go to{" "}
-              <a
-                href="https://www.massenergize.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                www.massenergize.org
-              </a>
-              .
-            </p>
-          </div>
+          {/* removed About MassEnergize section */}
         </div>
 
         {donateEnabled ? (
