@@ -54,9 +54,8 @@ class OneEventPage extends React.Component {
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
-    // was a problem if you go diretly to the event page, this.props.user can be undefined
-    //if (!pastEvent && this.props.user) this.getRSVPStatus(id);
-    if (!pastEvent) this.getRSVPStatus(id);
+    // can be a problem if you go diretly to the event page, this.props.user can be undefined
+    if (!pastEvent && this.props.user) this.getRSVPStatus(id);
   }
 
   render() {
