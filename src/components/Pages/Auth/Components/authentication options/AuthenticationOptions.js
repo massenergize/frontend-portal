@@ -94,7 +94,7 @@ function AuthenticationOptions({
         </button>
       </div>
       <Feature
-        name={FLAGS.GUEST_SIGN_IN}
+        name={FLAGS.GUEST_AUTHENTICATION}
       >
         <div
           className="auth-link touchable-opacity"
