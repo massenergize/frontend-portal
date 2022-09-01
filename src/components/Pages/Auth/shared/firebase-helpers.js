@@ -7,7 +7,7 @@ const PROVIDERS = {
   EMAIL_LINK: "emailLink",
 };
 
-const PASSWORD_FREE_EMAIL = "password_free_email";
+export const PASSWORD_FREE_EMAIL = "password_free_email";
 export const DIFFERENT_ENVIRONMENT = "different_environment";
 
 export const Auth = firebase?.auth();
@@ -108,7 +108,7 @@ export const firebaseDeleteFacebookAuthAccount = (cb) => {
 
 export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {
   link = link || window.location.href;
-  Auth.signInWithEmailLink(email, window.location.href)
+  Auth.signInWithEmailLink(email, link)
     .then((response) => {
       cb && cb(response);
     })
@@ -152,7 +152,7 @@ export const sendPasswordResetEmail = (email, cb) => {
       console.log("Password reset Email sent!");
     })
     .catch((e) => {
-      cb && cb(false);
+      cb && cb(false,e?.toString());
       console.log("Could not send password reset email!", e?.toString());
     });
 };

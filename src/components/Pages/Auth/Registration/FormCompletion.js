@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import MEButton from "../../Widgets/MEButton";
-import { US_STATES } from "./values";
 import ReCAPTCHA from "react-google-recaptcha";
 import "./FormCompletion.css";
 import { isInvalid } from "../shared/utils";
 import { onReCaptchaChange } from "../../../../redux/actions/authActions";
 import InformationBoard from "./InformationBoard";
 import DeleteConfirmation from "./DeleteConfirmation";
+import { apiCall } from "../../../../api/functions";
 export default function FormCompletion({
   onChange,
   getValue,
@@ -15,21 +15,30 @@ export default function FormCompletion({
   loading,
   policies,
   disableDeleteNotification,
-  customCancel
+  customCancel,
+  community,
+  onUsernameChange
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [showTOS, setShowTOS] = useState(false);
   const [showPP, setShowPP] = useState(false);
 
+  const [userName, setUserName] = useState("");
+  const [userNameValid, setUserNameValid] = useState(false);
+
+  const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
+  const [nonUniqueUsername, setNonUniqueUsername] = useState("")
+
+  const [firstColor, setFirstColor] = useState("");
+  const [secondColor, setSecondColor] = useState("");
+  const [thirdColor, setThirdColor] = useState("");
+
   const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
   const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
 
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
-  const preferredName = getValue("preferred_name");
-  const city = getValue("city");
-  const state = getValue("state");
   const zip = getValue("zip");
 
   const checkCaptcha = (value) => {
@@ -37,13 +46,50 @@ export default function FormCompletion({
   };
 
   const formNeedsWorks = () => {
-    const fieldVals = [firstName, lastName, city, state, zip];
+    const fieldVals = [firstName, lastName, zip];
     for (let i = 0; i < fieldVals.length; i++) {
       const field = fieldVals[i];
       if (isInvalid(field)) return true;
     }
     return false;
   };
+
+  const validateUserName = async (username) => {
+    return await apiCall("users.validate.username", {username: username})
+      .then(json => {
+        if (json.success) return json.data;
+      })
+      .catch(error => console.log(error));
+  }
+
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+    onUsernameChange(e.target.value);
+    setUserNameValid(false);
+    setInvalidUsernameDisplay("none");
+  }
+
+  const suggestUsername = async () => {
+    let last = "";
+    for (let x of lastName.split('-')) {
+        last += x.charAt(0).toUpperCase()
+    }
+
+    const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + last;
+    const data = await validateUserName(template);
+
+    setUserName(data['suggested_username'])
+    setUserNameValid(true);
+    onUsernameChange(data['suggested_username']);
+    setThirdColor("green");
+    setInvalidUsernameDisplay("none");
+  }
+
+  const autoSetSuggestion = () => {
+    if (firstName && lastName && !userName) {
+        suggestUsername();
+    }
+  }
 
   if (showTOS)
     return (
@@ -68,82 +114,100 @@ export default function FormCompletion({
   return (
     <div>
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
-        <div className="complete-form-header">
-          <p>Almost there, please tell us all of the following. Thank you!</p>
-        </div>
+        {/* style={{marginTop: 20}} does no change */}
+        <h3 align="center" className="cool-font mob-font-lg me-section-title">
+          Welcome to { community.name }
+        </h3>
+        <h5 align="center" className="cool-font mob-font-lg me-section-title">
+            Almost there! Please tell us your name
+        </h5>
+
+
         <div className="c-f-inner-wrapper">
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: firstColor}}></span>
             </span>
             <input
               type="text"
               name="firstName"
               value={firstName}
               onChange={onChange}
+              onBlur={() => { if (firstName) setFirstColor("green"); else setFirstColor("") }}
               placeholder="First Name"
               required
             />
           </div>
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: secondColor}}></span>
             </span>
             <input
               type="text"
               name="lastName"
               value={lastName}
               onChange={onChange}
+              onBlur={() => { autoSetSuggestion(); if (lastName) setSecondColor("green"); else setSecondColor("") }}
               placeholder="Last Name"
               required
             />
           </div>
-          <div className="form-group">
+          <p style={{marginTop: 10, marginBottom: 0 }}>
+            What username would you like? {" "} 
+            You can use our suggestion or create your own.
+          </p>
+          <div className="form-group" style={{ marginBottom: 20, marginTop: 10 }}>
             <span className="adon-icon">
-              <span className="fa fa-user"></span>
+              <span className="fa fa-user" style={{color: thirdColor}}></span>
             </span>
             <input
               type="text"
-              name="preferred_name"
-              value={preferredName}
-              onChange={onChange}
-              placeholder="Preferred Name (visible to others)"
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              name="city"
-              value={city}
-              onChange={onChange}
-              placeholder="City / Town"
-            />
-          </div>
+              name="userName"
+              value={userName || ""}
+              onChange={(e) => handleUserNameChange(e)}
+              onBlur={async () => { 
+                if (!userName) {
+                    setInvalidUsernameDisplay("none");
+                    setThirdColor("");
+                    return;
+                }
+                
+                if (userNameValid) {
+                    setThirdColor("green");
+                    setInvalidUsernameDisplay("none");
+                    return;
+                }
 
-          <div className="form-group">
-            <select
-              value={state}
-              className="form-control"
-              name="state"
-              onChange={onChange}
-              placeholder="State"
-            >
-              {US_STATES.map((s, index) => {
-                return (
-                  <option key={index?.toString()} value={s.value}>
-                    {s.name}
-                  </option>
-                );
-              })}
-            </select>
+                const data = await validateUserName(userName);
+                if (data['valid']) {
+                    setThirdColor("green");
+                    setUserNameValid(true);
+                    setInvalidUsernameDisplay("none");
+                    onUsernameChange(userName);
+                    return;
+                }
+
+                setThirdColor("green");
+                setUserNameValid(true);
+                setNonUniqueUsername(userName)
+                setUserName(data['suggested_username'])
+                onUsernameChange(data['suggested_username']);
+                setInvalidUsernameDisplay("block");
+              }}
+              placeholder="Username (unique)"
+            />
           </div>
+          <div style={{display: invalidUsernameDisplay }}>The username '{nonUniqueUsername}' is taken, how about '{userName}'?</div>
+          <p style={{marginTop: 10 }}>
+            Your ZIP code is used to count your actions properly towards the community goal.
+          </p>
           <div className="form-group">
             <input
               type="text"
               name="zip"
               value={zip}
               onChange={onChange}
-              placeholder="Home ZIP Code"
+              placeholder="Household ZIP Code"
               required
             />
           </div>
@@ -189,11 +253,11 @@ export default function FormCompletion({
               style={{ marginRight: 8, padding: "11px 40px" }}
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
-              disabled={!captchaIsValid || formNeedsWorks()}
-              onClick={() => createMyAccountNow()}
+              disabled={!captchaIsValid || formNeedsWorks() || !userNameValid}
+              onClick={async () => createMyAccountNow()}
               loading={loading}
             >
-              {loading ? "Creating Profile..." : "Finish Creating Profile"}
+              {loading ? "Creating Profile..." : "Finish Signing Up!"}
             </MEButton>
           </div>
           {!disableDeleteNotification && (

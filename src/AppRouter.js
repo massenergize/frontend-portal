@@ -63,6 +63,7 @@ import {
   reduxToggleGuestAuthDialog,
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
+  reduxLoadSettings,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -87,6 +88,8 @@ import {
   browswerIsSafari,
   siteUsesCustomDomain,
 } from "./components/Pages/Auth/shared/utils";
+import Settings from "./components/Pages/Settings/Settings";
+import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -211,6 +214,7 @@ class AppRouter extends Component {
         apiCall("testimonials_page_settings.info", body),
         apiCall("vendors_page_settings.info", body),
         apiCall("communities.actions.completed", body),
+        apiCall("settings.list", body),
       ])
         .then((res) => {
           const [
@@ -228,6 +232,7 @@ class AppRouter extends Component {
             testimonialsPageResponse,
             vendorsPageResponse,
             communityActionList,
+            settings,
           ] = res;
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
@@ -243,6 +248,7 @@ class AppRouter extends Component {
           this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
           this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
           this.props.setCommunityActionListInRedux(communityActionList?.data);
+          this.props.reduxLoadSettings(settings.data);
           this.setState({
             pagesEnabled: {
               aboutUsPage: aboutUsPageResponse.data.is_published,
@@ -562,7 +568,17 @@ class AppRouter extends Component {
             <Route path={`${links.events}/:id`} component={OneEventPage} />
             <Route path={links.signin} component={AuthEntry} />
             <Route path={links.signup} component={AuthEntry} />
-            <Route path={links.profile} component={ProfilePage} />
+            <Route
+              exact
+              path={`${links.profile}/settings`}
+              component={Settings}
+            />
+            <Route
+              exact
+              path={`${links.profile}/changes`}
+              component={ProfileSettings}
+            />
+            <Route exact path={links.profile} component={ProfilePage} />
             <Route path={links.policies} component={PoliciesPage} />
             <Route path={links.contactus} component={ContactPage} />
             <Route component={HomePage} />
@@ -633,5 +649,6 @@ const mapDispatchToProps = {
   setCommunityActionListInRedux: reduxLoadCommunityActionList,
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
+  reduxLoadSettings,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

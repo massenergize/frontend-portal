@@ -95,7 +95,7 @@ class ActionCard extends React.Component {
   userHasManyHouseHolds() {
     //return this.props.user.households.length > 1;
     // so that users can change the date
-    return this.props.user.households.length > 0;
+    return this.props.user?.households.length > 0;
   }
 
   componentDidMount() {
@@ -190,7 +190,7 @@ class ActionCard extends React.Component {
         className={`col-lg-6 col-md-12 col-sm-12 col-12 ${MEAnimation.getAnimationClass()} test-action-card-item`}
         key={this.props.key?.toString()}
         data-action-state={actionStateCase}
-        data-action-auth-state = {this.props.user && "authenticated"}
+        data-action-auth-state={this.props.user && "authenticated"}
       >
         <div
           className="every-day-flex z-depth-1"

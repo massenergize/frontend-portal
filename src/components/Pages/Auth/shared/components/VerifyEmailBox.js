@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import BreadCrumbBar from "../../../../Shared/BreadCrumbBar";
-import OpenEmailApp from "../OpenEmailApp";
-import { sendVerificationEmail } from "./../../../../../redux/actions/authActions";
-function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
+import AuthFooter from "../../Components/auth footer/AuthFooter";
+import AuthHeader from "../../Components/AuthHeader";
+// import OpenEmailApp from "../OpenEmailApp";
+import {
+  sendVerificationEmail,
+  signMeOut,
+} from "./../../../../../redux/actions/authActions";
+function VerifyEmailBox({ fireAuth, sendVerificationEmail, signMeOut }) {
   const [emailIsSent, setEmailSent] = useState(false);
 
   const sendEmail = () => {
@@ -25,38 +30,48 @@ function VerifyEmailBox({ fireAuth, sendVerificationEmail }) {
           <div className="row">
             <div className="col-md-8 col-12 offset-md-2">
               <div
-                className="z-depth-float me-anime-open-in"
+                className="z-depth-float me-anime-open-in force-no-elevation-on-mobile"
                 style={{
-                  padding: 20,
                   borderRadius: 6,
                 }}
               >
-                <p id="verify-email-area">
-                  <span style={{ color: "black" }}>
-                    We sent a link to your email address. Please check your
-                    email and follow the link to continue. If you don't see a
-                    message, be sure to
-                  </span>
-                  <strong style={{ color: "maroon", marginLeft: 4 }}>
+                <div className="login-form-content">
+                  {" "}
+                  <AuthHeader>Check your email</AuthHeader>
+                  <p id="verify-email-area">
+                    <span style={{ color: "black" }}>
+                      We sent a link to your email. Please click that link to
+                      continue.
+                      <br />
+                      Not in your inbox? Please check your <b>
+                        "Spam"
+                      </b> and <b>"Promotions" </b>
+                      folders
+                    </span>
+                    {/* <strong style={{ color: "maroon", marginLeft: 4 }}>
                     <em>check your spam folder.</em>
-                  </strong>
-                  <button
-                    type="button"
-                    className="as-link"
-                    onClick={sendEmail}
-                    style={{ marginTop: 10 }}
-                  >
-                    Didnt receive any verification email? Resend Verification
-                    Email
-                  </button>
-                  <br />
-                  {emailIsSent && (
-                    <p style={{ color: "var(--app-theme-green)" }}>
-                      Email was sent!
-                    </p>
-                  )}
-                </p>
-                <OpenEmailApp showCancel = {true} />
+                  </strong> */}
+                    <button
+                      type="button"
+                      className="auth-link touchable-opacity"
+                      onClick={sendEmail}
+                      style={{ marginTop: 10 }}
+                    >
+                      Not there? Click to resend email
+                    </button>
+                    <br />
+                    {emailIsSent && (
+                      <p style={{ color: "var(--app-theme-green)" }}>
+                        Email was sent!
+                      </p>
+                    )}
+                  </p>
+                </div>
+                {/* <OpenEmailApp showCancel={true} /> */}
+                <AuthFooter
+                  buttonText="CANCEL THIS PROCESS"
+                  back={() => signMeOut()}
+                />
               </div>
             </div>
           </div>
@@ -70,7 +85,7 @@ const mapStateToProps = (state) => {
   return { fireAuth: state.fireAuth };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ sendVerificationEmail }, dispatch);
+  return bindActionCreators({ sendVerificationEmail, signMeOut }, dispatch);
 };
 // const mapDispatchToProps = dispatch=>
 
