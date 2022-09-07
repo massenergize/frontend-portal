@@ -17,7 +17,7 @@
     "glob": "^7.1.6",
     "helmet": "^3.21.2",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.35",
+    "moment-timezone": "^0.5.27",
     "package.json": "^2.0.1",
     "query-string": "^6.13.1",
     "react": "^16.12.0",
