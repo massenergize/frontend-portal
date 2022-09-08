@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { IS_PROD, IS_CANARY } from './config'
+import IS_PROD from './config'
+import IS_CANARY from './config'
 
 let firebaseConfig = {}
 

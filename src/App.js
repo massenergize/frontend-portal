@@ -14,7 +14,9 @@ import {
 } from "./redux/actions/types";
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
 import URLS, { DEV_URL } from "./api/urls";
-import { IS_LOCAL, IS_PROD, IS_CANARY } from "./config";
+import IS_LOCAL from "./config";
+import IS_PROD from "./config";
+import IS_CANARY from "./config";
 const IS_DEV = !IS_LOCAL && !IS_PROD && !IS_CANARY;
 const IS_SANDBOX = "IS_SANDBOX";
 function App() {

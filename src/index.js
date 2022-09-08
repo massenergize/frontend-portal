@@ -13,7 +13,8 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import firebase from "./config/firebaseConfig";
-import { IS_PROD, IS_CANARY } from "./config";
+import IS_PROD from "./config";
+import IS_CANARY from "./config";
 
 //react redux firebase configure
 const rrfConfig = { userProfile: "users", firebaseStateName: "firebase" };

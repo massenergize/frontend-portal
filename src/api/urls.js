@@ -1,5 +1,7 @@
 // Defining URLS object for manipulation...
-import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config";
+import IS_PROD from "../config";
+import IS_CANARY from "../config";
+import IS_LOCAL from "../config";
 export const MASSENERGIZE_PRODUCTION_URL = "https://community.massenergize.org";
 export const DEV_URL =   "https://communities.massenergize.dev";
 let URLS = {};

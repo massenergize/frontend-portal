@@ -1,5 +1,7 @@
 import URLS from "./urls";
-import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
+import IS_PROD from "../config/config";
+import IS_CANARY from "../config/config";
+import IS_LOCAL from "../config/config";
 import store from "../redux/store";
 import Cookies from "universal-cookie";
 import { AUTH_TOKEN } from "../components/Pages/Auth/shared/utils";
