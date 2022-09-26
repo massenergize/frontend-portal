@@ -126,7 +126,7 @@ class ServicesPage extends React.Component {
         ? pageData.sub_title
         : "Click to view each provider's services";
     const description =
-      pageData && pageData.description ? pageData.description : "Services my gee";
+      pageData && pageData.description ? pageData.description : "";
 
     var vendors =
       this.searchIsActiveSoFindContentThatMatch() ||
