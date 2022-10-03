@@ -68,7 +68,7 @@ class ActionCard extends React.Component {
 
   actionIsInTodo() {
     var action = this.props.action;
-    var todo = this.props.todo ? this.props.todo : [];
+    var todo = this.props.todo ? this.props.todo?.items: [];
     return todo.find((t) => t.action.id === action.id);
   }
   actionIsDone() {
