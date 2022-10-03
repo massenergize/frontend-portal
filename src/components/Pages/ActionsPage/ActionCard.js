@@ -74,7 +74,7 @@ class ActionCard extends React.Component {
   actionIsDone() {
     var action = this.props.action;
     var done = this.props.done ? this.props.done : [];
-    return done.find((t) => t.action.id === action.id);
+    return done?.items?.find((t) => t.action.id === action.id);
   }
 
   getActionStateCase() {
@@ -174,9 +174,9 @@ class ActionCard extends React.Component {
 
   checkDone() {
     var action = this.props.action;
-    var done = this.props.done ? this.props.done : [];
+    var done = this.props.done ? this.props?.done?.items : [];
     var exists =
-      done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
+      done?.filter((t) => t.action.id === action.id).length > 0 ? true : false;
     return exists;
   }
 
@@ -399,7 +399,7 @@ class ActionCard extends React.Component {
       return false;
 
     var tagSet = new Set(); //create a set of the action's tag ids
-    this.props.action.tags.forEach((tag) => {
+    this.props.action.tags?.forEach((tag) => {
       tagSet.add(tag.id);
     });
 

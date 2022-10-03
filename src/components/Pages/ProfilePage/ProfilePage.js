@@ -102,6 +102,7 @@ class ProfilePage extends React.Component {
   }
   showCommunitiesSection() {
     const { user } = this.props;
+       console.log('===== ToLog USER========', user);
     return (
       <div>
         <MESectionWrapper headerText="Your Communities">
@@ -127,7 +128,7 @@ class ProfilePage extends React.Component {
 
   renderCarbonCounterBox() {
     const { pref_eq } = this.props;
-    var score = sumOfCarbonScores(this.props.done || []);
+    var score = sumOfCarbonScores(this.props.done?.items || []);
     if (pref_eq) score = calcEQ(score, pref_eq?.value || 0);
     return (
       <Counter
@@ -428,13 +429,13 @@ class ProfilePage extends React.Component {
                 >
                   <Cart
                     title="To Do List"
-                    actionRels={this.props.todo ? this.props.todo : []}
+                    actionRels={this.props.todo ? this.props.todo?.items : []}
                     status="TODO"
                   />
 
                   <Cart
                     title="Completed Actions"
-                    actionRels={this.props.done ? this.props.done : []}
+                    actionRels={this.props.done ? this.props.done?.items : []}
                     status="DONE"
                   />
                 </div>
@@ -515,6 +516,7 @@ class ProfilePage extends React.Component {
     );
   };
   renderCommunities(communities) {
+       console.log('===== ToLog commms ========', communities);
     if (!communities)
       return (
         <div style={{ textAlign: "center" }}>
@@ -522,6 +524,7 @@ class ProfilePage extends React.Component {
         </div>
       );
     return Object.keys(communities).map((key) => {
+      console.log('===== ToLog ========', communities);
       const community = communities[key];
       return (
         <div key={key} style={{ position: "relative" }}>

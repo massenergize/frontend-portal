@@ -57,7 +57,7 @@ class OneTestimonialPage extends React.Component {
     const { id } = this.props.match.params;
     const { stories } = this.props;
     if (!stories) return [];
-    const listWithoutCurrent = stories.filter((story) => story.id !== id); // dont include the current testimonial
+    const listWithoutCurrent = stories?.items?.filter((story) => story.id !== id); // dont include the current testimonial
     var list = this.getRandomIndexArr(listWithoutCurrent.length); // generate 3 random numbers within the range of the number of testimonials
     const randomlyPicked = list.map((index) => listWithoutCurrent[index]); // Look through the testimonial list, and pick out the testimonials that have the same indexes of the randomly generated indexes
     return randomlyPicked;

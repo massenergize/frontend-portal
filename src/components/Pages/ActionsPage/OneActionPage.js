@@ -175,13 +175,13 @@ class OneActionPage extends React.Component {
                   >
                     <Cart
                       title="To Do List"
-                      actionRels={this.props.todo}
+                      actionRels={this.props.todo?.items}
                       status="TODO"
                       moveToDone={this.moveToDone}
                     />
                     <Cart
                       title="Completed Actions"
-                      actionRels={this.props.done}
+                      actionRels={this.props.done?.items}
                       status="DONE"
                       moveToDone={this.moveToDone}
                     />
@@ -296,7 +296,7 @@ class OneActionPage extends React.Component {
   }
   actionIsDone() {
     var action = this.getMyAction();
-    var done = this.props.done ? this.props.done : [];
+    var done = this.props.done ? this.props.done?.items : [];
     var data = done.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];
@@ -306,7 +306,7 @@ class OneActionPage extends React.Component {
 
   checkDone() {
     var action = this.getMyAction();
-    var done = this.props.done ? this.props.done : [];
+    var done = this.props.done ? this.props.done?.items : [];
     var exists =
       done.filter((t) => t.action.id === action.id).length > 0 ? true : false;
     return exists;
@@ -463,7 +463,7 @@ class OneActionPage extends React.Component {
       ? this.props.communityData.community
       : null;
 
-    const stories = this.props.stories.filter((story) => {
+    const stories = this.props.stories?.items?.filter((story) => {
       if (story.action) {
         return story.action.id === Number(this.props.match.params.id);
       }

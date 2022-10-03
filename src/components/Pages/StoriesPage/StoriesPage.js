@@ -24,6 +24,7 @@ import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { createGlobalStyle } from "styled-components";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -141,7 +142,7 @@ class StoriesPage extends React.Component {
 
   searchIsActiveSoFindContentThatMatch() {
     return searchIsActiveFindContent(
-      this.props.stories,
+      this.props.stories?.items,
       this.state.checked_values,
       this.state.searchText,
       (story, word) =>
@@ -205,7 +206,7 @@ class StoriesPage extends React.Component {
 
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
-      applyTagsAndGetContent(this.props.stories, this.state.checked_values);
+      applyTagsAndGetContent(this.props.stories?.items, this.state.checked_values);
     return (
       <>
         <div
@@ -320,7 +321,7 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-    if (stories.length === 0) {
+    if (stories?.length === 0) {
       return (
         <div className="col-12 text-center">
           <p className="cool-font">
@@ -330,8 +331,7 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-
-    return stories.map((story, index) => (
+    return stories?.map((story, index) => (
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
@@ -357,7 +357,7 @@ const mapStoreToProps = (store) => {
     stories: store.page.testimonials,
     user: store.user.info,
     links: store.links,
-    tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
+    tagCols: filterTagCollections(store.page.testimonials?.items, store.page.tagCols?.items),
   };
 };
 export default connect(mapStoreToProps, {

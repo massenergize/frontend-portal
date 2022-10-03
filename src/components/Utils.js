@@ -316,7 +316,7 @@ export const applyTagsAndGetContent = (content, checkedValues) => {
 export const filterTagCollections = (actions, cols) => {
   if (!actions) return [];
   const collections = {};
-  actions.forEach((action) => {
+  actions?.forEach((action) => {
     action.tags &&
       action.tags.forEach((tag) => {
         const name = tag.tag_collection_name;

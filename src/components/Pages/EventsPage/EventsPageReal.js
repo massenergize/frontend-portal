@@ -86,7 +86,7 @@ class EventsPage extends React.Component {
 
   searchIsActiveSoFindContentThatMatch() {
     return searchIsActiveFindContent(
-      this.props.events,
+      this.props.events?.items,
       this.state.checked_values,
       this.state.searchText,
       (event, word) =>
@@ -125,13 +125,13 @@ class EventsPage extends React.Component {
 
     const found =
       this.searchIsActiveSoFindContentThatMatch() ||
-      applyTagsAndGetContent(this.props.events, this.state.checked_values);
+      applyTagsAndGetContent(this.props.events?.items, this.state.checked_values);
 
     return (
       <>
         <div
           className="boxed_wrapper test-events-page-wrapper"
-          data-number-of-events={this.props.events?.length || 0}
+          data-number-of-events={this.props.events?.item?.length || 0}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
@@ -174,7 +174,7 @@ class EventsPage extends React.Component {
                     </div>
                     <HorizontalFilterBox
                       type="events"
-                      tagCols={this.props.tagCols}
+                      tagCols={this.props.tagCols?.items}
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
                       searchText={this.state.searchText}
@@ -267,9 +267,9 @@ class EventsPage extends React.Component {
     //if check_values ===null, then it means it is probably the first time the user
     //is loading the page, so show everything from props
     if (this.state.mirror_events.length === 0) {
-      events = this.state.check_values === null ? this.props.events : events;
+      events = this.state.check_values === null ? this.props.events?.items : events;
     }
-    if (this.props.events.length === 0) {
+    if (this.props.events?.items?.length === 0) {
       return (
         <div
           className="text-center"
@@ -289,7 +289,8 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      const page = events.map((event) => {
+      console.log('===== ToLog ========', this.props.eventExceptions);
+      const page = events?.map((event) => {
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
@@ -358,7 +359,7 @@ const mapStoreToProps = (store) => {
     events: store.page.events,
     eventRSVPs: store.page.rsvps,
     links: store.links,
-    tagCols: filterTagCollections(store.page.events, store.page.tagCols),
+    tagCols: filterTagCollections(store.page.events?.items, store.page.tagCols?.items),
   };
 };
 export default connect(mapStoreToProps, {

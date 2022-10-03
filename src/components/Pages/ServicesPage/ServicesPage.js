@@ -280,8 +280,8 @@ const mapStoreToProps = (store) => {
     serviceProviders: store.page.serviceProviders,
     links: store.links,
     tagCols: filterTagCollections(
-      store.page.serviceProviders,
-      store.page.tagCols
+      store.page.serviceProviders?.items,
+      store.page.tagCols?.items
     ),
   };
 };

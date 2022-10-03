@@ -103,12 +103,12 @@ class StoryForm extends React.Component {
 
   getNeededFormFields() {
     const actionTitles = getPropsArrayFromJsonArray(
-      this.props.actions,
+      this.props.actions?.items,
       "title"
     );
-    const actionIds = getPropsArrayFromJsonArray(this.props.actions, "id");
-    const vendorTitles = getPropsArrayFromJsonArray(this.props.vendors, "name");
-    const vendorIds = getPropsArrayFromJsonArray(this.props.vendors, "id");
+    const actionIds = getPropsArrayFromJsonArray(this.props.actions?.items, "id");
+    const vendorTitles = getPropsArrayFromJsonArray(this.props.vendors?.items, "name");
+    const vendorIds = getPropsArrayFromJsonArray(this.props.vendors?.items, "id");
     return [
       {
         name: "action_id",

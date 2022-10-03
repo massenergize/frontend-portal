@@ -112,7 +112,7 @@ class OneServicePage extends React.Component {
           allowBack
         />
       );
-    const stories = this.props.testimonials.filter((story) => {
+    const stories = this.props.testimonials?.items?.filter((story) => {
       return (
         story.vendor && story.vendor.id === Number(this.props.match.params.id)
       );

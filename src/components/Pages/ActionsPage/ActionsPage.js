@@ -165,7 +165,7 @@ class ActionsPage extends React.Component {
 
   searchIsActiveSoFindContentThatMatch() {
     return searchIsActiveFindContent(
-      this.props.actions,
+      this.props.actions?.items,
       this.state.checked_values,
       this.state.searchText,
       (action, word) =>
@@ -217,7 +217,7 @@ class ActionsPage extends React.Component {
 
     var actions =
       this.searchIsActiveSoFindContentThatMatch() ||
-      applyTagsAndGetContent(this.props.actions, this.state.checked_values);
+      applyTagsAndGetContent(this.props.actions?.items, this.state.checked_values);
 
     const steps = [
       {
@@ -318,7 +318,7 @@ class ActionsPage extends React.Component {
                     <div className="phone-vanish">
                       <ActionBoxCounter
                         type="DONE"
-                        done={this.props.done}
+                        done={this.props.done?.items}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
                         pref_eq={this.props.pref_eq}
@@ -331,7 +331,7 @@ class ActionsPage extends React.Component {
                       <ActionBoxCounter
                         type="TODO"
                         style={{ marginTop: 20 }}
-                        todo={this.props.todo}
+                        todo={this.props.todo?.items}
                         link={this.props.links ? this.props.links.profile : "#"}
                         user={this.props.user}
                         pref_eq={this.props.pref_eq}
@@ -389,7 +389,7 @@ class ActionsPage extends React.Component {
         </p>
       );
     }
-    if (actions.length === 0) {
+    if (actions?.length === 0) {
       return (
         <p style={{ width: "100%", textAlign: "center" }}>
           There aren't any actions in the selected categories.
@@ -534,7 +534,7 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: filterTagCollections(store.page.actions, store.page.tagCols),
+    tagCols: filterTagCollections(store.page.actions?.items, store.page.tagCols?.items),
     rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
