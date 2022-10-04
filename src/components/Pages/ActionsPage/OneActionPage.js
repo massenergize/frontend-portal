@@ -286,7 +286,7 @@ class OneActionPage extends React.Component {
 
   actionIsInTodo() {
     var action = this.getMyAction();
-    var todo = this.props.todo ? this.props.todo : [];
+    var todo = this.props.todo ? this.props.todo?.items: [];
     var data = todo.filter((t) => t.action.id === action.id);
     if (data.length > 0) {
       return data[0];

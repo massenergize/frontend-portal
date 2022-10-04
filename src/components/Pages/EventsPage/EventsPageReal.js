@@ -269,7 +269,7 @@ class EventsPage extends React.Component {
     if (this.state.mirror_events.length === 0) {
       events = this.state.check_values === null ? this.props.events?.items : events;
     }
-    if (this.props.events?.items?.length === 0) {
+    if (this.props.events?.length === 0) {
       return (
         <div
           className="text-center"
@@ -289,7 +289,6 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      console.log('===== ToLog ========', this.props.eventExceptions);
       const page = events?.map((event) => {
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
