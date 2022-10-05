@@ -6,7 +6,6 @@ const DEFAULTS = {
   user_name: null,
   email: null,
   body: null,
-  uploaded_file: null,
 };
 class ContactPageForm extends Component {
   constructor(props) {
