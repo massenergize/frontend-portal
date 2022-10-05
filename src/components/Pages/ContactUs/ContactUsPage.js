@@ -23,7 +23,7 @@ class ContactUsPage extends React.Component {
         <div id="test-location-name">
           <div style={{ display: "flex" }}>
             <i
-              class="fas fa-map-marker-alt"
+              className="fas fa-map-marker-alt"
               style={{ fontSize: "1.5rem", marginRight: "10px" }}
             ></i>
             <h4>Location</h4>
@@ -115,7 +115,7 @@ class ContactUsPage extends React.Component {
                       }}
                     >
                       <i
-                        class="fad fa-user-shield"
+                        className="fad fa-user-shield"
                         style={{
                           fontSize: "1.5rem",
                           marginRight: "5px",
