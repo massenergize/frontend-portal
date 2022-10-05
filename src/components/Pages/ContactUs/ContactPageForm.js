@@ -18,7 +18,7 @@ class ContactPageForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(e, content, resetForm) {
+  onSubmit(e, content, resetForm, stopLoading) {
     e.preventDefault();
     if (!content.body || !content.name) {
       this.setState({
@@ -37,23 +37,27 @@ class ContactPageForm extends Component {
     };
 
     const _this = this;
-    apiCall("admins.messages.add", data)
-      .then((res) => {
-        if (res.success && res.data) {
-          _this.setState({
-            formNotification: {
-              icon: "fa fa-check",
-              type: "good",
-              text:
-                "Thanks for contacting the community administrator. You should receive a response within a few days.",
-            },
-          });
-          resetForm();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    apiCall("admins.messages.add", data).then((res) => {
+      if (res.success && res.data) {
+        _this.setState({
+          formNotification: {
+            icon: "fa fa-check",
+            type: "good",
+            text: "Thanks for contacting the community administrator. You should receive a response within a few days.",
+          },
+        });
+        resetForm();
+      } else {
+        stopLoading && stopLoading();
+        _this.setState({
+          formNotification: {
+            icon: "fa fa-times",
+            type: "bad",
+            text: res?.error,
+          },
+        });
+      }
+    });
   }
 
   neededFields() {
@@ -97,7 +101,7 @@ class ContactPageForm extends Component {
     // className="container mob-zero-margin mob-zero-padding me-anime-open-in"
     return (
       <div>
-        <div style={{ borderWidth: 0 }} id = "test-contact-us-form">
+        <div style={{ borderWidth: 0 }} id="test-contact-us-form">
           <MEFormGenerator
             onSubmit={this.onSubmit}
             title="Contact Community Admin"
