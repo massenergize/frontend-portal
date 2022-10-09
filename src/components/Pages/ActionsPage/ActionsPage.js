@@ -11,6 +11,7 @@ import {
 } from "../../../redux/actions/userActions";
 import {
   reduxChangeData,
+  reduxLoadActions,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
@@ -22,6 +23,7 @@ import {
   applyTagsAndGetContent,
   collectSearchTextValueFromURL,
   filterTagCollections,
+  hasMoreItems,
   makeFilterDescription,
   PREF_EQ_DEFAULT,
   processFiltersAndUpdateURL,
@@ -42,6 +44,9 @@ import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
+import { Button } from "react-bootstrap";
+import ActivityIndicator from "../../Shared/ActivityIndicator";
+
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -65,6 +70,7 @@ const INIT_STATE = {
   status: null,
   showEqModal: false,
   mounted: false,
+  loading:false // this is used to show loading with fetching more items
 };
 
 /**
@@ -193,6 +199,22 @@ class ActionsPage extends React.Component {
     return null;
   };
 
+  looadMore = () => {
+    const { meta, items } = this.props.actions;
+    let { subdomain } = this.props.community;
+    this.setState({loading:true})
+    apiCall("actions.list", { page: meta?.next, subdomain }).then((res) => {
+          this.setState({ loading: false });
+      if (res?.success) {
+        let newItems = items?.concat(res?.data?.items);
+        this.props.updateActionsInRedux({
+          meta: res?.data?.meta,
+          items: newItems,
+        });
+      }
+    });
+  };
+
   render() {
     const pageData = this.props.pageData;
     const filterDescription = makeFilterDescription(this.state.checked_values);
@@ -217,7 +239,10 @@ class ActionsPage extends React.Component {
 
     var actions =
       this.searchIsActiveSoFindContentThatMatch() ||
-      applyTagsAndGetContent(this.props.actions?.items, this.state.checked_values);
+      applyTagsAndGetContent(
+        this.props.actions?.items,
+        this.state.checked_values
+      );
 
     const steps = [
       {
@@ -371,6 +396,24 @@ class ActionsPage extends React.Component {
                   >
                     {this.renderActions(actions)}
                   </div>
+                  {hasMoreItems(this.props.actions) && (
+                    <center style={{ marginTop: 15 }}>
+                      {this.state.loading ? (
+                        <ActivityIndicator />
+                      ) : (
+                        <Button
+                          onClick={() => this.looadMore(actions)}
+                          style={{
+                            backgroundColor: "var(--app-theme-green)",
+                            padding: "10px 15px",
+                            border: "1px solid var(--app-theme-green)",
+                          }}
+                        >
+                          Load More
+                        </Button>
+                      )}
+                    </center>
+                  )}
                 </div>
               </div>
             </div>
@@ -433,7 +476,7 @@ class ActionsPage extends React.Component {
    */
   inCart = (aid, hid, cart) => {
     if (!this.props.todo) return false;
-    const todo = this.props.todo?.items ||[]
+    const todo = this.props.todo?.items || [];
     const checkTodo = todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
@@ -445,7 +488,7 @@ class ActionsPage extends React.Component {
     }
 
     if (!this.props.done) return false;
-        const done = this.props.done?.items ||[]
+    const done = this.props.done?.items || [];
     const checkDone = done.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
@@ -486,7 +529,7 @@ class ActionsPage extends React.Component {
 
   // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
   moveToDoneByActionId(aid, hid, date) {
-    const todo = this.props.todo?.items || []
+    const todo = this.props.todo?.items || [];
     const actionRel = todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
@@ -537,7 +580,10 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     actions: store.page.actions,
-    tagCols: filterTagCollections(store.page.actions?.items, store.page.tagCols?.items),
+    tagCols: filterTagCollections(
+      store.page.actions?.items,
+      store.page.tagCols?.items
+    ),
     rawTagCols: store.page.tagCols,
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
@@ -545,6 +591,7 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    community: store.page.community,
   };
 };
 
@@ -555,6 +602,7 @@ const mapDispatchToProps = {
   reduxChangeData,
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
+  updateActionsInRedux: reduxLoadActions,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
 };
 export default connect(

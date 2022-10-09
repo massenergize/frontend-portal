@@ -661,3 +661,9 @@ export function recurringDetails(event) {
   }
   return recurringDetails;
 }
+
+export const hasMoreItems = (data)=>{
+  let {meta, items} = data
+  if ((items|| [])?.length < meta?.count) return true
+  return false 
+}
