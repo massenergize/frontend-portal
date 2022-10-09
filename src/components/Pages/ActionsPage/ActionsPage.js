@@ -433,7 +433,8 @@ class ActionsPage extends React.Component {
    */
   inCart = (aid, hid, cart) => {
     if (!this.props.todo) return false;
-    const checkTodo = this.props.todo.filter((actionRel) => {
+    const todo = this.props.todo?.items ||[]
+    const checkTodo = todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
@@ -444,7 +445,8 @@ class ActionsPage extends React.Component {
     }
 
     if (!this.props.done) return false;
-    const checkDone = this.props.done.filter((actionRel) => {
+        const done = this.props.done?.items ||[]
+    const checkDone = done.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)
@@ -484,7 +486,8 @@ class ActionsPage extends React.Component {
 
   // NOTE: Routine currently duplicated in ActionsPage, OneActionPage, Cart - preserve same functionality in each
   moveToDoneByActionId(aid, hid, date) {
-    const actionRel = this.props.todo.filter((actionRel) => {
+    const todo = this.props.todo?.items || []
+    const actionRel = todo.filter((actionRel) => {
       return (
         Number(actionRel.action.id) === Number(aid) &&
         Number(actionRel.real_estate_unit.id) === Number(hid)

@@ -469,7 +469,7 @@ class ChooseHHForm extends React.Component {
       const toolTipText = IS_IN_TODO
         ? "When are you planning to complete the action?"
         : "When did you complete this action?";
-
+      
       return (
         <div id="act-item-Container">
           {userHasOnlyOneHouse && !selected ? (
@@ -661,8 +661,8 @@ class ChooseHHForm extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
-    todo: store.user.todo,
-    done: store.user.done,
+    todo: store.user.todo?.items,
+    done: store.user.done?.items,
   };
 };
 
