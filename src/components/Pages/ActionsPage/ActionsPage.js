@@ -199,7 +199,7 @@ class ActionsPage extends React.Component {
     return null;
   };
 
-  looadMore = () => {
+  loadMore = () => {
     const { meta, items } = this.props.actions;
     let { subdomain } = this.props.community;
     this.setState({loading:true})
@@ -402,7 +402,7 @@ class ActionsPage extends React.Component {
                         <ActivityIndicator />
                       ) : (
                         <Button
-                          onClick={() => this.looadMore(actions)}
+                          onClick={() => this.loadMore()}
                           style={{
                             backgroundColor: "var(--app-theme-green)",
                             padding: "10px 15px",
