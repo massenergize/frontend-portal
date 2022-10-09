@@ -28,6 +28,18 @@ const initialState = {
   done: null,
   show_reg_status: false,
 };
+const addItemToStore = (newItem, existing)=>{
+  let {items, meta} = existing
+  let filtered = items?.filter((element) => element.id !== newItem?.id)
+  return {meta, items:[newItem, ...filtered]}
+}
+
+
+const removeItemFromStore  = (item, lists)=>{
+  const {meta, items} = lists
+  let filtered = items?.filter((element) => element.id !== item?.id)
+  return {meta, items:filtered}
+}
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -64,12 +76,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         // if action already on list, replace with updated version
-        todo: [action.payload, ...state.todo.filter((element) => element.id !== action.payload.id)],
+        todo: addItemToStore(action.payload, state.todo),
+        // todo: [action.payload, ...state.todo.filter((element) => element.id !== action.payload.id)],
       };
     case REMOVE_FROM_TODO:
       return {
         ...state,
-        todo: state.todo.filter((element) => element.id !== action.payload.id),
+        todo: removeItemFromStore(action?.payload, state.todo),
+        // todo: state.todo.filter((element) => element.id !== action.payload.id),
       };
     /**************************/
     case LOAD_DONE:
@@ -81,19 +95,22 @@ export default function (state = initialState, action) {
       return {
         ...state,
         // if action already on list, replace with updated version
-        done: [action.payload, ...state.done.filter((element) => element.id !== action.payload.id)],
+        done:addItemToStore(action.payload, state.done),
       };
     case REMOVE_FROM_DONE:
       return {
         ...state,
-        done: state.done.filter((element) => element.id !== action.payload.id),
+        done: removeItemFromStore(action.payload, state.done),
+        // done: state.done.filter((element) => element.id !== action.payload.id),
       };
 
     case MOVE_TO_DONE:
       return {
         ...state,
-        done: [action.payload,...state.done ],
-        todo: state.todo.filter((element) => element.id !== action.payload.id),
+        done: addItemToStore(action.payload, state.done),
+        // done: [action.payload,...state.done ],
+        todo: removeItemFromStore(action.payload, state.todo),
+        // todo: state.todo.filter((element) => element.id !== action.payload.id),
       };
     /**************************/
     case LOAD_HOUSEHOLDS:
