@@ -28,7 +28,6 @@ import {
   reduxLoadTestimonials,
   reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
-import { createGlobalStyle } from "styled-components";
 import { apiCall } from "../../../api/functions";
 import { Button } from "react-bootstrap";
 import ActivityIndicator from "../../Shared/ActivityIndicator";
