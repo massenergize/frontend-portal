@@ -114,7 +114,7 @@ class StoriesPage extends React.Component {
               this.setState({ showEditModal: false, draftTestimonialData: {} })
             }
           >
-            <i className="fa fa-plus"/> {" "}Testimonial
+            <i className="fa fa-plus"/> {" "}New Testimonial
           </StoryFormButtonModal>
         </div>
       );
@@ -242,6 +242,7 @@ class StoriesPage extends React.Component {
           className="boxed_wrapper"
           style={{
             minHeight: window.screen.height - 200,
+            position:'relative'
           }}
         >
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
@@ -300,7 +301,7 @@ class StoriesPage extends React.Component {
                     {this.renderStories(stories)}
                   </div>
                   {hasMoreItems(this.props.stories) && (
-                    <center style={{ marginTop: 15 }}>
+                    <center style={{  }}>
                       {this.state.loading ? (
                         <ActivityIndicator />
                       ) : (
@@ -317,10 +318,10 @@ class StoriesPage extends React.Component {
                       )}
                     </center>
                   )}
-{/* 
-                  <div style={{ }}>
+
+                  <div style={{position:'fixed', bottom:20, right:10 }}>
                     {this.renderTestimonialForm()}
-                  </div> */}
+                  </div>
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>
