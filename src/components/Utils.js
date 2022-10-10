@@ -317,8 +317,7 @@ export const filterTagCollections = (actions, cols) => {
   if (!actions) return [];
   const collections = {};
   actions?.forEach((action) => {
-    action.tags &&
-      action.tags.forEach((tag) => {
+    action.tags && action.tags.forEach((tag) => {
         const name = tag.tag_collection_name;
         // Collect the rank value from the original tag collection array to be used for sorting later (TODO:backend needs to add this)
         const original = (cols || []).filter((set) => set.name === name)[0];
@@ -338,6 +337,7 @@ export const filterTagCollections = (actions, cols) => {
             rank,
           };
         }
+
       });
   });
   var arr = [];

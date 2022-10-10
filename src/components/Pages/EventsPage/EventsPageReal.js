@@ -15,6 +15,7 @@ import {
   collectSearchTextValueFromURL,
   processFiltersAndUpdateURL,
   makeFilterDescription,
+  hasMoreItems,
 } from "../../Utils";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
@@ -24,8 +25,11 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadEvents, reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
+import ActivityIndicator from "../../Shared/ActivityIndicator";
+import { Button } from "react-bootstrap";
+import { apiCall } from "../../../api/functions";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -49,6 +53,7 @@ class EventsPage extends React.Component {
       view_mode: savedView || VIEW_MODES.NORMAL.key,
       showModal: false,
       mounted: false,
+      loading:false,
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
@@ -98,6 +103,21 @@ class EventsPage extends React.Component {
   onSearchTextChange(text) {
     this.setState({ searchText: text || "" });
   }
+  loadMore = () => {
+    const { meta, items } = this.props.events;
+    let { subdomain } = this.props.community;
+    this.setState({ loading: true });
+    apiCall("events.list", { page: meta?.next, subdomain }).then((res) => {
+      this.setState({ loading: false });
+      if (res?.success) {
+        let newItems = items?.concat(res?.data?.items);
+        this.props.updateEventsInRedux({
+          meta: res?.data?.meta,
+          items: newItems,
+        });
+      }
+    });
+  };
 
   render() {
     const pageData = this.props.pageData;
@@ -125,7 +145,10 @@ class EventsPage extends React.Component {
 
     const found =
       this.searchIsActiveSoFindContentThatMatch() ||
-      applyTagsAndGetContent(this.props.events?.items, this.state.checked_values);
+      applyTagsAndGetContent(
+        this.props.events?.items,
+        this.state.checked_values
+      );
 
     return (
       <>
@@ -150,9 +173,7 @@ class EventsPage extends React.Component {
                             style={{ fontSize: 24 }}
                           >
                             {title}
-                            <Tooltip
-                              text={description}
-                            >
+                            <Tooltip text={description}>
                               <span
                                 className="fa fa-info-circle"
                                 style={{ color: "#428a36", padding: "5px" }}
@@ -214,6 +235,24 @@ class EventsPage extends React.Component {
                         }}
                       >
                         <div className="row">{this.renderEvents(found)}</div>
+                        {hasMoreItems(this.props.events) && (
+                          <center style={{ marginTop: 15 }}>
+                            {this.state.loading ? (
+                              <ActivityIndicator />
+                            ) : (
+                              <Button
+                                onClick={() => this.loadMore()}
+                                style={{
+                                  backgroundColor: "var(--app-theme-green)",
+                                  padding: "10px 15px",
+                                  border: "1px solid var(--app-theme-green)",
+                                }}
+                              >
+                                Load More
+                              </Button>
+                            )}
+                          </center>
+                        )}
                       </div>
                     )}
 
@@ -267,7 +306,8 @@ class EventsPage extends React.Component {
     //if check_values ===null, then it means it is probably the first time the user
     //is loading the page, so show everything from props
     if (this.state.mirror_events.length === 0) {
-      events = this.state.check_values === null ? this.props.events?.items : events;
+      events =
+        this.state.check_values === null ? this.props.events?.items : events;
     }
     if (this.props.events?.length === 0) {
       return (
@@ -359,8 +399,10 @@ const mapStoreToProps = (store) => {
     eventRSVPs: store.page.rsvps,
     links: store.links,
     tagCols: filterTagCollections(store.page.events?.items, store.page.tagCols?.items),
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  updateEventsInRedux:reduxLoadEvents
 })(withRouter(EventsPage));
