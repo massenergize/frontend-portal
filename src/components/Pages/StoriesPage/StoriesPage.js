@@ -318,10 +318,10 @@ class StoriesPage extends React.Component {
                       )}
                     </center>
                   )}
-
+{/* 
                   <div style={{ }}>
                     {this.renderTestimonialForm()}
-                  </div>
+                  </div> */}
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>
