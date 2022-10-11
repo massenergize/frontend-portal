@@ -101,8 +101,7 @@ class ProfilePage extends React.Component {
     );
   }
   showCommunitiesSection() {
-    const { user } = this.props;
-       console.log('===== ToLog USER========', user);
+    const { user } = this.props;;
     return (
       <div>
         <MESectionWrapper headerText="Your Communities">
@@ -516,7 +515,6 @@ class ProfilePage extends React.Component {
     );
   };
   renderCommunities(communities) {
-       console.log('===== ToLog commms ========', communities);
     if (!communities)
       return (
         <div style={{ textAlign: "center" }}>
@@ -524,7 +522,6 @@ class ProfilePage extends React.Component {
         </div>
       );
     return Object.keys(communities).map((key) => {
-      console.log('===== ToLog ========', communities);
       const community = communities[key];
       return (
         <div key={key} style={{ position: "relative" }}>
