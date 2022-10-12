@@ -13,6 +13,8 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { bindActionCreators } from "redux";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -270,6 +272,24 @@ class HorizontalFilterBox extends Component {
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
+
+  renderTestimonialForm() {
+    const { user, signInWithAuthenticationDialog } = this.props;
+    if (user)
+      return (
+        <StoryFormButtonModal>
+          <TestimonialButton />
+        </StoryFormButtonModal>
+      );
+
+    return (
+      <TestimonialButton
+        onClick={() =>
+          signInWithAuthenticationDialog && signInWithAuthenticationDialog()
+        }
+      />
+    );
+  }
   render() {
     const { longHeight } = this.state;
     return (
@@ -296,20 +316,7 @@ class HorizontalFilterBox extends Component {
           />
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
-          this.props.user ? (
-          
-              <StoryFormButtonModal>
-                <div className="add-testimonial-container">
-                  <div className="add-testimonial touchable-opacity">
-                    <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                    <p>Add Testimonial</p>
-                  </div>
-                </div>
-              </StoryFormButtonModal>
-             
-          ) : (
-            <div />
-          )}
+            this.renderTestimonialForm()}
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
@@ -351,9 +358,33 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
+    },
+    dispatch
+  );
+};
 
 HorizontalFilterBox.defaultProps = {
   version: 1,
 };
 
-export default withRouter(connect(mapStoreToProps)(HorizontalFilterBox));
+export default withRouter(
+  connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
+);
+
+const TestimonialButton = ({ onClick }) => {
+  return (
+    <div
+      className="add-testimonial-container"
+      onClick={() => onClick && onClick()}
+    >
+      <div className="add-testimonial touchable-opacity">
+        <i className="fa fa-plus" style={{ marginRight: 6 }} />
+        <p>Add Testimonial</p>
+      </div>
+    </div>
+  );
+};

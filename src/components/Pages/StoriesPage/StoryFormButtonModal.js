@@ -30,11 +30,13 @@ class StoryFormButtonModal extends Component {
     this.setState({ OpenModal: false });
   }
   render() {
+    const { overrideOpen } = this.props;
     return (
       <>
         <MEButton
           className={this.props.ButtonClasses}
           onClick={() => {
+            if (overrideOpen) return overrideOpen();
             this.TriggerModal(true);
           }}
         >
