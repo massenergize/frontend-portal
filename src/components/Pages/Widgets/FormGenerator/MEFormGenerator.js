@@ -47,6 +47,7 @@ export default class FormGenerator extends Component {
     this.state = {
       formData: {},
       resetors: {},
+      loading: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.setDefaultValues = this.setDefaultValues.bind(this);
@@ -361,7 +362,10 @@ export default class FormGenerator extends Component {
       onSubmit(e, { isNotComplete: true });
       return;
     }
-    onSubmit(e, this.state.formData, this.resetForm);
+    this.setState({ loading: true });
+    onSubmit(e, this.state.formData, this.resetForm, () =>
+      this.setState({ loading: false })
+    );
     return;
   }
 
@@ -385,7 +389,7 @@ export default class FormGenerator extends Component {
         }
       }
     });
-    this.setState({ formData: defaults });
+    this.setState({ formData: defaults, loading: false });
   }
 
   displayImageWarning() {
@@ -469,6 +473,12 @@ export default class FormGenerator extends Component {
                   fontSize: 18,
                 }}
               >
+                {this.state.loading && (
+                  <i
+                    className="fa fa-spinner fa-spin"
+                    style={{ marginRight: 5, color: "green" }}
+                  />
+                )}{" "}
                 {this.props.actionText}
               </MEButton>
             </div>
