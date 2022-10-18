@@ -59,7 +59,7 @@ class StoriesPage extends React.Component {
   }
 
   triggerGuestDialog(e) {
-    e.preventDefault();
+    e && e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
     this.props.toggleGuestAuthDialog(true);
   }
@@ -95,21 +95,29 @@ class StoriesPage extends React.Component {
     });
   }
   renderTestimonialForm() {
-    if (this.props.user) {
-      return (
-        <div className="every-day-flex">
-          <StoryFormButtonModal
-            openModal={this.state.showEditModal}
-            draftTestimonialData={this.state.draftTestimonialData}
-            toggleExternalTrigger={() =>
-              this.setState({ showEditModal: false, draftTestimonialData: {} })
-            }
-          >
-            Add Testimonial
-          </StoryFormButtonModal>
-        </div>
-      );
-    }
+    const { user } = this.props;
+    var props = {};
+    if (!user)
+      props = {
+        ...props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
+
+    return (
+      <div className="every-day-flex">
+        <StoryFormButtonModal
+          openModal={this.state.showEditModal}
+          draftTestimonialData={this.state.draftTestimonialData}
+          toggleExternalTrigger={() => {
+            this.setState({ showEditModal: false, draftTestimonialData: {} });
+          }}
+          {...props}
+        >
+          Add Testimonial
+        </StoryFormButtonModal>
+      </div>
+    );
   }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
