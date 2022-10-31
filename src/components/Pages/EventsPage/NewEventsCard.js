@@ -11,6 +11,7 @@ import MELightDropDown from "../Widgets/MELightDropDown";
 import { makeStringFromArrOfObjects } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import MEButton from "../Widgets/MEButton";
+import CustomTooltip from "../Widgets/CustomTooltip";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -151,6 +152,8 @@ export default class NewEventsCard extends Component {
       rsvp_enabled,
       tags,
       toggleGuestAuthDialog,
+      isShared,
+      community,
     } = this.props;
 
     const { rsvpStatus, loading, error } = this.state;
@@ -197,6 +200,14 @@ export default class NewEventsCard extends Component {
               data-event-title={title}
             >
               {title}
+
+              {isShared && (
+                <CustomTooltip
+                  text={`This event is originally from ${community?.name}`}
+                >
+                  <span className="shared-badge">SHARED</span>
+                </CustomTooltip>
+              )}
             </h1>
           </Link>
 

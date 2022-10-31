@@ -5,6 +5,16 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+.shared-badge {
+  padding: 2px 13px;
+  color: var(--app-theme-orange);
+  font-weight: bold;
+  margin-left: 11px;
+  font-size: 11px;
+  border: solid 1px var(--app-theme-orange);
+  border-radius: 55px;
+  cursor: pointer;
+}
 
 .delete-account {
   color: red;

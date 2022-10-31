@@ -150,9 +150,7 @@ class EventsPage extends React.Component {
                             style={{ fontSize: 24 }}
                           >
                             {title}
-                            <Tooltip
-                              text={description}
-                            >
+                            <Tooltip text={description}>
                               <span
                                 className="fa fa-info-circle"
                                 style={{ color: "#428a36", padding: "5px" }}
@@ -266,6 +264,8 @@ class EventsPage extends React.Component {
     //someone if user is using check_values
     //if check_values ===null, then it means it is probably the first time the user
     //is loading the page, so show everything from props
+
+    const thisCommunity = this.props?.pageData?.community;
     if (this.state.mirror_events.length === 0) {
       events = this.state.check_values === null ? this.props.events : events;
     }
@@ -327,6 +327,7 @@ class EventsPage extends React.Component {
               user={this.props.user}
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
+              isShared={thisCommunity?.id !== event?.community?.id}
             />
           </div>
         );
