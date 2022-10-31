@@ -225,6 +225,7 @@ class EventsPage extends React.Component {
                           onEventClick={(obj) =>
                             history?.push(links?.events + "/" + obj?.id)
                           }
+                          thisCommunity={this.props.pageData?.community}
                         />
                       </div>
                     )}
