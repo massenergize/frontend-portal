@@ -2319,7 +2319,7 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    /* height: 100vh; */
+    max-height: 70vh;
     overflow-y: scroll;
   }
   .stats-q-box {
