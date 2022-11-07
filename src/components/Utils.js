@@ -316,30 +316,30 @@ export const applyTagsAndGetContent = (content, checkedValues) => {
 export const filterTagCollections = (actions, cols) => {
   if (!actions) return [];
   const collections = {};
-  actions?.forEach((action) => {
-    action.tags && action.tags.forEach((tag) => {
-        const name = tag.tag_collection_name;
-        // Collect the rank value from the original tag collection array to be used for sorting later (TODO:backend needs to add this)
-        const original = (cols || []).filter((set) => set.name === name)[0];
-        const rank = original && original.rank;
-        const found = collections[name];
-        if (found) {
-          if (!found.alreadyIn.includes(tag.id)) {
-            collections[name].tags.push(tag);
-            collections[name].alreadyIn.push(tag.id);
-          }
-        } else {
-          collections[name] = {
-            id: original?.id,
-            name: name,
-            tags: [tag],
-            alreadyIn: [tag.id],
-            rank,
-          };
-        }
+  // actions?.forEach((action) => {
+  //   action.tags && action.tags.forEach((tag) => {
+  //       const name = tag.tag_collection_name;
+  //       // Collect the rank value from the original tag collection array to be used for sorting later (TODO:backend needs to add this)
+  //       const original = (cols || []).filter((set) => set.name === name)[0];
+  //       const rank = original && original.rank;
+  //       const found = collections[name];
+  //       if (found) {
+  //         if (!found.alreadyIn.includes(tag.id)) {
+  //           collections[name].tags.push(tag);
+  //           collections[name].alreadyIn.push(tag.id);
+  //         }
+  //       } else {
+  //         collections[name] = {
+  //           id: original?.id,
+  //           name: name,
+  //           tags: [tag],
+  //           alreadyIn: [tag.id],
+  //           rank,
+  //         };
+  //       }
 
-      });
-  });
+  //     });
+  // });
   var arr = [];
   Object.keys(collections).forEach((key) => {
     arr.push(collections[key]);
