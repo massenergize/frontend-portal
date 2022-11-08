@@ -3221,6 +3221,10 @@
     margin: 0px !important;
     margin-bottom: 15px !important;
   }
+  .fix-filter{
+    max-height: 70vh;
+    overflow-y: overlay;
+  }
 }
 /*  ====== END END END END ========== */
 
