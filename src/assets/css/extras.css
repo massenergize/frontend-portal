@@ -5,6 +5,16 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+.shared-badge {
+  padding: 2px 13px;
+  color: var(--app-theme-orange);
+  font-weight: bold;
+  margin-left: 11px;
+  font-size: 11px;
+  border: solid 1px var(--app-theme-orange);
+  border-radius: 55px;
+  cursor: pointer;
+}
 
 .delete-account {
   color: red;
@@ -290,9 +300,15 @@
   width: 100%;
   flex: 2;
 }
+.c-event-shared {
+  background: var(--app-theme-orange) !important;
+}
+.c-event-original {
+  background: var(--app-theme-green) !important;
+}
 
 .c-event-mark {
-  background: var(--app-theme-orange) !important;
+  /* background: var(--app-theme-green) !important; */
   color: white;
 
   border-radius: 0px !important;
@@ -300,7 +316,8 @@
   cursor: pointer;
 }
 .c-event-mark:hover {
-  background-color: var(--app-theme-green) !important;
+  /* background-color: var(--app-theme-green) !important; */
+  opacity: 0.8;
   transition: 0.2s ease-out;
 }
 .event-view-togglers {
