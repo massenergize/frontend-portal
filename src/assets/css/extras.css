@@ -2336,7 +2336,7 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    /* height: 100vh; */
+    max-height: 70vh;
     overflow-y: scroll;
   }
   .stats-q-box {
@@ -3237,6 +3237,10 @@
   .land-textbox {
     margin: 0px !important;
     margin-bottom: 15px !important;
+  }
+  .fix-filter{
+    max-height: 70vh;
+    overflow-y: overlay;
   }
 }
 /*  ====== END END END END ========== */
