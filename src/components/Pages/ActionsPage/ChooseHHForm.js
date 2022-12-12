@@ -90,7 +90,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   <small style={{ padding: "10px 15px", color: "grey" }}>
-                    Click "Add" if you want your changes to be saved{" "}
+                    Click "Apply" After making changes
                   </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
@@ -117,7 +117,7 @@ class ChooseHHForm extends React.Component {
                             : false
                         }
                       >
-                        Add
+                        Apply
                       </button>
                       <button
                         className="flat-btn close-flat"
@@ -292,7 +292,6 @@ class ChooseHHForm extends React.Component {
           ];
         }
       });
-   
     } else {
       (done || []).forEach((done) => {
         //this if statement populates the date data only for a the selected action and households
