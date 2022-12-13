@@ -90,7 +90,7 @@ class ChooseHHForm extends React.Component {
                   style={{ paddingBottom: 10 }}
                 >
                   <small style={{ padding: "10px 15px", color: "grey" }}>
-                    Click "Apply" After making changes
+                    Click "Apply" after making changes
                   </small>
                   {this.renderHouseHoldsInLine(this.props.user.households)}
                   <div className="act-status-bar">
