@@ -20,6 +20,7 @@ import * as moment from "moment";
 import { isMobile } from "react-device-detect";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
+import CustomTooltip from "../Widgets/CustomTooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -230,7 +231,9 @@ class OneEventPage extends React.Component {
     );
   }
   renderEvent(event) {
-    const { user, toggleGuestAuthDialog } = this.props;
+    const { user, toggleGuestAuthDialog, pageData } = this.props;
+    const isShared = pageData?.community?.id !== event?.community?.id;
+
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
@@ -245,8 +248,23 @@ class OneEventPage extends React.Component {
         data-venue={event?.location}
       >
         <div className="container">
-          <h3 className="cool-font text-center solid-font test-event-title">
+          <h3
+            className="cool-font text-center solid-font test-event-title"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {event.name}
+
+            {isShared && (
+              <CustomTooltip
+                text={`This event is originally from ${event?.community?.name}`}
+              >
+                <span className="shared-badge">SHARED</span>
+              </CustomTooltip>
+            )}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
@@ -428,6 +446,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     events: store.page.events,
     links: store.links,
+    pageData: store.page.eventsPage,
   };
 };
 export default connect(mapStoreToProps, {

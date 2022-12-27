@@ -28,7 +28,7 @@ import {
 
 import { apiCall } from "../../api/functions";
 const GUEST_USER = "guest_user";
-const STANDARD_USER = "standard_user";
+//const STANDARD_USER = "standard_user";
 export const reduxSetPreferredEquivalence = (value) => {
   return {
     type: SET_PREFERRED_EQUIVALENCE,
@@ -50,6 +50,7 @@ export const reduxLogin = (user) => (dispatch) => {
   const user_type = user.is_super_admin ? 'super_admin' : 
             user.is_community_admin ? 'community_admin' : 
             user.user_info?.user_type === GUEST_USER ? 'guest_user' : 'standard_user';
+
   window.gtag('set', 'user_properties', {user_type: user_type});
 
   if (user_info) {
@@ -62,7 +63,10 @@ export const reduxLogin = (user) => (dispatch) => {
     type: LOGIN,
     payload: {
       ...user,
-      isStandardUser: user && user.user_info && user.user_info.user_type === STANDARD_USER ? true:false
+      // this logic fails for user.user_info not defined (existing profiles)
+      //isStandardUser: user && user.user_info && user.user_info.user_type === STANDARD_USER ? true:false
+      // for our current purposes, anything but a guest_user qualifies as a standard user
+      isStandardUser: user_type !== 'guest_user'
     },
   });
 };
