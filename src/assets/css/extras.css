@@ -2336,7 +2336,8 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    max-height: 70vh;
+    /* temporary undo this while we improve actions page scrolling
+    max-height: 70vh; */
     overflow-y: scroll;
   }
   .stats-q-box {
@@ -3238,10 +3239,12 @@
     margin: 0px !important;
     margin-bottom: 15px !important;
   }
+
+  /* temporary remove while we decide best actions scrolling
   .fix-filter{
     max-height: 70vh;
     overflow-y: overlay;
-  }
+  } */
 }
 /*  ====== END END END END ========== */
 
