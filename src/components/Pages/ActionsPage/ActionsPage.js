@@ -362,7 +362,9 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 {/* renders the actions */}
-                <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12 fix-filter">
+                {/* temporary back out fix-filter while improving scrolling
+                <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12 fix-filter">*/}
+                <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
                     id="test-action-cards-wrapper"
                     data-number-of-actions-for-test={actions?.length}
