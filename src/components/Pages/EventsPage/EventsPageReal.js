@@ -266,6 +266,7 @@ class EventsPage extends React.Component {
                           onEventClick={(obj) =>
                             history?.push(links?.events + "/" + obj?.id)
                           }
+                          thisCommunity={this.props.pageData?.community}
                         />
                       </div>
                     )}
@@ -305,6 +306,8 @@ class EventsPage extends React.Component {
     //someone if user is using check_values
     //if check_values ===null, then it means it is probably the first time the user
     //is loading the page, so show everything from props
+
+    const thisCommunity = this.props?.pageData?.community;
     if (this.state.mirror_events.length === 0) {
       events =
         this.state.check_values === null ? this.props.events?.items : events;
@@ -367,6 +370,7 @@ class EventsPage extends React.Component {
               user={this.props.user}
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
+              isShared={thisCommunity?.id !== event?.community?.id}
             />
           </div>
         );

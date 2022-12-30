@@ -16,7 +16,11 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-export default function EventCalendarView({ events, onEventClick }) {
+export default function EventCalendarView({
+  events,
+  onEventClick,
+  thisCommunity,
+}) {
   return (
     <div className="event-calendar-container">
       <Calendar
@@ -30,9 +34,14 @@ export default function EventCalendarView({ events, onEventClick }) {
         onSelectEvent={(obj) => onEventClick && onEventClick(obj)}
         popup={true}
         showMultiDayTimes={true}
-        eventPropGetter={() => ({
-          className: "c-event-mark z-depth-float",
-        })}
+        eventPropGetter={({ community }) => {
+          const isShared = community?.id !== thisCommunity?.id;
+          return {
+            className: ` c-event-mark ${
+              isShared ? "c-event-shared" : "c-event-original"
+            } z-depth-float`,
+          };
+        }}
       />
     </div>
   );
