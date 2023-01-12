@@ -29,7 +29,9 @@ import Subtitle from "../Widgets/Subtitle";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
-  NORMAL: { name: "Upcoming", icon: "fa-bars", key: "normal" },
+  UPCOMING: { name: "Upcoming events", icon: "fa-bars", key: "upcoming" },
+  PAST: { name: "Past events", icon: "fa-bars", key: "past" },
+  CAMPAIGNS: { name: "Campaigns", icon: "fa-bars", key: "campaigns" },
   CALENDAR: { name: "Calendar View", icon: "fa-calendar", key: "calendar" },
 };
 /**
@@ -46,7 +48,7 @@ class EventsPage extends React.Component {
       checked_values: null,
       mirror_events: [],
       searchText: null,
-      view_mode: savedView || VIEW_MODES.NORMAL.key,
+      view_mode: savedView || VIEW_MODES.UPCOMING.key,
       showModal: false,
       mounted: false,
     };
@@ -126,6 +128,34 @@ class EventsPage extends React.Component {
     const found =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.events, this.state.checked_values);
+    console.log(found)
+
+    const duration = (event) => { return new Date(event.end_date_and_time) - new Date(event.start_date_and_time) };
+    const oneWeek = new Date("January 8, 2000 00:00:00") - new Date("January 1, 2000 00:00:00");
+
+    const today = new Date(Date.now()).toISOString();
+    const upcomingEvents = found.filter(
+      event => event.end_date_and_time >= today && duration(event)<oneWeek).sort((a, b) => { 
+        if (a === b) {
+          return 0;
+        }
+        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
+    });
+    const pastEvents = found.filter(
+      event => event.end_date_and_time < today && duration(event)<oneWeek).sort((a, b) => { 
+        if (a === b) {
+          return 0;
+        }
+        return a.start_date_and_time > b.start_date_and_time ? -1 : 1;      
+    });
+
+    const campaigns = found.filter(
+      event => duration(event)>=oneWeek).sort((a, b) => { 
+        if (a === b) {
+          return 0;
+        }
+        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
+    });
 
     return (
       <>
@@ -202,7 +232,7 @@ class EventsPage extends React.Component {
                       })}
                     </div>
 
-                    {this.state.view_mode === VIEW_MODES.NORMAL?.key && (
+                    {this.state.view_mode === VIEW_MODES.UPCOMING?.key && (
                       <div
                         className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
                         style={{
@@ -211,7 +241,33 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(found)}</div>
+                        <div className="row">{this.renderEvents(upcomingEvents)}</div>
+                      </div>
+                    )}
+
+                    {this.state.view_mode === VIEW_MODES.PAST?.key && (
+                      <div
+                        className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
+                        style={{
+                          paddingTop: 0,
+                          marginTop: 9,
+                          paddingRight: 40,
+                        }}
+                      >
+                        <div className="row">{this.renderEvents(pastEvents)}</div>
+                      </div>
+                    )}
+
+                    {this.state.view_mode === VIEW_MODES.CAMPAIGNS?.key && (
+                      <div
+                        className="mob-event-cards-fix outer-box sec-padd event-style2 phone-marg-top-90"
+                        style={{
+                          paddingTop: 0,
+                          marginTop: 9,
+                          paddingRight: 40,
+                        }}
+                      >
+                        <div className="row">{this.renderEvents(campaigns)}</div>
                       </div>
                     )}
 
