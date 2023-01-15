@@ -128,7 +128,6 @@ class EventsPage extends React.Component {
     const found =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.events, this.state.checked_values);
-    console.log(found)
 
     const duration = (event) => { return new Date(event.end_date_and_time) - new Date(event.start_date_and_time) };
     const oneWeek = new Date("January 8, 2000 00:00:00") - new Date("January 1, 2000 00:00:00");
