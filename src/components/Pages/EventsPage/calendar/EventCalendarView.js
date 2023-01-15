@@ -28,7 +28,7 @@ export default function EventCalendarView({
         events={events || []}
         startAccessor="start_date_and_time"
         titleAccessor="name"
-        endAccessor="end_date_and_time"
+        endAccessor="start_date_and_time"
         messages={{ previous: "Previous" }}
         views={["month"]}
         onSelectEvent={(obj) => onEventClick && onEventClick(obj)}
