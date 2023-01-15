@@ -23,7 +23,16 @@ import Tooltip from "../Widgets/CustomTooltip";
 
 class Events extends React.Component {
   renderEvents() {
-    const events = this.props.events;
+    const today = new Date(Date.now()).toISOString();
+
+    const events = this.props.events.filter(
+      event => event.end_date_and_time >= today
+      ).sort((a, b) => { 
+        if (a === b) {
+          return 0;
+        }
+        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
+    });
 
     if (!events) {
       return (
