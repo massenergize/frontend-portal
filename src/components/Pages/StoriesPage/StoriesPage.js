@@ -48,6 +48,10 @@ class StoriesPage extends React.Component {
     this.triggerGuestDialog = this.triggerGuestDialog.bind(this);
   }
 
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "TestimonialsPage"});
+  }
+
   addMeToSelected(param, reset = false) {
     processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });

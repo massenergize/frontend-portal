@@ -26,9 +26,11 @@ import URLS from "../../../api/urls";
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+    window.gtag('set', 'page_title', {page_title: "HomePage"});
   }
 
   closeTourCompletely() {

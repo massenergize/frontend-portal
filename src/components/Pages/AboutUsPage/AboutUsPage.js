@@ -11,6 +11,10 @@ import "react-multi-carousel/lib/styles.css";
 import LoadingCircle from "../../Shared/LoadingCircle";
 
 class AboutUsPage extends React.Component {
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "AboutUsPage"});
+  }
+
   renderImage(image) {
     if (!image) return;
     const { url } = image || {};
@@ -25,6 +29,7 @@ class AboutUsPage extends React.Component {
     );
   }
   render() {
+
     if (!this.props.pageData || !this.props.community) {
       return <LoadingCircle />;
     } else if (this.props.pageData === {} || this.props.community === {}) {
