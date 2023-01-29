@@ -84,7 +84,9 @@ class TeamsPage extends React.Component {
       console.log(e.toString());
     }
   }
+
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "TeamsPage"});
     const subdomain =
       this.props.communityData &&
       this.props.communityData.community &&

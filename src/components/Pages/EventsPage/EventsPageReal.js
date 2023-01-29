@@ -55,6 +55,10 @@ class EventsPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "EventsPage"});
+  }
+
   static getDerivedStateFromProps = (props, state) => {
     if (!state.mounted) {
       const oneCollection = props?.tagCols && props.tagCols[0];

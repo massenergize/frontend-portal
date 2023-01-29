@@ -8,6 +8,10 @@ import MEButton from "../Widgets/MEButton";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "DonatePage"});
+  }
+
   renderVideo(videoLink) {
     if (!videoLink) return;
     return (

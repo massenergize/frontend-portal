@@ -33,6 +33,11 @@ class ServicesPage extends React.Component {
     };
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
+
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ServicesPage"});
+  }
+
   addMeToSelected(param, reset = false) {
     processFiltersAndUpdateURL(param, this.props);
     if (reset) return this.setState({ checked_values: null });
