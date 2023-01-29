@@ -4,6 +4,7 @@ import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate } from "../../../Utils";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import StoryFormButtonModal from "../StoryFormButtonModal";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -196,7 +197,7 @@ export default class StorySheet extends Component {
                     draftTestimonialData={testimonialData}
                   >
                     Edit
-                  </button>
+                  </StoryFormButtonModal>
                 )}
               </div>
             </div>

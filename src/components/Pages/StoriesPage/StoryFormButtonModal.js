@@ -53,6 +53,7 @@ class StoryFormButtonModal extends Component {
         >
           <div style={{ textAlign: "left" }}>
             <StoryForm
+              ModalType={this.props.ModalType}
               close={this.closeModal.bind(this)}
               draftTestimonialData={this.props.draftTestimonialData}
               TriggerSuccessNotification={(bool) =>

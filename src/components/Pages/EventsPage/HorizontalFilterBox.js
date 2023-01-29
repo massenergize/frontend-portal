@@ -277,7 +277,7 @@ class HorizontalFilterBox extends Component {
   renderAddButton = () => {
     const { user, signInWithAuthenticationDialog } = this.props;
     if (user)
-
+    {
         var ButtonText = ""
 
         if (this.props.ModalType === "testimonial") {

@@ -244,10 +244,10 @@ class StoryForm extends React.Component {
       message = "Already completed this action? Tell Us Your Story";
     //   changes modal title depending on  the page its on
     if (props.ModalType  === "testimonial") {
-      message = "Already completed a testimonial? Tell Us Your Story"
+      message = "BOGUS TEXT - FIX THIS"
     }
     if (props.ModalType  === "event") {
-      message = "Already completed an event? Tell Us Your Story"
+      message = "Listing an event?  Tell us about it"
     }
 
     if (props.ModalType  === "vendor") {
