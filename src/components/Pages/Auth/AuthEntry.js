@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -12,12 +12,15 @@ import {
   firebaseRegistration,
   setAuthNotification,
 } from "../../../redux/actions/authActions";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
+import { fetchParamsFromURL } from "../../Utils";
 import Notification from "../Widgets/Notification/Notification";
 import LoginAuth from "./Login/LoginAuth";
 import SignUpAuth from "./Registration/SignUpAuth";
 import VerifyEmailBox from "./shared/components/VerifyEmailBox";
+import OpenEmailApp from "./shared/OpenEmailApp";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
 
 const SIGNIN = "signin";
@@ -40,6 +43,8 @@ function AuthEntry({
   finaliseNoPasswordAuth,
   registerPageData,
   showTour,
+  back,
+  match,
 }) {
   const URL = window.location.href;
   const isSignInPage = URL.includes(SIGNIN);
@@ -53,7 +58,7 @@ function AuthEntry({
     authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
 
   const [loading, setLoading] = useState(false);
-  const [userWantsPasswordFree, setUsePasswordFree] = useState(true);
+  const [userWantsPasswordFree, setUsePasswordFree] = useState(false);
   const [userWantsPasswordReset, setUserWantsPasswordReset] = useState(false);
 
   const clearSlate = () => {
@@ -81,6 +86,16 @@ function AuthEntry({
     firebaseRegistration(form, () => setLoading(false));
   };
 
+  useEffect(() => {
+    //We can go straight to passwordless form, by passing a value in the URL
+    const noPassword = fetchParamsFromURL(
+      window.location,
+      "noPassword"
+    )?.noPassword;
+    const passwordLessValueViaURL =
+      (noPassword || "").trim().toLowerCase() === "true";
+    setUsePasswordFree(passwordLessValueViaURL);
+  }, [match]);
   // ---------------------------------------------------------------
 
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
@@ -93,7 +108,7 @@ function AuthEntry({
 
   // ------------------------------------------------------------------
 
-  var title = "Welcome,",
+  var title = "Welcome!",
     description = "",
     Page,
     PageTitle;
@@ -115,6 +130,7 @@ function AuthEntry({
         setNotification={setNotification}
         finaliseNoPasswordAuth={finaliseNoPasswordAuth}
         setLoading={setLoading}
+        back={back}
       />
     );
     PageTitle = userWantsPasswordFree ? "Password-Free Sign In" : "Sign In";
@@ -140,6 +156,7 @@ function AuthEntry({
         completeFormRegistrationInME={completeFormRegistrationInME}
         policies={policies}
         showTour={showTour}
+        back={back}
       />
     );
     PageTitle = "Sign Up";
@@ -161,6 +178,22 @@ function AuthEntry({
                     <Notification {...notification}>
                       {notification?.message}
                     </Notification>
+                  )}
+                  {notification?.resendFunction && (
+                    <a
+                      href="#void"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        notification.resendFunction();
+                      }}
+                      style={{ fontWeight: "bold" }}
+                      className="energize-link"
+                    >
+                      Resend Link
+                    </a>
+                  )}
+                  {notification?.good && userWantsPasswordFree && (
+                    <OpenEmailApp />
                   )}
                   {Page}
                 </div>
@@ -198,6 +231,7 @@ const mapDispatchToProps = (dispatch) => {
       cancelRegistration: cancelMyRegistration,
       completeFormRegistrationInME: completeUserRegistration,
       finaliseNoPasswordAuth: finaliseNoPasswordAuthentication,
+      back: () => reduxToggleGuestAuthDialog(true),
     },
     dispatch
   );

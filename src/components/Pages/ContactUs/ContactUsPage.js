@@ -4,28 +4,41 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { connect } from "react-redux";
 import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
+
 class ContactUsPage extends React.Component {
-  
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ContactUsPage"});
+  }
+
+  prepareLocationText = (location) => {
+    let locationText = "";
+    if (location) {
+      locationText = location.address? location.address +`${location.city || location.state || location.zipcode ? ", " : ""}`: "";
+      locationText += location.city? location.city + `${location.state || location.zipcode ? ", " : ""}`: "";
+      locationText += location.state? location.state + `${location.zipcode ? ", " : ""}` : "";
+      locationText += location.zipcode ? location.zipcode : "";
+    }
+    return locationText;
+  };
+
   ejectLocation(location) {
     if (location) {
       return (
         <div id="test-location-name">
-          <h4>Location</h4>
-          <p className="make-me-dark">
-            {location.address ? location.address + ",\n" : ""}
-            {location.city ? location.city : ""}
-            {location.state ? `, ${location.state}` : ""}
-            {location.zipcode ? `, ${location.zipcode}` : ""}
+          <div style={{ display: "flex" }}>
+            <i
+              className="fas fa-map-marker-alt"
+              style={{ fontSize: "1.5rem", marginRight: "10px" }}
+            ></i>
+            <h4>Location</h4>
+          </div>
+          <p className="make-me-dak" style={{ color: "grey", marginTop: 10 }}>
+            {this.prepareLocationText(location)}
           </p>
         </div>
       );
     } else {
-      return (
-        <div>
-          <h4>Location</h4>
-          <p id="test-no-location-name">No location was provided by admin!</p>
-        </div>
-      );
+      return <></>;
     }
   }
   render() {
@@ -61,6 +74,12 @@ class ContactUsPage extends React.Component {
 
     const { id, location, owner_name } = communityInfo;
 
+    const getCAdmin =
+      communityInfo && communityInfo.admins && communityInfo.admins.length > 0
+        ? communityInfo.admins.find(
+            (admin) => admin.full_name === communityInfo.owner_name
+          )
+        : {};
     return (
       <>
         <div className="boxed_wrapper" style={{ marginBottom: 300 }}>
@@ -73,13 +92,79 @@ class ContactUsPage extends React.Component {
 
             <div className="container mob-contact-white-cleaner">
               <div className="row">
-                <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                  <h3>{title}</h3>
-                  <p className="make-me-dark">{description}</p> 
-                  <h4 className="make-me-dark">{communityInfo.name} site admin:</h4>
-                  <h5>{owner_name}</h5> 
+                <div
+                  className="col-md-6 col-lg-6 col-sm-12 col-xs-12"
+                  style={{ marginBottom: "1.5rem" }}
+                >
+                  <div style={{ marginBottom: "2rem" }}>
+                    <h3>{title}</h3>
+                    <p
+                      className="make-me-dar"
+                      style={{
+                        color: "grey",
+                        marginTop: "10px",
+                        textAlign: "justify",
+                      }}
+                    >
+                      {description}
+                    </p>
+                  </div>
+
+                  <div style={{ marginBottom: "2rem" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        marginBottom: "10px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <i
+                        className="fad fa-user-shield"
+                        style={{
+                          fontSize: "1.5rem",
+                          marginRight: "5px",
+                          paddingBottom: "15px",
+                        }}
+                      ></i>
+                      <h3>Community Administrator</h3>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      {getCAdmin && getCAdmin.profile_picture ? (
+                        <img
+                          src={getCAdmin.profile_picture.url}
+                          alt=" "
+                          height={60}
+                          width={60}
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "100%",
+                            marginRight: 10,
+                            border: "3px solid  #8dc63f",
+                          }}
+                        />
+                      ) : null}
+                      <p
+                        style={{
+                          marginTop:
+                            getCAdmin && getCAdmin.profile_picture ? 13 : 0,
+                        }}
+                      >
+                        {owner_name}
+                      </p>
+                    </div>
+                  </div>
                   {this.ejectLocation(location)}
+                  <div
+                    className="pc-vanish"
+                    style={{
+                      width: "100%",
+                      height: 1,
+                      backgroundColor: "whitesmoke",
+                      marginTop: "2rem",
+                    }}
+                  />
                 </div>
+
                 <div className="col-md-6 col-lg-6 col-sm-12 col-xs-12 mob-zero-padding">
                   <ContactPageForm community_id={id} />
                 </div>

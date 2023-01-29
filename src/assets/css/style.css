@@ -33,6 +33,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
 @import url("https://fonts.googleapis.com/css?family=Google+Sans:400,400i,700");
+@import url("https://pro.fontawesome.com/releases/v5.10.0/css/all.css");
 @import url(./bootstrap.min.css);
 @import url(./bootstrap-select.min.css);
 @import url(./jquery.bootstrap-touchspin.css);
@@ -131,7 +132,7 @@ ul.normal li {
 p {
   font-family: "Google Sans", "Oxygen", "Open Sans", sans-serif;
   font-size: large;
-  color: #999;
+  color: black;
   line-height: 26px;
   font-weight: 400;
 }
@@ -9683,6 +9684,13 @@ button.as-link:hover {
 .team-card-content {
   width: 95%;
   display: block;
+  margin: auto;
+}
+.team-name-container {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: auto;
 }
 

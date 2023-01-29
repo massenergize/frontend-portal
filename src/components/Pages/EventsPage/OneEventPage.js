@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
-import { Link } from "react-router-dom";
 import notFound from "./not-found.jpg";
 import {
   dateFormatString,
   recurringDetails,
   locationFormatJSX,
+  smartString,
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
@@ -17,6 +17,10 @@ import URLS from "../../../api/urls";
 import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
+import { isMobile } from "react-device-detect";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import MEButton from "../Widgets/MEButton";
+import CustomTooltip from "../Widgets/CustomTooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -46,12 +50,14 @@ class OneEventPage extends React.Component {
   }
 
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "OneEventPage"});
     const { id } = this.props.match.params;
     this.fetch(id);
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
-    if (!pastEvent && this.props.user) this.getRSVPStatus(id); // @TODO We need to take a look at why we are doing this here(maybe restructure recurring events if need be?). (What if a community has 150 events...? 150 requests to the backend everytime we visit the all events )
+    // can be a problem if you go diretly to the event page, this.props.user can be undefined
+    if (!pastEvent && this.props.user) this.getRSVPStatus(id);
   }
 
   render() {
@@ -91,7 +97,12 @@ class OneEventPage extends React.Component {
           <BreadCrumbBar
             links={[
               { link: this.props.links.events, name: "Events" },
-              { name: event ? event.name : "..." },
+              {
+                name:
+                  (isMobile && smartString(event?.name, 20)) ||
+                  event.name ||
+                  "...",
+              },
             ]}
           />
           <section className="shop-single-area" style={{ paddingTop: 0 }}>
@@ -221,7 +232,9 @@ class OneEventPage extends React.Component {
     );
   }
   renderEvent(event) {
-    const { user } = this.props;
+    const { user, toggleGuestAuthDialog, pageData } = this.props;
+    const isShared = pageData?.community?.id !== event?.community?.id;
+
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
@@ -236,8 +249,23 @@ class OneEventPage extends React.Component {
         data-venue={event?.location}
       >
         <div className="container">
-          <h3 className="cool-font text-center test-event-title">
+          <h3
+            className="cool-font text-center solid-font test-event-title"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {event.name}
+
+            {isShared && (
+              <CustomTooltip
+                text={`This event is originally from ${event?.community?.name}`}
+              >
+                <span className="shared-badge">SHARED</span>
+              </CustomTooltip>
+            )}
           </h3>
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
@@ -311,9 +339,9 @@ class OneEventPage extends React.Component {
                       {user ? (
                         <div style={{ position: "relative" }}>
                           <MELightDropDown
-                            style={{ width: "100%", padding: 11 }}
+                            style={{ width: "100%", padding: 13 }}
                             containerStyle={{ display: "block", padding: 0 }}
-                            direction="bottom"
+                            direction="down"
                             onItemSelected={(status) => this.updateRSVP(status)}
                             animate={false}
                             customAnimation="rsvp-drop-from-left-anime"
@@ -323,7 +351,8 @@ class OneEventPage extends React.Component {
                                 <i className="fa fa-spinner fa-spin"></i>
                               ) : (
                                 <span style={{ marginRight: 6 }}>
-                                  {this.state.rsvpStatus || "RSVP for this event"}
+                                  {this.state.rsvpStatus ||
+                                    "RSVP for this event"}
                                 </span>
                               )
                             }
@@ -345,23 +374,28 @@ class OneEventPage extends React.Component {
                           {/* ---- Just used as a confirmation div when testing rsvp-ing  (Is not shown to the end user) ----- */}
                           {this.state.rsvpStatus && (
                             <div className="test-rsvp-status-div">
-                              {this.state.rsvpStatus}
+                              {/* this does show to the user this.state.rsvpStatus */}
                             </div>
-
                           )}
-                        </div> 
-                        ):(
-                          <div>
-                            <small style={{ fontSize: "90%" }}>
-                              <Link className="test-sign-in-to-rsvp" to={this.props.links.signin}>
-                                Sign In to RSVP
-                              </Link>
-                            </small>
-                          </div>
-                        )}
-
+                        </div>
+                      ) : (
+                        <div>
+                          <MEButton
+                            containerStyle={{ width: "100%" }}
+                            style={{ width: "100%" }}
+                            wrapperStyle={{ width: "100%" }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleGuestAuthDialog(true);
+                            }}
+                            flat
+                          >
+                            RSVP
+                          </MEButton>
+                        </div>
+                      )}
                     </div>
-                  ): null }
+                  ) : null}
                 </div>
               </div>
               <div className="col-12 col-lg-8">
@@ -413,6 +447,9 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     events: store.page.events,
     links: store.links,
+    pageData: store.page.eventsPage,
   };
 };
-export default connect(mapStoreToProps, null)(OneEventPage);
+export default connect(mapStoreToProps, {
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+})(OneEventPage);

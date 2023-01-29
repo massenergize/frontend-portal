@@ -12,6 +12,7 @@ import {
 import {
   reduxChangeData,
   reduxTeamAddAction,
+  reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ActionCard from "./ActionCard";
@@ -22,6 +23,7 @@ import {
   collectSearchTextValueFromURL,
   filterTagCollections,
   makeFilterDescription,
+  PREF_EQ_DEFAULT,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
@@ -38,6 +40,9 @@ import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
+import ActionMobileStats from "./ActionMobileStats";
+import Subtitle from "../Widgets/Subtitle";
+//import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
   checked_values: null, // an arr of jsons that contain current selected collection Name, and tag name
@@ -79,6 +84,10 @@ class ActionsPage extends React.Component {
     this.state = { ...INIT_STATE };
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.toggleEQModal = this.toggleEQModal.bind(this);
+  }
+
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ActionsPage"});
   }
 
   renderEQModal() {
@@ -266,31 +275,34 @@ class ActionsPage extends React.Component {
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div style={{ marginBottom: 30, marginTop: -20 }}>
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
+                    <PageTitle style={{ fontSize: 24 }}>
+                      {title}
+                      <Tooltip text={description}>
                         <span
                           className="fa fa-info-circle"
                           style={{ color: "#428a36", padding: "5px" }}
                         ></span>
-                      </PageTitle>
-                    </Tooltip>
+                      </Tooltip>
+                    </PageTitle>
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
                 </div>
                 <center>
-                  {pageData.sub_title ? (
-                    <small>{pageData.sub_title}</small>
-                  ) : null}
+                  <Subtitle>{pageData.sub_title}</Subtitle>
                 </center>
               </div>
+
+              <ActionMobileStats
+                todo={this.props.todo}
+                done={this.props.done}
+                user={this.props.user}
+                pref_eq={this.props.pref_eq}
+                eq={this.props.eq}
+              />
               <HorizontalFilterBox
                 ModalType="action"
                 foundNumber={this.state.mirror_actions}
@@ -316,6 +328,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                       <ActionBoxCounter
                         type="TODO"
@@ -326,6 +341,9 @@ class ActionsPage extends React.Component {
                         pref_eq={this.props.pref_eq}
                         eq={this.props.eq}
                         toggleEQModal={this.toggleEQModal}
+                        signInWithAuthenticationDialog={
+                          this.props.signInWithAuthenticationDialog
+                        }
                       />
                     </div>
                     <center style={{ padding: 10 }}>
@@ -348,6 +366,8 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 {/* renders the actions */}
+                {/* temporary back out fix-filter while improving scrolling
+                <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12 fix-filter">*/}
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
                   <div
                     id="test-action-cards-wrapper"
@@ -525,7 +545,7 @@ const mapStoreToProps = (store) => {
     pageData: store.page.actionsPage,
     communityData: store.page.communityData,
     links: store.links,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
   };
@@ -538,6 +558,7 @@ const mapDispatchToProps = {
   reduxChangeData,
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
+  signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
 };
 export default connect(
   mapStoreToProps,

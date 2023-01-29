@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { apiCall } from "../../../api/functions";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Cart from "../../Shared/Cart";
@@ -28,26 +28,31 @@ import {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
 import DeleteAccountForm from "./DeleteAccountForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeEmailForm from "./ChangeEmailForm";
-import Dropdown from "react-bootstrap/Dropdown";
+// import Dropdown from "react-bootstrap/Dropdown";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import MECard from "../Widgets/MECard";
 import METextView from "../Widgets/METextView";
 import {
   calcEQ,
+  fetchParamsFromURL,
   getPropsArrayFromJsonArray,
   PREFERRED_EQ,
+  PREF_EQ_DEFAULT,
   sumOfCarbonScores,
 } from "../../Utils";
 import MEDropdown from "../Widgets/MEDropdown";
-import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
+// import { usesOnlyPasswordAuth } from "../Auth/shared/firebase-helpers";
 import { AUTH_STATES } from "../Auth/shared/utils";
+import BecomeAValidUser from "./BecomeAValidUser";
+import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -60,17 +65,14 @@ class ProfilePage extends React.Component {
       editingHH: null,
       joiningCom: false,
       addingHH: false,
-      editingProfileForm: null,
+      editingProfileForm: undefined,
       printing: false,
       message: "",
+      // wantsToBecomeValidUser: false,
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
 
-  componentDidMount() {
-    // disable the registration protocol to prevent the form from ever showing again, until enabled
-    // localStorage.removeItem("reg_protocol");
-  }
 
   getEqData() {
     const { eq } = this.props;
@@ -144,18 +146,28 @@ class ProfilePage extends React.Component {
       />
     );
   }
+
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ProfilePage"});
+    const { mode } = fetchParamsFromURL(this.props.location, "mode");
+    if (mode === "become-valid")
+      this.setState({ wantsToBecomeValidUser: true });
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const isMountingForTheFirst = state.editingProfileForm === undefined;
+    const { mode } = fetchParamsFromURL(props.location, "mode");
+    const path = props.location.search;
+    const userHasChangedModes = path !== state.path;
+    if (isMountingForTheFirst || userHasChangedModes)
+      return { editingProfileForm: mode, path };
+
+    return { editingProfileForm: state.editingProfileForm };
+  }
   render() {
     const { fireAuth } = this.props;
-    // if (!this.props.user) {
-    //   return <Redirect to={this.props.links.signin}> </Redirect>;
-    // }
-
-    // if (!this.props.user) {
-    //   // can this execute?
-    //   this.props.firebase.auth().signOut();
-    //   this.props.reduxLogout();
-
-    // }
+    const wantsToBecomeValidUser =
+      this.state.editingProfileForm === "become-valid";
     const userIsNotAuthenticated =
       this.props.authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
     const appIsCheckingFirebase =
@@ -171,7 +183,7 @@ class ProfilePage extends React.Component {
 
     if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-    const myHouseholds = this.props.user.households || [];
+    const myHouseholds = this.props.user?.households || [];
 
     if (!this.props.teams) {
       return <LoadingCircle />;
@@ -181,8 +193,13 @@ class ProfilePage extends React.Component {
       this.setState({ addedHouse: true });
       this.addDefaultHousehold(this.props.user, this.props.community);
     }
-    const { user } = this.props;
+    if (wantsToBecomeValidUser) return <BecomeAValidUser />;
+
+    const { user, community } = this.props;
+    const userIsAGuest = user && user.is_guest;
+
     const [eqLabels, eqValues] = this.getEqData();
+
     return (
       <>
         <div
@@ -238,15 +255,6 @@ class ProfilePage extends React.Component {
                           </div>
                           <div className="column counter-column col-lg-4 col-6">
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={"lbs CO2"}
-                              icon={"fa fa-leaf"}
-                              title={"Impact"}
-                              info={
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
@@ -291,21 +299,29 @@ class ProfilePage extends React.Component {
                             className=" column col-lg-4 col-md-4 col-md-4 col-sm-4 col-xs-6 card2"
                           >
                             {this.renderCarbonCounterBox()}
-                            {/* <Counter
-                              end={sumOfCarbonScores(this.props.done || [])}
-                              unit={!pref_eq ?? "lbs CO2"}
-                              icon={`fa ${pref_eq?.icon || "fa-leaf"}`}
-                              title={`Number of ${pref_eq?.name}`}
-                              info={
-                                pref_eq?.explanation ||
-                                "Amount your yearly carbon footprint is reduced through the actions you've taken."
-                              }
-                            /> */}
                           </div>
                         </div>
                       </div>
                     </div>
                   </section>
+
+                  {userIsAGuest && (
+                    <div
+                      className="become-valid-from-guest touchable-opacity"
+                      onClick={() =>
+                        this.setState({ editingProfileForm: "become-valid" })
+                      }
+                    >
+                      <p>
+                        You are currently a guest of {community?.name || ""},
+                        click here to become a registered member
+                        <span role="img" aria-label="image">
+                          🎊
+                        </span>{" "}
+                      </p>{" "}
+                      <i className=" fa fa-angle-right"></i>
+                    </div>
+                  )}
                   <div
                     id="eq-list-dropdown-wrapper"
                     data-number-of-eq-items={this.props.eq?.length}
@@ -436,7 +452,13 @@ class ProfilePage extends React.Component {
   renderForm = (form) => {
     return (
       <>
-        <h4>
+        <h4
+          style={{
+            border: "solid 0px var(--app-theme-green)",
+            borderBottomWidth: 2,
+            paddingBottom: 15,
+          }}
+        >
           {this.props.user ? (
             <div style={{ display: "inline-block" }}>
               <span style={{ color: "#8dc63f" }}>Welcome</span>{" "}
@@ -445,60 +467,9 @@ class ProfilePage extends React.Component {
           ) : (
             "Your Profile"
           )}
-          <Dropdown onSelect={() => null} style={{ display: "inline-block" }}>
-            <Dropdown.Toggle
-              style={{ padding: "9px 16px" }}
-              className="me-undefault-btn me-universal-btn me-btn-green undo-dropdown-active"
-            ></Dropdown.Toggle>
-            <Dropdown.Menu
-              style={{
-                borderTop: "5px solid #8dc63f",
-                borderRadius: "0",
-                padding: "0",
-              }}
-              className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
-            >
-              <Dropdown.Item
-                onClick={() => this.setState({ editingProfileForm: "edit" })}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Edit Profile
-              </Dropdown.Item>
-              {/* {this.props.auth.providerData &&
-              this.props.auth.providerData.length === 1 &&
-              this.props.auth.providerData[0].providerId === "password" ? ( */}
-              {usesOnlyPasswordAuth(this.props.fireAuth) ? (
-                <>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "password" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Password
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() =>
-                      this.setState({ editingProfileForm: "email" })
-                    }
-                    className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-                  >
-                    Change Email
-                  </Dropdown.Item>
-                </>
-              ) : null}
-              <Dropdown.Item
-                onClick={() => this.setState({ editingProfileForm: "delete" })}
-                className="dropdown-item dropdown-item me-dropdown-theme-item force-padding-20"
-              >
-                Delete Profile
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          &nbsp;&nbsp;
         </h4>
         <p> {this.state.message ? this.state.message : ""} </p>
-        {form === "edit" ? (
+        {form === "edit" && (
           <EditingProfileForm
             email={this.props.user.email}
             full_name={this.props.user.full_name}
@@ -511,8 +482,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "delete" ? (
+        )}
+        {form === "delete" && (
           <DeleteAccountForm
             closeForm={(message = "") =>
               this.setState({
@@ -521,8 +492,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "password" ? (
+        )}
+        {form === "password" && (
           <ChangePasswordForm
             closeForm={(message = "") =>
               this.setState({
@@ -531,8 +502,8 @@ class ProfilePage extends React.Component {
               })
             }
           />
-        ) : null}
-        {form === "email" ? (
+        )}
+        {form === "email" && (
           <ChangeEmailForm
             closeForm={(message = "") =>
               this.setState({
@@ -542,7 +513,7 @@ class ProfilePage extends React.Component {
             }
             email={this.props.user.email}
           />
-        ) : null}
+        )}
       </>
     );
   };
@@ -599,7 +570,6 @@ class ProfilePage extends React.Component {
       (team) => team.team.id
     );
 
-    //console.log("currentCommunityTeamIDs",currentCommunityTeamIDs)
     const inThisCommunity = (team) =>
       currentCommunityTeamIDs && currentCommunityTeamIDs.includes(team.id);
 
@@ -650,6 +620,7 @@ class ProfilePage extends React.Component {
     });
   }
   renderHouseholds(households) {
+    const { toggleModal } = this.props;
     const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
@@ -706,7 +677,21 @@ class ProfilePage extends React.Component {
                 />
                 {isNotLastHouse && (
                   <MEButton
-                    onClick={() => this.deleteHousehold(house)}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      toggleModal({
+                        show: true,
+                        component: (
+                          <HouseholdDeleteConfirmation
+                            household={house}
+                            onConfirm={() => this.deleteHousehold(house)}
+                            cancel={() => toggleModal({ show: false })}
+                            todos={this.props.todo}
+                          />
+                        ),
+                      });
+                      // this.deleteHousehold(house);
+                    }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
                     iconStyle={{ margin: 0 }}
@@ -890,9 +875,10 @@ const mapStoreToProps = (store) => {
     rsvps: store.page.rsvps,
     links: store.links,
     eq: store.page.equivalences,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     fireAuth: store.fireAuth,
     authState: store.authState,
+    firebaseAuthSettings: store.firebaseAuthSettings,
   };
 };
 const mapDispatchToProps = {
@@ -910,8 +896,9 @@ const mapDispatchToProps = {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
   reduxSetPreferredEquivalence,
+  toggleModal: reduxToggleUniversalModal,
 };
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(withFirebase(ProfilePage));
+)(withFirebase(withRouter(ProfilePage)));

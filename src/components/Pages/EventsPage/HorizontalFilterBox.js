@@ -13,6 +13,8 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { bindActionCreators } from "redux";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -266,14 +268,15 @@ class HorizontalFilterBox extends Component {
   }
   handleSearchTyping = (e) => {
     if (!this.props.search) return;
-    this.props.onSearchTextChange(e.target.value,e);
+    this.props.onSearchTextChange(e.target.value, e);
     this.props.search(e);
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
 //changes text of button depending on the page that its on
   renderAddButton = () => {
-      if (this.props.user) {
+    const { user, signInWithAuthenticationDialog } = this.props;
+    if (user)
 
         var ButtonText = ""
 
@@ -284,7 +287,6 @@ class HorizontalFilterBox extends Component {
         if (this.props.ModalType === "action") {
           ButtonText = "Add Action"
         }
-
 
         if (this.props.ModalType === "event") {
           ButtonText = "Add an Event"
@@ -314,7 +316,6 @@ class HorizontalFilterBox extends Component {
       } else {
         return <div />
       }
-
   }
   render() {
     const { longHeight } = this.state;
@@ -341,9 +342,7 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-
           {this.renderAddButton()}
-          
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
@@ -385,9 +384,33 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
+    },
+    dispatch
+  );
+};
 
 HorizontalFilterBox.defaultProps = {
   version: 1,
 };
 
-export default withRouter(connect(mapStoreToProps)(HorizontalFilterBox));
+export default withRouter(
+  connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
+);
+
+const TestimonialButton = ({ onClick }) => {
+  return (
+    <div
+      className="add-testimonial-container"
+      onClick={() => onClick && onClick()}
+    >
+      <div className="add-testimonial touchable-opacity">
+        <i className="fa fa-plus" style={{ marginRight: 6 }} />
+        <p>Add Testimonial</p>
+      </div>
+    </div>
+  );
+};

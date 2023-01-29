@@ -40,6 +40,7 @@ class OneTestimonialPage extends React.Component {
   }
 
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "OneTestimonialPage"});
     const { id } = this.props.match.params;
     this.fetch(id);
   }
@@ -286,7 +287,7 @@ class OneTestimonialPage extends React.Component {
               <div className="col-12 col-lg-8 col-md-8">
                 <div className="text">
                   <div
-                    className="one-story-html-view"
+                    className="one-story-html-view test-story-body"
                     dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
                   />
                   {/* <p

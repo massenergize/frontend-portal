@@ -43,9 +43,9 @@ class CookieBanner extends React.Component {
           }}
         >
           <div className="container-fluid" style={{ padding: "0px" }}>
-            <div className="row ml-auto" style={{ margin: "0px" }}>
-              <div className="mr-auto" style={{ width: "70%" }}>
-                <div style={{ color: "white", padding: "10px 15px" }}>
+            <div className="row ml-auto cookie-container" style={{ margin: "0px" }}>
+              <div className="mr-auto cookie-content">
+                <div style={{ color: "white" }}>
                   This website uses cookies to provide the best user experience
                   we can. We share no data with third parties or for any
                   commercial purpose. By using this site, you accept this use of
@@ -60,14 +60,17 @@ class CookieBanner extends React.Component {
                   </a>
                 </div>
               </div>
-              <div className="ml-auto" style={{ alignItems: "center" }}>
+              <div
+                className="ml-auto cookie-btn-area"
+                style={{ alignItems: "center" }}
+              >
                 <button
-                  onClick={this.acceptCookies}
-                  className="cool-font new-sign-in float-right round-me z-depth-float"
-                  style={{ background: "white", color: "black" }}
                   id="test-cookie-banner-okay"
+                  onClick={this.acceptCookies}
+                  className="cool-font new-sign-in float-right round-me z-depth-float "
+                  style={{ background: "white", color: "black" }}
                 >
-                  Okay
+                  Accept
                 </button>
               </div>
             </div>

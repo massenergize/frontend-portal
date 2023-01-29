@@ -381,7 +381,7 @@ class StoryForm extends React.Component {
         label:
           "Your name and email will be known to the Community Organizer but how would you like it to be displayed?",
         placeholder: "Name...",
-        value: this.props.user?.preferred_name,
+        defaultValue: this.props.user?.preferred_name,
         required: true,
       },
       {
@@ -404,15 +404,6 @@ class StoryForm extends React.Component {
         maxHeight: 1000,
         maxWidth: 1000,
       },
-      // {
-      //   type: "textarea",
-      //   name: "body",
-      //   hasLabel: true,
-      //   label: "Your Story * ( limit: 9000 Char's)",
-      //   placeholder: "Your story...*",
-      //   value: "",
-      //   required: true,
-      // },
       {
         type: "html-field",
         name: "body",

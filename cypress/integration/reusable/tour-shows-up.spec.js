@@ -2,7 +2,7 @@ import fields from "../../fixtures/json/fields";
 
 describe("Test tour", function () {
   it("Tour overlay shows up", function () {
-    cy.visit(fields.urls.homepage);
+    cy.visit(fields.urls.homepage.raw);
     cy.get(".react-joyride__overlay").should("exist");
     cy.get(".__floater__open").should("exist");
     cy.get(".__floater__body").should("exist");

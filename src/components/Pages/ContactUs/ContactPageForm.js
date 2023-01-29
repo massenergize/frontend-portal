@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import { apiCall } from "../../../api/functions";
-// import MEButton from "../Widgets/MEButton";
-// import METextView from "../Widgets/METextView";
-// import METextField from "../Widgets/METextField";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 
 const DEFAULTS = {
   user_name: null,
   email: null,
   body: null,
-  uploaded_file: null,
 };
 class ContactPageForm extends Component {
   constructor(props) {
@@ -22,55 +18,7 @@ class ContactPageForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // handleText = (event) => {
-  //   let prevContent = this.state.content;
-  //   this.setState({
-  //     content: { ...prevContent, [event.target.name]: event.target.value },
-  //   });
-  // };
-  // clear() {
-  //   document.getElementById("name").value = "";
-  //   document.getElementById("email").value = "";
-  //   document.getElementById("title").value = "";
-  //   document.getElementById("message").value = "";
-  // }
-  // sendMessage = () => {
-  //   let spin = document.getElementById("s_spin");
-  //   spin.style.display = "block";
-  //   const msg = this.state.content.body;
-  //   const name = this.state.content.user_name;
-  //   const title = "Message from " + name;
-  //   let data = {
-  //     community_id: this.props.community_id,
-  //     title,
-  //     ...DEFAULTS,
-  //     ...this.state.content,
-  //   };
-
-  //   if (!msg || !name) {
-  //     alert("Please provide a message, and name!");
-  //     spin.style.display = "none";
-  //     return;
-  //   }
-
-  //   apiCall("admins.messages.add", data)
-  //     .then((res) => {
-  //       alert(
-  //         "Thanks for contacting the community administrator. You should receive a response within a few days."
-  //       );
-  //       if (res.success) {
-  //         spin.style.display = "none";
-  //         this.clear();
-  //       }
-  //       spin.style.display = "none";
-  //     })
-  //     .catch((err) => {
-  //       spin.style.display = "none";
-  //       console.log(err);
-  //     });
-  // };
-
-  onSubmit(e, content, resetForm) {
+  onSubmit(e, content, resetForm, stopLoading) {
     e.preventDefault();
     if (!content.body || !content.name) {
       this.setState({
@@ -89,23 +37,27 @@ class ContactPageForm extends Component {
     };
 
     const _this = this;
-    apiCall("admins.messages.add", data)
-      .then((res) => {
-        if (res.success && res.data) {
-          _this.setState({
-            formNotification: {
-              icon: "fa fa-check",
-              type: "good",
-              text:
-                "Thanks for contacting the community administrator. You should receive a response within a few days.",
-            },
-          });
-          resetForm();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    apiCall("admins.messages.add", data).then((res) => {
+      if (res.success && res.data) {
+        _this.setState({
+          formNotification: {
+            icon: "fa fa-check",
+            type: "good",
+            text: "Thanks for contacting the community administrator. You should receive a response within a few days.",
+          },
+        });
+        resetForm();
+      } else {
+        stopLoading && stopLoading();
+        _this.setState({
+          formNotification: {
+            icon: "fa fa-times",
+            type: "bad",
+            text: res?.error,
+          },
+        });
+      }
+    });
   }
 
   neededFields() {
@@ -149,10 +101,10 @@ class ContactPageForm extends Component {
     // className="container mob-zero-margin mob-zero-padding me-anime-open-in"
     return (
       <div>
-        <div style={{ borderWidth: 0 }} id = "test-contact-us-form">
+        <div style={{ borderWidth: 0 }} id="test-contact-us-form">
           <MEFormGenerator
             onSubmit={this.onSubmit}
-            title="Contact Community Admin Here"
+            title="Contact Community Admin"
             actionText="Send Message"
             fields={this.neededFields()}
             info={this.state.formNotification}

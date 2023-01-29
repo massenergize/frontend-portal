@@ -23,6 +23,7 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
+import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +45,11 @@ class StoriesPage extends React.Component {
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.triggerGuestDialog = this.triggerGuestDialog.bind(this);
+  }
+
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "TestimonialsPage"});
   }
 
   addMeToSelected(param, reset = false) {
@@ -56,6 +62,11 @@ class StoriesPage extends React.Component {
     this.setState({ checked_values: arr });
   }
 
+  triggerGuestDialog(e) {
+    e && e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.toggleGuestAuthDialog(true);
+  }
   renderAddTestmonialBtn() {
     if (this.props.user) {
       return (
@@ -71,21 +82,46 @@ class StoriesPage extends React.Component {
     }
     return (
       <center>
-        <MELink to={this.props.links.signin}>Sign In to submit a story</MELink>
+        <MELink to={this.props.links.signin} onClick={this.triggerGuestDialog}>
+          Sign In to submit a story
+        </MELink>
       </center>
     );
   }
 
+  toggleStoryForm() {
+    this.setState({ showStoryForm: !this.state.showStoryForm });
+  }
+  triggerFormForEdit({ data }) {
+    this.setState({
+      showEditModal: true,
+      draftTestimonialData: data,
+    });
+  }
   renderTestimonialForm() {
-    if (this.props.user) {
-      return (
-        <div className="every-day-flex">
-          <StoryFormButtonModal
+    const { user } = this.props;
+    var props = {};
+    if (!user)
+      props = {
+        ...props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
+    return (
+      <div className="every-day-flex">
+        <StoryFormButtonModal
           ModalType="testimonial"
-          >Add Testimonial</StoryFormButtonModal>
-        </div>
-      );
-    }
+          openModal={this.state.showEditModal}
+          draftTestimonialData={this.state.draftTestimonialData}
+          toggleExternalTrigger={() => {
+            this.setState({ showEditModal: false, draftTestimonialData: {} });
+          }}
+          {...props}
+        >
+          Add Testimonial
+        </StoryFormButtonModal>
+      </div>
+    );
   }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
@@ -182,7 +218,6 @@ class StoriesPage extends React.Component {
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
-
     return (
       <>
         <div
@@ -194,26 +229,26 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div style={{ marginBottom: 30 }}>
+              <div className="all-head-area">
                 <div className="text-center">
                   {description ? (
-                    <Tooltip
-                      text={description}
-                      paperStyle={{ maxWidth: "100vh" }}
-                    >
-                      <PageTitle style={{ fontSize: 24 }}>
-                        {title}
+                    <PageTitle style={{ fontSize: 24 }}>
+                      {title}
+                      <Tooltip text={description}>
                         <span
                           className="fa fa-info-circle"
                           style={{ color: "#428a36", padding: "5px" }}
                         ></span>
-                      </PageTitle>
-                    </Tooltip>
+                      </Tooltip>
+                    </PageTitle>
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
                 </div>
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                <div className="pc-vanish" style={{ marginTop: 10 }}>
+                  {this.renderTestimonialForm()}
+                </div>
               </div>
               <HorizontalFilterBox
                 ModalType="testimonial"
@@ -225,7 +260,7 @@ class StoriesPage extends React.Component {
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
               />
-              <div className="row phone-marg-top-90">
+              <div className="row stories-row">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>
                     <h5>Jump to story</h5>
@@ -258,7 +293,10 @@ class StoriesPage extends React.Component {
                 <center>
                   {!this.props.user ? (
                     <p className="text-center">
-                      <MELink to={this.props.links.signin}>
+                      <MELink
+                        to={this.props.links.signin}
+                        onClick={this.triggerGuestDialog}
+                      >
                         Sign In to submit a story
                       </MELink>
                     </p>
@@ -316,7 +354,11 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
-        <StorySheet {...story} links={this.props.links} />
+        <StorySheet
+          {...story}
+          links={this.props.links}
+          triggerForEdit={this.triggerFormForEdit.bind(this)}
+        />
       </div>
     ));
   }
@@ -330,4 +372,6 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
   };
 };
-export default connect(mapStoreToProps, null)(StoriesPage);
+export default connect(mapStoreToProps, {
+  toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+})(StoriesPage);

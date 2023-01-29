@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import MEButton from "../../Widgets/MEButton";
+import { useHistory } from "react-router-dom";
+// import MEButton from "../../Widgets/MEButton";
+import AuthFooter from "../Components/auth footer/AuthFooter";
+import AuthHeader from "../Components/AuthHeader";
+import TextBoxAndButtonCombo from "../Components/TextBoxAndButtonCombo";
 import PasswordFreeForm from "../Password Free/PasswordFreeForm";
 import ResetPassword from "../Reset/ResetPassword";
 import {
@@ -19,16 +22,19 @@ export default function LoginAuth(props) {
     links,
     description,
     title,
-    signInWithGoogle,
-    signInWithFacebook,
+    // signInWithGoogle,
+    // signInWithFacebook,
     setPasswordReset,
     userWantsToResetPassword,
     setNotification,
     finaliseNoPasswordAuth,
     setLoading,
+    back,
   } = props;
 
   const [form, setForm] = useState({});
+  const history = useHistory();
+
   const [
     userContinuedPasswordFreeInDiffEnv,
     setUserContinuedPasswordFreeInDiffEnv,
@@ -38,7 +44,11 @@ export default function LoginAuth(props) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const hasInvalidContent = () => {
+    return isInvalid(getValue("password")) || isInvalid(getValue("email"));
+  };
   const whenUserTypes = (e) => {
+    if (hasInvalidContent()) return;
     if (ifEnterKeyIsPressed(e)) signUserIn(form);
   };
 
@@ -59,17 +69,16 @@ export default function LoginAuth(props) {
       if (error) return setNotification({ good: false, message: error });
       setNotification({
         good: true,
-        message: `We have sent a  special link to ${email}, check it out.`,
+        message: `MassEnergize sent you an email with a link, please click the link to continue. If its not in your inbox, check your Promotions and Spam folder. Not there? Use the link below to resend`,
+        resendFunction: sendLink,
       });
     });
   };
 
   const backgroundCheckForPasswordlessAuthentication = useCallback(() => {
     checkForPasswordFreeAuth((email, error) => {
-      if (!error) {
-        finaliseNoPasswordAuth(email);
-        return;
-      }
+      if (!error) return finaliseNoPasswordAuth(email);
+
       if (error === DIFFERENT_ENVIRONMENT) {
         setNotification({
           good: false,
@@ -114,23 +123,82 @@ export default function LoginAuth(props) {
       >
         <div
           className="z-depth-float mob-login-card-fix"
-          style={{ padding: 55, borderRadius: 12 }}
+          style={{ borderRadius: 12 }}
         >
-          <div
+          <div className="login-form-content">
+            <AuthHeader>Sign in with email and password</AuthHeader>
+            <input
+              style={{ width: "100%", marginBottom: 6 }}
+              placeholder="Enter your email address"
+              name="email"
+              className="auth-textbox"
+              value={getValue("email")}
+              onChange={onChange}
+            />
+            <TextBoxAndButtonCombo
+              value={getValue("password")}
+              onClick={() => signUserIn(form)}
+              name="password"
+              type="password"
+              onChange={onChange}
+              btnText="Sign In"
+              placeholder="Enter your secure password here"
+              genericProps={{ onKeyUp: whenUserTypes }}
+              loading={loading}
+              loadingText="Checking..."
+              disabled={hasInvalidContent() || loading}
+            />
+            <div
+              className="auth-link touchable-opacity"
+              style={{ marginTop: 10 }}
+              onClick={() => setPasswordReset(true)}
+            >
+              <p>Forgot my password</p>{" "}
+              <i
+                className="fa fa-long-arrow-right"
+                style={{ color: "var(--app-theme-green)" }}
+              />
+            </div>
+          </div>
+
+          <AuthFooter back={back}>
+            {" "}
+            <button
+              className="auth-btns touchable-opacity"
+              style={{
+                background: "var(--app-theme-orange)",
+                borderBottomRightRadius: 5,
+                margin: 0,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "center",
+              }}
+              onClick={() => history.push(links?.signup)}
+            >
+              Haven't joined yet? Join{" "}
+              <i
+                className="fa fa-long-arrow-right"
+                style={{ color: "white", marginLeft: 3 }}
+              />
+            </button>
+          </AuthFooter>
+          {/* <div
             className="section-title style-2 mob-sweet-b-10"
             style={{ marginBottom: 5 }}
           >
-            <h3 className="mog-title-fix">{title}</h3>
+            <h3 className="mob-title-fix">{title}</h3>
             <p> {description}</p>
-          </div>
+          </div> */}
 
-          <div>
-            <p>
+          {/* <div>
+            <p className="mob-f-text">
               Fill in the form appropriately to activate the 'sign in' button
             </p>
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div>
             <div className="form-group mob-sweet-b-10">
               <span className="adon-icon">
                 <span className="fa fa-envelope-o"></span>
@@ -161,7 +229,7 @@ export default function LoginAuth(props) {
               />
             </div>
 
-            <div className="clearfix">
+            <div className="clearfix btn-grouping">
               <div className="form-group pull-left">
                 <MEButton
                   onClick={() => signUserIn(form)}
@@ -172,34 +240,40 @@ export default function LoginAuth(props) {
                   }
                   id="sign-in-btn"
                   loading={loading}
+                  className="mob-log-submit"
                 >
                   {loading ? "Working on it..." : "Sign In"}
                 </MEButton>
               </div>
 
-              <div className="form-group social-links-two padd-top-5 pull-right">
-                Or sign in with
-                <button
-                  onClick={() => signInWithGoogle()}
-                  id="google"
-                  type="button"
-                  className="img-circle  round-me  me-google-btn z-depth-float"
+              {!loading && (
+                <div
+                  className="form-group social-links-two padd-top-5 pull-right"
+                  style={{ marginLeft: "auto" }}
                 >
-                  <span className="fa fa-google"></span>
-                </button>
-                <button
-                  onClick={signInWithFacebook}
-                  id="facebook"
-                  type="button"
-                  className="img-circle  round-me me-facebook-btn z-depth-float"
-                >
-                  <span className="fa fa-facebook"></span>
-                </button>
-              </div>
+                  Or sign in with
+                  <button
+                    onClick={() => signInWithGoogle()}
+                    id="google"
+                    type="button"
+                    className="img-circle  round-me  me-google-btn z-depth-float"
+                  >
+                    <span className="fa fa-google"></span>
+                  </button>
+                  <button
+                    onClick={signInWithFacebook}
+                    id="facebook"
+                    type="button"
+                    className="img-circle  round-me me-facebook-btn z-depth-float"
+                  >
+                    <span className="fa fa-facebook"></span>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="row">
-              <div className="col">
+              <div className="col col-link-btns">
                 <div
                   style={{
                     display: "flex",
@@ -228,7 +302,8 @@ export default function LoginAuth(props) {
                     I Forgot my password
                   </button>
                 </div>
-                <p>
+                <br className="pc-vanish" />
+                <p className="mob-f-text">
                   Don't have a profile?
                   <Link
                     style={{ marginLeft: 5 }}
@@ -240,7 +315,7 @@ export default function LoginAuth(props) {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

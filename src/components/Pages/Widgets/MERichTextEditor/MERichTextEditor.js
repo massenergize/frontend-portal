@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-const TINY_MCE_API_KEY = "6pg5u1ebssmbyjcba68sak0bfhx28w247y9lcdnq1m5q94t1";
+const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY
 
 function MERichTextEditor({
   onChange,
@@ -11,7 +11,7 @@ function MERichTextEditor({
   _generics,
 }) {
   const editorRef = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text) => {
@@ -27,7 +27,7 @@ function MERichTextEditor({
   }, [onMount]);
 
   useEffect(() => {
-    if (content === "") setContent(value || defaultValue || initialValue || "");
+    if (content === undefined) setContent(value || defaultValue || initialValue || "");
   }, [value, defaultValue, initialValue, content]);
 
   return (
@@ -53,7 +53,7 @@ function MERichTextEditor({
         init={{
           height: 350,
           menubar: false,
-
+          default_link_target: "_blank",
           plugins: [
             "advlist autolink lists link image charmap print preview anchor forecolor",
             "searchreplace visualblocks code fullscreen",

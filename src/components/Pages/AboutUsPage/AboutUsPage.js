@@ -11,25 +11,25 @@ import "react-multi-carousel/lib/styles.css";
 import LoadingCircle from "../../Shared/LoadingCircle";
 
 class AboutUsPage extends React.Component {
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "AboutUsPage"});
+  }
+
   renderImage(image) {
     if (!image) return;
     const { url } = image || {};
     return (
       url && (
         <img
+        className="about-us-img"
           alt="about-us media"
           src={url}
-          style={{
-            width: "100%",
-            minHeight: 300,
-            objectFit: "contain",
-            margin: 10,
-          }}
         />
       )
     );
   }
   render() {
+
     if (!this.props.pageData || !this.props.community) {
       return <LoadingCircle />;
     } else if (this.props.pageData === {} || this.props.community === {}) {
@@ -73,14 +73,14 @@ class AboutUsPage extends React.Component {
             }
           >
             <center>
-              <h2 className="cool-font" style={{ padding: 10 }}>
+              <h2 className="cool-font solid-font" style={{ padding: 10 }}>
                 {title}
               </h2>
             </center>
             {subtitle ? (
               <div>
                 <center>
-                  <h4 className="cool-font" style={{ padding: 10 }}>
+                  <h4 className="cool-font " style={{ padding: 10 }}>
                     {subtitle}
                   </h4>
                 </center>
@@ -107,34 +107,7 @@ class AboutUsPage extends React.Component {
             </div>
           ) : null}
 
-          <div className=" col-sm-12 col-md-10 offset-md-1 mass-energize-about">
-            <center>
-              <h2 className="cool-font" style={{ padding: 10 }}>
-                About MassEnergize
-              </h2>
-            </center>
-            <p
-              className="cool-font make-me-dark"
-              style={{ textAlign: "justify" }}
-            >
-              Our mission is to provide communities with the tools and resources
-              to motivate and support their residents, businesses and
-              non-profits in a wide array of actions to reduce greenhouse gas
-              emissions and prepare for a changing climate. We leverage the
-              collective expertise, experience and buying power of multiple
-              towns, cities and local organizations by collaborating with them
-              on tools, strategies, and resources. This community web platform
-              is one example of our work. For more information go to{" "}
-              <a
-                href="https://www.massenergize.org"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                www.massenergize.org
-              </a>
-              .
-            </p>
-          </div>
+          {/* removed About MassEnergize section */}
         </div>
 
         {donateEnabled ? (

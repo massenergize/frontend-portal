@@ -1,6 +1,7 @@
 import { Auth } from "../../src/components/Pages/Auth/shared/firebase-helpers";
 import "cypress-localstorage-commands";
 import fields from "../fixtures/json/fields";
+const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 const removeCookieBanner = () => {
   // This is just a function to always close the banner, not for testing the cookie banner
   cy.get("#test-cookie-banner-okay").then(($banner) => {
@@ -19,6 +20,7 @@ Cypress.Commands.add(
     cy.get("#sign-in-btn").click();
   }
 );
+
 Cypress.Commands.add(
   "authenticateWithoutUI",
   function (email = fields.emailToUse, password = fields.passwordToUse) {
@@ -26,6 +28,7 @@ Cypress.Commands.add(
     return Auth.signInWithEmailAndPassword(email, password);
   }
 );
+
 Cypress.Commands.add("deactivateTour", function () {
   cy.get("[aria-label='Skip Tour']").click();
 });

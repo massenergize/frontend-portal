@@ -7,13 +7,14 @@ import TeamStatsBars from "./TeamStatsBars";
 import TeamInfoModal from "./TeamInfoModal";
 import { getTeamsData, inTeam, inThisTeam } from "./utils.js";
 import { Link, Redirect } from "react-router-dom";
-import { getRandomIntegerInRange } from "../../Utils";
+import { getRandomIntegerInRange, PREF_EQ_DEFAULT } from "../../Utils";
 import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
+import Subtitle from "../Widgets/Subtitle";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -83,7 +84,9 @@ class TeamsPage extends React.Component {
       console.log(e.toString());
     }
   }
+
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "TeamsPage"});
     const subdomain =
       this.props.communityData &&
       this.props.communityData.community &&
@@ -98,7 +101,7 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats, communityData, links, pageData } = this.props;
+    const { teamsStats, communityData, links, pageData, user } = this.props;
     if (pageData == null) return <LoadingCircle />;
     if (teamsStats === null) {
       return (
@@ -143,22 +146,24 @@ class TeamsPage extends React.Component {
           >
             <div className="text-center">
               {description ? (
-                <Tooltip text={description} paperStyle={{ maxWidth: "100vh" }}>
-                  <PageTitle style={{ fontSize: 24 }}>
-                    {title}
+                <PageTitle style={{ fontSize: 24 }}>
+                  {title}
+                  <Tooltip
+                    text={description}
+                  >
                     <span
                       className="fa fa-info-circle"
                       style={{ color: "#428a36", padding: "5px" }}
                     ></span>
-                  </PageTitle>
-                </Tooltip>
+                  </Tooltip>
+                </PageTitle>
               ) : (
                 <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
               )}
             </div>
 
             <center>
-              {sub_title ? <p className="phone-font-15">{sub_title}</p> : null}
+              <Subtitle>{sub_title}</Subtitle>
             </center>
             <center>
               <div
@@ -189,15 +194,17 @@ class TeamsPage extends React.Component {
                   className="col-3"
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
                 >
-                  <MEButton
-                    style={{ width: "100%", margin: 0 }}
-                    onClick={() => {
-                      this.setState({ createTeamModalOpen: true });
-                    }}
-                    className="phone-vanish"
-                  >
-                    Start Team
-                  </MEButton>
+                  {user && user.isStandardUser && (
+                    <MEButton
+                      style={{ width: "100%", margin: 0 }}
+                      onClick={() => {
+                        this.setState({ createTeamModalOpen: true });
+                      }}
+                      className="phone-vanish"
+                    >
+                      Start Team
+                    </MEButton>
+                  )}
                 </div>
               </div>
             </center>
@@ -437,7 +444,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
-    pref_eq: store.user.pref_equivalence,
+    pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
   };
 };
 const mapDispatchToProps = {

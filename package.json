@@ -16,7 +16,7 @@
     "firebase": "^8.10.0",
     "glob": "^7.1.6",
     "helmet": "^3.21.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.27",
     "package.json": "^2.0.1",
     "query-string": "^6.13.1",
@@ -56,9 +56,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "cypress open",
+    "all-tests": "cypress run",
     "test-and-record": "cypress run --record --key bc66b892-4075-42c4-8180-2c7259c6c246",
     "test-non-auth-user": "cypress run --config integrationFolder=cypress/integration/non-auth-user-tests",
-    "test-auth-user": "cypress open --config integrationFolder=cypress/integration/auth-user-tests",
+    "test-auth-user": "cypress run --config integrationFolder=cypress/integration/auth-user-tests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -71,8 +72,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cypress": "^8.5.0",
+    "cypress": "^9.6.0",
     "cypress-localstorage-commands": "^1.5.0",
+    "cypress-mochawesome-reporter": "^3.0.1",
     "immutable": "^4.0.0-rc.12",
     "style-loader": "^0.23.1"
   }

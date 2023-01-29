@@ -20,17 +20,24 @@ import {
   SECOND_SET,
 } from "../../../redux/actions/pageActions";
 
+import ShareButtons from "../../Shared/ShareButtons";
+import URLS from "../../../api/urls";
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
+    window.gtag('set', 'page_title', {page_title: "HomePage"});
   }
 
   closeTourCompletely() {
     const { setTourValueInRedux } = this.props;
+
+    window.history.replaceState({}, document.title, window.location.href.split("?")[0]);
+
     setTourValueInRedux(false);
     window.localStorage.setItem(TOUR_STORAGE_KEY, false);
   }
@@ -43,7 +50,11 @@ class HomePage extends React.Component {
         action === ACTIONS.NEXT &&
         status === STATUS.FINISHED;
 
-      if (action === ACTIONS.CLOSE || action === ACTIONS.SKIP || userHasGoneFullCircle)
+      if (
+        action === ACTIONS.CLOSE ||
+        action === ACTIONS.SKIP ||
+        userHasGoneFullCircle
+      )
         return this.closeTourCompletely();
 
       if (ACTIONS.NEXT === action && index === 1 && STATUS.FINISHED === status)
@@ -205,7 +216,6 @@ class HomePage extends React.Component {
     ];
 
     var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
-
     return (
       <>
         {showTour && (
@@ -234,6 +244,7 @@ class HomePage extends React.Component {
           {welcomeImagesData ? (
             <WelcomeImages data={welcomeImagesData} title={title} />
           ) : null}
+
           <div
             className=""
             style={{ padding: 30, background: "white", color: "#383838" }}
@@ -291,6 +302,14 @@ class HomePage extends React.Component {
               info={this.props.pageData.featured_events_description}
             />
           ) : null}
+          <br />
+          <ShareButtons
+              label="Share this community page!"
+              pageTitle={this.props.community.name}
+              pageDescription={this.props.community.about_community} // maybe revisit and add a better community description
+              url={`${URLS.SHARE}/${subdomain}`}
+          />
+          <br />
         </div>
       </>
     );

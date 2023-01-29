@@ -19,6 +19,7 @@ import {
   LEAVE_TEAM,
   SHOW_REG,
   SET_PREFERRED_EQUIVALENCE,
+  USER_IS_GUEST,
 } from "../actions/types";
 
 const initialState = {
@@ -30,7 +31,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-
+    case USER_IS_GUEST:
+      return {
+        ...state,
+        isGuest: action.payload,
+      };
     case SET_PREFERRED_EQUIVALENCE:
       return {
         ...state,
