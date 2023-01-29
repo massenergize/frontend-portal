@@ -6,6 +6,10 @@ import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
 
 class ContactUsPage extends React.Component {
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ContactUsPage"});
+  }
+
   prepareLocationText = (location) => {
     let locationText = "";
     if (location) {

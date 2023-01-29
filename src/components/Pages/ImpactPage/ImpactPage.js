@@ -21,6 +21,11 @@ import { withRouter } from "react-router-dom";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
+
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ImpactPage"});
+  }
+
   shortenWords(word) {
     //shorten all two-worded strings except "home energy"
     let stringArr = word.split(" ");
