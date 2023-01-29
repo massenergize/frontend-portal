@@ -86,6 +86,10 @@ class ActionsPage extends React.Component {
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
 
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ActionsPage"});
+  }
+
   renderEQModal() {
     const { showEqModal } = this.state;
     if (showEqModal)

@@ -175,6 +175,10 @@ class AppRouter extends Component {
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
 
+    // save as a custom property for Google Analytics
+    window.gtag('set', 'community', {community: community.subdomain});
+
+
     const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
     this.props.reduxLoadLinks({

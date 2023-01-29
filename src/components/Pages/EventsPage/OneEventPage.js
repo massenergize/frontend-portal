@@ -50,6 +50,7 @@ class OneEventPage extends React.Component {
   }
 
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "OneEventPage"});
     const { id } = this.props.match.params;
     this.fetch(id);
     const rightNow = moment().format();

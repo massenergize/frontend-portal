@@ -74,8 +74,8 @@ class OneActionPage extends React.Component {
     this.runActionFunction = this.runActionFunction.bind(this);
   }
 
-
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "OneActionPage"});
     window.addEventListener("resize", this.chooseFontSize);
     const { id } = this.props.match.params;
     this.fetch(id);
