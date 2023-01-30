@@ -10,6 +10,7 @@ import {
   reduxSetPreferredEquivalence,
 } from "../../../redux/actions/userActions";
 import {
+  celebrateWithConfetti,
   reduxChangeData,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
@@ -434,6 +435,11 @@ class ActionsPage extends React.Component {
     });
   }
 
+  performCelebration() {
+    const { celebrate } = this.props;
+    celebrate({ show: true, duration: 8000 });
+  }
+
   /**
    * These are the cart functions
    */
@@ -475,6 +481,7 @@ class ActionsPage extends React.Component {
       .then((json) => {
         if (json.success) {
           this.props.reduxMoveToDone(json.data);
+          this.performCelebration();
           this.setState({
             testimonialLink: actionRel.action.id,
             showTodoMsg: false,
@@ -509,6 +516,7 @@ class ActionsPage extends React.Component {
     if (date_completed) {
       body.date_completed = date_completed;
     }
+
     const path =
       status === "DONE"
         ? "users.actions.completed.add"
@@ -522,6 +530,7 @@ class ActionsPage extends React.Component {
             this.props.reduxAddToTodo(json.data);
             this.setState({ showTodoMsg: aid });
           } else if (status === "DONE") {
+            this.performCelebration();
             this.props.reduxAddToDone(json.data);
             this.setState({ testimonialLink: aid, showTodoMsg: false });
           }
@@ -559,6 +568,7 @@ const mapDispatchToProps = {
   reduxTeamAddAction,
   reduxSetPreferredEquivalence,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
+  celebrate: celebrateWithConfetti,
 };
 export default connect(
   mapStoreToProps,

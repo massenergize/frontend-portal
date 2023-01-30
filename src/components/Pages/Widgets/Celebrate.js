@@ -18,6 +18,7 @@ function Celebrate({
       setOptions({ pieces: 150, opacity: 0.4 });
       setTimeout(() => {
         close && close();
+        setOptions({ pieces: 400, opacity: 1 }); // set back to default when ending
       }, endDuration);
     }, startDuration);
   }, [show, duration, close]);
@@ -27,7 +28,7 @@ function Celebrate({
   return (
     <Confetti
       width={window.screen.width}
-      height={window.screen.height}
+      height={window.screen.height + 250}
       numberOfPieces={options.pieces}
       initialVelocityY={10}
       gravity={gravity}
