@@ -17,7 +17,7 @@ import {
   GUEST_USER_KEY,
 } from "../../components/Pages/Auth/shared/utils";
 import { getTakeTourFromURL } from "../../components/Utils";
-import { reduxSetTourState } from "./pageActions";
+import { celebrateWithConfetti, reduxSetTourState } from "./pageActions";
 import { LOGIN } from "./types";
 import { reduxLoadDone, reduxLoadTodo, reduxLogin } from "./userActions";
 
@@ -71,13 +71,15 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
   const auth = getState().fireAuth;
   apiCall("users.create", body)
     .then((response) => {
-      if (response?.success && response?.data)
+      if (response?.success && response?.data) {
         return dispatch(
           fetchTokenFromMassEnergize(
             auth._lat,
-            (response) => cb && cb(response)
+            (response) => cb && cb(response),
+            { userIsNew: response.data?.is_new }
           )
         );
+      }
       console.log(
         "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user"
       );
@@ -107,14 +109,17 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
   });
 };
 
-export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
+export const fetchTokenFromMassEnergize = (lat, cb, moreInfo) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
   apiCall("auth.login", { idToken: lat })
     .then((response) => {
       const error = response.error;
-      const massUser = response.data;
+      const massUser = { ...response.data, ...(moreInfo || moreInfo) };
       cb && cb(massUser);
       if (!error) {
+        if (massUser?.userIsNew)
+          dispatch(celebrateWithConfetti({ show: true, duration: 10000 }));
+          
         dispatch(fetchUserContent(massUser?.email));
         dispatch(setAuthStateAction(AUTH_STATES.CHECK_MASS_ENERGIZE));
         return dispatch(reduxLogin(massUser));
