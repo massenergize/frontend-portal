@@ -107,9 +107,9 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
   });
 };
 
-export const fetchTokenFromMassEnergize = (lat, cb) => (dispatch) => {
+export const fetchTokenFromMassEnergize = (lat, cb, more) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
-  apiCall("auth.login", { idToken: lat })
+  apiCall("auth.login", { idToken: lat, noFootage: more?.noFootage || false })
     .then((response) => {
       const error = response.error;
       const massUser = response.data;
@@ -190,7 +190,7 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
     dispatch(setFirebaseUser(user));
-    dispatch(fetchTokenFromMassEnergize(user?._lat));
+    dispatch(fetchTokenFromMassEnergize(user?._lat, null, { noFootage: true }));
     dispatch(breakdownFirebaseSettings(user));
   });
 };
