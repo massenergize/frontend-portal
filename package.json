@@ -25,6 +25,7 @@
     "react-big-calendar": "^0.38.6",
     "react-bootstrap": "^1.6.3",
     "react-chartjs-2": "^2.9.0",
+    "react-confetti": "^6.1.0",
     "react-countup": "^4.3.2",
     "react-data-table-component": "^7.4.6",
     "react-datepicker": "^2.11.0",

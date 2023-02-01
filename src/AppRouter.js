@@ -90,6 +90,7 @@ import {
 } from "./components/Pages/Auth/shared/utils";
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
+import Celebrate from "./components/Pages/Widgets/Celebrate";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -176,8 +177,7 @@ class AppRouter extends Component {
     this.props.reduxLoadCommunity(community);
 
     // save as a custom property for Google Analytics
-    window.gtag('set', 'community', {community: community.subdomain});
-
+    window.gtag("set", "community", { community: community.subdomain });
 
     const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
@@ -472,8 +472,14 @@ class AppRouter extends Component {
   }
 
   render() {
-    const { community, modalOptions, toggleUniversalModal, links, is_sandbox } =
-      this.props;
+    const {
+      community,
+      modalOptions,
+      toggleUniversalModal,
+      links,
+      is_sandbox,
+      confettiOptions,
+    } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
 
@@ -501,97 +507,103 @@ class AppRouter extends Component {
     };
 
     return (
-      <div className="boxed-wrapper">
-        <div className="burger-menu-overlay"></div>
-        {is_sandbox && (
-          <div className="sandbox-ribbon z-depth-1">
-            <small>SANDBOX</small>
-          </div>
-        )}
-        <UniversalModal
-          {...(modalOptions || {})}
-          close={() =>
-            toggleUniversalModal({
-              ...(modalOptions || {}),
-              show: !modalOptions?.show,
-            })
+      <>
+        <Celebrate {...(confettiOptions || {})} />
+        <div className="boxed-wrapper">
+          <div className="burger-menu-overlay"></div>
+          {is_sandbox && (
+            <div className="sandbox-ribbon z-depth-1">
+              <small>SANDBOX</small>
+            </div>
+          )}
+          <UniversalModal
+            {...(modalOptions || {})}
+            close={() =>
+              toggleUniversalModal({
+                ...(modalOptions || {}),
+                show: !modalOptions?.show,
+              })
+            }
+          />
+          {Seo({
+            title: community.name,
+            description: community.about,
+            url: `${window.location.pathname}`,
+            image: community.logo && community.logo.url,
+            keywords: [],
+            updated_at: community.updated_at,
+            created_at: community.updated_at,
+            tags: [community.name, community.subdomain],
+          })}
+
+          {navBarMenu ? (
+            <div>
+              <NavBarBurger navLinks={navBarMenu} />
+            </div>
+          ) : null}
+          {
+            <Switch>
+              {/* ---- This route is a facebook app requirement. -------- */}
+              <Route path={`/how-to-delete-my-data`} component={Help} />
+              <Route
+                exact
+                path={`${links.profile}/password-less/manage`}
+                component={ProfilePasswordlessRedirectPage}
+              />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path={links.home} component={HomePage} />
+              <Route exact path={`${links.home}home`} component={HomePage} />
+              <Route exact path={links.actions} component={ActionsPage} />
+              <Route
+                exact
+                path={`${links.actions}/:id`}
+                component={OneActionPage}
+              />
+
+              <Route path={links.aboutus} component={AboutUsPage} />
+              <Route exact path={links.services} component={ServicesPage} />
+              <Route
+                path={`${links.services}/:id`}
+                component={OneServicePage}
+              />
+
+              <Route exact path={links.testimonials} component={StoriesPage} />
+              <Route
+                path={`${links.testimonials}/:id`}
+                component={OneTestimonialPage}
+              />
+              <Route exact path={links.teams} component={TeamsPage} />
+              <Route path={`${links.teams}/:id`} component={OneTeamPage} />
+              <Route path={links.impact} component={ImpactPage} />
+              <Route path={links.donate} component={DonatePage} />
+              <Route exact path={links.events} component={EventsPage} />
+              <Route path={`${links.events}/:id`} component={OneEventPage} />
+              <Route path={links.signin} component={AuthEntry} />
+              <Route path={links.signup} component={AuthEntry} />
+              <Route
+                exact
+                path={`${links.profile}/settings`}
+                component={Settings}
+              />
+              <Route
+                exact
+                path={`${links.profile}/changes`}
+                component={ProfileSettings}
+              />
+              <Route exact path={links.profile} component={ProfilePage} />
+              <Route path={links.policies} component={PoliciesPage} />
+              <Route path={links.contactus} component={ContactPage} />
+              <Route component={HomePage} />
+              {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
+            </Switch>
+            // )
           }
-        />
-        {Seo({
-          title: community.name,
-          description: community.about,
-          url: `${window.location.pathname}`,
-          image: community.logo && community.logo.url,
-          keywords: [],
-          updated_at: community.updated_at,
-          created_at: community.updated_at,
-          tags: [community.name, community.subdomain],
-        })}
-
-        {navBarMenu ? (
-          <div>
-            <NavBarBurger navLinks={navBarMenu} />
-          </div>
-        ) : null}
-        {
-          <Switch>
-            {/* ---- This route is a facebook app requirement. -------- */}
-            <Route path={`/how-to-delete-my-data`} component={Help} />
-            <Route
-              exact
-              path={`${links.profile}/password-less/manage`}
-              component={ProfilePasswordlessRedirectPage}
-            />
-            <Route exact path="/" component={HomePage} />
-            <Route exact path={links.home} component={HomePage} />
-            <Route exact path={`${links.home}home`} component={HomePage} />
-            <Route exact path={links.actions} component={ActionsPage} />
-            <Route
-              exact
-              path={`${links.actions}/:id`}
-              component={OneActionPage}
-            />
-
-            <Route path={links.aboutus} component={AboutUsPage} />
-            <Route exact path={links.services} component={ServicesPage} />
-            <Route path={`${links.services}/:id`} component={OneServicePage} />
-
-            <Route exact path={links.testimonials} component={StoriesPage} />
-            <Route
-              path={`${links.testimonials}/:id`}
-              component={OneTestimonialPage}
-            />
-            <Route exact path={links.teams} component={TeamsPage} />
-            <Route path={`${links.teams}/:id`} component={OneTeamPage} />
-            <Route path={links.impact} component={ImpactPage} />
-            <Route path={links.donate} component={DonatePage} />
-            <Route exact path={links.events} component={EventsPage} />
-            <Route path={`${links.events}/:id`} component={OneEventPage} />
-            <Route path={links.signin} component={AuthEntry} />
-            <Route path={links.signup} component={AuthEntry} />
-            <Route
-              exact
-              path={`${links.profile}/settings`}
-              component={Settings}
-            />
-            <Route
-              exact
-              path={`${links.profile}/changes`}
-              component={ProfileSettings}
-            />
-            <Route exact path={links.profile} component={ProfilePage} />
-            <Route path={links.policies} component={PoliciesPage} />
-            <Route path={links.contactus} component={ContactPage} />
-            <Route component={HomePage} />
-            {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
-          </Switch>
-          // )
-        }
-        {footerLinks ? (
-          <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
-        ) : null}
-        <CookieBanner policyPath={links.policies} />
-      </div>
+          {footerLinks ? (
+            <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
+          ) : null}
+          <CookieBanner policyPath={links.policies} />
+        </div>
+      </>
     );
   }
 }
@@ -606,6 +618,7 @@ const mapStoreToProps = (store) => {
     showTour: store.page.showTour,
     modalOptions: store.page.modalOptions,
     is_sandbox: store.page.__is_sandbox,
+    confettiOptions: store.page.confettiOptions,
   };
 };
 const mapDispatchToProps = {
