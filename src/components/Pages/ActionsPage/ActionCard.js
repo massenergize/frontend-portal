@@ -399,9 +399,9 @@ class ActionCard extends React.Component {
       return false;
 
     var tagSet = new Set(); //create a set of the action's tag ids
-    this.props.action.tags?.forEach((tag) => {
-      tagSet.add(tag.id);
-    });
+    // this.props.action.tags?.forEach((tag) => {
+    //   tagSet.add(tag.id);
+    // });
 
     for (var i in this.props.tagCols) {
       var tagCol = this.props.tagCols[i]; //if any filter does not fit, return false
