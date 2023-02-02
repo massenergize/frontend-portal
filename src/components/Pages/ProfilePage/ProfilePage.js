@@ -73,6 +73,7 @@ class ProfilePage extends React.Component {
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
 
+
   getEqData() {
     const { eq } = this.props;
     const labels = getPropsArrayFromJsonArray(eq || [], "name");
@@ -145,7 +146,9 @@ class ProfilePage extends React.Component {
       />
     );
   }
+
   componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "ProfilePage"});
     const { mode } = fetchParamsFromURL(this.props.location, "mode");
     if (mode === "become-valid")
       this.setState({ wantsToBecomeValidUser: true });

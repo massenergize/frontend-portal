@@ -18,6 +18,10 @@ class OneServicePage extends React.Component {
       expanded: null,
     };
   }
+  componentDidMount() {
+    window.gtag('set', 'page_title', {page_title: "OneServicePage"});
+  }
+
   render() {
     if (!this.props.serviceProviders || !this.props.testimonials) {
       return <LoadingCircle />;

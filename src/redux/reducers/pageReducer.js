@@ -47,6 +47,7 @@ import {
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
+  CELEBRATE,
 } from "../actions/types";
 
 import {
@@ -106,6 +107,11 @@ export default function (state = initialState, action) {
     /**************************/
 
     
+    case CELEBRATE:
+      return {
+        ...state,
+        confettiOptions: action.payload,
+      };
     case LOAD_SETTINGS:
       return {
         ...state,

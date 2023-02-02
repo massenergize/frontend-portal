@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 // import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import { reduxLoadTestimonials } from "../../../redux/actions/pageActions";
+import {
+  celebrateWithConfetti,
+  reduxLoadTestimonials,
+} from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 
 /********************************************************************/
@@ -264,7 +267,7 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(event, data, resetForm) {
-    const { community, user } = this.props;
+    const { community, user, celebrate } = this.props;
     event.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -289,6 +292,7 @@ class StoryForm extends React.Component {
       });
     } else {
       var Url = "testimonials.add";
+
       //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
       if (body.key) {
         Url = "testimonials.update";
@@ -309,8 +313,10 @@ class StoryForm extends React.Component {
         }
         delete body?.ImgToDel;
       }
+      var isNew = Url === "testimonials.add";
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
+          if (isNew) celebrate({ show: true, duration: 8000 });
           if (this.props?.TriggerSuccessNotification) {
             this.props.TriggerSuccessNotification(true);
             this.props.TriggerModal(false);
@@ -356,6 +362,7 @@ const mapStoreToProps = (store) => {
 
 const mapDispatchToProps = {
   reduxLoadTestimonials,
+  celebrate: celebrateWithConfetti,
 };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
