@@ -91,6 +91,7 @@ import {
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
+import CONST from "./components/Constants";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -214,7 +215,7 @@ class AppRouter extends Component {
         apiCall("teams_page_settings.info", body),
         apiCall("testimonials_page_settings.info", body),
         apiCall("vendors_page_settings.info", body),
-        apiCall("communities.actions.completed", body),
+        apiCall("communities.actions.completed", {...body, limit:CONST.DATA_LIMIT}),
         apiCall("settings.list", body),
       ])
         .then((res) => {
@@ -283,18 +284,18 @@ class AppRouter extends Component {
           console.log(err);
         });
       Promise.all([
-        apiCall("actions.list", body),
+        apiCall("actions.list", { ...body, limit:CONST.DATA_LIMIT}),
         apiCall("graphs.actions.completed", body),
         apiCall("graphs.communities.impact", body),
         apiCall("events.list", body),
         apiCall("events.exceptions.list", body),
         apiCall("policies.list", body),
-        apiCall("teams.stats", body),
-        apiCall("tag_collections.list", body),
-        apiCall("testimonials.list", body),
+        apiCall("teams.stats", {...body, limit:CONST.DATA_LIMIT}),
+        apiCall("tag_collections.list", {...body, limit:CONST.DATA_LIMIT}),
+        apiCall("testimonials.list", {...body, limit:CONST.DATA_LIMIT}),
         apiCall("vendors.list", body),
         apiCall("data.carbonEquivalency.get", body),
-        apiCall("communities.list", body),
+        apiCall("communities.list", {...body, limit:CONST.DATA_LIMIT}),
       ])
         .then((res) => {
           const [

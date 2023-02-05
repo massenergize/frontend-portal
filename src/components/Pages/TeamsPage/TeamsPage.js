@@ -15,6 +15,7 @@ import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
 import Subtitle from "../Widgets/Subtitle";
+import CONST from "../../Constants";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class TeamsPage extends React.Component {
 
   // This fxn is meant to go to the backend and collect any new changes that have happened to any
   async getAnyUpdatedTeamChanges(subdomain) {
-    const body = { subdomain: subdomain };
+    const body = { subdomain: subdomain, limit:CONST.DATA_LIMIT };
     try {
       const response = await apiCall("teams.stats", body);
       if (response.success) {

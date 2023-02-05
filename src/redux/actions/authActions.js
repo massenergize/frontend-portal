@@ -1,4 +1,5 @@
 import { apiCall } from "../../api/functions";
+import CONST from "../../components/Constants";
 import {
   checkFirebaseAuthenticationState,
   deleteAccountFromFirebase,
@@ -57,8 +58,8 @@ export const finaliseNoPasswordAuthentication = (email, cb) => (dispatch) => {
 
 export const fetchUserContent = (email) => async (dispatch) => {
   try {
-    const done = await apiCall("users.actions.completed.list", { email });
-    const todo = await apiCall("users.actions.todo.list", { email });
+    const done = await apiCall("users.actions.completed.list", { email, limit:CONST.DATA_LIMIT });
+    const todo = await apiCall("users.actions.todo.list", { email,limit:CONST.DATA_LIMIT });
     dispatch(reduxLoadTodo(todo?.data || []));
     dispatch(reduxLoadDone(done?.data || []));
     dispatch(setAuthStateAction(AUTH_STATES.USER_IS_AUTHENTICATED));

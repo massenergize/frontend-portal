@@ -1,4 +1,5 @@
 import { apiCall } from "../../../src/api/functions";
+import CONST from "../../../src/components/Constants";
 import {
   filterTagCollections,
   getRandomIntegerInRange,
@@ -18,12 +19,12 @@ export const onlyRelevantTags = (array = []) => {
 };
 
 export const loadActions = () => {
-  return apiCall("actions.list", { subdomain }).then(
+  return apiCall("actions.list", { subdomain, limit: CONST.DATA_LIMIT }).then(
     (response) => response.data
   );
 };
 export const loadTestimonials = () => {
-  return apiCall("testimonials.list", { subdomain }).then(
+  return apiCall("testimonials.list", { subdomain, limit:CONST.DATA_LIMIT }).then(
     (response) => response.data
   );
 };

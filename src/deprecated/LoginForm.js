@@ -15,6 +15,7 @@ import {
   reduxLoadDone,
   reduxLoadTodo,
 } from "../../../redux/actions/userActions";
+import CONST from "../components/Constants";
 
 
 /**
@@ -433,9 +434,9 @@ class LoginFormBase extends React.Component {
   inflatePageWithUserData = async (json, email) => {
     if (json.success && json.data) {
       this.props.reduxLogin(json.data);
-      const todo = await apiCall("users.actions.todo.list", { email });
+      const todo = await apiCall("users.actions.todo.list", { email, limit:CONST.DATA_LIMIT});
       this.props.reduxLoadTodo(todo.data);
-      const done = await apiCall("users.actions.completed.list", { email });
+      const done = await apiCall("users.actions.completed.list", { email, limit:CONST.DATA_LIMIT });
       this.props.reduxLoadDone(done.data);
       this.props.tryingToLogin(false);
       return true;

@@ -10,6 +10,7 @@ import {
   reduxLoadTestimonials,
 } from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
+import CONST from "../../Constants";
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -333,6 +334,7 @@ class StoryForm extends React.Component {
           //reloads the testimonials list to the user can see the updated testimonial
           apiCall("testimonials.list", {
             subdomain: this.props.community.subdomain,
+            limit:CONST.DATA_LIMIT
           }).then((json) => {
             this.props.reduxLoadTestimonials(json.data);
           });

@@ -10,6 +10,7 @@ import MEFormGenerator, {
   GOOD,
 } from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
+import CONST from "../../Constants";
 
 class TeamInfoModal extends React.Component {
   constructor(props) {
@@ -284,6 +285,7 @@ class TeamInfoModal extends React.Component {
         if (!team) reduxJoinTeam(newTeam);
         const teamsStatsResponse = await apiCall("teams.stats", {
           community_id: communityData.community.id,
+          limit:CONST.DATA_LIMIT
         });
         if (teamsStatsResponse.success) {
           reduxLoadTeams(teamsStatsResponse.data);
