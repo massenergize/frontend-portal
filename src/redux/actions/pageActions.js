@@ -287,10 +287,10 @@ export const reduxLoadPolicies = (policies) => (dispatch) => {
   });
 };
 
-export const reduxLoadActions = (actions) => (dispatch) => {
+export const reduxLoadActions = (actions, meta) => (dispatch) => {
   return dispatch({
     type: LOAD_ACTIONS,
-    payload: actions,
+    payload: {data:actions, meta:meta},
   });
 };
 
@@ -322,10 +322,10 @@ export const reduxLoadServiceProviders = (serviceProviders) => (dispatch) => {
   });
 };
 
-export const reduxLoadTestimonials = (testimonials) => (dispatch) => {
+export const reduxLoadTestimonials = (testimonials,meta) => (dispatch) => {
   return dispatch({
     type: LOAD_TESTIMONIALS,
-    payload: testimonials,
+    payload: {data: testimonials, meta: meta},
   });
 };
 

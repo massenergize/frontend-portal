@@ -304,15 +304,18 @@ class HorizontalFilterBox extends Component {
               position: "absolute",
               top: 10,
               fontSize: "medium",
-              marginLeft: 31,
+              right: -120,
+              cursor: "pointer",
             }}
             onChange={this.handleSearchTyping}
             value={this.props.searchText}
             icon="fa fa-search"
-            iconColor="rgb(210 210 210)"
+            // iconColor="rgb(210 210 210)"
+            iconColor="var(--app-theme-green)"
             containerStyle={{ display: "inline-block", position: "relative" }}
             className="hori-search-box"
             placeholder="Search..."
+            onSearchClicked={this.props.handleApiSearch}
           />
           {this.renderTagComponent()}
           {window.location.pathname.includes("testimonial") &&
@@ -320,13 +323,21 @@ class HorizontalFilterBox extends Component {
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
-          <input
-            id="test-filter-box-id"
-            className="phone-search-input "
-            placeholder="Search..."
-            onChange={this.handleSearchTyping}
-            value={this.props.searchText}
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              id="test-filter-box-id"
+              className="phone-search-input "
+              placeholder="Search..."
+              onChange={this.handleSearchTyping}
+              value={this.props.searchText}
+            />
+            <span
+              className="fa fa-search mob-search-btn"
+              onClick={() =>
+                this.props.handleApiSearch && this.props.handleApiSearch()
+              }
+            ></span>
+          </div>
 
           <div
             className="hori-filter-container"

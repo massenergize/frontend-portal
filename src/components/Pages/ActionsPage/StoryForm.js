@@ -336,7 +336,7 @@ class StoryForm extends React.Component {
             subdomain: this.props.community.subdomain,
             limit:CONST.DATA_LIMIT
           }).then((json) => {
-            this.props.reduxLoadTestimonials(json.data);
+            this.props.reduxLoadTestimonials(json.data, json.meta);
           });
         } else {
           this.setState({

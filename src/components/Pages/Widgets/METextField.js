@@ -32,7 +32,8 @@ class METextField extends Component {
   };
 
   ejectIcon() {
-    const { icon, iconSize, iconColor, iconStyle } = this.props;
+    const { icon, iconSize, iconColor, iconStyle, onSearchClicked } =
+      this.props;
     const iconStyles = {
       marginRight: 5,
       color: iconColor,
@@ -40,7 +41,13 @@ class METextField extends Component {
       ...iconStyle,
     };
     if (icon) {
-      return <span className={`fa ${icon} me-btn-icon`} style={iconStyles} />;
+      return (
+        <span
+          className={`fa ${icon} me-btn-icon`}
+          style={iconStyles}
+          onClick={() => onSearchClicked && onSearchClicked()}
+        />
+      );
     }
   }
 

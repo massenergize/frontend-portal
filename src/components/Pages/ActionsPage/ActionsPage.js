@@ -12,6 +12,7 @@ import {
 import {
   celebrateWithConfetti,
   reduxChangeData,
+  reduxLoadActions,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
 } from "../../../redux/actions/pageActions";
@@ -23,10 +24,12 @@ import {
   applyTagsAndGetContent,
   collectSearchTextValueFromURL,
   filterTagCollections,
+  hasMoreItems,
   makeFilterDescription,
   PREF_EQ_DEFAULT,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
+  removeDuplicates,
   searchIsActiveFindContent,
   sumOfCarbonScores,
 } from "../../Utils";
@@ -43,6 +46,9 @@ import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
+import CONST from "../../Constants";
+import ActivityIndicator from "../../Shared/ActivityIndicator";
+import { Button } from "react-bootstrap";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -66,6 +72,7 @@ const INIT_STATE = {
   status: null,
   showEqModal: false,
   mounted: false,
+  loading: false,
 };
 
 /**
@@ -173,12 +180,30 @@ class ActionsPage extends React.Component {
       this.props.actions,
       this.state.checked_values,
       this.state.searchText,
-      (action, word) =>
-        action.title.toLowerCase().includes(word) ||
-        action.about.toLowerCase().includes(word) ||
-        action.featured_summary.toLowerCase().includes(word) ||
-        action.deep_dive.toLowerCase().includes(word)
+      (action, word) =>{
+        return action?.title?.toLowerCase()?.includes(word) ||action?.about?.toLowerCase()?.includes(word) || action?.featured_summary?.toLowerCase()?.includes(word) ||action?.deep_dive?.toLowerCase()?.includes(word)
+
+      }
     );
+  }
+    loadMore = () => {
+    const { actions, meta, community, reduxUpdateActions } = this.props;
+    let { subdomain } = community;
+    this.setState({loading:true})
+    apiCall("actions.list", {
+      page: meta?.next,
+      subdomain,
+      limit: CONST.DATA_LIMIT,
+      params: JSON.stringify({
+        search_text: this.state.searchText,
+      }),
+    }).then((res) => {
+      this.setState({ loading: false });
+      if (res?.success) {
+        let newItems = removeDuplicates(actions?.concat(res?.data));
+        reduxUpdateActions(newItems, res?.meta);
+      }
+    });
   }
 
   static getDerivedStateFromProps = (props, state) => {
@@ -198,6 +223,24 @@ class ActionsPage extends React.Component {
     return null;
   };
 
+  handleApiSearch = ()=>{
+      const { actions, community, reduxUpdateActions } = this.props;
+      let { subdomain } = community;
+      this.setState({ loading: true });
+      apiCall("actions.list", {
+        subdomain,
+        limit: CONST.DATA_LIMIT,
+        params: JSON.stringify({
+          search_text: this.state.searchText,
+        }),
+      }).then((res) => {
+        this.setState({ loading: false });
+        if (res?.success) {
+          let newItems = removeDuplicates(actions?.concat(res?.data));
+          reduxUpdateActions(newItems, res?.meta);
+        }
+      });
+  }
   render() {
     const pageData = this.props.pageData;
     const filterDescription = makeFilterDescription(this.state.checked_values);
@@ -314,6 +357,7 @@ class ActionsPage extends React.Component {
                 filtersFromURL={this.state.checked_values}
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
+                handleApiSearch={this.handleApiSearch}
               />
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}
@@ -378,6 +422,25 @@ class ActionsPage extends React.Component {
                   >
                     {this.renderActions(actions)}
                   </div>
+                  {
+                    hasMoreItems(actions, this.props.meta) && (
+                      <center className="load-more-items-container">
+                        {this.state.loading ? (
+                          <ActivityIndicator />
+                        ) : (
+                          <Button
+                            onClick={() => this.loadMore()}
+                            style={{
+                              backgroundColor: "var(--app-theme-green)",
+                              // padding: "10px 15px",
+                              border: "1px solid var(--app-theme-green)",
+                            }}
+                          >
+                            Load More
+                          </Button>
+                        )}
+                      </center>
+                    )}
                 </div>
               </div>
             </div>
@@ -557,6 +620,8 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    meta: store.page.meta?.actions,
+    community: store.page.community,
   };
 };
 
@@ -569,6 +634,7 @@ const mapDispatchToProps = {
   reduxSetPreferredEquivalence,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
   celebrate: celebrateWithConfetti,
+  reduxUpdateActions: reduxLoadActions
 };
 export default connect(
   mapStoreToProps,

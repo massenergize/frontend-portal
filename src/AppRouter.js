@@ -314,9 +314,9 @@ class AppRouter extends Component {
           ] = res;
           this.props.reduxLoadEvents(eventsResponse.data);
           this.props.reduxLoadEventExceptions(eventExceptionsResponse);
-          this.props.reduxLoadActions(actionsResponse.data);
+          this.props.reduxLoadActions(actionsResponse.data, actionsResponse.meta);
           this.props.reduxLoadServiceProviders(vendorsResponse.data);
-          this.props.reduxLoadTestimonials(testimonialsResponse.data);
+          this.props.reduxLoadTestimonials(testimonialsResponse.data, testimonialsResponse.meta);
           this.props.reduxLoadPolicies(policiesResponse.data);
           this.props.reduxLoadTeams(teamResponse.data);
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);

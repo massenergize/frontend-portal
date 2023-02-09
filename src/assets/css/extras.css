@@ -722,7 +722,7 @@
 }
 
 .hori-search-box {
-  display: inline-block !important;
+  /* display: inline-block !important; */
   border-width: 0px !important;
   padding-left: 33px !important;
   margin-left: 30px !important;
@@ -3771,4 +3771,23 @@
   box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%),
     0 2px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+
+.load-more-items-container{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mob-search-btn{
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  color: var(--app-theme-green);
+}
+@media (max-width: 480px) {
+.load-more-items-container{
+  margin-top: 10px;
+  margin-bottom: 70px;
+}
 }

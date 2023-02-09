@@ -10,9 +10,11 @@ import {
   filterTagCollections,
   getHumanFriendlyDate,
   getRandomIntegerInRange,
+  hasMoreItems,
   makeStringFromArrOfObjects,
   processFiltersAndUpdateURL,
   recreateFiltersForState,
+  removeDuplicates,
   searchIsActiveFindContent,
 } from "../../Utils";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -23,7 +25,11 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadTestimonials, reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { apiCall } from "../../../api/functions";
+import { Button } from "react-bootstrap";
+import ActivityIndicator from "../../Shared/ActivityIndicator";
+import CONST from "../../Constants";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +47,7 @@ class StoriesPage extends React.Component {
       stories: [],
       searchText: null,
       mounted: false,
+      loading: false,
     };
     this.renderStories = this.renderStories.bind(this);
     this.addMeToSelected = this.addMeToSelected.bind(this);
@@ -49,7 +56,7 @@ class StoriesPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "TestimonialsPage"});
+    window.gtag("set", "page_title", { page_title: "TestimonialsPage" });
   }
 
   addMeToSelected(param, reset = false) {
@@ -202,6 +209,44 @@ class StoriesPage extends React.Component {
   onSearchTextChange(text) {
     this.setState({ searchText: text || "" });
   }
+  loadMore = () => {
+    const { stories, meta, community, updateStoriesInRedux } = this.props;
+    let { subdomain } =community;
+    this.setState({ loading: true });
+    apiCall("testimonials.list", {
+      page: meta?.next,
+      subdomain,
+      limit: CONST.DATA_LIMIT,
+      params: JSON.stringify({
+        search_text: this.state.searchText,
+      }),
+    }).then((res) => {
+      this.setState({ loading: false });
+      if (res?.success) {
+        let newItems = removeDuplicates(stories?.concat(res?.data));
+        updateStoriesInRedux(newItems, res?.meta);
+      }
+    });
+  };
+
+    handleApiSearch = ()=>{
+     const { stories, community, updateStoriesInRedux } = this.props;
+      let { subdomain } = community;
+      this.setState({ loading: true });
+      apiCall("testimonials.list", {
+        subdomain,
+        limit: CONST.DATA_LIMIT,
+        params: JSON.stringify({
+          search_text: this.state.searchText,
+        }),
+      }).then((res) => {
+        this.setState({ loading: false });
+        if (res?.success) {
+          let newItems = removeDuplicates(stories?.concat(res?.data));
+          updateStoriesInRedux(newItems, res?.meta);
+        }
+      });
+    }
   render() {
     const pageData = this.props.pageData;
     if (pageData == null) return <LoadingCircle />;
@@ -218,6 +263,7 @@ class StoriesPage extends React.Component {
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
+
     return (
       <>
         <div
@@ -259,6 +305,7 @@ class StoriesPage extends React.Component {
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
+                handleApiSearch={this.handleApiSearch}
               />
               <div className="row stories-row">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -281,6 +328,24 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
+                  {hasMoreItems(stories, this.props.meta) && (
+                    <center style={{}}>
+                      {this.state.loading ? (
+                        <ActivityIndicator />
+                      ) : (
+                        <Button
+                          onClick={() => this.loadMore()}
+                          style={{
+                            backgroundColor: "var(--app-theme-green)",
+                            padding: "10px 15px",
+                            border: "1px solid var(--app-theme-green)",
+                          }}
+                        >
+                          Load More
+                        </Button>
+                      )}
+                    </center>
+                  )}
                   <div>{this.renderTestimonialForm()}</div>
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
@@ -343,7 +408,7 @@ class StoriesPage extends React.Component {
       );
     }
 
-    return stories.map((story, index) => (
+    return stories?.map((story, index) => (
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
@@ -370,8 +435,11 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     links: store.links,
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
+    community: store.page.community,
+    meta:store.page.meta?.testimonials
   };
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  updateStoriesInRedux: reduxLoadTestimonials,
 })(StoriesPage);

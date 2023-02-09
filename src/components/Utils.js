@@ -661,3 +661,13 @@ export function recurringDetails(event) {
   }
   return recurringDetails;
 }
+
+export const hasMoreItems = (data, meta) => {
+  if ((data || [])?.length < meta?.count) return true;
+  return false;
+};
+
+
+export const removeDuplicates = (arr, key="id") => {
+  return [...new Map(arr.map((item) => [item[key], item])).values()];
+}

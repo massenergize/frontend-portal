@@ -267,7 +267,11 @@ export default function (state = initialState, action) {
     case LOAD_ACTIONS:
       return {
         ...state,
-        actions: action.payload,
+        actions: action.payload.data,
+        meta: {
+          ...state.meta,
+          actions: action.payload.meta,
+        },
       };
     case LOAD_EVENTS:
       return {
@@ -292,7 +296,11 @@ export default function (state = initialState, action) {
     case LOAD_TESTIMONIALS:
       return {
         ...state,
-        testimonials: action.payload,
+        testimonials: action.payload.data,
+        meta:{
+          ...state.meta,
+          testimonials: action.payload.meta,
+        }
       };
     case LOAD_COMMUNITIES:
       return {
