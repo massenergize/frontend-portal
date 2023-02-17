@@ -80,11 +80,12 @@ import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
-import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
+import { setAuthStateAction, subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
 import {
+  AUTH_STATES,
   browswerIsSafari,
   siteUsesCustomDomain,
 } from "./components/Pages/Auth/shared/utils";
@@ -153,7 +154,6 @@ class AppRouter extends Component {
     const { community } = this.props;
     const subdomain = community?.subdomain || "undefined";
     const { pathname } = new URL(window.location.href);
-
     if (browswerIsSafari() && siteUsesCustomDomain()) {
       const subd =
         pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1
@@ -168,6 +168,18 @@ class AppRouter extends Component {
     this.fetch();
   }
 
+
+
+  static getDerivedStateFromProps(props, state) {
+    const isJustFromGoogleAUth =  props.authState?.split("::")
+    if (isJustFromGoogleAUth[1]=== AUTH_STATES.JUST_FROM_GOOGLE_AUTH){
+      props.history.push(props.links.signup)
+      props.setAuthState(isJustFromGoogleAUth[0])
+      return null
+    }
+    return null
+  }
+
   async fetch() {
     const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
@@ -177,7 +189,7 @@ class AppRouter extends Component {
     this.props.reduxLoadCommunity(community);
 
     // save as a custom property for Google Analytics
-    window.gtag("set", "community", { community: community.subdomain });
+    window.gtag('set', 'user_properties', { community: community.subdomain });
 
     const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
@@ -619,6 +631,7 @@ const mapStoreToProps = (store) => {
     modalOptions: store.page.modalOptions,
     is_sandbox: store.page.__is_sandbox,
     confettiOptions: store.page.confettiOptions,
+    authState: store.authState,
   };
 };
 const mapDispatchToProps = {
@@ -664,5 +677,6 @@ const mapDispatchToProps = {
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
   reduxLoadSettings,
+  setAuthState:setAuthStateAction
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

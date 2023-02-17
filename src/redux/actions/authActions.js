@@ -109,7 +109,7 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
   });
 };
 
-export const fetchTokenFromMassEnergize = (lat, cb, moreInfo) => (dispatch) => {
+export const fetchTokenFromMassEnergize = (lat, cb, moreInfo, justFromGoogleAuth) => (dispatch) => {
   if (!lat) return console.log("Include user _lat to fetch token from ME...");
   apiCall("auth.login", { idToken: lat })
     .then((response) => {
@@ -124,8 +124,16 @@ export const fetchTokenFromMassEnergize = (lat, cb, moreInfo) => (dispatch) => {
         dispatch(setAuthStateAction(AUTH_STATES.CHECK_MASS_ENERGIZE));
         return dispatch(reduxLogin(massUser));
       }
-      if (error === AUTH_STATES.NEEDS_REGISTRATION)
-        return dispatch(setAuthStateAction(AUTH_STATES.NEEDS_REGISTRATION));
+      if (error === AUTH_STATES.NEEDS_REGISTRATION){
+        return dispatch(
+          setAuthStateAction(
+            justFromGoogleAuth
+              ? AUTH_STATES.NEEDS_REGISTRATION+"::"+AUTH_STATES.JUST_FROM_GOOGLE_AUTH
+              : AUTH_STATES.NEEDS_REGISTRATION
+          )
+        );
+      }
+
 
       cb && cb(null, error);
       dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
@@ -143,7 +151,7 @@ export const authenticateWithGoogle = (cb) => (dispatch) => {
     const user = response?.user;
     if (error) return dispatch(setAuthNotification(makeError(error)));
     cb && cb(user);
-    dispatch(fetchTokenFromMassEnergize(user?._lat));
+    dispatch(fetchTokenFromMassEnergize(user?._lat, null, null, true));
     dispatch(setFirebaseUser(user));
   });
 };
@@ -194,6 +202,7 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
     // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
+
     dispatch(setFirebaseUser(user));
     dispatch(fetchTokenFromMassEnergize(user?._lat));
     dispatch(breakdownFirebaseSettings(user));
