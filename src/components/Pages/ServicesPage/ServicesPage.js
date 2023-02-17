@@ -35,7 +35,7 @@ class ServicesPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "ServicesPage"});
+    window.gtag('set', 'user_properties', {page_title: "ServicesPage"});
   }
 
   addMeToSelected(param, reset = false) {
