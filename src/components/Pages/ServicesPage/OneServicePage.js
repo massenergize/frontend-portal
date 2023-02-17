@@ -19,7 +19,7 @@ class OneServicePage extends React.Component {
     };
   }
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "OneServicePage"});
+    window.gtag('set', 'user_properties', {page_title: "OneServicePage"});
   }
 
   render() {

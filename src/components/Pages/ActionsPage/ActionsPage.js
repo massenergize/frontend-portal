@@ -88,7 +88,7 @@ class ActionsPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag("set", "page_title", { page_title: "ActionsPage" });
+    window.gtag("set", "user_properties", { page_title: "ActionsPage" });
   }
 
   renderEQModal() {

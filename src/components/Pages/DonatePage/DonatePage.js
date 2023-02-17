@@ -9,7 +9,7 @@ import MEButton from "../Widgets/MEButton";
 
 class DonatePage extends React.Component {
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "DonatePage"});
+    window.gtag('set', 'user_properties', {page_title: "DonatePage"});
   }
 
   renderVideo(videoLink) {

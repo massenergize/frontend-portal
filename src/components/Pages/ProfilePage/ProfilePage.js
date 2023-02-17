@@ -148,7 +148,7 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "ProfilePage"});
+    window.gtag('set', 'user_properties', {page_title: "ProfilePage"});
     const { mode } = fetchParamsFromURL(this.props.location, "mode");
     if (mode === "become-valid")
       this.setState({ wantsToBecomeValidUser: true });
