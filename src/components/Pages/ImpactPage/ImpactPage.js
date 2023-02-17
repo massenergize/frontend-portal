@@ -23,7 +23,7 @@ import { withRouter } from "react-router-dom";
 class ImpactPage extends React.Component {
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "ImpactPage"});
+    window.gtag('set', 'user_properties', {page_title: "ImpactPage"});
   }
 
   shortenWords(word) {

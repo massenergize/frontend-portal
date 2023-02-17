@@ -7,7 +7,7 @@ import ContactPageForm from "./ContactPageForm";
 
 class ContactUsPage extends React.Component {
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "ContactUsPage"});
+    window.gtag('set', 'user_properties', {page_title: "ContactUsPage"});
   }
 
   prepareLocationText = (location) => {

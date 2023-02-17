@@ -49,7 +49,7 @@ class StoriesPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "TestimonialsPage"});
+    window.gtag('set', 'user_properties', {page_title: "TestimonialsPage"});
   }
 
   addMeToSelected(param, reset = false) {
