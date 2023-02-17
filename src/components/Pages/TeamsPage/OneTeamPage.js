@@ -67,7 +67,7 @@ class OneTeamPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "OneTeamPage"});
+    window.gtag('set', 'user_properties', {page_title: "OneTeamPage"});
     const { id } = this.props.match.params;
     this.fetch(id);
     // TODO: get show option from local storage
