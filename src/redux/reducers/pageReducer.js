@@ -266,6 +266,7 @@ export default function (state = initialState, action) {
       };
     case LOAD_ACTIONS:
       return {
+        
         ...state,
         actions: action.payload.data,
         meta: {
@@ -286,7 +287,11 @@ export default function (state = initialState, action) {
     case LOAD_TEAMS:
       return {
         ...state,
-        teams: action.payload,
+        teams: action.payload.data,
+        meta: {
+          ...state.meta,
+          teams: action.payload.meta,
+        },
       };
     case LOAD_SERVICE_PROVIDERS:
       return {
