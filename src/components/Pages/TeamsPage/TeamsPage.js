@@ -79,7 +79,7 @@ class TeamsPage extends React.Component {
     try {
       const response = await apiCall("teams.stats", body);
       if (response.success) {
-        this.props.reduxLoadTeams(response.data);
+        this.props.reduxLoadTeams(response.data, response.meta);
       }
     } catch (e) {
       console.log(e.toString());
@@ -260,6 +260,10 @@ class TeamsPage extends React.Component {
           },
           [[], []]
         );
+console.log("==== My teams ====", myTeams);
+console.log("==== Other teams ====", otherTeams);
+console.log("==== teamsData ====", teamsData);
+console.log("==== teamsStats ====", this.props.teamsStats);
 
         const userInTeams = teamsData.map((teamData) => inTeam(user, teamData));
 

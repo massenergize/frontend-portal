@@ -330,7 +330,7 @@ class AppRouter extends Component {
           this.props.reduxLoadServiceProviders(vendorsResponse.data);
           this.props.reduxLoadTestimonials(testimonialsResponse.data, testimonialsResponse.meta);
           this.props.reduxLoadPolicies(policiesResponse.data);
-          this.props.reduxLoadTeams(teamResponse.data);
+          this.props.reduxLoadTeams(teamResponse.data, teamResponse.meta);
           this.props.reduxLoadTagCols(tagCollectionsResponse.data);
           this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
           this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);

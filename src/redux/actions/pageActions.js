@@ -308,10 +308,10 @@ export const reduxLoadEventExceptions = (eventExceptions) => (dispatch) => {
   });
 };
 
-export const reduxLoadTeams = (teams) => (dispatch) => {
+export const reduxLoadTeams = (teams, meta) => (dispatch) => {
   return dispatch({
     type: LOAD_TEAMS,
-    payload: teams,
+    payload: {data:teams, meta:meta},
   });
 };
 

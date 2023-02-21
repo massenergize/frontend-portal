@@ -288,7 +288,7 @@ class TeamInfoModal extends React.Component {
           limit:CONST.DATA_LIMIT
         });
         if (teamsStatsResponse.success) {
-          reduxLoadTeams(teamsStatsResponse.data);
+          reduxLoadTeams(teamsStatsResponse.data, teamsStatsResponse.meta);
         }
         onComplete(newTeam.id);
       } else {
