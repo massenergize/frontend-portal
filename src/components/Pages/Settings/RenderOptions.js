@@ -56,6 +56,8 @@ function RenderOptions({
                     questionItemKey
                   )
                 }
+                variant={"vertical"}
+              
               />
             )}
           </div>
