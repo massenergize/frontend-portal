@@ -678,7 +678,7 @@ class ProfilePage extends React.Component {
                 {isNotLastHouse && (
                   <MEButton
                     onClick={() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      // used to scroll to top here; fixed
                       toggleModal({
                         show: true,
                         component: (
@@ -690,7 +690,6 @@ class ProfilePage extends React.Component {
                           />
                         ),
                       });
-                      // this.deleteHousehold(house);
                     }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
