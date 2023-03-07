@@ -16,6 +16,7 @@ function RenderOptions({
   user,
 }) {
   userDefaults = userDefaults || {};
+    const list = Object.entries(options);
 
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
