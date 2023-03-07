@@ -1,4 +1,9 @@
 import React from "react";
+import { Button } from "react-bootstrap";
+import { apiCall } from "../../../api/functions";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import MEButton from "../Widgets/MEButton";
 import RenderCheckboxes from "./RenderCheckboxes";
 import RenderRadios from "./RenderRadios";
 
@@ -11,7 +16,6 @@ function RenderOptions({
   user,
 }) {
   userDefaults = userDefaults || {};
-  const list = Object.entries(options);
 
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
@@ -57,12 +61,25 @@ function RenderOptions({
                   )
                 }
                 variant={"vertical"}
-              
               />
             )}
           </div>
         );
       })}
+      <Feature name={FLAGS.COMMUNICATION_PREFS} >
+        {(user.is_super_admin || user.is_community_admin) && (
+          <MEButton
+            onClick={() => {
+              apiCall("/downloads.sample.user_report").then((res) => {
+                // TODO: show a toast
+                console.log("=== res ===", res);
+              });
+            }}
+          >
+            Send A Sample To Your Email
+          </MEButton>
+        )}
+      </Feature>
     </div>
   );
 }
