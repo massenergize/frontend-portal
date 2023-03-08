@@ -363,6 +363,7 @@ class ProfilePage extends React.Component {
                   <MESectionWrapper headerText="Your Households">
                     {this.renderHouseholds(user.households)}
                   </MESectionWrapper>
+
                   <div
                     style={{
                       width: "100%",
@@ -384,6 +385,7 @@ class ProfilePage extends React.Component {
                       </MEButton>
                     )}
                   </div>
+                  
                   {!this.state.editingHH && this.state.addingHH && (
                     <MECard className="me-anime-open-in">
                       <AddingHouseholdForm
@@ -619,6 +621,7 @@ class ProfilePage extends React.Component {
       );
     });
   }
+
   renderHouseholds(households) {
     const { toggleModal } = this.props;
     const isNotLastHouse = households?.length > 1;
@@ -678,7 +681,7 @@ class ProfilePage extends React.Component {
                 {isNotLastHouse && (
                   <MEButton
                     onClick={() => {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      // used to scroll to top here; fixed
                       toggleModal({
                         show: true,
                         component: (
@@ -690,7 +693,6 @@ class ProfilePage extends React.Component {
                           />
                         ),
                       });
-                      // this.deleteHousehold(house);
                     }}
                     className="me-delete-btn"
                     icon="fa fa-trash"
@@ -706,14 +708,15 @@ class ProfilePage extends React.Component {
       }
     });
   }
+
   addHousehold = (household) => {
     this.props.reduxAddHousehold(household);
     const teams = this.props.user.teams || [];
     teams.forEach((team) => {
       this.props.reduxTeamAddHouse(team);
     });
-    // BHN - causes exception - this.addHouseToImpact();
   };
+
   editHousehold = (household) => {
     this.props.reduxEditHousehold(household);
   };
