@@ -18,6 +18,7 @@ function Settings({
   links,
   fireAuth,
   authState,
+  community
 }) {
   const [currentTab, setCurrentTab] = useState(null);
 
@@ -72,6 +73,7 @@ function Settings({
             settingsTabKey={key}
             updateUser={updateSettingsForUser}
             user={user}
+            community_id={community?.id}
           />
         ),
       };
@@ -136,6 +138,7 @@ const mapStateToProps = (store) => {
     firebaseAuthSettings: store.firebaseAuthSettings,
     fireAuth: store.fireAuth,
     authState: store.authState,
+    community: store.page.community,
   };
 };
 const mapDispatchToProps = (dispatch) => {

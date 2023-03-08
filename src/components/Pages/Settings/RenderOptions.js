@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { apiCall } from "../../../api/functions";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
@@ -14,6 +13,7 @@ function RenderOptions({
   settingsTabKey,
   updateUser,
   user,
+  community_id
 }) {
   userDefaults = userDefaults || {};
     const list = Object.entries(options);
@@ -71,9 +71,8 @@ function RenderOptions({
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
             onClick={() => {
-              apiCall("/downloads.sample.user_report").then((res) => {
+              apiCall("/downloads.sample.user_report", {community_id}).then((res) => {
                 // TODO: show a toast
-                console.log("=== res ===", res);
               });
             }}
           >
