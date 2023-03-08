@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../../api/functions";
+import { reduxToggleUniversalToastAction } from "../../../redux/actions/pageActions";
 import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
@@ -18,7 +19,8 @@ function Settings({
   links,
   fireAuth,
   authState,
-  community
+  community,
+  toggleToast,
 }) {
   const [currentTab, setCurrentTab] = useState(null);
 
@@ -74,6 +76,7 @@ function Settings({
             updateUser={updateSettingsForUser}
             user={user}
             community_id={community?.id}
+            toggleToast={toggleToast}
           />
         ),
       };
@@ -142,6 +145,6 @@ const mapStateToProps = (store) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ updateUserInRedux: reduxLogin }, dispatch);
+  return bindActionCreators({ updateUserInRedux: reduxLogin, toggleToast:reduxToggleUniversalToastAction }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

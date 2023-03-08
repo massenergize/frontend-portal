@@ -13,10 +13,11 @@ function RenderOptions({
   settingsTabKey,
   updateUser,
   user,
-  community_id
+  community_id,
+  toggleToast,
 }) {
   userDefaults = userDefaults || {};
-    const list = Object.entries(options);
+  const list = Object.entries(options);
 
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
@@ -29,7 +30,6 @@ function RenderOptions({
     };
     updateUser(newSettings);
   };
-
   return (
     <div>
       {list.map(([questionItemKey, { text, live, type, values }], index) => {
@@ -67,13 +67,28 @@ function RenderOptions({
           </div>
         );
       })}
-      <Feature name={FLAGS.COMMUNICATION_PREFS} >
+      <Feature name={FLAGS.COMMUNICATION_PREFS}>
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
             onClick={() => {
-              apiCall("/downloads.sample.user_report", {community_id}).then((res) => {
-                // TODO: show a toast
-              });
+              apiCall("/downloads.sample.user_report", { community_id }).then(
+                (res) => {
+                  if (res?.data) {
+                    toggleToast({
+                      open: true,
+                      type: "success",
+                      message: "Your request has been sent to your email.",
+                    });
+                  } else {
+                    toggleToast({
+                      type: "error",
+                      open: true,
+                      message:
+                        "An error occurred while processing your request. Try again later.",
+                    });
+                  }
+                }
+              );
             }}
           >
             Send A Sample To Your Email
