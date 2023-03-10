@@ -37,8 +37,9 @@ function RenderOptions({
         const isCheckbox = type === CHECKBOX;
         return (
           <div key={questionItemKey} style={{ marginBottom: 25 }}>
-            <p className="settings-p">
-              {index + 1}. {text}
+            <p className="settings-p" style={{ marginBottom: 20 }}>
+              {text}
+              {/* {index + 1}. {text} */}
             </p>
             {isCheckbox ? (
               <RenderCheckboxes
@@ -70,6 +71,7 @@ function RenderOptions({
       <Feature name={FLAGS.COMMUNICATION_PREFS}>
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
+          className="send-sample-report-button"
             onClick={() => {
               apiCall("/downloads.sample.user_report", { community_id }).then(
                 (res) => {
@@ -91,7 +93,7 @@ function RenderOptions({
               );
             }}
           >
-            Send A Sample To Your Email
+            Hi Admin: send yourself a sample email!
           </MEButton>
         )}
       </Feature>
