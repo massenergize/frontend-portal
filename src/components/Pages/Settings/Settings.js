@@ -35,7 +35,6 @@ function Settings({
 
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
   // -------------------------------------------------------------------
-
   const userDefaults = user?.preferences?.user_portal_settings || {};
 
   const updateSettingsForUser = (content) => {
@@ -110,12 +109,12 @@ function Settings({
             <div className="col-lg-9 col-md-9 col-12 offset-md-1 settings-wrapper">
               <h1>Communication Preferences</h1>
               {/*  TODO: The text here is just a placeholder. Text description from Kaat or Brad will be used here... */}
-              <p style={{ color: "black" }}>
+              {/* <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics
                 to receive notifications on. Use the toggles below to manage the
                 behavior of the application in the manner that best suits
                 you.
-              </p>
+              </p> */}
               <TabView
                 onChange={(tabKey) => setCurrentTab(tabKey)}
                 tabs={TABS}

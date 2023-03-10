@@ -477,8 +477,9 @@ class AppRouter extends Component {
     const realRoute = window.location.pathname;
     if (
       !currentURL?.includes("signin") &&
-      !currentURL?.includes("signup") &&
-      !currentURL?.includes("profile")
+      !currentURL?.includes("signup")
+      // Makes way for users to be able to update their preferences from email
+      // &&!currentURL?.includes("profile")
     )
       window.localStorage.setItem("last_visited", realRoute);
   }
