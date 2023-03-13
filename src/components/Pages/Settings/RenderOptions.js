@@ -41,31 +41,31 @@ function RenderOptions({
               {text}
               {/* {index + 1}. {text} */}
             </p>
-            <div style={{marginLeft:30}}>
-            {isCheckbox ? (
-              <RenderCheckboxes
-                defaultFromUser={userDefaults[questionItemKey] || {}}
-                values={values}
-                onItemSelected={(objectOfSelectedItem) =>
-                  whenSettingItemIsToggled(
-                    objectOfSelectedItem,
-                    questionItemKey
-                  )
-                }
-              />
-            ) : (
-              <RenderRadios
-                defaultFromUser={userDefaults[questionItemKey] || {}}
-                values={values}
-                onItemSelected={(objectOfSelectedItem) =>
-                  whenSettingItemIsToggled(
-                    objectOfSelectedItem,
-                    questionItemKey
-                  )
-                }
-                variant={"vertical"}
-              />
-            )}
+            <div style={{ marginLeft: 30 }}>
+              {isCheckbox ? (
+                <RenderCheckboxes
+                  defaultFromUser={userDefaults[questionItemKey] || {}}
+                  values={values}
+                  onItemSelected={(objectOfSelectedItem) =>
+                    whenSettingItemIsToggled(
+                      objectOfSelectedItem,
+                      questionItemKey
+                    )
+                  }
+                />
+              ) : (
+                <RenderRadios
+                  defaultFromUser={userDefaults[questionItemKey] || {}}
+                  values={values}
+                  onItemSelected={(objectOfSelectedItem) =>
+                    whenSettingItemIsToggled(
+                      objectOfSelectedItem,
+                      questionItemKey
+                    )
+                  }
+                  variant={"vertical"}
+                />
+              )}
             </div>
           </div>
         );
@@ -73,7 +73,7 @@ function RenderOptions({
       <Feature name={FLAGS.COMMUNICATION_PREFS}>
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
-          className="send-sample-report-button"
+            className="send-sample-report-button"
             onClick={() => {
               apiCall("/downloads.sample.user_report", { community_id }).then(
                 (res) => {
@@ -95,7 +95,7 @@ function RenderOptions({
               );
             }}
           >
-            Hi Admin: send yourself a sample email!
+            <small>Send yourself a sample email</small>
           </MEButton>
         )}
       </Feature>
