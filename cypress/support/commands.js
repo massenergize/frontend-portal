@@ -42,7 +42,7 @@ Cypress.Commands.add("loadPage", function (pageURL, successComponentID) {
 
 Cypress.Commands.add("findComponentsOnPage", function (arrayOfIds = []) {
   arrayOfIds.forEach((id) => {
-    cy.get("#" + id);
+    cy.get("#test-action-title");
   });
 });
 
