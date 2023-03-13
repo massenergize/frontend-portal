@@ -41,6 +41,7 @@ function RenderOptions({
               {text}
               {/* {index + 1}. {text} */}
             </p>
+            <div style={{marginLeft:30}}>
             {isCheckbox ? (
               <RenderCheckboxes
                 defaultFromUser={userDefaults[questionItemKey] || {}}
@@ -65,6 +66,7 @@ function RenderOptions({
                 variant={"vertical"}
               />
             )}
+            </div>
           </div>
         );
       })}
