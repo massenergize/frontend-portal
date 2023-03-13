@@ -160,11 +160,19 @@ class EventsPage extends React.Component {
         return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
     });
 
+    const getEventLength = ()=>{
+      const {view_mode} = this.state;
+      if(view_mode===VIEW_MODES.UPCOMING.key) return upcomingEvents?.length || 0;
+      else if(view_mode===VIEW_MODES.CAMPAIGNS.key) return campaigns?.length || 0
+      else if(view_mode===VIEW_MODES.PAST.key) return pastEvents?.length || 0
+      return 0;
+    }
+
     return (
       <>
         <div
           className="boxed_wrapper test-events-page-wrapper"
-          data-number-of-events={this.props.events?.length || 0}
+          data-number-of-events={getEventLength()}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
