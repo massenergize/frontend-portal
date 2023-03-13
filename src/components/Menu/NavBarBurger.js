@@ -202,6 +202,7 @@ class NavBarBurger extends React.Component {
 
     return Object.keys(navLinks).map((key) => {
       var navLink = navLinks[key];
+
       if (navLink.children) {
         const CustomNavLink = React.forwardRef((props, ref) => (
           <Link
@@ -262,12 +263,16 @@ class NavBarBurger extends React.Component {
       : { name: "My Community" };
     return children.map((child, key) => {
       const id = child?.navItemId ? { id: child.navItemId } : {};
+      const name = child?.link?.split("/")?.pop()
+      const con = `menu-${name}-id`
+      console.log("=== con. === ",con)
       if (child.special) {
         return (
           <Link
+          id={con}
             {...id}
             key={key}
-            className=" cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
+            className="cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => {
               window.location = child.link;
             }}
@@ -281,6 +286,7 @@ class NavBarBurger extends React.Component {
             {...id}
             key={key}
             to={`${child.link}`}
+            id={con}
             className="cool-font  p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={(e) => {
               if (e.target.id === "take-the-tour") {
