@@ -48,6 +48,6 @@ Cypress.Commands.add("findComponentsOnPage", function (arrayOfIds = []) {
 
 Cypress.Commands.add("removeBanner", removeCookieBanner);
 Cypress.Commands.add("cleanUp", function () {
-  removeCookieBanner();
+  // removeCookieBanner();
   clearAuthentication();
 });
