@@ -36,7 +36,6 @@ class NavBar extends React.Component {
 	}
 	render() {
 		const { links } = this.props
-		console.log("==== navLink ====", links);
 		return (
 			<div>
 				<nav className="theme_menu navbar stricky">

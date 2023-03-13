@@ -204,7 +204,7 @@ class NavBarBurger extends React.Component {
       var navLink = navLinks[key];
 
       const name = navLink?.name?.toLowerCase();
-      const con = `menu-${name}-id`;
+      const linkId = `menu-${name}-id`;
       if (navLink.children) {
         const CustomNavLink = React.forwardRef((props, ref) => (
           <Link
@@ -226,7 +226,7 @@ class NavBarBurger extends React.Component {
         return (
           <li
             className={`d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`}
-            id={con}
+            id={linkId}
             key={navLink.name}
           >
             <Dropdown onSelect={() => null}>
@@ -250,7 +250,7 @@ class NavBarBurger extends React.Component {
           className="d-flex flex-column justify-content-center test-me-nav-menu-item"
           key={navLink.name}
           {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
-          id={con}
+          id={linkId}
         >
           <Link className="cool-font" to={`${navLink.link}`}>
             {navLink.name}
