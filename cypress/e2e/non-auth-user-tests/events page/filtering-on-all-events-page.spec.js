@@ -8,8 +8,7 @@ describe("Filtering on all events page works well", function () {
     cy.get(".test-event-card-title")
       .first()
       .then(($el) =>{
-        console.log("=== Write title ===", $el.text());
-        return (title = $el.text());
+        return (title = $el.text().split("...")[0]);
       });
   });
   it("Typed content into filterbox", () => {
@@ -17,7 +16,6 @@ describe("Filtering on all events page works well", function () {
   });
   it("Event cards were filtered", () => {
     cy.get(".test-event-card-title").each(($el) => {
-      console.log("=== Checking title match ===", $el.text());
       return $el.text().includes(title)}
       );
   });
