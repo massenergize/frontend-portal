@@ -21,6 +21,7 @@ describe("Filters passed via url work well on vendors page", function () {
   before("Load content from api", async function () {
     const vendors = await loadServiceProviders();
     const filters = await onlyRelevantTags(vendors);
+
     filterObject = createFilterContentFromCollection(filters[0]);
   });
 
