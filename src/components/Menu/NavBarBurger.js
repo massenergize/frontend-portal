@@ -203,7 +203,7 @@ class NavBarBurger extends React.Component {
     return Object.keys(navLinks).map((key) => {
       var navLink = navLinks[key];
 
-      const name = navLink?.name?.toLowerCase();
+      const name = navLink?.name?.toLowerCase()?.replace(" ", "-");
       const linkId = `menu-${name}-id`;
       if (navLink.children) {
         const CustomNavLink = React.forwardRef((props, ref) => (

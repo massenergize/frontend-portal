@@ -28,7 +28,7 @@ describe("Filters passed via url work well on testimonials page", function () {
     cy.visit(
       fields.urls.testimonials.raw + "/" + "?filters=" + filterObject.filterString
     );
-    cy.removeBanner();
+    // cy.removeBanner();
   });
 
   it("All selected testimonials cards contain the filter tagName", function () {

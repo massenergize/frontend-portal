@@ -276,8 +276,8 @@ class AppRouter extends Component {
             },
             prefix,
           });
-          this.loadMenu(mainMenuResponse.data);
           this.checkTourState(mainMenuResponse.data);
+          this.loadMenu(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });

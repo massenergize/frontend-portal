@@ -5,6 +5,6 @@ describe("Visits contact us page via navigation menu", () => {
 
   it("Clicked on 'contact us' from menu and redirected there", () => {
     cy.get("#menu-about-us-id").click();
-    cy.get(".test-me-nav-drop-item").eq(2).click();
+    cy.get(".test-me-nav-drop-item").eq(3).click();
   });
 });

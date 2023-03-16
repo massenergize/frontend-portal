@@ -21,7 +21,6 @@ describe("Filters passed via url work well on vendors page", function () {
   before("Load content from api", async function () {
     const vendors = await loadServiceProviders();
     const filters = await onlyRelevantTags(vendors);
-
     filterObject = createFilterContentFromCollection(filters[0]);
   });
 
@@ -29,7 +28,7 @@ describe("Filters passed via url work well on vendors page", function () {
     cy.visit(
       fields.urls.services.raw + "/" + "?filters=" + filterObject.filterString
     );
-    cy.removeBanner();
+    // cy.removeBanner();
   });
 
   it("All selected vendors cards contain the filter tagName", function () {
