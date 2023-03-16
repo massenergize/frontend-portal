@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cypress/webpack-preprocessor": "^5.17.0",
     "@sentry/react": "^7.38.0",
     "@tinymce/tinymce-react": "^3.14.0",
     "apexcharts": "^3.37.0",
@@ -81,3 +80,4 @@
     "style-loader": "^0.23.1"
   }
 }
+   
