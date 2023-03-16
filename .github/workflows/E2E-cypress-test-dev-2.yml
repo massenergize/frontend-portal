@@ -1,41 +1,31 @@
-name: Test and Deploy Workflow
-
+name: Frontend Testing
 on:
   pull_request:
     branches: [ development ]
-
 jobs:
-  cypress-run:
+  cypress-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
-
+    container:
+      image: cypress/browsers:node16.5.0-chrome94-ff93
+      options: --user 1001
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Build
-        run: npm run build
-
+      - uses: actions/checkout@v3
+      - name: Install and Verify Cypress
+        run: |
+          npm ci
+          $(npm bin)/cypress verify
+     
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v2
-        with:
-          start: npm start
-          wait-on: 'http://localhost:3000'
-          record: true
-          config: baseUrl=http://localhost:3000
+        run: npm run all-tests
+        continue-on-error: false
+      - name: Copy test report from cypress to Github Pages
+        run: |
+          mkdir report-folder
+          cp -r cypress/reports/index.html report-folder
 
-      - name: Deploy Results to GitHub Pages
-        if: always()
+      - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./cypress/screenshots
+          publish_branch: gh-pages
+          publish_dir: ./report-folder
