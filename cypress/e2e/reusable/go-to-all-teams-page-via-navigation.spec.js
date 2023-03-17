@@ -10,7 +10,7 @@ describe("Gets to all teams page via clicking on navigation", function () {
   });
 
   it("Clicks on 'teams' on navbar and directs to all teams page", function () {
-    cy.get("#menu-actions-id").click();
-    cy.get(".test-me-nav-drop-item").eq(3).click();
+    cy.get("#menu-teams-id").click();
+    // cy.get(".test-me-nav-drop-item").eq(3).click();
   });
 });

@@ -267,7 +267,7 @@ class NavBarBurger extends React.Component {
       : { name: "My Community" };
     return children.map((child, key) => {
       const id = child?.navItemId ? { id: child.navItemId } : {};
-        const name = child?.name?.toLowerCase();
+        const name = child?.name?.toLowerCase()?.replace(" ", "-");
         const linkId = `menu-${name}-id`;
       if (child.special) {
         return (

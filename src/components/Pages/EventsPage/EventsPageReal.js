@@ -236,6 +236,7 @@ class EventsPage extends React.Component {
                               "event-view-toggler-active z-depth-float"
                             }`}
                             key={index}
+                            id={`test-event-view-toggler-${mode?.key}`}
                           >
                             <i className={`fa ${mode?.icon}`}></i> {mode?.name}
                           </div>
