@@ -1,10 +1,8 @@
 name: React App Tests
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ development ]
 
 jobs:
   build-and-test:
