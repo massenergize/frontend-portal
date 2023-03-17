@@ -1,0 +1,27 @@
+name: React App Tests
+
+on:
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install and Verify Cypress
+      run: |
+        npm i  --legacy-peer-deps
+        $(npm bin)/cypress verify
+
+    - name: Run Cypress tests
+      run: npm run all-tests
+      continue-on-error: false
