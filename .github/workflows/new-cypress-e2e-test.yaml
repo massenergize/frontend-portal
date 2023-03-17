@@ -22,6 +22,14 @@ jobs:
         npm i  --legacy-peer-deps
         $(npm bin)/cypress verify
 
+
+    - name: Build Application
+      run: npm run build
+      
+    - name: Start Local Server
+      run: npm run start &
+
+
     - name: Run Cypress tests
       run: npm run all-tests
       continue-on-error: false
