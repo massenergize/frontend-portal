@@ -1,8 +1,9 @@
 import { IS_LOCAL } from "../../../src/config";
 import URLS from "../../../src/api/urls";
 
+const testMode = process.env.REACT_APP_TEST_MODE || false
 var DOMAIN = URLS["COMMUNITIES"] + "/";
-if (IS_LOCAL) var DOMAIN = "http://localhost:3000/";
+if (IS_LOCAL || testMode) var DOMAIN = "http://localhost:3000/";
 var COMMUNITY = "wayland"; // Only Change this to a community that exists in your DB (wayland exists everywhere, so this should work everywhere)
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
