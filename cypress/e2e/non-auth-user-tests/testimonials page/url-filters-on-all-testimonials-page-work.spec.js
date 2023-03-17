@@ -20,7 +20,9 @@ var filterObject;
 describe("Filters passed via url work well on testimonials page", function () {
   before("Load content from api", async function () {
     const testimonials = await loadTestimonials();
+    console.log("==== testimonials ====", testimonials);
     const filters = await onlyRelevantTags(testimonials);
+    console.log("==== filters ====", filters)
     filterObject = createFilterContentFromCollection(filters[0]);
   });
 
