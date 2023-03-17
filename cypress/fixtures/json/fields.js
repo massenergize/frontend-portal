@@ -1,16 +1,17 @@
 import { IS_LOCAL } from "../../../src/config";
 import URLS from "../../../src/api/urls";
 
-const testMode = JSON.parse(process.env.REACT_APP_TEST_MODE||false);
+// const testMode = JSON.parse(process.env.REACT_APP_TEST_MODE||false);
 // var DOMAIN = URLS["COMMUNITIES"] + "/";
+
+// this change  is made to allow us run tests on the branch making a PR to dev.
 var DOMAIN = "http://localhost:3000/";
-if (IS_LOCAL || testMode) var DOMAIN = "http://localhost:3000/";
+// if (IS_LOCAL || testMode) var DOMAIN = "http://localhost:3000/";
 var COMMUNITY = "wayland"; // Only Change this to a community that exists in your DB (wayland exists everywhere, so this should work everywhere)
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
 const API_ROOT = URLS["ROOT"] + (IS_LOCAL ? "/api/" : "/");
 
-console.log("==== baseURL=====", BASE_URL)
 export default {
   api: {
     root: API_ROOT,
