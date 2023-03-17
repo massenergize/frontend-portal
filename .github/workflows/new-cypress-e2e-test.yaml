@@ -19,7 +19,7 @@ jobs:
 
     - name: Install and Verify Cypress
       run: |
-        npm i
+        npm i  --legacy-peer-deps
         $(npm bin)/cypress verify
 
     - name: Build App

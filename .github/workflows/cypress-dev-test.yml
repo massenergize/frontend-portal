@@ -10,10 +10,10 @@
 #       options: --user 1001
 #     steps:
 #       - uses: actions/checkout@v3
-#       - name: Install and Verify Cypress
-#         run: |
-#           npm ci
-#           $(npm bin)/cypress verify
+      # - name: Install and Verify Cypress
+      #   run: |
+      #     npm ci
+      #     $(npm bin)/cypress verify
      
 #       - name: Run Cypress tests
 #         run: npm run all-tests
