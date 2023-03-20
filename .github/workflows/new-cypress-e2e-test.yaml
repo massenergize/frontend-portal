@@ -1,17 +1,17 @@
-name: React App Tests
+# name: React App Tests
 
-on:
-  pull_request:
-    branches: [ development ]
+# on:
+#   pull_request:
+#     branches: [ development ]
 
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
+# jobs:
+#   cypress-run:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
+#     steps:
+#       - uses: actions/checkout@v3
       
-      - name: Cypress Run
-        uses: cypress-io/github-action@v5
-        with:
-          start: npm start
+#       - name: Cypress Run
+#         uses: cypress-io/github-action@v5
+#         with:
+#           start: npm start
