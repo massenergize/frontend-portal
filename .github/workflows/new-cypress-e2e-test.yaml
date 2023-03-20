@@ -1,30 +1,24 @@
-# name: React App Tests
+name: React App Tests
 
-# on:
-#   pull_request:
-#     branches: [ development ]
+on:
+  pull_request:
+    branches: [ development ]
 
-# jobs:
-#   build-and-test:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Install Node.js
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: 16
-
-#     - name: Install and Verify Cypress
-#       run: |
-#         npm i  --legacy-peer-deps
-#         $(npm bin)/cypress verify
-      
-    # - name: Start Local Server
-    #   run: npm run start &
-
-
-#     - name: Run Cypress tests
-#       run: npm run all-tests
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: npm ci --legacy-peer-deps
+      - name: Cypress
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm start
+          wait-on: http://localhost:3000
+          parallel: true
