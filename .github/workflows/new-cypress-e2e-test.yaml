@@ -5,20 +5,13 @@ on:
     branches: [ development ]
 
 jobs:
-  install:
+  cypress-run:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install modules
-        run: npm i --legacy-peer-deps
-      - name: Cypress
-        uses: cypress-io/github-action@v5
+      - uses: actions/checkout@v3
+      
+      - name: Cypress Run
+        uses: cypress-io/github-action@v2.9.7
         with:
           start: npm start
-          wait-on: http://localhost:3000
-          parallel: true
