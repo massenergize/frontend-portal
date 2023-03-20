@@ -25,6 +25,5 @@ jobs:
     - name: Start Local Server
       run: npm run start &
 
-
-    - name: Run Cypress tests
-      run: npm run all-tests
+    - name: Cypress run
+      uses: cypress-io/github-action@v5
