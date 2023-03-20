@@ -4,6 +4,8 @@ module.exports = defineConfig({
   chromeWebSecurity: false,
   defaultCommandTimeout: 6000,
   projectId: "eu6sim",
+  waitForAnimations: false,
+  animationDistanceThreshold: 50,
 
   retries: {
     openMode: 0,
