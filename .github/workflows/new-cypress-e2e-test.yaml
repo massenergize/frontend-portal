@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install modules
-        run: npm ci --legacy-peer-deps
+        run: npm i --legacy-peer-deps
       - name: Cypress
         uses: cypress-io/github-action@v5
         with:
