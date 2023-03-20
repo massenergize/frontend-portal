@@ -1,34 +1,22 @@
-name: Frontend Testing
-on:
-  pull_request:
-    branches: [ development ]
+name: Run Cypress Tests
+on: [push]
 jobs:
-  cypress-test:
+  install:
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node16.5.0-chrome94-ff93
-      options: --user 1001
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v3
-      - name: Install and Verify Cypress
-        run: |
-          npm ci
-          $(npm bin)/cypress verify
-
-      - name: Start Local Server
-        run: npm run start &
-     
-      - name: Run Cypress tests
-        run: npm run all-tests
-        continue-on-error: false
-      - name: Copy test report from cypress to Github Pages
-        run: |
-          mkdir report-folder
-          cp -r cypress/reports/index.html report-folder
-
-      - name: Deploy report to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: npm ci
+      - name: Cypress
+        uses: cypress-io/github-action@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./report-folder
+          browser: chrome
+          headless: true
+          start: npm start
+          wait-on: http://localhost:3000
+          parallel: true
