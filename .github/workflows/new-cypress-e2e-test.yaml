@@ -5,55 +5,26 @@ on:
     branches: [ development ]
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
+  build-and-test:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      # https://github.com/cypress-io/github-action
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-      # after the test run completes
-      # store videos and any screenshots
-      # NOTE: screenshots will be generated only if E2E test failed
-      # thus we store screenshots only on failures
-      # Alternative: create and commit an empty cypress/screenshots folder
-      # to always have something to upload
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-      # Test run video was always captured, so this action uses "always()" condition
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-# jobs:
-#   build-and-test:
-#     runs-on: ubuntu-latest
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
 
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Install Node.js
-#       uses: actions/setup-node@v3
-#       with:
-#         node-version: 16
-
-#     - name: Install and Verify Cypress
-#       run: |
-#         npm i  --legacy-peer-deps
-#         $(npm bin)/cypress verify
+    - name: Install and Verify Cypress
+      run: |
+        npm i  --legacy-peer-deps
+        $(npm bin)/cypress verify
       
-#     - name: Start Local Server
-#       run: npm run start &
+    - name: Start Local Server
+      run: npm run start &
 
 
-#     - name: Cypress run
-#       uses: cypress-io/github-action@v5
+    - name: Run Cypress tests
+      run: npm run all-tests
