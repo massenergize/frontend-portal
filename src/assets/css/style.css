@@ -72,6 +72,9 @@ html {
   font-family: "Google Sans", "Open Sans", sans-serif;
   scroll-behavior: smooth !important;
 }
+iframe{
+  display: none !important;
+}
 
 body {
   font-family: "Google Sans", "Open Sans", sans-serif;
