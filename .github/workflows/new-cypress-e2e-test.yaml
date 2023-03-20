@@ -22,8 +22,8 @@
 #         npm i  --legacy-peer-deps
 #         $(npm bin)/cypress verify
       
-#     - name: Start Local Server
-#       run: npm run start &
+    # - name: Start Local Server
+    #   run: npm run start &
 
 
 #     - name: Run Cypress tests

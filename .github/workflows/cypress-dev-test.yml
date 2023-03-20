@@ -14,6 +14,9 @@ jobs:
         run: |
           npm ci
           $(npm bin)/cypress verify
+
+      - name: Start Local Server
+        run: npm run start &
      
       - name: Run Cypress tests
         run: npm run all-tests
