@@ -140,7 +140,7 @@ class AppRouter extends Component {
    * @returns
    */
   checkTourState = (menu) => {
-    // if (!this.isHomepage(menu)) return this.props.setTourState(false); bring me back
+      if (!this.isHomepage(menu)) return this.props.setTourState(false);
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
