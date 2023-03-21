@@ -4,9 +4,15 @@ import fields from "../fixtures/json/fields";
 const PASSPORT_KEY = Cypress.env("PASSPORT_KEY");
 const removeCookieBanner = () => {
   // This is just a function to always close the banner, not for testing the cookie banner
-  cy.get("#test-cookie-banner-okay").then(($banner) => {
-    if ($banner) cy.wrap($banner).click();
-  });
+cy.get("body")
+  .then(($body) => {
+    if ($body.find("#test-cookie-banner-okay").length) {
+      cy.get("#test-cookie-banner-okay").then(($banner) => {
+        cy.wrap($banner).click();
+      });
+    }
+  })
+
 };
 const clearAuthentication = () => {
   Auth.signOut();
@@ -48,6 +54,6 @@ Cypress.Commands.add("findComponentsOnPage", function (arrayOfIds = []) {
 
 Cypress.Commands.add("removeBanner", removeCookieBanner);
 Cypress.Commands.add("cleanUp", function () {
-  // removeCookieBanner();
+  removeCookieBanner();
   clearAuthentication();
 });

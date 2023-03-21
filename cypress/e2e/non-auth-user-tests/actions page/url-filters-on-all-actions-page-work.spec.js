@@ -28,7 +28,7 @@ describe("Filters passed via url work well on actions page", function () {
     cy.visit(
       fields.urls.actions.raw + "/" + "?filters=" + filterObject.filterString
     );
-    // cy.removeBanner();
+    cy.removeBanner();
   });
 
   it("All selected actions cards contain the filter tagName", function () {
