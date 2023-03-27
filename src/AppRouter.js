@@ -117,12 +117,10 @@ class AppRouter extends Component {
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
     const homeFxn = (m) => m.name === "Home";
-    const homegroup = main.content.find(homeFxn);
-    const home = homegroup?.children?.find(homeFxn);
+    const homeGroup = main.content.find(homeFxn);
+    const home = homeGroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
-    var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home?.link
-    );
+    var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home?.link);
     return location === rebuilt;
   }
 
@@ -140,7 +138,7 @@ class AppRouter extends Component {
    * @returns
    */
   checkTourState = (menu) => {
-      if (!this.isHomepage(menu)) return this.props.setTourState(false);
+    // if (!this.isHomepage(menu)) return this.props.setTourState(false);
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
