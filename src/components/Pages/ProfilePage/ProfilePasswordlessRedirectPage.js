@@ -149,7 +149,7 @@ function ProfilePasswordlessRedirectPage({
                       </b>
                     </span>{" "}
                     for a{" "}
-                    <b style={{ color: "var(--app-theme-green)" }}>special</b>{" "}
+                    <b>special</b>{" "}
                     link.
                   </li>
                   <li>Check your email.</li>

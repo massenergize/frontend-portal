@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { apiCall } from "../../../api/functions";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
@@ -31,42 +30,44 @@ function RenderOptions({
 
   return (
     <div>
-      {list.map(([questionItemKey, { text, live, type, values }], index) => {
-        if (!live) return <></>;
-        const isCheckbox = type === CHECKBOX;
-        return (
-          <div key={questionItemKey} style={{ marginBottom: 25 }}>
-            <p className="settings-p">
-              {index + 1}. {text}
-            </p>
-            {isCheckbox ? (
-              <RenderCheckboxes
-                defaultFromUser={userDefaults[questionItemKey] || {}}
-                values={values}
-                onItemSelected={(objectOfSelectedItem) =>
-                  whenSettingItemIsToggled(
-                    objectOfSelectedItem,
-                    questionItemKey
-                  )
-                }
-              />
-            ) : (
-              <RenderRadios
-                defaultFromUser={userDefaults[questionItemKey] || {}}
-                values={values}
-                onItemSelected={(objectOfSelectedItem) =>
-                  whenSettingItemIsToggled(
-                    objectOfSelectedItem,
-                    questionItemKey
-                  )
-                }
-                variant={"vertical"}
-              />
-            )}
-          </div>
-        );
-      })}
-      <Feature name={FLAGS.COMMUNICATION_PREFS} >
+      {Object.entries(options).map(
+        ([questionItemKey, { text, live, type, values }], index) => {
+          if (!live) return <></>;
+          const isCheckbox = type === CHECKBOX;
+          return (
+            <div key={questionItemKey} style={{ marginBottom: 25 }}>
+              <p className="settings-p">
+                {index + 1}. {text}
+              </p>
+              {isCheckbox ? (
+                <RenderCheckboxes
+                  defaultFromUser={userDefaults[questionItemKey] || {}}
+                  values={values}
+                  onItemSelected={(objectOfSelectedItem) =>
+                    whenSettingItemIsToggled(
+                      objectOfSelectedItem,
+                      questionItemKey
+                    )
+                  }
+                />
+              ) : (
+                <RenderRadios
+                  defaultFromUser={userDefaults[questionItemKey] || {}}
+                  values={values}
+                  onItemSelected={(objectOfSelectedItem) =>
+                    whenSettingItemIsToggled(
+                      objectOfSelectedItem,
+                      questionItemKey
+                    )
+                  }
+                  variant={"vertical"}
+                />
+              )}
+            </div>
+          );
+        }
+      )}
+      <Feature name={FLAGS.COMMUNICATION_PREFS}>
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
             onClick={() => {
