@@ -92,7 +92,6 @@ import {
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
-
 class AppRouter extends Component {
   constructor(props) {
     super(props);
@@ -116,11 +115,12 @@ class AppRouter extends Component {
   isHomepage(menu) {
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
+    const content = [...main.content]
     const homeFxn = (m) => m.name === "Home";
     const homeGroup = main.content.find(homeFxn);
     const home = homeGroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
-    var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home?.link);
+    var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home.link);
     return location === rebuilt;
   }
 
@@ -138,7 +138,7 @@ class AppRouter extends Component {
    * @returns
    */
   checkTourState = (menu) => {
-    // if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back 
+    if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back 
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
@@ -274,8 +274,8 @@ class AppRouter extends Component {
             },
             prefix,
           });
-          this.checkTourState(mainMenuResponse.data);
           this.loadMenu(mainMenuResponse.data);
+          this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -353,10 +353,7 @@ class AppRouter extends Component {
       return;
     }
 
-    const { content } =
-      menus.find((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      }) || {};
+    const { content } = menus.find((menu) => {return menu.name === "PortalMainNavLinks"; }) || {};
     const initialMenu = content;
 
     const finalMenu = this.modifiedMenu(initialMenu);
@@ -372,7 +369,6 @@ class AppRouter extends Component {
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
-
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
@@ -386,14 +382,8 @@ class AppRouter extends Component {
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
-    var aboutMenu =
-      menu.find((menu) => {
-        return menu.name === "About Us";
-      }) || {};
-    var actionsMenu =
-      menu.find((menu) => {
-        return menu.name === "Actions";
-      }) || {};
+    var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
+    var actionsMenu = menu.find((menu) => menu.name === "Actions" ) || {};
 
     if (aboutMenu) {
       aboutMenu.children = aboutMenu.children.filter((item) => {
@@ -453,6 +443,7 @@ class AppRouter extends Component {
    */
   addPrefix(menu) {
     menu = menu.map((m) => {
+      console.log("=== m ===", m)
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -463,6 +454,9 @@ class AppRouter extends Component {
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
       }
+
+
+    console.log("=== new m ===", m)
 
       return m;
     });
