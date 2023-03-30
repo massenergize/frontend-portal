@@ -54,8 +54,21 @@ function Settings({
       preferences: JSON.stringify(preferences),
     })
       .then((response) => {
-        if (!response.success)
+        if (response?.success) {
+          toggleToast({
+            open: true,
+            type: "success",
+            message: "Settings updated successfully.",
+          });
+        } else {
+          toggleToast({
+            type: "error",
+            open: true,
+            message:
+              "An error occurred while updating user settings. Try again later.",
+          });
           return console.log("Error updating user settings: ", response.error);
+        }
       })
       .catch((e) =>
         console.log("Error updating user settings: ", e.toString())
@@ -67,7 +80,7 @@ function Settings({
       return {
         key,
         name,
-        hideHeader:true,
+        hideHeader: true,
         component: (
           <RenderOptions
             options={options}
@@ -145,6 +158,12 @@ const mapStateToProps = (store) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ updateUserInRedux: reduxLogin, toggleToast:reduxToggleUniversalToastAction }, dispatch);
+  return bindActionCreators(
+    {
+      updateUserInRedux: reduxLogin,
+      toggleToast: reduxToggleUniversalToastAction,
+    },
+    dispatch
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

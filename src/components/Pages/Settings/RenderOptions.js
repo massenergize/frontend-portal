@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { apiCall } from "../../../api/functions";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import MEButton from "../Widgets/MEButton";
 import RenderCheckboxes from "./RenderCheckboxes";
 import RenderRadios from "./RenderRadios";
+
 
 const CHECKBOX = "checkbox";
 function RenderOptions({
@@ -18,6 +19,7 @@ function RenderOptions({
 }) {
   userDefaults = userDefaults || {};
   const list = Object.entries(options);
+  const [toSend, setToSend] = useState({});
 
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};
@@ -47,10 +49,7 @@ function RenderOptions({
                   defaultFromUser={userDefaults[questionItemKey] || {}}
                   values={values}
                   onItemSelected={(objectOfSelectedItem) =>
-                    whenSettingItemIsToggled(
-                      objectOfSelectedItem,
-                      questionItemKey
-                    )
+                    setToSend({ objectOfSelectedItem, questionItemKey })
                   }
                 />
               ) : (
@@ -58,10 +57,7 @@ function RenderOptions({
                   defaultFromUser={userDefaults[questionItemKey] || {}}
                   values={values}
                   onItemSelected={(objectOfSelectedItem) =>
-                    whenSettingItemIsToggled(
-                      objectOfSelectedItem,
-                      questionItemKey
-                    )
+                    setToSend({ objectOfSelectedItem, questionItemKey })
                   }
                   variant={"vertical"}
                 />
@@ -70,10 +66,19 @@ function RenderOptions({
           </div>
         );
       })}
+      <MEButton
+        className="send-sample-report-button"
+        onClick={() => {
+          const { questionItemKey, objectOfSelectedItem } = toSend;
+          whenSettingItemIsToggled(objectOfSelectedItem, questionItemKey);
+        }}
+      >
+        <small>Save Settings</small>
+      </MEButton>
+
       <Feature name={FLAGS.COMMUNICATION_PREFS}>
         {(user.is_super_admin || user.is_community_admin) && (
           <MEButton
-            className="send-sample-report-button"
             onClick={() => {
               apiCall("/downloads.sample.user_report", { community_id }).then(
                 (res) => {
