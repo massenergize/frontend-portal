@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import { apiCall } from "../../../api/functions";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
@@ -16,6 +15,7 @@ function RenderOptions({
   user,
 }) {
   userDefaults = userDefaults || {};
+    const list = Object.entries(options);
 
   const whenSettingItemIsToggled = (objectOfSelectedItem, questionItemKey) => {
     const settingsThatAlreadyExistForUser = userDefaults[settingsTabKey] || {};

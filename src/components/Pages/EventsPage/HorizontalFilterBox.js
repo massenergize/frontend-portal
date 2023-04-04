@@ -275,7 +275,7 @@ class HorizontalFilterBox extends Component {
 
 //changes text of button depending on the page that its on
   renderAddButton = () => {
-    const { user, signInWithAuthenticationDialog } = this.props;
+    const { user } = this.props;
     if (user)
     {
         var ButtonText = ""
@@ -401,16 +401,4 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-const TestimonialButton = ({ onClick }) => {
-  return (
-    <div
-      className="add-testimonial-container"
-      onClick={() => onClick && onClick()}
-    >
-      <div className="add-testimonial touchable-opacity">
-        <i className="fa fa-plus" style={{ marginRight: 6 }} />
-        <p>Add Testimonial</p>
-      </div>
-    </div>
-  );
-};
+
