@@ -116,11 +116,16 @@ class AppRouter extends Component {
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
     const content = [...main.content]
+    console.log("===== content array =====", content)
     const homeFxn = (m) => m.name === "Home";
-    const homeGroup = main.content.find(homeFxn);
+    const homeGroup = content.find(homeFxn);
+    console.log("==== homeGroup=====", homeGroup)
     const home = homeGroup?.children?.find(homeFxn);
+    console.log("==== home=====", home);
     var location = this.cleanURL(window.location.href);
     var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home.link);
+    console.log("====== location =====", location);
+    console.log("======= rebuilt ==========", rebuilt);
     return location === rebuilt;
   }
 
@@ -274,8 +279,8 @@ class AppRouter extends Component {
             },
             prefix,
           });
-          this.loadMenu(mainMenuResponse.data);
           this.checkTourState(mainMenuResponse.data);
+          this.loadMenu(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -442,8 +447,10 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
-    menu = menu.map((m) => {
-      console.log("=== m ===", m)
+     const cpyArr = JSON.parse(JSON.stringify(menu));
+     
+
+    let menus = cpyArr.map((m) => {
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -455,13 +462,10 @@ class AppRouter extends Component {
         m.children = this.addPrefix(m.children);
       }
 
-
-    console.log("=== new m ===", m)
-
       return m;
     });
 
-    return menu;
+    return menus;
   }
 
   saveCurrentPageURL() {
