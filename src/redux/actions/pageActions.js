@@ -52,6 +52,7 @@ import {
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
+  CELEBRATE,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
@@ -74,6 +75,20 @@ export const reduxLoadSettings = (data) => {
  * show: Whether the modal should be shown or not
  * @returns
  */
+export const celebrateWithConfetti = (options) => (dispatch) => {
+  const defaults = {
+    show: false,
+    pieces: 400,
+    gravity: 0.12,
+    duration: 10000, // in milliseconds
+    close: () => dispatch(celebrateWithConfetti({ show: false })),
+  };
+  return dispatch({
+    type: CELEBRATE,
+    payload: { ...defaults, ...(options || {}) },
+  });
+};
+
 export const reduxToggleUniversalModal = (data) => {
   return {
     type: TOGGLE_UNIVERSAL_MODAL,

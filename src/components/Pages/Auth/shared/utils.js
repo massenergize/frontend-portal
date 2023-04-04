@@ -22,6 +22,7 @@ export const AUTH_STATES = {
   CHECK_MASS_ENERGIZE: "checking_massenergize_for_profile",
   NEEDS_REGISTRATION: "authenticated_but_needs_registration",
   USER_IS_AUTHENTICATED: "user_is_authenticated",
+  JUST_FROM_GOOGLE_AUTH: "just_from_google_auth",
 };
 
 export const GUEST_USER_KEY = "GUEST_USER_EMAIL";

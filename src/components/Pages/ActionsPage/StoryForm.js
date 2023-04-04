@@ -5,7 +5,10 @@ import { connect } from "react-redux";
 // import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
 import { getPropsArrayFromJsonArray } from "../../Utils";
-import { reduxLoadTestimonials } from "../../../redux/actions/pageActions";
+import {
+  celebrateWithConfetti,
+  reduxLoadTestimonials,
+} from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 
 /********************************************************************/
@@ -498,7 +501,7 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(event, data, resetForm) {
-    const { community, user } = this.props;
+    const { community, user, celebrate } = this.props;
     event.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -506,8 +509,51 @@ class StoryForm extends React.Component {
     var Url = ""
     var body = ""
     const communityID = community ? { community_id: community.id } : {};
-    //makes api call for actions page
-    if (this.props.ModalType  === "action") {
+    const userEmail = user ? { user_email: user.email } : {};
+    const body = { ...data, rank: 0, ...communityID, ...userEmail };
+    if (this.count(this.state.body) > this.state.limit) {
+      this.setState({
+        formNotification: {
+          icon: "fa fa-times",
+          type: "bad",
+          text: "Sorry, your story is a bit too long..",
+        },
+      });
+    } else {
+      var Url = "testimonials.add";
+
+      //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
+      if (body.key) {
+        Url = "testimonials.update";
+        delete body.key;
+        //prevents front end fron submitting null data to back end causing the picture to be overwritten
+        //also prepares the image to be deleted if another one is not uploaded to replace it
+        if (
+          body?.image === null ||
+          body?.image === undefined ||
+          body?.image?.hasOwnProperty("url")
+        ) {
+          //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+          if (body?.ImgToDel) {
+            body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+          } else {
+            delete body.image;
+          }
+        }
+        delete body?.ImgToDel;
+      }
+      var isNew = Url === "testimonials.add";
+      apiCall(Url, body).then((json) => {
+        if (json && json.success) {
+          if (isNew) celebrate({ show: true, duration: 8000 });
+          if (this.props?.TriggerSuccessNotification) {
+            this.props.TriggerSuccessNotification(true);
+            this.props.TriggerModal(false);
+          } 
+        } 
+      });
+    } 
+     if (this.props.ModalType  === "action") {
       body = {...data,...communityID }
       Url = "actions.add";
 
@@ -519,22 +565,7 @@ class StoryForm extends React.Component {
             text: "Sorry, your title needs to be longer..",
           },
         });
-        return 
-      }
-      apiCall(Url, body).then((json) => {
-        if (json && json.success) {
-          if (this.props?.TriggerSuccessNotification) {
-            this.props.TriggerSuccessNotification(true);
-            this.props.TriggerModal(false);
-          } 
-        } 
-      });
-
-
-
-
-
-    } 
+      }}
     //makes api call for events page
     else if (this.props.ModalType  === "event") {
       Url = "events.add"
@@ -713,6 +744,7 @@ const mapStoreToProps = (store) => {
 
 const mapDispatchToProps = {
   reduxLoadTestimonials,
+  celebrate: celebrateWithConfetti,
 };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);

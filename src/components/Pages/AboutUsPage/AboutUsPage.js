@@ -12,7 +12,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 
 class AboutUsPage extends React.Component {
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "AboutUsPage"});
+    window.gtag('set', 'user_properties', {page_title: "AboutUsPage"});
   }
 
   renderImage(image) {

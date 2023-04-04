@@ -27,7 +27,12 @@ const rrfProps = {
 const SENTRY_DSN = IS_PROD || IS_CANARY
   ? "https://92581929e77e4312b27864e5b5c6a16e@o415460.ingest.sentry.io/5306611"
   : "https://987764a913714e0eba38e95c6d73fd52@o415460.ingest.sentry.io/5306642";
-Sentry.init({ dsn: SENTRY_DSN });
+Sentry.init({
+  dsn: SENTRY_DSN,
+  replaysSessionSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0,
+  integrations: [new Sentry.Replay({ stickySession:true})],
+});
 
 ReactDOM.render(
   <Provider store={store}>

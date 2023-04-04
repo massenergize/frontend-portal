@@ -22,6 +22,7 @@ import {
   reduxSetTourInformation,
   SECOND_SET,
   reduxToggleGuestAuthDialog,
+  celebrateWithConfetti,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -75,7 +76,7 @@ class OneActionPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "OneActionPage"});
+    window.gtag("set","user_properties", { page_title: "OneActionPage" });
     window.addEventListener("resize", this.chooseFontSize);
     const { id } = this.props.match.params;
     this.fetch(id);
@@ -87,7 +88,7 @@ class OneActionPage extends React.Component {
       const json = await apiCall("actions.info", { action_id: id });
       if (json.success) {
         this.setState({ action: json.data });
-        this.checkIfActionShouldStartAutomatically(json.data)
+        this.checkIfActionShouldStartAutomatically(json.data);
       } else {
         this.setState({ error: json.error });
       }
@@ -597,7 +598,7 @@ class OneActionPage extends React.Component {
                         className="btn-envelope"
                         id="todo-btns"
                         data-page-state={this.props.user && "authenticated"}
-                        data-action-state = {actionStateCase}
+                        data-action-state={actionStateCase}
                       >
                         <>
                           <MECameleonButton
@@ -783,12 +784,12 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <p
-                      className="cool-font make-me-dark word-wrap"
+                    <div
+                      className="cool-font make-me-dark"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.about),
                       }}
-                    ></p>
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -803,12 +804,12 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <p
-                      className="cool-font make-me-dark word-wrap"
+                    <div
+                      className="cool-font make-me-dark"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.steps_to_take),
                       }}
-                    ></p>
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -823,12 +824,12 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <p
-                      className="cool-font make-me-dark word-wrap"
+                    <div
+                      className="cool-font make-me-dark"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.deep_dive),
                       }}
-                    ></p>
+                    ></div>
                     {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
                   </div>
                 </div>
@@ -955,6 +956,10 @@ class OneActionPage extends React.Component {
     this.forceUpdate();
   }
 
+  performCelebration() {
+    const { celebrate } = this.props;
+    celebrate({ show: true, duration: 8000 });
+  }
   /**
    * These are the Cart functions
    * NOTE: The routines inCart, moveToDone, addToCart and removeFromCart are currently duplicated in Cart.js, OneActionPage.js and ActionsPage.js;
@@ -997,6 +1002,7 @@ class OneActionPage extends React.Component {
     apiCall("users.actions.completed.add", body)
       .then((json) => {
         if (json.success) {
+          this.performCelebration();
           this.props.reduxMoveToDone(json.data);
           this.setState({ testimonialLink: actionRel.action.id });
         } else {
@@ -1043,6 +1049,7 @@ class OneActionPage extends React.Component {
             this.props.reduxAddToTodo(json.data);
             this.setState({ showTodoMsg: aid });
           } else if (status === "DONE") {
+            this.performCelebration();
             this.setState({ showTestimonialLink: true });
             this.props.reduxAddToDone(json.data);
           }
@@ -1092,6 +1099,7 @@ const mapDispatchToProps = {
   reduxRemoveFromTodo,
   reduxSetTourInformation,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  celebrate: celebrateWithConfetti,
 };
 
 export default connect(

@@ -47,6 +47,7 @@ import {
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
+  CELEBRATE,
 } from "../actions/types";
 
 import {
@@ -92,7 +93,7 @@ const initialState = {
 function alreadyInSubTeam(state, action) {
   const teamsStats = state.teams;
   const teamStats = teamsStats.filter((stats) => {
-    return stats.team.id === action.payload.team.id;
+    return stats.team.id === action.payload.id;
   })[0];
   const teamData = getTeamData(teamsStats, teamStats);
   return (
@@ -106,6 +107,11 @@ export default function (state = initialState, action) {
     /**************************/
 
     
+    case CELEBRATE:
+      return {
+        ...state,
+        confettiOptions: action.payload,
+      };
     case LOAD_SETTINGS:
       return {
         ...state,

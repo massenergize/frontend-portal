@@ -100,10 +100,10 @@ function AuthenticationOptions({
           className="auth-link touchable-opacity"
           onClick={() => setUserWantsToUseGuestAuth(true)}
         >
-          <p>Let me try as a guest</p>{" "}
+          <p style={{ fontSize: "1.3rem" }}>Proceed as guest</p>{" "}
           <i
             className="fa fa-long-arrow-right"
-            style={{ color: "var(--app-theme-green)" }}
+            style={{ color: "var(--app-theme-green-darker)" }}
           />
         </div>
       </Feature>

@@ -40,7 +40,7 @@ class OneTestimonialPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'page_title', {page_title: "OneTestimonialPage"});
+    window.gtag('set', 'user_properties', {page_title: "OneTestimonialPage"});
     const { id } = this.props.match.params;
     this.fetch(id);
   }

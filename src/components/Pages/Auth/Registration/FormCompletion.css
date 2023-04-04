@@ -26,3 +26,15 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+
+.form-complete-submit-btn{
+  background-color: var(--app-theme-green) !important;
+  border-color: var(--app-theme-green) !important;
+  color: white !important;
+}
+
+/* .btn-test:hover{
+  color: var(--app-theme-green) !important;
+  background-color: white !important;
+  border-color: white !important;
+} */

@@ -33,6 +33,8 @@ export const LEAVE_TEAM = 'LEAVE_TEAM'
  * these actions load the database data for the pages
  * find the pagedata at store.pages.[pagename]
  */
+
+export const CELEBRATE = "CELEBRATE_WITH_CONFETTI";
 export const LOAD_COMMUNITY_ACTION_LIST = "LOAD_COMMUNITY_ACTION_LIST"
 export const SET_TOUR_INFO = "SET_TOUR_INFORMATION"; 
 export const SET_TOUR_STATE = "SET_TOUR_STATE"; 
