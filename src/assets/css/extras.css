@@ -3776,3 +3776,17 @@
 .put-me-block{
   margin-bottom: 15px;
 }
+.m-content-wrapper{
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.me-modal-header{
+  background-color: var(--app-theme-green);
+  color: white;
+  padding: 15px 20px;
+  z-index: 1000;
+   width: var(--modal-width-size);
+}
+.me-modal-title{
+  text-align: left !important;
+}

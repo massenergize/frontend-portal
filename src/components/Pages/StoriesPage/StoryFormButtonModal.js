@@ -49,6 +49,7 @@ class StoryFormButtonModal extends Component {
           show={this.props.openModal || this.state.OpenModal}
           size="md"
           close={this.closeModal.bind(this)}
+          title={this.props.ModalType}
         >
           <div style={{ textAlign: "left" }}>
             <StoryForm

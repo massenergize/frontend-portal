@@ -26,6 +26,19 @@ const INITIAL_STATE = {
   limit: 9000,
 };
 
+const EVENT = 'event';
+const ACTION = 'action';
+const VENDOR="vendor";
+const TESTIMONIAL = 'testimonial';
+
+const URLS = {
+  action: "actions.add",
+  event: "events.add",
+  vendor: "vendors.add",
+  testimonial: "testimonials.add",
+};
+
+
 
 //form fields for the action page
 var ActionFormData = [	  {
@@ -73,7 +86,7 @@ var ActionFormData = [	  {
 
 
 //form fields for the events page
-var EventsFormData = 	[
+var EventsFormData = [
   {
     type: "input",
     name: "name",
@@ -84,50 +97,43 @@ var EventsFormData = 	[
     value: "",
   },
   {
-    type: "input",
-    name: "description",
-    hasLabel: true,
-    label: "Event description *",
-    placeholder: "Add a description... *",
-    required: true,
-    value: "",
-  },
-  {
-    type: "date",
+    type: "datetime-local",
     name: "start_date_and_time",
     hasLabel: true,
-    label: "Start Date *",
-    placeholder: "Add a Date ... *",
+    label: "Start Date And Time *",
+    placeholder: "Add a Date and time when Event starts",
     required: true,
-    value: "2022-01-02",
+    value: new Date().toISOString().slice(0, -8),
+    min: new Date().toISOString().slice(0, -8),
   },
- {
-    type: "date",
+  {
+    type: "datetime-local",
     name: "end_date_and_time",
     hasLabel: true,
-    label: "End Date *",
+    label: "End Date And Time *",
     placeholder: "Add a Date ... *",
     required: true,
-    value: "2022-01-02",
+    value: new Date().toISOString().slice(0, -8),
+    min: new Date().toISOString().slice(0, -8),
   },
 
   {
     type: "input",
     name: "address",
     hasLabel: true,
-    label: "Address *",
+    label: "Address",
     placeholder: "Add an address... *",
-    required: true,
+    required: false,
     value: "",
   },
-      
-{
+
+  {
     type: "input",
     name: "city",
     hasLabel: true,
-    label: "City Name *",
+    label: "City",
     placeholder: "Add a city... *",
-    required: true,
+    required: false,
     value: "",
   },
 
@@ -137,11 +143,11 @@ var EventsFormData = 	[
     hasLabel: true,
     label: "State *",
     placeholder: "Add a name... *",
-    required: true,
+    required: false,
     value: "",
   },
 
- {
+  {
     type: "file",
     name: "image",
     hasLabel: true,
@@ -152,7 +158,16 @@ var EventsFormData = 	[
     maxHeight: 1000,
     maxWidth: 1000,
   },
-]
+  {
+    type: "html-field",
+    name: "description",
+    hasLabel: true,
+    label: "Event Description",
+    placeholder: "event description...*",
+    value: "",
+    required: true,
+  },
+];
 
 //form fields for the vendors page
 var VendorFormData = [
@@ -183,8 +198,8 @@ var VendorFormData = [
     required: true,
     value: "",
   },
-      
-{
+
+  {
     type: "input",
     name: "description",
     hasLabel: true,
@@ -216,16 +231,24 @@ var VendorFormData = [
 
   {
     type: "input",
-    name: "key_contact",
+    name: "key_contact_name",
     hasLabel: true,
-    label: "Key Contact *",
-    placeholder: "Add a Key Contact... *",
+    label: "Contact Person's Full Name ",
+    placeholder: "eg. Grace Tsu",
     required: true,
     value: "",
   },
-  
+  {
+    type: "input",
+    name: "key_contact_email",
+    hasLabel: true,
+    label: "Contact Person's Email ",
+    placeholder: "eg. johny.appleseed@gmail.com",
+    required: true,
+    value: "",
+  },
 
- {
+  {
     type: "file",
     name: "image",
     hasLabel: true,
@@ -235,8 +258,17 @@ var VendorFormData = [
     showOverlay: false,
     maxHeight: 1000,
     maxWidth: 1000,
-  }
-]
+  },
+  {
+    type: "html-field",
+    name: "description",
+    hasLabel: true,
+    label: "Tell us about the services this vendor provides",
+    placeholder: "Tell us more ...",
+    value: "",
+    required: true,
+  },
+];
 
 class StoryForm extends React.Component {
   constructor(props) {
@@ -262,7 +294,7 @@ class StoryForm extends React.Component {
       vid: props.vid ? props.vid : "--",
       aid: props.aid ? props.aid : "--",
       captchaConfirmed: false,
-      message: message,
+      message: "",
       picFile: null,
       //preferredName: "",
       notificationState: null,
@@ -329,14 +361,14 @@ class StoryForm extends React.Component {
   getNeededFormFields() {
 
     //returns the proper fields depending on the page being loaded 
-    if (this.props.ModalType  === "action") {
+    if (this.props.ModalType  === ACTION) {
         return ActionFormData
     }
-    if (this.props.ModalType  === "event") {
+    if (this.props.ModalType  === EVENT) {
         return EventsFormData
     }
 
-    if (this.props.ModalType  === "vendor") {
+    if (this.props.ModalType  === VENDOR) {
         return VendorFormData
     }
     const actionTitles = getPropsArrayFromJsonArray(
@@ -500,27 +532,35 @@ class StoryForm extends React.Component {
       );
     });
   }
-  onSubmit(event, data, resetForm) {
-    const { community, user, celebrate } = this.props;
-    event.preventDefault();
+  onSubmit(e, data, resetForm) {
+    const { community, user, celebrate, ModalType } = this.props;
+    e.preventDefault();
     if (!data || data.isNotComplete) {
       return;
     }
-    var Url = ""
-    var body = ""
+    var Url = URLS[this.props.ModalType];
     const communityID = community ? { community_id: community.id } : {};
     const userEmail = user ? { user_email: user.email } : {};
-    const body = { ...data, rank: 0, ...communityID, ...userEmail };
-    if (this.count(this.state.body) > this.state.limit) {
+    let body = { ...data,  ...communityID };
+
+    if(ModalType === TESTIMONIAL){
+      body = { ...body, rank: 0, ...userEmail };
+      if (this.count(this.state.body) > this.state.limit) {
+          this.setState({
+            formNotification: {
+              icon: "fa fa-times",
+              type: "bad",
+              text: "Sorry, your story is a bit too long..",
+            },
+          });
+        } else {
       this.setState({
         formNotification: {
-          icon: "fa fa-times",
-          type: "bad",
-          text: "Sorry, your story is a bit too long..",
+          icon: "fa fa-spinner fa-spin",
+          type: "good",
+          text: "We are sending now...",
         },
       });
-    } else {
-      var Url = "testimonials.add";
 
       //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
       if (body.key) {
@@ -543,20 +583,21 @@ class StoryForm extends React.Component {
         delete body?.ImgToDel;
       }
       var isNew = Url === "testimonials.add";
-      apiCall(Url, body).then((json) => {
-        if (json && json.success) {
-          if (isNew) celebrate({ show: true, duration: 8000 });
-          if (this.props?.TriggerSuccessNotification) {
-            this.props.TriggerSuccessNotification(true);
-            this.props.TriggerModal(false);
-          } 
-        } 
-      });
-    } 
-     if (this.props.ModalType  === "action") {
-      body = {...data,...communityID }
-      Url = "actions.add";
+        apiCall(Url, body).then((json) => {
+          if (json && json.success) {
+            if (isNew) celebrate({ show: true, duration: 8000 });
+            if (this.props?.TriggerSuccessNotification) {
+              this.props.TriggerSuccessNotification(true);
+              this.props.TriggerModal(false);
+            }
+          }
+        });
+      } 
 
+    }
+
+
+     if (ModalType  === ACTION) {
       if (this.count(body.title) < 6) {
         this.setState({
           formNotification: {
@@ -565,11 +606,29 @@ class StoryForm extends React.Component {
             text: "Sorry, your title needs to be longer..",
           },
         });
-      }}
+      }
+      else{
+        this.setState({
+        formNotification: {
+          icon: "fa fa-spinner fa-spin",
+          type: "good",
+          text: "We are sending now...",
+        },
+      });
+
+      apiCall(Url, body).then((json) => {
+        if (json && json.success) {
+          celebrate({ show: true, duration: 8000 });
+          if (this.props?.TriggerSuccessNotification) {
+            this.props.TriggerSuccessNotification(true);
+            this.props.TriggerModal(false);
+          }
+        }
+      })
+      }
+    }
     //makes api call for events page
-    else if (this.props.ModalType  === "event") {
-      Url = "events.add"
-      body = {...data,...communityID, ...{"have_address": true} }
+    else if (ModalType  === EVENT) {
       var location = {
         "city": body.city,
         "unit": null,
@@ -604,6 +663,7 @@ class StoryForm extends React.Component {
       }
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
+          celebrate({ show: true, duration: 8000 });
           if (this.props?.TriggerSuccessNotification) {
             this.props.TriggerSuccessNotification(true);
             this.props.TriggerModal(false);
@@ -613,11 +673,7 @@ class StoryForm extends React.Component {
     }
 
     //makes api call for vendors page
-    else if (this.props.ModalType === "vendor") {
-      Url = "vendors.add"
-      body = {...data,...communityID}
-      
-      
+    else if (ModalType === VENDOR) {
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {
@@ -630,7 +686,9 @@ class StoryForm extends React.Component {
       }
       apiCall(Url, body).then((json) => {
         var ErrorMessage  = ""
-        if (json && json.success) {
+        if (json && json.success) 
+        {
+          celebrate({ show: true, duration: 8000 });
           if (this.props?.TriggerSuccessNotification) {
             this.props.TriggerSuccessNotification(true);
             this.props.TriggerModal(false);
@@ -641,8 +699,6 @@ class StoryForm extends React.Component {
         else if (json.error.includes("Vendor submission incomplete"))  {
           ErrorMessage = "Vendor submission is incomplete. Please confirm you entered a valid email"
         }
-
-
         this.setState({
           formNotification: {
             icon: "fa fa-times",
@@ -653,81 +709,7 @@ class StoryForm extends React.Component {
         return
       });
     }
-    
-    else {
-      this.setState({
-        formNotification: {
-          icon: "fa fa-spinner fa-spin",
-          type: "good",
-          text: "We are sending now...",
-        },
-      });
-      
-      const userEmail = user ? { user_email: user.email } : {};
-      const body = { ...data, rank: 0, ...communityID, ...userEmail };
-      if (this.count(this.state.body) > this.state.limit) {
-        this.setState({
-          formNotification: {
-            icon: "fa fa-times",
-            type: "bad",
-            text: "Sorry, your story is a bit too long..",
-          },
-        });
-      } else {
-         Url = "testimonials.add";
-        //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
-        if (body.key) {
-          Url = "testimonials.update";
-          delete body.key;
-          //prevents front end fron submitting null data to back end causing the picture to be overwritten
-          //also prepares the image to be deleted if another one is not uploaded to replace it
-          if (
-            body?.image === null ||
-            body?.image === undefined ||
-            body?.image?.hasOwnProperty("url")
-          ) {
-            //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
-            if (body?.ImgToDel) {
-              body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
-            } else {
-              delete body.image;
-            }
-          }
-          delete body?.ImgToDel;
-        }
-        apiCall(Url, body).then((json) => {
-          if (json && json.success) {
-            if (this.props?.TriggerSuccessNotification) {
-              this.props.TriggerSuccessNotification(true);
-              this.props.TriggerModal(false);
-            } else {
-              this.setState({
-                formNotification: {
-                  icon: "fa fa-check",
-                  type: "good",
-                  text: "Nicely done! Your story will be reviewed and published as soon as possible. Stay tuned!",
-                },
-              });
-              resetForm();
-            }
-            //reloads the testimonials list to the user can see the updated testimonial
-            apiCall("testimonials.list", {
-              subdomain: this.props.community.subdomain,
-            }).then((json) => {
-              this.props.reduxLoadTestimonials(json.data);
-            });
-          } else {
-            this.setState({
-              formNotification: {
-                icon: "fa fa-times",
-                type: "bad",
-                text: "Something happened, we could not send your story!",
-              },
-            });
-          }
-        });
-      }
-    }
+
 
   }
 }
