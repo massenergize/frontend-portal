@@ -574,13 +574,13 @@ class StoryForm extends React.Component {
           },
         });
       } else {
-        this.setState({
-          formNotification: {
-            icon: "fa fa-spinner fa-spin",
-            type: "good",
-            text: "We are sending now...",
-          },
-        });
+        // this.setState({
+        //   formNotification: {
+        //     icon: "fa fa-spinner fa-spin",
+        //     type: "good",
+        //     text: "We are sending now...",
+        //   },
+        // });
 
         //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
         if (body.key) {
@@ -602,18 +602,17 @@ class StoryForm extends React.Component {
           }
           delete body?.ImgToDel;
         }
-        var isNew = Url === "testimonials.add";
-        apiCall(Url, body).then((json) => {
-          if (json && json.success) {
-            if (isNew) celebrate({ show: true, duration: 8000 });
-            if (TriggerSuccessNotification) {
-              TriggerSuccessNotification(true);
-              TriggerModal(false);
-            }
-          }
-        });
-      }
-      return 
+        // var isNew = Url === "testimonials.add";
+        // apiCall(Url, body).then((json) => {
+        //   if (json && json.success) {
+        //     if (isNew) celebrate({ show: true, duration: 8000 });
+        //     if (TriggerSuccessNotification) {
+        //       TriggerSuccessNotification(true);
+        //       TriggerModal(false);
+        //     }
+        //   }
+        // });
+      } 
     }
 
     if (ModalType === ACTION) {
@@ -733,9 +732,8 @@ class StoryForm extends React.Component {
 
     apiCall(Url, body).then((json) => {
       let name = ModalType + "_id"
-      
       if (json && json.success) {
-        !body[name] && celebrate({ show: true, duration: 8000 });
+       (!body[name] && !body?.id) && celebrate({ show: true, duration: 8000 });
         this.updateRedux(json?.data)
         if (TriggerSuccessNotification) {
           TriggerSuccessNotification(true);
@@ -743,6 +741,17 @@ class StoryForm extends React.Component {
           TriggerModal && TriggerModal(false);
         }
       }
+      else{
+      this.setState({
+          formNotification: {
+            icon: "fa fa-times",
+            type: "bad",
+            text: "An Error occurred while submitting your data. Try again",
+          },
+        })
+        return
+      }
+      
     });
   }
 }

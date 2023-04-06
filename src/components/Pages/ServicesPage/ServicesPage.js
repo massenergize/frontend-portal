@@ -269,6 +269,7 @@ class ServicesPage extends React.Component {
                         this.props.toggleModal({
                         show: true,
                         title: "Edit Service Provider Form",
+                        size:"md",
                         component: (
                           <StoryForm
                             ModalType={"vendor"}

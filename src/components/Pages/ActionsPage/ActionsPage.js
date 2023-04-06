@@ -443,6 +443,7 @@ class ActionsPage extends React.Component {
             this.props.toggleModal({
               show: true,
               title: "Edit Action Form",
+              size: "md",
               component: (
                 <StoryForm
                   ModalType={"action"}

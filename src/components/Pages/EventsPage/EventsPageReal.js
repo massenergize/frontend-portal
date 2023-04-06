@@ -411,6 +411,7 @@ class EventsPage extends React.Component {
                 this.props.toggleModal({
                   show: true,
                   title: "Edit Event Form",
+                  size:"md",
                   component: (
                     <StoryForm
                       ModalType={"event"}
