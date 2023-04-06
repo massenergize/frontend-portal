@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 // import Toast from "../Notification/Toast";
 // import MEModal from "../Widgets/MEModal";
 import MEFormGenerator from "../Widgets/FormGenerator/MEFormGenerator";
-import { getPropsArrayFromJsonArray } from "../../Utils";
+import { commonKeys, getPropsArrayFromJsonArray } from "../../Utils";
 import {
   celebrateWithConfetti,
   reduxLoadTestimonials,
@@ -41,47 +41,49 @@ const URLS = {
 
 
 //form fields for the action page
-var ActionFormData = [	  {
-  type: "input",
-  name: "title",
-  hasLabel: true,
-  label: "Action Name *",
-  placeholder: "Add a name... *",
-  required: true,
-  value: "",
-},
+var ActionFormData = [
+  {
+    type: "input",
+    name: "title",
+    hasLabel: true,
+    label: "Action Name *",
+    placeholder: "Add a name... *",
+    required: true,
+    value: "",
+  },
 
-{
-  type: "input",
-  name: "featured_summary",
-  hasLabel: true,
-  label: "Description *",
-  placeholder: "Please add a description... *",
-  required: true,
-  value: "",
-},
+  {
+    type: "html-field",
+    name: "about",
+    hasLabel: true,
+    label: "Description *",
+    placeholder: "Please add a description... *",
+    required: true,
+    value: "",
+  },
 
-{
-  type: "file",
-  name: "image",
-  hasLabel: true,
-  label:
-    "You can add an image to your action. It should be your own picture, or one you are sure is not copyrighted material",
-  modalContainerClassName: "me-f-c-pos-correction",
-  showOverlay: false,
-  maxHeight: 1000,
-  maxWidth: 1000,
-},
+  {
+    type: "file",
+    name: "image",
+    hasLabel: true,
+    label:
+      "You can add an image to your action. It should be your own picture, or one you are sure is not copyrighted material",
+    modalContainerClassName: "me-f-c-pos-correction",
+    showOverlay: false,
+    maxHeight: 1000,
+    maxWidth: 1000,
+  },
 
-{ 
-  type: "html-field",
-  name: "steps_to_take",
-  hasLabel: true,
-  label: "Action steps * ( limit: 9000 Char's)",
-  placeholder: "action steps...*",
-  value: "",
-  required: true,
-}	]
+  {
+    type: "html-field",
+    name: "steps_to_take",
+    hasLabel: true,
+    label: "Action steps * ( limit: 9000 Char's)",
+    placeholder: "action steps...*",
+    value: "",
+    required: true,
+  },
+];
 
 
 
@@ -463,7 +465,7 @@ class StoryForm extends React.Component {
     return (
       <MEFormGenerator
         TriggerModal={(bool) => this.props.TriggerModal(bool)}
-        inputData={this.props.draftTestimonialData}
+        inputData={this.props.draftData}
         style={{ background: "white", borderRadius: 10 }}
         className="z-depth-1"
         fields={this.getNeededFormFields()}
@@ -533,7 +535,7 @@ class StoryForm extends React.Component {
     });
   }
   onSubmit(e, data, resetForm) {
-    const { community, user, celebrate, ModalType } = this.props;
+    const { community, user, celebrate, ModalType, close,TriggerModal,TriggerSuccessNotification,updateActionsInRedux} = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -586,9 +588,9 @@ class StoryForm extends React.Component {
         apiCall(Url, body).then((json) => {
           if (json && json.success) {
             if (isNew) celebrate({ show: true, duration: 8000 });
-            if (this.props?.TriggerSuccessNotification) {
-              this.props.TriggerSuccessNotification(true);
-              this.props.TriggerModal(false);
+            if (TriggerSuccessNotification) {
+              TriggerSuccessNotification(true);
+              TriggerModal(false);
             }
           }
         });
@@ -608,6 +610,7 @@ class StoryForm extends React.Component {
         });
       }
       else{
+
         this.setState({
         formNotification: {
           icon: "fa fa-spinner fa-spin",
@@ -615,13 +618,33 @@ class StoryForm extends React.Component {
           text: "We are sending now...",
         },
       });
+      if(body?.id){
+        if (
+          body?.image === null ||
+          body?.image === undefined ||
+          body?.image?.hasOwnProperty("url")
+        ) {
+          //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+          if (body?.ImgToDel) {
+            body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+          } else {
+            delete body.image;
+          }
+        }
+        delete body?.ImgToDel;
 
+        let newBody = commonKeys({...body}, ActionFormData?.map(i=> i.name))
+        body = { ...newBody, action_id: body?.id, ...communityID};
+      }
+      
       apiCall(Url, body).then((json) => {
         if (json && json.success) {
-          celebrate({ show: true, duration: 8000 });
-          if (this.props?.TriggerSuccessNotification) {
-            this.props.TriggerSuccessNotification(true);
-            this.props.TriggerModal(false);
+         !body?.action_id && celebrate({ show: true, duration: 8000 });
+       updateActionsInRedux&& updateActionsInRedux(json.data)
+          if (TriggerSuccessNotification) {
+            TriggerSuccessNotification(true);
+            close && close()
+            TriggerModal&& TriggerModal(false);
           }
         }
       })

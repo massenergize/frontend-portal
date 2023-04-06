@@ -194,7 +194,7 @@ export default class StorySheet extends Component {
                   <StoryFormButtonModal
                     ModalType="testimonial"
                     ButtonClasses="me-testi-btn-reset touchable-opacity"
-                    draftTestimonialData={testimonialData}
+                    draftData={testimonialData}
                   >
                     Edit
                   </StoryFormButtonModal>

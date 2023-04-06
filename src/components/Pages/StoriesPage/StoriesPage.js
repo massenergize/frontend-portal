@@ -112,7 +112,7 @@ class StoriesPage extends React.Component {
         <StoryFormButtonModal
           ModalType="testimonial"
           openModal={this.state.showEditModal}
-          draftTestimonialData={this.state.draftTestimonialData}
+          draftData={this.state.draftTestimonialData}
           toggleExternalTrigger={() => {
             this.setState({ showEditModal: false, draftTestimonialData: {} });
           }}

@@ -55,7 +55,7 @@ class StoryFormButtonModal extends Component {
             <StoryForm
               ModalType={this.props.ModalType}
               close={this.closeModal.bind(this)}
-              draftTestimonialData={this.props.draftTestimonialData}
+              draftData={this.props.draftTestimonialData}
               TriggerSuccessNotification={(bool) =>
                 this.TriggerSuccessNotification(bool)
               }
