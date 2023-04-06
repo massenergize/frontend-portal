@@ -46,6 +46,7 @@ import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "./StoryForm";
+import { ACTION } from "../../Constants";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -308,7 +309,7 @@ class ActionsPage extends React.Component {
                 eq={this.props.eq}
               />
               <HorizontalFilterBox
-                ModalType="action"
+                ModalType={ACTION}
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
@@ -446,7 +447,7 @@ class ActionsPage extends React.Component {
               size: "md",
               component: (
                 <StoryForm
-                  ModalType={"action"}
+                  ModalType={ACTION}
                   close={() => this.props.toggleModal({ show: false })}
                   draftData={toEdit}
                   TriggerSuccessNotification={(bool) => ({})}

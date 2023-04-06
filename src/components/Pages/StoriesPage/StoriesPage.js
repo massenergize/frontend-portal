@@ -25,6 +25,7 @@ import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
 import { reduxLoadTestimonials, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
+import { TESTIMONIAL } from "../../Constants";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -100,7 +101,7 @@ class StoriesPage extends React.Component {
       size: "md",
       component: (
         <StoryForm
-          ModalType={"testimonial"}
+          ModalType={TESTIMONIAL}
           close={() => this.props.toggleModal({ show: false })}
           draftData={data}
           TriggerSuccessNotification={(bool) => ({})}
@@ -122,7 +123,7 @@ class StoriesPage extends React.Component {
     return (
       <div className="every-day-flex">
         <StoryFormButtonModal
-          ModalType="testimonial"
+          ModalType={TESTIMONIAL}
           openModal={this.state.showEditModal}
           draftData={this.state.draftTestimonialData}
           toggleExternalTrigger={() => {
@@ -263,7 +264,7 @@ class StoriesPage extends React.Component {
                 </div>
               </div>
               <HorizontalFilterBox
-                ModalType="testimonial"
+                ModalType={TESTIMONIAL}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
@@ -293,7 +294,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  <div>{this.renderTestimonialForm()}</div>
+                  {/* <div>{this.renderTestimonialForm()}</div> */}
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>

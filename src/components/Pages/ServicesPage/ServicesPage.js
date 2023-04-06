@@ -25,6 +25,7 @@ import Tooltip from "../Widgets/CustomTooltip";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
+import { VENDOR } from "../../Constants";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -174,7 +175,7 @@ class ServicesPage extends React.Component {
                 </div>
                 <div>
                   <HorizontalFilterBox
-                    ModalType="vendor"
+                    ModalType={VENDOR}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
@@ -267,20 +268,24 @@ class ServicesPage extends React.Component {
                         key_contact_name: vendor?.key_contact?.name,
                       };
                         this.props.toggleModal({
-                        show: true,
-                        title: "Edit Service Provider Form",
-                        size:"md",
-                        component: (
-                          <StoryForm
-                            ModalType={"vendor"}
-                            close={() => this.props.toggleModal({ show: false })}
-                            draftData={newVendor}
-                            TriggerSuccessNotification={(bool) => ({})}
-                            updateItemInRedux={this.props.updateVendorsInRedux}
-                            reduxItems={this.props.serviceProviders}
-                          />
-                        ),
-                      });
+                          show: true,
+                          title: "Edit Service Provider Form",
+                          size: "md",
+                          component: (
+                            <StoryForm
+                              ModalType={VENDOR}
+                              close={() =>
+                                this.props.toggleModal({ show: false })
+                              }
+                              draftData={newVendor}
+                              TriggerSuccessNotification={(bool) => ({})}
+                              updateItemInRedux={
+                                this.props.updateVendorsInRedux
+                              }
+                              reduxItems={this.props.serviceProviders}
+                            />
+                          ),
+                        });
                     } }
                   >
                     <span className="edit-badge z-depth-half">Edit</span>

@@ -27,6 +27,7 @@ import ShareButtons from "../../Shared/ShareButtons";
 import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "../ActionsPage/StoryForm";
+import { EVENT } from "../../Constants";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -205,7 +206,7 @@ class EventsPage extends React.Component {
                       </center>
                     </div>
                     <HorizontalFilterBox
-                      ModalType="event"
+                      ModalType={EVENT}
                       tagCols={this.props.tagCols}
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
@@ -414,7 +415,7 @@ class EventsPage extends React.Component {
                   size:"md",
                   component: (
                     <StoryForm
-                      ModalType={"event"}
+                      ModalType={EVENT}
                       close={() => this.props.toggleModal({ show: false })}
                       draftData={reConstEvent}
                       TriggerSuccessNotification={(bool) => ({})}

@@ -21,6 +21,11 @@ class StoryFormButtonModal extends Component {
     });
   };
 
+  getTitle = (formType)=>{
+    if(!formType) return ""
+    return `Create ${formType} Form`
+  }
+
 
   //opens modal for the testimonial to be submitted
   TriggerModal = (bool) => {
@@ -49,7 +54,7 @@ class StoryFormButtonModal extends Component {
           show={this.props.openModal || this.state.OpenModal}
           size="md"
           close={this.closeModal.bind(this)}
-          title={this.props.ModalType}
+          title={this.getTitle(this.props.ModalType)}
         >
           <div style={{ textAlign: "left" }}>
             <StoryForm
@@ -60,6 +65,7 @@ class StoryFormButtonModal extends Component {
                 this.TriggerSuccessNotification(bool)
               }
               TriggerModal={this.closeModal.bind(this)}
+
             />
           </div>
         </MEModal>

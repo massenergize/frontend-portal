@@ -10,6 +10,7 @@ import {
   reduxLoadTestimonials,
 } from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
+import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
 
 /********************************************************************/
 /**                        SUBSCRIBE FORM                          **/
@@ -26,10 +27,6 @@ const INITIAL_STATE = {
   limit: 9000,
 };
 
-const EVENT = 'event';
-const ACTION = 'action';
-const VENDOR="vendor";
-const TESTIMONIAL = 'testimonial';
 
 const URLS = {
   action: "actions.add",

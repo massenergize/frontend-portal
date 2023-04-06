@@ -275,44 +275,24 @@ class HorizontalFilterBox extends Component {
 
 //changes text of button depending on the page that its on
   renderAddButton = () => {
-    const { user } = this.props;
+    const { user,ModalType } = this.props;
     if (user)
     {
-        var ButtonText = ""
-
-        if (this.props.ModalType === "testimonial") {
-          ButtonText = "Add Testimonial"
-        }
-
-        if (this.props.ModalType === "action") {
-          ButtonText = "Add Action"
-        }
-
-        if (this.props.ModalType === "event") {
-          ButtonText = "Add an Event"
-        }
-
-        if (this.props.ModalType === "vendor") {
-          ButtonText = "Add a Vendor"
-        }
-
-        if (ButtonText === "") {
-          return
-        }
+      let btnTxt = ""
+      if(ModalType){
+        btnTxt = `Add ${ModalType}`
+      }
 
         return (
-          <StoryFormButtonModal
-          ModalType={this.props.ModalType}
-          >
+          <StoryFormButtonModal ModalType={ModalType}>
             <div className="add-testimonial-container">
               <div className="add-testimonial touchable-opacity">
                 <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                <p>{ButtonText}</p>
+                <p>{btnTxt}</p>
               </div>
             </div>
           </StoryFormButtonModal>
-    
-        )
+        );
       } else {
         return <div />
       }
