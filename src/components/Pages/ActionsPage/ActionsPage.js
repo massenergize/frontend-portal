@@ -389,13 +389,7 @@ class ActionsPage extends React.Component {
       </>
     );
   }
-  updateActions = (newData) => {
-    let { actions, updateActionsInRedux } = this.props;
-    let index = actions?.findIndex((item) => item.id?.toString() === newData?.id?.toString());
-    let filtered = actions?.filter((item) => item?.id !== newData?.id);
-    filtered.splice(index, 0, newData);
-    updateActionsInRedux(filtered);
-  };
+
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -455,9 +449,8 @@ class ActionsPage extends React.Component {
                   close={() => this.props.toggleModal({ show: false })}
                   draftData={toEdit}
                   TriggerSuccessNotification={(bool) => ({})}
-                  updateActionsInRedux={(newData) =>
-                    this.updateActions(newData)
-                  }
+                  updateItemsInRedux={this.props.updateActionsInRedux}
+                  reduxItems={actions}
                 />
               ),
             });

@@ -3790,3 +3790,14 @@
 .me-modal-title{
   text-align: left !important;
 }
+
+.edit-badge {
+  padding: 2px 13px;
+  color: var(--app-theme-green);
+  font-weight: bold;
+  margin-left: 11px;
+  font-size: 11px;
+  border: solid 1px var(--app-theme-green-darker);
+  border-radius: 55px;
+  cursor: pointer;
+}

@@ -24,8 +24,9 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
+import StoryForm from "../ActionsPage/StoryForm";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -358,7 +359,10 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      const page = events.map((event) => {
+      let sorted_events = events.sort((a, b) =>
+        a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+      );
+      const page = sorted_events.map((event) => {
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
@@ -397,6 +401,28 @@ class EventsPage extends React.Component {
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
               isShared={thisCommunity?.id !== event?.community?.id}
+              onEditButtonClicked={() => {
+                let reConstEvent = {
+                  ...event,
+                  ...(JSON.parse(event?.location || "{}") || {}),
+                  end_date_and_time: event?.end_date_and_time?.slice(0, 16),
+                  start_date_and_time: event?.start_date_and_time?.slice(0, 16),
+                };
+                this.props.toggleModal({
+                  show: true,
+                  title: "Edit Event Form",
+                  component: (
+                    <StoryForm
+                      ModalType={"event"}
+                      close={() => this.props.toggleModal({ show: false })}
+                      draftData={reConstEvent}
+                      TriggerSuccessNotification={(bool) => ({})}
+                      updateItemInRedux={this.props.updateEventsInRedux}
+                      reduxItems={this.props.events}
+                    />
+                  ),
+                });
+              }}
             />
           </div>
         );
@@ -433,4 +459,6 @@ const mapStoreToProps = (store) => {
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal: reduxToggleUniversalModal,
+  updateEventsInRedux:reduxLoadEvents
 })(withRouter(EventsPage));

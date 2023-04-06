@@ -280,15 +280,15 @@ class StoryForm extends React.Component {
     if (props.aid)
       message = "Already completed this action? Tell Us Your Story";
     //   changes modal title depending on  the page its on
-    if (props.ModalType  === "testimonial") {
-      message = "BOGUS TEXT - FIX THIS"
+    if (props.ModalType === "testimonial") {
+      message = "BOGUS TEXT - FIX THIS";
     }
-    if (props.ModalType  === "event") {
-      message = "Listing an event?  Tell us about it"
+    if (props.ModalType === "event") {
+      message = "Listing an event?  Tell us about it";
     }
 
-    if (props.ModalType  === "vendor") {
-      message = "Add a vendor"
+    if (props.ModalType === "vendor") {
+      message = "Add a vendor";
     }
 
     this.state = {
@@ -361,17 +361,16 @@ class StoryForm extends React.Component {
   }
 
   getNeededFormFields() {
-
-    //returns the proper fields depending on the page being loaded 
-    if (this.props.ModalType  === ACTION) {
-        return ActionFormData
+    //returns the proper fields depending on the page being loaded
+    if (this.props.ModalType === ACTION) {
+      return ActionFormData;
     }
-    if (this.props.ModalType  === EVENT) {
-        return EventsFormData
+    if (this.props.ModalType === EVENT) {
+      return EventsFormData;
     }
 
-    if (this.props.ModalType  === VENDOR) {
-        return VendorFormData
+    if (this.props.ModalType === VENDOR) {
+      return VendorFormData;
     }
     const actionTitles = getPropsArrayFromJsonArray(
       this.props.actions,
@@ -452,6 +451,28 @@ class StoryForm extends React.Component {
       },
     ];
   }
+
+  processEditData = (body, formJson) => {
+    if (
+      body?.image === null ||
+      body?.image === undefined ||
+      body?.image?.hasOwnProperty("url")
+    ) {
+      //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+      if (body?.ImgToDel) {
+        body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+      } else {
+        delete body.image;
+      }
+    }
+    delete body?.ImgToDel;
+    let newBody = commonKeys(
+      { ...body },
+      formJson?.map((i) => i.name)
+    );
+
+    return newBody;
+  };
   render() {
     // const cols = this.props.tagCollections;
     if (!this.props.actions || this.props.actions.length === 0)
@@ -534,8 +555,27 @@ class StoryForm extends React.Component {
       );
     });
   }
+
+  updateRedux = (newData) => {
+    let { reduxItems, updateItemInRedux } = this.props;
+    if(reduxItems && updateItemInRedux){
+      let index = reduxItems?.findIndex((item) => item.id?.toString() === newData?.id?.toString()) || 0;
+      let filtered = reduxItems?.filter((item) => item?.id !== newData?.id);
+      filtered.splice(index, 0, newData);
+      updateItemInRedux(filtered);
+    }
+
+  };
   onSubmit(e, data, resetForm) {
-    const { community, user, celebrate, ModalType, close,TriggerModal,TriggerSuccessNotification,updateActionsInRedux} = this.props;
+    const {
+      community,
+      user,
+      celebrate,
+      ModalType,
+      close,
+      TriggerModal,
+      TriggerSuccessNotification,
+    } = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) {
       return;
@@ -543,48 +583,48 @@ class StoryForm extends React.Component {
     var Url = URLS[this.props.ModalType];
     const communityID = community ? { community_id: community.id } : {};
     const userEmail = user ? { user_email: user.email } : {};
-    let body = { ...data,  ...communityID };
+    let body = { ...data, ...communityID };
 
-    if(ModalType === TESTIMONIAL){
+    if (ModalType === TESTIMONIAL) {
       body = { ...body, rank: 0, ...userEmail };
       if (this.count(this.state.body) > this.state.limit) {
-          this.setState({
-            formNotification: {
-              icon: "fa fa-times",
-              type: "bad",
-              text: "Sorry, your story is a bit too long..",
-            },
-          });
-        } else {
-      this.setState({
-        formNotification: {
-          icon: "fa fa-spinner fa-spin",
-          type: "good",
-          text: "We are sending now...",
-        },
-      });
+        this.setState({
+          formNotification: {
+            icon: "fa fa-times",
+            type: "bad",
+            text: "Sorry, your story is a bit too long..",
+          },
+        });
+      } else {
+        this.setState({
+          formNotification: {
+            icon: "fa fa-spinner fa-spin",
+            type: "good",
+            text: "We are sending now...",
+          },
+        });
 
-      //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
-      if (body.key) {
-        Url = "testimonials.update";
-        delete body.key;
-        //prevents front end fron submitting null data to back end causing the picture to be overwritten
-        //also prepares the image to be deleted if another one is not uploaded to replace it
-        if (
-          body?.image === null ||
-          body?.image === undefined ||
-          body?.image?.hasOwnProperty("url")
-        ) {
-          //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
-          if (body?.ImgToDel) {
-            body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
-          } else {
-            delete body.image;
+        //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
+        if (body.key) {
+          Url = "testimonials.update";
+          delete body.key;
+          //prevents front end fron submitting null data to back end causing the picture to be overwritten
+          //also prepares the image to be deleted if another one is not uploaded to replace it
+          if (
+            body?.image === null ||
+            body?.image === undefined ||
+            body?.image?.hasOwnProperty("url")
+          ) {
+            //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
+            if (body?.ImgToDel) {
+              body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+            } else {
+              delete body.image;
+            }
           }
+          delete body?.ImgToDel;
         }
-        delete body?.ImgToDel;
-      }
-      var isNew = Url === "testimonials.add";
+        var isNew = Url === "testimonials.add";
         apiCall(Url, body).then((json) => {
           if (json && json.success) {
             if (isNew) celebrate({ show: true, duration: 8000 });
@@ -594,12 +634,10 @@ class StoryForm extends React.Component {
             }
           }
         });
-      } 
-
+      }
     }
 
-
-     if (ModalType  === ACTION) {
+    if (ModalType === ACTION) {
       if (this.count(body.title) < 6) {
         this.setState({
           formNotification: {
@@ -608,60 +646,35 @@ class StoryForm extends React.Component {
             text: "Sorry, your title needs to be longer..",
           },
         });
-      }
-      else{
-
+      } else {
         this.setState({
-        formNotification: {
-          icon: "fa fa-spinner fa-spin",
-          type: "good",
-          text: "We are sending now...",
-        },
-      });
-      if(body?.id){
-        if (
-          body?.image === null ||
-          body?.image === undefined ||
-          body?.image?.hasOwnProperty("url")
-        ) {
-          //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
-          if (body?.ImgToDel) {
-            body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
-          } else {
-            delete body.image;
-          }
+          formNotification: {
+            icon: "fa fa-spinner fa-spin",
+            type: "good",
+            text: "We are sending now...",
+          },
+        });
+        if (body?.id) {
+          let newBody = this.processEditData(body, ActionFormData);
+          body = { ...newBody, action_id: body?.id, ...communityID };
         }
-        delete body?.ImgToDel;
-
-        let newBody = commonKeys({...body}, ActionFormData?.map(i=> i.name))
-        body = { ...newBody, action_id: body?.id, ...communityID};
-      }
-      
-      apiCall(Url, body).then((json) => {
-        if (json && json.success) {
-         !body?.action_id && celebrate({ show: true, duration: 8000 });
-       updateActionsInRedux&& updateActionsInRedux(json.data)
-          if (TriggerSuccessNotification) {
-            TriggerSuccessNotification(true);
-            close && close()
-            TriggerModal&& TriggerModal(false);
-          }
-        }
-      })
       }
     }
     //makes api call for events page
-    else if (ModalType  === EVENT) {
+    else if (ModalType === EVENT) {
       var location = {
-        "city": body.city,
-        "unit": null,
-        "state": body.state,
-        "address": body.address,
-        "country": null,
-        "zipcode": null
-      }
-      body.location = location
-      
+        city: data.city,
+        unit: null,
+        state: data.state,
+        address: data.address,
+        country: null,
+        zipcode: null,
+      };
+      body.location = JSON.stringify(location);
+      body.have_address = true;
+      delete body.address;
+      delete body.city;
+      delete body.state;
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {
@@ -670,11 +683,14 @@ class StoryForm extends React.Component {
             text: "Sorry, your name needs to be longer..",
           },
         });
-        return 
+        return;
       }
 
-            
-      if (Date.parse(body.end_date_and_time) - Date.parse(body.start_date_and_time) < 0 ) {
+      if (
+        Date.parse(body.end_date_and_time) -
+          Date.parse(body.start_date_and_time) <
+        0
+      ) {
         this.setState({
           formNotification: {
             icon: "fa fa-times",
@@ -682,17 +698,13 @@ class StoryForm extends React.Component {
             text: "Sorry, the end date cannot be past start date..",
           },
         });
-        return 
+        return;
       }
-      apiCall(Url, body).then((json) => {
-        if (json && json.success) {
-          celebrate({ show: true, duration: 8000 });
-          if (this.props?.TriggerSuccessNotification) {
-            this.props.TriggerSuccessNotification(true);
-            this.props.TriggerModal(false);
-          } 
-        } 
-      });
+
+      if (body?.id) {
+        let newBody = this.processEditData(body, EventsFormData);
+        body = { ...newBody, event_id: body?.id, ...communityID };
+      }
     }
 
     //makes api call for vendors page
@@ -705,35 +717,46 @@ class StoryForm extends React.Component {
             text: "Sorry, your name needs to be longer..",
           },
         });
-        return 
+        return;
       }
-      apiCall(Url, body).then((json) => {
-        var ErrorMessage  = ""
-        if (json && json.success) 
-        {
-          celebrate({ show: true, duration: 8000 });
-          if (this.props?.TriggerSuccessNotification) {
-            this.props.TriggerSuccessNotification(true);
-            this.props.TriggerModal(false);
-          } 
-        } else if (json.error.includes("duplicate key value violates unique constraint")) {
-          ErrorMessage = "Sorry, the vendor name already exists in the database.."
-        } 
-        else if (json.error.includes("Vendor submission incomplete"))  {
-          ErrorMessage = "Vendor submission is incomplete. Please confirm you entered a valid email"
-        }
-        this.setState({
-          formNotification: {
-            icon: "fa fa-times",
-            type: "bad",
-            text: ErrorMessage,
-          },
-        })
-        return
-      });
+      // apiCall(Url, body).then((json) => {
+      //   var ErrorMessage  = ""
+      //   if (json && json.success)
+      //   {
+      //     celebrate({ show: true, duration: 8000 });
+      //     if (this.props?.TriggerSuccessNotification) {
+      //       this.props.TriggerSuccessNotification(true);
+      //       this.props.TriggerModal(false);
+      //     }
+      //   } else if (json.error.includes("duplicate key value violates unique constraint")) {
+      //     ErrorMessage = "Sorry, the vendor name already exists in the database.."
+      //   }
+      //   else if (json.error.includes("Vendor submission incomplete"))  {
+      //     ErrorMessage = "Vendor submission is incomplete. Please confirm you entered a valid email"
+      //   }
+      //   this.setState({
+      //     formNotification: {
+      //       icon: "fa fa-times",
+      //       type: "bad",
+      //       text: ErrorMessage,
+      //     },
+      //   })
+      //   return
+      // });
     }
 
-
+    apiCall(Url, body).then((json) => {
+      console.log("=== json ===", json);
+      if (json && json.success) {
+        celebrate({ show: true, duration: 8000 });
+        this.updateRedux(json?.data)
+        if (TriggerSuccessNotification) {
+          TriggerSuccessNotification(true);
+          close && close();
+          TriggerModal && TriggerModal(false);
+        }
+      }
+    });
   }
 }
 
@@ -753,3 +776,5 @@ const mapDispatchToProps = {
 };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
+
+
