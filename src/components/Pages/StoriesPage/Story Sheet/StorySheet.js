@@ -188,16 +188,14 @@ export default class StorySheet extends Component {
                   View
                 </Link>
 
-                {is_published ? (
-                  <div />
-                ) : (
-                  <StoryFormButtonModal
+                {!is_published && (
+                  <div
                     ModalType="testimonial"
-                    ButtonClasses="me-testi-btn-reset touchable-opacity"
+                    className="me-testi-btn-reset touchable-opacity"
                     draftData={testimonialData}
                   >
                     Edit
-                  </StoryFormButtonModal>
+                  </div>
                 )}
               </div>
             </div>

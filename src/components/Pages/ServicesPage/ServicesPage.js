@@ -23,6 +23,8 @@ import Tooltip from "../Widgets/CustomTooltip";
 // import Funnel from "../EventsPage/Funnel";
 // import METextView from "../Widgets/METextView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
+import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -226,7 +228,11 @@ class ServicesPage extends React.Component {
       );
     }
 
-    return vendors.map((vendor, index) => {
+    let sorted_vendors = vendors.sort((a, b) =>
+      a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+    );
+
+    return sorted_vendors.map((vendor, index) => {
       return (
         <div
           data-tag-names={makeStringFromArrOfObjects(
@@ -250,6 +256,35 @@ class ServicesPage extends React.Component {
               }}
             >
               <div className="col-12 text-center" style={{ padding: 0 }}>
+                {!vendor?.is_published && (
+                  <div
+                    style={{ position: "absolute", right: 2 }}
+                    onClick={() =>{
+                      let newVendor = {
+                        ...vendor,
+                        image: vendor?.logo,
+                        key_contact_email: vendor?.key_contact?.email,
+                        key_contact_name: vendor?.key_contact?.name,
+                      };
+                        this.props.toggleModal({
+                        show: true,
+                        title: "Edit Service Provider Form",
+                        component: (
+                          <StoryForm
+                            ModalType={"vendor"}
+                            close={() => this.props.toggleModal({ show: false })}
+                            draftData={newVendor}
+                            TriggerSuccessNotification={(bool) => ({})}
+                            updateItemInRedux={this.props.updateVendorsInRedux}
+                            reduxItems={this.props.serviceProviders}
+                          />
+                        ),
+                      });
+                    } }
+                  >
+                    <span className="edit-badge z-depth-half">Edit</span>
+                  </div>
+                )}
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <img
                     className="w-100 service-prov-img"
@@ -290,4 +325,8 @@ const mapStoreToProps = (store) => {
     ),
   };
 };
-export default connect(mapStoreToProps, null)(ServicesPage);
+const mapDispatchToProps = {
+  toggleModal:reduxToggleUniversalModal,
+  updateVendorsInRedux:reduxLoadServiceProviders
+};
+export default connect(mapStoreToProps, mapDispatchToProps)(ServicesPage);

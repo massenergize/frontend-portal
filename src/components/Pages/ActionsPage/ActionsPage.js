@@ -449,7 +449,7 @@ class ActionsPage extends React.Component {
                   close={() => this.props.toggleModal({ show: false })}
                   draftData={toEdit}
                   TriggerSuccessNotification={(bool) => ({})}
-                  updateItemsInRedux={this.props.updateActionsInRedux}
+                  updateItemInRedux={this.props.updateActionsInRedux}
                   reduxItems={actions}
                 />
               ),

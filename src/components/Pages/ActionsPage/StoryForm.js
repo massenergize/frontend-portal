@@ -200,27 +200,6 @@ var VendorFormData = [
     required: true,
     value: "",
   },
-
-  {
-    type: "input",
-    name: "description",
-    hasLabel: true,
-    label: "Description *",
-    placeholder: "Add a description... *",
-    required: true,
-    value: "",
-  },
-
-  {
-    type: "input",
-    name: "address",
-    hasLabel: true,
-    label: "Address *",
-    placeholder: "Add an address... *",
-    required: true,
-    value: "",
-  },
-
   {
     type: "input",
     name: "website",
@@ -230,7 +209,6 @@ var VendorFormData = [
     required: true,
     value: "",
   },
-
   {
     type: "input",
     name: "key_contact_name",
@@ -276,20 +254,20 @@ class StoryForm extends React.Component {
   constructor(props) {
     super();
     this.closeToast = this.closeToast.bind(this);
-    var message = "Already completed an action? Tell Us Your Story";
-    if (props.aid)
-      message = "Already completed this action? Tell Us Your Story";
-    //   changes modal title depending on  the page its on
-    if (props.ModalType === "testimonial") {
-      message = "BOGUS TEXT - FIX THIS";
-    }
-    if (props.ModalType === "event") {
-      message = "Listing an event?  Tell us about it";
-    }
+    // var message = "Already completed an action? Tell Us Your Story";
+    // if (props.aid)
+    //   message = "Already completed this action? Tell Us Your Story";
+    // //   changes modal title depending on  the page its on
+    // if (props.ModalType === "testimonial") {
+    //   message = "BOGUS TEXT - FIX THIS";
+    // }
+    // if (props.ModalType === "event") {
+    //   message = "Listing an event?  Tell us about it";
+    // }
 
-    if (props.ModalType === "vendor") {
-      message = "Add a vendor";
-    }
+    // if (props.ModalType === "vendor") {
+    //   message = "Add a vendor";
+    // }
 
     this.state = {
       ...INITIAL_STATE,
@@ -635,6 +613,7 @@ class StoryForm extends React.Component {
           }
         });
       }
+      return 
     }
 
     if (ModalType === ACTION) {
@@ -647,13 +626,6 @@ class StoryForm extends React.Component {
           },
         });
       } else {
-        this.setState({
-          formNotification: {
-            icon: "fa fa-spinner fa-spin",
-            type: "good",
-            text: "We are sending now...",
-          },
-        });
         if (body?.id) {
           let newBody = this.processEditData(body, ActionFormData);
           body = { ...newBody, action_id: body?.id, ...communityID };
@@ -700,7 +672,6 @@ class StoryForm extends React.Component {
         });
         return;
       }
-
       if (body?.id) {
         let newBody = this.processEditData(body, EventsFormData);
         body = { ...newBody, event_id: body?.id, ...communityID };
@@ -719,6 +690,14 @@ class StoryForm extends React.Component {
         });
         return;
       }
+      if (body?.id) {
+        let newBody = this.processEditData(body, VendorFormData);
+        body = { ...newBody, vendor_id: body?.id };
+        }
+      else{
+        body={...body, communities:[communityID?.community_id]}
+      }
+      
       // apiCall(Url, body).then((json) => {
       //   var ErrorMessage  = ""
       //   if (json && json.success)
@@ -744,11 +723,19 @@ class StoryForm extends React.Component {
       //   return
       // });
     }
+    this.setState({
+        formNotification: {
+          icon: "fa fa-spinner fa-spin",
+          type: "good",
+          text: "We are sending now...",
+        },
+      });
 
     apiCall(Url, body).then((json) => {
-      console.log("=== json ===", json);
+      let name = ModalType + "_id"
+      
       if (json && json.success) {
-        celebrate({ show: true, duration: 8000 });
+        !body[name] && celebrate({ show: true, duration: 8000 });
         this.updateRedux(json?.data)
         if (TriggerSuccessNotification) {
           TriggerSuccessNotification(true);
