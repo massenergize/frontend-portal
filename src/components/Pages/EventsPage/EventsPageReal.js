@@ -214,6 +214,8 @@ class EventsPage extends React.Component {
                       filtersFromURL={this.state.checked_values}
                       doneProcessingURLFilter={this.state.mounted}
                       onSearchTextChange={this.onSearchTextChange.bind(this)}
+                      updateItemInRedux={this.props.updateEventsInRedux}
+                      reduxItems={this.props.events}
                     />
                     <div className="event-view-togglers">
                       {Object.keys(VIEW_MODES).map((key, index) => {
@@ -246,7 +248,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(upcomingEvents)}</div>
+                        <div className="row">
+                          {this.renderEvents(upcomingEvents)}
+                        </div>
                       </div>
                     )}
 
@@ -259,7 +263,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(pastEvents)}</div>
+                        <div className="row">
+                          {this.renderEvents(pastEvents)}
+                        </div>
                       </div>
                     )}
 
@@ -272,7 +278,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(campaigns)}</div>
+                        <div className="row">
+                          {this.renderEvents(campaigns)}
+                        </div>
                       </div>
                     )}
 

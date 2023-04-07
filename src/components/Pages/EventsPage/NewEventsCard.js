@@ -262,11 +262,23 @@ export default class NewEventsCard extends Component {
             )}
 
             {!is_published && (
-              <div style={{ position: "absolute", right: 15 }} onClick={()=>{
-                onEditButtonClicked && onEditButtonClicked()
-              }}>
-                <span className="edit-badge z-depth-half">Edit</span>
-              </div>
+              <MEButton
+                onClick={() =>
+                  onEditButtonClicked && onEditButtonClicked()
+                }
+                style={{
+                  padding: "2px 18px ",
+                  fontSize: "14px",
+                  minWidth: 76,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  position: "absolute",
+                  right: 15,
+                  bottom:1
+                }}
+              >
+                Edit
+              </MEButton>
             )}
           </div>
         </MECard>

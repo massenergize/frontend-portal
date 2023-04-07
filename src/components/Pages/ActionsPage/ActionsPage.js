@@ -318,6 +318,8 @@ class ActionsPage extends React.Component {
                 filtersFromURL={this.state.checked_values}
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
+                updateItemInRedux={this.props.updateActionsInRedux}
+                reduxItems={this.props.actions}
               />
               <div className="row phone-marg-top">
                 {/* renders the sidebar */}

@@ -126,6 +126,7 @@ class StoriesPage extends React.Component {
           ModalType={TESTIMONIAL}
           openModal={this.state.showEditModal}
           draftData={this.state.draftTestimonialData}
+          ButtonClasses={"z-depth-1 add-story-btn"}
           toggleExternalTrigger={() => {
             this.setState({ showEditModal: false, draftTestimonialData: {} });
           }}
@@ -272,6 +273,8 @@ class StoriesPage extends React.Component {
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
+                updateItemInRedux={this.props.updateItemInRedux}
+                reduxItems={this.props.stories}
               />
               <div className="row stories-row">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -294,7 +297,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  {/* <div>snksnlkskadjlak</div> */}
+                  <div>{this.renderTestimonialForm()}</div>
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>

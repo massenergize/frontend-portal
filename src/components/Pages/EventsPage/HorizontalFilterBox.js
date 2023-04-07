@@ -16,6 +16,8 @@ import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -275,10 +277,10 @@ class HorizontalFilterBox extends Component {
   };
 
   renderTestimonialForm() {
-    const { user, signInWithAuthenticationDialog, type} = this.props;
+    const { user, signInWithAuthenticationDialog, type, reduxItems, updateItemInRedux} = this.props;
     if (user)
       return (
-        <StoryFormButtonModal ModalType={type}>
+        <StoryFormButtonModal ModalType={type} reduxProps={{reduxItems, updateItemInRedux}}>
           <TestimonialButton type={type} />
         </StoryFormButtonModal>
       );
@@ -317,8 +319,10 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-       
-            {this.renderTestimonialForm()}
+          <Feature
+            name={FLAGS.USER_SUBMITTED_CONTENTS}
+            children={this.renderTestimonialForm()}
+          />
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>

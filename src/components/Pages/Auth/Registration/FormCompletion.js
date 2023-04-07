@@ -71,11 +71,11 @@ export default function FormCompletion({
 
   const suggestUsername = async () => {
     let last = "";
-    for (let x of lastName.split('-')) {
-        last += x.charAt(0).toUpperCase()
+    for (let x of lastName?.split('-')) {
+        last += x?.charAt(0)?.toUpperCase()
     }
 
-    const template = firstName.charAt(0).toUpperCase() + firstName.substring(1) + last;
+    const template = firstName?.charAt(0)?.toUpperCase() + firstName?.substring(1) + last;
     const data = await validateUserName(template);
 
     setUserName(data['suggested_username'])

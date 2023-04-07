@@ -29,10 +29,10 @@ const INITIAL_STATE = {
 
 
 const URLS = {
-  action: "actions.add",
-  event: "events.add",
-  vendor: "vendors.add",
-  testimonial: "testimonials.add",
+  Action: "actions.add",
+  Event: "events.add",
+  Vendor: "vendors.add",
+  Testimonial: "testimonials.add",
 };
 
 
@@ -534,8 +534,11 @@ class StoryForm extends React.Component {
   updateRedux = (newData) => {
     let { reduxItems, updateItemInRedux } = this.props;
     if(reduxItems && updateItemInRedux){
-      let index = reduxItems?.findIndex((item) => item.id?.toString() === newData?.id?.toString()) || 0;
-      let filtered = reduxItems?.filter((item) => item?.id !== newData?.id);
+      let index = reduxItems?.findIndex((item) => item.id?.toString() === newData?.id?.toString());      
+      if (index === -1) {
+        index = 0;
+      }
+      let filtered = (reduxItems|| [])?.filter((item) => item?.id !== newData?.id);
       filtered.splice(index, 0, newData);
       updateItemInRedux(filtered);
     }
@@ -678,15 +681,15 @@ class StoryForm extends React.Component {
       }
     }
     this.setState({
-        formNotification: {
-          icon: "fa fa-spinner fa-spin",
-          type: "good",
-          text: "We are sending now...",
-        },
-      });
+    formNotification: {
+      icon: "fa fa-spinner fa-spin",
+      type: "good",
+      text: "We are sending now...",
+    },
+  });
 
     apiCall(Url, body).then((json) => {
-      let name = ModalType + "_id"
+      let name = ModalType?.toLowerCase() + "_id"
       if (json && json.success) {
        (!body[name] && !body?.id) && celebrate({ show: true, duration: 8000 });
         this.updateRedux(json?.data)

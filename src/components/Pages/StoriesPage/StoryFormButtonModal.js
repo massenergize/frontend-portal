@@ -36,7 +36,7 @@ class StoryFormButtonModal extends Component {
     this.setState({ OpenModal: false });
   }
   render() {
-    const { overrideOpen } = this.props;
+    const { overrideOpen, reduxProps} = this.props;
     return (
       <>
         <div
@@ -61,11 +61,10 @@ class StoryFormButtonModal extends Component {
               ModalType={this.props.ModalType}
               close={this.closeModal.bind(this)}
               draftData={this.props.draftTestimonialData}
-              TriggerSuccessNotification={(bool) =>
-                this.TriggerSuccessNotification(bool)
-              }
+              TriggerSuccessNotification={(bool) =>this.TriggerSuccessNotification(bool)}
               TriggerModal={this.closeModal.bind(this)}
-
+              updateItemInRedux={reduxProps?.updateItemInRedux}
+              reduxItems={reduxProps?.reduxItems}
             />
           </div>
         </MEModal>
