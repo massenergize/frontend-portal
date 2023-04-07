@@ -15,6 +15,7 @@ import METextField from "../Widgets/METextField";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
+import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 
@@ -40,7 +41,7 @@ class HorizontalFilterBox extends Component {
   getCollectionSetAccordingToPage() {
     const { type, tagCols } = this.props;
     if (!type) return [];
-    if (type === "testimonial" || type === "service" || type === "event")
+    if (type === TESTIMONIAL || type === VENDOR || type === EVENT|| type === ACTION)
       return this.props.collection; //this.props.collection only brings the category collection
     if (!tagCols) return [];
     return tagCols;
@@ -273,29 +274,23 @@ class HorizontalFilterBox extends Component {
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
-//changes text of button depending on the page that its on
-  renderAddButton = () => {
-    const { user,ModalType } = this.props;
+  renderTestimonialForm() {
+    const { user, signInWithAuthenticationDialog, type} = this.props;
     if (user)
-    {
-      let btnTxt = ""
-      if(ModalType){
-        btnTxt = `Add ${ModalType}`
-      }
+      return (
+        <StoryFormButtonModal ModalType={type}>
+          <TestimonialButton type={type} />
+        </StoryFormButtonModal>
+      );
 
-        return (
-          <StoryFormButtonModal ModalType={ModalType}>
-            <div className="add-testimonial-container">
-              <div className="add-testimonial touchable-opacity">
-                <i className="fa fa-plus" style={{ marginRight: 6 }} />
-                <p>{btnTxt}</p>
-              </div>
-            </div>
-          </StoryFormButtonModal>
-        );
-      } else {
-        return <div />
-      }
+    return (
+      <TestimonialButton
+        onClick={() =>
+          signInWithAuthenticationDialog && signInWithAuthenticationDialog()
+        }
+        type={type}
+      />
+    );
   }
   render() {
     const { longHeight } = this.state;
@@ -322,7 +317,8 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-          {this.renderAddButton()}
+       
+            {this.renderTestimonialForm()}
         </div>
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
@@ -381,4 +377,16 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-
+const TestimonialButton = ({ onClick, type }) => {
+  return (
+    <div
+      className="add-testimonial-container"
+      onClick={() => onClick && onClick()}
+    >
+      <div className="add-testimonial touchable-opacity">
+        <i className="fa fa-plus" style={{ marginRight: 6 }} />
+        <p>Add {type}</p>
+      </div>
+    </div>
+  );
+};

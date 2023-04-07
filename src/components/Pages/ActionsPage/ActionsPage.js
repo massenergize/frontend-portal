@@ -178,10 +178,10 @@ class ActionsPage extends React.Component {
       this.state.checked_values,
       this.state.searchText,
       (action, word) =>
-        action.title.toLowerCase().includes(word) ||
-        action.about.toLowerCase().includes(word) ||
-        action.featured_summary.toLowerCase().includes(word) ||
-        action.deep_dive.toLowerCase().includes(word)
+        action?.title?.toLowerCase()?.includes(word) ||
+        action?.about?.toLowerCase()?.includes(word) ||
+        action?.featured_summary?.toLowerCase()?.includes(word) ||
+        action?.deep_dive?.toLowerCase()?.includes(word)
     );
   }
 
@@ -309,7 +309,7 @@ class ActionsPage extends React.Component {
                 eq={this.props.eq}
               />
               <HorizontalFilterBox
-                ModalType={ACTION}
+                type={ACTION}
                 foundNumber={this.state.mirror_actions}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}

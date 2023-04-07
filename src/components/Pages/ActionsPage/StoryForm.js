@@ -571,13 +571,6 @@ class StoryForm extends React.Component {
           },
         });
       } else {
-        // this.setState({
-        //   formNotification: {
-        //     icon: "fa fa-spinner fa-spin",
-        //     type: "good",
-        //     text: "We are sending now...",
-        //   },
-        // });
 
         //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
         if (body.key) {
@@ -599,16 +592,6 @@ class StoryForm extends React.Component {
           }
           delete body?.ImgToDel;
         }
-        // var isNew = Url === "testimonials.add";
-        // apiCall(Url, body).then((json) => {
-        //   if (json && json.success) {
-        //     if (isNew) celebrate({ show: true, duration: 8000 });
-        //     if (TriggerSuccessNotification) {
-        //       TriggerSuccessNotification(true);
-        //       TriggerModal(false);
-        //     }
-        //   }
-        // });
       } 
     }
 
@@ -693,31 +676,6 @@ class StoryForm extends React.Component {
       else{
         body={...body, communities:[communityID?.community_id]}
       }
-      
-      // apiCall(Url, body).then((json) => {
-      //   var ErrorMessage  = ""
-      //   if (json && json.success)
-      //   {
-      //     celebrate({ show: true, duration: 8000 });
-      //     if (this.props?.TriggerSuccessNotification) {
-      //       this.props.TriggerSuccessNotification(true);
-      //       this.props.TriggerModal(false);
-      //     }
-      //   } else if (json.error.includes("duplicate key value violates unique constraint")) {
-      //     ErrorMessage = "Sorry, the vendor name already exists in the database.."
-      //   }
-      //   else if (json.error.includes("Vendor submission incomplete"))  {
-      //     ErrorMessage = "Vendor submission is incomplete. Please confirm you entered a valid email"
-      //   }
-      //   this.setState({
-      //     formNotification: {
-      //       icon: "fa fa-times",
-      //       type: "bad",
-      //       text: ErrorMessage,
-      //     },
-      //   })
-      //   return
-      // });
     }
     this.setState({
         formNotification: {

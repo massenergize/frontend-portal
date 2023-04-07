@@ -206,7 +206,7 @@ class EventsPage extends React.Component {
                       </center>
                     </div>
                     <HorizontalFilterBox
-                      ModalType={EVENT}
+                      type={EVENT}
                       tagCols={this.props.tagCols}
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}

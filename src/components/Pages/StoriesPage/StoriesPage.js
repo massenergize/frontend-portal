@@ -264,7 +264,7 @@ class StoriesPage extends React.Component {
                 </div>
               </div>
               <HorizontalFilterBox
-                ModalType={TESTIMONIAL}
+                type={TESTIMONIAL}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
@@ -294,7 +294,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  {/* <div>{this.renderTestimonialForm()}</div> */}
+                  {/* <div>snksnlkskadjlak</div> */}
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>

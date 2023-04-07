@@ -175,7 +175,7 @@ class ServicesPage extends React.Component {
                 </div>
                 <div>
                   <HorizontalFilterBox
-                    ModalType={VENDOR}
+                    type={VENDOR}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
