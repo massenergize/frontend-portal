@@ -94,7 +94,7 @@ const initialState = {
 function alreadyInSubTeam(state, action) {
   const teamsStats = state.teams;
   const teamStats = teamsStats.filter((stats) => {
-    return stats.team.id === action.payload.team.id;
+    return stats.team.id === action.payload.id;
   })[0];
   const teamData = getTeamData(teamsStats, teamStats);
   return (
