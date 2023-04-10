@@ -64,6 +64,7 @@ import {
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
   reduxLoadSettings,
+  reduxToggleUniversalToastAction,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -92,6 +93,7 @@ import {
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
+import METoast from "./components/Pages/Widgets/METoast/METoast";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -477,8 +479,9 @@ class AppRouter extends Component {
     const realRoute = window.location.pathname;
     if (
       !currentURL?.includes("signin") &&
-      !currentURL?.includes("signup") &&
-      !currentURL?.includes("profile")
+      !currentURL?.includes("signup")
+      // Makes way for users to be able to update their preferences from email
+      // &&!currentURL?.includes("profile")
     )
       window.localStorage.setItem("last_visited", realRoute);
   }
@@ -491,6 +494,8 @@ class AppRouter extends Component {
       links,
       is_sandbox,
       confettiOptions,
+      toastOptions,
+      toggleToast,
     } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
@@ -536,6 +541,15 @@ class AppRouter extends Component {
                 show: !modalOptions?.show,
               })
             }
+          />
+          <METoast
+            {...(toastOptions || {})}
+            open={toastOptions?.open}
+            onClose={() => {
+              toggleToast({ open: false, component: null });
+              return false;
+            }}
+            message={toastOptions?.message}
           />
           {Seo({
             title: community.name,
@@ -632,6 +646,7 @@ const mapStoreToProps = (store) => {
     is_sandbox: store.page.__is_sandbox,
     confettiOptions: store.page.confettiOptions,
     authState: store.authState,
+    toastOptions: store.page.toastOptions,
   };
 };
 const mapDispatchToProps = {
@@ -677,6 +692,7 @@ const mapDispatchToProps = {
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
   reduxLoadSettings,
-  setAuthState:setAuthStateAction
+  setAuthState:setAuthStateAction,
+  toggleToast:reduxToggleUniversalToastAction
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

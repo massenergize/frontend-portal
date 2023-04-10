@@ -325,6 +325,15 @@ class EventsPage extends React.Component {
     //if check_values ===null, then it means it is probably the first time the user
     //is loading the page, so show everything from props
 
+    // when a user clicks view more events from the user nudge email,
+    // we show upcoming events that were not included in the email whose ids have been
+    // attached to the link: {domain}/events?ids=24-3-4
+    let ids = window.location.href.split("?ids=")[1];
+    if (ids) {
+      let idsArr = ids.split("-");
+      events = events.filter(event =>idsArr.includes(event.id.toString()));
+    }
+
     const thisCommunity = this.props?.pageData?.community;
     if (this.state.mirror_events.length === 0) {
       events = this.state.check_values === null ? this.props.events : events;
