@@ -136,6 +136,15 @@
   margin-bottom: 5px;
   color: black;
 }
+.send-sample-report-button{
+  background-color: var(--app-theme-color) !important;
+  color: white !important;
+  border:1px solid var(--app-theme-color) !important;
+}
+.send-sample-report-button:hover{
+  background-color: white !important;
+  color: var(--app-theme-color)  !important;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
