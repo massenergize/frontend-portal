@@ -2345,9 +2345,12 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    /* temporary undo this while we improve actions page scrolling
-    max-height: 70vh; */
-    overflow-y: scroll;
+    /* temporary undo this while we improve actions page scrolling*/
+    /* max-height: 70vh;
+    overflow-y: scroll; */
+    position: fixed;
+    top:170px;
+    left: 30px;
   }
   .stats-q-box {
     cursor: pointer;
@@ -2895,7 +2898,7 @@
   }
   .scroll-fix {
     height: fit-content;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
   }
   .mob-borderless {
     box-shadow: 0px 0px 0px !important;

@@ -304,21 +304,9 @@ class ActionsPage extends React.Component {
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
               />
-              <HorizontalFilterBox
-                type="action"
-                foundNumber={this.state.mirror_actions}
-                tagCols={this.props.tagCols}
-                boxClick={this.addMeToSelected}
-                search={this.handleSearch}
-                searchText={this.state.searchText}
-                filtersFromURL={this.state.checked_values}
-                doneProcessingURLFilter={this.state.mounted}
-                onSearchTextChange={this.onSearchTextChange.bind(this)}
-              />
               <div className="row phone-marg-top">
-                {/* renders the sidebar */}
-                <div className="phone-vanish col-lg-3 col-md-5 col-sm-12 col-xs-12 sidebar_styleTwo">
-                  <div style={{ marginTop: 20 }}>
+                <div className="phone-vanish  col-md-2 sidebar_styleTwo">
+                  <div style={{ marginTop: 0 }} className="scroll-fix">
                     {/* {this.props.user ? ( */}
                     <div className="phone-vanish">
                       <ActionBoxCounter
@@ -366,17 +354,32 @@ class ActionsPage extends React.Component {
                     </center>
                   </div>
                 </div>
-                {/* renders the actions */}
-                {/* temporary back out fix-filter while improving scrolling
+                <div className="col-md-10 col-sm-12 col-xs-12">
+                  <HorizontalFilterBox
+                    type="action"
+                    foundNumber={this.state.mirror_actions}
+                    tagCols={this.props.tagCols}
+                    boxClick={this.addMeToSelected}
+                    search={this.handleSearch}
+                    searchText={this.state.searchText}
+                    filtersFromURL={this.state.checked_values}
+                    doneProcessingURLFilter={this.state.mounted}
+                    onSearchTextChange={this.onSearchTextChange.bind(this)}
+                  />
+                  {/* renders the sidebar */}
+
+                  {/* renders the actions */}
+                  {/* temporary back out fix-filter while improving scrolling
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12 fix-filter">*/}
-                <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12">
-                  <div
-                    id="test-action-cards-wrapper"
-                    data-number-of-actions-for-test={actions?.length}
-                    className="row scroll-fix"
-                    style={{ marginTop: 20, paddingTop: 30 }}
-                  >
-                    {this.renderActions(actions)}
+                  <div className="">
+                    <div
+                      id="test-action-cards-wrapper"
+                      data-number-of-actions-for-test={actions?.length}
+                      className="row"
+                      style={{ marginTop: 20, paddingTop: 30 }}
+                    >
+                      {this.renderActions(actions)}
+                    </div>
                   </div>
                 </div>
               </div>
