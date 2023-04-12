@@ -403,8 +403,9 @@ class ActionsPage extends React.Component {
         </p>
       );
     }
+
     //returns a list of action components
-    return Object.keys(actions).map((key) => {
+    return Object.keys(actions.sort((a,b) => a.rank - b.rank)).map((key) => {
       var action = actions[key];
       return (
         <ActionCard
