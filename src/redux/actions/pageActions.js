@@ -53,6 +53,7 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
   CELEBRATE,
+  TOGGLE_UNIVERSAL_TOAST,
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
@@ -439,3 +440,8 @@ export const reduxChangeData = (data) => (dispatch) => {
     payload: data,
   });
 };
+
+export const reduxToggleUniversalToastAction = (data = {}) => ({
+  type: TOGGLE_UNIVERSAL_TOAST,
+  payload: data,
+});

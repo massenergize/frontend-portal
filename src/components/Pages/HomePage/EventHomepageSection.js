@@ -35,14 +35,15 @@ class Events extends React.Component {
     });
 
     if (!events) {
-      return (
-        <div>
-          <p>
-            No upcoming events. See{" "}
-            <Link to={this.props.links.events}>all events</Link>{" "}
-          </p>
-        </div>
-      );
+      return <></> 
+      // return (
+      //   <div>
+      //     <p>
+      //       No upcoming events. See{" "}
+      //       <Link to={this.props.links.events}>all events</Link>{" "}
+      //     </p>
+      //   </div>
+      // );
     }
     if (events.length !== 0) {
       return events.map((event, index) => {
@@ -67,16 +68,18 @@ class Events extends React.Component {
         );
       });
     } else {
-      return (
-        <div style={{ width: "100%", marginTop: 10 }}>
-          <center>
-            <p>
-              No upcoming events. See{" "}
-              <Link to={this.props.links.events}>all events</Link>{" "}
-            </p>
-          </center>
-        </div>
-      );
+      return <></>
+      
+      // (
+      //   <div style={{ width: "100%", marginTop: 10 }}>
+      //     <center>
+      //       <p>
+      //         No upcoming events. See{" "}
+      //         <Link to={this.props.links.events}>all events</Link>{" "}
+      //       </p>
+      //     </center>
+      //   </div>
+      // );
     }
   }
   render() {

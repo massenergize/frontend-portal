@@ -48,6 +48,7 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
   CELEBRATE,
+  TOGGLE_UNIVERSAL_TOAST,
 } from "../actions/types";
 
 import {
@@ -93,7 +94,7 @@ const initialState = {
 function alreadyInSubTeam(state, action) {
   const teamsStats = state.teams;
   const teamStats = teamsStats.filter((stats) => {
-    return stats.team.id === action.payload.team.id;
+    return stats.team.id === action.payload.id;
   })[0];
   const teamData = getTeamData(teamsStats, teamStats);
   return (
@@ -106,7 +107,6 @@ export default function (state = initialState, action) {
   switch (action.type) {
     /**************************/
 
-    
     case CELEBRATE:
       return {
         ...state,
@@ -484,6 +484,13 @@ export default function (state = initialState, action) {
         ...state,
         __is_custom_site: action.payload,
       };
+
+    case TOGGLE_UNIVERSAL_TOAST:
+      return {
+        ...state,
+        toastOptions:action.payload,
+      };
+
     /**************************/
     default:
       return {
@@ -491,3 +498,12 @@ export default function (state = initialState, action) {
       };
   }
 }
+
+
+export const reducerForUniversalToast = (state = {}, action = {}) => {
+  switch (action.type) {
+
+    default:
+      return state;
+  }
+};

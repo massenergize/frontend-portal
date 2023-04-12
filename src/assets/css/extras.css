@@ -136,6 +136,15 @@
   margin-bottom: 5px;
   color: black;
 }
+.send-sample-report-button{
+  background-color: var(--app-theme-color) !important;
+  color: white !important;
+  border:1px solid var(--app-theme-color) !important;
+}
+.send-sample-report-button:hover{
+  background-color: white !important;
+  color: var(--app-theme-color)  !important;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
@@ -3771,4 +3780,7 @@
   box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: 0 1px 0px 0 rgb(0 0 0 / 0%),
     0 2px 10px 0 rgba(0, 0, 0, 0.05);
+}
+.put-me-block{
+  margin-bottom: 15px;
 }

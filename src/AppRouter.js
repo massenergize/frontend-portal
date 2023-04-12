@@ -64,6 +64,7 @@ import {
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
   reduxLoadSettings,
+  reduxToggleUniversalToastAction,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -80,17 +81,19 @@ import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
-import { subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
+import { setAuthStateAction, subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
 import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
 import {
+  AUTH_STATES,
   browswerIsSafari,
   siteUsesCustomDomain,
 } from "./components/Pages/Auth/shared/utils";
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
+import METoast from "./components/Pages/Widgets/METoast/METoast";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -153,7 +156,6 @@ class AppRouter extends Component {
     const { community } = this.props;
     const subdomain = community?.subdomain || "undefined";
     const { pathname } = new URL(window.location.href);
-
     if (browswerIsSafari() && siteUsesCustomDomain()) {
       const subd =
         pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1
@@ -166,6 +168,18 @@ class AppRouter extends Component {
     device_checkin(cookies, community_id).then(null, (err) => console.log(err));
     this.props.checkFirebaseAuthentication();
     this.fetch();
+  }
+
+
+
+  static getDerivedStateFromProps(props, state) {
+    const isJustFromGoogleAUth =  props.authState?.split("::")
+    if (isJustFromGoogleAUth[1]=== AUTH_STATES.JUST_FROM_GOOGLE_AUTH){
+      props.history.push(props.links.signup)
+      props.setAuthState(isJustFromGoogleAUth[0])
+      return null
+    }
+    return null
   }
 
   async fetch() {
@@ -465,8 +479,9 @@ class AppRouter extends Component {
     const realRoute = window.location.pathname;
     if (
       !currentURL?.includes("signin") &&
-      !currentURL?.includes("signup") &&
-      !currentURL?.includes("profile")
+      !currentURL?.includes("signup")
+      // Makes way for users to be able to update their preferences from email
+      // &&!currentURL?.includes("profile")
     )
       window.localStorage.setItem("last_visited", realRoute);
   }
@@ -479,6 +494,8 @@ class AppRouter extends Component {
       links,
       is_sandbox,
       confettiOptions,
+      toastOptions,
+      toggleToast,
     } = this.props;
     this.saveCurrentPageURL();
     document.body.style.overflowX = "hidden";
@@ -524,6 +541,15 @@ class AppRouter extends Component {
                 show: !modalOptions?.show,
               })
             }
+          />
+          <METoast
+            {...(toastOptions || {})}
+            open={toastOptions?.open}
+            onClose={() => {
+              toggleToast({ open: false, component: null });
+              return false;
+            }}
+            message={toastOptions?.message}
           />
           {Seo({
             title: community.name,
@@ -619,6 +645,8 @@ const mapStoreToProps = (store) => {
     modalOptions: store.page.modalOptions,
     is_sandbox: store.page.__is_sandbox,
     confettiOptions: store.page.confettiOptions,
+    authState: store.authState,
+    toastOptions: store.page.toastOptions,
   };
 };
 const mapDispatchToProps = {
@@ -664,5 +692,7 @@ const mapDispatchToProps = {
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
   reduxLoadSettings,
+  setAuthState:setAuthStateAction,
+  toggleToast:reduxToggleUniversalToastAction
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

@@ -116,90 +116,105 @@ export default function FormCompletion({
       <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
         {/* style={{marginTop: 20}} does no change */}
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
-          Welcome to { community.name }
+          Welcome to {community.name}
         </h3>
         <h5 align="center" className="cool-font mob-font-lg me-section-title">
-            Almost there! Please tell us your name
+          Almost there! Please tell us your name
         </h5>
-
 
         <div className="c-f-inner-wrapper">
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user" style={{color: firstColor}}></span>
+              <span className="fa fa-user" style={{ color: firstColor }}></span>
             </span>
             <input
               type="text"
               name="firstName"
               value={firstName}
               onChange={onChange}
-              onBlur={() => { if (firstName) setFirstColor("green"); else setFirstColor("") }}
+              onBlur={() => {
+                if (firstName) setFirstColor("green");
+                else setFirstColor("");
+              }}
               placeholder="First Name"
               required
             />
           </div>
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user" style={{color: secondColor}}></span>
+              <span
+                className="fa fa-user"
+                style={{ color: secondColor }}
+              ></span>
             </span>
             <input
               type="text"
               name="lastName"
               value={lastName}
               onChange={onChange}
-              onBlur={() => { autoSetSuggestion(); if (lastName) setSecondColor("green"); else setSecondColor("") }}
+              onBlur={() => {
+                autoSetSuggestion();
+                if (lastName) setSecondColor("green");
+                else setSecondColor("");
+              }}
               placeholder="Last Name"
               required
             />
           </div>
-          <p style={{marginTop: 10, marginBottom: 0 }}>
-            What username would you like? {" "} 
-            You can use our suggestion or create your own.
+          <p style={{ marginTop: 10, marginBottom: 0 }}>
+            What username would you like? You can use our suggestion or create
+            your own.
           </p>
-          <div className="form-group" style={{ marginBottom: 20, marginTop: 10 }}>
+          <div
+            className="form-group"
+            style={{ marginBottom: 20, marginTop: 10 }}
+          >
             <span className="adon-icon">
-              <span className="fa fa-user" style={{color: thirdColor}}></span>
+              <span className="fa fa-user" style={{ color: thirdColor }}></span>
             </span>
             <input
               type="text"
               name="userName"
               value={userName || ""}
               onChange={(e) => handleUserNameChange(e)}
-              onBlur={async () => { 
+              onBlur={async () => {
                 if (!userName) {
-                    setInvalidUsernameDisplay("none");
-                    setThirdColor("");
-                    return;
+                  setInvalidUsernameDisplay("none");
+                  setThirdColor("");
+                  return;
                 }
-                
+
                 if (userNameValid) {
-                    setThirdColor("green");
-                    setInvalidUsernameDisplay("none");
-                    return;
+                  setThirdColor("green");
+                  setInvalidUsernameDisplay("none");
+                  return;
                 }
 
                 const data = await validateUserName(userName);
-                if (data['valid']) {
-                    setThirdColor("green");
-                    setUserNameValid(true);
-                    setInvalidUsernameDisplay("none");
-                    onUsernameChange(userName);
-                    return;
+                if (data["valid"]) {
+                  setThirdColor("green");
+                  setUserNameValid(true);
+                  setInvalidUsernameDisplay("none");
+                  onUsernameChange(userName);
+                  return;
                 }
 
                 setThirdColor("green");
                 setUserNameValid(true);
-                setNonUniqueUsername(userName)
-                setUserName(data['suggested_username'])
-                onUsernameChange(data['suggested_username']);
+                setNonUniqueUsername(userName);
+                setUserName(data["suggested_username"]);
+                onUsernameChange(data["suggested_username"]);
                 setInvalidUsernameDisplay("block");
               }}
               placeholder="Username (unique)"
             />
           </div>
-          <div style={{display: invalidUsernameDisplay }}>The username '{nonUniqueUsername}' is taken, how about '{userName}'?</div>
-          <p style={{marginTop: 10 }}>
-            Your ZIP code is used to count your actions properly towards the community goal.
+          <div style={{ display: invalidUsernameDisplay }}>
+            The username '{nonUniqueUsername}' is taken, how about '{userName}'?
+          </div>
+          <p style={{ marginTop: 10 }}>
+            Your ZIP code is used to count your actions properly towards the
+            community goal.
           </p>
           <div className="form-group">
             <input
@@ -256,6 +271,11 @@ export default function FormCompletion({
               disabled={!captchaIsValid || formNeedsWorks() || !userNameValid}
               onClick={async () => createMyAccountNow()}
               loading={loading}
+              className={
+                captchaIsValid &&
+                !formNeedsWorks() &&
+                "form-complete-submit-btn"
+              }
             >
               {loading ? "Creating Profile..." : "Finish Signing Up!"}
             </MEButton>

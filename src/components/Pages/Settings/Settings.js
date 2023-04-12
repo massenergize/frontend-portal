@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../../api/functions";
+import { reduxToggleUniversalToastAction } from "../../../redux/actions/pageActions";
 import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
@@ -18,6 +19,8 @@ function Settings({
   links,
   fireAuth,
   authState,
+  community,
+  toggleToast,
 }) {
   const [currentTab, setCurrentTab] = useState(null);
 
@@ -35,7 +38,6 @@ function Settings({
 
   if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
   // -------------------------------------------------------------------
-
   const userDefaults = user?.preferences?.user_portal_settings || {};
 
   const updateSettingsForUser = (content) => {
@@ -52,8 +54,21 @@ function Settings({
       preferences: JSON.stringify(preferences),
     })
       .then((response) => {
-        if (!response.success)
+        if (response?.success) {
+          toggleToast({
+            open: true,
+            type: "success",
+            message: "Settings updated successfully.",
+          });
+        } else {
+          toggleToast({
+            type: "error",
+            open: true,
+            message:
+              "An error occurred while updating user settings. Try again later.",
+          });
           return console.log("Error updating user settings: ", response.error);
+        }
       })
       .catch((e) =>
         console.log("Error updating user settings: ", e.toString())
@@ -65,7 +80,7 @@ function Settings({
       return {
         key,
         name,
-        hideHeader:true,
+        hideHeader: true,
         component: (
           <RenderOptions
             options={options}
@@ -73,6 +88,8 @@ function Settings({
             settingsTabKey={key}
             updateUser={updateSettingsForUser}
             user={user}
+            community_id={community?.id}
+            toggleToast={toggleToast}
           />
         ),
       };
@@ -110,12 +127,12 @@ function Settings({
             <div className="col-lg-9 col-md-9 col-12 offset-md-1 settings-wrapper">
               <h1>Communication Preferences</h1>
               {/*  TODO: The text here is just a placeholder. Text description from Kaat or Brad will be used here... */}
-              <p style={{ color: "black" }}>
+              {/* <p style={{ color: "black" }}>
                 You can set how often you receive notifications, and what topics
                 to receive notifications on. Use the toggles below to manage the
                 behavior of the application in the manner that best suits
                 you.
-              </p>
+              </p> */}
               <TabView
                 onChange={(tabKey) => setCurrentTab(tabKey)}
                 tabs={TABS}
@@ -137,9 +154,16 @@ const mapStateToProps = (store) => {
     firebaseAuthSettings: store.firebaseAuthSettings,
     fireAuth: store.fireAuth,
     authState: store.authState,
+    community: store.page.community,
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ updateUserInRedux: reduxLogin }, dispatch);
+  return bindActionCreators(
+    {
+      updateUserInRedux: reduxLogin,
+      toggleToast: reduxToggleUniversalToastAction,
+    },
+    dispatch
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
