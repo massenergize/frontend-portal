@@ -304,9 +304,9 @@ class ActionsPage extends React.Component {
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
               />
-              <div className="row phone-marg-top">
-                <div className="phone-vanish  col-md-2 sidebar_styleTwo">
-                  <div style={{ marginTop: 0 }} className="scroll-fix">
+              <div className=" phone-marg-top action-items-n-sidebar-container">
+                <div className="phone-vanish sidebar_styleTwo ">
+                  <div className="scroll-fix">
                     {/* {this.props.user ? ( */}
                     <div className="phone-vanish">
                       <ActionBoxCounter
@@ -354,7 +354,7 @@ class ActionsPage extends React.Component {
                     </center>
                   </div>
                 </div>
-                <div className="col-md-10 col-sm-12 col-xs-12">
+                <div>
                   <HorizontalFilterBox
                     type="action"
                     foundNumber={this.state.mirror_actions}
@@ -371,7 +371,7 @@ class ActionsPage extends React.Component {
                   {/* renders the actions */}
                   {/* temporary back out fix-filter while improving scrolling
                 <div className="col-lg-9 col-md-7 col-sm-12 col-xs-12 fix-filter">*/}
-                  <div className="">
+                  <div>
                     <div
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
