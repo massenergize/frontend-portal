@@ -1,6 +1,6 @@
 import React from "react";
 import RadioButtons from "./../Widgets/MERadio";
-function RenderRadios({ values, onItemSelected, defaultFromUser }) {
+function RenderRadios({ values, onItemSelected, defaultFromUser, variant }) {
   const options = Object.entries(values).map(([key, items]) => ({
     ...items,
     key,
@@ -19,6 +19,7 @@ function RenderRadios({ values, onItemSelected, defaultFromUser }) {
         labelExtractor={(it) => it.name}
         onItemSelected={transfer}
         value={defaultValue}
+        variant={variant}
       />
     </div>
   );
