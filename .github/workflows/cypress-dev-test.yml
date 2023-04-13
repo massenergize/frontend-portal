@@ -1,6 +1,7 @@
 name: Frontend Testing
 on:
   pull_request:
+    types: [ready_for_review]
     branches: [ development ]
 jobs:
   cypress-test:
