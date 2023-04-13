@@ -276,27 +276,6 @@ class ActionsPage extends React.Component {
           {/* main shop section */}
           <div className="shop sec-padd">
             <div className="container override-container-width">
-              <div className="all-head-area">
-                <div className="text-center">
-                  {description ? (
-                    <PageTitle style={{ fontSize: 24 }}>
-                      {title}
-                      <Tooltip text={description}>
-                        <span
-                          className="fa fa-info-circle"
-                          style={{ color: "#428a36", padding: "5px" }}
-                        ></span>
-                      </Tooltip>
-                    </PageTitle>
-                  ) : (
-                    <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
-                  )}
-                </div>
-                <center>
-                  <Subtitle>{pageData.sub_title}</Subtitle>
-                </center>
-              </div>
-
               <ActionMobileStats
                 todo={this.props.todo}
                 done={this.props.done}
@@ -355,6 +334,26 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 <div>
+                  <div className="all-head-area">
+                    <div className="text-center">
+                      {description ? (
+                        <PageTitle style={{ fontSize: 24 }}>
+                          {title}
+                          <Tooltip text={description}>
+                            <span
+                              className="fa fa-info-circle"
+                              style={{ color: "#428a36", padding: "5px" }}
+                            ></span>
+                          </Tooltip>
+                        </PageTitle>
+                      ) : (
+                        <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
+                      )}
+                    </div>
+                    <center>
+                      <Subtitle>{pageData.sub_title}</Subtitle>
+                    </center>
+                  </div>
                   <HorizontalFilterBox
                     type="action"
                     foundNumber={this.state.mirror_actions}
