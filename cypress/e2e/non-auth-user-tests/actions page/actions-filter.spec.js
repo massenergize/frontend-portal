@@ -24,7 +24,7 @@ describe("Test actions filterbox functionality", function () {
         // cy.get("@filterbox").type($title.text(), { delay: 100 });
         typeInsideFilterbox($title.text())
         cy.get(".test-action-card-item")
-          .find(".test-action-title")
+          .find(".test-action-title").first()
           .should("have.text", $title.text());
       });
   });

@@ -116,19 +116,16 @@ class AppRouter extends Component {
   }
 
   isHomepage(menu) {
+    // let cpy = JSON.parse(JSON.stringify(menu));
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
     const content = [...main.content]
-    console.log("===== content array =====", content)
     const homeFxn = (m) => m.name === "Home";
     const homeGroup = content.find(homeFxn);
-    console.log("==== homeGroup=====", homeGroup)
+  
     const home = homeGroup?.children?.find(homeFxn);
-    console.log("==== home=====", home);
     var location = this.cleanURL(window.location.href);
     var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home.link);
-    console.log("====== location =====", location);
-    console.log("======= rebuilt ==========", rebuilt);
     return location === rebuilt;
   }
 
@@ -282,8 +279,8 @@ class AppRouter extends Component {
             },
             prefix,
           });
-          this.checkTourState(mainMenuResponse.data);
           this.loadMenu(mainMenuResponse.data);
+          this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
@@ -370,7 +367,7 @@ class AppRouter extends Component {
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerLinks =  this.addPrefix(footerContent[0].content.links);
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -450,21 +447,16 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
-     const cpyArr = JSON.parse(JSON.stringify(menu));
-     
-
-    let menus = cpyArr.map((m) => {
-      if (
-        this.state.prefix !== "" &&
-        m.link &&
-        !isValidUrl(m.link) &&
-        !m.link.startsWith(this.state.prefix)
-      )
+    if(!menu) {
+      return [];
+    }
+    let menus = menu.map((m) => {
+      if ( this.state.prefix !== "" && m.link && !isValidUrl(m.link) && !m.link.startsWith(this.state.prefix)){
         m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+      }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
       }
-
       return m;
     });
 
