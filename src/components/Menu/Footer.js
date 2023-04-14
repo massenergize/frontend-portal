@@ -79,7 +79,7 @@ class Footer extends React.Component {
                   href="https://massenergize.org"
                   rel="noopener noreferrer"
                 >
-                  Copyright © 2022
+                  Copyright © 2023
                 </a>{" "}
                 All Rights Reserved. Powered by{" "}
                 <a
