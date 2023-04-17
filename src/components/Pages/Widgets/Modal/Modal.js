@@ -29,6 +29,7 @@ function Modal(props) {
     children,
     showOverlay,
     show,
+    title
   } = props;
 
   if (!show) return <></>;
@@ -36,8 +37,24 @@ function Modal(props) {
     <>
       <div className="m-container">
         {showOverlay && <Curtain close={close} />}
+        {title && (
+          <div
+            className="me-modal-header z-depth-1 ml-modal-scale-in"
+            style={{
+              "--modal-width-size": getSize(
+                customSize ? "custom" : size,
+                customSize && sizeValue
+              ),
+            }}
+          >
+            <div className="me-modal-title">
+              <span>{title}</span>
+            </div>
+          </div>
+        )}
+
         <div
-          className={`m-content-wrapper z-depth-1 ml-modal-scale-in ${className}`}
+          className={`m-content-wrapper ${title && "remove-border-radius"} z-depth-1 ml-modal-scale-in ${className}`}
           style={{
             "--modal-width-size": getSize(
               customSize ? "custom" : size,

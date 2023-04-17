@@ -9839,3 +9839,13 @@ button.as-link:hover {
   display: flex;
   align-items: center;
 }
+
+.add-story-btn{
+  border-radius: 55px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.add-story-btn:hover{
+  background-color: var(--app-theme-green);
+  color: white;
+}

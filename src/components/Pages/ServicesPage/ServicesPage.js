@@ -23,6 +23,10 @@ import Tooltip from "../Widgets/CustomTooltip";
 // import Funnel from "../EventsPage/Funnel";
 // import METextView from "../Widgets/METextView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
+import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
+import { VENDOR } from "../../Constants";
+import MEButton from "../Widgets/MEButton";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -35,7 +39,7 @@ class ServicesPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "ServicesPage"});
+    window.gtag("set", "user_properties", { page_title: "ServicesPage" });
   }
 
   addMeToSelected(param, reset = false) {
@@ -172,7 +176,7 @@ class ServicesPage extends React.Component {
                 </div>
                 <div>
                   <HorizontalFilterBox
-                    type="action"
+                    type={VENDOR}
                     tagCols={this.props.tagCols}
                     boxClick={this.addMeToSelected}
                     search={this.handleSearch}
@@ -180,6 +184,8 @@ class ServicesPage extends React.Component {
                     filtersFromURL={this.state.checked_values}
                     doneProcessingURLFilter={this.state.mounted}
                     onSearchTextChange={this.onSearchTextChange.bind(this)}
+                    updateItemInRedux={this.props.updateVendorsInRedux}
+                    reduxItems={this.props.serviceProviders}
                   />
                 </div>
 
@@ -197,6 +203,35 @@ class ServicesPage extends React.Component {
       </>
     );
   }
+
+  onEditButtonClicked = (vendor)=>{
+    let newVendor = {
+      ...vendor,
+      image: vendor?.logo,
+      key_contact_email: vendor?.key_contact?.email,
+      key_contact_name: vendor?.key_contact?.name,
+    };
+      this.props.toggleModal({
+        show: true,
+        title: "Edit Vendor Form",
+        size: "md",
+        component: (
+          <StoryForm
+            ModalType={VENDOR}
+            close={() =>
+              this.props.toggleModal({ show: false })
+            }
+            draftData={newVendor}
+            TriggerSuccessNotification={(bool) => ({})}
+            updateItemInRedux={this.props.updateVendorsInRedux }
+            reduxItems={this.props.serviceProviders}
+          />
+        ),
+      });
+
+  }
+
+
 
   renderVendors(vendors) {
     if (this.state.mirror_services.length === 0) {
@@ -226,7 +261,11 @@ class ServicesPage extends React.Component {
       );
     }
 
-    return vendors.map((vendor, index) => {
+    let sorted_vendors = vendors.sort((a, b) =>
+      a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+    );
+
+    return sorted_vendors.map((vendor, index) => {
       return (
         <div
           data-tag-names={makeStringFromArrOfObjects(
@@ -270,6 +309,22 @@ class ServicesPage extends React.Component {
                   </h4>
                 </Link>
               </div>
+              {!vendor?.is_published && (
+                <center>
+                  <MEButton
+                    onClick={() => this.onEditButtonClicked(vendor)}
+                    style={{
+                      padding: "2px 18px ",
+                      fontSize: "14px",
+                      minWidth: 76,
+                      textAlign: "center",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Edit
+                  </MEButton>
+                </center>
+              )}
             </div>
             {/* </div> */}
           </MECard>
@@ -290,4 +345,8 @@ const mapStoreToProps = (store) => {
     ),
   };
 };
-export default connect(mapStoreToProps, null)(ServicesPage);
+const mapDispatchToProps = {
+  toggleModal:reduxToggleUniversalModal,
+  updateVendorsInRedux:reduxLoadServiceProviders
+};
+export default connect(mapStoreToProps, mapDispatchToProps)(ServicesPage);

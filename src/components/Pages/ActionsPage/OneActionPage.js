@@ -594,6 +594,8 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
+                      
+                    {action?.is_published &&(
                       <div
                         className="btn-envelope"
                         id="todo-btns"
@@ -617,6 +619,8 @@ class OneActionPage extends React.Component {
                           />
                         </>
                       </div>
+
+                    )}
 
                       {this.state.showTestimonialLink ? (
                         <div>

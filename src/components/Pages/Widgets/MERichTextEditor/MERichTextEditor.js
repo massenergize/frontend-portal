@@ -27,9 +27,8 @@ function MERichTextEditor({
   }, [onMount]);
 
   useEffect(() => {
-    if (content === undefined) setContent(value || defaultValue || initialValue || "");
+    if (!content) setContent(value || defaultValue || initialValue || "");
   }, [value, defaultValue, initialValue, content]);
-
   return (
     <>
       {loading && (

@@ -62,6 +62,7 @@ export default class MEModal extends Component {
           className={`me-modal-content me-modal-fade-down ${this.getSize()} ${containerClassName}`}
           style={contentStyle}
         >
+
           {showCloseBtnOnMobile && (
             <center>
               <MEButton
@@ -107,6 +108,7 @@ export default class MEModal extends Component {
               </MEButton>
             </center>
           )}
+
           <MECard
             className={`z-depth-5 ${className}`}
             style={{ ...defaults, ...style }}

@@ -706,10 +706,11 @@
   transition: 0.2s ease-out;
 }
 .add-testimonial-container {
+  height: 100%;
   padding-right: 15px;
   position: absolute;
   right: -16px;
-  top: -1px;
+  top: 0px;
   display: inline-block;
 }
 .add-testimonial {
@@ -3787,4 +3788,29 @@
 }
 .put-me-block{
   margin-bottom: 15px;
+}
+.m-content-wrapper{
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.me-modal-header{
+  background-color: var(--app-theme-green);
+  color: white;
+  padding: 15px 20px;
+  z-index: 1000;
+   width: var(--modal-width-size);
+}
+.me-modal-title{
+  text-align: left !important;
+}
+
+.edit-badge {
+  padding: 2px 13px;
+  color: var(--app-theme-green);
+  font-weight: bold;
+  margin-left: 11px;
+  font-size: 11px;
+  border: solid 1px var(--app-theme-green-darker);
+  border-radius: 55px;
+  cursor: pointer;
 }
