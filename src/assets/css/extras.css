@@ -136,6 +136,15 @@
   margin-bottom: 5px;
   color: black;
 }
+.send-sample-report-button{
+  background-color: var(--app-theme-color) !important;
+  color: white !important;
+  border:1px solid var(--app-theme-color) !important;
+}
+.send-sample-report-button:hover{
+  background-color: white !important;
+  color: var(--app-theme-color)  !important;
+}
 .me-light-footer {
   width: 100%;
   display: flex;
@@ -2337,9 +2346,13 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    /* temporary undo this while we improve actions page scrolling
-    max-height: 70vh; */
-    overflow-y: scroll;
+    width: 20%;
+    position: fixed;
+    left: 30px;
+  }
+  .action-items-n-sidebar-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
   }
   .stats-q-box {
     cursor: pointer;

@@ -1,0 +1,26 @@
+.me-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 40px;
+  background-color: #333;
+  color: #fff;
+  opacity: 0.9;
+  z-index: 9999;
+}
+
+.me-toast.success {
+  background-color: #4caf50;
+ 
+}
+
+.me-toast.error {
+  background-color: #f44336;
+}
+
+.me-toast.warning {
+  background-color: #ff9800;
+
+}
