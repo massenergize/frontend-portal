@@ -248,7 +248,7 @@ class ActionsPage extends React.Component {
     ];
 
     return (
-      <>
+      <div id="test-actions-main-wrapper">
         {this.props.showTour && (
           <ProductTour
             steps={steps}
@@ -389,7 +389,7 @@ class ActionsPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 

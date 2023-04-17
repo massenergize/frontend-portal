@@ -7,12 +7,16 @@ describe("Filtering on all events page works well", function () {
   it("Got the title of the first event", function () {
     cy.get(".test-event-card-title")
       .first()
-      .then(($el) => (title = $el.text()));
+      .then(($el) =>{
+        return (title = $el.text().split("...")[0]);
+      });
   });
   it("Typed content into filterbox", () => {
     typeInsideFilterbox(title);
   });
   it("Event cards were filtered", () => {
-    cy.get(".test-event-card-title").each(($el) => $el.text() === title);
+    cy.get(".test-event-card-title").each(($el) => {
+      return $el.text().includes(title)}
+      );
   });
 });
