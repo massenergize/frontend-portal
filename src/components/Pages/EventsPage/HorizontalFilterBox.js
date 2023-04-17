@@ -18,9 +18,9 @@ import { bindActionCreators } from "redux";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
+import CustomTooltip from "../Widgets/CustomTooltip";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
-
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
@@ -277,11 +277,14 @@ class HorizontalFilterBox extends Component {
   };
 
   renderTestimonialForm() {
-    const { user, signInWithAuthenticationDialog, type, reduxItems, updateItemInRedux} = this.props;
+    const { user, signInWithAuthenticationDialog, type, reduxItems, updateItemInRedux, communityData} = this.props;
     if (user)
       return (
-        <StoryFormButtonModal ModalType={type} reduxProps={{reduxItems, updateItemInRedux}}>
-          <TestimonialButton type={type} />
+        <StoryFormButtonModal
+          ModalType={type}
+          reduxProps={{ reduxItems, updateItemInRedux }}
+        >
+          <TestimonialButton type={type}  community={communityData?.community?.name}/>
         </StoryFormButtonModal>
       );
 
@@ -362,6 +365,7 @@ const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
     user: store.user.info,
+    communityData: store.page.communityData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -381,16 +385,22 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-const TestimonialButton = ({ onClick, type }) => {
+const TestimonialButton = ({ onClick, type, community="" }) => {
   return (
-    <div
-      className="add-testimonial-container"
-      onClick={() => onClick && onClick()}
+    <CustomTooltip
+      text={
+        `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
+      }
     >
-      <div className="add-testimonial touchable-opacity">
-        <i className="fa fa-plus" style={{ marginRight: 6 }} />
-        <p>Add {type}</p>
+      <div
+        className="add-testimonial-container"
+        onClick={() => onClick && onClick()}
+      >
+        <div className="add-testimonial touchable-opacity">
+          <i className="fa fa-plus" style={{ marginRight: 6 }} />
+          <p>Add {type}</p>
+        </div>
       </div>
-    </div>
+    </CustomTooltip>
   );
 };

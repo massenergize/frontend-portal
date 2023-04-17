@@ -7,7 +7,7 @@ CONST['BIG_LIMIT'] = 400
 
 export const TESTIMONIAL = "Testimonial"
 export const ACTION = "Action"
-export const VENDOR = "Vendor"
+export const VENDOR = "Service Provider";
 export const EVENT = "Event"
 
 export default CONST;
