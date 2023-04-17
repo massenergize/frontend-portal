@@ -2345,9 +2345,13 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    /* temporary undo this while we improve actions page scrolling
-    max-height: 70vh; */
-    overflow-y: scroll;
+    width: 20%;
+    position: fixed;
+    left: 30px;
+  }
+  .action-items-n-sidebar-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
   }
   .stats-q-box {
     cursor: pointer;
