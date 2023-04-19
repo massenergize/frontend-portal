@@ -684,7 +684,7 @@
   min-height: 280px;
   border: solid 3px #8dc343;
   border-radius: 10px;
-  width: 100%;
+  width: 70%;
   position: relative;
 }
 
@@ -2351,7 +2351,7 @@
   }
   .action-items-n-sidebar-container{
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr 5fr;
   }
   .stats-q-box {
     cursor: pointer;

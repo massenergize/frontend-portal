@@ -314,7 +314,7 @@ class ActionsPage extends React.Component {
                         }
                       />
                     </div>
-                    <center style={{ padding: 10 }}>
+                    <center style={{ padding: 10, width:"70%" }}>
                       <p style={{ color: "black" }}>Share this page</p>
                       <ShareButtons
                         include={["facebook"]}
