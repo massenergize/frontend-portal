@@ -187,9 +187,7 @@ export default class StorySheet extends Component {
                   View
                 </Link>
 
-                {is_published ? (
-                  <div />
-                ) : (
+                {!is_published && (
                   <button
                     className="me-testi-btn-reset touchable-opacity"
                     onClick={() =>

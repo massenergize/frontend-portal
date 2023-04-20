@@ -72,6 +72,10 @@ html {
   font-family: "Google Sans", "Open Sans", sans-serif;
   scroll-behavior: smooth !important;
 }
+iframe{
+  /* display: none !important; */
+  position:  relative !important;
+}
 
 body {
   font-family: "Google Sans", "Open Sans", sans-serif;
@@ -9838,4 +9842,14 @@ button.as-link:hover {
   margin-top: 10px;
   display: flex;
   align-items: center;
+}
+
+.add-story-btn{
+  border-radius: 55px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.add-story-btn:hover{
+  background-color: var(--app-theme-green);
+  color: white;
 }

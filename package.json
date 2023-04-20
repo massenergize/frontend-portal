@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cypress/webpack-preprocessor": "^5.17.0",
     "@sentry/react": "^7.38.0",
     "@tinymce/tinymce-react": "^3.14.0",
     "apexcharts": "^3.37.0",
@@ -73,7 +74,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cypress": "^9.7.0",
+    "cypress": "^12.7.0",
     "cypress-localstorage-commands": "^1.7.0",
     "cypress-mochawesome-reporter": "^3.3.0",
     "immutable": "^4.2.4",

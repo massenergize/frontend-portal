@@ -25,6 +25,7 @@ describe("Filters passed via url work well on events page", function () {
   });
 
   it("Visits all events page with filter url", function () {
+
     cy.visit(
       fields.urls.events.raw + "/" + "?filters=" + filterObject.filterString
     );

@@ -5,5 +5,6 @@ describe("Renders all events page by using navigation", function () {
 
   it("Clicked on 'events' using nav menu", () => {
     cy.get("#menu-events-id").click();
+    cy.get("#test-event-view-toggler-past").click()
   });
 });

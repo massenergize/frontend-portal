@@ -23,7 +23,9 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadTestimonials, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
+import { TESTIMONIAL } from "../../Constants";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -93,9 +95,20 @@ class StoriesPage extends React.Component {
     this.setState({ showStoryForm: !this.state.showStoryForm });
   }
   triggerFormForEdit({ data }) {
-    this.setState({
-      showEditModal: true,
-      draftTestimonialData: data,
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Testimonial Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={TESTIMONIAL}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={data}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={this.props.updateItemInRedux}
+          reduxItems={this.props.stories}
+        />
+      ),
     });
   }
   renderTestimonialForm() {
@@ -107,12 +120,13 @@ class StoriesPage extends React.Component {
         overrideOpen: () =>
           this.triggerGuestDialog && this.triggerGuestDialog(),
       };
-
     return (
       <div className="every-day-flex">
         <StoryFormButtonModal
+          ModalType={TESTIMONIAL}
           openModal={this.state.showEditModal}
-          draftTestimonialData={this.state.draftTestimonialData}
+          draftData={this.state.draftTestimonialData}
+          ButtonClasses={"z-depth-1 add-story-btn"}
           toggleExternalTrigger={() => {
             this.setState({ showEditModal: false, draftTestimonialData: {} });
           }}
@@ -251,7 +265,7 @@ class StoriesPage extends React.Component {
                 </div>
               </div>
               <HorizontalFilterBox
-                type="testimonials"
+                type={TESTIMONIAL}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
@@ -259,6 +273,8 @@ class StoriesPage extends React.Component {
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
+                updateItemInRedux={this.props.updateItemInRedux}
+                reduxItems={this.props.stories}
               />
               <div className="row stories-row">
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -342,8 +358,10 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-
-    return stories.map((story, index) => (
+     let sortedStories = stories.sort((a, b) =>
+       a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+     );
+    return sortedStories.map((story, index) => (
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
@@ -374,4 +392,6 @@ const mapStoreToProps = (store) => {
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal:reduxToggleUniversalModal,
+  updateItemInRedux:reduxLoadTestimonials
 })(StoriesPage);
