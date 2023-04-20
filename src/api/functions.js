@@ -1,9 +1,10 @@
 import URLS from "./urls";
-import { IS_PROD, IS_CANARY, IS_LOCAL } from "../config/config";
 import store from "../redux/store";
 import Cookies from "universal-cookie";
 import { AUTH_TOKEN } from "../components/Pages/Auth/shared/utils";
 import * as Sentry from "@sentry/react";
+import { IS_CANARY, IS_LOCAL, IS_PROD } from "../config";
+
 
 /**
  * Handles making a POST request to the backend as a form submission

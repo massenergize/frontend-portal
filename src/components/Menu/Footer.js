@@ -3,8 +3,9 @@ import FooterInfo from "./FooterInfo";
 import FooterLinks from "./FooterLinks";
 import SubscribeForm from "./SubscribeForm";
 import { connect } from "react-redux";
-import { IS_PROD, IS_CANARY, BUILD_VERSION } from "../../config/config";
 import CommunitySocials from "./CommunitySocials";
+import { BUILD_VERSION, IS_CANARY, IS_PROD } from "../../config";
+
 /**
  * Footer section has place for links,
  */
