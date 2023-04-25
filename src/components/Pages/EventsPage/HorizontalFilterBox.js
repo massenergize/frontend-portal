@@ -18,7 +18,7 @@ import { bindActionCreators } from "redux";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
-import CustomTooltip from "../Widgets/CustomTooltip";
+import AddButton from "../../Shared/AddButton";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 class HorizontalFilterBox extends Component {
@@ -284,12 +284,12 @@ class HorizontalFilterBox extends Component {
           ModalType={type}
           reduxProps={{ reduxItems, updateItemInRedux }}
         >
-          <TestimonialButton type={type}  community={communityData?.community?.name}/>
+          <AddButton type={type}  community={communityData?.community?.name} />
         </StoryFormButtonModal>
       );
 
     return (
-      <TestimonialButton
+      <AddButton
         onClick={() =>
           signInWithAuthenticationDialog && signInWithAuthenticationDialog()
         }
@@ -322,11 +322,11 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-          <Feature
-            name={FLAGS.USER_SUBMITTED_CONTENTS}
-            children={this.renderTestimonialForm()}
-          />
         </div>
+        <Feature
+          name={FLAGS.USER_SUBMITTED_CONTENTS}
+          children={this.renderTestimonialForm()}
+        />
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
           <input
@@ -385,22 +385,22 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-const TestimonialButton = ({ onClick, type, community="" }) => {
-  return (
-    <CustomTooltip
-      text={
-        `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
-      }
-    >
-      <div
-        className="add-testimonial-container"
-        onClick={() => onClick && onClick()}
-      >
-        <div className="add-testimonial touchable-opacity">
-          <i className="fa fa-plus" style={{ marginRight: 6 }} />
-          <p>Add {type}</p>
-        </div>
-      </div>
-    </CustomTooltip>
-  );
-};
+// const TestimonialButton = ({ onClick, type, community="" }) => {
+//   return (
+//     <CustomTooltip
+//       text={
+//         `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
+//       }
+//     >
+//       <div
+//         className=""
+//         onClick={() => onClick && onClick()}
+//       >
+//         <div className="add-testimonial touchable-opacity">
+//           <i className="fa fa-plus" style={{ marginRight: 6 }} />
+//           <p>Add {type}</p>
+//         </div>
+//       </div>
+//     </CustomTooltip>
+//   );
+// };

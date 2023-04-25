@@ -9853,3 +9853,27 @@ button.as-link:hover {
   background-color: var(--app-theme-green);
   color: white;
 }
+
+.round-sticky-btn-container{
+  position: fixed;
+  bottom: 25px;
+  right: 25px
+}
+.round-sticky-btn {
+  cursor: pointer;
+  background: #f57b34;
+  color: white;
+    height: 60px;
+  width: 60px;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.round-sticky-btn i {
+  margin: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
