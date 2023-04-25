@@ -61,5 +61,8 @@
     width: 90% !important; 
     min-height: 150px;
   }
+  .me-modal-header{
+    width: 90% !important;
+  }
 }
 

@@ -323,10 +323,7 @@ class HorizontalFilterBox extends Component {
           />
           {this.renderTagComponent()}
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_CONTENTS}
-          children={this.renderTestimonialForm()}
-        />
+
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
           <input
@@ -356,6 +353,10 @@ class HorizontalFilterBox extends Component {
             ></div>
           </div>
         </div>
+        <Feature
+          name={FLAGS.USER_SUBMITTED_CONTENTS}
+          children={this.renderTestimonialForm()}
+        />
       </>
     );
   }

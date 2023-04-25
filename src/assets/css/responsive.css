@@ -203,7 +203,7 @@
 	}
 	.footer-bottom {
 		text-align: center;
-		z-index: 1 !important;
+		z-index: 1;
 	}
 	.footer-bottom .pull-left,
 	.footer-bottom .pull-right {
