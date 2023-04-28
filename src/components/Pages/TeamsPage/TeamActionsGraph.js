@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import { apiCall } from "../../../api/functions";
-import { IS_PROD } from "../../../config/config";
+import { IS_PROD } from "../../../config";
 import loader from "../../../assets/images/other/loader.gif";
 
 class TeamActionsGraph extends React.Component {

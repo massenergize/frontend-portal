@@ -1,10 +1,10 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import { IS_PROD, IS_CANARY } from './config'
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import { IS_PROD, IS_CANARY } from ".";
 
-let firebaseConfig = {}
+let firebaseConfig = {};
 
-if(IS_PROD || IS_CANARY){
+if (IS_PROD || IS_CANARY) {
   firebaseConfig = {
     apiKey: "AIzaSyDgSkiZGtco0b8ntN9Yo7U-urRzXhQNOo8",
     authDomain: "massenergize-prod-auth.firebaseapp.com",
@@ -13,9 +13,9 @@ if(IS_PROD || IS_CANARY){
     storageBucket: "massenergize-prod-auth.appspot.com",
     messagingSenderId: "738582671182",
     appId: "1:738582671182:web:1cb9c3353cff73a4e3381f",
-    measurementId: "G-4FPTY0R9S6"
+    measurementId: "G-4FPTY0R9S6",
   };
-} else{
+} else {
   firebaseConfig = {
     apiKey: "AIzaSyBjcwjC_0H1bgGKqPyqKnbWaGmAtzc4BJQ",
     authDomain: "massenergize-auth.firebaseapp.com",
@@ -24,7 +24,7 @@ if(IS_PROD || IS_CANARY){
     storageBucket: "",
     messagingSenderId: "72842344535",
     appId: "1:72842344535:web:9b1517b1b3d2e818",
-  }
+  };
 }
 
 firebase.initializeApp(firebaseConfig);
