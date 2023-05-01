@@ -2422,6 +2422,11 @@
     border: solid 2px var(--app-theme-orange);
     border-left-width: 0px;
     border-right-width: 0px;
+        white-space: nowrap;
+    overflow-x: scroll;
+        max-width: 65vw;
+        overflow-y: hidden;
+        height: auto;
   }
 
   .snackbar-success .mob-modal-correction {
