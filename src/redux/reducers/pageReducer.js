@@ -102,7 +102,7 @@ function alreadyInSubTeam(state, action) {
   );
 }
 
-export default function pageReducer (state = initialState, action) {
+export default function pageReducer(state = initialState, action) {
   var team;
   switch (action.type) {
     /**************************/
