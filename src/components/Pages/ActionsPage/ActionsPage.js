@@ -379,7 +379,7 @@ class ActionsPage extends React.Component {
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
                       className="row"
-                      style={{ marginTop: 20, paddingTop: 30 }}
+                      style={{ marginTop: 40, paddingTop: 50 }}
                     >
                       {this.renderActions(actions)}
                     </div>

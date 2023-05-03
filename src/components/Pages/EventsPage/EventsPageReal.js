@@ -225,7 +225,7 @@ class EventsPage extends React.Component {
                       updateItemInRedux={this.props.updateEventsInRedux}
                       reduxItems={this.props.events}
                     />
-                    <div className="event-view-togglers">
+                    <div className="event-view-togglers" style={{ marginTop: 30 }}>
                       {Object.keys(VIEW_MODES).map((key, index) => {
                         const mode = VIEW_MODES[key];
                         const isActive = this.state.view_mode === mode?.key;

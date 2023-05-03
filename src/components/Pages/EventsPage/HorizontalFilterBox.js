@@ -31,6 +31,7 @@ class HorizontalFilterBox extends Component {
       longHeight: false,
       selected_collection: null,
       mounted: false,
+      isFilterOn: false,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
@@ -74,12 +75,13 @@ class HorizontalFilterBox extends Component {
           // style={{ fontWeight: "600", color: "#7cb331" }}
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
-          onClick={() =>
+          onClick={() =>{
             this.onItemSelectedFromDropDown(
               NONE,
               tagObj.collectionName,
               tagObj?.collectionId
             )
+          }
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -143,6 +145,9 @@ class HorizontalFilterBox extends Component {
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
               collectionId={set.id}
+              onHide={(isFilterOn) => 
+                this.setState({ isFilterOn })
+              }
             />
           </div>
         );
@@ -298,11 +303,11 @@ class HorizontalFilterBox extends Component {
     );
   }
   render() {
-    const { longHeight } = this.state;
+    const { longHeight, isFilterOn} = this.state;
     return (
       <>
         {this.renderMoreModal()}
-        <div className="hori-filter-container phone-vanish">
+        <div className={`hori-filter-container phone-vanish ${isFilterOn ? "redo-hori-filter-container": ""}`}>
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
           <METextField
