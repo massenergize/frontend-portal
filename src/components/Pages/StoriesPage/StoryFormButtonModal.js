@@ -63,7 +63,7 @@ class StoryFormButtonModal extends Component {
               draftData={this.props.draftTestimonialData}
               TriggerSuccessNotification={(bool) =>this.TriggerSuccessNotification(bool)}
               TriggerModal={this.closeModal.bind(this)}
-              updateItemInRedux={reduxProps?.updateItemInRedux}
+              updateItemInRedux={()=> reduxProps?.updateItemInRedux}
               reduxItems={reduxProps?.reduxItems}
             />
           </div>

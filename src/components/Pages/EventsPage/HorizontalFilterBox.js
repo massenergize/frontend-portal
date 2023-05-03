@@ -12,13 +12,13 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+// import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
-import Feature from "../FeatureFlags/Feature";
-import { FLAGS } from "../FeatureFlags/flags";
-import AddButton from "../../Shared/AddButton";
+// import Feature from "../FeatureFlags/Feature";
+// import { FLAGS } from "../FeatureFlags/flags";
+// import AddButton from "../../Shared/AddButton";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 class HorizontalFilterBox extends Component {
@@ -281,33 +281,18 @@ class HorizontalFilterBox extends Component {
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
-  renderTestimonialForm() {
-    const { user, signInWithAuthenticationDialog, type, reduxItems, updateItemInRedux, communityData} = this.props;
-    if (user)
-      return (
-        <StoryFormButtonModal
-          ModalType={type}
-          reduxProps={{ reduxItems, updateItemInRedux }}
-        >
-          <AddButton type={type}  community={communityData?.community?.name} />
-        </StoryFormButtonModal>
-      );
-
-    return (
-      <AddButton
-        onClick={() =>
-          signInWithAuthenticationDialog && signInWithAuthenticationDialog()
-        }
-        type={type}
-      />
-    );
-  }
   render() {
     const { longHeight, isFilterOn} = this.state;
+    const {customStyles } = this.props;
     return (
       <>
         {this.renderMoreModal()}
-        <div className={`hori-filter-container phone-vanish ${isFilterOn ? "redo-hori-filter-container": ""}`}>
+        <div
+          className={`hori-filter-container phone-vanish ${
+            isFilterOn ? "redo-hori-filter-container" : ""
+          }`}
+          style={customStyles}
+        >
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
           <METextField
@@ -358,10 +343,6 @@ class HorizontalFilterBox extends Component {
             ></div>
           </div>
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_CONTENTS}
-          children={this.renderTestimonialForm()}
-        />
       </>
     );
   }

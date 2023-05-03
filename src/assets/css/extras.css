@@ -2349,6 +2349,8 @@
     width: 17%;
     position: fixed;
     left: 120px;
+    background: white;
+    z-index: 1;
   }
   .action-items-n-sidebar-container {
     display: grid;
@@ -2954,7 +2956,7 @@
   .phone-marg-top {
     margin-top: 50px;
   }
-  /* .hori-filter-container {
+  .hori-filter-container {
     position: absolute;
     z-index: 4;
     height: 100vh;
@@ -2969,7 +2971,7 @@
     border-top-width: 0px;
     white-space: nowrap;
     overflow-x: scroll;
-  } */
+  }
 
   .me-light-drop-fine-tune {
     padding: 9px 0px !important;

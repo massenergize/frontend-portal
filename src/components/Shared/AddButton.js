@@ -15,7 +15,7 @@ export default function AddButton({onClick, text, type, community}) {
         <div className="round-sticky-btn touchable-opacity">
           <i className="fa fa-plus" />
             <span style={{marginLeft:5, marginBottom:2}}>
-              New
+              {text || type || "New"}
             </span>
         </div>
       </div>

@@ -39,7 +39,7 @@ import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
-import ProductTour from "react-joyride";
+import ProductTour, { ACTIONS } from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
@@ -47,6 +47,10 @@ import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "./StoryForm";
 import { ACTION } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -111,6 +115,27 @@ class ActionsPage extends React.Component {
 
   toggleEQModal(value) {
     this.setState({ showEqModal: value });
+  }
+  renderAddForm() {
+    const { user, actions, updateActionsInRedux, communityData } = this.props;
+    if (user){
+      return (
+        <StoryFormButtonModal
+          ModalType={ACTIONS}
+          reduxProps={{
+            reduxItems: actions,
+            updateItemInRedux: updateActionsInRedux,
+          }}
+        >
+          <AddButton
+            type={"Action"}
+            community={communityData?.community?.name}
+          />
+        </StoryFormButtonModal>
+      );
+
+    }
+      return null;
   }
 
   addMeToSelected(param, reset = false) {
@@ -384,6 +409,11 @@ class ActionsPage extends React.Component {
                       {this.renderActions(actions)}
                     </div>
                   </div>
+
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_ACTIONS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
             </div>
@@ -452,7 +482,7 @@ class ActionsPage extends React.Component {
                   ModalType={ACTION}
                   close={() => this.props.toggleModal({ show: false })}
                   draftData={toEdit}
-                  TriggerSuccessNotification={(bool) => ({})}
+                  TriggerSuccessNotification={() => ({})}
                   updateItemInRedux={this.props.updateActionsInRedux}
                   reduxItems={actions}
                 />
