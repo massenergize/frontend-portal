@@ -36,7 +36,7 @@ class Footer extends React.Component {
 
     return (
       <div className="d-flex flex-column">
-        <footer className="main-footer m-footer-color">
+        <footer className="main-footer m-footer-color footer-wrapper">
           {/* <!--Widgets Section--> */}
           <div className="widgets-section">
             {/* <div className="container"> */}
@@ -69,7 +69,7 @@ class Footer extends React.Component {
             </div>
           </div>
         </footer>
-        <section className="footer-bottom m-footer-color">
+        <section className="footer-bottom m-footer-color footer-wrapper">
           {/* <div className="container"> */}
           <div className="temp-f-donate-area">
             <div className="pull-left copy-text">

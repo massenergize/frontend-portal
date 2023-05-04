@@ -3825,3 +3825,7 @@
   border-radius: 55px;
   cursor: pointer;
 }
+
+.footer-wrapper{
+  z-index: 10;
+}
