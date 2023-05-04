@@ -39,7 +39,7 @@ import ActionBoxCounter from "./ActionBoxCounter";
 import { NONE } from "../Widgets/MELightDropDown";
 import Tooltip from "../Widgets/CustomTooltip";
 import EquivalenceModal from "./EquivalenceModal";
-import ProductTour, { ACTIONS } from "react-joyride";
+import ProductTour from "react-joyride";
 import { handleTourCallback } from "../../Utils";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
@@ -121,16 +121,13 @@ class ActionsPage extends React.Component {
     if (user){
       return (
         <StoryFormButtonModal
-          ModalType={ACTIONS}
+          ModalType={ACTION}
           reduxProps={{
             reduxItems: actions,
             updateItemInRedux: updateActionsInRedux,
           }}
         >
-          <AddButton
-            type={"Action"}
-            community={communityData?.community?.name}
-          />
+          <AddButton type={ACTION} community={communityData?.community?.name} />
         </StoryFormButtonModal>
       );
 

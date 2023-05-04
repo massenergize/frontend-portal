@@ -48,7 +48,14 @@ var ActionFormData = [
     required: true,
     value: "",
   },
-
+  {
+    name: "featured_summary",
+    label: "Featured Summary",
+    placeholder: "Short sentence promoting the action",
+    type: "textarea",
+    hasLabel: true,
+    isRequired: false,
+  },
   {
     type: "html-field",
     name: "about",
@@ -58,7 +65,15 @@ var ActionFormData = [
     required: true,
     value: "",
   },
-
+  {
+    type: "html-field",
+    name: "steps_to_take",
+    hasLabel: true,
+    label: "Action steps * ( limit: 9000 Char's)",
+    placeholder: "action steps...*",
+    value: "",
+    required: true,
+  },
   {
     type: "file",
     name: "image",
@@ -70,15 +85,13 @@ var ActionFormData = [
     maxHeight: 1000,
     maxWidth: 1000,
   },
-
   {
+    name: "deep_dive",
+    label: "Deep dive into all the details (optional)",
+    placeholder: "Further information some users might want to know",
     type: "html-field",
-    name: "steps_to_take",
+    isRequired: false,
     hasLabel: true,
-    label: "Action steps * ( limit: 9000 Char's)",
-    placeholder: "action steps...*",
-    value: "",
-    required: true,
   },
 ];
 
@@ -94,6 +107,14 @@ var EventsFormData = [
     placeholder: "Add a name... *",
     required: true,
     value: "",
+  },
+  {
+    name: "featured_summary",
+    label: "One sentence that describes this event",
+    placeholder: "One sentence that describes this event",
+    fieldType: "textarea",
+    hasLabel: true,
+    isRequired: false,
   },
   {
     type: "datetime-local",
@@ -115,7 +136,6 @@ var EventsFormData = [
     value: new Date().toISOString().slice(0, -8),
     min: new Date().toISOString().slice(0, -8),
   },
-
   {
     type: "input",
     name: "address",
@@ -662,6 +682,7 @@ class StoryForm extends React.Component {
 
     //makes api call for vendors page
     else if (ModalType === VENDOR) {
+      Url = "vendors.add";
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {

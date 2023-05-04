@@ -121,10 +121,7 @@ class EventsPage extends React.Component {
             updateItemInRedux: updateEventsInRedux,
           }}
         >
-          <AddButton
-            type={"Event"}
-            community={communityData?.community?.name}
-          />
+          <AddButton type={EVENT} community={communityData?.community?.name} />
         </StoryFormButtonModal>
       );
 

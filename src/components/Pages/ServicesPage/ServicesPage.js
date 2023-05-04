@@ -105,7 +105,7 @@ class ServicesPage extends React.Component {
           }}
         >
           <AddButton
-            type={"Service Provider"}
+            type={VENDOR}
             community={communityData?.community?.name}
           />
         </StoryFormButtonModal>
@@ -304,7 +304,7 @@ class ServicesPage extends React.Component {
         >
           <MECard
             className={`vendor-hover  ${MEAnimation.getAnimationClass()}`}
-            style={{ borderRadius: 10, position: "relative" }}
+            style={{ borderRadius: 10, position: "relative", paddingBottom:40}}
           >
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
@@ -315,7 +315,7 @@ class ServicesPage extends React.Component {
                 borderTopLeftRadius: 12,
               }}
             >
-              <div className="col-12 text-center" style={{ padding: 0 }}>
+              <div className="col-12 text-center" style={{ padding:0}}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <img
                     className="w-100 service-prov-img"
