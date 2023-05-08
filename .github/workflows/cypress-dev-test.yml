@@ -1,6 +1,7 @@
 name: Frontend Testing
 on:
   pull_request:
+    types: [ready_for_review]
     branches: [ development ]
 jobs:
   cypress-test:
@@ -14,6 +15,9 @@ jobs:
         run: |
           npm ci
           $(npm bin)/cypress verify
+
+      - name: Start Local Server
+        run: npm run start &
      
       - name: Run Cypress tests
         run: npm run all-tests

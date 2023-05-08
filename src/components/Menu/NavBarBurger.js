@@ -202,6 +202,9 @@ class NavBarBurger extends React.Component {
 
     return Object.keys(navLinks).map((key) => {
       var navLink = navLinks[key];
+
+      const name = navLink?.name?.toLowerCase()?.replace(" ", "-");
+      const linkId = `menu-${name}-id`;
       if (navLink.children) {
         const CustomNavLink = React.forwardRef((props, ref) => (
           <Link
@@ -222,7 +225,8 @@ class NavBarBurger extends React.Component {
 
         return (
           <li
-            className="d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop"
+            className={`d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`}
+            id={linkId}
             key={navLink.name}
           >
             <Dropdown onSelect={() => null}>
@@ -246,6 +250,7 @@ class NavBarBurger extends React.Component {
           className="d-flex flex-column justify-content-center test-me-nav-menu-item"
           key={navLink.name}
           {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
+          id={linkId}
         >
           <Link className="cool-font" to={`${navLink.link}`}>
             {navLink.name}
@@ -262,15 +267,18 @@ class NavBarBurger extends React.Component {
       : { name: "My Community" };
     return children.map((child, key) => {
       const id = child?.navItemId ? { id: child.navItemId } : {};
+        const name = child?.name?.toLowerCase()?.replace(" ", "-");
+        const linkId = `menu-${name}-id`;
       if (child.special) {
         return (
           <Link
             {...id}
             key={key}
-            className=" cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
+            className="cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={() => {
               window.location = child.link;
             }}
+            id={linkId}
           >
             {child.name}
           </Link>
@@ -280,6 +288,7 @@ class NavBarBurger extends React.Component {
           <Link
             {...id}
             key={key}
+            id={linkId}
             to={`${child.link}`}
             className="cool-font  p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
             onClick={(e) => {

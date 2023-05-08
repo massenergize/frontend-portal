@@ -29,7 +29,7 @@ const initialState = {
   show_reg_status: false,
 };
 
-export default function (state = initialState, action) {
+export default function userReducer (state = initialState, action) {
   switch (action.type) {
     case USER_IS_GUEST:
       return {
