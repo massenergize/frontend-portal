@@ -662,6 +662,7 @@ class StoryForm extends React.Component {
 
     //makes api call for vendors page
     else if (ModalType === VENDOR) {
+      Url = "vendor.add"
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {

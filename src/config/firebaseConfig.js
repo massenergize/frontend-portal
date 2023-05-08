@@ -1,6 +1,6 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import { IS_PROD, IS_CANARY } from ".";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { IS_CANARY, IS_PROD } from ".";
 
 let firebaseConfig = {};
 
