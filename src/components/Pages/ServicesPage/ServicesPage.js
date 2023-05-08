@@ -27,6 +27,10 @@ import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../r
 import StoryForm from "../ActionsPage/StoryForm";
 import { VENDOR } from "../../Constants";
 import MEButton from "../Widgets/MEButton";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -85,6 +89,29 @@ class ServicesPage extends React.Component {
         };
     }
 
+    return null;
+  };
+
+  renderAddForm = () => {
+    const { user, serviceProviders, updateVendorsInRedux, communityData } =
+      this.props;
+    if (user){
+      return (
+        <StoryFormButtonModal
+          ModalType={VENDOR}
+          reduxProps={{
+            reduxItems: serviceProviders,
+            updateItemInRedux: updateVendorsInRedux,
+          }}
+        >
+          <AddButton
+            type={VENDOR}
+            community={communityData?.community?.name}
+          />
+        </StoryFormButtonModal>
+      );
+
+    }
     return null;
   };
   render() {
@@ -174,7 +201,7 @@ class ServicesPage extends React.Component {
                   </div>
                   <center>{sub_title ? <p>{sub_title}</p> : null}</center>
                 </div>
-                <div>
+                <div style={{ marginBottom: 90 }}>
                   <HorizontalFilterBox
                     type={VENDOR}
                     tagCols={this.props.tagCols}
@@ -186,11 +213,12 @@ class ServicesPage extends React.Component {
                     onSearchTextChange={this.onSearchTextChange.bind(this)}
                     updateItemInRedux={this.props.updateVendorsInRedux}
                     reduxItems={this.props.serviceProviders}
+                    customStyles={{ width: "100%" }}
                   />
                 </div>
 
                 <div
-                  className="row pt-3 pb-3 phone-marg-top-90"
+                  className="row pt-3 pb-3 phone-marg-top-90 "
                   // style={{ maxHeight: 700, overflowY: "scroll" }}
                   style={{ position: "relative" }}
                 >
@@ -200,38 +228,37 @@ class ServicesPage extends React.Component {
             </div>
           </div>
         </div>
+        <Feature
+          name={FLAGS.USER_SUBMITTED_VENDORS}
+          children={this.renderAddForm()}
+        />
       </>
     );
   }
 
-  onEditButtonClicked = (vendor)=>{
+  onEditButtonClicked = (vendor) => {
     let newVendor = {
       ...vendor,
       image: vendor?.logo,
       key_contact_email: vendor?.key_contact?.email,
       key_contact_name: vendor?.key_contact?.name,
     };
-      this.props.toggleModal({
-        show: true,
-        title: "Edit Vendor Form",
-        size: "md",
-        component: (
-          <StoryForm
-            ModalType={VENDOR}
-            close={() =>
-              this.props.toggleModal({ show: false })
-            }
-            draftData={newVendor}
-            TriggerSuccessNotification={(bool) => ({})}
-            updateItemInRedux={this.props.updateVendorsInRedux }
-            reduxItems={this.props.serviceProviders}
-          />
-        ),
-      });
-
-  }
-
-
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Vendor Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={VENDOR}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={newVendor}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={this.props.updateVendorsInRedux}
+          reduxItems={this.props.serviceProviders}
+        />
+      ),
+    });
+  };
 
   renderVendors(vendors) {
     if (this.state.mirror_services.length === 0) {
@@ -277,7 +304,7 @@ class ServicesPage extends React.Component {
         >
           <MECard
             className={`vendor-hover  ${MEAnimation.getAnimationClass()}`}
-            style={{ borderRadius: 10, position: "relative" }}
+            style={{ borderRadius: 10, position: "relative", paddingBottom:40}}
           >
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
@@ -288,7 +315,7 @@ class ServicesPage extends React.Component {
                 borderTopLeftRadius: 12,
               }}
             >
-              <div className="col-12 text-center" style={{ padding: 0 }}>
+              <div className="col-12 text-center" style={{ padding:0}}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <img
                     className="w-100 service-prov-img"
@@ -337,7 +364,9 @@ const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePage,
     pageData: store.page.serviceProvidersPage,
+    user: store.user.info,
     serviceProviders: store.page.serviceProviders,
+    communityData: store.page.communityData,
     links: store.links,
     tagCols: filterTagCollections(
       store.page.serviceProviders,

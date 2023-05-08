@@ -47,6 +47,10 @@ import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "./StoryForm";
 import { ACTION } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -111,6 +115,24 @@ class ActionsPage extends React.Component {
 
   toggleEQModal(value) {
     this.setState({ showEqModal: value });
+  }
+  renderAddForm() {
+    const { user, actions, updateActionsInRedux, communityData } = this.props;
+    if (user){
+      return (
+        <StoryFormButtonModal
+          ModalType={ACTION}
+          reduxProps={{
+            reduxItems: actions,
+            updateItemInRedux: updateActionsInRedux,
+          }}
+        >
+          <AddButton type={ACTION} community={communityData?.community?.name} />
+        </StoryFormButtonModal>
+      );
+
+    }
+      return null;
   }
 
   addMeToSelected(param, reset = false) {
@@ -379,11 +401,16 @@ class ActionsPage extends React.Component {
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
                       className="row"
-                      style={{ marginTop: 20, paddingTop: 30 }}
+                      style={{ marginTop: 40, paddingTop: 50 }}
                     >
                       {this.renderActions(actions)}
                     </div>
                   </div>
+
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_ACTIONS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
             </div>
@@ -452,7 +479,7 @@ class ActionsPage extends React.Component {
                   ModalType={ACTION}
                   close={() => this.props.toggleModal({ show: false })}
                   draftData={toEdit}
-                  TriggerSuccessNotification={(bool) => ({})}
+                  TriggerSuccessNotification={() => ({})}
                   updateItemInRedux={this.props.updateActionsInRedux}
                   reduxItems={actions}
                 />

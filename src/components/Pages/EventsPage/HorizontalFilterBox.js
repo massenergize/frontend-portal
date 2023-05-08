@@ -12,13 +12,13 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+// import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
-import Feature from "../FeatureFlags/Feature";
-import { FLAGS } from "../FeatureFlags/flags";
-import CustomTooltip from "../Widgets/CustomTooltip";
+// import Feature from "../FeatureFlags/Feature";
+// import { FLAGS } from "../FeatureFlags/flags";
+// import AddButton from "../../Shared/AddButton";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
 class HorizontalFilterBox extends Component {
@@ -31,6 +31,7 @@ class HorizontalFilterBox extends Component {
       longHeight: false,
       selected_collection: null,
       mounted: false,
+      isFilterOn: false,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
@@ -74,12 +75,13 @@ class HorizontalFilterBox extends Component {
           // style={{ fontWeight: "600", color: "#7cb331" }}
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
-          onClick={() =>
+          onClick={() =>{
             this.onItemSelectedFromDropDown(
               NONE,
               tagObj.collectionName,
               tagObj?.collectionId
             )
+          }
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -143,6 +145,9 @@ class HorizontalFilterBox extends Component {
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
               collectionId={set.id}
+              onHide={(isFilterOn) => 
+                this.setState({ isFilterOn })
+              }
             />
           </div>
         );
@@ -276,33 +281,18 @@ class HorizontalFilterBox extends Component {
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
-  renderTestimonialForm() {
-    const { user, signInWithAuthenticationDialog, type, reduxItems, updateItemInRedux, communityData} = this.props;
-    if (user)
-      return (
-        <StoryFormButtonModal
-          ModalType={type}
-          reduxProps={{ reduxItems, updateItemInRedux }}
-        >
-          <TestimonialButton type={type}  community={communityData?.community?.name}/>
-        </StoryFormButtonModal>
-      );
-
-    return (
-      <TestimonialButton
-        onClick={() =>
-          signInWithAuthenticationDialog && signInWithAuthenticationDialog()
-        }
-        type={type}
-      />
-    );
-  }
   render() {
-    const { longHeight } = this.state;
+    const { longHeight, isFilterOn} = this.state;
+    const {customStyles } = this.props;
     return (
       <>
         {this.renderMoreModal()}
-        <div className="hori-filter-container phone-vanish">
+        <div
+          className={`hori-filter-container phone-vanish ${
+            isFilterOn ? "redo-hori-filter-container" : ""
+          }`}
+          style={customStyles}
+        >
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
           <METextField
@@ -322,11 +312,8 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-          <Feature
-            name={FLAGS.USER_SUBMITTED_CONTENTS}
-            children={this.renderTestimonialForm()}
-          />
         </div>
+
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
           <input
@@ -385,22 +372,22 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-const TestimonialButton = ({ onClick, type, community="" }) => {
-  return (
-    <CustomTooltip
-      text={
-        `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
-      }
-    >
-      <div
-        className="add-testimonial-container"
-        onClick={() => onClick && onClick()}
-      >
-        <div className="add-testimonial touchable-opacity">
-          <i className="fa fa-plus" style={{ marginRight: 6 }} />
-          <p>Add {type}</p>
-        </div>
-      </div>
-    </CustomTooltip>
-  );
-};
+// const TestimonialButton = ({ onClick, type, community="" }) => {
+//   return (
+//     <CustomTooltip
+//       text={
+//         `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
+//       }
+//     >
+//       <div
+//         className=""
+//         onClick={() => onClick && onClick()}
+//       >
+//         <div className="add-testimonial touchable-opacity">
+//           <i className="fa fa-plus" style={{ marginRight: 6 }} />
+//           <p>Add {type}</p>
+//         </div>
+//       </div>
+//     </CustomTooltip>
+//   );
+// };
