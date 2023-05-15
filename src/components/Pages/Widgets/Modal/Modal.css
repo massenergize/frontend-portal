@@ -33,6 +33,9 @@
   opacity: 0;
 }
 
+.remove-border-radius{
+  border-radius: 0 !important;
+}
 @keyframes ml-anime-scale-in {
   from {
     opacity: 0;
@@ -58,4 +61,8 @@
     width: 90% !important; 
     min-height: 150px;
   }
+  .me-modal-header{
+    width: 90% !important;
+  }
 }
+

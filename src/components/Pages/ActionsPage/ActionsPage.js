@@ -12,8 +12,10 @@ import {
 import {
   celebrateWithConfetti,
   reduxChangeData,
+  reduxLoadActions,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ActionCard from "./ActionCard";
@@ -43,6 +45,12 @@ import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
+import StoryForm from "./StoryForm";
+import { ACTION } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -107,6 +115,24 @@ class ActionsPage extends React.Component {
 
   toggleEQModal(value) {
     this.setState({ showEqModal: value });
+  }
+  renderAddForm() {
+    const { user, actions, updateActionsInRedux, communityData } = this.props;
+    if (user){
+      return (
+        <StoryFormButtonModal
+          ModalType={ACTION}
+          reduxProps={{
+            reduxItems: actions,
+            updateItemInRedux: updateActionsInRedux,
+          }}
+        >
+          <AddButton type={ACTION} community={communityData?.community?.name} />
+        </StoryFormButtonModal>
+      );
+
+    }
+      return null;
   }
 
   addMeToSelected(param, reset = false) {
@@ -174,10 +200,10 @@ class ActionsPage extends React.Component {
       this.state.checked_values,
       this.state.searchText,
       (action, word) =>
-        action.title.toLowerCase().includes(word) ||
-        action.about.toLowerCase().includes(word) ||
-        action.featured_summary.toLowerCase().includes(word) ||
-        action.deep_dive.toLowerCase().includes(word)
+        action?.title?.toLowerCase()?.includes(word) ||
+        action?.about?.toLowerCase()?.includes(word) ||
+        action?.featured_summary?.toLowerCase()?.includes(word) ||
+        action?.deep_dive?.toLowerCase()?.includes(word)
     );
   }
 
@@ -244,7 +270,7 @@ class ActionsPage extends React.Component {
     ];
 
     return (
-      <>
+      <div id="test-actions-main-wrapper">
         {this.props.showTour && (
           <ProductTour
             steps={steps}
@@ -375,19 +401,25 @@ class ActionsPage extends React.Component {
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
                       className="row"
-                      style={{ marginTop: 20, paddingTop: 30 }}
+                      style={{ marginTop: 40, paddingTop: 50 }}
                     >
                       {this.renderActions(actions)}
                     </div>
                   </div>
+
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_ACTIONS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
+
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -405,8 +437,13 @@ class ActionsPage extends React.Component {
         </p>
       );
     }
+
+    // put unapproved user submitted actions above
+    let sorted_actions = actions.sort((a, b) =>
+      a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+    );
     //returns a list of action components
-    return Object.keys(actions).map((key) => {
+    return Object.keys(sorted_actions).map((key) => {
       var action = actions[key];
       return (
         <ActionCard
@@ -432,6 +469,23 @@ class ActionsPage extends React.Component {
           }
           openModal={this.openModal}
           closeModal={() => this.setState({ openModalForm: null })}
+          onEditButtonClick={(toEdit) => {
+            this.props.toggleModal({
+              show: true,
+              title: "Edit Action Form",
+              size: "md",
+              component: (
+                <StoryForm
+                  ModalType={ACTION}
+                  close={() => this.props.toggleModal({ show: false })}
+                  draftData={toEdit}
+                  TriggerSuccessNotification={() => ({})}
+                  updateItemInRedux={this.props.updateActionsInRedux}
+                  reduxItems={actions}
+                />
+              ),
+            });
+          }}
         />
       );
     });
@@ -571,6 +625,8 @@ const mapDispatchToProps = {
   reduxSetPreferredEquivalence,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
   celebrate: celebrateWithConfetti,
+  toggleModal:reduxToggleUniversalModal,
+  updateActionsInRedux:reduxLoadActions
 };
 export default connect(
   mapStoreToProps,

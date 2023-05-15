@@ -39,7 +39,7 @@ export const loadServiceProviders = () => {
 };
 
 export const createFilterContentFromCollection = (collection) => {
-  const randomIndex = getRandomIntegerInRange(collection.tags.length);
+  const randomIndex = getRandomIntegerInRange(collection?.tags?.length);
   const tag = collection.tags[randomIndex];
   return { filterString: collection.id + ":" + tag.id, tagName: tag.name };
 };

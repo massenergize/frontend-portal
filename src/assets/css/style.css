@@ -72,6 +72,10 @@ html {
   font-family: "Google Sans", "Open Sans", sans-serif;
   scroll-behavior: smooth !important;
 }
+iframe{
+  /* display: none !important; */
+  position:  relative !important;
+}
 
 body {
   font-family: "Google Sans", "Open Sans", sans-serif;
@@ -5814,6 +5818,7 @@ span.has-tooltip {
   background: #003000;
   border-top: 1px solid #2b2f25;
   padding: 21px 0;
+  z-index: 1;
 }
 
 .footer-bottom .copy-text {
@@ -9838,4 +9843,50 @@ button.as-link:hover {
   margin-top: 10px;
   display: flex;
   align-items: center;
+}
+
+.add-story-btn{
+  border-radius: 55px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.add-story-btn:hover{
+  background-color: var(--app-theme-green);
+  color: white;
+}
+
+.round-sticky-btn-container{
+  position: fixed;
+  bottom: 25px;
+  right: 25px
+}
+.round-sticky-btn {
+  cursor: pointer;
+  background: #f57b34;
+  color: white;
+    /* height: 60px;
+  width: 60px; */
+  padding: 15px 20px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.round-sticky-btn i {
+  margin: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+.round-sticky-btn-container{
+    position: relative;
+    bottom: -40px !important;
+    right: 0;
+}
+.round-sticky-btn {
+  padding: 10px 15px;
+}
 }

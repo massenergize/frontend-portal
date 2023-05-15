@@ -23,6 +23,9 @@ const SECTION = "section-creator";
 const CHIPS = "chips";
 const FILE = "file";
 const HTMLFIELD = "html-field";
+//added field for date types
+const DATE = "date"
+const DATE_TIME = "datetime-local"
 
 export const BAD = "bad";
 export const GOOD = "good";
@@ -289,6 +292,10 @@ export default class FormGenerator extends Component {
       switch (formItem.type.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
+        case DATE:
+          return this.getInput(formItem, index);  
+        case DATE_TIME:
+          return this.getInput(formItem, index);  
         case TEXTAREA:
           return this.getInput(formItem, index);
         case DROPDOWN:

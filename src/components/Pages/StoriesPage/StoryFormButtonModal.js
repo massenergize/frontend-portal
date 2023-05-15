@@ -1,8 +1,8 @@
 import StoryForm from "../ActionsPage/StoryForm";
 import Toast from "react-bootstrap/Toast";
 import React, { Component } from "react";
-import MEButton from "../Widgets/MEButton";
 import MEModal from "../Widgets/MEModal";
+
 
 //refactored the submit testimonial form so now you can have a modal version of it
 // TODO: We will have to refactor again, some structures and names cld work better in diff way. (Do when there is time)
@@ -21,6 +21,12 @@ class StoryFormButtonModal extends Component {
     });
   };
 
+  getTitle = (formType)=>{
+    if(!formType) return ""
+    return `Create ${formType} Form`
+  }
+
+
   //opens modal for the testimonial to be submitted
   TriggerModal = (bool) => {
     this.setState({ OpenModal: bool });
@@ -30,10 +36,10 @@ class StoryFormButtonModal extends Component {
     this.setState({ OpenModal: false });
   }
   render() {
-    const { overrideOpen } = this.props;
+    const { overrideOpen, reduxProps} = this.props;
     return (
       <>
-        <MEButton
+        <div
           className={this.props.ButtonClasses}
           onClick={() => {
             if (overrideOpen) return overrideOpen();
@@ -41,22 +47,24 @@ class StoryFormButtonModal extends Component {
           }}
         >
           {this.props.children}
-        </MEButton>
+        </div>
 
         <MEModal
           v2
           show={this.props.openModal || this.state.OpenModal}
           size="md"
           close={this.closeModal.bind(this)}
+          title={this.getTitle(this.props.ModalType)}
         >
           <div style={{ textAlign: "left" }}>
             <StoryForm
+              ModalType={this.props.ModalType}
               close={this.closeModal.bind(this)}
-              draftTestimonialData={this.props.draftTestimonialData}
-              TriggerSuccessNotification={(bool) =>
-                this.TriggerSuccessNotification(bool)
-              }
+              draftData={this.props.draftTestimonialData}
+              TriggerSuccessNotification={(bool) =>this.TriggerSuccessNotification(bool)}
               TriggerModal={this.closeModal.bind(this)}
+              updateItemInRedux={reduxProps?.updateItemInRedux}
+              reduxItems={reduxProps?.reduxItems}
             />
           </div>
         </MEModal>
@@ -71,7 +79,7 @@ class StoryFormButtonModal extends Component {
             }}
           >
             <Toast.Body className={"Success"}>
-              <h6>Your testimonial has been submitted! </h6>
+              <h6>Your {this.props.ModalType} has been submitted! </h6>
             </Toast.Body>
           </Toast>
         </div>

@@ -182,7 +182,7 @@ class ActionCard extends React.Component {
 
   newFlexRender() {
     const actionStateCase = this.getActionStateCase();
-    const { action } = this.props;
+    const { action, onEditButtonClick } = this.props;
     const tagNames = makeStringFromArrOfObjects(action?.tags, (t) => t.name);
     return (
       <div
@@ -220,23 +220,27 @@ class ActionCard extends React.Component {
                 className="every-day-flex"
                 style={{ flexDirection: "column", flex: "12" }}
               >
-                <MEChameleonButton
-                  style={{ flex: "3" }}
-                  className={`cameleon-correct test-btn-for-todo`}
-                  _case={actionStateCase}
-                  type={TODO}
-                  // {...this.getNoAuthParams()}
-                  onClick={() => this.runActionFunction("TODO")}
-                  {...this.getTodoPopoverInfo()}
-                />
-                <MEChameleonButton
-                  style={{ flex: "3" }}
-                  className={`cameleon-correct test-btn-for-done`}
-                  _case={actionStateCase}
-                  type={DONE}
-                  // {...this.getNoAuthParams()}
-                  onClick={() => this.runActionFunction("DONE")}
-                />
+                {action?.is_published && (
+                  <>
+                    <MEChameleonButton
+                      style={{ flex: "3" }}
+                      className={`cameleon-correct test-btn-for-todo`}
+                      _case={actionStateCase}
+                      type={TODO}
+                      // {...this.getNoAuthParams()}
+                      onClick={() => this.runActionFunction("TODO")}
+                      {...this.getTodoPopoverInfo()}
+                    />
+                    <MEChameleonButton
+                      style={{ flex: "3" }}
+                      className={`cameleon-correct test-btn-for-done`}
+                      _case={actionStateCase}
+                      type={DONE}
+                      // {...this.getNoAuthParams()}
+                      onClick={() => this.runActionFunction("DONE")}
+                    />
+                  </>
+                )}
                 {/* ----- Show this button in phone mode --------- */}
                 <MEButton
                   to={this.props.links.actions + "/" + this.props.action.id}
@@ -266,6 +270,22 @@ class ActionCard extends React.Component {
                 >
                   Info
                 </MEButton>
+                {!action?.is_published && (
+                  <MEButton
+                    onClick={() => onEditButtonClick && onEditButtonClick(action)}
+                    style={{
+                      padding: "5px 18px ",
+                      fontSize: "14px",
+                      minWidth: 76,
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      marginLeft: 5,
+                    }}
+                    containerClassName="test-action-info-btn"
+                  >
+                    Edit
+                  </MEButton>
+                )}
               </div>
             </div>
           </div>

@@ -24,8 +24,14 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
+import StoryForm from "../ActionsPage/StoryForm";
+import { EVENT } from "../../Constants";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -56,7 +62,7 @@ class EventsPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "EventsPage"});
+    window.gtag("set", "user_properties", { page_title: "EventsPage" });
   }
 
   static getDerivedStateFromProps = (props, state) => {
@@ -104,7 +110,24 @@ class EventsPage extends React.Component {
   onSearchTextChange(text) {
     this.setState({ searchText: text || "" });
   }
+  renderAddForm = () => {
+    const { user, events, updateEventsInRedux, communityData } = this.props;
+    if (user){
+      return (
+        <StoryFormButtonModal
+          ModalType={EVENT}
+          reduxProps={{
+            reduxItems: events,
+            updateItemInRedux: updateEventsInRedux,
+          }}
+        >
+          <AddButton type={EVENT} community={communityData?.community?.name} />
+        </StoryFormButtonModal>
+      );
 
+    }
+      return null;
+  };
   render() {
     const pageData = this.props.pageData;
     const { history, links } = this.props;
@@ -133,38 +156,62 @@ class EventsPage extends React.Component {
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.events, this.state.checked_values);
 
-    const duration = (event) => { return new Date(event.end_date_and_time) - new Date(event.start_date_and_time) };
-    const oneWeek = new Date("January 8, 2000 00:00:00") - new Date("January 1, 2000 00:00:00");
+    const duration = (event) => {
+      return (
+        new Date(event.end_date_and_time) - new Date(event.start_date_and_time)
+      );
+    };
+    const oneWeek =
+      new Date("January 8, 2000 00:00:00") -
+      new Date("January 1, 2000 00:00:00");
 
     const today = new Date(Date.now()).toISOString();
-    const upcomingEvents = found.filter(
-      event => event.end_date_and_time >= today && duration(event)<oneWeek).sort((a, b) => { 
+    const upcomingEvents = found
+      .filter(
+        (event) => event.end_date_and_time >= today && duration(event) < oneWeek
+      )
+      .sort((a, b) => {
         if (a === b) {
           return 0;
         }
-        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
-    });
-    const pastEvents = found.filter(
-      event => event.end_date_and_time < today && duration(event)<oneWeek).sort((a, b) => { 
+        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;
+      });
+    const pastEvents = found
+      .filter(
+        (event) => event.end_date_and_time < today && duration(event) < oneWeek
+      )
+      .sort((a, b) => {
         if (a === b) {
           return 0;
         }
-        return a.start_date_and_time > b.start_date_and_time ? -1 : 1;      
-    });
+        return a.start_date_and_time > b.start_date_and_time ? -1 : 1;
+      });
 
-    const campaigns = found.filter(
-      event => duration(event)>=oneWeek).sort((a, b) => { 
+    const campaigns = found
+      .filter((event) => duration(event) >= oneWeek)
+      .sort((a, b) => {
         if (a === b) {
           return 0;
         }
-        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;      
-    });
+        return a.start_date_and_time < b.start_date_and_time ? -1 : 1;
+      });
+
+    const getEventLength = () => {
+      const { view_mode } = this.state;
+      if (view_mode === VIEW_MODES.UPCOMING.key)
+        return upcomingEvents?.length || 0;
+      else if (view_mode === VIEW_MODES.CAMPAIGNS.key)
+        return campaigns?.length || 0;
+      else if (view_mode === VIEW_MODES.PAST.key)
+        return pastEvents?.length || 0;
+      return 0;
+    };
 
     return (
       <>
         <div
           className="boxed_wrapper test-events-page-wrapper"
-          data-number-of-events={this.props.events?.length || 0}
+          data-number-of-events={getEventLength()}
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
         >
           {/* renders the sidebar and events columns */}
@@ -204,7 +251,7 @@ class EventsPage extends React.Component {
                       </center>
                     </div>
                     <HorizontalFilterBox
-                      type="events"
+                      type={EVENT}
                       tagCols={this.props.tagCols}
                       boxClick={this.addMeToSelected}
                       search={this.handleSearch}
@@ -212,27 +259,40 @@ class EventsPage extends React.Component {
                       filtersFromURL={this.state.checked_values}
                       doneProcessingURLFilter={this.state.mounted}
                       onSearchTextChange={this.onSearchTextChange.bind(this)}
+                      updateItemInRedux={this.props.updateEventsInRedux}
+                      reduxItems={this.props.events}
+                      customStyles={{ width: "100%" }}
                     />
-                    <div className="event-view-togglers">
-                      {Object.keys(VIEW_MODES).map((key, index) => {
-                        const mode = VIEW_MODES[key];
-                        const isActive = this.state.view_mode === mode?.key;
-                        return (
-                          <div
-                            onClick={() => {
-                              this.setState({ view_mode: mode?.key });
-                              localStorage.setItem(EVENT_VIEW_MODE, mode?.key);
-                            }}
-                            className={`${
-                              isActive &&
-                              "event-view-toggler-active z-depth-float"
-                            }`}
-                            key={index}
-                          >
-                            <i className={`fa ${mode?.icon}`}></i> {mode?.name}
-                          </div>
-                        );
-                      })}
+                    <div>
+                      <div
+                        className="event-view-togglers"
+                        style={{ marginTop: 90 }}
+                      >
+                        {Object.keys(VIEW_MODES).map((key, index) => {
+                          const mode = VIEW_MODES[key];
+                          const isActive = this.state.view_mode === mode?.key;
+                          return (
+                            <div
+                              onClick={() => {
+                                this.setState({ view_mode: mode?.key });
+                                localStorage.setItem(
+                                  EVENT_VIEW_MODE,
+                                  mode?.key
+                                );
+                              }}
+                              className={`${
+                                isActive &&
+                                "event-view-toggler-active z-depth-float"
+                              }`}
+                              key={index}
+                              id={`test-event-view-toggler-${mode?.key}`}
+                            >
+                              <i className={`fa ${mode?.icon}`}></i>{" "}
+                              {mode?.name}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {this.state.view_mode === VIEW_MODES.UPCOMING?.key && (
@@ -244,7 +304,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(upcomingEvents)}</div>
+                        <div className="row">
+                          {this.renderEvents(upcomingEvents)}
+                        </div>
                       </div>
                     )}
 
@@ -257,7 +319,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(pastEvents)}</div>
+                        <div className="row">
+                          {this.renderEvents(pastEvents)}
+                        </div>
                       </div>
                     )}
 
@@ -270,7 +334,9 @@ class EventsPage extends React.Component {
                           paddingRight: 40,
                         }}
                       >
-                        <div className="row">{this.renderEvents(campaigns)}</div>
+                        <div className="row">
+                          {this.renderEvents(campaigns)}
+                        </div>
                       </div>
                     )}
 
@@ -312,6 +378,10 @@ class EventsPage extends React.Component {
             </section>
           </div>
         </div>
+        <Feature
+          name={FLAGS.USER_SUBMITTED_EVENTS}
+          children={this.renderAddForm()}
+        />
       </>
     );
   }
@@ -331,7 +401,7 @@ class EventsPage extends React.Component {
     let ids = window.location.href.split("?ids=")[1];
     if (ids) {
       let idsArr = ids.split("-");
-      events = events.filter(event =>idsArr.includes(event.id.toString()));
+      events = events.filter((event) => idsArr.includes(event.id.toString()));
     }
 
     const thisCommunity = this.props?.pageData?.community;
@@ -358,7 +428,10 @@ class EventsPage extends React.Component {
       if (this.props.eventExceptions) {
         exceptions = this.props.eventExceptions.data;
       }
-      const page = events.map((event) => {
+      let sorted_events = events.sort((a, b) =>
+        a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+      );
+      const page = sorted_events.map((event) => {
         const dateString = dateFormatString(
           new Date(event.start_date_and_time),
           new Date(event.end_date_and_time)
@@ -397,6 +470,29 @@ class EventsPage extends React.Component {
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
               isShared={thisCommunity?.id !== event?.community?.id}
+              onEditButtonClicked={() => {
+                let reConstEvent = {
+                  ...event,
+                  ...(JSON.parse(event?.location || "{}") || {}),
+                  end_date_and_time: event?.end_date_and_time?.slice(0, 16),
+                  start_date_and_time: event?.start_date_and_time?.slice(0, 16),
+                };
+                this.props.toggleModal({
+                  show: true,
+                  title: "Edit Event Form",
+                  size: "md",
+                  component: (
+                    <StoryForm
+                      ModalType={EVENT}
+                      close={() => this.props.toggleModal({ show: false })}
+                      draftData={reConstEvent}
+                      TriggerSuccessNotification={(bool) => ({})}
+                      updateItemInRedux={this.props.updateEventsInRedux}
+                      reduxItems={this.props.events}
+                    />
+                  ),
+                });
+              }}
             />
           </div>
         );
@@ -429,8 +525,11 @@ const mapStoreToProps = (store) => {
     eventRSVPs: store.page.rsvps,
     links: store.links,
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
+    communityData: store.page.communityData,
   };
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal: reduxToggleUniversalModal,
+  updateEventsInRedux:reduxLoadEvents
 })(withRouter(EventsPage));
