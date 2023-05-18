@@ -5,13 +5,20 @@ import Card from 'react-bootstrap/Card';
 import { connect } from 'react-redux';
 import BreadCrumbBar from '../../Shared/BreadCrumbBar'
 import queryString from 'query-string'
+import Seo from '../../Shared/Seo';
 
 class PoliciesPage extends React.Component {
 	render() {
+		const {community} = this.props
 		if (!this.props.policies) return <LoadingCircle />;
 		return (
 			<>
-
+				{Seo({
+				title: 'Policies Page',
+				description: '',
+				url: `${window.location.pathname}`,
+				subdomain: community?.subdomain,
+				})}
 				<div className='boxed_wrapper'>
 					<BreadCrumbBar links={[{ name: 'Policies' }]} />
 					<div className="container p-5" style={{height:window.screen.height-200}}>
@@ -49,7 +56,8 @@ class PoliciesPage extends React.Component {
 
 const mapStoreToProps = (store) => {
 	return {
-		policies: store.page.policies
+		policies: store.page.policies,
+		community: store.page.community,
 	}
 }
 export default connect(mapStoreToProps, null)(PoliciesPage);

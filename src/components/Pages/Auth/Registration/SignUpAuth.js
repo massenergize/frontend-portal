@@ -10,6 +10,7 @@ import {
 } from "../shared/utils";
 // import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
+import Seo from "../../../Shared/Seo";
 
 export default function SignUpAuth({
   // description,
@@ -85,21 +86,35 @@ export default function SignUpAuth({
   };
   if (itsTimeForRegistration)
     return (
-      <FormCompletion
-        onChange={onChange}
-        getValue={getValue}
-        form={form}
-        cancelRegistration={yesDeleteMyAccount}
-        createMyAccountNow={finaliseFormAndRegister}
-        loading={loading}
-        policies={policies}
-        community={community}
-        onUsernameChange={onUsernameChange}
-      />
+      <>
+        {Seo({
+          title: "Register",
+          description: "",
+          url: `${window.location.pathname}`,
+          subdomain: community?.subdomain,
+        })}
+        <FormCompletion
+          onChange={onChange}
+          getValue={getValue}
+          form={form}
+          cancelRegistration={yesDeleteMyAccount}
+          createMyAccountNow={finaliseFormAndRegister}
+          loading={loading}
+          policies={policies}
+          community={community}
+          onUsernameChange={onUsernameChange}
+        />
+      </>
     );
 
   return (
     <div className=" register-form">
+      {Seo({
+        title: 'Register',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: community?.subdomain,
+      })}
       <div
         className="z-depth-float me-anime-fade-in-up force-no-elevation-on-mobile"
         style={{ borderRadius: 12 }}

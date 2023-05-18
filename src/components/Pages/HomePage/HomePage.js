@@ -22,6 +22,7 @@ import {
 
 import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
+import Seo from "../../Shared/Seo";
 /*'
  * The Home Page of the MassEnergize
  */
@@ -218,6 +219,12 @@ class HomePage extends React.Component {
     var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
     return (
       <>
+      {Seo({
+        title: 'Home Page',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: community?.subdomain,
+      })}
         {showTour && (
           <ProductTour
             steps={steps[tourInfo.stage]}

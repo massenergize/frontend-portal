@@ -189,6 +189,12 @@ class CommunitySelectPage extends React.Component {
     if (!this.props.communities) return <LoadingCircle />;
     return (
       <div className="">
+        {Seo({
+          title: 'Community Selection',
+          description: '',
+          url: `${window.location.pathname}`,
+          subdomain: '',
+        })}
         <div className="container" style={{ height: "100vh" }}>
           <div
             className="row"

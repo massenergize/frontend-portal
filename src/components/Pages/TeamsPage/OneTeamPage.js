@@ -13,7 +13,6 @@ import TeamInfoModal from "./TeamInfoModal";
 import ContactAdminModal from "./ContactAdminModal";
 import ShareButtons from "../../Shared/ShareButtons";
 import { getTeamData, inTeam, inThisTeam } from "./utils.js";
-import { Helmet } from "react-helmet";
 import { Link, withRouter } from "react-router-dom";
 import MEButton from "../Widgets/MEButton";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
@@ -24,6 +23,7 @@ import MEModal from "../Widgets/MEModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
 import { PREF_EQ_DEFAULT } from "../../Utils"
+import Seo from "../../Shared/Seo";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -208,12 +208,12 @@ class OneTeamPage extends React.Component {
 
     return (
       <>
-        <Helmet>
-          <meta property="og:title" content={team.name} />
-          <meta property="og:image" content={team.image && team.image.url} />
-          <meta property="og:description" content={team.tagline} />
-          <meta property="og:url" content={window.location.href} />
-        </Helmet>
+      {Seo({
+        title: team?.name,
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain:this.props?.community?.subdomain,
+      })}
 
         {contactEditModalOpen &&
           (isAdmin ? (

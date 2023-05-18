@@ -12,6 +12,7 @@ import ChangePasswordForm from "./ChangePasswordForm";
 import DeleteAccountForm from "./DeleteAccountForm";
 import EditingProfileForm from "./EditingProfileForm";
 import ProfileOptions from "./ProfileOptions";
+import Seo from "../../Shared/Seo";
 
 function ProfileSettings(props) {
   const [notification, setNotification] = useState(null);
@@ -72,6 +73,12 @@ function ProfileSettings(props) {
   if (page)
     return (
       <BoxWrapper>
+        {Seo({
+          title: "Profile Settings",
+          description: "",
+          url: `${window.location.pathname}`,
+          subdomain: props.community?.subdomain,
+        })}
         <div style={{ marginBottom: 70 }}>{renderThisPage(page)}</div>
       </BoxWrapper>
     );
@@ -100,6 +107,7 @@ const mapStateToProps = (store) => {
     firebaseAuthSettings: store.firebaseAuthSettings,
     fireAuth: store.fireAuth,
     authState: store.authState,
+    community: store.page.community,
   };
 };
 
