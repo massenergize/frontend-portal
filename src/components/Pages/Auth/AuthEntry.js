@@ -167,7 +167,7 @@ function AuthEntry({
   return (
     <>
       {Seo({
-        title: 'Auth',
+        title: 'Sign In',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: community?.subdomain,

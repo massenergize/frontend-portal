@@ -120,7 +120,7 @@ export default function LoginAuth(props) {
   return (
     <div>
       {Seo({
-        title: 'Auth',
+        title: 'Sign In',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: community?.subdomain,
