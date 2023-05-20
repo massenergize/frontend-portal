@@ -18,6 +18,7 @@ import { isMobile } from "react-device-detect";
 import ImpactCommunityActionList from "./ImpactCommunityActionList";
 import TabView from "../Widgets/METabView/METabView";
 import { withRouter } from "react-router-dom";
+import Seo from "../../Shared/Seo";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
@@ -324,6 +325,12 @@ class ImpactPage extends React.Component {
 
     return (
       <>
+      {Seo({
+        title: 'Impacts',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: this.props.community?.subdomain,
+      })}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div

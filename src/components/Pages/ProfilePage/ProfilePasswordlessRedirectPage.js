@@ -14,6 +14,7 @@ import METextView from "../Widgets/METextView";
 import Notification from "../Widgets/Notification/Notification";
 import AddPassword from "./AddPassword";
 import PasswordLessDeleteBox from "./PasswordLessDeleteBox";
+import Seo from "../../Shared/Seo";
 const VERIFIED = "verfied";
 const ADD_PASSWORD = "add-password";
 const DELETE_ACCOUNT = "delete-account";
@@ -100,6 +101,12 @@ function ProfilePasswordlessRedirectPage({
     : {};
   return (
     <>
+    {Seo({
+      title: 'Manage Password',
+      description: '',
+      url: `${window.location.pathname}`,
+      subdomain: 'community?.subdomain',
+    })}
       <div
         className="boxed_wrapper"
         style={{ minHeight: window.screen.height - 200 }}
@@ -163,7 +170,7 @@ function ProfilePasswordlessRedirectPage({
               {sent && (
                 <>
                   <small style={{ color: "var(--app-theme-green)" }}>
-                    <b>Specia link is sent!</b>
+                    <b>Special link is sent!</b>
                   </small>
                   <br />
                 </>
@@ -225,6 +232,7 @@ const mapStateToProps = (store) => {
     fireAuth: store.fireAuth,
     links: store.links,
     settings: store.user.userFirebaseSettings,
+    community: store.page.community,
   };
 };
 const mapDispatchToProps = (dispatch) => {

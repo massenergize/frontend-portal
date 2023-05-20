@@ -541,7 +541,7 @@ class AppRouter extends Component {
             message={toastOptions?.message}
           />
           {Seo({
-            title: community.name,
+            title: "",
             description: community.about,
             url: `${window.location.pathname}`,
             image: community.logo && community.logo.url,
@@ -549,6 +549,7 @@ class AppRouter extends Component {
             updated_at: community.updated_at,
             created_at: community.updated_at,
             tags: [community.name, community.subdomain],
+            subdomain:community?.subdomain
           })}
 
           {navBarMenu ? (

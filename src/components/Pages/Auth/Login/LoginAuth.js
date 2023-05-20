@@ -12,6 +12,7 @@ import {
   sendSignInLinkToEmail,
 } from "../shared/firebase-helpers";
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
+import Seo from "../../../Shared/Seo";
 
 export default function LoginAuth(props) {
   const {
@@ -30,6 +31,7 @@ export default function LoginAuth(props) {
     finaliseNoPasswordAuth,
     setLoading,
     back,
+    community
   } = props;
 
   const [form, setForm] = useState({});
@@ -117,6 +119,12 @@ export default function LoginAuth(props) {
 
   return (
     <div>
+      {Seo({
+        title: 'Sign In',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: community?.subdomain,
+      })}
       <div
         className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"
         style={{ height: window.screen.height, marginTop: 40 }}

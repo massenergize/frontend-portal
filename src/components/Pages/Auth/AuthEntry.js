@@ -22,6 +22,7 @@ import SignUpAuth from "./Registration/SignUpAuth";
 import VerifyEmailBox from "./shared/components/VerifyEmailBox";
 import OpenEmailApp from "./shared/OpenEmailApp";
 import { AUTH_STATES, validatePassword } from "./shared/utils";
+import Seo from "../../Shared/Seo";
 
 const SIGNIN = "signin";
 const REGISTER = "signup";
@@ -131,6 +132,7 @@ function AuthEntry({
         finaliseNoPasswordAuth={finaliseNoPasswordAuth}
         setLoading={setLoading}
         back={back}
+        community={community}
       />
     );
     PageTitle = userWantsPasswordFree ? "Password-Free Sign In" : "Sign In";
@@ -164,6 +166,12 @@ function AuthEntry({
 
   return (
     <>
+      {Seo({
+        title: 'Sign In',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: community?.subdomain,
+      })}
       <div>
         <div className="boxed_wrapper" style={{ height: "100vh" }}>
           <BreadCrumbBar links={[{ name: PageTitle }]} />
