@@ -180,7 +180,7 @@ class OneTestimonialPage extends React.Component {
           updated_at: story.updated_at,
           created_at: story.created_at,
           tags: (tags || []).map(({ name }) => name) || [],
-          subdomain:this.props?.community?.subdomain
+          site_name:this.props?.community?.name
         })}
 
         <div

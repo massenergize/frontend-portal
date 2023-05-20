@@ -88,7 +88,7 @@ class ContactUsPage extends React.Component {
             title: "Contact Us",
             description: "",
             url: `${window.location.pathname}`,
-            subdomain: communityInfo?.subdomain,
+            site_name: communityInfo?.name,
           })}
           <BreadCrumbBar links={[{ name: "Contact Us" }]} />
           <div

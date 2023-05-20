@@ -207,7 +207,7 @@ class ProfilePage extends React.Component {
         title: 'Profile',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: this.props?.community?.subdomain,
+        site_name: this.props?.community?.name,
       })}
         <div
           className="boxed_wrapper"

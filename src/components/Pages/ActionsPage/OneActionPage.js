@@ -115,7 +115,6 @@ class OneActionPage extends React.Component {
         />
       );
     }
-
     const { tags } = action;
     const { community } = action || {};
     const { subdomain } = community || {};
@@ -132,7 +131,6 @@ class OneActionPage extends React.Component {
           updated_at: action.updated_at,
           created_at: action.updated_at,
           tags: (tags || []).map(({ name }) => name) || [],
-          subdomain:community?.subdomain
         })}
 
         <div className="boxed_wrapper">

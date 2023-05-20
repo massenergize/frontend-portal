@@ -856,7 +856,7 @@ class RegisterFormBase extends React.Component {
         is_vendor: false,
         accepts_terms_and_conditions: true,
         //accepts_terms_and_conditions: termsAndServices,
-        subdomain: community && community.subdomain,
+        site_name: community && community.name,
         color: getRandomColor(),
       };
       this.setState({ creating: true });

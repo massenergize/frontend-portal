@@ -215,7 +215,7 @@ class EventsPage extends React.Component {
         title: 'Events',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: communityData?.community?.subdomain,
+        site_name: communityData?.community?.name,
       })}
         <div
           className="boxed_wrapper test-events-page-wrapper"

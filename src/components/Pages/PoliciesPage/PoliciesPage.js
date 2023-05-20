@@ -17,7 +17,7 @@ class PoliciesPage extends React.Component {
 				title: 'Policies',
 				description: '',
 				url: `${window.location.pathname}`,
-				subdomain: community?.subdomain,
+				site_name: community?.name,
 				})}
 				<div className='boxed_wrapper'>
 					<BreadCrumbBar links={[{ name: 'Policies' }]} />

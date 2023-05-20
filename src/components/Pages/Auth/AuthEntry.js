@@ -170,7 +170,7 @@ function AuthEntry({
         title: 'Sign In',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: community?.subdomain,
+        site_name: community?.name,
       })}
       <div>
         <div className="boxed_wrapper" style={{ height: "100vh" }}>

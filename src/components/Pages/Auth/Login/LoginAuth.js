@@ -123,7 +123,7 @@ export default function LoginAuth(props) {
         title: 'Sign In',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: community?.subdomain,
+        site_name: community?.name,
       })}
       <div
         className="styled-form login-form mob-login-white-cleaner me-anime-fade-in-up"

@@ -212,7 +212,7 @@ class OneTeamPage extends React.Component {
         title: team?.name,
         description: '',
         url: `${window.location.pathname}`,
-        subdomain:this.props?.community?.subdomain,
+        site_name:this.props?.community?.name,
       })}
 
         {contactEditModalOpen &&

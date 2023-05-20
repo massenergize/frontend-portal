@@ -37,7 +37,7 @@ class DonatePage extends React.Component {
           title: "Donate",
           description: "",
           url: `${window.location.pathname}`,
-          subdomain: community?.subdomain,
+          site_name: community?.name,
         })}
         <div
           className="boxed_wrapper"
