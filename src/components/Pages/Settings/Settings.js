@@ -118,7 +118,7 @@ function Settings({
         title: 'User Settings',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: this.props?.community?.subdomain,
+        subdomain: community?.subdomain,
       })}
       <div
         className="boxed_wrapper"
