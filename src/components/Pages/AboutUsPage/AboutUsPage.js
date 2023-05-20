@@ -9,6 +9,7 @@ import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 // Carousel from npm react-multi-carousel
 import "react-multi-carousel/lib/styles.css";
 import LoadingCircle from "../../Shared/LoadingCircle";
+import Seo from "../../Shared/Seo";
 
 class AboutUsPage extends React.Component {
   componentDidMount() {
@@ -62,8 +63,16 @@ class AboutUsPage extends React.Component {
     const donateMessage =
       donatePageData && donatePageData.title ? donatePageData.title : null;
 
+      const {community} = this.props;
+
     return (
       <div className="boxed_wrapper">
+        {Seo({
+          title: "About Us",
+          description: "",
+          url: `${window.location.pathname}`,
+          subdomain: community?.subdomain,
+        })}
         <BreadCrumbBar links={[{ name: "About Us" }]} />
         <div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">
           <div style={{ marginTop: 70 }}></div>

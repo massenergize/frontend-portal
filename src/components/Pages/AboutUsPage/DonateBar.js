@@ -12,7 +12,9 @@ class DonateBar extends React.Component {
       <div className="donate-us center p-5" style={{ backgroundColor: "" }}>
         <h4 className="cool-font">{this.props.donateMessage}</h4>
         <br />
-        <MEButton variation = "union" to={this.props.links.donate}>Donate</MEButton>
+        <MEButton variation="union" to={this.props.links.donate}>
+          Donate
+        </MEButton>
       </div>
     );
   }
@@ -20,6 +22,7 @@ class DonateBar extends React.Component {
 const mapStoreToProps = (store) => {
   return {
     links: store.links,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps)(DonateBar);

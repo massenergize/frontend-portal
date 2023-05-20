@@ -4,6 +4,7 @@ import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import { connect } from "react-redux";
 import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
+import Seo from "../../Shared/Seo";
 
 class ContactUsPage extends React.Component {
   componentDidMount() {
@@ -83,6 +84,12 @@ class ContactUsPage extends React.Component {
     return (
       <>
         <div className="boxed_wrapper" style={{ marginBottom: 300 }}>
+          {Seo({
+            title: "Contact Us",
+            description: "",
+            url: `${window.location.pathname}`,
+            subdomain: communityInfo?.subdomain,
+          })}
           <BreadCrumbBar links={[{ name: "Contact Us" }]} />
           <div
             className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12 test-contact-us-wrapper"

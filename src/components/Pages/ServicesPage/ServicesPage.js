@@ -31,6 +31,7 @@ import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
+import Seo from "../../Shared/Seo";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -170,6 +171,12 @@ class ServicesPage extends React.Component {
 
     return (
       <>
+      {Seo({
+        title: 'Service Providers',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain:this.props?.community?.subdomain ,
+      })}
         <div
           className="boxed_wrapper"
           style={{
@@ -368,6 +375,7 @@ const mapStoreToProps = (store) => {
     serviceProviders: store.page.serviceProviders,
     communityData: store.page.communityData,
     links: store.links,
+     community: store.page.community,
     tagCols: filterTagCollections(
       store.page.serviceProviders,
       store.page.tagCols

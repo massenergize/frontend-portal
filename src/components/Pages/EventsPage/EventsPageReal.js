@@ -32,6 +32,7 @@ import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
+import Seo from "../../Shared/Seo";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -207,8 +208,15 @@ class EventsPage extends React.Component {
       return 0;
     };
 
+    const {communityData} = this.props;
     return (
       <>
+      {Seo({
+        title: 'Events',
+        description: '',
+        url: `${window.location.pathname}`,
+        subdomain: communityData?.community?.subdomain,
+      })}
         <div
           className="boxed_wrapper test-events-page-wrapper"
           data-number-of-events={getEventLength()}
