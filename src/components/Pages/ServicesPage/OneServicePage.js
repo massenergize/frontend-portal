@@ -41,7 +41,7 @@ class OneServicePage extends React.Component {
           updated_at: vendor.updated_at,
           created_at: vendor.created_at,
           tags: vendor.name && vendor.name.split(" "),
-          subdomain: this.props.community?.subdomain,
+          site_name: this.props.community?.name,
         })}
         <div
           className="boxed_wrapper"

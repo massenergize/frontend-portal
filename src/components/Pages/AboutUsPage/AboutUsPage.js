@@ -71,7 +71,7 @@ class AboutUsPage extends React.Component {
           title: "About Us",
           description: "",
           url: `${window.location.pathname}`,
-          subdomain: community?.subdomain,
+          site_name: community?.name,
         })}
         <BreadCrumbBar links={[{ name: "About Us" }]} />
         <div className="col-md-10 col-lg-10 offset-md-1 col-sm-10 col-xs-12">

@@ -326,10 +326,10 @@ class ImpactPage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Impacts',
+        title: 'Impact',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: this.props.community?.subdomain,
+        site_name: this.props.community?.name,
       })}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />

@@ -132,7 +132,7 @@ class TeamsPage extends React.Component {
         title: 'Teams',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: communityData.community.subdomain,
+        site_name: communityData.community.name,
       })}
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (

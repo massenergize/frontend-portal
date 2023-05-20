@@ -262,7 +262,7 @@ class StoriesPage extends React.Component {
         title: 'Testimonials',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: this.props?.community?.subdomain,
+        site_name: this.props?.community?.name,
       })}
         <div
           className="boxed_wrapper"

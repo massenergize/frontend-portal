@@ -11,18 +11,17 @@ const Seo = ({
   updated_at,
   created_at,
   tags,
-  subdomain
 }) => {
   return (
     <Helmet>
-      <title>{`${subdomain} | ${title}`}</title>
+      <title>{`${site_name} | ${title}`}</title>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <meta property="og:title" content={`${subdomain} | ${title}`} />
+      <meta property="og:title" content={`${site_name} | ${title}`} />
       <meta property="og:image" content={image} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="article" />
@@ -30,22 +29,22 @@ const Seo = ({
       <meta property="og:site_name" content={site_name || title} />
 
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:title" content={`${subdomain} | ${title}`} />
+      <meta property="twitter:title" content={`${site_name} | ${title}`} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={image} />
 
-      <meta name="twitter:title" content={`${subdomain} | ${title}`} />
+      <meta name="twitter:title" content={`${site_name} | ${title}`} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image:src" content={image} />
 
       <meta name="description" content={description} />
-      <meta itemprop="name" content={`${subdomain} | ${title}`} />
+      <meta itemprop="name" content={`${site_name} | ${title}`} />
       <meta itemprop="description" content={description} />
       <meta itemprop="image" content={image} />
 
       <meta property="article:published_time" content={created_at} />
       <meta property="article:modified_time" content={updated_at} />
-      <meta property="article:section" content={`${subdomain} | ${title}`} />
+      <meta property="article:section" content={`${site_name} | ${title}`} />
       <meta name="keywords" content={keywords?.join()} />
       {(tags || []).map((name, i) => (
         <meta key={i} property="article:tag" content={name} />

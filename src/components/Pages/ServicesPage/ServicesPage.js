@@ -175,7 +175,7 @@ class ServicesPage extends React.Component {
         title: 'Service Providers',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain:this.props?.community?.subdomain ,
+        site_name:this.props?.community?.name ,
       })}
         <div
           className="boxed_wrapper"

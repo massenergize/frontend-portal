@@ -193,7 +193,7 @@ class CommunitySelectPage extends React.Component {
           title: 'Communities',
           description: '',
           url: `${window.location.pathname}`,
-          subdomain: 'MassEnergize',
+          site_name: 'MassEnergize',
         })}
         <div className="container" style={{ height: "100vh" }}>
           <div

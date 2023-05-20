@@ -549,7 +549,7 @@ class AppRouter extends Component {
             updated_at: community.updated_at,
             created_at: community.updated_at,
             tags: [community.name, community.subdomain],
-            subdomain:community?.subdomain
+            site_name:community.name
           })}
 
           {navBarMenu ? (
