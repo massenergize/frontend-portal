@@ -326,7 +326,7 @@ class ImpactPage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Impacts Page',
+        title: 'Impacts',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: this.props.community?.subdomain,

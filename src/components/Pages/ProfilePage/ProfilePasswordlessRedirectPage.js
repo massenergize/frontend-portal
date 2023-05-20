@@ -102,7 +102,7 @@ function ProfilePasswordlessRedirectPage({
   return (
     <>
     {Seo({
-      title: 'Password-less Management',
+      title: 'Manage Password',
       description: '',
       url: `${window.location.pathname}`,
       subdomain: 'community?.subdomain',
@@ -170,7 +170,7 @@ function ProfilePasswordlessRedirectPage({
               {sent && (
                 <>
                   <small style={{ color: "var(--app-theme-green)" }}>
-                    <b>Specia link is sent!</b>
+                    <b>Special link is sent!</b>
                   </small>
                   <br />
                 </>

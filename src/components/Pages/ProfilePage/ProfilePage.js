@@ -204,7 +204,7 @@ class ProfilePage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Profile Page',
+        title: 'Profile',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: this.props?.community?.subdomain,

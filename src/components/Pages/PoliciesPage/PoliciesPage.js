@@ -14,7 +14,7 @@ class PoliciesPage extends React.Component {
 		return (
 			<>
 				{Seo({
-				title: 'Policies Page',
+				title: 'Policies',
 				description: '',
 				url: `${window.location.pathname}`,
 				subdomain: community?.subdomain,

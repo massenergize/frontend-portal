@@ -74,7 +74,7 @@ function ProfileSettings(props) {
     return (
       <BoxWrapper>
         {Seo({
-          title: "Profile Settings",
+          title: "Profle Settings",
           description: "",
           url: `${window.location.pathname}`,
           subdomain: props.community?.subdomain,

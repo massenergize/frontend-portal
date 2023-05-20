@@ -110,7 +110,7 @@ export default function SignUpAuth({
   return (
     <div className=" register-form">
       {Seo({
-        title: 'Register',
+        title: 'Sign Up',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: community?.subdomain,

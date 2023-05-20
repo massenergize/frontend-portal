@@ -129,7 +129,7 @@ class TeamsPage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Teams Page',
+        title: 'Teams',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: communityData.community.subdomain,

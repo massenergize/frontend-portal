@@ -259,7 +259,7 @@ class StoriesPage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Testimonials Page',
+        title: 'Testimonials',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: this.props?.community?.subdomain,

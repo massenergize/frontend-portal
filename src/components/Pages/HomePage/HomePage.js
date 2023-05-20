@@ -220,7 +220,7 @@ class HomePage extends React.Component {
     return (
       <>
       {Seo({
-        title: 'Home Page',
+        title: 'Home',
         description: '',
         url: `${window.location.pathname}`,
         subdomain: community?.subdomain,
