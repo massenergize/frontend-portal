@@ -16,7 +16,7 @@ import Seo from "../../Shared/Seo";
 
 function ProfileSettings(props) {
   const [notification, setNotification] = useState(null);
-  const { links, user, authState, fireAuth } = props;
+  const { links, user, authState, fireAuth, community } = props;
   const { mode } = fetchParamsFromURL(props.location, "mode");
   const pathname = props.location?.pathname || "#";
   const history = useHistory();
@@ -77,7 +77,7 @@ function ProfileSettings(props) {
           title: "Profle Settings",
           description: "",
           url: `${window.location.pathname}`,
-          subdomain: props.community?.subdomain,
+          subdomain: community?.subdomain,
         })}
         <div style={{ marginBottom: 70 }}>{renderThisPage(page)}</div>
       </BoxWrapper>
