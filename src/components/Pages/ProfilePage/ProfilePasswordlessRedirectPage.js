@@ -105,7 +105,7 @@ function ProfilePasswordlessRedirectPage({
       title: 'Manage Password',
       description: '',
       url: `${window.location.pathname}`,
-      subdomain: 'community?.subdomain',
+      site_name: 'community?.name',
     })}
       <div
         className="boxed_wrapper"

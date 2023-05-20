@@ -223,7 +223,7 @@ class HomePage extends React.Component {
         title: 'Home',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: community?.subdomain,
+        site_name: community?.name,
       })}
         {showTour && (
           <ProductTour

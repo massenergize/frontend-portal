@@ -227,7 +227,7 @@ class ActionsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
-    const {communityData:community} = this.props;
+    const {communityData} = this.props;
     const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
@@ -276,7 +276,7 @@ class ActionsPage extends React.Component {
           title: "Actions",
           description: "",
           url: `${window.location.pathname}`,
-          subdomain: community?.community?.subdomain,
+          site_name:communityData?.community?.name,
         })}
         {this.props.showTour && (
           <ProductTour

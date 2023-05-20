@@ -88,7 +88,7 @@ class OneEventPage extends React.Component {
           updated_at: event.updated_at,
           created_at: event.updated_at,
           tags: event.name && event.name.split(" "),
-          subdomain: this.props.community?.subdomain,
+          site_name: this.props.community?.name,
         })}
 
         <div

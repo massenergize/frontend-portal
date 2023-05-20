@@ -91,7 +91,7 @@ export default function SignUpAuth({
           title: "Sign Up",
           description: "",
           url: `${window.location.pathname}`,
-          subdomain: community?.subdomain,
+          site_name: community?.name,
         })}
         <FormCompletion
           onChange={onChange}
@@ -113,7 +113,7 @@ export default function SignUpAuth({
         title: 'Sign Up',
         description: '',
         url: `${window.location.pathname}`,
-        subdomain: community?.subdomain,
+        site_name: community?.name,
       })}
       <div
         className="z-depth-float me-anime-fade-in-up force-no-elevation-on-mobile"
