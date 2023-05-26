@@ -77,32 +77,30 @@ function RenderOptions({
       </MEButton>
 
       <Feature name={FLAGS.COMMUNICATION_PREFS}>
-        {(user.is_super_admin || user.is_community_admin) && (
-          <MEButton
-            onClick={() => {
-              apiCall("/downloads.sample.user_report", { community_id }).then(
-                (res) => {
-                  if (res?.data) {
-                    toggleToast({
-                      open: true,
-                      type: "success",
-                      message: "Your request has been sent to your email.",
-                    });
-                  } else {
-                    toggleToast({
-                      type: "error",
-                      open: true,
-                      message:
-                        "An error occurred while processing your request. Try again later.",
-                    });
-                  }
+        <MEButton
+          onClick={() => {
+            apiCall("/downloads.sample.user_report", { community_id }).then(
+              (res) => {
+                if (res?.data) {
+                  toggleToast({
+                    open: true,
+                    type: "success",
+                    message: "Your request has been sent to your email.",
+                  });
+                } else {
+                  toggleToast({
+                    type: "error",
+                    open: true,
+                    message:
+                      "An error occurred while processing your request. Try again later.",
+                  });
                 }
-              );
-            }}
-          >
-            <small>Send yourself a sample email</small>
-          </MEButton>
-        )}
+              }
+            );
+          }}
+        >
+          <small>Send yourself a sample email</small>
+        </MEButton>
       </Feature>
     </div>
   );
