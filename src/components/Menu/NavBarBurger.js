@@ -365,7 +365,7 @@ class NavBarBurger extends React.Component {
                 apiCall("auth.logout", {}).then((res) => {
                   if(res?.success){
                      this.props.signOut();
-                     window.location.reload()
+                    //  window.location.reload()
                   }
                 })
                
