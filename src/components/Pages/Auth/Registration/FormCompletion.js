@@ -17,18 +17,18 @@ export default function FormCompletion({
   disableDeleteNotification,
   customCancel,
   community,
-  onUsernameChange
+  onUsernameChange,
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [showTOS, setShowTOS] = useState(false);
   const [showPP, setShowPP] = useState(false);
 
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
   const [userNameValid, setUserNameValid] = useState(false);
 
   const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
-  const [nonUniqueUsername, setNonUniqueUsername] = useState("")
+  const [nonUniqueUsername, setNonUniqueUsername] = useState("");
 
   const [firstColor, setFirstColor] = useState("");
   const [secondColor, setSecondColor] = useState("");
@@ -39,6 +39,7 @@ export default function FormCompletion({
 
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
+  const userName = getValue("userName");
   const zip = getValue("zip");
 
   const checkCaptcha = (value) => {
@@ -55,41 +56,42 @@ export default function FormCompletion({
   };
 
   const validateUserName = async (username) => {
-    return await apiCall("users.validate.username", {username: username})
-      .then(json => {
+    return await apiCall("users.validate.username", { username: username })
+      .then((json) => {
         if (json.success) return json.data;
       })
-      .catch(error => console.log(error));
-  }
+      .catch((error) => console.log(error));
+  };
 
-  const handleUserNameChange = (e) => {
-    setUserName(e.target.value);
-    onUsernameChange(e.target.value);
-    setUserNameValid(false);
-    setInvalidUsernameDisplay("none");
-  }
+  // const handleUserNameChange = (e) => {
+  //   setUserName(e.target.value);
+  //   onUsernameChange(e.target.value);
+  //   setUserNameValid(false);
+  //   setInvalidUsernameDisplay("none");
+  // };
 
-  const suggestUsername = async () => {
-    let last = "";
-    for (let x of lastName?.split('-')) {
-        last += x?.charAt(0)?.toUpperCase()
-    }
+  // const suggestUsername = async () => {
+  //   let last = "";
+  //   for (let x of lastName?.split("-")) {
+  //     last += x?.charAt(0)?.toUpperCase();
+  //   }
 
-    const template = firstName?.charAt(0)?.toUpperCase() + firstName?.substring(1) + last;
-    const data = await validateUserName(template);
+  //   const template =
+  //     firstName?.charAt(0)?.toUpperCase() + firstName?.substring(1) + last;
+  //   const data = await validateUserName(template);
 
-    setUserName(data['suggested_username'])
-    setUserNameValid(true);
-    onUsernameChange(data['suggested_username']);
-    setThirdColor("green");
-    setInvalidUsernameDisplay("none");
-  }
+  //   setUserName(data["suggested_username"]);
+  //   setUserNameValid(true);
+  //   onUsernameChange(data["suggested_username"]);
+  //   setThirdColor("green");
+  //   setInvalidUsernameDisplay("none");
+  // };
 
-  const autoSetSuggestion = () => {
-    if (firstName && lastName && !userName) {
-        suggestUsername();
-    }
-  }
+  // const autoSetSuggestion = () => {
+  //   if (firstName && lastName && !userName) {
+  //     suggestUsername();
+  //   }
+  // };
 
   if (showTOS)
     return (
@@ -132,10 +134,10 @@ export default function FormCompletion({
               name="firstName"
               value={firstName}
               onChange={onChange}
-              onBlur={() => {
-                if (firstName) setFirstColor("green");
-                else setFirstColor("");
-              }}
+              // onBlur={() => {
+              //   if (firstName) setFirstColor("green");
+              //   else setFirstColor("");
+              // }}
               placeholder="First Name"
               required
             />
@@ -152,11 +154,11 @@ export default function FormCompletion({
               name="lastName"
               value={lastName}
               onChange={onChange}
-              onBlur={() => {
-                autoSetSuggestion();
-                if (lastName) setSecondColor("green");
-                else setSecondColor("");
-              }}
+              // onBlur={() => {
+              //   autoSetSuggestion();
+              //   if (lastName) setSecondColor("green");
+              //   else setSecondColor("");
+              // }}
               placeholder="Last Name"
               required
             />
@@ -176,36 +178,37 @@ export default function FormCompletion({
               type="text"
               name="userName"
               value={userName || ""}
-              onChange={(e) => handleUserNameChange(e)}
-              onBlur={async () => {
-                if (!userName) {
-                  setInvalidUsernameDisplay("none");
-                  setThirdColor("");
-                  return;
-                }
+              // onChange={(e) => handleUserNameChange(e)}
+              onChange={onChange}
+              // onBlur={async () => {
+              //   if (!userName) {
+              //     setInvalidUsernameDisplay("none");
+              //     setThirdColor("");
+              //     return;
+              //   }
 
-                if (userNameValid) {
-                  setThirdColor("green");
-                  setInvalidUsernameDisplay("none");
-                  return;
-                }
+              //   if (userNameValid) {
+              //     setThirdColor("green");
+              //     setInvalidUsernameDisplay("none");
+              //     return;
+              //   }
 
-                const data = await validateUserName(userName);
-                if (data["valid"]) {
-                  setThirdColor("green");
-                  setUserNameValid(true);
-                  setInvalidUsernameDisplay("none");
-                  onUsernameChange(userName);
-                  return;
-                }
+              //   const data = await validateUserName(userName);
+              //   if (data["valid"]) {
+              //     setThirdColor("green");
+              //     setUserNameValid(true);
+              //     setInvalidUsernameDisplay("none");
+              //     onUsernameChange(userName);
+              //     return;
+              //   }
 
-                setThirdColor("green");
-                setUserNameValid(true);
-                setNonUniqueUsername(userName);
-                setUserName(data["suggested_username"]);
-                onUsernameChange(data["suggested_username"]);
-                setInvalidUsernameDisplay("block");
-              }}
+              //   setThirdColor("green");
+              //   setUserNameValid(true);
+              //   setNonUniqueUsername(userName);
+              //   setUserName(data["suggested_username"]);
+              //   onUsernameChange(data["suggested_username"]);
+              //   setInvalidUsernameDisplay("block");
+              // }}
               placeholder="Username (unique)"
             />
           </div>

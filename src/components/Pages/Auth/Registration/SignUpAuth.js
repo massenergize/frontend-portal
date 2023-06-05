@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
@@ -10,7 +10,8 @@ import {
 } from "../shared/utils";
 // import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
-
+import { apiCall } from "../../../../api/functions";
+const ALLOWED_TRIGGERS = ["firstName", "lastName", "userName"];
 export default function SignUpAuth({
   // description,
   // title,
@@ -32,6 +33,9 @@ export default function SignUpAuth({
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
   const [userName, setUserName] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  let debounceTimeoutId;
+  const controller = new AbortController();
 
   const onUsernameChange = (username) => {
     setUserName(username);
@@ -43,8 +47,51 @@ export default function SignUpAuth({
     cancelRegistration();
     history.push(links.signin);
   };
+
+  const debounceSearch = ({ cb, requestBody, url, controller, timeoutId }) => {
+    clearTimeout(timeoutId);
+    controller.abort(); // Cancel previous request
+    console.log("we ouchere still")
+    timeoutId = setTimeout(async () => {
+      try {
+        const { signal } = controller;
+        const response = await apiCall(url, requestBody, null, { signal });
+        console.log("this is the response by geee", response)
+        // const response = await fetch(
+        //   `https://api.example.com/search?q=${value}`,
+        //   { signal }
+        // );
+        cb && cb(response, false, null);
+      } catch (error) {
+        // if (error.name === "AbortError") console.log("Request aborted");
+        if (error.name !== "AbortError") {
+          console.error(error);
+          cb && cb(null, true, error);
+        }
+      }
+    }, 600); // Debounce delay in milliseconds
+  };
+
+  const validateUserName = (response, failed, error) => {
+    if (failed)
+      return setFormErrors({ ...(formErrors || {}), ["userName"]: error });
+    console.log("I think this is the responsen that we need", response);
+  };
   const onChange = (e) => {
-    const newForm = { ...form, [e.target.name]: e.target.value?.trim() };
+    const name = e.target.name;
+    const value = e.target.value;
+    const userNameToBeSent =
+      name === "userName" ? value : form?.firstName || form?.lastName;
+    const params = {
+      controller,
+      timeoutId: debounceTimeoutId,
+      url: "users.validate.username",
+      requestBody: { username: userNameToBeSent },
+      cb: validateUserName,
+    };
+
+    if (ALLOWED_TRIGGERS.includes(name)) debounceSearch(params);
+    const newForm = { ...form, [name]: value?.trim() };
     setForm(newForm);
   };
 
