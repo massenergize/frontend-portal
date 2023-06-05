@@ -2,11 +2,14 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { IS_CANARY, IS_PROD } from ".";
 
+const PROD_FIREBASE_API_KEY = process.env.REACT_APP_PROD_FIREBASE_API_KEY
+const LOCAL_FIREBASE_API_KEY = process.env.REACT_APP_LOCAL_FIREBASE_API_KEY
+
 let firebaseConfig = {};
 
 if (IS_PROD || IS_CANARY) {
   firebaseConfig = {
-    apiKey: "AIzaSyDgSkiZGtco0b8ntN9Yo7U-urRzXhQNOo8",
+    apiKey: PROD_FIREBASE_API_KEY,
     authDomain: "massenergize-prod-auth.firebaseapp.com",
     databaseURL: "https://massenergize-prod-auth.firebaseio.com",
     projectId: "massenergize-prod-auth",
@@ -17,7 +20,7 @@ if (IS_PROD || IS_CANARY) {
   };
 } else {
   firebaseConfig = {
-    apiKey: "AIzaSyBjcwjC_0H1bgGKqPyqKnbWaGmAtzc4BJQ",
+    apiKey: LOCAL_FIREBASE_API_KEY,
     authDomain: "massenergize-auth.firebaseapp.com",
     databaseURL: "https://massenergize-auth.firebaseio.com",
     projectId: "massenergize-auth",
