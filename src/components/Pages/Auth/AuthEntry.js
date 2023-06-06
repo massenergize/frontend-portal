@@ -157,6 +157,7 @@ function AuthEntry({
         policies={policies}
         showTour={showTour}
         back={back}
+        setNotification={setNotification}
       />
     );
     PageTitle = "Sign Up";

@@ -18,6 +18,9 @@ export default function FormCompletion({
   customCancel,
   community,
   onUsernameChange,
+  validateOrSuggestUserName,
+  validatorLoading,
+  suggestedName,
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
@@ -134,10 +137,7 @@ export default function FormCompletion({
               name="firstName"
               value={firstName}
               onChange={onChange}
-              // onBlur={() => {
-              //   if (firstName) setFirstColor("green");
-              //   else setFirstColor("");
-              // }}
+              onBlur={validateOrSuggestUserName}
               placeholder="First Name"
               required
             />
@@ -154,25 +154,41 @@ export default function FormCompletion({
               name="lastName"
               value={lastName}
               onChange={onChange}
-              // onBlur={() => {
-              //   autoSetSuggestion();
-              //   if (lastName) setSecondColor("green");
-              //   else setSecondColor("");
-              // }}
+              onBlur={validateOrSuggestUserName}
               placeholder="Last Name"
               required
             />
           </div>
           <p style={{ marginTop: 10, marginBottom: 0 }}>
-            What username would you like? You can use our suggestion or create
-            your own.
+            {suggestedName ? (
+              <span>
+                The username is already taken, how about "
+                <span style={{ color: "green" }}>{suggestedName}</span>" ?
+              </span>
+            ) : (
+              <span>
+                What username would you like? You can use our suggestion or
+                create your own.
+              </span>
+            )}
           </p>
           <div
             className="form-group"
             style={{ marginBottom: 20, marginTop: 10 }}
           >
             <span className="adon-icon">
-              <span className="fa fa-user" style={{ color: thirdColor }}></span>
+              {validatorLoading ? (
+                <span
+                  className="fa fa-spinner fa-spin"
+                  style={{ color: "green" }}
+                ></span>
+              ) : (
+                <span
+                  className="fa fa-user"
+                  style={{ color: thirdColor }}
+                ></span>
+              )}
+              {/* <span className="fa fa-user" style={{ color: thirdColor }}></span> */}
             </span>
             <input
               type="text"
@@ -180,41 +196,12 @@ export default function FormCompletion({
               value={userName || ""}
               // onChange={(e) => handleUserNameChange(e)}
               onChange={onChange}
-              // onBlur={async () => {
-              //   if (!userName) {
-              //     setInvalidUsernameDisplay("none");
-              //     setThirdColor("");
-              //     return;
-              //   }
-
-              //   if (userNameValid) {
-              //     setThirdColor("green");
-              //     setInvalidUsernameDisplay("none");
-              //     return;
-              //   }
-
-              //   const data = await validateUserName(userName);
-              //   if (data["valid"]) {
-              //     setThirdColor("green");
-              //     setUserNameValid(true);
-              //     setInvalidUsernameDisplay("none");
-              //     onUsernameChange(userName);
-              //     return;
-              //   }
-
-              //   setThirdColor("green");
-              //   setUserNameValid(true);
-              //   setNonUniqueUsername(userName);
-              //   setUserName(data["suggested_username"]);
-              //   onUsernameChange(data["suggested_username"]);
-              //   setInvalidUsernameDisplay("block");
-              // }}
               placeholder="Username (unique)"
             />
           </div>
-          <div style={{ display: invalidUsernameDisplay }}>
+          {/* <div style={{ display: invalidUsernameDisplay }}>
             The username '{nonUniqueUsername}' is taken, how about '{userName}'?
-          </div>
+          </div> */}
           <p style={{ marginTop: 10 }}>
             Your ZIP code is used to count your actions properly towards the
             community goal.
