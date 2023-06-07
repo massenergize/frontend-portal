@@ -6,7 +6,6 @@ import { isInvalid } from "../shared/utils";
 import { onReCaptchaChange } from "../../../../redux/actions/authActions";
 import InformationBoard from "./InformationBoard";
 import DeleteConfirmation from "./DeleteConfirmation";
-import { apiCall } from "../../../../api/functions";
 export default function FormCompletion({
   onChange,
   getValue,
@@ -17,25 +16,20 @@ export default function FormCompletion({
   disableDeleteNotification,
   customCancel,
   community,
-  onUsernameChange,
+  // onUsernameChange,
   validateOrSuggestUserName,
   validatorLoading,
   suggestedName,
+  updateForm,
+  notification,
+  namesChanged,
+  setNamesChanged
 }) {
   const [captchaIsValid, setcaptchaIsValid] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [showTOS, setShowTOS] = useState(false);
   const [showPP, setShowPP] = useState(false);
-
-  // const [userName, setUserName] = useState("");
-  const [userNameValid, setUserNameValid] = useState(false);
-
-  const [invalidUsernameDisplay, setInvalidUsernameDisplay] = useState("none");
-  const [nonUniqueUsername, setNonUniqueUsername] = useState("");
-
-  const [firstColor, setFirstColor] = useState("");
-  const [secondColor, setSecondColor] = useState("");
-  const [thirdColor, setThirdColor] = useState("");
+  const [userNameValid, setUserNameValid] = useState(undefined);
 
   const TOS = policies?.find((x) => x.name === "Terms of Service") || "";
   const PP = policies?.find((x) => x.name === "Privacy Policy") || "";
@@ -43,13 +37,16 @@ export default function FormCompletion({
   const firstName = getValue("firstName");
   const lastName = getValue("lastName");
   const userName = getValue("userName");
+  // const namesChanged = getValue("namesChanged");
   const zip = getValue("zip");
+  const noErrors =
+    !notification || notification.good || notification.good === undefined;
 
   const checkCaptcha = (value) => {
     onReCaptchaChange(value, (status) => setcaptchaIsValid(status));
   };
 
-  const formNeedsWorks = () => {
+  const formNeedsWork = () => {
     const fieldVals = [firstName, lastName, zip];
     for (let i = 0; i < fieldVals.length; i++) {
       const field = fieldVals[i];
@@ -57,44 +54,6 @@ export default function FormCompletion({
     }
     return false;
   };
-
-  const validateUserName = async (username) => {
-    return await apiCall("users.validate.username", { username: username })
-      .then((json) => {
-        if (json.success) return json.data;
-      })
-      .catch((error) => console.log(error));
-  };
-
-  // const handleUserNameChange = (e) => {
-  //   setUserName(e.target.value);
-  //   onUsernameChange(e.target.value);
-  //   setUserNameValid(false);
-  //   setInvalidUsernameDisplay("none");
-  // };
-
-  // const suggestUsername = async () => {
-  //   let last = "";
-  //   for (let x of lastName?.split("-")) {
-  //     last += x?.charAt(0)?.toUpperCase();
-  //   }
-
-  //   const template =
-  //     firstName?.charAt(0)?.toUpperCase() + firstName?.substring(1) + last;
-  //   const data = await validateUserName(template);
-
-  //   setUserName(data["suggested_username"]);
-  //   setUserNameValid(true);
-  //   onUsernameChange(data["suggested_username"]);
-  //   setThirdColor("green");
-  //   setInvalidUsernameDisplay("none");
-  // };
-
-  // const autoSetSuggestion = () => {
-  //   if (firstName && lastName && !userName) {
-  //     suggestUsername();
-  //   }
-  // };
 
   if (showTOS)
     return (
@@ -116,9 +75,51 @@ export default function FormCompletion({
       />
     );
 
+  const addOnIcon = (show, icon, style) => {
+    if (!show) return <></>;
+    return <span className={`fa ${icon || ""}`} style={style || {}}></span>;
+  };
+  console.log(
+    "NO errors, notification, others",
+    noErrors,
+    notification,
+    userNameValid,
+    captchaIsValid,
+    formNeedsWork()
+  );
+
+  const triggerUsernameValidation = (key) => {
+    const value = firstName + lastName;
+    validateOrSuggestUserName(
+      value,
+      ({ code, valid, suggested_username }) => {
+        if (code === 911) return;
+        if (namesChanged) {
+          setUserNameValid(suggested_username ? true : false);
+          updateForm({
+            userName: valid ? value : suggested_username,
+            // namesChanged: false,
+          });
+          setNamesChanged(false);
+        }
+      },
+      key
+    );
+  };
+
+  const getValidStyles = () => {
+    if (userNameValid === undefined) return {};
+    if (userNameValid === true)
+      return { borderColor: "#8dc63f", borderWidth: 3 };
+    if (userNameValid === false) return { borderColor: "red", borderWidth: 3 };
+  };
+
   return (
     <div>
-      <div className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points">
+      <div
+        style={{ paddingTop: 30 }}
+        className="styled-form me-anime-fade-in-up register-form z-depth-float shave-points"
+      >
         {/* style={{marginTop: 20}} does no change */}
         <h3 align="center" className="cool-font mob-font-lg me-section-title">
           Welcome to {community.name}
@@ -130,31 +131,28 @@ export default function FormCompletion({
         <div className="c-f-inner-wrapper">
           <div className="form-group">
             <span className="adon-icon">
-              <span className="fa fa-user" style={{ color: firstColor }}></span>
+              <span className="fa fa-user"></span>
             </span>
             <input
               type="text"
               name="firstName"
               value={firstName}
               onChange={onChange}
-              onBlur={validateOrSuggestUserName}
+              onBlur={() => triggerUsernameValidation("firstName")}
               placeholder="First Name"
               required
             />
           </div>
           <div className="form-group">
             <span className="adon-icon">
-              <span
-                className="fa fa-user"
-                style={{ color: secondColor }}
-              ></span>
+              <span className="fa fa-user"></span>
             </span>
             <input
               type="text"
               name="lastName"
               value={lastName}
               onChange={onChange}
-              onBlur={validateOrSuggestUserName}
+              onBlur={() => triggerUsernameValidation("lastName")}
               placeholder="Last Name"
               required
             />
@@ -177,26 +175,48 @@ export default function FormCompletion({
             style={{ marginBottom: 20, marginTop: 10 }}
           >
             <span className="adon-icon">
-              {validatorLoading ? (
-                <span
-                  className="fa fa-spinner fa-spin"
-                  style={{ color: "green" }}
-                ></span>
-              ) : (
-                <span
-                  className="fa fa-user"
-                  style={{ color: thirdColor }}
-                ></span>
+              {addOnIcon(validatorLoading, "fa-spinner fa-spin", {
+                color: "#8dc63f",
+              })}
+              {addOnIcon(
+                !validatorLoading && userNameValid,
+                "fa-check-circle",
+                {
+                  color: "#8dc63f",
+                  fontSize: 21,
+                }
               )}
-              {/* <span className="fa fa-user" style={{ color: thirdColor }}></span> */}
+              {addOnIcon(
+                !validatorLoading && userNameValid === false,
+                "fa-times-circle",
+                {
+                  color: "red",
+                }
+              )}
+              {addOnIcon(
+                !validatorLoading && userNameValid === undefined,
+                "fa-user"
+              )}
             </span>
             <input
+              style={getValidStyles()}
               type="text"
               name="userName"
               value={userName || ""}
               // onChange={(e) => handleUserNameChange(e)}
               onChange={onChange}
               placeholder="Username (unique)"
+              onBlur={() => {
+                validateOrSuggestUserName(
+                  userName,
+                  ({ valid, suggested_username, code }, recommend) => {
+                    if (code === 911) return setUserNameValid(false);
+                    if (valid) setUserNameValid(true);
+                    else setUserNameValid(false);
+                    if (code === 202) recommend(suggested_username);
+                  }
+                );
+              }}
             />
           </div>
           {/* <div style={{ display: invalidUsernameDisplay }}>
@@ -258,12 +278,19 @@ export default function FormCompletion({
               style={{ marginRight: 8, padding: "11px 40px" }}
               type="submit"
               containerStyle={{ marginLeft: "auto" }}
-              disabled={!captchaIsValid || formNeedsWorks() || !userNameValid}
+              disabled={
+                !captchaIsValid ||
+                formNeedsWork() ||
+                !userNameValid ||
+                !noErrors
+              }
               onClick={async () => createMyAccountNow()}
               loading={loading}
               className={
                 captchaIsValid &&
-                !formNeedsWorks() &&
+                !formNeedsWork() &&
+                userNameValid &&
+                noErrors &&
                 "form-complete-submit-btn"
               }
             >

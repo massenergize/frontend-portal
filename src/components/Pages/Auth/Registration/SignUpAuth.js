@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthFooter from "../Components/auth footer/AuthFooter";
 import AuthHeader from "../Components/AuthHeader";
@@ -11,7 +11,6 @@ import {
 // import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 import { apiCall } from "../../../../api/functions";
-const ALLOWED_TRIGGERS = ["firstName", "lastName"];
 export default function SignUpAuth({
   // description,
   // title,
@@ -26,81 +25,52 @@ export default function SignUpAuth({
   setLoading,
   policies,
   setNotification,
-  // registerWithGoogle,
-  // registerWithFacebook,
-  // showTour,
+  notification,
   back,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
-  const [userName, setUserName] = useState("");
+  const [namesChanged, setNamesChanged] = useState(false);
   const [suggested, setSuggested] = useState(null);
   const [validatorLoading, setValidatorLoading] = useState(false);
+  const [validationResponse, setValidationResponse] = useState({}); // We keep a copy of just validated username. This helps if nothing has changed, so we dont run unnecessary API requests
   const history = useHistory();
-  // // let debounceTimeoutId;
-  // // const controller = new AbortController();
-
-  const onUsernameChange = (username) => {
-    setUserName(username);
-  };
 
   const yesDeleteMyAccount = () => {
     cancelRegistration();
     history.push(links.signin);
   };
 
-  // const debounceSearch = ({ cb, requestBody, url, controller, timeoutId }) => {
-  //   clearTimeout(timeoutId);
-  //   controller.abort(); // Cancel previous request
-  //   timeoutId = setTimeout(async () => {
-  //     console.log("LEts see body", requestBody)
-  //     try {
-  //       const { signal } = controller;
-  //       const response = await apiCall(url, requestBody, null, { signal });
-  //       console.log("this is the response by geee", response);
-  //       // const response = await fetch(
-  //       //   `https://api.example.com/search?q=${value}`,
-  //       //   { signal }
-  //       // );
-  //       cb && cb(response, false, null);
-  //     } catch (error) {
-  //       if (error.name === "AbortError") console.log("Request aborted");
-  //       if (error.name !== "AbortError") {
-  //         console.error(error);
-  //         cb && cb(null, true, error);
-  //       }
-  //     }
-  //   }, 600); // Debounce delay in milliseconds
-  // };
-
-  // const validateUserName = (response, failed, error) => {
-  //   if (failed)
-  //     return setFormErrors({ ...(formErrors || {}), ["userName"]: error });
-  // };
-
-  const validateOrSuggestUserName = () => {
-    const value = (form?.firstName || "") + (form?.lastName || "");
+  const validateOrSuggestUserName = (value, cb) => {
+    if (!value) return;
+    if (validationResponse && validationResponse?.value === value) return;
     setNotification({});
     setValidatorLoading(true);
-    // console.log("This is the form I think ", form);
+    setSuggested(null);
     apiCall("users.validate.username", { username: value }).then(
       ({ data, success, error }) => {
         setValidatorLoading(false);
         if (!success) return console.log("Error validating: ", error);
-        const { code, valid, suggested_username, message } = data;
-        if (!valid && code === 911)
-          return setNotification({ good: false, message });
+        const { code, valid } = data;
 
-        if (!valid && code === 202) return setSuggested(suggested_username);
+        setValidationResponse({ ...data, value });
+        if (!valid && code === 911)
+          setNotification({
+            good: false,
+            message: `Parts of "${value}" contains some profanity, please change`,
+          });
+
+        cb && cb(data, setSuggested);
       }
     );
   };
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+    // let namesChanged = false;
+    if (["firstName", "lastName"].includes(name)) setNamesChanged(true);
     const newForm = { ...form, [name]: value?.trim() };
     setForm(newForm);
-    // setValidatorLoading(true);
   };
 
   const hasInvalidContent = () => {
@@ -126,7 +96,7 @@ export default function SignUpAuth({
     const location = " , " + form.city + ", " + form.state + ", " + form.zip;
     const body = {
       full_name: form.firstName + " " + form.lastName,
-      preferred_name: userName || form.firstName,
+      preferred_name: form.userName || form.firstName,
       email: fireAuth.email,
       location: location,
       is_vendor: false,
@@ -146,13 +116,16 @@ export default function SignUpAuth({
         onChange={onChange}
         getValue={getValue}
         form={form}
+        updateForm={(data) => setForm({ ...form, ...data })}
         cancelRegistration={yesDeleteMyAccount}
         createMyAccountNow={finaliseFormAndRegister}
         loading={loading}
         policies={policies}
         community={community}
-        onUsernameChange={onUsernameChange}
         suggestedName={suggested}
+        notification={notification}
+        namesChanged={namesChanged}
+        setNamesChanged={setNamesChanged}
       />
     );
 
