@@ -224,62 +224,62 @@ export default class NewEventsCard extends Component {
                 </METextView>
               )}
             </div>
-            {!user && rsvp_enabled && (
-              <div style={{ marginLeft: "auto" }}>
+            <div style={{ display: "flex" }}>
+              {/* ==== Edit button */}
+              {!is_published && (
+                <div style={{ marginRight: 5}}>
                 <MEButton
-                  onClick={(e) => {
+                  onClick={(e) =>{
                     e.preventDefault();
-                    toggleGuestAuthDialog(true);
+                    onEditButtonClicked(id);
                   }}
                   flat
                 >
-                  RSVP
+                  Edit
                 </MEButton>
-              </div>
-            )}
-            {user && rsvp_enabled && true && (
-              <div style={{ marginLeft: "auto" }}>
-                <MELightDropDown
-                  containerStyle={{ padding: 0 }}
-                  direction={dropDirection}
-                  onItemSelected={this.itemSelected}
-                  animate={false}
-                  customAnimation={customDropAnimation || "rsvp-drop-anime"}
-                  controlLabel={true}
-                  label={
-                    (loading && <i className="fa fa-spinner fa-spin"></i>) ||
-                    rsvpStatus ||
-                    "RSVP"
-                  }
-                  labelClassNames="me-rsvp-btn test-card-rsvp-toggler"
-                  data={[
-                    RSVP_STATUS.INTERESTED,
-                    RSVP_STATUS.GOING,
-                    RSVP_STATUS.NOT_GOING,
-                  ]}
-                />
-              </div>
-            )}
+                </div>
+              )}
 
-            {!is_published && (
-              <MEButton
-                onClick={() =>
-                  onEditButtonClicked && onEditButtonClicked()
-                }
-                style={{
-                  padding: "2px 18px ",
-                  fontSize: "14px",
-                  minWidth: 76,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  position: "absolute",
-                  right: 15,
-                  bottom:1
-                }}
-              >
-                Edit
-              </MEButton>
-            )}
+              {/* ==== RSVP button  */}
+
+              {!user && rsvp_enabled && (
+                <div style={{ marginLeft: "auto" }}>
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleGuestAuthDialog(true);
+                    }}
+                    flat
+                  >
+                    RSVP
+                  </MEButton>
+                </div>
+              )}
+
+              {user && rsvp_enabled && true && (
+                <div style={{ marginLeft: "auto" }}>
+                  <MELightDropDown
+                    containerStyle={{ padding: 0 }}
+                    direction={dropDirection}
+                    onItemSelected={this.itemSelected}
+                    animate={false}
+                    customAnimation={customDropAnimation || "rsvp-drop-anime"}
+                    controlLabel={true}
+                    label={
+                      (loading && <i className="fa fa-spinner fa-spin"></i>) ||
+                      rsvpStatus ||
+                      "RSVP"
+                    }
+                    labelClassNames="me-rsvp-btn test-card-rsvp-toggler"
+                    data={[
+                      RSVP_STATUS.INTERESTED,
+                      RSVP_STATUS.GOING,
+                      RSVP_STATUS.NOT_GOING,
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </MECard>
         {error && (
