@@ -53,6 +53,7 @@ import MEDropdown from "../Widgets/MEDropdown";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
 import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
+import Seo from "../../Shared/Seo";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -202,6 +203,12 @@ class ProfilePage extends React.Component {
 
     return (
       <>
+      {Seo({
+        title: 'Profile',
+        description: '',
+        url: `${window.location.pathname}`,
+        site_name: this.props?.community?.name,
+      })}
         <div
           className="boxed_wrapper"
           onClick={this.clearError}

@@ -11,7 +11,7 @@ import {
 import { ME_STATES } from "../States";
 import MEAutoComplete from "./Widgets/MEAutoComplete";
 import { withRouter } from "react-router";
-
+import Seo from "../../Shared/Seo";
 
 const meStatesData = getPropsArrayFromJsonArray(ME_STATES, "name");
 const meStatesDataValues = getPropsArrayFromJsonArray(ME_STATES, "value");
@@ -189,6 +189,12 @@ class CommunitySelectPage extends React.Component {
     if (!this.props.communities) return <LoadingCircle />;
     return (
       <div className="">
+        {Seo({
+          title: 'Communities',
+          description: '',
+          url: `${window.location.pathname}`,
+          site_name: 'MassEnergize',
+        })}
         <div className="container" style={{ height: "100vh" }}>
           <div
             className="row"

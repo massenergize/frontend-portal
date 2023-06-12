@@ -180,6 +180,7 @@ class OneTestimonialPage extends React.Component {
           updated_at: story.updated_at,
           created_at: story.created_at,
           tags: (tags || []).map(({ name }) => name) || [],
+          site_name:this.props?.community?.name
         })}
 
         <div
@@ -377,6 +378,7 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     stories: store.page.testimonials,
     links: store.links,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, null)(OneTestimonialPage);

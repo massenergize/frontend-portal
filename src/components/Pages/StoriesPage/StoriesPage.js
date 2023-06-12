@@ -29,6 +29,7 @@ import { TESTIMONIAL } from "../../Constants";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import AddButton from "../../Shared/AddButton";
+import Seo from "../../Shared/Seo";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -257,6 +258,12 @@ class StoriesPage extends React.Component {
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
     return (
       <>
+      {Seo({
+        title: 'Testimonials',
+        description: '',
+        url: `${window.location.pathname}`,
+        site_name: this.props?.community?.name,
+      })}
         <div
           className="boxed_wrapper"
           style={{
@@ -417,6 +424,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
     communityData: store.page.communityData,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, {

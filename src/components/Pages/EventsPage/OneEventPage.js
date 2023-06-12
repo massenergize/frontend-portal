@@ -88,6 +88,7 @@ class OneEventPage extends React.Component {
           updated_at: event.updated_at,
           created_at: event.updated_at,
           tags: event.name && event.name.split(" "),
+          site_name: this.props.community?.name,
         })}
 
         <div
@@ -448,6 +449,7 @@ const mapStoreToProps = (store) => {
     events: store.page.events,
     links: store.links,
     pageData: store.page.eventsPage,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, {

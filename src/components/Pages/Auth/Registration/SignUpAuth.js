@@ -11,6 +11,8 @@ import {
 // import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
 import { apiCall } from "../../../../api/functions";
+import Seo from "../../../Shared/Seo";
+
 export default function SignUpAuth({
   // description,
   // title,
@@ -110,27 +112,41 @@ export default function SignUpAuth({
   };
   if (itsTimeForRegistration)
     return (
-      <FormCompletion
-        validateOrSuggestUserName={validateOrSuggestUserName}
-        validatorLoading={validatorLoading}
-        onChange={onChange}
-        getValue={getValue}
-        form={form}
-        updateForm={(data) => setForm({ ...form, ...data })}
-        cancelRegistration={yesDeleteMyAccount}
-        createMyAccountNow={finaliseFormAndRegister}
-        loading={loading}
-        policies={policies}
-        community={community}
-        suggestedName={suggested}
-        notification={notification}
-        namesChanged={namesChanged}
-        setNamesChanged={setNamesChanged}
-      />
+      <>
+        {Seo({
+          title: "Sign Up",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: community?.name,
+        })}
+        <FormCompletion
+          validateOrSuggestUserName={validateOrSuggestUserName}
+          validatorLoading={validatorLoading}
+          onChange={onChange}
+          getValue={getValue}
+          form={form}
+          updateForm={(data) => setForm({ ...form, ...data })}
+          cancelRegistration={yesDeleteMyAccount}
+          createMyAccountNow={finaliseFormAndRegister}
+          loading={loading}
+          policies={policies}
+          community={community}
+          suggestedName={suggested}
+          notification={notification}
+          namesChanged={namesChanged}
+          setNamesChanged={setNamesChanged}
+        />
+      </>
     );
 
   return (
     <div className=" register-form">
+      {Seo({
+        title: "Sign Up",
+        description: "",
+        url: `${window.location.pathname}`,
+        site_name: community?.name,
+      })}
       <div
         className="z-depth-float me-anime-fade-in-up force-no-elevation-on-mobile"
         style={{ borderRadius: 12 }}

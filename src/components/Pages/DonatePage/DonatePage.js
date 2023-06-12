@@ -5,6 +5,7 @@ import ReactPlayer from "react-player";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import MEButton from "../Widgets/MEButton";
+import Seo from "../../Shared/Seo";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
@@ -29,8 +30,15 @@ class DonatePage extends React.Component {
     const sub_title =
       pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
+    const {community} = this.props
     return (
       <>
+        {Seo({
+          title: "Donate",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: community?.name,
+        })}
         <div
           className="boxed_wrapper"
           style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
@@ -75,6 +83,7 @@ const mapStoreToProps = (store) => {
   return {
     homePageData: store.page.homePageData,
     donatePage: store.page.donatePage,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, null)(DonatePage);

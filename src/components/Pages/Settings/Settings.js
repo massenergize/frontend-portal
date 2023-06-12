@@ -11,6 +11,7 @@ import VerifyEmailBox from "../Auth/shared/components/VerifyEmailBox";
 import { AUTH_STATES } from "../Auth/shared/utils";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
+import Seo from "../../Shared/Seo";
 
 function Settings({
   user,
@@ -113,6 +114,12 @@ function Settings({
 
   return (
     <div>
+      {Seo({
+        title: 'User Settings',
+        description: '',
+        url: `${window.location.pathname}`,
+        site_name: community?.name,
+      })}
       <div
         className="boxed_wrapper"
         style={{ minHeight: window.screen.height - 100 }}

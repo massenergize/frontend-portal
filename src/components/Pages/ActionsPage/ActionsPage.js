@@ -51,6 +51,7 @@ import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
+import Seo from "../../Shared/Seo";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -226,6 +227,7 @@ class ActionsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
+    const {communityData} = this.props;
     const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
@@ -268,9 +270,14 @@ class ActionsPage extends React.Component {
         disableOverlayClose: true,
       },
     ];
-
     return (
       <div id="test-actions-main-wrapper">
+        {Seo({
+          title: "Actions",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name:communityData?.community?.name,
+        })}
         {this.props.showTour && (
           <ProductTour
             steps={steps}

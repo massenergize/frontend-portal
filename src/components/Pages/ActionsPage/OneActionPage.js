@@ -115,7 +115,6 @@ class OneActionPage extends React.Component {
         />
       );
     }
-
     const { tags } = action;
     const { community } = action || {};
     const { subdomain } = community || {};
