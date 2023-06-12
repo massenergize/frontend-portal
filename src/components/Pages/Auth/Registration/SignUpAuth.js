@@ -59,7 +59,7 @@ export default function SignUpAuth({
         if (!valid && code === 911)
           setNotification({
             good: false,
-            message: `Parts of "${value}" contains some profanity, please change`,
+            message: `Parts of "${value}" contains profanity, please change`,
           });
 
         cb && cb(data, setSuggested);
