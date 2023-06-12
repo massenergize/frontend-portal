@@ -79,14 +79,6 @@ export default function FormCompletion({
     if (!show) return <></>;
     return <span className={`fa ${icon || ""}`} style={style || {}}></span>;
   };
-  console.log(
-    "NO errors, notification, others",
-    noErrors,
-    notification,
-    userNameValid,
-    captchaIsValid,
-    formNeedsWork()
-  );
 
   const triggerUsernameValidation = (key) => {
     const value = firstName + lastName;
@@ -114,6 +106,7 @@ export default function FormCompletion({
     if (userNameValid === false) return { borderColor: "red", borderWidth: 3 };
   };
 
+  
   return (
     <div>
       <div
