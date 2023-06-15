@@ -2415,7 +2415,7 @@
   }
 
   .hori-filter-container {
-    position: absolute;
+
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 20px;
@@ -2426,13 +2426,15 @@
     border-right-width: 0px;
     white-space: nowrap;
     overflow-x: scroll;
-    /* max-width: 50vw; */
+    /* max-width: 100%; */
     overflow-y: hidden;
     height: auto;
   }
   .redo-hori-filter-container {
     height: 90vh !important;
     border-bottom-width: 0px;
+    position: absolute;
+    max-width: 77vw;
   }
 
   .snackbar-success .mob-modal-correction {
@@ -2556,6 +2558,9 @@
 @media (min-width: 768px) and (max-width: 1024px) {
   .tablet-vanish {
     display: none !important;
+  }
+    .redo-hori-filter-container {
+    max-width: 96%;
   }
 }
 
