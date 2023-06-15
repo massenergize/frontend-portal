@@ -2434,7 +2434,7 @@
     height: 90vh !important;
     border-bottom-width: 0px;
     position: absolute;
-    max-width: 77vw;
+    max-width: 1100px !important;  
   }
 
   .snackbar-success .mob-modal-correction {
@@ -2965,7 +2965,7 @@
     position: absolute;
     z-index: 4;
     height: 100vh;
-    text-align: center;
+    /* text-align: center; */
     padding: 3px 0px 0px;
     margin-bottom: 16px;
     border-radius: -22px;
@@ -2976,6 +2976,7 @@
     border-top-width: 0px;
     white-space: nowrap;
     overflow-x: scroll;
+    width: 100%;
   }
 
   .me-light-drop-fine-tune {
