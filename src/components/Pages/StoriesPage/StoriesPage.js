@@ -299,19 +299,20 @@ class StoriesPage extends React.Component {
                   />
                 </div>
               </div>
-              <HorizontalFilterBox
-                type={TESTIMONIAL}
-                tagCols={this.props.tagCols}
-                boxClick={this.addMeToSelected}
-                search={this.handleSearch}
-                searchText={this.state.searchText}
-                doneProcessingURLFilter={this.state.mounted}
-                onSearchTextChange={this.onSearchTextChange.bind(this)}
-                filtersFromURL={this.state.checked_values}
-                updateItemInRedux={this.props.updateItemInRedux}
-                reduxItems={this.props.stories}
-                // customStyles={{ width: "73%" }}
-              />
+                <HorizontalFilterBox
+                  type={TESTIMONIAL}
+                  tagCols={this.props.tagCols}
+                  boxClick={this.addMeToSelected}
+                  search={this.handleSearch}
+                  searchText={this.state.searchText}
+                  doneProcessingURLFilter={this.state.mounted}
+                  onSearchTextChange={this.onSearchTextChange.bind(this)}
+                  filtersFromURL={this.state.checked_values}
+                  updateItemInRedux={this.props.updateItemInRedux}
+                  reduxItems={this.props.stories}
+                  customStyles={{ width: "100%" }}
+                />
+
               <div className="row stories-row" style={{ paddingTop: 60 }}>
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>

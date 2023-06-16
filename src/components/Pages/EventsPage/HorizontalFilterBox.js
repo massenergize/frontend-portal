@@ -283,12 +283,12 @@ class HorizontalFilterBox extends Component {
 
   render() {
     const { longHeight, isFilterOn} = this.state;
-    const {customStyles } = this.props;
+    const {customStyles, customClass } = this.props;
     return (
       <>
         {this.renderMoreModal()}
         <div
-          className={`hori-filter-container phone-vanish ${
+          className={`hori-filter-container phone-vanish ${customClass} ${
             isFilterOn ? "redo-hori-filter-container" : ""
           }`}
           style={customStyles}
