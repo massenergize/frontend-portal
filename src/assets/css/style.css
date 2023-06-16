@@ -9856,9 +9856,9 @@ button.as-link:hover {
 }
 
 .round-sticky-btn-container{
-  position: fixed;
-  bottom: 25px;
-  right: 25px
+  /* position: fixed; */
+  width: max-content;
+  margin-left: 30px;
 }
 .round-sticky-btn {
   cursor: pointer;
@@ -9867,7 +9867,7 @@ button.as-link:hover {
     /* height: 60px;
   width: 60px; */
   padding: 15px 20px;
-  border-radius: 30px;
+  /* border-radius: 30px; */
   display: flex;
   flex-direction: row;
   align-items: center;

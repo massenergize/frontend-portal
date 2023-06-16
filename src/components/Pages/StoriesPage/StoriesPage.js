@@ -250,20 +250,22 @@ class StoriesPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
-      pageData && pageData.sub_title ? pageData.sub_title : null;
-    const description = pageData.description ? pageData.description : null;
+      pageData && pageData.sub_title
+        ? pageData.sub_title
+        : "lorem ipsum dolor sit amet consectetur adipisicing elit. de the commitment. I used Energize Wayland's website to see the impact of making the switch and found that the impact was even greater than I'd expected. ";
+    const description = pageData.description ? pageData.description : "lorem ipsum dolor sit amet consectetur adipisicing elit.";
 
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
     return (
       <>
-      {Seo({
-        title: 'Testimonials',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: this.props?.community?.name,
-      })}
+        {Seo({
+          title: "Testimonials",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
         <div
           className="boxed_wrapper"
           style={{
@@ -273,7 +275,7 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="all-head-area">
+              <div className="all-head-area" style={{display: "flex", alignItems:'flex-end'}}>
                 <div className="text-center">
                   {description ? (
                     <PageTitle style={{ fontSize: 24 }}>
@@ -288,10 +290,13 @@ class StoriesPage extends React.Component {
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
-                </div>
                 <center>{sub_title ? <p>{sub_title}</p> : null}</center>
-                <div className="pc-vanish" style={{ marginTop: 10 }}>
-                  {/* {this.renderTestimonialForm()} */}
+                </div>
+                <div className="" style={{ marginTop: 10 }}>
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
               <HorizontalFilterBox
@@ -305,7 +310,7 @@ class StoriesPage extends React.Component {
                 filtersFromURL={this.state.checked_values}
                 updateItemInRedux={this.props.updateItemInRedux}
                 reduxItems={this.props.stories}
-                customStyles={{ width: "73%" }}
+                // customStyles={{ width: "73%" }}
               />
               <div className="row stories-row" style={{ paddingTop: 60 }}>
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -364,10 +369,6 @@ class StoriesPage extends React.Component {
             </div>
           </section>
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
-          children={this.renderAddForm()}
-        />
       </>
     );
   }
