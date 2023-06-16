@@ -245,6 +245,12 @@ class ServicesPage extends React.Component {
                     updateItemInRedux={this.props.updateVendorsInRedux}
                     reduxItems={this.props.serviceProviders}
                     customStyles={{ width: "100%" }}
+                    renderAddButton={() => (
+                      <Feature
+                        name={FLAGS.USER_SUBMITTED_VENDORS}
+                        children={this.renderAddForm()}
+                      />
+                    )}
                   />
                 </div>
 

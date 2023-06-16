@@ -302,10 +302,16 @@ class StoriesPage extends React.Component {
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
                   {sub_title && (
-                    <center> <p>{sub_title}</p></center>
+                    <center>
+                      {" "}
+                      <p>{sub_title}</p>
+                    </center>
                   )}
                 </div>
-                <div className="phone-vanish" style={{ marginTop: 10, alignSelf: "end" }}>
+                <div
+                  className="phone-vanish"
+                  style={{ marginTop: 10, alignSelf: "end" }}
+                >
                   <Feature
                     name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
                     children={this.renderAddForm()}
@@ -324,6 +330,12 @@ class StoriesPage extends React.Component {
                 updateItemInRedux={this.props.updateItemInRedux}
                 reduxItems={this.props.stories}
                 customStyles={{ width: "100%" }}
+                renderAddButton={() => (
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
+                )}
               />
 
               <div className="row stories-row" style={{ paddingTop: 60 }}>

@@ -420,6 +420,12 @@ class ActionsPage extends React.Component {
                     filtersFromURL={this.state.checked_values}
                     doneProcessingURLFilter={this.state.mounted}
                     onSearchTextChange={this.onSearchTextChange.bind(this)}
+                    renderAddButton={() => (
+                      <Feature
+                        name={FLAGS.USER_SUBMITTED_ACTIONS}
+                        children={this.renderAddForm()}
+                      />
+                    )}
                   />
                   {/* renders the sidebar */}
 

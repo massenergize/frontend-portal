@@ -296,6 +296,12 @@ class EventsPage extends React.Component {
                       updateItemInRedux={this.props.updateEventsInRedux}
                       reduxItems={this.props.events}
                       customStyles={{ width: "100%" }}
+                      renderAddButton={() => (
+                        <Feature
+                          name={FLAGS.USER_SUBMITTED_EVENTS}
+                          children={this.renderAddForm()}
+                        />
+                      )}
                     />
                     <div>
                       <div
