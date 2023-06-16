@@ -23,7 +23,7 @@ import Tooltip from "../Widgets/CustomTooltip";
 // import Funnel from "../EventsPage/Funnel";
 // import METextView from "../Widgets/METextView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import { reduxLoadServiceProviders, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import { VENDOR } from "../../Constants";
 import MEButton from "../Widgets/MEButton";
@@ -92,28 +92,36 @@ class ServicesPage extends React.Component {
 
     return null;
   };
+  triggerGuestDialog(e) {
+    e && e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.signInWithAuthenticationDialog(true);
+  }
 
   renderAddForm = () => {
     const { user, serviceProviders, updateVendorsInRedux, communityData } =
       this.props;
-    if (user){
-      return (
-        <StoryFormButtonModal
-          ModalType={VENDOR}
-          reduxProps={{
-            reduxItems: serviceProviders,
-            updateItemInRedux: updateVendorsInRedux,
-          }}
-        >
-          <AddButton
-            type={VENDOR}
-            community={communityData?.community?.name}
-          />
-        </StoryFormButtonModal>
-      );
-
+    let _props = {};
+    if (!user) {
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
     }
-    return null;
+
+    return (
+      <StoryFormButtonModal
+        ModalType={VENDOR}
+        reduxProps={{
+          reduxItems: serviceProviders,
+          updateItemInRedux: updateVendorsInRedux,
+        }}
+        {..._props}
+      >
+        <AddButton type={VENDOR} community={communityData?.community?.name} />
+      </StoryFormButtonModal>
+    );
   };
   render() {
     var { serviceProviders, pageData } = this.props;
@@ -171,12 +179,12 @@ class ServicesPage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: 'Service Providers',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name:this.props?.community?.name ,
-      })}
+        {Seo({
+          title: "Service Providers",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
         <div
           className="boxed_wrapper"
           style={{
@@ -190,7 +198,14 @@ class ServicesPage extends React.Component {
           >
             <div className="row">
               <div className="col-md-10 col-lg-10 col-sm-12 offset-md-1 ">
-                <div style={{ marginBottom: 30 }}>
+                <div
+                  className="all-head-area"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "6fr 1fr",
+                    // marginBottom: 30,
+                  }}
+                >
                   <div className="text-center">
                     {description ? (
                       <PageTitle style={{ fontSize: 24 }}>
@@ -205,8 +220,17 @@ class ServicesPage extends React.Component {
                     ) : (
                       <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                     )}
+                    <center>{sub_title ? <p>{sub_title}</p> : null}</center>
                   </div>
-                  <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                  <div
+                    className="phone-vanish"
+                    style={{ marginTop: 10, alignSelf: "end" }}
+                  >
+                    <Feature
+                      name={FLAGS.USER_SUBMITTED_VENDORS}
+                      children={this.renderAddForm()}
+                    />
+                  </div>
                 </div>
                 <div style={{ marginBottom: 90 }}>
                   <HorizontalFilterBox
@@ -235,10 +259,6 @@ class ServicesPage extends React.Component {
             </div>
           </div>
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_VENDORS}
-          children={this.renderAddForm()}
-        />
       </>
     );
   }
@@ -311,7 +331,11 @@ class ServicesPage extends React.Component {
         >
           <MECard
             className={`vendor-hover  ${MEAnimation.getAnimationClass()}`}
-            style={{ borderRadius: 10, position: "relative", paddingBottom:40}}
+            style={{
+              borderRadius: 10,
+              position: "relative",
+              paddingBottom: 40,
+            }}
           >
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
@@ -322,7 +346,7 @@ class ServicesPage extends React.Component {
                 borderTopLeftRadius: 12,
               }}
             >
-              <div className="col-12 text-center" style={{ padding:0}}>
+              <div className="col-12 text-center" style={{ padding: 0 }}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <img
                     className="w-100 service-prov-img"
@@ -383,7 +407,8 @@ const mapStoreToProps = (store) => {
   };
 };
 const mapDispatchToProps = {
-  toggleModal:reduxToggleUniversalModal,
-  updateVendorsInRedux:reduxLoadServiceProviders
+  toggleModal: reduxToggleUniversalModal,
+  updateVendorsInRedux: reduxLoadServiceProviders,
+  signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ServicesPage);

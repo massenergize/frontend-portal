@@ -117,7 +117,14 @@ class StoriesPage extends React.Component {
   }
   renderAddForm = () => {
     const { user, stories, updateItemInRedux, communityData } = this.props;
-    if (user){
+    let _props = {};
+    if (!user){
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
+    }
       return (
         <StoryFormButtonModal
           ModalType={TESTIMONIAL}
@@ -125,6 +132,7 @@ class StoriesPage extends React.Component {
             reduxItems: stories,
             updateItemInRedux: updateItemInRedux,
           }}
+          {..._props}
         >
           <AddButton
             type={"Testimonial"}
@@ -132,8 +140,8 @@ class StoriesPage extends React.Component {
           />
         </StoryFormButtonModal>
       );
-    }
-    return null
+    //     }
+    // return null
   };
   // renderTestimonialForm() {
   //   const { user } = this.props;
@@ -252,8 +260,8 @@ class StoriesPage extends React.Component {
     const sub_title =
       pageData && pageData.sub_title
         ? pageData.sub_title
-        : "lorem ipsum dolor sit amet consectetur adipisicing elit. de the commitment. I used Energize Wayland's website to see the impact of making the switch and found that the impact was even greater than I'd expected. ";
-    const description = pageData.description ? pageData.description : "lorem ipsum dolor sit amet consectetur adipisicing elit.";
+        : "";
+    const description = pageData.description ? pageData.description : "";
 
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
@@ -275,7 +283,10 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="all-head-area" style={{display: "flex", alignItems:'flex-end'}}>
+              <div
+                className="all-head-area"
+                style={{ display: "grid", gridTemplateColumns: "6fr 1fr" }}
+              >
                 <div className="text-center">
                   {description ? (
                     <PageTitle style={{ fontSize: 24 }}>
@@ -290,28 +301,30 @@ class StoriesPage extends React.Component {
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
-                <center>{sub_title ? <p>{sub_title}</p> : null}</center>
+                  {sub_title && (
+                    <center> <p>{sub_title}</p></center>
+                  )}
                 </div>
-                <div className="" style={{ marginTop: 10 }}>
+                <div className="phone-vanish" style={{ marginTop: 10, alignSelf: "end" }}>
                   <Feature
                     name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
                     children={this.renderAddForm()}
                   />
                 </div>
               </div>
-                <HorizontalFilterBox
-                  type={TESTIMONIAL}
-                  tagCols={this.props.tagCols}
-                  boxClick={this.addMeToSelected}
-                  search={this.handleSearch}
-                  searchText={this.state.searchText}
-                  doneProcessingURLFilter={this.state.mounted}
-                  onSearchTextChange={this.onSearchTextChange.bind(this)}
-                  filtersFromURL={this.state.checked_values}
-                  updateItemInRedux={this.props.updateItemInRedux}
-                  reduxItems={this.props.stories}
-                  customStyles={{ width: "100%" }}
-                />
+              <HorizontalFilterBox
+                type={TESTIMONIAL}
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+                searchText={this.state.searchText}
+                doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
+                filtersFromURL={this.state.checked_values}
+                updateItemInRedux={this.props.updateItemInRedux}
+                reduxItems={this.props.stories}
+                customStyles={{ width: "100%" }}
+              />
 
               <div className="row stories-row" style={{ paddingTop: 60 }}>
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>

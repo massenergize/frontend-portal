@@ -99,6 +99,11 @@ class ActionsPage extends React.Component {
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "ActionsPage" });
   }
+  triggerGuestDialog(e) {
+    e && e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.signInWithAuthenticationDialog(true);
+  }
 
   renderEQModal() {
     const { showEqModal } = this.state;
@@ -119,21 +124,26 @@ class ActionsPage extends React.Component {
   }
   renderAddForm() {
     const { user, actions, updateActionsInRedux, communityData } = this.props;
-    if (user){
-      return (
-        <StoryFormButtonModal
-          ModalType={ACTION}
-          reduxProps={{
-            reduxItems: actions,
-            updateItemInRedux: updateActionsInRedux,
-          }}
-        >
-          <AddButton type={ACTION} community={communityData?.community?.name} />
-        </StoryFormButtonModal>
-      );
-
+    let _props = {};
+    if (!user) {
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
     }
-      return null;
+    return (
+      <StoryFormButtonModal
+        ModalType={ACTION}
+        reduxProps={{
+          reduxItems: actions,
+          updateItemInRedux: updateActionsInRedux,
+        }}
+        {..._props}
+      >
+        <AddButton type={ACTION} community={communityData?.community?.name} />
+      </StoryFormButtonModal>
+    );
   }
 
   addMeToSelected(param, reset = false) {
@@ -227,7 +237,7 @@ class ActionsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
-    const {communityData} = this.props;
+    const { communityData } = this.props;
     const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
@@ -276,7 +286,7 @@ class ActionsPage extends React.Component {
           title: "Actions",
           description: "",
           url: `${window.location.pathname}`,
-          site_name:communityData?.community?.name,
+          site_name: communityData?.community?.name,
         })}
         {this.props.showTour && (
           <ProductTour
@@ -367,7 +377,10 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 <div>
-                  <div className="all-head-area">
+                  <div
+                    className="all-head-area"
+                    style={{ display: "grid", gridTemplateColumns: "6fr 1fr" }}
+                  >
                     <div className="text-center">
                       {description ? (
                         <PageTitle style={{ fontSize: 24 }}>
@@ -382,10 +395,20 @@ class ActionsPage extends React.Component {
                       ) : (
                         <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                       )}
+                      <center>
+                        <Subtitle>{pageData.sub_title}</Subtitle>
+                      </center>
                     </div>
-                    <center>
-                      <Subtitle>{pageData.sub_title}</Subtitle>
-                    </center>
+
+                    <div
+                      className="phone-vanish"
+                      style={{ marginTop: 10, alignSelf: "end" }}
+                    >
+                      <Feature
+                        name={FLAGS.USER_SUBMITTED_ACTIONS}
+                        children={this.renderAddForm()}
+                      />
+                    </div>
                   </div>
                   <HorizontalFilterBox
                     type="action"
@@ -413,11 +436,6 @@ class ActionsPage extends React.Component {
                       {this.renderActions(actions)}
                     </div>
                   </div>
-
-                  <Feature
-                    name={FLAGS.USER_SUBMITTED_ACTIONS}
-                    children={this.renderAddForm()}
-                  />
                 </div>
               </div>
             </div>
