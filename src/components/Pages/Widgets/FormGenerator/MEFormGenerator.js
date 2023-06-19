@@ -289,7 +289,7 @@ export default class FormGenerator extends Component {
     if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
       if (!formItem || formItem === {}) return <i></i>;
-      switch (formItem.type.toLowerCase()) {
+      switch (formItem?.type?.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
         case DATE:

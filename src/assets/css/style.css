@@ -9847,7 +9847,7 @@ button.as-link:hover {
 
 .add-story-btn{
   border-radius: 55px;
-  padding: 10px 20px;
+  padding: 10px 15px;
   cursor: pointer;
 }
 .add-story-btn:hover{
@@ -9856,22 +9856,20 @@ button.as-link:hover {
 }
 
 .round-sticky-btn-container{
-  position: fixed;
-  bottom: 25px;
-  right: 25px
+  width: max-content;
+  /* margin-left: 30px; */
 }
 .round-sticky-btn {
   cursor: pointer;
   background: #f57b34;
   color: white;
-    /* height: 60px;
-  width: 60px; */
-  padding: 15px 20px;
-  border-radius: 30px;
+  padding: 10px 15px;
+  border-radius: 25px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
 }
 .round-sticky-btn i {
   margin: 0px;
@@ -9880,11 +9878,25 @@ button.as-link:hover {
   font-weight: bold;
 }
 
+.position-btn-and-title{
+  display: flex;
+ justify-content: space-between;
+}
+
+.page-title-container{
+ width: 100%;
+align-self: flex-end;
+}
+.submitted-content-btn-wrapper{
+  align-self: flex-end;
+  padding-left: 20px;
+}
+
 @media (max-width: 480px) {
 .round-sticky-btn-container{
-    position: relative;
     bottom: -40px !important;
-    right: 0;
+    margin-left: 15px !important;
+    margin-bottom: 20px;
 }
 .round-sticky-btn {
   padding: 10px 15px;
