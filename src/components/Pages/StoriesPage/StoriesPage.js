@@ -117,7 +117,14 @@ class StoriesPage extends React.Component {
   }
   renderAddForm = () => {
     const { user, stories, updateItemInRedux, communityData } = this.props;
-    if (user){
+    let _props = {};
+    if (!user){
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
+    }
       return (
         <StoryFormButtonModal
           ModalType={TESTIMONIAL}
@@ -125,6 +132,7 @@ class StoriesPage extends React.Component {
             reduxItems: stories,
             updateItemInRedux: updateItemInRedux,
           }}
+          {..._props}
         >
           <AddButton
             type={"Testimonial"}
@@ -132,8 +140,8 @@ class StoriesPage extends React.Component {
           />
         </StoryFormButtonModal>
       );
-    }
-    return null
+    //     }
+    // return null
   };
   // renderTestimonialForm() {
   //   const { user } = this.props;
@@ -250,8 +258,10 @@ class StoriesPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
-      pageData && pageData.sub_title ? pageData.sub_title : null;
-    const description = pageData.description ? pageData.description : null;
+      pageData && pageData.sub_title
+        ? pageData.sub_title
+        : "";
+    const description = pageData.description ? pageData.description : "";
 
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
@@ -273,8 +283,8 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="all-head-area">
-                <div className="text-center">
+              <div className="all-head-area position-btn-and-title">
+                <div className="text-center page-title-container">
                   {description ? (
                     <PageTitle style={{ fontSize: 24 }}>
                       {title}
@@ -288,25 +298,39 @@ class StoriesPage extends React.Component {
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
+                  {sub_title && (
+                    <center>
+                      {" "}
+                      <p>{sub_title}</p>
+                    </center>
+                  )}
                 </div>
-                <center>{sub_title ? <p>{sub_title}</p> : null}</center>
-                <div className="pc-vanish" style={{ marginTop: 10 }}>
-                  {/* {this.renderTestimonialForm()} */}
+                <div className="phone-vanish submitted-content-btn-wrapper">
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
-                <HorizontalFilterBox
-                  type={TESTIMONIAL}
-                  tagCols={this.props.tagCols}
-                  boxClick={this.addMeToSelected}
-                  search={this.handleSearch}
-                  searchText={this.state.searchText}
-                  doneProcessingURLFilter={this.state.mounted}
-                  onSearchTextChange={this.onSearchTextChange.bind(this)}
-                  filtersFromURL={this.state.checked_values}
-                  updateItemInRedux={this.props.updateItemInRedux}
-                  reduxItems={this.props.stories}
-                  customStyles={{ width: "100%" }}
-                />
+              <HorizontalFilterBox
+                type={TESTIMONIAL}
+                tagCols={this.props.tagCols}
+                boxClick={this.addMeToSelected}
+                search={this.handleSearch}
+                searchText={this.state.searchText}
+                doneProcessingURLFilter={this.state.mounted}
+                onSearchTextChange={this.onSearchTextChange.bind(this)}
+                filtersFromURL={this.state.checked_values}
+                updateItemInRedux={this.props.updateItemInRedux}
+                reduxItems={this.props.stories}
+                customStyles={{ width: "100%" }}
+                renderAddButton={() => (
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
+                )}
+              />
 
               <div className="row stories-row" style={{ paddingTop: 60 }}>
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
@@ -365,10 +389,6 @@ class StoriesPage extends React.Component {
             </div>
           </section>
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
-          children={this.renderAddForm()}
-        />
       </>
     );
   }

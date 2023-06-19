@@ -316,13 +316,18 @@ class HorizontalFilterBox extends Component {
 
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
-          <input
-            id="test-filter-box-id"
-            className="phone-search-input "
-            placeholder="Search..."
-            onChange={this.handleSearchTyping}
-            value={this.props.searchText}
-          />
+          <div style={{display:'grid', gridTemplateColumns:'5fr 1fr'}}>
+            <div>
+              <input
+                id="test-filter-box-id"
+                className="phone-search-input "
+                placeholder="Search..."
+                onChange={this.handleSearchTyping}
+                value={this.props.searchText}
+              />
+            </div>
+            <div style={{alignSelf:'center'}}>{this.props.renderAddButton && this.props.renderAddButton()}</div>
+          </div>
 
           <div
             className="hori-filter-container"

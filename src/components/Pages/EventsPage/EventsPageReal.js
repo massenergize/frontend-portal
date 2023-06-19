@@ -111,23 +111,33 @@ class EventsPage extends React.Component {
   onSearchTextChange(text) {
     this.setState({ searchText: text || "" });
   }
+  triggerGuestDialog(e) {
+    e && e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.toggleGuestAuthDialog(true);
+  }
   renderAddForm = () => {
     const { user, events, updateEventsInRedux, communityData } = this.props;
-    if (user){
-      return (
-        <StoryFormButtonModal
-          ModalType={EVENT}
-          reduxProps={{
-            reduxItems: events,
-            updateItemInRedux: updateEventsInRedux,
-          }}
-        >
-          <AddButton type={EVENT} community={communityData?.community?.name} />
-        </StoryFormButtonModal>
-      );
-
+    let _props = {};
+    if (!user) {
+    _props = {
+      ..._props,
+      overrideOpen: () =>
+        this.triggerGuestDialog && this.triggerGuestDialog(),
+    };
     }
-      return null;
+    return (
+      <StoryFormButtonModal
+        ModalType={EVENT}
+        reduxProps={{
+          reduxItems: events,
+          updateItemInRedux: updateEventsInRedux,
+        }}
+        {..._props}
+      >
+        <AddButton type={EVENT} community={communityData?.community?.name} />
+      </StoryFormButtonModal>
+    );
   };
   render() {
     const pageData = this.props.pageData;
@@ -208,15 +218,15 @@ class EventsPage extends React.Component {
       return 0;
     };
 
-    const {communityData} = this.props;
+    const { communityData } = this.props;
     return (
       <>
-      {Seo({
-        title: 'Events',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: communityData?.community?.name,
-      })}
+        {Seo({
+          title: "Events",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: communityData?.community?.name,
+        })}
         <div
           className="boxed_wrapper test-events-page-wrapper"
           data-number-of-events={getEventLength()}
@@ -230,8 +240,8 @@ class EventsPage extends React.Component {
               <div className="container override-container-width">
                 <div className="row">
                   <div className="col-lg-10 col-md-10 col-12 offset-md-1">
-                    <div style={{ marginBottom: 30 }}>
-                      <div className="text-center">
+                    <div className="all-head-area position-btn-and-title">
+                      <div className="text-center page-title-container">
                         {description ? (
                           <PageTitle
                             className="solid-font"
@@ -253,10 +263,16 @@ class EventsPage extends React.Component {
                             {title}
                           </PageTitle>
                         )}
+                        <center>
+                          <Subtitle>{sub_title}</Subtitle>
+                        </center>
                       </div>
-                      <center>
-                        <Subtitle>{sub_title}</Subtitle>
-                      </center>
+                      <div className="phone-vanish submitted-content-btn-wrapper">
+                        <Feature
+                          name={FLAGS.USER_SUBMITTED_EVENTS}
+                          children={this.renderAddForm()}
+                        />
+                      </div>
                     </div>
                     <HorizontalFilterBox
                       type={EVENT}
@@ -270,6 +286,12 @@ class EventsPage extends React.Component {
                       updateItemInRedux={this.props.updateEventsInRedux}
                       reduxItems={this.props.events}
                       customStyles={{ width: "100%" }}
+                      renderAddButton={() => (
+                        <Feature
+                          name={FLAGS.USER_SUBMITTED_EVENTS}
+                          children={this.renderAddForm()}
+                        />
+                      )}
                     />
                     <div>
                       <div
@@ -386,10 +408,6 @@ class EventsPage extends React.Component {
             </section>
           </div>
         </div>
-        <Feature
-          name={FLAGS.USER_SUBMITTED_EVENTS}
-          children={this.renderAddForm()}
-        />
       </>
     );
   }
