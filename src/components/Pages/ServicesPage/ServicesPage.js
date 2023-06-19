@@ -198,15 +198,8 @@ class ServicesPage extends React.Component {
           >
             <div className="row">
               <div className="col-md-10 col-lg-10 col-sm-12 offset-md-1 ">
-                <div
-                  className="all-head-area"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "6fr 1fr",
-                    // marginBottom: 30,
-                  }}
-                >
-                  <div className="text-center">
+                <div className="all-head-area position-btn-and-title">
+                  <div className="text-center page-title-container">
                     {description ? (
                       <PageTitle style={{ fontSize: 24 }}>
                         {title}
@@ -222,10 +215,7 @@ class ServicesPage extends React.Component {
                     )}
                     <center>{sub_title ? <p>{sub_title}</p> : null}</center>
                   </div>
-                  <div
-                    className="phone-vanish"
-                    style={{ marginTop: 10, alignSelf: "end" }}
-                  >
+                  <div className="phone-vanish submitted-content-btn-wrapper">
                     <Feature
                       name={FLAGS.USER_SUBMITTED_VENDORS}
                       children={this.renderAddForm()}

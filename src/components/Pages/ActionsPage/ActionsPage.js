@@ -377,11 +377,8 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 <div>
-                  <div
-                    className="all-head-area"
-                    style={{ display: "grid", gridTemplateColumns: "6fr 1fr" }}
-                  >
-                    <div className="text-center">
+                  <div className="all-head-area position-btn-and-title">
+                    <div className="text-center page-title-container">
                       {description ? (
                         <PageTitle style={{ fontSize: 24 }}>
                           {title}
@@ -396,14 +393,14 @@ class ActionsPage extends React.Component {
                         <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                       )}
                       <center>
-                        <Subtitle>{pageData.sub_title}</Subtitle>
+                        <Subtitle>
+                          {pageData.sub_title ||
+                            ""}
+                        </Subtitle>
                       </center>
                     </div>
 
-                    <div
-                      className="phone-vanish"
-                      style={{ marginTop: 10, alignSelf: "end" }}
-                    >
+                    <div className="phone-vanish submitted-content-btn-wrapper">
                       <Feature
                         name={FLAGS.USER_SUBMITTED_ACTIONS}
                         children={this.renderAddForm()}

@@ -283,11 +283,8 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div
-                className="all-head-area"
-                style={{ display: "grid", gridTemplateColumns: "6fr 1fr" }}
-              >
-                <div className="text-center">
+              <div className="all-head-area position-btn-and-title">
+                <div className="text-center page-title-container">
                   {description ? (
                     <PageTitle style={{ fontSize: 24 }}>
                       {title}
@@ -308,10 +305,7 @@ class StoriesPage extends React.Component {
                     </center>
                   )}
                 </div>
-                <div
-                  className="phone-vanish"
-                  style={{ marginTop: 10, alignSelf: "end" }}
-                >
+                <div className="phone-vanish submitted-content-btn-wrapper">
                   <Feature
                     name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
                     children={this.renderAddForm()}

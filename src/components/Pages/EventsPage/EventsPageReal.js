@@ -240,15 +240,8 @@ class EventsPage extends React.Component {
               <div className="container override-container-width">
                 <div className="row">
                   <div className="col-lg-10 col-md-10 col-12 offset-md-1">
-                    <div
-                      className="all-head-area"
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "6fr 1fr",
-                        // marginBottom: 30,
-                      }}
-                    >
-                      <div className="text-center">
+                    <div className="all-head-area position-btn-and-title">
+                      <div className="text-center page-title-container">
                         {description ? (
                           <PageTitle
                             className="solid-font"
@@ -274,10 +267,7 @@ class EventsPage extends React.Component {
                           <Subtitle>{sub_title}</Subtitle>
                         </center>
                       </div>
-                      <div
-                        className="phone-vanish"
-                        style={{ marginTop: 10, alignSelf: "end" }}
-                      >
+                      <div className="phone-vanish submitted-content-btn-wrapper">
                         <Feature
                           name={FLAGS.USER_SUBMITTED_EVENTS}
                           children={this.renderAddForm()}
