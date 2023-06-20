@@ -72,6 +72,10 @@ html {
   font-family: "Google Sans", "Open Sans", sans-serif;
   scroll-behavior: smooth !important;
 }
+iframe{
+  /* display: none !important; */
+  position:  relative !important;
+}
 
 body {
   font-family: "Google Sans", "Open Sans", sans-serif;
@@ -5814,6 +5818,7 @@ span.has-tooltip {
   background: #003000;
   border-top: 1px solid #2b2f25;
   padding: 21px 0;
+  z-index: 1;
 }
 
 .footer-bottom .copy-text {
@@ -9838,4 +9843,62 @@ button.as-link:hover {
   margin-top: 10px;
   display: flex;
   align-items: center;
+}
+
+.add-story-btn{
+  border-radius: 55px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+.add-story-btn:hover{
+  background-color: var(--app-theme-green);
+  color: white;
+}
+
+.round-sticky-btn-container{
+  width: max-content;
+  /* margin-left: 30px; */
+}
+.round-sticky-btn {
+  cursor: pointer;
+  background: #f57b34;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.round-sticky-btn i {
+  margin: 0px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.position-btn-and-title{
+  display: flex;
+ justify-content: space-between;
+}
+
+.page-title-container{
+ width: 100%;
+align-self: flex-end;
+}
+.submitted-content-btn-wrapper{
+  align-self: flex-end;
+  padding-left: 20px;
+}
+
+@media (max-width: 480px) {
+.round-sticky-btn-container{
+    bottom: -40px !important;
+    margin-left: 15px !important;
+    margin-bottom: 20px;
+}
+.round-sticky-btn {
+  padding: 10px 15px;
+}
 }

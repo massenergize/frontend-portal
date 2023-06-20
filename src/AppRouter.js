@@ -116,15 +116,16 @@ class AppRouter extends Component {
   }
 
   isHomepage(menu) {
+    // let cpy = JSON.parse(JSON.stringify(menu));
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
+    const content = [...main.content]
     const homeFxn = (m) => m.name === "Home";
-    const homegroup = main.content.find(homeFxn);
-    const home = homegroup?.children?.find(homeFxn);
+    const homeGroup = content.find(homeFxn);
+  
+    const home = homeGroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
-    var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home?.link
-    );
+    var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home.link);
     return location === rebuilt;
   }
 
@@ -142,7 +143,7 @@ class AppRouter extends Component {
    * @returns
    */
   checkTourState = (menu) => {
-    if (!this.isHomepage(menu)) return this.props.setTourState(false);
+    if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back 
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
@@ -357,10 +358,7 @@ class AppRouter extends Component {
       return;
     }
 
-    const { content } =
-      menus.find((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      }) || {};
+    const { content } = menus.find((menu) => {return menu.name === "PortalMainNavLinks"; }) || {};
     const initialMenu = content;
 
     const finalMenu = this.modifiedMenu(initialMenu);
@@ -369,14 +367,13 @@ class AppRouter extends Component {
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerLinks =  this.addPrefix(footerContent[0].content.links);
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
-
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
@@ -390,14 +387,8 @@ class AppRouter extends Component {
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
   modifiedMenu(menu) {
-    var aboutMenu =
-      menu.find((menu) => {
-        return menu.name === "About Us";
-      }) || {};
-    var actionsMenu =
-      menu.find((menu) => {
-        return menu.name === "Actions";
-      }) || {};
+    var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
+    var actionsMenu = menu.find((menu) => menu.name === "Actions" ) || {};
 
     if (aboutMenu) {
       aboutMenu.children = aboutMenu.children.filter((item) => {
@@ -456,22 +447,20 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
-    menu = menu.map((m) => {
-      if (
-        this.state.prefix !== "" &&
-        m.link &&
-        !isValidUrl(m.link) &&
-        !m.link.startsWith(this.state.prefix)
-      )
+    if(!menu) {
+      return [];
+    }
+    let menus = menu.map((m) => {
+      if ( this.state.prefix !== "" && m.link && !isValidUrl(m.link) && !m.link.startsWith(this.state.prefix)){
         m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+      }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
       }
-
       return m;
     });
 
-    return menu;
+    return menus;
   }
 
   saveCurrentPageURL() {
@@ -552,7 +541,7 @@ class AppRouter extends Component {
             message={toastOptions?.message}
           />
           {Seo({
-            title: community.name,
+            title: "",
             description: community.about,
             url: `${window.location.pathname}`,
             image: community.logo && community.logo.url,
@@ -560,6 +549,7 @@ class AppRouter extends Component {
             updated_at: community.updated_at,
             created_at: community.updated_at,
             tags: [community.name, community.subdomain],
+            site_name:community.name
           })}
 
           {navBarMenu ? (

@@ -12,8 +12,10 @@ import {
 import {
   celebrateWithConfetti,
   reduxChangeData,
+  reduxLoadActions,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ActionCard from "./ActionCard";
@@ -43,6 +45,13 @@ import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
+import StoryForm from "./StoryForm";
+import { ACTION } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+import AddButton from "../../Shared/AddButton";
+import Seo from "../../Shared/Seo";
 //import ActionMobileStats from "./ActionMobileStats";
 
 const INIT_STATE = {
@@ -90,6 +99,11 @@ class ActionsPage extends React.Component {
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "ActionsPage" });
   }
+  triggerGuestDialog(e) {
+    e && e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    this.props.signInWithAuthenticationDialog(true);
+  }
 
   renderEQModal() {
     const { showEqModal } = this.state;
@@ -107,6 +121,29 @@ class ActionsPage extends React.Component {
 
   toggleEQModal(value) {
     this.setState({ showEqModal: value });
+  }
+  renderAddForm() {
+    const { user, actions, updateActionsInRedux, communityData } = this.props;
+    let _props = {};
+    if (!user) {
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
+    }
+    return (
+      <StoryFormButtonModal
+        ModalType={ACTION}
+        reduxProps={{
+          reduxItems: actions,
+          updateItemInRedux: updateActionsInRedux,
+        }}
+        {..._props}
+      >
+        <AddButton type={ACTION} community={communityData?.community?.name} />
+      </StoryFormButtonModal>
+    );
   }
 
   addMeToSelected(param, reset = false) {
@@ -174,10 +211,10 @@ class ActionsPage extends React.Component {
       this.state.checked_values,
       this.state.searchText,
       (action, word) =>
-        action.title.toLowerCase().includes(word) ||
-        action.about.toLowerCase().includes(word) ||
-        action.featured_summary.toLowerCase().includes(word) ||
-        action.deep_dive.toLowerCase().includes(word)
+        action?.title?.toLowerCase()?.includes(word) ||
+        action?.about?.toLowerCase()?.includes(word) ||
+        action?.featured_summary?.toLowerCase()?.includes(word) ||
+        action?.deep_dive?.toLowerCase()?.includes(word)
     );
   }
 
@@ -200,6 +237,7 @@ class ActionsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
+    const { communityData } = this.props;
     const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 
@@ -242,9 +280,14 @@ class ActionsPage extends React.Component {
         disableOverlayClose: true,
       },
     ];
-
     return (
-      <>
+      <div id="test-actions-main-wrapper">
+        {Seo({
+          title: "Actions",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: communityData?.community?.name,
+        })}
         {this.props.showTour && (
           <ProductTour
             steps={steps}
@@ -334,8 +377,8 @@ class ActionsPage extends React.Component {
                   </div>
                 </div>
                 <div>
-                  <div className="all-head-area">
-                    <div className="text-center">
+                  <div className="all-head-area position-btn-and-title">
+                    <div className="text-center page-title-container">
                       {description ? (
                         <PageTitle style={{ fontSize: 24 }}>
                           {title}
@@ -349,10 +392,20 @@ class ActionsPage extends React.Component {
                       ) : (
                         <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                       )}
+                      <center>
+                        <Subtitle>
+                          {pageData.sub_title ||
+                            ""}
+                        </Subtitle>
+                      </center>
                     </div>
-                    <center>
-                      <Subtitle>{pageData.sub_title}</Subtitle>
-                    </center>
+
+                    <div className="phone-vanish submitted-content-btn-wrapper">
+                      <Feature
+                        name={FLAGS.USER_SUBMITTED_ACTIONS}
+                        children={this.renderAddForm()}
+                      />
+                    </div>
                   </div>
                   <HorizontalFilterBox
                     type="action"
@@ -364,6 +417,12 @@ class ActionsPage extends React.Component {
                     filtersFromURL={this.state.checked_values}
                     doneProcessingURLFilter={this.state.mounted}
                     onSearchTextChange={this.onSearchTextChange.bind(this)}
+                    renderAddButton={() => (
+                      <Feature
+                        name={FLAGS.USER_SUBMITTED_ACTIONS}
+                        children={this.renderAddForm()}
+                      />
+                    )}
                   />
                   {/* renders the sidebar */}
 
@@ -375,7 +434,7 @@ class ActionsPage extends React.Component {
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
                       className="row"
-                      style={{ marginTop: 20, paddingTop: 30 }}
+                      style={{ marginTop: 40, paddingTop: 50 }}
                     >
                       {this.renderActions(actions)}
                     </div>
@@ -385,9 +444,10 @@ class ActionsPage extends React.Component {
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
+
   // renders all the actions
   renderActions(actions) {
     if (!actions) {
@@ -405,8 +465,13 @@ class ActionsPage extends React.Component {
         </p>
       );
     }
+
+    // put unapproved user submitted actions above
+    let sorted_actions = actions.sort((a, b) =>
+      a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+    );
     //returns a list of action components
-    return Object.keys(actions).map((key) => {
+    return Object.keys(sorted_actions).map((key) => {
       var action = actions[key];
       return (
         <ActionCard
@@ -432,6 +497,23 @@ class ActionsPage extends React.Component {
           }
           openModal={this.openModal}
           closeModal={() => this.setState({ openModalForm: null })}
+          onEditButtonClick={(toEdit) => {
+            this.props.toggleModal({
+              show: true,
+              title: "Edit Action Form",
+              size: "md",
+              component: (
+                <StoryForm
+                  ModalType={ACTION}
+                  close={() => this.props.toggleModal({ show: false })}
+                  draftData={toEdit}
+                  TriggerSuccessNotification={() => ({})}
+                  updateItemInRedux={this.props.updateActionsInRedux}
+                  reduxItems={actions}
+                />
+              ),
+            });
+          }}
         />
       );
     });
@@ -571,6 +653,8 @@ const mapDispatchToProps = {
   reduxSetPreferredEquivalence,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
   celebrate: celebrateWithConfetti,
+  toggleModal:reduxToggleUniversalModal,
+  updateActionsInRedux:reduxLoadActions
 };
 export default connect(
   mapStoreToProps,

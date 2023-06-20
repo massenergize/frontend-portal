@@ -55,6 +55,7 @@ export default class MELightDropDown extends Component {
       customAnimation,
       direction,
       containerStyle = {},
+      onHide,
     } = this.props;
     const toggleClassNames = controlLabel
       ? labelClassNames
@@ -69,6 +70,7 @@ export default class MELightDropDown extends Component {
             padding: "0px 10px",
             ...containerStyle,
           }}
+          onToggle={(nextShow)=> onHide && onHide(nextShow)}
         >
           <Dropdown.Toggle style={{ ...style }} className={toggleClassNames}>
             <span

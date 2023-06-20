@@ -23,7 +23,13 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadTestimonials, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
+import { TESTIMONIAL } from "../../Constants";
+import Feature from "../FeatureFlags/Feature";
+import { FLAGS } from "../FeatureFlags/flags";
+import AddButton from "../../Shared/AddButton";
+import Seo from "../../Shared/Seo";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +55,7 @@ class StoriesPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "TestimonialsPage"});
+    window.gtag("set", "user_properties", { page_title: "TestimonialsPage" });
   }
 
   addMeToSelected(param, reset = false) {
@@ -93,36 +99,76 @@ class StoriesPage extends React.Component {
     this.setState({ showStoryForm: !this.state.showStoryForm });
   }
   triggerFormForEdit({ data }) {
-    this.setState({
-      showEditModal: true,
-      draftTestimonialData: data,
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Testimonial Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={TESTIMONIAL}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={data}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={this.props.updateItemInRedux}
+          reduxItems={this.props.stories}
+        />
+      ),
     });
   }
-  renderTestimonialForm() {
-    const { user } = this.props;
-    var props = {};
-    if (!user)
-      props = {
-        ...props,
+  renderAddForm = () => {
+    const { user, stories, updateItemInRedux, communityData } = this.props;
+    let _props = {};
+    if (!user){
+      _props = {
+        ..._props,
         overrideOpen: () =>
           this.triggerGuestDialog && this.triggerGuestDialog(),
       };
-
-    return (
-      <div className="every-day-flex">
+    }
+      return (
         <StoryFormButtonModal
-          openModal={this.state.showEditModal}
-          draftTestimonialData={this.state.draftTestimonialData}
-          toggleExternalTrigger={() => {
-            this.setState({ showEditModal: false, draftTestimonialData: {} });
+          ModalType={TESTIMONIAL}
+          reduxProps={{
+            reduxItems: stories,
+            updateItemInRedux: updateItemInRedux,
           }}
-          {...props}
+          {..._props}
         >
-          Add Testimonial
+          <AddButton
+            type={"Testimonial"}
+            community={communityData?.community?.name}
+          />
         </StoryFormButtonModal>
-      </div>
-    );
-  }
+      );
+    //     }
+    // return null
+  };
+  // renderTestimonialForm() {
+  //   const { user } = this.props;
+  //   var props = {};
+  //   if (!user)
+  //     props = {
+  //       ...props,
+  //       overrideOpen: () =>
+  //         this.triggerGuestDialog && this.triggerGuestDialog(),
+  //     };
+  //   return (
+  //     <div className="every-day-flex">
+  //       <StoryFormButtonModal
+  //         ModalType={TESTIMONIAL}
+  //         openModal={this.state.showEditModal}
+  //         draftData={this.state.draftTestimonialData}
+  //         ButtonClasses={"z-depth-1 add-story-btn"}
+  //         toggleExternalTrigger={() => {
+  //           this.setState({ showEditModal: false, draftTestimonialData: {} });
+  //         }}
+  //         {...props}
+  //       >
+  //         Add Testimonial
+  //       </StoryFormButtonModal>
+  //     </div>
+  //   );
+  // }
   scrollToForm() {
     document.getElementById("testimonial-area").scrollIntoView({
       behavior: "smooth",
@@ -212,14 +258,22 @@ class StoriesPage extends React.Component {
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
-      pageData && pageData.sub_title ? pageData.sub_title : null;
-    const description = pageData.description ? pageData.description : null;
+      pageData && pageData.sub_title
+        ? pageData.sub_title
+        : "";
+    const description = pageData.description ? pageData.description : "";
 
     const stories =
       this.searchIsActiveSoFindContentThatMatch() ||
       applyTagsAndGetContent(this.props.stories, this.state.checked_values);
     return (
       <>
+        {Seo({
+          title: "Testimonials",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
         <div
           className="boxed_wrapper"
           style={{
@@ -229,8 +283,8 @@ class StoriesPage extends React.Component {
           <BreadCrumbBar links={[{ name: "Testimonials" }]} />
           <section className="testimonial2">
             <div className="container override-container-width">
-              <div className="all-head-area">
-                <div className="text-center">
+              <div className="all-head-area position-btn-and-title">
+                <div className="text-center page-title-container">
                   {description ? (
                     <PageTitle style={{ fontSize: 24 }}>
                       {title}
@@ -244,14 +298,22 @@ class StoriesPage extends React.Component {
                   ) : (
                     <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                   )}
+                  {sub_title && (
+                    <center>
+                      {" "}
+                      <p>{sub_title}</p>
+                    </center>
+                  )}
                 </div>
-                <center>{sub_title ? <p>{sub_title}</p> : null}</center>
-                <div className="pc-vanish" style={{ marginTop: 10 }}>
-                  {this.renderTestimonialForm()}
+                <div className="phone-vanish submitted-content-btn-wrapper">
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
                 </div>
               </div>
               <HorizontalFilterBox
-                type="testimonials"
+                type={TESTIMONIAL}
                 tagCols={this.props.tagCols}
                 boxClick={this.addMeToSelected}
                 search={this.handleSearch}
@@ -259,8 +321,18 @@ class StoriesPage extends React.Component {
                 doneProcessingURLFilter={this.state.mounted}
                 onSearchTextChange={this.onSearchTextChange.bind(this)}
                 filtersFromURL={this.state.checked_values}
+                updateItemInRedux={this.props.updateItemInRedux}
+                reduxItems={this.props.stories}
+                customStyles={{ width: "100%" }}
+                renderAddButton={() => (
+                  <Feature
+                    name={FLAGS.USER_SUBMITTED_TESTIMONIALS}
+                    children={this.renderAddForm()}
+                  />
+                )}
               />
-              <div className="row stories-row">
+
+              <div className="row stories-row" style={{ paddingTop: 60 }}>
                 <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>
                     <h5>Jump to story</h5>
@@ -281,7 +353,7 @@ class StoriesPage extends React.Component {
                   >
                     {this.renderStories(stories)}
                   </div>
-                  <div>{this.renderTestimonialForm()}</div>
+                  {/* <div>{this.renderTestimonialForm()}</div> */}
 
                   <div id="testimonial-area" style={{ height: 100 }}></div>
                 </div>
@@ -342,8 +414,10 @@ class StoriesPage extends React.Component {
         </div>
       );
     }
-
-    return stories.map((story, index) => (
+    let sortedStories = stories.sort((a, b) =>
+      a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
+    );
+    return sortedStories.map((story, index) => (
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
@@ -370,8 +444,12 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     links: store.links,
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
+    communityData: store.page.communityData,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal:reduxToggleUniversalModal,
+  updateItemInRedux:reduxLoadTestimonials
 })(StoriesPage);

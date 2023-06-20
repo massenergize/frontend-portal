@@ -30,6 +30,7 @@ class NavBar extends React.Component {
 		}
 		return Object.keys(navLinks).map(key => {
 			var navLink = navLinks[key];
+			
 			return <li key={navLink.name}><Link to={`${navLink.link}`}>{navLink.name}</Link></li>
 		});
 	}

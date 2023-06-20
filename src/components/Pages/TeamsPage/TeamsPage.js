@@ -15,6 +15,7 @@ import { reduxLoadTeams } from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
 import Subtitle from "../Widgets/Subtitle";
+import Seo from "../../Shared/Seo";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -127,6 +128,12 @@ class TeamsPage extends React.Component {
 
     return (
       <>
+      {Seo({
+        title: 'Teams',
+        description: '',
+        url: `${window.location.pathname}`,
+        site_name: communityData.community.name,
+      })}
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
           <TeamInfoModal

@@ -41,6 +41,7 @@ class OneServicePage extends React.Component {
           updated_at: vendor.updated_at,
           created_at: vendor.created_at,
           tags: vendor.name && vendor.name.split(" "),
+          site_name: this.props.community?.name,
         })}
         <div
           className="boxed_wrapper"
@@ -380,6 +381,7 @@ const mapStoreToProps = (store) => {
     serviceProviders: store.page.serviceProviders,
     testimonials: store.page.testimonials,
     links: store.links,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, null)(OneServicePage);

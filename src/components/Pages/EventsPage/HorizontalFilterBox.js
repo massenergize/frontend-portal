@@ -12,12 +12,15 @@ import MobileModeFilterModal from "../Widgets/MobileModeFilterModal";
 // import MEModal from "../Widgets/MEModal";
 // import MEDropdown from "../Widgets/MEDropdown";
 import METextField from "../Widgets/METextField";
-import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
+// import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
+import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
+// import Feature from "../FeatureFlags/Feature";
+// import { FLAGS } from "../FeatureFlags/flags";
+// import AddButton from "../../Shared/AddButton";
 export const FILTER_BAR_VERSION = "filter_bar_version";
 const OPTION2 = "option2";
-
 class HorizontalFilterBox extends Component {
   constructor() {
     super();
@@ -28,6 +31,7 @@ class HorizontalFilterBox extends Component {
       longHeight: false,
       selected_collection: null,
       mounted: false,
+      isFilterOn: false,
     };
     this.onItemSelectedFromDropDown =
       this.onItemSelectedFromDropDown.bind(this);
@@ -40,7 +44,7 @@ class HorizontalFilterBox extends Component {
   getCollectionSetAccordingToPage() {
     const { type, tagCols } = this.props;
     if (!type) return [];
-    if (type === "testimonial" || type === "service" || type === "event")
+    if (type === TESTIMONIAL || type === VENDOR || type === EVENT|| type === ACTION)
       return this.props.collection; //this.props.collection only brings the category collection
     if (!tagCols) return [];
     return tagCols;
@@ -71,12 +75,13 @@ class HorizontalFilterBox extends Component {
           // style={{ fontWeight: "600", color: "#7cb331" }}
           className="round-me h-cat-select z-depth-float-half"
           key={index.toString()}
-          onClick={() =>
+          onClick={() =>{
             this.onItemSelectedFromDropDown(
               NONE,
               tagObj.collectionName,
               tagObj?.collectionId
             )
+          }
           }
         >
           <span>{tagObj.collectionName}</span> : <span>{tagObj.value}</span>{" "}
@@ -140,6 +145,9 @@ class HorizontalFilterBox extends Component {
               onItemSelected={this.onItemSelectedFromDropDown}
               categoryType={set.name}
               collectionId={set.id}
+              onHide={(isFilterOn) => 
+                this.setState({ isFilterOn })
+              }
             />
           </div>
         );
@@ -273,29 +281,18 @@ class HorizontalFilterBox extends Component {
     putSearchTextFilterInURL(this.props, e.target.value);
   };
 
-  renderTestimonialForm() {
-    const { user, signInWithAuthenticationDialog } = this.props;
-    if (user)
-      return (
-        <StoryFormButtonModal>
-          <TestimonialButton />
-        </StoryFormButtonModal>
-      );
-
-    return (
-      <TestimonialButton
-        onClick={() =>
-          signInWithAuthenticationDialog && signInWithAuthenticationDialog()
-        }
-      />
-    );
-  }
   render() {
-    const { longHeight } = this.state;
+    const { longHeight, isFilterOn} = this.state;
+    const {customStyles, customClass } = this.props;
     return (
       <>
         {this.renderMoreModal()}
-        <div className="hori-filter-container phone-vanish">
+        <div
+          className={`hori-filter-container phone-vanish ${customClass} ${
+            isFilterOn ? "redo-hori-filter-container" : ""
+          }`}
+          style={customStyles}
+        >
           {this.renderClearFilter()}
           {this.renderDifferentCollections()}
           <METextField
@@ -315,18 +312,22 @@ class HorizontalFilterBox extends Component {
             placeholder="Search..."
           />
           {this.renderTagComponent()}
-          {window.location.pathname.includes("testimonial") &&
-            this.renderTestimonialForm()}
         </div>
+
         {/* --------------------- PHONE MODE ----------------- */}
         <div className="pc-vanish" style={{ marginBottom: 10 }}>
-          <input
-            id="test-filter-box-id"
-            className="phone-search-input "
-            placeholder="Search..."
-            onChange={this.handleSearchTyping}
-            value={this.props.searchText}
-          />
+          <div style={{display:'grid', gridTemplateColumns:'5fr 1fr'}}>
+            <div>
+              <input
+                id="test-filter-box-id"
+                className="phone-search-input "
+                placeholder="Search..."
+                onChange={this.handleSearchTyping}
+                value={this.props.searchText}
+              />
+            </div>
+            <div style={{alignSelf:'center'}}>{this.props.renderAddButton && this.props.renderAddButton()}</div>
+          </div>
 
           <div
             className="hori-filter-container"
@@ -356,6 +357,7 @@ const mapStoreToProps = (store) => {
   return {
     collection: store.page.collection,
     user: store.user.info,
+    communityData: store.page.communityData,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -375,16 +377,22 @@ export default withRouter(
   connect(mapStoreToProps, mapDispatchToProps)(HorizontalFilterBox)
 );
 
-const TestimonialButton = ({ onClick }) => {
-  return (
-    <div
-      className="add-testimonial-container"
-      onClick={() => onClick && onClick()}
-    >
-      <div className="add-testimonial touchable-opacity">
-        <i className="fa fa-plus" style={{ marginRight: 6 }} />
-        <p>Add Testimonial</p>
-      </div>
-    </div>
-  );
-};
+// const TestimonialButton = ({ onClick, type, community="" }) => {
+//   return (
+//     <CustomTooltip
+//       text={
+//         `Use this button to submit a new ${type?.toLowerCase() || ""} for ${community}. It will be reviewed by the community admin before it can be added.`
+//       }
+//     >
+//       <div
+//         className=""
+//         onClick={() => onClick && onClick()}
+//       >
+//         <div className="add-testimonial touchable-opacity">
+//           <i className="fa fa-plus" style={{ marginRight: 6 }} />
+//           <p>Add {type}</p>
+//         </div>
+//       </div>
+//     </CustomTooltip>
+//   );
+// };

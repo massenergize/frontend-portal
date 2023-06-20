@@ -65,7 +65,8 @@ class METextField extends Component {
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
     const ID = id ? id : getRandomIntegerInRange(9999999).toString();
-    if (inputType === "input") {
+
+    if (["input", "date", "datetime-local"].includes(inputType)) {
       return (
         <input
           id={ID}
@@ -73,14 +74,14 @@ class METextField extends Component {
           name={name}
           type={type}
           placeholder={placeholder}
-          value={defaultValue || value}
+          value={defaultValue || value || ""}
           style={styles}
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           onBlur={onBlur}
           autoComplete={history ? "on" : "off"}
           readOnly={readonly}
-          {...(genericProps ||{})}
+          {...(genericProps || {})}
         />
       );
     } else if (inputType === "textarea") {
@@ -90,14 +91,14 @@ class METextField extends Component {
           className={`${defaultClasses} only-bottom-border ${className}`}
           name={name}
           placeholder={placeholder}
-          value={defaultValue || value}
+          value={defaultValue || value || ""}
           rows={rows ? rows : "10"}
           style={styles}
           required={isRequired ? isRequired : false}
           onChange={(e) => this.handleOnChange(e)}
           autoComplete={history ? "on" : "off"}
           readOnly={readonly}
-          {...(genericProps ||{})}
+          {...(genericProps || {})}
         />
       );
     }

@@ -154,6 +154,8 @@ export default class NewEventsCard extends Component {
       toggleGuestAuthDialog,
       isShared,
       community,
+      is_published,
+      onEditButtonClicked,
     } = this.props;
 
     const { rsvpStatus, loading, error } = this.state;
@@ -222,7 +224,6 @@ export default class NewEventsCard extends Component {
                 </METextView>
               )}
             </div>
-
             {!user && rsvp_enabled && (
               <div style={{ marginLeft: "auto" }}>
                 <MEButton
@@ -258,6 +259,26 @@ export default class NewEventsCard extends Component {
                   ]}
                 />
               </div>
+            )}
+
+            {!is_published && (
+              <MEButton
+                onClick={() =>
+                  onEditButtonClicked && onEditButtonClicked()
+                }
+                style={{
+                  padding: "2px 18px ",
+                  fontSize: "14px",
+                  minWidth: 76,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  position: "absolute",
+                  right: 15,
+                  bottom:1
+                }}
+              >
+                Edit
+              </MEButton>
             )}
           </div>
         </MECard>

@@ -115,7 +115,6 @@ class OneActionPage extends React.Component {
         />
       );
     }
-
     const { tags } = action;
     const { community } = action || {};
     const { subdomain } = community || {};
@@ -594,6 +593,8 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
+                      
+                    {action?.is_published &&(
                       <div
                         className="btn-envelope"
                         id="todo-btns"
@@ -617,6 +618,8 @@ class OneActionPage extends React.Component {
                           />
                         </>
                       </div>
+
+                    )}
 
                       {this.state.showTestimonialLink ? (
                         <div>
