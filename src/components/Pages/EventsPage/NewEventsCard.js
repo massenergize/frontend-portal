@@ -227,16 +227,17 @@ export default class NewEventsCard extends Component {
             <div style={{ display: "flex" }}>
               {/* ==== Edit button */}
               {!is_published && (
-                <div style={{ marginRight: 5}}>
-                <MEButton
-                  onClick={(e) =>{
-                    e.preventDefault();
-                    onEditButtonClicked(id);
-                  }}
-                  flat
-                >
-                  Edit
-                </MEButton>
+                <div style={{ marginRight: 5 }}>
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onEditButtonClicked(id);
+                    }}
+                    flat
+                    style={{padding:'12px 30px'}}
+                  >
+                    Edit
+                  </MEButton>
                 </div>
               )}
 
