@@ -20,7 +20,7 @@ import {
 import MEChameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { makeStringFromArrOfObjects } from "../../Utils";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadActions, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 export const ACTION_TO_AUTO_START = "AUTO_START-";
 /**
  * Action Component is a single action for the action page,
@@ -272,7 +272,9 @@ class ActionCard extends React.Component {
                 </MEButton>
                 {!action?.is_published && (
                   <MEButton
-                    onClick={() => onEditButtonClick && onEditButtonClick(action)}
+                    onClick={() =>
+                      onEditButtonClick && onEditButtonClick(action)
+                    }
                     style={{
                       padding: "5px 18px ",
                       fontSize: "14px",
@@ -290,7 +292,10 @@ class ActionCard extends React.Component {
             </div>
           </div>
           <div className="text-footer">
-            <span className="test-action-title">{this.props.action.title}</span>
+            <span className="test-action-title">
+              {this.props.action.title}{" "}
+              {!this.props.action?.is_published && " (Pending Approval)"}
+            </span>
             <br />
             {this.showNotifications()}
           </div>
@@ -520,12 +525,16 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     collection: store.page.collection,
+    actions: store.page.actions,
+    user: store.user.info,
   };
 };
 const mapDispatchToProps = {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal: reduxToggleUniversalModal,
+  updateActionsInRedux: reduxLoadActions,
 };
 export default connect(
   mapStoreToProps,

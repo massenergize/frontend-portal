@@ -23,6 +23,8 @@ import {
   SECOND_SET,
   reduxToggleGuestAuthDialog,
   celebrateWithConfetti,
+  reduxToggleUniversalModal,
+  reduxLoadActions,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -44,6 +46,8 @@ import ProductTour, { ACTIONS, STATUS } from "react-joyride";
 import { handleTourCallback, smartString } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
+import MEButton from "../Widgets/MEButton";
+import { ACTION } from "../../Constants";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -76,7 +80,7 @@ class OneActionPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag("set","user_properties", { page_title: "OneActionPage" });
+    window.gtag("set", "user_properties", { page_title: "OneActionPage" });
     window.addEventListener("resize", this.chooseFontSize);
     const { id } = this.props.match.params;
     this.fetch(id);
@@ -454,6 +458,24 @@ class OneActionPage extends React.Component {
     });
   };
 
+  onEditButtonClick = (toEdit) => {
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Action Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={ACTION}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={toEdit}
+          TriggerSuccessNotification={() => ({})}
+          updateItemInRedux={this.props.updateActionsInRedux}
+          reduxItems={this.props.actions}
+        />
+      ),
+    });
+  };
+
   renderAction(action) {
     if (!this.props.stories) {
       return <LoadingCircle />;
@@ -593,33 +615,50 @@ class OneActionPage extends React.Component {
                         marginTop: 10,
                       }}
                     >
-                      
-                    {action?.is_published &&(
-                      <div
-                        className="btn-envelope"
-                        id="todo-btns"
-                        data-page-state={this.props.user && "authenticated"}
-                        data-action-state={actionStateCase}
-                      >
-                        <>
-                          <MECameleonButton
-                            id="test-todo-btn"
-                            _case={actionStateCase}
-                            type={TODO}
-                            onClick={() => this.runActionFunction("TODO")}
-                            {...this.getTodoPopoverInfo()}
-                          />
+                      {action?.is_published && (
+                        <div
+                          className="btn-envelope"
+                          id="todo-btns"
+                          data-page-state={this.props.user && "authenticated"}
+                          data-action-state={actionStateCase}
+                        >
+                          <>
+                            <MECameleonButton
+                              id="test-todo-btn"
+                              _case={actionStateCase}
+                              type={TODO}
+                              onClick={() => this.runActionFunction("TODO")}
+                              {...this.getTodoPopoverInfo()}
+                            />
 
-                          <MECameleonButton
-                            id="test-done-btn"
-                            _case={actionStateCase}
-                            type={DONE}
-                            onClick={() => this.runActionFunction("DONE")}
-                          />
-                        </>
-                      </div>
+                            <MECameleonButton
+                              id="test-done-btn"
+                              _case={actionStateCase}
+                              type={DONE}
+                              onClick={() => this.runActionFunction("DONE")}
+                            />
+                          </>
+                        </div>
+                      )}
 
-                    )}
+                      {(!action?.is_published && this.props?.user) && (
+                        <center>
+                          <MEButton
+                            onClick={(e) => {
+                              e.preventDefault();
+                              this.onEditButtonClick(action);
+                            }}
+                            flat
+                            style={{
+                              padding: "5px 25px",
+                              borderRadius: 55,
+                              // marginTop: 10,
+                            }}
+                          >
+                            Edit
+                          </MEButton>
+                        </center>
+                      )}
 
                       {this.state.showTestimonialLink ? (
                         <div>
@@ -1103,6 +1142,8 @@ const mapDispatchToProps = {
   reduxSetTourInformation,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
   celebrate: celebrateWithConfetti,
+  toggleModal: reduxToggleUniversalModal,
+  updateActionsInRedux: reduxLoadActions,
 };
 
 export default connect(

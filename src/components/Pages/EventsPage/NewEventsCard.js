@@ -201,8 +201,10 @@ export default class NewEventsCard extends Component {
               className="test-event-card-title"
               data-event-title={title}
             >
-              {title}
-
+              {title}{" "}
+              {!is_published && (
+                <p style={{ marginLeft: 5 }}> (Pending Approval)</p>
+              )}
               {isShared && (
                 <CustomTooltip
                   text={`This event is originally from ${community?.name}`}
@@ -263,19 +265,12 @@ export default class NewEventsCard extends Component {
 
             {!is_published && (
               <MEButton
-                onClick={() =>
-                  onEditButtonClicked && onEditButtonClicked()
-                }
-                style={{
-                  padding: "2px 18px ",
-                  fontSize: "14px",
-                  minWidth: 76,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  position: "absolute",
-                  right: 15,
-                  bottom:1
+                onClick={(e) => {
+                  e.preventDefault();
+                  onEditButtonClicked(id);
                 }}
+                flat
+                style={{ padding: "12px 30px" }}
               >
                 Edit
               </MEButton>
