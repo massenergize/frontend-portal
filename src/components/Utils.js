@@ -668,39 +668,42 @@ export const commonKeys = (obj, keys) =>
     Object.entries(obj).filter(([key]) => keys.includes(key))
   );
 
-    export const isEmpty = (value) => {
-      if (
-        value === undefined ||
-        value === null ||
-        value === "" ||
-        value?.length === 0 ||
-        value === "null" ||
-        value === "undefined"
-      )
-        return true;
-      return false;
-    };
-    export const sanitizeValue = (val) => {
-      if (isEmpty(val)) {
-        return null;
-      }
 
-      return val;
-    };
+  export const isEmpty = (value) => {
+    if (
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      value?.length === 0 ||
+      value === "null" ||
+      value === "undefined"
+    )
+      return true;
+    return false;
+  };
+ export const sanitizeValue = (val) => {
+   if (isEmpty(val)) {
+     return null;
+   }
 
-    /**
-     * Returns a Javascript object from a string
-     * @param {*} val
-     * @returns
-     */
-    export const parseJSON = (val) => {
-      if (typeof val === "object") return val;
-      const sanitizedValue = sanitizeValue("" + val);
-      if (!sanitizedValue) return null;
-      try {
-        return JSON.parse(sanitizedValue);
-      } catch (error) {
-        console.log(`JSON: Error parsing ${val} to JSON`);
-        return {};
-      }
-    };
+   return val;
+ };
+
+ /**
+  * Returns a Javascript object from a string
+  * @param {*} val
+  * @returns
+  */
+ export const parseJSON = (val) => {
+   if (typeof val === "object") return val;
+   const sanitizedValue = sanitizeValue("" + val);
+   if (!sanitizedValue) return null;
+   try {
+     return JSON.parse(sanitizedValue);
+   } catch (error) {
+     console.log(`JSON: Error parsing ${val} to JSON`);
+     return {};
+   }
+ };
+
+
