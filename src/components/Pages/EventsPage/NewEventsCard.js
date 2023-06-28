@@ -203,7 +203,7 @@ export default class NewEventsCard extends Component {
             >
               {title}{" "}
               {!is_published && (
-                <p style={{ marginLeft: 5 }}> (Pending Approval)</p>
+              <small className="pending-approval">{" "} Pending Approval</small>
               )}
               {isShared && (
                 <CustomTooltip

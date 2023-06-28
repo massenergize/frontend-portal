@@ -363,21 +363,21 @@ class ServicesPage extends React.Component {
                   </h4>
                 </Link>
               </div>
-                  {!vendor?.is_published && (
-                    <div style={{ marginRight: 5, display: "flex", justifyContent:'space-between', marginTop:6 , alignItems:'center'}}>
-                      <>Pending Approval</>
-                      <MEButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          this.onEditButtonClicked(vendor);
-                        }}
-                        flat
-                        style={{ padding: "5px 20px", borderRadius: 5 }}
-                      >
-                        Edit
-                      </MEButton>
-                    </div>
-                  )}
+              {!vendor?.is_published && (
+                <center style={{ marginTop: 5 }}>
+                  <small className="pending-approval"> Pending Approval</small>
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.onEditButtonClicked(vendor);
+                    }}
+                    flat
+                    style={{ padding: "5px 20px", borderRadius: 5 }}
+                  >
+                    Edit
+                  </MEButton>
+                </center>
+              )}
             </div>
             {/* </div> */}
           </MECard>

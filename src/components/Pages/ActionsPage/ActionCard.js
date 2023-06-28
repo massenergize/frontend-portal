@@ -294,7 +294,9 @@ class ActionCard extends React.Component {
           <div className="text-footer">
             <span className="test-action-title">
               {this.props.action.title}{" "}
-              {!this.props.action?.is_published && " (Pending Approval)"}
+              {!this.props.action?.is_published && (
+                <small className="pending-approval"> Pending Approval</small>
+              )}
             </span>
             <br />
             {this.showNotifications()}
