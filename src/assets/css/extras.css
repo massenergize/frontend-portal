@@ -3836,3 +3836,17 @@
 .footer-wrapper{
   z-index: 10;
 }
+
+.testimonial-edit-btn-text{
+  color: var(--app-theme-orange);
+  cursor: pointer;
+  font-weight: bold;
+  padding: 2px 20px;
+  border: 1px solid var(--app-theme-orange);
+  font-size: 0.8rem;
+  border-radius: 55px;
+}
+.testimonial-edit-btn-text:hover{
+background-color:var(--app-theme-orange) ;
+color: white;
+}

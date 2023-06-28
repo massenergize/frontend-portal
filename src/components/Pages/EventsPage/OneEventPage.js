@@ -63,10 +63,18 @@ class OneEventPage extends React.Component {
     if (!pastEvent && this.props.user) this.getRSVPStatus(id);
   }
 
+  static getDerivedStateFromProps(props, state) {
+    let { id } = props?.match?.params;
+    if (props.events && id)
+      return {
+        event: props.events?.filter((item) => item.id?.toString() === id)[0],
+      };
+    return null;
+  }
   onEditButtonClick = (event) => {
     let reConstEvent = {
       ...event,
-       ...(parseJSON(event?.location)) || {},
+      ...(parseJSON(event?.location) || {}),
       end_date_and_time: event?.end_date_and_time?.slice(0, 16),
       start_date_and_time: event?.start_date_and_time?.slice(0, 16),
     };

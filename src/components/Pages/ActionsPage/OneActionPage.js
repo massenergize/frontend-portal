@@ -86,6 +86,14 @@ class OneActionPage extends React.Component {
     this.fetch(id);
     this.chooseFontSize();
   }
+  static getDerivedStateFromProps(props, state) {
+    let { id } = props?.match?.params;
+    if (props.actions && id)
+      return {
+        action: props.actions?.filter((item) => item?.id?.toString() === id)[0],
+      };
+    return null;
+  }
 
   async fetch(id) {
     try {
@@ -641,7 +649,7 @@ class OneActionPage extends React.Component {
                         </div>
                       )}
 
-                      {(!action?.is_published && this.props?.user) && (
+                      {!action?.is_published && this.props?.user && (
                         <center>
                           <MEButton
                             onClick={(e) => {
