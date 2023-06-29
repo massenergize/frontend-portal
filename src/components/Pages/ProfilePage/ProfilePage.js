@@ -74,7 +74,6 @@ class ProfilePage extends React.Component {
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
 
-
   getEqData() {
     const { eq } = this.props;
     const labels = getPropsArrayFromJsonArray(eq || [], "name");
@@ -107,7 +106,7 @@ class ProfilePage extends React.Component {
     return (
       <div>
         <MESectionWrapper headerText="Your Communities">
-          {this.renderCommunities(user.communities)}
+          {this.renderCommunities(user?.communities)}
         </MESectionWrapper>
         {this.showJoiningForm()}
         {!this.state.joiningCom && (
@@ -149,7 +148,7 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "ProfilePage"});
+    window.gtag("set", "user_properties", { page_title: "ProfilePage" });
     const { mode } = fetchParamsFromURL(this.props.location, "mode");
     if (mode === "become-valid")
       this.setState({ wantsToBecomeValidUser: true });
@@ -184,7 +183,7 @@ class ProfilePage extends React.Component {
 
     if (fireAuth && !fireAuth.emailVerified) return <VerifyEmailBox />;
 
-    const myHouseholds = this.props.user?.households || [];
+    const myHouseholds = this.props?.user?.households || [];
 
     if (!this.props.teams) {
       return <LoadingCircle />;
@@ -192,7 +191,7 @@ class ProfilePage extends React.Component {
 
     if (myHouseholds.length === 0 && !this.state.addedHouse) {
       this.setState({ addedHouse: true });
-      this.addDefaultHousehold(this.props.user, this.props.community);
+      this.addDefaultHousehold(this.props?.user, this.props.community);
     }
     if (wantsToBecomeValidUser) return <BecomeAValidUser />;
 
@@ -203,12 +202,12 @@ class ProfilePage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: 'Profile',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: this.props?.community?.name,
-      })}
+        {Seo({
+          title: "Profile",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
         <div
           className="boxed_wrapper"
           onClick={this.clearError}
@@ -349,7 +348,7 @@ class ProfilePage extends React.Component {
                   <br />
                   <br />
                   <MESectionWrapper headerText="Your Teams ( * Outside This Community )">
-                    {this.renderTeams(user.teams)}
+                    {this.renderTeams(user?.teams)}
                   </MESectionWrapper>
                   <div
                     style={{
@@ -368,7 +367,7 @@ class ProfilePage extends React.Component {
 
                   <br />
                   <MESectionWrapper headerText="Your Households">
-                    {this.renderHouseholds(user.households)}
+                    {this.renderHouseholds(user?.households)}
                   </MESectionWrapper>
 
                   <div
@@ -392,11 +391,11 @@ class ProfilePage extends React.Component {
                       </MEButton>
                     )}
                   </div>
-                  
+
                   {!this.state.editingHH && this.state.addingHH && (
                     <MECard className="me-anime-open-in">
                       <AddingHouseholdForm
-                        user={this.props.user}
+                        user={this.props?.user}
                         addHousehold={this.addHousehold}
                         closeForm={() => this.setState({ addingHH: false })}
                         editHousehold={this.editHousehold}
@@ -468,10 +467,10 @@ class ProfilePage extends React.Component {
             paddingBottom: 15,
           }}
         >
-          {this.props.user ? (
+          {this.props?.user ? (
             <div style={{ display: "inline-block" }}>
               <span style={{ color: "#8dc63f" }}>Welcome</span>{" "}
-              {this.props.user.preferred_name}
+              {this.props?.user.preferred_name}
             </div>
           ) : (
             "Your Profile"
@@ -480,10 +479,10 @@ class ProfilePage extends React.Component {
         <p> {this.state.message ? this.state.message : ""} </p>
         {form === "edit" && (
           <EditingProfileForm
-            email={this.props.user.email}
-            full_name={this.props.user.full_name}
-            preferred_name={this.props.user.preferred_name}
-            image={this.props.user.profile_picture}
+            email={this.props?.user.email}
+            full_name={this.props?.user.full_name}
+            preferred_name={this.props?.user.preferred_name}
+            image={this.props?.user.profile_picture}
             closeForm={(message = "") =>
               this.setState({
                 editingProfileForm: null,
@@ -520,7 +519,7 @@ class ProfilePage extends React.Component {
                 message: message ? message : null,
               })
             }
-            email={this.props.user.email}
+            email={this.props?.user.email}
           />
         )}
       </>
@@ -631,6 +630,7 @@ class ProfilePage extends React.Component {
 
   renderHouseholds(households) {
     const { toggleModal } = this.props;
+    if (!households) return null;
     const isNotLastHouse = households?.length > 1;
     return Object.keys(households).map((key) => {
       const house = households[key];
@@ -643,7 +643,7 @@ class ProfilePage extends React.Component {
                 name={house.name}
                 location={house.location}
                 unittype={house.unit_type}
-                user={this.props.user}
+                user={this.props?.user}
                 editHousehold={this.editHousehold}
                 closeForm={() => this.setState({ editingHH: null })}
               />
@@ -718,7 +718,7 @@ class ProfilePage extends React.Component {
 
   addHousehold = (household) => {
     this.props.reduxAddHousehold(household);
-    const teams = this.props.user.teams || [];
+    const teams = this.props?.user.teams || [];
     teams.forEach((team) => {
       this.props.reduxTeamAddHouse(team);
     });
@@ -729,7 +729,7 @@ class ProfilePage extends React.Component {
   };
 
   deleteHousehold = (household) => {
-    if (this.props.user.households.length > 1) {
+    if (this.props?.user.households.length > 1) {
       apiCall("users.households.remove", { household_id: household.id })
         .then((json) => {
           if (json.success) {
@@ -749,10 +749,10 @@ class ProfilePage extends React.Component {
 
   removeHouseFromImpact(numDone) {
     this.changeDataByName("EngagedHouseholdsData", -1);
-    Object.keys(this.props.user.teams).forEach((key) => {
-      this.props.reduxTeamRemoveHouse(this.props.user.teams[key]);
+    Object.keys(this.props?.user.teams).forEach((key) => {
+      this.props.reduxTeamRemoveHouse(this.props?.user.teams[key]);
       for (var i = 0; i < numDone; i++) {
-        this.props.reduxTeamRemoveAction(this.props.user.teams[key]);
+        this.props.reduxTeamRemoveAction(this.props?.user.teams[key]);
       }
     });
   }
@@ -784,14 +784,14 @@ class ProfilePage extends React.Component {
     if (community.id !== this.props.community.id) {
       var newCommunityIds = [];
 
-      this.props.user.communities.forEach((com) => {
+      this.props?.user.communities.forEach((com) => {
         if (com.id !== community.id) {
           newCommunityIds.push(com.id);
         }
       });
 
       const body = {
-        user_id: this.props.user.id,
+        user_id: this.props?.user.id,
         community_id: community.id,
       };
 
@@ -826,7 +826,7 @@ class ProfilePage extends React.Component {
 
   addDefaultCommunity = () => {
     const body = {
-      user_id: this.props.user.id,
+      user_id: this.props?.user.id,
       community_id: this.props.community.id,
     };
 
@@ -862,7 +862,7 @@ class ProfilePage extends React.Component {
         if (json.success) {
           this.addHousehold(json.data);
           var householdIds = [];
-          this.props.user.households.forEach((household) => {
+          this.props?.user.households.forEach((household) => {
             householdIds.push(household.id);
           });
         }
