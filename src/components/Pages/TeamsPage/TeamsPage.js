@@ -8,7 +8,7 @@ import TeamInfoModal from "./TeamInfoModal";
 import { getTeamsData, inTeam, inThisTeam } from "./utils.js";
 import { Link, Redirect } from "react-router-dom";
 import { getRandomIntegerInRange, PREF_EQ_DEFAULT } from "../../Utils";
-import MEButton from "./../Widgets/MEButton";
+// import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
 import { reduxLoadTeams } from "../../../redux/actions/pageActions";
@@ -16,6 +16,7 @@ import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
 import Subtitle from "../Widgets/Subtitle";
 import Seo from "../../Shared/Seo";
+import AddButton from "../../Shared/AddButton";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -128,12 +129,12 @@ class TeamsPage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: 'Teams',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: communityData.community.name,
-      })}
+        {Seo({
+          title: "Teams",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: communityData.community.name,
+        })}
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
           <TeamInfoModal
@@ -155,9 +156,7 @@ class TeamsPage extends React.Component {
               {description ? (
                 <PageTitle style={{ fontSize: 24 }}>
                   {title}
-                  <Tooltip
-                    text={description}
-                  >
+                  <Tooltip text={description}>
                     <span
                       className="fa fa-info-circle"
                       style={{ color: "#428a36", padding: "5px" }}
@@ -202,15 +201,25 @@ class TeamsPage extends React.Component {
                   style={{ paddingRight: "10px", maxWidth: "20%" }}
                 >
                   {user && user.isStandardUser && (
-                    <MEButton
-                      style={{ width: "100%", margin: 0 }}
+                    <AddButton
                       onClick={() => {
                         this.setState({ createTeamModalOpen: true });
                       }}
+                      text={"Team"}
+                      type={"team"}
                       className="phone-vanish"
-                    >
-                      Start Team
-                    </MEButton>
+                      community={communityData?.community?.name}
+                    />
+                    // <MEButton
+                    //   style={{ width: "100%", margin: 0 }}
+                    // onClick={() => {
+                    //   this.setState({ createTeamModalOpen: true });
+                    // }}
+                    //   className="phone-vanish"
+                    //   flat
+                    // >
+                    //   Start Team
+                    // </MEButton>
                   )}
                 </div>
               </div>
