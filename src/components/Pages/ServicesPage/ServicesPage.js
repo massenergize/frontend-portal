@@ -346,33 +346,33 @@ class ServicesPage extends React.Component {
               }}
             >
               <div className="col-12 text-center" style={{ padding: 0 }}>
-                  <Link to={`${this.props.links.services}/${vendor.id}`}>
-                    {vendor?.is_published ? (
+                <Link to={`${this.props.links.services}/${vendor.id}`}>
+                  {vendor?.is_published ? (
+                    <img
+                      className="w-100 service-prov-img"
+                      src={vendor.logo ? vendor.logo.url : notFound}
+                      alt={vendor.name}
+                    />
+                  ) : (
+                    <METooltip text={tooltipText}>
                       <img
                         className="w-100 service-prov-img"
                         src={vendor.logo ? vendor.logo.url : notFound}
                         alt={vendor.name}
                       />
-                    ) : (
-                      <METooltip text={tooltipText}>
-                        <img
-                          className="w-100 service-prov-img"
-                          src={vendor.logo ? vendor.logo.url : notFound}
-                          alt={vendor.name}
-                        />
-                      </METooltip>
-                    )}
+                    </METooltip>
+                  )}
 
-                    {!vendor?.is_published && (
-                      <small
-                        className="pending-approval"
-                        style={{ top: "40%", right: "30%" }}
-                      >
-                        {" "}
-                        Pending Approval
-                      </small>
-                    )}
-                  </Link>
+                  {!vendor?.is_published && (
+                    <small
+                      className="pending-approval vendor-pending-approval-banner"
+                      // style={{ top: "40%", right: "30%" }}
+                    >
+                      {" "}
+                      Pending Approval
+                    </small>
+                  )}
+                </Link>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <h4
                     className="pt-3 test-vendor-name"

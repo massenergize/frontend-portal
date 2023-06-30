@@ -322,16 +322,20 @@ class OneTestimonialPage extends React.Component {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <MELink to={this.props.links.testimonials}>
-                    Add a testimonial
-                  </MELink>
+                  <p
+                    className="testimonial-add-btn-text"
+                    // to={this.props.links.testimonials}
+                    onClick={()=>this.props.history.push(this.props.links.testimonials)}
+                  >
+                    <i className="fa fa-plus" /> Testimonial
+                  </p>
 
                   {!story?.is_published && this.props?.user && (
                     <p
                       onClick={() => this.onEditButtonClick(story)}
                       className="testimonial-edit-btn-text"
                     >
-                      Edit Testimonial
+                      <i className="fa fa-edit" /> Testimonial
                     </p>
                   )}
                 </div>

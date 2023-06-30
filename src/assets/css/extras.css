@@ -2550,6 +2550,10 @@
   .me-light-footer {
     margin-top: 20px;
   }
+  .vendor-pending-approval-banner{
+    right: 30%;
+    top: 40%;
+  }
 }
 .profile-pic-preview {
   border-radius: 100%;
@@ -2562,6 +2566,9 @@
   }
     .redo-hori-filter-container {
     max-width: 96%;
+  }
+  .vendor-pending-approval-banner{
+    right: 10%;
   }
 }
 
@@ -3272,6 +3279,10 @@
     margin-bottom: 15px !important;
   }
 
+  .vendor-pending-approval-banner{
+    right: 50% !important;
+  }
+
   /* temporary remove while we decide best actions scrolling
   .fix-filter{
     max-height: 70vh;
@@ -3845,9 +3856,26 @@
   border: 1px solid var(--app-theme-orange);
   font-size: 0.8rem;
   border-radius: 55px;
+    width: 48%;
+  text-align: center;
 }
 .testimonial-edit-btn-text:hover{
 background-color:var(--app-theme-orange) ;
+color: white;
+}
+.testimonial-add-btn-text{
+  color: var(--app-theme-green);
+  cursor: pointer;
+  font-weight: bold;
+  padding: 2px 20px;
+  border: 1px solid var(--app-theme-green);
+  font-size: 0.8rem;
+  border-radius: 55px;
+  width: 48%;
+  text-align: center;
+}
+.testimonial-add-btn-text:hover{
+background-color:var(--app-theme-green) ;
 color: white;
 }
 
