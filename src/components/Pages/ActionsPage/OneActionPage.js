@@ -657,13 +657,16 @@ class OneActionPage extends React.Component {
                               this.onEditButtonClick(action);
                             }}
                             flat
+                            wrapperStyle={{ width: "100%" }}
+                            containerStyle={{ width: "100%" }}
                             style={{
-                              padding: "5px 25px",
-                              borderRadius: 55,
-                              // marginTop: 10,
+                              padding: "10px 30px",
+                              borderRadius: 5,
+                              width: "80%",
+                              marginTop: 10,
                             }}
                           >
-                            Edit
+                            Edit Action
                           </MEButton>
                         </center>
                       )}

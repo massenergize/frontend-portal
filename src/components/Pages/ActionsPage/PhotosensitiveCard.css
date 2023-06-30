@@ -14,7 +14,7 @@
 
 .sensitive-photo {
   height: 150px;
-  width: 60%;
+  width: 100%;
   object-fit: contain;
   border-top-left-radius: 10px;
   cursor: pointer;
