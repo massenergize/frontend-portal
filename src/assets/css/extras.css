@@ -2551,7 +2551,7 @@
     margin-top: 20px;
   }
   .vendor-pending-approval-banner{
-    right: 30%;
+    right: 10%;
     top: 40%;
   }
 }
@@ -3849,34 +3849,36 @@
 }
 
 .testimonial-edit-btn-text{
-  color: var(--app-theme-orange);
+  color: white;
   cursor: pointer;
   font-weight: bold;
   padding: 2px 20px;
-  border: 1px solid var(--app-theme-orange);
+  background-color:var(--app-theme-green);
   font-size: 0.8rem;
-  border-radius: 55px;
+  border-radius: 5px;
     width: 48%;
   text-align: center;
+border: 1px solid var(--app-theme-green);
 }
 .testimonial-edit-btn-text:hover{
-background-color:var(--app-theme-orange) ;
-color: white;
+background-color:white ;
+color: var(--app-theme-green);
 }
 .testimonial-add-btn-text{
-  color: var(--app-theme-green);
+  color: white;
   cursor: pointer;
   font-weight: bold;
   padding: 2px 20px;
-  border: 1px solid var(--app-theme-green);
+  background-color:var(--app-theme-orange);
   font-size: 0.8rem;
   border-radius: 55px;
   width: 48%;
   text-align: center;
+  border: 1px solid var(--app-theme-orange);
 }
 .testimonial-add-btn-text:hover{
-background-color:var(--app-theme-green) ;
-color: white;
+background-color:white ;
+color: var(--app-theme-orange);
 }
 
 .pending-approval{
@@ -3888,4 +3890,39 @@ color: white;
   border-radius: 6px;
   position: absolute;
   background-color: white;
+}
+
+/* ,......... */
+
+.ribbon-container {
+  --d: 6px; /* folded part */
+  --c: tomato; /* color */
+  --f: 0.8rem; /* ribbon font-size */
+  z-index: 1000;
+
+}
+
+.ribbon-container::before {
+  content: attr(data-ribbon);
+  position: absolute;
+  font-size: var(--f);
+  top: 0;
+  right: 0;
+  transform: translate(29.29%, -100%) rotate(45deg);
+  color: #fff;
+  text-align: center;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  transform-origin: bottom left;
+  padding: 5px 35px calc(var(--d) + 5px);
+  background: linear-gradient(rgba(0, 0, 0, 0.5) 0 0) bottom/100% var(--d)
+    no-repeat var(--c);
+  background-clip: padding-box;
+  clip-path: polygon(0 0,100% 0,100% 100%,calc(100% - var(--d)) calc(100% - var(--d)),var(--d) calc(100% - var(--d)),0 100%);
+  -webkit-mask: linear-gradient(135deg,transparent calc(50% - var(--d) * 0.707),#fff 0) bottom left,
+    linear-gradient(-135deg, transparent calc(50% - var(--d) * 0.707), #fff 0)bottom right;
+  -webkit-mask-size: 300vmax 300vmax;
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+    z-index: 1000;
 }

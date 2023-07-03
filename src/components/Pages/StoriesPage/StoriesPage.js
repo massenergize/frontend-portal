@@ -30,6 +30,7 @@ import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import AddButton from "../../Shared/AddButton";
 import Seo from "../../Shared/Seo";
+import RibbonBanner from "../../Shared/RibbonBanner";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -428,6 +429,7 @@ class StoriesPage extends React.Component {
         }}
         className="animate-testimonial-sheet test-story-sheet"
       >
+        {!story?.is_published && <RibbonBanner />}
         <StorySheet
           {...story}
           links={this.props.links}

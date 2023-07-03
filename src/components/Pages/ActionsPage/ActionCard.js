@@ -26,6 +26,7 @@ import {
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 export const ACTION_TO_AUTO_START = "AUTO_START-";
 /**
  * Action Component is a single action for the action page,
@@ -187,7 +188,7 @@ class ActionCard extends React.Component {
 
   newFlexRender() {
     const actionStateCase = this.getActionStateCase();
-    const { action, onEditButtonClick } = this.props;
+    const { action } = this.props;
     const tagNames = makeStringFromArrOfObjects(action?.tags, (t) => t.name);
     const tooltipText =
       "You alone are seeing this action that you submitted. You can edit it until a Community admin approves it. To edit,click on the card";
@@ -198,7 +199,9 @@ class ActionCard extends React.Component {
         key={this.props.key?.toString()}
         data-action-state={actionStateCase}
         data-action-auth-state={this.props.user && "authenticated"}
+        style={{paddingRight:0}}
       >
+        {!action?.is_published && <RibbonBanner />}
         <div
           className="every-day-flex z-depth-1"
           style={{
@@ -241,16 +244,6 @@ class ActionCard extends React.Component {
                     style={{ flex: "9" }}
                   />
                 </METooltip>
-              )}
-
-              {!action?.is_published && (
-                <small
-                  className="pending-approval"
-                  style={{ top: "40%", right: "50%" }}
-                >
-                  {" "}
-                  Pending Approval
-                </small>
               )}
             </div>
             <div

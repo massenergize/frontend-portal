@@ -172,7 +172,7 @@ export default class StorySheet extends Component {
 
           <div className="sheet-content-area">
             <h4>
-              {creatorName} {is_published ? "" : " (Pending Approval) "}{" "}
+              {creatorName}{" "}
             </h4>
             <div className="sheet-details">
               <p>{date}</p>

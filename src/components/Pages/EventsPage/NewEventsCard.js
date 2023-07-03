@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -205,13 +206,7 @@ export default class NewEventsCard extends Component {
             )}
 
             {!is_published && (
-              <small
-                className="pending-approval"
-                style={{ top: "30%", right: "40%" }}
-              >
-                {" "}
-                Pending Approval
-              </small>
+              <RibbonBanner style={{ top: "30%", right: "40%" }} />
             )}
             <h1
               style={{

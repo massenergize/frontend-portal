@@ -33,6 +33,7 @@ import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import Seo from "../../Shared/Seo";
 import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -335,7 +336,10 @@ class ServicesPage extends React.Component {
               position: "relative",
               paddingBottom: 40,
             }}
-          >
+            >
+            {!vendor?.is_published && (
+              <RibbonBanner/>
+            )}
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
               className="card-body pref-height "
@@ -362,16 +366,6 @@ class ServicesPage extends React.Component {
                       />
                     </METooltip>
                   )}
-
-                  {!vendor?.is_published && (
-                    <small
-                      className="pending-approval vendor-pending-approval-banner"
-                      // style={{ top: "40%", right: "30%" }}
-                    >
-                      {" "}
-                      Pending Approval
-                    </small>
-                  )}
                 </Link>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <h4
@@ -386,20 +380,6 @@ class ServicesPage extends React.Component {
                   </h4>
                 </Link>
               </div>
-              {/* {!vendor?.is_published && (
-                <center style={{ marginTop: 5 }}>
-                  <MEButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.onEditButtonClicked(vendor);
-                    }}
-                    flat
-                    style={{ padding: "5px 20px", borderRadius: 5 }}
-                  >
-                    Edit
-                  </MEButton>
-                </center>
-              )} */}
             </div>
             {/* </div> */}
           </MECard>
