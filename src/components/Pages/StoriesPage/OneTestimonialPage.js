@@ -335,7 +335,7 @@ class OneTestimonialPage extends React.Component {
                       onClick={() => this.onEditButtonClick(story)}
                       className="testimonial-edit-btn-text"
                     >
-                      <i className="fa fa-edit" /> Testimonial
+                      Edit
                     </p>
                   )}
                 </div>
