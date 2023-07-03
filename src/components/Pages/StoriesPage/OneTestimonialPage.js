@@ -323,7 +323,7 @@ class OneTestimonialPage extends React.Component {
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <p
-                    className="testimonial-add-btn-text"
+                    className="testimonial-add-btn-text phone-vanish"
                     // to={this.props.links.testimonials}
                     onClick={()=>this.props.history.push(this.props.links.testimonials)}
                   >

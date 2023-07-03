@@ -2570,6 +2570,9 @@
   .vendor-pending-approval-banner{
     right: 10%;
   }
+  .testimonial-edit-btn-text{
+    width: 100%;
+  }
 }
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
@@ -3073,6 +3076,10 @@
   .more-hyperlink:hover {
     color: #8dc63f;
     transition: 0.4s;
+  }
+  .testimonial-edit-btn-text{
+    width: 100% !important;
+    margin-bottom: 10px;
   }
 
   /* .green-done-it-correction{
