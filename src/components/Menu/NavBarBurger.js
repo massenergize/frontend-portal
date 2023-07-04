@@ -366,7 +366,7 @@ class NavBarBurger extends React.Component {
                   if(res?.success){
                      this.props.signOut();
                      window.location.reload()
-                  }
+                 }
                 })
                
               }}
