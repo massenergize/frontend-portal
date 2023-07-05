@@ -15,6 +15,7 @@ import {
   collectSearchTextValueFromURL,
   processFiltersAndUpdateURL,
   makeFilterDescription,
+  parseJSON,
 } from "../../Utils";
 import NewEventsCard from "./NewEventsCard";
 import HorizontalFilterBox from "./HorizontalFilterBox";
@@ -499,7 +500,7 @@ class EventsPage extends React.Component {
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,
-                  ...(JSON.parse(event?.location || "{}") || {}),
+                  ...(parseJSON(event?.location)) || {},
                   end_date_and_time: event?.end_date_and_time?.slice(0, 16),
                   start_date_and_time: event?.start_date_and_time?.slice(0, 16),
                 };

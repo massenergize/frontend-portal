@@ -20,6 +20,19 @@ export default function AddButton({onClick, text, type, community, style, classN
           </span>
         </div>
       </div>
-    </CustomTooltip>
+      <div className="pc-vanish">
+          <div
+            className="round-sticky-btn-container"
+            onClick={() => onClick && onClick()}
+          >
+            <div className="round-sticky-btn touchable-opacity">
+              <i className="fa fa-plus" />
+              <span style={{ marginLeft: 5, marginBottom: 2 }}>
+                {text || type || "New"}
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
   );
 }

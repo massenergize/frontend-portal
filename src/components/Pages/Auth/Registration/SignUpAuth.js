@@ -10,6 +10,7 @@ import {
 } from "../shared/utils";
 // import MEButton from "./../../../../components/Pages/Widgets/MEButton";
 import FormCompletion from "./FormCompletion";
+import { apiCall } from "../../../../api/functions";
 import Seo from "../../../Shared/Seo";
 
 export default function SignUpAuth({
@@ -25,27 +26,52 @@ export default function SignUpAuth({
   completeFormRegistrationInME,
   setLoading,
   policies,
-  // registerWithGoogle,
-  // registerWithFacebook,
-  // showTour,
+  setNotification,
+  notification,
   back,
 }) {
   const [form, setForm] = useState({});
   const [itsTimeForRegistration] = useState(userNeedsToRegister);
-  const [userName, setUserName] = useState("");
-
-  const onUsernameChange = (username) => {
-    setUserName(username);
-  };
-
+  const [namesChanged, setNamesChanged] = useState(false);
+  const [suggested, setSuggested] = useState(null);
+  const [validatorLoading, setValidatorLoading] = useState(false);
+  const [validationResponse, setValidationResponse] = useState({}); // We keep a copy of just validated username. This helps if nothing has changed, so we dont run unnecessary API requests
   const history = useHistory();
 
   const yesDeleteMyAccount = () => {
     cancelRegistration();
     history.push(links.signin);
   };
+
+  const validateOrSuggestUserName = (value, cb) => {
+    if (!value) return;
+    if (validationResponse && validationResponse?.value === value) return;
+    setNotification({});
+    setValidatorLoading(true);
+    setSuggested(null);
+    apiCall("users.validate.username", { username: value }).then(
+      ({ data, success, error }) => {
+        setValidatorLoading(false);
+        if (!success) return console.log("Error validating: ", error);
+        const { code, valid } = data;
+
+        setValidationResponse({ ...data, value });
+        if (!valid && code === 911)
+          setNotification({
+            good: false,
+            message: `Parts of "${value}" contains profanity, please change`,
+          });
+
+        cb && cb(data, setSuggested);
+      }
+    );
+  };
   const onChange = (e) => {
-    const newForm = { ...form, [e.target.name]: e.target.value?.trim() };
+    const name = e.target.name;
+    const value = e.target.value;
+    // let namesChanged = false;
+    if (["firstName", "lastName"].includes(name)) setNamesChanged(true);
+    const newForm = { ...form, [name]: value?.trim() };
     setForm(newForm);
   };
 
@@ -72,7 +98,7 @@ export default function SignUpAuth({
     const location = " , " + form.city + ", " + form.state + ", " + form.zip;
     const body = {
       full_name: form.firstName + " " + form.lastName,
-      preferred_name: userName || form.firstName,
+      preferred_name: form.userName || form.firstName,
       email: fireAuth.email,
       location: location,
       is_vendor: false,
@@ -94,15 +120,21 @@ export default function SignUpAuth({
           site_name: community?.name,
         })}
         <FormCompletion
+          validateOrSuggestUserName={validateOrSuggestUserName}
+          validatorLoading={validatorLoading}
           onChange={onChange}
           getValue={getValue}
           form={form}
+          updateForm={(data) => setForm({ ...form, ...data })}
           cancelRegistration={yesDeleteMyAccount}
           createMyAccountNow={finaliseFormAndRegister}
           loading={loading}
           policies={policies}
           community={community}
-          onUsernameChange={onUsernameChange}
+          suggestedName={suggested}
+          notification={notification}
+          namesChanged={namesChanged}
+          setNamesChanged={setNamesChanged}
         />
       </>
     );
@@ -110,8 +142,8 @@ export default function SignUpAuth({
   return (
     <div className=" register-form">
       {Seo({
-        title: 'Sign Up',
-        description: '',
+        title: "Sign Up",
+        description: "",
         url: `${window.location.pathname}`,
         site_name: community?.name,
       })}

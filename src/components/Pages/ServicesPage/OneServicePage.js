@@ -8,6 +8,10 @@ import ErrorPage from "../Errors/ErrorPage";
 import MECard from "../Widgets/MECard";
 import { extractTextFromHTML, getHumanFriendlyDate } from "../../Utils";
 import Seo from "../../Shared/Seo";
+import MEButton from "../Widgets/MEButton";
+import { VENDOR } from "../../Constants";
+import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
 
 class OneServicePage extends React.Component {
   constructor(props) {
@@ -19,8 +23,32 @@ class OneServicePage extends React.Component {
     };
   }
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "OneServicePage"});
+    window.gtag("set", "user_properties", { page_title: "OneServicePage" });
   }
+
+  onEditButtonClicked = (vendor) => {
+    let newVendor = {
+      ...vendor,
+      image: vendor?.logo,
+      key_contact_email: vendor?.key_contact?.email,
+      key_contact_name: vendor?.key_contact?.name,
+    };
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Vendor Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={VENDOR}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={newVendor}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={this.props.updateVendorsInRedux}
+          reduxItems={this.props.serviceProviders}
+        />
+      ),
+    });
+  };
 
   render() {
     if (!this.props.serviceProviders || !this.props.testimonials) {
@@ -236,6 +264,25 @@ class OneServicePage extends React.Component {
                   </p>
                 )}
                 {this.renderTestimonials(stories)}
+                {!vendor?.is_published && this.props?.user && (
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.onEditButtonClicked(vendor);
+                    }}
+                    flat
+                    wrapperStyle={{ width: "100%" }}
+                    containerStyle={{ width: "100%" }}
+                    style={{
+                      padding: "10px 30px",
+                      borderRadius: 5,
+                      width: "100%",
+                      marginTop: 10,
+                    }}
+                  >
+                    Edit
+                  </MEButton>
+                )}
               </div>
 
               {/* --------------------------------------------------------------- VENDOR DESCRIPTION --------------------------------- */}
@@ -250,6 +297,7 @@ class OneServicePage extends React.Component {
                 >
                   {vendor.name}
                 </h1>
+
                 <p
                   className="cool-font make-me-dark"
                   id="test-vendor-description"
@@ -382,6 +430,12 @@ const mapStoreToProps = (store) => {
     testimonials: store.page.testimonials,
     links: store.links,
     community: store.page.community,
+    user: store.user.info,
   };
 };
-export default connect(mapStoreToProps, null)(OneServicePage);
+const mapDispatchToProps = {
+    toggleModal: reduxToggleUniversalModal,
+    updateVendorsInRedux: reduxLoadServiceProviders,
+
+  };
+export default connect(mapStoreToProps, mapDispatchToProps)(OneServicePage);
