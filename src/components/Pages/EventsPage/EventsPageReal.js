@@ -500,7 +500,7 @@ class EventsPage extends React.Component {
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,
-                  ...(parseJSON(event?.location) || {}),
+                  ...(parseJSON(event?.location)) || {},
                   end_date_and_time: event?.end_date_and_time?.slice(0, 16),
                   start_date_and_time: event?.start_date_and_time?.slice(0, 16),
                 };

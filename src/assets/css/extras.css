@@ -1794,6 +1794,9 @@
   -webkit-box-shadow: 0 1px 0px 0 rgba(0, 0, 0, -1.84),
     0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
+.me-btn-union span { 
+  color:white;
+}
 .me-btn-union:hover {
   background: #f57b34;
   border-color: #f57b34;
@@ -2347,9 +2350,9 @@
     font-size: 0.9rem;
   }
   .scroll-fix {
-    width: 17%;
+    width: 200px;
     position: fixed;
-    left: 120px;
+    /* left: 120px; */
     background: white;
     z-index: 1;
   }
@@ -2416,7 +2419,6 @@
   }
 
   .hori-filter-container {
-
     text-align: center;
     padding: 3px 0px 0px;
     margin-bottom: 20px;
@@ -2435,7 +2437,7 @@
     height: 90vh !important;
     border-bottom-width: 0px;
     position: absolute;
-    max-width: 1100px !important;  
+    max-width: 1100px !important;
   }
 
   .snackbar-success .mob-modal-correction {
@@ -2564,7 +2566,7 @@
   .tablet-vanish {
     display: none !important;
   }
-    .redo-hori-filter-container {
+  .redo-hori-filter-container {
     max-width: 96%;
   }
   .vendor-pending-approval-banner{
@@ -2573,6 +2575,44 @@
   .testimonial-edit-btn-text{
     width: 100%;
   }
+  .action-items-n-sidebar-container {
+    grid-template-columns: 2fr 4fr;
+  }
+  .scroll-fix {
+    width: 164px;
+  }
+}
+
+@media screen and (width: 768px) {
+  .action-items-n-sidebar-container {
+    display: block;
+  }
+  .scroll-fix {
+    width: 154px;
+    display: none;
+  }
+  .tablet-force-show{
+    display: flex !important;
+        position: fixed;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 100;
+    color: white !important;
+        background-color: var(--app-theme-green);
+    justify-content: space-around;
+    padding-top:15px;
+    padding-bottom:15px;
+  }
+ .act-stats-item{
+  display: flex;
+  flex-direction: column;
+ }
+
+ .act-stats-item small{
+  font-size: 0.9rem;
+ }
 }
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
@@ -2686,6 +2726,8 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    background-color: var(--app-theme-green);
+    color: white !important;
   }
   .act-stats-item {
     margin-right: 25px;
@@ -2699,7 +2741,7 @@
   }
 
   .stats-eq {
-    color: var(--app-theme-green-darker);
+    /* color: var(--app-theme-green-darker); */
   }
   .me-auth-not {
     font-size: 13px;
@@ -3851,7 +3893,7 @@
   cursor: pointer;
 }
 
-.footer-wrapper{
+.footer-wrapper {
   z-index: 10;
 }
 
