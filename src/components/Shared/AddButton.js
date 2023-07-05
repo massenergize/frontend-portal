@@ -33,6 +33,6 @@ export default function AddButton({onClick, text, type, community, style, classN
             </div>
           </div>
       </div>
-    </div>
+    </CustomTooltip>
   );
 }
