@@ -12,6 +12,8 @@ import { makeStringFromArrOfObjects } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -155,11 +157,13 @@ export default class NewEventsCard extends Component {
       isShared,
       community,
       is_published,
-      onEditButtonClicked,
+      // onEditButtonClicked,
     } = this.props;
 
     const { rsvpStatus, loading, error } = this.state;
     const title = this.getEventTitle();
+    const tooltipText =
+      "You alone are seeing this event that you submitted. You can edit it until a Community admin approves it. To edit, click on the card";
     return (
       <div
         data-tag-names={makeStringFromArrOfObjects(tags, (e) => e.name)}
@@ -183,12 +187,27 @@ export default class NewEventsCard extends Component {
             style={{ width: "100%" }}
             className="test-one-event-card-clickable"
           >
-            <img
-              src={this.getPhoto()}
-              className="new-me-testimonial-img"
-              alt="event media"
-              onError={() => photo}
-            />
+            {!is_published ? (
+              <METooltip text={tooltipText}>
+                <img
+                  src={this.getPhoto()}
+                  className="new-me-testimonial-img"
+                  alt="event media"
+                  onError={() => photo}
+                />
+              </METooltip>
+            ) : (
+              <img
+                src={this.getPhoto()}
+                className="new-me-testimonial-img"
+                alt="event media"
+                onError={() => photo}
+              />
+            )}
+
+            {!is_published && (
+              <RibbonBanner style={{ top: "30%", right: "40%" }} />
+            )}
             <h1
               style={{
                 fontSize: 17,
@@ -201,8 +220,7 @@ export default class NewEventsCard extends Component {
               className="test-event-card-title"
               data-event-title={title}
             >
-              {title}
-
+              {title}{" "}
               {isShared && (
                 <CustomTooltip
                   text={`This event is originally from ${community?.name}`}
@@ -226,7 +244,7 @@ export default class NewEventsCard extends Component {
             </div>
             <div style={{ display: "flex" }}>
               {/* ==== Edit button */}
-              {!is_published && (
+              {/* {!is_published && (
                 <div style={{ marginRight: 5 }}>
                   <MEButton
                     onClick={(e) => {
@@ -239,7 +257,7 @@ export default class NewEventsCard extends Component {
                     Edit
                   </MEButton>
                 </div>
-              )}
+              )} */}
 
               {/* ==== RSVP button  */}
 

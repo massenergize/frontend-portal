@@ -20,7 +20,13 @@ import {
 import MEChameleonButton from "./MEChameleonButton";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { makeStringFromArrOfObjects } from "../../Utils";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadActions,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
+import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 export const ACTION_TO_AUTO_START = "AUTO_START-";
 /**
  * Action Component is a single action for the action page,
@@ -182,8 +188,10 @@ class ActionCard extends React.Component {
 
   newFlexRender() {
     const actionStateCase = this.getActionStateCase();
-    const { action, onEditButtonClick } = this.props;
+    const { action } = this.props;
     const tagNames = makeStringFromArrOfObjects(action?.tags, (t) => t.name);
+    const tooltipText =
+      "You alone are seeing this action that you submitted. You can edit it until a Community admin approves it. To edit,click on the card";
     return (
       <div
         data-tag-names={tagNames}
@@ -191,7 +199,9 @@ class ActionCard extends React.Component {
         key={this.props.key?.toString()}
         data-action-state={actionStateCase}
         data-action-auth-state={this.props.user && "authenticated"}
+        style={{paddingRight:0}}
       >
+        {!action?.is_published && <RibbonBanner />}
         <div
           className="every-day-flex z-depth-1"
           style={{
@@ -201,17 +211,41 @@ class ActionCard extends React.Component {
           }}
         >
           <div className="img-and-btns-container every-day-flex" style={{}}>
-            <img
-              onClick={() =>
-                this.props.history.push(
-                  this.props.links.actions + "/" + this.props.action.id
-                )
-              }
-              className="sensitive-photo"
-              src={this.props.action.image ? this.props.action.image.url : null}
-              alt="action"
-              style={{ flex: "9" }}
-            />
+            <div style={{ width: "100%" }}>
+              {action?.is_published ? (
+                <img
+                  onClick={() =>
+                    this.props.history.push(
+                      this.props.links.actions + "/" + this.props.action.id
+                    )
+                  }
+                  className="sensitive-photo"
+                  src={
+                    this.props.action.image ? this.props.action.image.url : null
+                  }
+                  alt="action"
+                  style={{ flex: "9" }}
+                />
+              ) : (
+                <METooltip text={tooltipText}>
+                  <img
+                    onClick={() =>
+                      this.props.history.push(
+                        this.props.links.actions + "/" + this.props.action.id
+                      )
+                    }
+                    className="sensitive-photo"
+                    src={
+                      this.props.action.image
+                        ? this.props.action.image.url
+                        : null
+                    }
+                    alt="action"
+                    style={{ flex: "9" }}
+                  />
+                </METooltip>
+              )}
+            </div>
             <div
               className="btn-sidebar-container every-day-flex"
               style={{ flex: "3" }}
@@ -270,9 +304,11 @@ class ActionCard extends React.Component {
                 >
                   Info
                 </MEButton>
-                {!action?.is_published && (
+                {/* {!action?.is_published && (
                   <MEButton
-                    onClick={() => onEditButtonClick && onEditButtonClick(action)}
+                    onClick={() =>
+                      onEditButtonClick && onEditButtonClick(action)
+                    }
                     style={{
                       padding: "5px 18px ",
                       fontSize: "14px",
@@ -285,12 +321,14 @@ class ActionCard extends React.Component {
                   >
                     Edit
                   </MEButton>
-                )}
+                )} */}
               </div>
             </div>
           </div>
           <div className="text-footer">
-            <span className="test-action-title">{this.props.action.title}</span>
+            <span className="test-action-title">
+              {this.props.action.title}{" "}
+            </span>
             <br />
             {this.showNotifications()}
           </div>
@@ -520,12 +558,16 @@ const mapStoreToProps = (store) => {
     todo: store.user.todo,
     done: store.user.done,
     collection: store.page.collection,
+    actions: store.page.actions,
+    user: store.user.info,
   };
 };
 const mapDispatchToProps = {
   reduxRemoveFromDone,
   reduxRemoveFromTodo,
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal: reduxToggleUniversalModal,
+  updateActionsInRedux: reduxLoadActions,
 };
 export default connect(
   mapStoreToProps,
