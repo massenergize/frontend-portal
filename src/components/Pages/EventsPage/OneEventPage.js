@@ -10,6 +10,7 @@ import {
   recurringDetails,
   locationFormatJSX,
   smartString,
+  parseJSON,
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
@@ -18,9 +19,11 @@ import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
 import { isMobile } from "react-device-detect";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import { EVENT } from "../../Constants";
+import StoryForm from "../ActionsPage/StoryForm";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +53,7 @@ class OneEventPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "OneEventPage"});
+    window.gtag("set", "user_properties", { page_title: "OneEventPage" });
     const { id } = this.props.match.params;
     this.fetch(id);
     const rightNow = moment().format();
@@ -59,6 +62,38 @@ class OneEventPage extends React.Component {
     // can be a problem if you go diretly to the event page, this.props.user can be undefined
     if (!pastEvent && this.props.user) this.getRSVPStatus(id);
   }
+
+  static getDerivedStateFromProps(props, state) {
+    let { id } = props?.match?.params;
+    if (props.events && id)
+      return {
+        event: props.events?.filter((item) => item.id?.toString() === id)[0],
+      };
+    return null;
+  }
+  onEditButtonClick = (event) => {
+    let reConstEvent = {
+      ...event,
+      ...(parseJSON(event?.location) || {}),
+      end_date_and_time: event?.end_date_and_time?.slice(0, 16),
+      start_date_and_time: event?.start_date_and_time?.slice(0, 16),
+    };
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Event Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={EVENT}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={reConstEvent}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={this.props.updateEventsInRedux}
+          reduxItems={this.props.events}
+        />
+      ),
+    });
+  };
 
   render() {
     const event = this.state.event;
@@ -336,9 +371,21 @@ class OneEventPage extends React.Component {
                     )}
                   </ul>
                   {event.rsvp_enabled && !this.state.pastEvent ? (
-                    <div>
+                    <div style={{ display: "flex", marginTop: 10 }}>
+                      {!event?.is_published && user && (
+                        <MEButton
+                          onClick={(e) => {
+                            e.preventDefault();
+                            this.onEditButtonClick(event);
+                          }}
+                          flat
+                          style={{ padding: "12px 30px", marginRight: 5 }}
+                        >
+                          Edit
+                        </MEButton>
+                      )}
                       {user ? (
-                        <div style={{ position: "relative" }}>
+                        <div style={{ position: "relative", width: "100%" }}>
                           <MELightDropDown
                             style={{ width: "100%", padding: 13 }}
                             containerStyle={{ display: "block", padding: 0 }}
@@ -396,7 +443,27 @@ class OneEventPage extends React.Component {
                         </div>
                       )}
                     </div>
-                  ) : null}
+                  ) : (
+                    !event?.is_published &&
+                    user && (
+                      <MEButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          this.onEditButtonClick(event);
+                        }}
+                        flat
+                        style={{
+                          padding: "12px 30px",
+                          marginTop: 10,
+                          width: "100%",
+                        }}
+                        wrapperStyle={{ width: "100%" }}
+                        containerStyle={{ width: "100%" }}
+                      >
+                        Edit
+                      </MEButton>
+                    )
+                  )}
                 </div>
               </div>
               <div className="col-12 col-lg-8">
@@ -454,4 +521,6 @@ const mapStoreToProps = (store) => {
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+  toggleModal: reduxToggleUniversalModal,
+  updateEventsInRedux: reduxLoadEvents,
 })(OneEventPage);

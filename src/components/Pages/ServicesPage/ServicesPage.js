@@ -26,12 +26,14 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { reduxLoadServiceProviders, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import { VENDOR } from "../../Constants";
-import MEButton from "../Widgets/MEButton";
+// import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import Seo from "../../Shared/Seo";
+import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -290,6 +292,8 @@ class ServicesPage extends React.Component {
           ? this.props.serviceProviders
           : vendors;
     }
+    const tooltipText =
+      "You alone are seeing this service provider that you submitted. You can edit it until a Community admin approves it. To edit, click on the card";
     if (!vendors || vendors.length === 0) {
       return (
         <div className="boxed_wrapper">
@@ -332,7 +336,10 @@ class ServicesPage extends React.Component {
               position: "relative",
               paddingBottom: 40,
             }}
-          >
+            >
+            {!vendor?.is_published && (
+              <RibbonBanner/>
+            )}
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
               className="card-body pref-height "
@@ -344,11 +351,21 @@ class ServicesPage extends React.Component {
             >
               <div className="col-12 text-center" style={{ padding: 0 }}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
-                  <img
-                    className="w-100 service-prov-img"
-                    src={vendor.logo ? vendor.logo.url : notFound}
-                    alt={vendor.name}
-                  />
+                  {vendor?.is_published ? (
+                    <img
+                      className="w-100 service-prov-img"
+                      src={vendor.logo ? vendor.logo.url : notFound}
+                      alt={vendor.name}
+                    />
+                  ) : (
+                    <METooltip text={tooltipText}>
+                      <img
+                        className="w-100 service-prov-img"
+                        src={vendor.logo ? vendor.logo.url : notFound}
+                        alt={vendor.name}
+                      />
+                    </METooltip>
+                  )}
                 </Link>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   <h4
@@ -363,22 +380,6 @@ class ServicesPage extends React.Component {
                   </h4>
                 </Link>
               </div>
-              {!vendor?.is_published && (
-                <center>
-                  <MEButton
-                    onClick={() => this.onEditButtonClicked(vendor)}
-                    style={{
-                      padding: "2px 18px ",
-                      fontSize: "14px",
-                      minWidth: 76,
-                      textAlign: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Edit
-                  </MEButton>
-                </center>
-              )}
             </div>
             {/* </div> */}
           </MECard>

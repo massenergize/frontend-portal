@@ -44,12 +44,12 @@ export const completeUserDeletion = (user_id, cb) => (dispatch) => {
 };
 
 export const finaliseNoPasswordAuthentication = (email, cb) => (dispatch) => {
-  firebaseAuthenticationWithNoPassword(email, async(response, error) => {
+  firebaseAuthenticationWithNoPassword(email, async (response, error) => {
     if (error) {
       cb && cb(null, error);
       dispatch(setAuthNotification(makeError(error)));
     }
-     let _fbToken = await response?.user?.getIdTokenResult();
+    let _fbToken = await response?.user?.getIdTokenResult();
     fetchTokenFromMassEnergize(_fbToken.token, cb);
   });
 };
@@ -69,9 +69,9 @@ export const fetchUserContent = (email) => async (dispatch) => {
 export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
   const auth = getState().fireAuth;
   apiCall("users.create", body)
-    .then(async(response) => {
+    .then(async (response) => {
       if (response?.success && response?.data) {
-         let _fbToken = await auth?.getIdTokenResult();
+        let _fbToken = await auth?.getIdTokenResult();
         return dispatch(
           fetchTokenFromMassEnergize(
             _fbToken.token,
@@ -79,9 +79,10 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
             { userIsNew: response.data?.is_new }
           )
         );
-      }
+      } else cb && cb(null, response.error);
       console.log(
-        "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user"
+        "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user",
+        response.error
       );
     })
     .catch((error) => {
@@ -109,42 +110,44 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
   });
 };
 
-export const fetchTokenFromMassEnergize = (lat, cb, moreInfo, justFromGoogleAuth) => (dispatch) => {
-  if (!lat) return console.log("Include user _lat to fetch token from ME...");
-  apiCall("auth.login", { idToken: lat })
-    .then((response) => {
-      const error = response.error;
-      const massUser = { ...response.data, ...(moreInfo || moreInfo) };
-      cb && cb(massUser);
-      if (!error) {
-        if (massUser?.userIsNew)
-          dispatch(celebrateWithConfetti({ show: true, duration: 10000 }));
-          
-        dispatch(fetchUserContent(massUser?.email));
-        dispatch(setAuthStateAction(AUTH_STATES.CHECK_MASS_ENERGIZE));
-        return dispatch(reduxLogin(massUser));
-      }
-      if (error === AUTH_STATES.NEEDS_REGISTRATION){
-        return dispatch(
-          setAuthStateAction(
-            justFromGoogleAuth
-              ? AUTH_STATES.NEEDS_REGISTRATION+"::"+AUTH_STATES.JUST_FROM_GOOGLE_AUTH
-              : AUTH_STATES.NEEDS_REGISTRATION
-          )
-        );
-      }
+export const fetchTokenFromMassEnergize =
+  (lat, cb, moreInfo, justFromGoogleAuth) => (dispatch) => {
+    if (!lat) return console.log("Include user _lat to fetch token from ME...");
+    apiCall("auth.login", { idToken: lat })
+      .then((response) => {
+        const error = response.error;
+        const massUser = { ...response.data, ...(moreInfo || moreInfo) };
+        cb && cb(massUser);
+        if (!error) {
+          if (massUser?.userIsNew)
+            dispatch(celebrateWithConfetti({ show: true, duration: 10000 }));
 
+          dispatch(fetchUserContent(massUser?.email));
+          dispatch(setAuthStateAction(AUTH_STATES.CHECK_MASS_ENERGIZE));
+          return dispatch(reduxLogin(massUser));
+        }
+        if (error === AUTH_STATES.NEEDS_REGISTRATION) {
+          return dispatch(
+            setAuthStateAction(
+              justFromGoogleAuth
+                ? AUTH_STATES.NEEDS_REGISTRATION +
+                    "::" +
+                    AUTH_STATES.JUST_FROM_GOOGLE_AUTH
+                : AUTH_STATES.NEEDS_REGISTRATION
+            )
+          );
+        }
 
-      cb && cb(null, error);
-      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
-    })
-    .catch((error) => {
-      if (cb) cb(null, error?.toString());
-      dispatch(setAuthNotification(makeError(error)));
-      dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
-      console.log("AUTH_LOGIN_ERROR", error?.toString());
-    });
-};
+        cb && cb(null, error);
+        dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+      })
+      .catch((error) => {
+        if (cb) cb(null, error?.toString());
+        dispatch(setAuthNotification(makeError(error)));
+        dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
+        console.log("AUTH_LOGIN_ERROR", error?.toString());
+      });
+  };
 
 export const authenticateWithGoogle = (cb) => (dispatch) => {
   firebaseAuthenticationWithGoogle(async (response, error) => {
@@ -157,7 +160,7 @@ export const authenticateWithGoogle = (cb) => (dispatch) => {
   });
 };
 export const authenticateWithFacebook = (cb) => (dispatch) => {
-  firebaseAuthenticationWithFacebook(async(user, error) => {
+  firebaseAuthenticationWithFacebook(async (user, error) => {
     if (error) return dispatch(setAuthNotification(makeError(error)));
     cb && cb(user);
     let _fbToken = await user?.getIdTokenResult();
@@ -187,7 +190,7 @@ export const authenticateAsGuest = () => async (dispatch) => {
 };
 export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
   const tour = getTakeTourFromURL();
-  checkFirebaseAuthenticationState(async(user) => {
+  checkFirebaseAuthenticationState(async (user) => {
     if (!user) {
       dispatch(setAuthStateAction(AUTH_STATES.USER_IS_NOT_AUTHENTICATED));
       // If a guest is trying to become a valid user, but a passwordless one, this value will be set
@@ -204,7 +207,7 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
     // Unless tour value is set via url params -- dont do anything here. Leave things to prior logic  implemented in AppRouter
     if (!tour) dispatch(reduxSetTourState(false));
     // ------------------------------------------------
-     let _fbToken = await user?.getIdTokenResult();
+    let _fbToken = await user?.getIdTokenResult();
     dispatch(setFirebaseUser(user));
     dispatch(fetchTokenFromMassEnergize(_fbToken?.token));
     dispatch(breakdownFirebaseSettings(user));
@@ -231,7 +234,7 @@ export const breakdownFirebaseSettings = (user) => (dispatch) => {
 };
 
 export const firebaseLogin = (data, cb) => (dispatch) => {
-  withEmailAndPassword(data.email, data.password, async(auth, error) => {
+  withEmailAndPassword(data.email, data.password, async (auth, error) => {
     if (cb) cb(auth);
     if (error) return dispatch(setAuthNotification(makeError(error)));
     let _fbToken = await auth.user?.getIdTokenResult();
@@ -241,14 +244,18 @@ export const firebaseLogin = (data, cb) => (dispatch) => {
 };
 
 export const firebaseRegistration = (data, cb) => (dispatch) => {
-  registerWithEmailAndPassword(data.email, data.password, async(auth, error) => {
-    if (cb) cb(auth);
-    if (error) return dispatch(setAuthNotification(makeError(error)));
-     let _fbToken = await auth.user?.getIdTokenResult();
-    dispatch(sendVerificationEmail(auth?.user));
-    dispatch(fetchTokenFromMassEnergize(_fbToken.token));
-    dispatch(setFirebaseUser(auth?.user));
-  });
+  registerWithEmailAndPassword(
+    data.email,
+    data.password,
+    async (auth, error) => {
+      if (cb) cb(auth);
+      if (error) return dispatch(setAuthNotification(makeError(error)));
+      let _fbToken = await auth.user?.getIdTokenResult();
+      dispatch(sendVerificationEmail(auth?.user));
+      dispatch(fetchTokenFromMassEnergize(_fbToken.token));
+      dispatch(setFirebaseUser(auth?.user));
+    }
+  );
 };
 
 export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {

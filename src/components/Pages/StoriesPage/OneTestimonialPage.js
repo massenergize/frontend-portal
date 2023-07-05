@@ -14,6 +14,9 @@ import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
+import { TESTIMONIAL } from "../../Constants";
+import { reduxLoadTestimonials, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -40,9 +43,15 @@ class OneTestimonialPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "OneTestimonialPage"});
+    window.gtag("set", "user_properties", { page_title: "OneTestimonialPage" });
     const { id } = this.props.match.params;
     this.fetch(id);
+  }
+//  trigger whenever props.stories change
+  static getDerivedStateFromProps(props, state) {
+    let {id} = props?.match?.params
+    if (props.stories && id) return { story: props.stories?.filter((story) => story.id?.toString() === id)[0] };
+    return null;
   }
 
   getRandomIndexArr(range) {
@@ -109,6 +118,37 @@ class OneTestimonialPage extends React.Component {
       );
     }
   }
+
+  onEditButtonClick = (data) => {
+    let toEdit = {
+      id: data?.id,
+      community: data?.community?.id,
+      key: Math.random(),
+      action_id: data?.action?.id,
+      tags: [],
+      body: data?.body,
+      other_vendor: data?.other_vendor,
+      preferred_name: data?.preferred_name,
+      title: data?.title,
+      vendor_id: data?.vendor ? data?.vendor.id : "",
+      image: data?.file,
+    };
+    this.props.toggleModal({
+      show: true,
+      title: "Edit Testimonial Form",
+      size: "md",
+      component: (
+        <StoryForm
+          ModalType={TESTIMONIAL}
+          close={() => this.props.toggleModal({ show: false })}
+          draftData={toEdit}
+          TriggerSuccessNotification={(bool) => ({})}
+          updateItemInRedux={(data)=>this.props.updateItemInRedux(data)}
+          reduxItems={this.props.stories}
+        />
+      ),
+    });
+  };
 
   renderRelatedAction() {
     const action = this.state.story ? this.state.story.action : {};
@@ -180,7 +220,7 @@ class OneTestimonialPage extends React.Component {
           updated_at: story.updated_at,
           created_at: story.created_at,
           tags: (tags || []).map(({ name }) => name) || [],
-          site_name:this.props?.community?.name
+          site_name: this.props?.community?.name,
         })}
 
         <div
@@ -279,9 +319,26 @@ class OneTestimonialPage extends React.Component {
                     {dateString}
                   </METextView>
                 </div>
-                <MELink to={this.props.links.testimonials}>
-                  Add a testimonial
-                </MELink>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p
+                    className="testimonial-add-btn-text phone-vanish"
+                    // to={this.props.links.testimonials}
+                    onClick={()=>this.props.history.push(this.props.links.testimonials)}
+                  >
+                    <i className="fa fa-plus" /> Testimonial
+                  </p>
+
+                  {!story?.is_published && this.props?.user && (
+                    <p
+                      onClick={() => this.onEditButtonClick(story)}
+                      className="testimonial-edit-btn-text"
+                    >
+                      Edit
+                    </p>
+                  )}
+                </div>
                 {this.renderOtherTestimonials()}
                 {this.renderRelatedVendor(story)}
               </div>
@@ -381,4 +438,7 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
   };
 };
-export default connect(mapStoreToProps, null)(OneTestimonialPage);
+export default connect(mapStoreToProps, {
+  toggleModal: reduxToggleUniversalModal,
+  updateItemInRedux: reduxLoadTestimonials,
+})(OneTestimonialPage);
