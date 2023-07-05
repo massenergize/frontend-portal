@@ -1252,6 +1252,7 @@
   font-weight: bold;
   /* min-height: 70px; */
   align-items: center;
+  justify-content: space-between;
   font-size: 0.9rem !important;
   border-bottom-right-radius: 15px;
   border-bottom-left-radius: 15px;
