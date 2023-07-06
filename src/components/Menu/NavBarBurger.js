@@ -268,8 +268,8 @@ class NavBarBurger extends React.Component {
       : { name: "My Community" };
     return children.map((child, key) => {
       const id = child?.navItemId ? { id: child.navItemId } : {};
-        const name = child?.name?.toLowerCase()?.replace(" ", "-");
-        const linkId = `menu-${name}-id`;
+      const name = child?.name?.toLowerCase()?.replace(" ", "-");
+      const linkId = `menu-${name}-id`;
       if (child.special) {
         return (
           <Link
@@ -363,12 +363,15 @@ class NavBarBurger extends React.Component {
               className="dropdown-item p-3 small font-weight-bold cool-font me-dropdown-theme-item"
               onClick={() => {
                 apiCall("auth.logout", {}).then((res) => {
-                  if(res?.success){
-                     this.props.signOut();
-                    //  window.location.reload()
+                  if (res?.success) {
+                    const url = new URL(window.location.href);
+                    const isProfilePage = url?.pathname?.includes("profile");
+                    const homepage = links.home;
+                    if (isProfilePage) this.props.history.push(homepage);
+                    document.dispatchEvent(new MouseEvent("click"));
+                    this.props.signOut();
                   }
-                })
-               
+                });
               }}
             >
               Sign Out
