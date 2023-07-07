@@ -326,7 +326,7 @@ class ActionsPage extends React.Component {
                 pref_eq={this.props.pref_eq}
                 eq={this.props.eq}
               />
-              <div className=" phone-marg-top action-items-n-sidebar-container">
+              <div className="phone-marg-top action-items-n-sidebar-container">
                 <div className="phone-vanish sidebar_styleTwo ">
                   <div className="scroll-fix">
                     {/* {this.props.user ? ( */}
@@ -434,7 +434,7 @@ class ActionsPage extends React.Component {
                       id="test-action-cards-wrapper"
                       data-number-of-actions-for-test={actions?.length}
                       className="row"
-                      style={{ marginTop: 40, paddingTop: 50 }}
+                      style={{ marginTop: 30 }}
                     >
                       {this.renderActions(actions)}
                     </div>

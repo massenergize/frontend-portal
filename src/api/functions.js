@@ -18,6 +18,7 @@ export async function apiCall(
   destinationUrl,
   dataToSend = {},
   relocationPage = null
+  ,options = {}
 ) {
   // add some meta data for context in backend
   dataToSend = {
@@ -47,6 +48,7 @@ export async function apiCall(
     credentials: "include",
     method: "POST",
     body: formData,
+    ...(options || {})
   });
   try {
     const json = await response.json();

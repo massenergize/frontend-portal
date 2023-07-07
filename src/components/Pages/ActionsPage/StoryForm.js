@@ -27,15 +27,12 @@ const INITIAL_STATE = {
   limit: 9000,
 };
 
-
 const URLS = {
   Action: "actions.add",
   Event: "events.add",
   Vendor: "vendors.add",
   Testimonial: "testimonials.add",
 };
-
-
 
 //form fields for the action page
 var ActionFormData = [
@@ -94,8 +91,6 @@ var ActionFormData = [
     hasLabel: true,
   },
 ];
-
-
 
 //form fields for the events page
 var EventsFormData = [
@@ -553,16 +548,19 @@ class StoryForm extends React.Component {
 
   updateRedux = (newData) => {
     let { reduxItems, updateItemInRedux } = this.props;
-    if(reduxItems && updateItemInRedux){
-      let index = reduxItems?.findIndex((item) => item.id?.toString() === newData?.id?.toString());      
+    if (reduxItems && updateItemInRedux) {
+      let index = reduxItems?.findIndex(
+        (item) => item.id?.toString() === newData?.id?.toString()
+      );
       if (index === -1) {
         index = 0;
       }
-      let filtered = (reduxItems|| [])?.filter((item) => item?.id !== newData?.id);
+      let filtered = (reduxItems || [])?.filter(
+        (item) => item?.id?.toString() !== newData?.id?.toString()
+      );
       filtered.splice(index, 0, newData);
       updateItemInRedux(filtered);
     }
-
   };
   onSubmit(e, data, resetForm) {
     const {
@@ -594,10 +592,10 @@ class StoryForm extends React.Component {
           },
         });
       } else {
-
         //if the body has a key, that means the data being submitted is for updating a draft testimonial and updates the URL
-        if (body.key) {
-          Url = "testimonials.update";
+        if (body?.id) {
+          // Url = "testimonials.update";
+          body.testimonial_id = body?.id;
           delete body.key;
           //prevents front end fron submitting null data to back end causing the picture to be overwritten
           //also prepares the image to be deleted if another one is not uploaded to replace it
@@ -608,14 +606,14 @@ class StoryForm extends React.Component {
           ) {
             //marks the  image to be deleted from  the back end if the user removes image from draft and submits it with no image
             if (body?.ImgToDel) {
-              body.image = "ImgToDel ---" + String(body?.ImgToDel.id);
+              body.image = "reset";
             } else {
               delete body.image;
             }
           }
           delete body?.ImgToDel;
         }
-      } 
+      }
     }
 
     if (ModalType === ACTION) {
@@ -696,41 +694,45 @@ class StoryForm extends React.Component {
       if (body?.id) {
         let newBody = this.processEditData(body, VendorFormData);
         body = { ...newBody, vendor_id: body?.id };
-        }
-      else{
-        body={...body, communities:[communityID?.community_id]}
+      } else {
+        body = { ...body, communities: [communityID?.community_id] };
       }
     }
     this.setState({
-    formNotification: {
-      icon: "fa fa-spinner fa-spin",
-      type: "good",
-      text: "We are sending now...",
-    },
-  });
+      formNotification: {
+        icon: "fa fa-spinner fa-spin",
+        type: "good",
+        text: "We are sending now...",
+      },
+    });
 
     apiCall(Url, body).then((json) => {
-      let name = ModalType?.toLowerCase() + "_id"
+      let name = ModalType?.toLowerCase() + "_id";
+
       if (json && json.success) {
-       (!body[name] && !body?.id) && celebrate({ show: true, duration: 8000 });
-        this.updateRedux(json?.data)
+        if (ModalType === VENDOR) {
+          if (!body?.vendor_id) {
+            celebrate({ show: true, duration: 8000 });
+          }
+        } else if (!body[name] && !body?.id) {
+          celebrate({ show: true, duration: 8000 });
+        }
+        this.updateRedux(json?.data);
         if (TriggerSuccessNotification) {
           TriggerSuccessNotification(true);
           close && close();
           TriggerModal && TriggerModal(false);
         }
-      }
-      else{
-      this.setState({
+      } else {
+        this.setState({
           formNotification: {
             icon: "fa fa-times",
             type: "bad",
             text: "An Error occurred while submitting your data. Try again",
           },
-        })
-        return
+        });
+        return;
       }
-      
     });
   }
 }
@@ -751,5 +753,3 @@ const mapDispatchToProps = {
 };
 //composes the login form by using higher order components to make it have routing and firebase capabilities
 export default connect(mapStoreToProps, mapDispatchToProps)(StoryForm);
-
-
