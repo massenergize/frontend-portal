@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Cookies from "universal-cookie";
-import { set_cookie, get_cookie, setCookieInAPi } from "../../api/functions";
+import { get_cookie, setCookieInAPi } from "../../api/functions";
 
 class CookieBanner extends React.Component {
   constructor(props) {
