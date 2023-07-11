@@ -87,8 +87,19 @@ function _getCurrentCommunityContext() {
   return { __community: subdomain, __is_sandbox };
 }
 
+const getCommunityID = () => {
+  const { page } = store.getState() || {};
+  const { community } = page || {};
+  return community?.id;
+}
+
 export function set_cookie(cookies, key, value) {
   cookies.set(key, value, { path: "/" });
+}
+
+export const setCookieInAPi = (cookies) => {
+    let community_id = getCommunityID();
+    log_device(cookies, community_id, true);
 }
 
 export function get_cookie(cookies, key) {
@@ -96,15 +107,15 @@ export function get_cookie(cookies, key) {
   return cookie;
 }
 
-function log_device(cookies, community_id) {
+function log_device(cookies, community_id, acceptCookies=false) {
   // TODO: Get IP address and other info
   let device = get_cookie(cookies, "device");
   let body;
   let response;
   if (device === undefined) {
-    body = {};
+    body = acceptCookies ? { has_accepted_cookies: true } : {};
   } else {
-    body = { id: device };
+    body = acceptCookies? { id: device, has_accepted_cookies: acceptCookies }: {id: device,};
   }
   if (community_id) {
     body = { ...body, community_id: community_id };
@@ -115,8 +126,15 @@ function log_device(cookies, community_id) {
       try {
         if (result.data) {
           // David: do we want to set_cookie again if get_cookie indicated already was a cookie?
-          if (!device || device === undefined)
-            set_cookie(cookies, "device", result.data.id);
+
+          // if the user has already accepted cookies but on a new window don't show banner
+          if (result?.data?.has_accepted_cookies) {
+            set_cookie(cookies, "acceptsCookies", 1);
+          }
+            if (!device || device === undefined)
+              set_cookie(cookies, "device", result.data.id);
+
+
         }
       } catch (error) {
         console.log(error); // Debug
