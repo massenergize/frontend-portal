@@ -12,6 +12,8 @@ import { makeStringFromArrOfObjects } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
+import METooltip from "../../Shared/METooltip";
+import RibbonBanner from "../../Shared/RibbonBanner";
 export const RSVP_STATUS = {
   GOING: "Going",
   INTERESTED: "Interested",
@@ -155,11 +157,13 @@ export default class NewEventsCard extends Component {
       isShared,
       community,
       is_published,
-      onEditButtonClicked,
+      // onEditButtonClicked,
     } = this.props;
 
     const { rsvpStatus, loading, error } = this.state;
     const title = this.getEventTitle();
+    const tooltipText =
+      "You alone are seeing this event that you submitted. You can edit it until a Community admin approves it. To edit, click on the card";
     return (
       <div
         data-tag-names={makeStringFromArrOfObjects(tags, (e) => e.name)}
@@ -183,12 +187,27 @@ export default class NewEventsCard extends Component {
             style={{ width: "100%" }}
             className="test-one-event-card-clickable"
           >
-            <img
-              src={this.getPhoto()}
-              className="new-me-testimonial-img"
-              alt="event media"
-              onError={() => photo}
-            />
+            {!is_published ? (
+              <METooltip text={tooltipText}>
+                <img
+                  src={this.getPhoto()}
+                  className="new-me-testimonial-img"
+                  alt="event media"
+                  onError={() => photo}
+                />
+              </METooltip>
+            ) : (
+              <img
+                src={this.getPhoto()}
+                className="new-me-testimonial-img"
+                alt="event media"
+                onError={() => photo}
+              />
+            )}
+
+            {!is_published && (
+              <RibbonBanner style={{ top: "30%", right: "40%" }} />
+            )}
             <h1
               style={{
                 fontSize: 17,
@@ -201,8 +220,7 @@ export default class NewEventsCard extends Component {
               className="test-event-card-title"
               data-event-title={title}
             >
-              {title}
-
+              {title}{" "}
               {isShared && (
                 <CustomTooltip
                   text={`This event is originally from ${community?.name}`}
@@ -224,62 +242,63 @@ export default class NewEventsCard extends Component {
                 </METextView>
               )}
             </div>
-            {!user && rsvp_enabled && (
-              <div style={{ marginLeft: "auto" }}>
-                <MEButton
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleGuestAuthDialog(true);
-                  }}
-                  flat
-                >
-                  RSVP
-                </MEButton>
-              </div>
-            )}
-            {user && rsvp_enabled && true && (
-              <div style={{ marginLeft: "auto" }}>
-                <MELightDropDown
-                  containerStyle={{ padding: 0 }}
-                  direction={dropDirection}
-                  onItemSelected={this.itemSelected}
-                  animate={false}
-                  customAnimation={customDropAnimation || "rsvp-drop-anime"}
-                  controlLabel={true}
-                  label={
-                    (loading && <i className="fa fa-spinner fa-spin"></i>) ||
-                    rsvpStatus ||
-                    "RSVP"
-                  }
-                  labelClassNames="me-rsvp-btn test-card-rsvp-toggler"
-                  data={[
-                    RSVP_STATUS.INTERESTED,
-                    RSVP_STATUS.GOING,
-                    RSVP_STATUS.NOT_GOING,
-                  ]}
-                />
-              </div>
-            )}
+            <div style={{ display: "flex" }}>
+              {/* ==== Edit button */}
+              {/* {!is_published && (
+                <div style={{ marginRight: 5 }}>
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onEditButtonClicked(id);
+                    }}
+                    flat
+                    style={{padding:'12px 30px'}}
+                  >
+                    Edit
+                  </MEButton>
+                </div>
+              )} */}
 
-            {!is_published && (
-              <MEButton
-                onClick={() =>
-                  onEditButtonClicked && onEditButtonClicked()
-                }
-                style={{
-                  padding: "2px 18px ",
-                  fontSize: "14px",
-                  minWidth: 76,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  position: "absolute",
-                  right: 15,
-                  bottom:1
-                }}
-              >
-                Edit
-              </MEButton>
-            )}
+              {/* ==== RSVP button  */}
+
+              {!user && rsvp_enabled && (
+                <div style={{ marginLeft: "auto" }}>
+                  <MEButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleGuestAuthDialog(true);
+                    }}
+                    flat
+                  >
+                    RSVP
+                  </MEButton>
+                </div>
+              )}
+
+              {user && rsvp_enabled && true && (
+                <div style={{ marginLeft: "auto" }}>
+                  <MELightDropDown
+                    containerStyle={{ padding: 0 }}
+                    direction={dropDirection}
+                    onItemSelected={this.itemSelected}
+                    animate={false}
+                    customAnimation={customDropAnimation || "rsvp-drop-anime"}
+                    controlLabel={true}
+                    label={
+                      (loading && <i className="fa fa-spinner fa-spin"></i>) ||
+                      rsvpStatus ||
+                      "RSVP"
+                    }
+                    labelClassNames="me-rsvp-btn test-card-rsvp-toggler"
+                    data={[
+                      RSVP_STATUS.INTERESTED,
+                      RSVP_STATUS.GOING,
+                      RSVP_STATUS.NOT_GOING,
+                    ]}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </MECard>
         {error && (

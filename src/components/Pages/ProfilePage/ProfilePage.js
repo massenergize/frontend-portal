@@ -166,7 +166,7 @@ class ProfilePage extends React.Component {
     return { editingProfileForm: state.editingProfileForm };
   }
   render() {
-    const { fireAuth } = this.props;
+    const { fireAuth ,} = this.props;
     const wantsToBecomeValidUser =
       this.state.editingProfileForm === "become-valid";
     const userIsNotAuthenticated =
@@ -186,7 +186,7 @@ class ProfilePage extends React.Component {
 
     const myHouseholds = this.props.user?.households || [];
 
-    if (!this.props.teams) {
+    if (!this.props.teams || !this.props.user) {
       return <LoadingCircle />;
     }
 
@@ -349,7 +349,7 @@ class ProfilePage extends React.Component {
                   <br />
                   <br />
                   <MESectionWrapper headerText="Your Teams ( * Outside This Community )">
-                    {this.renderTeams(user.teams)}
+                    {this.renderTeams(user?.teams)}
                   </MESectionWrapper>
                   <div
                     style={{
@@ -368,7 +368,7 @@ class ProfilePage extends React.Component {
 
                   <br />
                   <MESectionWrapper headerText="Your Households">
-                    {this.renderHouseholds(user.households)}
+                    {this.renderHouseholds(user?.households)}
                   </MESectionWrapper>
 
                   <div

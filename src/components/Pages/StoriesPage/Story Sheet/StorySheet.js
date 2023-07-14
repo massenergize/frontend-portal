@@ -88,7 +88,7 @@ export default class StorySheet extends Component {
       preferred_name,
       title,
       vendor,
-      is_approved,
+      // is_approved,
       community,
       created_at,
       file,
@@ -98,8 +98,8 @@ export default class StorySheet extends Component {
     //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
     var testimonialData = {
       id: id,
-      is_approved: is_approved,
-      is_published: is_published,
+      // is_approved: is_approved,
+      // is_published: is_published,
       community: community?.id,
       key: Math.random(),
       action_id: action?.id,
@@ -172,7 +172,7 @@ export default class StorySheet extends Component {
 
           <div className="sheet-content-area">
             <h4>
-              {creatorName} {is_published ? "" : " (Pending Approval) "}{" "}
+              {creatorName}{" "}
             </h4>
             <div className="sheet-details">
               <p>{date}</p>
