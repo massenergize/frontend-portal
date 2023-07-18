@@ -19,7 +19,11 @@ import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
 import { isMobile } from "react-device-detect";
-import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadEvents,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import { EVENT } from "../../Constants";
@@ -186,6 +190,7 @@ class OneEventPage extends React.Component {
       }
     });
   }
+
   // @TODO: Fxn appears in two places(here, NewEventCard)... make DRY later...
   getRSVPStatus(event_id) {
     apiCall("events.rsvp.get", { event_id }).then((json) => {
@@ -267,6 +272,70 @@ class OneEventPage extends React.Component {
       </>
     );
   }
+
+  renderEventLocation = (event) => {
+    if (event?.event_type === "online") {
+      return (
+        <li
+          style={{ listStyle: "none", marginTop: 10, color: "rgb(128 177 61)", cursor: "pointer" }}
+        >
+          <i className="fa fa-link" style={{ marginRight: 6 }} />
+          <b>Click to Register</b>{" "}
+        </li>
+      );
+    }
+    if (event?.event_type === "in-person") {
+      return (
+        event?.location && (
+          <li
+            style={{
+              listStyle: "none",
+              marginTop: 10,
+              color: "rgb(128 177 61)",
+            }}
+          >
+            {/* House Number, Street Name, Town, State */}
+            <i className="fa fa-map-marker" style={{ marginRight: 6 }} />
+            <b>Venue</b>{" "}
+            <div
+              className="make-me-dark test-event-venue"
+              style={{ fontSize: 14, display: "block" }}
+            >
+              {locationFormatJSX(event?.location)}
+            </div>
+          </li>
+        )
+      );
+    }
+    return (
+      <>
+        {event?.location && (
+          <li
+            style={{
+              listStyle: "none",
+              marginTop: 10,
+              color: "rgb(128 177 61)",
+            }}
+          >
+            <i className="fa fa-map-marker" style={{ marginRight: 6 }} />
+            <b>Venue</b>{" "}
+            <div
+              className="make-me-dark test-event-venue"
+              style={{ fontSize: 14, display: "block" }}
+            >
+              {locationFormatJSX(event?.location)}
+            </div>
+          </li>
+        )}
+        <li
+          style={{ listStyle: "none", marginTop: 10, color: "rgb(128 177 61)" }}
+        >
+          <i className="fa fa-link" style={{ marginRight: 6 }} />
+          <b>Click to Register</b>{" "}
+        </li>
+      </>
+    );
+  };
   renderEvent(event) {
     const { user, toggleGuestAuthDialog, pageData } = this.props;
     const isShared = pageData?.community?.id !== event?.community?.id;
@@ -275,7 +344,6 @@ class OneEventPage extends React.Component {
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
     );
-    const location = event.location;
 
     return (
       <section
@@ -331,29 +399,7 @@ class OneEventPage extends React.Component {
                         </span>
                       </div>
                     </li>
-                    {location ? (
-                      <li
-                        style={{
-                          listStyle: "none",
-                          marginTop: 10,
-                          color: "rgb(128 177 61)",
-                        }}
-                      >
-                        {/* House Number, Street Name, Town, State */}
-                        <i
-                          className="fa fa-map-marker"
-                          style={{ marginRight: 6 }}
-                        />
-                        <b>Venue</b>{" "}
-                        <div
-                          className="make-me-dark test-event-venue"
-                          style={{ fontSize: 14, display: "block" }}
-                        >
-                          {locationFormatJSX(location)}
-                        </div>
-                      </li>
-                    ) : null}
-
+                    {this.renderEventLocation(event)}
                     {event?.is_recurring && (
                       <li
                         style={{
