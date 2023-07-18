@@ -397,7 +397,7 @@ class OneEventPage extends React.Component {
                       </li>
                     )}
                   </ul>
-                  {!event.rsvp_enabled && !this.state.pastEvent ? (
+                  {event.rsvp_enabled && !this.state.pastEvent ? (
                     <div style={{ display: "flex", marginTop: 10 }}>
                       {!event?.is_published && user && (
                         <MEButton
