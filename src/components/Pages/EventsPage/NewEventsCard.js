@@ -157,6 +157,7 @@ export default class NewEventsCard extends Component {
       isShared,
       community,
       is_published,
+      ...rest
       // onEditButtonClicked,
     } = this.props;
 
@@ -221,7 +222,7 @@ export default class NewEventsCard extends Component {
               data-event-title={title}
             >
               {title}{" "}
-              {isShared && (
+              {!isShared && (
                 <CustomTooltip
                   text={`This event is originally from ${community?.name}`}
                 >
@@ -229,6 +230,16 @@ export default class NewEventsCard extends Component {
                 </CustomTooltip>
               )}
             </h1>
+
+            <small
+              style={{
+                fontSize: "0.8rem",
+                padding: "2px 18px",
+                color: "gray",
+              }}
+            >
+              {rest?.event_type === "both" ? "In-Person & Online" : rest?.event_type === "online" ? "Online" : rest?.location? "In-Person":""}
+            </small>
           </Link>
 
           <div className="bottom-date-area">

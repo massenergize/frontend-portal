@@ -28,7 +28,7 @@ import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import { EVENT } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
-import METooltip from "../../Shared/METooltip";
+// import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -275,48 +275,27 @@ class OneEventPage extends React.Component {
   }
 
   renderEventLocation = (event) => {
-    if (event?.event_type === "online") {
-      return (
-        <METooltip text={"This event is an online event. Click here to register"}>
-        <li
-          style={{ listStyle: "none", marginTop: 10, color: "rgb(128 177 61)", cursor: "pointer" }}
-          onClick={(e)=>{
-            e.preventDefault();
-            window.open(event?.external_link, "_blank");
-          }}
-        >
-          <i className="fa fa-link" style={{ marginRight: 6 }} />
-          <b>Click to Register</b>{" "}
-        </li>
-
-        </METooltip>
-      );
-    }
-    if (event?.event_type === "in-person") {
-      return (
-        event?.location && (
-          <li
-            style={{
-              listStyle: "none",
-              marginTop: 10,
-              color: "rgb(128 177 61)",
-            }}
-          >
-            {/* House Number, Street Name, Town, State */}
-            <i className="fa fa-map-marker" style={{ marginRight: 6 }} />
-            <b>Venue</b>{" "}
-            <div
-              className="make-me-dark test-event-venue"
-              style={{ fontSize: 14, display: "block" }}
-            >
-              {locationFormatJSX(event?.location)}
-            </div>
-          </li>
-        )
-      );
-    }
     return (
       <>
+        {(event?.is_published && event?.external_link) && (
+          <MEButton
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(event?.external_link, "_blank");
+            }}
+            flat
+            wrapperStyle={{ width: "100%" }}
+            containerStyle={{ width: "100%" }}
+            style={{
+              padding: "10px 30px",
+              borderRadius: 5,
+              width: "100%",
+              marginTop: 10,
+            }}
+          >
+            Register
+          </MEButton>
+        )}
         {event?.location && (
           <li
             style={{
@@ -335,25 +314,6 @@ class OneEventPage extends React.Component {
             </div>
           </li>
         )}
-        <METooltip
-          text={"This event has an online aspect. Click to register for event."}
-        >
-          <li
-            style={{
-              listStyle: "none",
-              marginTop: 10,
-              color: "rgb(128 177 61)",
-              cursor: "pointer",
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(event?.external_link, "_blank");
-            }}
-          >
-            <i className="fa fa-link" style={{ marginRight: 6 }} />
-            <b>Click to Register</b>{" "}
-          </li>
-        </METooltip>
       </>
     );
   };
@@ -437,7 +397,7 @@ class OneEventPage extends React.Component {
                       </li>
                     )}
                   </ul>
-                  {event.rsvp_enabled && !this.state.pastEvent ? (
+                  {!event.rsvp_enabled && !this.state.pastEvent ? (
                     <div style={{ display: "flex", marginTop: 10 }}>
                       {!event?.is_published && user && (
                         <MEButton
