@@ -28,6 +28,7 @@ import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import { EVENT } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
+import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -276,12 +277,19 @@ class OneEventPage extends React.Component {
   renderEventLocation = (event) => {
     if (event?.event_type === "online") {
       return (
+        <METooltip text={"This event is an online event. Click here to register"}>
         <li
           style={{ listStyle: "none", marginTop: 10, color: "rgb(128 177 61)", cursor: "pointer" }}
+          onClick={(e)=>{
+            e.preventDefault();
+            window.open(event?.external_link, "_blank");
+          }}
         >
           <i className="fa fa-link" style={{ marginRight: 6 }} />
           <b>Click to Register</b>{" "}
         </li>
+
+        </METooltip>
       );
     }
     if (event?.event_type === "in-person") {
@@ -327,12 +335,25 @@ class OneEventPage extends React.Component {
             </div>
           </li>
         )}
-        <li
-          style={{ listStyle: "none", marginTop: 10, color: "rgb(128 177 61)" }}
+        <METooltip
+          text={"This event has an online aspect. Click to register for event."}
         >
-          <i className="fa fa-link" style={{ marginRight: 6 }} />
-          <b>Click to Register</b>{" "}
-        </li>
+          <li
+            style={{
+              listStyle: "none",
+              marginTop: 10,
+              color: "rgb(128 177 61)",
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(event?.external_link, "_blank");
+            }}
+          >
+            <i className="fa fa-link" style={{ marginRight: 6 }} />
+            <b>Click to Register</b>{" "}
+          </li>
+        </METooltip>
       </>
     );
   };
