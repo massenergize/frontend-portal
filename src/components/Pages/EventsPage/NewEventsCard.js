@@ -222,7 +222,7 @@ export default class NewEventsCard extends Component {
               data-event-title={title}
             >
               {title}{" "}
-              {!isShared && (
+              {isShared && (
                 <CustomTooltip
                   text={`This event is originally from ${community?.name}`}
                 >
