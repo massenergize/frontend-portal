@@ -33,6 +33,63 @@ const URLS = {
   Vendor: "vendors.add",
   Testimonial: "testimonials.add",
 };
+const ADDRESS_FIELDS = [
+  {
+    type: "input",
+    name: "address",
+    hasLabel: true,
+    label: "Street Address",
+    placeholder: "Street Address or Public Facility",
+    required: false,
+    value: "",
+  },
+
+  {
+    type: "input",
+    name: "unit",
+    hasLabel: true,
+    label: "Unit Number",
+    placeholder: 'eg. "2A"',
+    required: false,
+    value: "",
+  },
+  {
+    type: "input",
+    name: "city",
+    hasLabel: true,
+    label: "City",
+    placeholder: "eg. Springfield",
+    required: false,
+    value: "",
+  },
+
+  {
+    type: "input",
+    name: "state",
+    hasLabel: true,
+    label: "State ",
+    placeholder: "eg. Massachusetts",
+    required: false,
+    value: "",
+  },
+];
+
+const ONLINE_FIELDS = [
+  {
+    type: "input",
+    name: "external_link",
+    hasLabel: true,
+    label: "Join or Register link",
+    placeholder: "link",
+    required: false,
+    value: "",
+  },
+];
+
+
+
+
+
 
 //form fields for the action page
 var ActionFormData = [
@@ -132,33 +189,27 @@ var EventsFormData = [
     min: new Date().toISOString().slice(0, -8),
   },
   {
-    type: "input",
-    name: "address",
+    type: "radio-group",
+    name: "event_type",
     hasLabel: true,
-    label: "Address",
-    placeholder: "Add an address... *",
+    label: "Is this Event ?",
     required: false,
     value: "",
-  },
-
-  {
-    type: "input",
-    name: "city",
-    hasLabel: true,
-    label: "City",
-    placeholder: "Add a city... *",
-    required: false,
-    value: "",
-  },
-
-  {
-    type: "input",
-    name: "state",
-    hasLabel: true,
-    label: "State *",
-    placeholder: "Add a name... *",
-    required: false,
-    value: "",
+    data: ["In-Person","Online", "Both"],
+    conditionalDisplays: [
+      {
+        valueToCheck: "Online",
+        fields:ONLINE_FIELDS,
+      },
+      {
+        valueToCheck: "In-Person",
+        fields: ADDRESS_FIELDS,
+      },
+      {
+        valueToCheck: "Both",
+        fields: [...ADDRESS_FIELDS, ...ONLINE_FIELDS],
+      },
+    ],
   },
 
   {
@@ -634,19 +685,7 @@ class StoryForm extends React.Component {
     }
     //makes api call for events page
     else if (ModalType === EVENT) {
-      var location = {
-        city: data.city,
-        unit: null,
-        state: data.state,
-        address: data.address,
-        country: null,
-        zipcode: null,
-      };
-      body.location = JSON.stringify(location);
-      body.have_address = true;
-      delete body.address;
-      delete body.city;
-      delete body.state;
+      body.event_type = data?.event_type?.toLowerCase();
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {
