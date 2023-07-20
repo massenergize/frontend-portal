@@ -203,7 +203,7 @@ export default class FormGenerator extends Component {
   }
 
   getFileUploader(formObject, key) {
-    const { resetters: resetters } = this.state;
+    const { resetters } = this.state;
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
@@ -310,10 +310,13 @@ export default class FormGenerator extends Component {
         <MERichTextEditor
           onChange={(text) => this.handleFields(formItem.name, text)}
           defaultValue={this.state.formData[formItem.name]}
-          onMount={(resetor) =>
+          onMount={(resetters) =>
             !hasResetFxnInStateAlready &&
             this.setState({
-              resetters: { ...this.state.resetters, [formItem.name]: resetor },
+              resetters: {
+                ...this.state.resetters,
+                [formItem.name]: resetters,
+              },
             })
           }
         />
