@@ -79,10 +79,21 @@ const ONLINE_FIELDS = [
     type: "input",
     name: "external_link",
     hasLabel: true,
-    label: "Join or Register link",
+    label: "Enter link to the event",
     placeholder: "link",
     required: false,
     value: "",
+  },
+  {
+    type: "dropdown",
+    name: "external_link_type",
+    hasLabel: true,
+    label:
+      "Is the link specified to join the event, or to register (with join link sent separately)?",
+    placeholder: "link",
+    required: false,
+    value: "",
+    data: ["Register", "Join"],
   },
 ];
 
