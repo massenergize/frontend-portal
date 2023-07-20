@@ -173,12 +173,14 @@ export default class FormGenerator extends Component {
   };
 
   getRadioGroup(formObject, key) {
+    const value = this.getValue(formObject.name);
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MERadio
           containerStyle={{ marginTop: 5 }}
           {...formObject}
+          value={value}
           onItemSelected={(selected) =>
             this.handleFields(formObject.name, selected)
           }
@@ -253,15 +255,16 @@ export default class FormGenerator extends Component {
     onMount && onMount(this.resetForm);
     if (!fields) return;
     const formData = this.setDefaultValues(fields);
-    this.setState({
-      formData: formData,
-    });
     //sets props for form data when in edit mode
-    if (this.props.inputData) {
+    if (!this.props.inputData) {
       this.setState({
-        formData: this.props.inputData,
+        formData: formData,
       });
+      return;
     }
+    this.setState({
+      formData: this.props.inputData,
+    });
   }
   getDropDownDefault(formItem) {
     //the real value of a dropdown should be take from its dataValues array if it exists
