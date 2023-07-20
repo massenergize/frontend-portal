@@ -293,7 +293,7 @@ class OneEventPage extends React.Component {
               marginTop: 10,
             }}
           >
-            Register
+            {event?.external_link_type || "Register"}
           </MEButton>
         )}
         {event?.location && (
