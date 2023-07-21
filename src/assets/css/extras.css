@@ -3975,3 +3975,17 @@ color: var(--app-theme-orange);
   mask-composite: intersect;
     z-index: 1000;
 }
+
+
+.cal-btn{
+  background-color: grey;
+  color: white;
+  border: 1px solid grey !important;
+}
+
+.cal-btn:hover{
+background-color:white !important ;
+color: grey;
+
+
+}

@@ -28,6 +28,8 @@ import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import { EVENT } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
+import ICSEventCreator from "./ICSEventCreator";
+import AddToGoogleCalendar from "./AddToGoogleCalendar";
 // import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -490,6 +492,16 @@ class OneEventPage extends React.Component {
                         Edit
                       </MEButton>
                     )
+                  )}
+
+                  {event?.is_published &&(
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}>
+                      <ICSEventCreator data={event} />
+                      <AddToGoogleCalendar data={event} />
+                    </div>
                   )}
                 </div>
               </div>
