@@ -1,3 +1,4 @@
+import { apiCall } from "../../../../api/functions";
 import firebase from "../../../../config/firebaseConfig";
 import { translateFirebaseError } from "./utils";
 const PROVIDERS = {
@@ -118,17 +119,33 @@ export const firebaseAuthenticationWithNoPassword = (email, cb, link) => {
     });
 };
 
-export const sendSignInLinkToEmail = (email, cb, url) => {
-  var settings = {
-    url: url || window.location.href,
-    handleCodeInApp: true,
-  };
-  Auth.sendSignInLinkToEmail(email, settings)
-    .then(() => {
-      localStorage.setItem(PASSWORD_FREE_EMAIL, email);
-      cb && cb();
-    })
-    .catch((e) => cb && cb(null, translateFirebaseError(e)));
+export const sendSignInLinkToEmail = (email, cb, url, community) => {
+  // var settings = {
+  //   url: url || window.location.href,
+  //   handleCodeInApp: true,
+  // };
+   apiCall("auth.email.verification", {
+     email,
+     url: url || window.location.href,
+     community_id: community?.id,
+   }).then((res) => {
+     if (!res?.success) {
+       cb && cb(null, res?.error);
+       return;
+     }
+     localStorage.setItem(PASSWORD_FREE_EMAIL, email);
+     cb && cb();
+   });
+
+// return 
+
+
+  // Auth.sendSignInLinkToEmail(email, settings)
+  //   .then(() => {
+  //     localStorage.setItem(PASSWORD_FREE_EMAIL, email);
+  //     cb && cb();
+  //   })
+  //   .catch((e) => cb && cb(null, translateFirebaseError(e)));
 };
 
 export const checkForPasswordFreeAuth = (cb) => {
