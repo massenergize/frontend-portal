@@ -72,10 +72,9 @@ const ICSEventCreator = ({ data }) => {
       }}
       wrapperStyle={{ width: "100%" }}
       containerStyle={{
-        width: "43%",
-        fontSize: "0.7rem",
+        // width: "43%",
       }}
-      className="cal-btn"
+      className="cal-btn ical-btn"
     >
       <i className="fa fa-plus" style={{ marginRight: 6 }} /> ICAL
     </MEButton>

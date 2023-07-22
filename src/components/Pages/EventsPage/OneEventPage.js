@@ -30,6 +30,7 @@ import { EVENT } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
 import ICSEventCreator from "./ICSEventCreator";
 import AddToGoogleCalendar from "./AddToGoogleCalendar";
+import RibbonBanner from "../../Shared/RibbonBanner";
 // import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -368,6 +369,7 @@ class OneEventPage extends React.Component {
                   src={event.image ? event.image.url : notFound}
                   alt=""
                 />
+                {!event?.is_published && <RibbonBanner />}
 
                 <div style={{ margin: "10px 0px", borderRadius: 12 }}>
                   <ul>
@@ -494,11 +496,13 @@ class OneEventPage extends React.Component {
                     )
                   )}
 
-                  {event?.is_published &&(
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}>
+                  {event?.is_published && (
+                    <div
+                      style={{
+                        display: "flex",
+                        // justifyContent: "space-between",
+                      }}
+                    >
                       <ICSEventCreator data={event} />
                       <AddToGoogleCalendar data={event} />
                     </div>
