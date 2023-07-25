@@ -47,6 +47,7 @@ import { handleTourCallback, smartString } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
+import RibbonBanner from "../../Shared/RibbonBanner";
 import { ACTION, TESTIMONIAL } from "../../Constants";
 
 /**
@@ -733,6 +734,7 @@ class OneActionPage extends React.Component {
                     style={{ marginTop: "20px", borderRadius: 9 }}
                   />
                 </div>
+                {!action?.is_published && <RibbonBanner />}
               </div>
             </div>
           </div>

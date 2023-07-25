@@ -3973,7 +3973,7 @@ color: var(--app-theme-orange);
   -webkit-mask-size: 300vmax 300vmax;
   -webkit-mask-composite: destination-in;
   mask-composite: intersect;
-    z-index: 1000;
+    z-index: 10;
 }
 
 
@@ -3981,11 +3981,9 @@ color: var(--app-theme-orange);
   background-color: grey;
   color: white;
   border: 1px solid grey !important;
+  font-size: 0.7rem !important;
 }
-
 .cal-btn:hover{
 background-color:white !important ;
 color: grey;
-
-
 }

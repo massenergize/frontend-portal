@@ -17,6 +17,7 @@ import Seo from "../../Shared/Seo";
 import { TESTIMONIAL } from "../../Constants";
 import { reduxLoadTestimonials, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
+import RibbonBanner from "../../Shared/RibbonBanner";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -286,6 +287,7 @@ class OneTestimonialPage extends React.Component {
                     alt=""
                   />
                 </div>
+                {!story?.is_published && <RibbonBanner />}
                 <div
                   className="ripped-border me-anime-show-up"
                   style={{ margin: "10px 0px" }}
@@ -325,7 +327,9 @@ class OneTestimonialPage extends React.Component {
                   <p
                     className="testimonial-add-btn-text phone-vanish"
                     // to={this.props.links.testimonials}
-                    onClick={()=>this.props.history.push(this.props.links.testimonials)}
+                    onClick={() =>
+                      this.props.history.push(this.props.links.testimonials)
+                    }
                   >
                     <i className="fa fa-plus" /> Testimonial
                   </p>
