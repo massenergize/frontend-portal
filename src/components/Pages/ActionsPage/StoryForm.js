@@ -97,11 +97,6 @@ const ONLINE_FIELDS = [
   },
 ];
 
-
-
-
-
-
 //form fields for the action page
 var ActionFormData = [
   {
@@ -510,7 +505,7 @@ class StoryForm extends React.Component {
     ];
   }
 
-  getFieldNames = (data, formData)=>{
+  getFieldNames = (data, formData) => {
     let names = [];
     // eslint-disable-next-line
     formData.map((i) => {
@@ -525,7 +520,7 @@ class StoryForm extends React.Component {
       }
     });
     return names;
-  }
+  };
 
   processEditData = (body, formJson) => {
     if (
@@ -542,7 +537,7 @@ class StoryForm extends React.Component {
     }
     let names = this.getFieldNames(body, formJson);
     delete body?.ImgToDel;
-    let newBody = commonKeys( { ...body },names);
+    let newBody = commonKeys({ ...body }, names);
 
     return newBody;
   };
@@ -663,7 +658,6 @@ class StoryForm extends React.Component {
     const communityID = community ? { community_id: community.id } : {};
     const userEmail = user ? { user_email: user.email } : {};
     let body = { ...data, ...communityID };
-
     if (ModalType === TESTIMONIAL) {
       body = { ...body, rank: 0, ...userEmail };
       if (this.count(this.state.body) > this.state.limit) {
@@ -728,7 +722,11 @@ class StoryForm extends React.Component {
         return;
       }
 
-      if ( Date.parse(body.end_date_and_time) - Date.parse(body.start_date_and_time) < 0) {
+      if (
+        Date.parse(body.end_date_and_time) -
+          Date.parse(body.start_date_and_time) <
+        0
+      ) {
         this.setState({
           formNotification: {
             icon: "fa fa-times",
@@ -738,8 +736,10 @@ class StoryForm extends React.Component {
         });
         return;
       }
-      body.start_date_and_time = new Date(body?.start_date_and_time).toISOString()
-      body.end_date_and_time = new Date(body?.end_date_and_time).toISOString()
+      body.start_date_and_time = new Date(
+        body?.start_date_and_time
+      ).toISOString();
+      body.end_date_and_time = new Date(body?.end_date_and_time).toISOString();
       if (body?.id) {
         let newBody = this.processEditData(body, EventsFormData);
         body = { ...newBody, event_id: body?.id, ...communityID };
@@ -775,7 +775,6 @@ class StoryForm extends React.Component {
     });
     apiCall(Url, body).then((json) => {
       let name = ModalType?.toLowerCase() + "_id";
-
       if (json && json.success) {
         if (ModalType === VENDOR) {
           if (!body?.vendor_id) {
@@ -785,6 +784,14 @@ class StoryForm extends React.Component {
           celebrate({ show: true, duration: 8000 });
         }
         this.updateRedux(json?.data);
+        this.setState({
+          formNotification: {
+            icon: "fa check-circle",
+            type: "good",
+            text: "Sent! Admins will take a look and approve it soon. Cheers!",
+          },
+        });
+        resetForm && resetForm();
         if (TriggerSuccessNotification) {
           TriggerSuccessNotification(true);
           close && close();
