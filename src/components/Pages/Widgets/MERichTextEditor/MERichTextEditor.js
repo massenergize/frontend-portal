@@ -53,6 +53,9 @@ function MERichTextEditor({
           height: 350,
           menubar: false,
           default_link_target: "_blank",
+          force_br_newlines: true,
+          force_p_newlines: false,
+          forced_root_block: "",
           plugins: [
             "advlist autolink lists link image charmap print preview anchor forecolor",
             "searchreplace visualblocks code fullscreen",
