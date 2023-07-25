@@ -47,7 +47,7 @@ import { handleTourCallback, smartString } from "../../Utils";
 import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
-import { ACTION } from "../../Constants";
+import { ACTION, TESTIMONIAL } from "../../Constants";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -940,6 +940,7 @@ class OneActionPage extends React.Component {
                   {this.props.user ? (
                     <div id="testimonials-form">
                       <StoryForm
+                        ModalType={TESTIMONIAL}
                         uid={this.props.user.id}
                         aid={action.id}
                         addStory={this.addStory}
