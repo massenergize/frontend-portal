@@ -12,6 +12,7 @@ import MEButton from "../Widgets/MEButton";
 import { VENDOR } from "../../Constants";
 import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
+import RibbonBanner from "../../Shared/RibbonBanner";
 
 class OneServicePage extends React.Component {
   constructor(props) {
@@ -176,6 +177,7 @@ class OneServicePage extends React.Component {
                   src={vendor.logo ? vendor.logo.url : notFound}
                   alt={vendor.name}
                 />
+                {!vendor?.is_published && <RibbonBanner />}
                 {vendor.location ? (
                   <div
                     className="w-100 p-2 bg-dark text-white text-center justify-content-center loc-banner"

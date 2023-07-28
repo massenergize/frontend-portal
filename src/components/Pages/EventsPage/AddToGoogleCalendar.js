@@ -39,13 +39,13 @@ const AddToGoogleCalendar = ({ data }) => {
         marginTop: 10,
         width: "100%",
         backgroundColor: "grey",
+        marginLeft:10
       }}
       wrapperStyle={{ width: "100%" }}
       containerStyle={{
-        width: "55%",
         fontSize: "0.7rem",
       }}
-      className="cal-btn"
+      className="cal-btn google-calendar-btn"
     >
       <i className="fa fa-plus" style={{ marginRight: 6 }} /> Google Calendar
     </MEButton>
