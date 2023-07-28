@@ -31,7 +31,7 @@ export default function LoginAuth(props) {
     finaliseNoPasswordAuth,
     setLoading,
     back,
-    community
+    community,
   } = props;
 
   const [form, setForm] = useState({});
@@ -74,7 +74,7 @@ export default function LoginAuth(props) {
         message: `MassEnergize sent you an email with a link, please click the link to continue. If its not in your inbox, check your Promotions and Spam folder. Not there? Use the link below to resend`,
         resendFunction: sendLink,
       });
-    });
+    },null, community);
   };
 
   const backgroundCheckForPasswordlessAuthentication = useCallback(() => {
@@ -120,8 +120,8 @@ export default function LoginAuth(props) {
   return (
     <div>
       {Seo({
-        title: 'Sign In',
-        description: '',
+        title: "Sign In",
+        description: "",
         url: `${window.location.pathname}`,
         site_name: community?.name,
       })}

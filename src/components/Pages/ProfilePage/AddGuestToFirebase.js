@@ -20,6 +20,7 @@ function AddGuestToFirebase({
   sendVerificationEmail,
   links,
   location,
+  community
 }) {
   const [form, setForm] = useState({ email });
   const [noPassword, setNoPassword] = useState();
@@ -59,7 +60,8 @@ function AddGuestToFirebase({
         setLoading(false);
         setSent(true);
       },
-      link
+      link,
+      community
     );
   };
 

@@ -25,6 +25,7 @@ function ProfilePasswordlessRedirectPage({
   deleteUserFromMEAndLogout,
   settings,
   links,
+  community
 }) {
   // const { signInConfig } = settings || {};
   const [error, setError] = useState(null);
@@ -91,7 +92,8 @@ function ProfilePasswordlessRedirectPage({
       () => {
         setSent(true);
       },
-      urlToThisPage
+      urlToThisPage,
+      community
     );
   };
 
