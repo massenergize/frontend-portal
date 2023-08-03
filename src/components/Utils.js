@@ -707,3 +707,6 @@ export const commonKeys = (obj, keys) =>
  };
 
 
+export const capitalizeMe = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

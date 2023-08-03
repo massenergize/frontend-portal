@@ -16,6 +16,7 @@ function BecomeAValidUser({
   setFirebaseUser,
   sendVerificationEmail,
   links,
+  community
 }) {
   const [loading, setLoading] = useState(false);
   const [checked, setChecked] = useState([]);
@@ -40,6 +41,7 @@ function BecomeAValidUser({
           }}
           setFirebaseUser={setFirebaseUser}
           sendVerificationEmail={sendVerificationEmail}
+          community={community}
         />
       ),
     },

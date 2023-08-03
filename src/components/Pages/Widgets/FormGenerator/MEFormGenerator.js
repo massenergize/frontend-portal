@@ -49,7 +49,7 @@ export default class FormGenerator extends Component {
     super(props);
     this.state = {
       formData: {},
-      resetors: {},
+      resetters: {},
       loading: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -144,18 +144,48 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+  getValue = (name, defaultValue = null, field = null) => {
+    let { formData } = this.state;
+    let val = formData[name];
+    if (field?.fieldType === INPUT && !val) return ""; 
+    if (!val) {
+      formData = { ...formData, [name]: defaultValue };
+      // this.setState({ formData });
+      val = defaultValue;
+    }
+
+    if (field && field.valueExtractor) {
+      const passValueOnToState = (newValue) =>
+        this.setState({ formData: { ...formData, [name]: newValue } });
+      return field.valueExtractor(formData, field, passValueOnToState);
+    }
+    return val;
+  };
+  renderConditionalDisplays = (field) => {
+    // use conditional displays to render other fields based on user's radio btn selection
+    // you can have as many conditions as possible defined in the user form json props
+    if (!field || !field.conditionalDisplays) return;
+    const toRender = field.conditionalDisplays.filter(
+      (f) => this.getValue(field.name) === f.valueToCheck
+    )[0];
+    if (toRender && toRender.fields)
+      return this.createAndEjectForm(toRender.fields);
+  };
 
   getRadioGroup(formObject, key) {
+    const value = this.getValue(formObject.name);
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
         <MERadio
           containerStyle={{ marginTop: 5 }}
           {...formObject}
+          value={value}
           onItemSelected={(selected) =>
             this.handleFields(formObject.name, selected)
           }
         />
+        {this.renderConditionalDisplays(formObject)}
       </div>
     );
   }
@@ -175,7 +205,7 @@ export default class FormGenerator extends Component {
   }
 
   getFileUploader(formObject, key) {
-    const { resetors } = this.state;
+    const { resetters } = this.state;
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
@@ -186,7 +216,7 @@ export default class FormGenerator extends Component {
           onFileSelected={(file, removeFxn) => {
             this.handleFileSelection(formObject, file);
             this.setState({
-              resetors: { ...resetors, [formObject.name]: removeFxn },
+              resetters: { ...resetters, [formObject.name]: removeFxn },
             });
           }}
         />
@@ -224,13 +254,17 @@ export default class FormGenerator extends Component {
     const { fields, onMount } = this.props;
     onMount && onMount(this.resetForm);
     if (!fields) return;
-    this.setDefaultValues();
+    const formData = this.setDefaultValues(fields);
     //sets props for form data when in edit mode
-    if (this.props.inputData) {
+    if (!this.props.inputData) {
       this.setState({
-        formData: this.props.inputData,
+        formData: formData,
       });
+      return;
     }
+    this.setState({
+      formData: this.props.inputData,
+    });
   }
   getDropDownDefault(formItem) {
     //the real value of a dropdown should be take from its dataValues array if it exists
@@ -241,8 +275,8 @@ export default class FormGenerator extends Component {
     return value;
   }
 
-  setDefaultValues() {
-    const { fields } = this.props;
+  setDefaultValues(fields) {
+    // const { fields } = this.props;
     var defaults = {};
     fields.forEach((formItem) => {
       if (formItem.value || formItem.defaultValue) {
@@ -258,25 +292,34 @@ export default class FormGenerator extends Component {
           };
         }
       }
+      if (formItem.conditionalDisplays) {
+        (formItem.conditionalDisplays || []).forEach((item) => {
+          const cFormData = this.setDefaultValues(item.fields);
+          Object.keys(cFormData).forEach((k) => {
+            defaults[k] = cFormData[k];
+          });
+        });
+      }
     });
-    if (defaults === {}) return;
-    this.setState({
-      formData: defaults,
-    });
+
+    return defaults;
   }
 
   getRichTextEditor(formItem, key) {
-    const hasResetFxnInStateAlready = this.state.resetors[formItem.name];
+    const hasResetFxnInStateAlready = this.state.resetters[formItem.name];
     return (
       <React.Fragment key={key}>
         {this.labelOrNot(formItem)}
         <MERichTextEditor
           onChange={(text) => this.handleFields(formItem.name, text)}
           defaultValue={this.state.formData[formItem.name]}
-          onMount={(resetor) =>
+          onMount={(resetters) =>
             !hasResetFxnInStateAlready &&
             this.setState({
-              resetors: { ...this.state.resetors, [formItem.name]: resetor },
+              resetters: {
+                ...this.state.resetters,
+                [formItem.name]: resetters,
+              },
             })
           }
         />
@@ -284,8 +327,8 @@ export default class FormGenerator extends Component {
     );
   }
 
-  createAndEjectForm() {
-    const { fields } = this.props;
+  createAndEjectForm(fields) {
+    // const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
       if (!formItem || formItem === {}) return <i></i>;
@@ -293,9 +336,9 @@ export default class FormGenerator extends Component {
         case INPUT:
           return this.getInput(formItem, index);
         case DATE:
-          return this.getInput(formItem, index);  
+          return this.getInput(formItem, index);
         case DATE_TIME:
-          return this.getInput(formItem, index);  
+          return this.getInput(formItem, index);
         case TEXTAREA:
           return this.getInput(formItem, index);
         case DROPDOWN:
@@ -391,7 +434,7 @@ export default class FormGenerator extends Component {
           [formItem.name]: formItem.resetKey,
         };
         if (formItem.type === FILE) {
-          const reset = this.state.resetors[formItem.name];
+          const reset = this.state.resetters[formItem.name];
           if (reset) reset();
         }
       }
@@ -454,7 +497,8 @@ export default class FormGenerator extends Component {
     });
   }
   render() {
-    var { animate, className, style, title, elevate, moreActions } = this.props;
+    var { animate, className, style, title, elevate, moreActions, fields } =
+      this.props;
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
@@ -466,7 +510,7 @@ export default class FormGenerator extends Component {
           {title}
         </METextView>
         <form onSubmit={this.onSubmit}>
-          {this.createAndEjectForm()}
+          {this.createAndEjectForm(fields)}
 
           <br />
           <div>{this.displayInformation()}</div>
