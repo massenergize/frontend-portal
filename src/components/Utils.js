@@ -4,6 +4,8 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
+import { IS_CANARY, IS_LOCAL, IS_PROD } from "../config";
+
 
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
@@ -710,3 +712,10 @@ export const commonKeys = (obj, keys) =>
 export const capitalizeMe = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export const getOrigin = () => {
+  if (IS_PROD) return "https://api.massenergize.org";
+  else if (IS_CANARY) return "https://api-canary.massenergize.org";
+  else if (IS_LOCAL) return "http://127.0.0.1:8000";
+  return "https://api.massenergize.dev";
+};

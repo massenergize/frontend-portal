@@ -14,6 +14,11 @@ import { ConnectedRouter } from "connected-react-router/immutable";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import firebase from "./config/firebaseConfig";
 import { IS_PROD, IS_CANARY } from "./config";
+import {
+  ReportingObserver as ReportingObserverIntegration
+} from "@sentry/integrations";
+import { getOrigin } from "./components/Utils";
+
 
 //react redux firebase configure
 const rrfConfig = { userProfile: "users", firebaseStateName: "firebase" };
@@ -24,14 +29,23 @@ const rrfProps = {
   dispatch: store.dispatch,
 };
 
-const SENTRY_DSN = IS_PROD || IS_CANARY
-  ? "https://92581929e77e4312b27864e5b5c6a16e@o415460.ingest.sentry.io/5306611"
-  : "https://987764a913714e0eba38e95c6d73fd52@o415460.ingest.sentry.io/5306642";
+const SENTRY_DSN =
+  IS_PROD || IS_CANARY
+    ? process.env.REACT_APP_SENTRY_PROD_DSN
+    : process.env.REACT_APP_SENTRY_DEV_DSN;
 Sentry.init({
   dsn: SENTRY_DSN,
   replaysSessionSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
-  integrations: [new Sentry.Replay({ stickySession:true})],
+  integrations: [
+    new Sentry.Replay({ stickySession: true }),
+    new Sentry.BrowserTracing({
+      routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
+      tracingOrigins: [getOrigin()],
+    }),
+    new ReportingObserverIntegration(),
+  ],
+  tracesSampleRate: 1.0,
 });
 
 ReactDOM.render(
