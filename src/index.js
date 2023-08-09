@@ -17,7 +17,7 @@ import { IS_PROD, IS_CANARY } from "./config";
 import {
   ReportingObserver as ReportingObserverIntegration
 } from "@sentry/integrations";
-import { getOrigin } from "./components/Utils";
+import URLS from "./api/urls";
 
 
 //react redux firebase configure
@@ -41,7 +41,7 @@ Sentry.init({
     new Sentry.Replay({ stickySession: true }),
     new Sentry.BrowserTracing({
       routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
-      tracingOrigins: [getOrigin()],
+      tracePropagationTargets: [URLS["ROOT"]],
     }),
     new ReportingObserverIntegration(),
   ],
