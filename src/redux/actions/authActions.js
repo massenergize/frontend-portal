@@ -271,6 +271,8 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
   var actionCodeSettings = {
     url: redirect,
   };
+  apiCall("", {})
+  return
   fireAuth
     .sendEmailVerification(actionCodeSettings)
     .then((_) => {
