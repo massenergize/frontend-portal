@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
+import * as Sentry from "@sentry/react";
+
 
 import "./assets/css/style.css";
 import AppRouter from "./AppRouter";
@@ -90,5 +92,6 @@ function App() {
     </Switch>
   );
 }
+const sentryWrapped = Sentry.withProfiler(App);
 
-export default connect(null, {})(App);
+export default connect(null, {})(sentryWrapped);
