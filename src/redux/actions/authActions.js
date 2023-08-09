@@ -271,15 +271,29 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
   var actionCodeSettings = {
     url: redirect,
   };
-  apiCall("", {})
-  return
-  fireAuth
-    .sendEmailVerification(actionCodeSettings)
-    .then((_) => {
-      cb && cb(true);
-      console.log("Verification Email Sent!");
-    })
-    .catch((e) => console.log("Failed sending verification email"));
+
+  const community = getState()?.page?.community
+
+   apiCall("auth.email.verification", {
+     email: fireAuth.email,
+     url: redirect,
+     community_id: community?.id,
+     type: "EMAIL_PASSWORD_VERIFICATION",
+   }).then((res) => {
+     if (res?.success) {
+       cb && cb(true);
+       console.log("Verification Email Sent!");
+       return;
+     }
+     console.log("Failed sending verification email");
+   });
+  // fireAuth
+  //   .sendEmailVerification(actionCodeSettings)
+  //   .then((_) => {
+  //     cb && cb(true);
+  //     console.log("Verification Email Sent!");
+  //   })
+  //   .catch((e) => console.log("Failed sending verification email"));
 };
 
 export const setAuthStateAction = (state) => {
