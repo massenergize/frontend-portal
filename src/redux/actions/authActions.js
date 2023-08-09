@@ -268,9 +268,9 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
   var n = str.lastIndexOf("/");
   const suffix = is_sandbox ? "?sandbox=true" : "";
   var redirect = str.substring(0, n) + "/signin" + suffix;
-  var actionCodeSettings = {
-    url: redirect,
-  };
+  // var actionCodeSettings = {
+  //   url: redirect,
+  // };
 
   const community = getState()?.page?.community
 
