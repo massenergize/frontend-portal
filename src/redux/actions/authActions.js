@@ -268,9 +268,6 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
   var n = str.lastIndexOf("/");
   const suffix = is_sandbox ? "?sandbox=true" : "";
   var redirect = str.substring(0, n) + "/signin" + suffix;
-  // var actionCodeSettings = {
-  //   url: redirect,
-  // };
 
   const community = getState()?.page?.community
 
@@ -287,13 +284,6 @@ export const sendVerificationEmail = (fireAuth, cb) => (dispatch, getState) => {
      }
      console.log("Failed sending verification email");
    });
-  // fireAuth
-  //   .sendEmailVerification(actionCodeSettings)
-  //   .then((_) => {
-  //     cb && cb(true);
-  //     console.log("Verification Email Sent!");
-  //   })
-  //   .catch((e) => console.log("Failed sending verification email"));
 };
 
 export const setAuthStateAction = (state) => {
