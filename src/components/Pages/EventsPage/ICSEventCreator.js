@@ -35,14 +35,12 @@ const ICSEventCreator = ({ data }) => {
   const handleDownloadICS = () => {
     const event = {
       title: data?.name,
-      description: data?.description.replace(/<[^>]+>/g, ''),
+      description: data?.featured_summary,
       location: locationFormat(data?.location),
       start: getDateArr(data?.start_date_and_time),
       end: getDateArr(data?.end_date_and_time),
+      url:window.location.href
     };
-    if(data?.external_link) {
-        event.url = data?.external_link
-    }
 
     createEvent(event, (error, value) => {
       if (error) {
