@@ -33,6 +33,69 @@ const URLS = {
   Vendor: "vendors.add",
   Testimonial: "testimonials.add",
 };
+const ADDRESS_FIELDS = [
+  {
+    type: "input",
+    name: "address",
+    hasLabel: true,
+    label: "Street Address",
+    placeholder: "Street Address or Public Facility",
+    required: false,
+    value: "",
+  },
+
+  {
+    type: "input",
+    name: "unit",
+    hasLabel: true,
+    label: "Unit Number",
+    placeholder: 'eg. "2A"',
+    required: false,
+    value: "",
+  },
+  {
+    type: "input",
+    name: "city",
+    hasLabel: true,
+    label: "City",
+    placeholder: "eg. Springfield",
+    required: false,
+    value: "",
+  },
+
+  {
+    type: "input",
+    name: "state",
+    hasLabel: true,
+    label: "State ",
+    placeholder: "eg. Massachusetts",
+    required: false,
+    value: "",
+  },
+];
+
+const ONLINE_FIELDS = [
+  {
+    type: "input",
+    name: "external_link",
+    hasLabel: true,
+    label: "Enter link to the event",
+    placeholder: "link",
+    required: false,
+    value: "",
+  },
+  {
+    type: "dropdown",
+    name: "external_link_type",
+    hasLabel: true,
+    label:
+      "Is the link specified to join the event, or to register (with join link sent separately)?",
+    // placeholder: "link",
+    required: false,
+    value: "",
+    data: ["Register", "Join"],
+  },
+];
 
 //form fields for the action page
 var ActionFormData = [
@@ -132,33 +195,33 @@ var EventsFormData = [
     min: new Date().toISOString().slice(0, -8),
   },
   {
-    type: "input",
-    name: "address",
+    type: "radio-group",
+    name: "event_type",
     hasLabel: true,
-    label: "Address",
-    placeholder: "Add an address... *",
+    label: "Is this Event ?",
     required: false,
     value: "",
-  },
-
-  {
-    type: "input",
-    name: "city",
-    hasLabel: true,
-    label: "City",
-    placeholder: "Add a city... *",
-    required: false,
-    value: "",
-  },
-
-  {
-    type: "input",
-    name: "state",
-    hasLabel: true,
-    label: "State *",
-    placeholder: "Add a name... *",
-    required: false,
-    value: "",
+    data: [
+      { id: "in-person", value: "In-Person" },
+      { id: "online", value: "Online" },
+      { id: "both", value: "Both" },
+    ],
+    valueExtractor: (e) => e.id,
+    labelExtractor: (e) => e.value,
+    conditionalDisplays: [
+      {
+        valueToCheck: "online",
+        fields: ONLINE_FIELDS,
+      },
+      {
+        valueToCheck: "in-person",
+        fields: ADDRESS_FIELDS,
+      },
+      {
+        valueToCheck: "both",
+        fields: [...ADDRESS_FIELDS, ...ONLINE_FIELDS],
+      },
+    ],
   },
 
   {
@@ -442,6 +505,23 @@ class StoryForm extends React.Component {
     ];
   }
 
+  getFieldNames = (data, formData) => {
+    let names = [];
+    // eslint-disable-next-line
+    formData.map((i) => {
+      names.push(i.name);
+      if (i.conditionalDisplays) {
+        // eslint-disable-next-line
+        i.conditionalDisplays.map((j) => {
+          if (j?.valueToCheck === data[i.name]) {
+            names.push(...(this.getFieldNames(data, j.fields) || []));
+          }
+        });
+      }
+    });
+    return names;
+  };
+
   processEditData = (body, formJson) => {
     if (
       body?.image === null ||
@@ -455,11 +535,9 @@ class StoryForm extends React.Component {
         delete body.image;
       }
     }
+    let names = this.getFieldNames(body, formJson);
     delete body?.ImgToDel;
-    let newBody = commonKeys(
-      { ...body },
-      formJson?.map((i) => i.name)
-    );
+    let newBody = commonKeys({ ...body }, names);
 
     return newBody;
   };
@@ -580,7 +658,6 @@ class StoryForm extends React.Component {
     const communityID = community ? { community_id: community.id } : {};
     const userEmail = user ? { user_email: user.email } : {};
     let body = { ...data, ...communityID };
-
     if (ModalType === TESTIMONIAL) {
       body = { ...body, rank: 0, ...userEmail };
       if (this.count(this.state.body) > this.state.limit) {
@@ -634,19 +711,6 @@ class StoryForm extends React.Component {
     }
     //makes api call for events page
     else if (ModalType === EVENT) {
-      var location = {
-        city: data.city,
-        unit: null,
-        state: data.state,
-        address: data.address,
-        country: null,
-        zipcode: null,
-      };
-      body.location = JSON.stringify(location);
-      body.have_address = true;
-      delete body.address;
-      delete body.city;
-      delete body.state;
       if (this.count(body.name) < 4) {
         this.setState({
           formNotification: {
@@ -672,6 +736,10 @@ class StoryForm extends React.Component {
         });
         return;
       }
+      body.start_date_and_time = new Date(
+        body?.start_date_and_time
+      ).toISOString();
+      body.end_date_and_time = new Date(body?.end_date_and_time).toISOString();
       if (body?.id) {
         let newBody = this.processEditData(body, EventsFormData);
         body = { ...newBody, event_id: body?.id, ...communityID };
@@ -705,10 +773,8 @@ class StoryForm extends React.Component {
         text: "We are sending now...",
       },
     });
-
     apiCall(Url, body).then((json) => {
       let name = ModalType?.toLowerCase() + "_id";
-
       if (json && json.success) {
         if (ModalType === VENDOR) {
           if (!body?.vendor_id) {
@@ -718,6 +784,14 @@ class StoryForm extends React.Component {
           celebrate({ show: true, duration: 8000 });
         }
         this.updateRedux(json?.data);
+        this.setState({
+          formNotification: {
+            icon: "fa check-circle",
+            type: "good",
+            text: "Sent! Admins will take a look and approve it soon. Cheers!",
+          },
+        });
+        resetForm && resetForm();
         if (TriggerSuccessNotification) {
           TriggerSuccessNotification(true);
           close && close();

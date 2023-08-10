@@ -5,6 +5,7 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
+
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
     return console.warn(
@@ -707,3 +708,6 @@ export const commonKeys = (obj, keys) =>
  };
 
 
+export const capitalizeMe = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

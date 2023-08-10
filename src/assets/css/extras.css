@@ -2581,6 +2581,13 @@
   .scroll-fix {
     width: 164px;
   }
+
+  .ical-btn{
+  width: 37% !important;
+}
+.google-calendar-btn{
+  width: 60% !important;
+}
 }
 
 @media screen and (width: 768px) {
@@ -2613,6 +2620,7 @@
  .act-stats-item small{
   font-size: 0.9rem;
  }
+ 
 }
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
@@ -3141,6 +3149,12 @@
     margin-top: -22px !important;
     right: 30% !important;
   } */
+  .ical-btn{
+  width: 35% !important;
+}
+.google-calendar-btn{
+  width: 61% !important;
+}
   .mob-line-break {
     display: block;
   }
@@ -3973,5 +3987,23 @@ color: var(--app-theme-orange);
   -webkit-mask-size: 300vmax 300vmax;
   -webkit-mask-composite: destination-in;
   mask-composite: intersect;
-    z-index: 1000;
+    z-index: 10;
+}
+
+
+.cal-btn{
+  background-color: grey;
+  color: white;
+  border: 1px solid grey !important;
+  font-size: 0.7rem !important;
+}
+.cal-btn:hover{
+background-color:white !important ;
+color: grey;
+}
+.ical-btn{
+  width: 43%;
+}
+.google-calendar-btn{
+  width: 55%;
 }

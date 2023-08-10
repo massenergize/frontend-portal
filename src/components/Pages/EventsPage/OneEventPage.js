@@ -19,11 +19,19 @@ import { RSVP_STATUS } from "./NewEventsCard";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import * as moment from "moment";
 import { isMobile } from "react-device-detect";
-import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadEvents,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
 import { EVENT } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
+import ICSEventCreator from "./ICSEventCreator";
+import AddToGoogleCalendar from "./AddToGoogleCalendar";
+import RibbonBanner from "../../Shared/RibbonBanner";
+// import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
     super(props);
@@ -186,6 +194,7 @@ class OneEventPage extends React.Component {
       }
     });
   }
+
   // @TODO: Fxn appears in two places(here, NewEventCard)... make DRY later...
   getRSVPStatus(event_id) {
     apiCall("events.rsvp.get", { event_id }).then((json) => {
@@ -267,6 +276,50 @@ class OneEventPage extends React.Component {
       </>
     );
   }
+
+  renderEventLocation = (event) => {
+    return (
+      <>
+        {(event?.is_published && event?.external_link) && (
+          <MEButton
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(event?.external_link, "_blank");
+            }}
+            flat
+            wrapperStyle={{ width: "100%" }}
+            containerStyle={{ width: "100%" }}
+            style={{
+              padding: "10px 30px",
+              borderRadius: 5,
+              width: "100%",
+              marginTop: 10,
+            }}
+          >
+            {event?.external_link_type || "Register"}
+          </MEButton>
+        )}
+        {event?.location && (
+          <li
+            style={{
+              listStyle: "none",
+              marginTop: 10,
+              color: "rgb(128 177 61)",
+            }}
+          >
+            <i className="fa fa-map-marker" style={{ marginRight: 6 }} />
+            <b>Venue</b>{" "}
+            <div
+              className="make-me-dark test-event-venue"
+              style={{ fontSize: 14, display: "block" }}
+            >
+              {locationFormatJSX(event?.location)}
+            </div>
+          </li>
+        )}
+      </>
+    );
+  };
   renderEvent(event) {
     const { user, toggleGuestAuthDialog, pageData } = this.props;
     const isShared = pageData?.community?.id !== event?.community?.id;
@@ -275,7 +328,6 @@ class OneEventPage extends React.Component {
       new Date(event.start_date_and_time),
       new Date(event.end_date_and_time)
     );
-    const location = event.location;
 
     return (
       <section
@@ -317,6 +369,7 @@ class OneEventPage extends React.Component {
                   src={event.image ? event.image.url : notFound}
                   alt=""
                 />
+                {!event?.is_published && <RibbonBanner />}
 
                 <div style={{ margin: "10px 0px", borderRadius: 12 }}>
                   <ul>
@@ -331,29 +384,7 @@ class OneEventPage extends React.Component {
                         </span>
                       </div>
                     </li>
-                    {location ? (
-                      <li
-                        style={{
-                          listStyle: "none",
-                          marginTop: 10,
-                          color: "rgb(128 177 61)",
-                        }}
-                      >
-                        {/* House Number, Street Name, Town, State */}
-                        <i
-                          className="fa fa-map-marker"
-                          style={{ marginRight: 6 }}
-                        />
-                        <b>Venue</b>{" "}
-                        <div
-                          className="make-me-dark test-event-venue"
-                          style={{ fontSize: 14, display: "block" }}
-                        >
-                          {locationFormatJSX(location)}
-                        </div>
-                      </li>
-                    ) : null}
-
+                    {this.renderEventLocation(event)}
                     {event?.is_recurring && (
                       <li
                         style={{
@@ -463,6 +494,18 @@ class OneEventPage extends React.Component {
                         Edit
                       </MEButton>
                     )
+                  )}
+
+                  {event?.is_published && (
+                    <div
+                      style={{
+                        display: "flex",
+                        // justifyContent: "space-between",
+                      }}
+                    >
+                      <ICSEventCreator data={event} />
+                      <AddToGoogleCalendar data={event} />
+                    </div>
                   )}
                 </div>
               </div>
