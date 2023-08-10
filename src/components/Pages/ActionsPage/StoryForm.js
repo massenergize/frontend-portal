@@ -731,7 +731,7 @@ class StoryForm extends React.Component {
           formNotification: {
             icon: "fa fa-times",
             type: "bad",
-            text: "Sorry, the end date cannot be past start date..",
+            text: "Sorry, the end date and time should be after the start.",
           },
         });
         return;
