@@ -17,7 +17,7 @@ import { IS_PROD, IS_CANARY } from "./config";
 import {
   ReportingObserver as ReportingObserverIntegration
 } from "@sentry/integrations";
-import URLS from "./api/urls";
+// import URLS from "./api/urls";
 
 
 //react redux firebase configure
