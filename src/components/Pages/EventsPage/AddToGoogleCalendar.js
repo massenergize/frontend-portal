@@ -21,10 +21,10 @@ const AddToGoogleCalendar = ({ data }) => {
     const googleCalendar = new GoogleCalendar({
       title: data?.name,
       location: locationFormat(data?.location),
-      description: data?.description.replace(/<[^>]+>/g, ""),
+      description: data?.featured_summary,
       start: new Date(data?.start_date_and_time),
       end: new Date(data?.end_date_and_time),
-      url: data?.external_link,
+      url: window.location.href,
     });
     const link = googleCalendar.render();
     window.open(link, "_blank");
@@ -40,7 +40,7 @@ const AddToGoogleCalendar = ({ data }) => {
         width: "100%",
         backgroundColor: "grey",
         marginLeft: 10,
-        borderRadius:5
+        borderRadius: 5,
       }}
       wrapperStyle={{ width: "100%" }}
       containerStyle={{
@@ -49,7 +49,8 @@ const AddToGoogleCalendar = ({ data }) => {
       className="cal-btn"
       containerClassName="google-calendar-btn"
     >
-      <i className="fa fa-plus" style={{ marginRight: 6 }} /> Google Calendar
+      <i className="fa fa-plus" style={{ marginRight: 6 }} />
+      Google Calendar
     </MEButton>
   );
 };
