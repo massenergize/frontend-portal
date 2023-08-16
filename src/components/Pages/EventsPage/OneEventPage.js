@@ -497,15 +497,31 @@ class OneEventPage extends React.Component {
                   )}
 
                   {event?.is_published && (
-                    <div
-                      style={{
-                        display: "flex",
-                        // justifyContent: "space-between",
-                      }}
-                    >
-                      <ICSEventCreator data={event} />
-                      <AddToGoogleCalendar data={event} />
-                    </div>
+                    <>
+                      <li
+                        style={{
+                          listStyle: "none",
+                          marginTop: 10,
+                          color: "rgb(128 177 61)",
+                        }}
+                      >
+                        <i
+                          className="fa fa-download"
+                          style={{ marginRight: 6 }}
+                        />
+                        <b>Download to your calendar</b>{" "}
+                      </li>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          // justifyContent: "space-between",
+                        }}
+                      >
+                        <ICSEventCreator data={event} />
+                        <AddToGoogleCalendar data={event} />
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
