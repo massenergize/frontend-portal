@@ -528,7 +528,7 @@ class OneEventPage extends React.Component {
               <div className="col-12 col-lg-8">
                 <div className="text">
                   <p
-                    className="cool-font make-me-dark events-about-content test-event-body"
+                    className="cool-font make-me-dark events-about-content test-event-body rich-text-container"
                     dangerouslySetInnerHTML={{ __html: event.description }}
                   ></p>
                   <br />
