@@ -6,7 +6,7 @@ export default function InformationBoard({ html, close }) {
     <div>
       <div
         style={{ borderRadius: 6, marginBottom: 70 }}
-        className="z-depth-float me-anime-open-in"
+        className="z-depth-float me-anime-open-in rich-text-container"
       >
         <div
           style={{ padding: 20, color: "black" }}

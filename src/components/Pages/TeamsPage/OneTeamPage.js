@@ -208,12 +208,12 @@ class OneTeamPage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: team?.name,
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name:this.props?.community?.name,
-      })}
+        {Seo({
+          title: team?.name,
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
 
         {contactEditModalOpen &&
           (isAdmin ? (
@@ -332,7 +332,7 @@ class OneTeamPage extends React.Component {
                   {isBigText && (
                     <div
                       style={{ marginTop: 15, marginBottom: 15 }}
-                      className="team-about-richtext-wrapper test-team-big-text-wrapper"
+                      className="team-about-richtext-wrapper test-team-big-text-wrapper rich-text-container"
                       dangerouslySetInnerHTML={{ __html: team.description }}
                     />
                   )}
@@ -462,7 +462,7 @@ class OneTeamPage extends React.Component {
               caret
             >
               <div
-                className="team-about-richtext-wrapper test-team-small-text"
+                className="team-about-richtext-wrapper test-team-small-text rich-text-container"
                 dangerouslySetInnerHTML={{ __html: team.description }}
               />
             </MESectionWrapper>

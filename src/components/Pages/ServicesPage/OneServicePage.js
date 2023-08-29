@@ -301,7 +301,7 @@ class OneServicePage extends React.Component {
                 </h1>
 
                 <p
-                  className="cool-font make-me-dark"
+                  className="cool-font make-me-dark rich-text-container"
                   id="test-vendor-description"
                   data-vendor-description={vendor?.description}
                   dangerouslySetInnerHTML={{ __html: vendor?.description }}
