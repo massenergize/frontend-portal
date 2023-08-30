@@ -6,7 +6,7 @@
     "@cypress/webpack-preprocessor": "^5.17.0",
     "@sentry/integrations": "^7.62.0",
     "@sentry/react": "^7.50.0",
-    "@tinymce/tinymce-react": "^3.14.0",
+    "@tinymce/tinymce-react": "^4.3.0",
     "apexcharts": "^3.39.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",

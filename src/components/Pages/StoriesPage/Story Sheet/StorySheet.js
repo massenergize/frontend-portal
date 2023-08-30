@@ -171,9 +171,7 @@ export default class StorySheet extends Component {
           )}
 
           <div className="sheet-content-area">
-            <h4>
-              {creatorName}{" "}
-            </h4>
+            <h4>{creatorName} </h4>
             <div className="sheet-details">
               <p>{date}</p>
               <div style={{ display: "flex" }}>
@@ -244,7 +242,7 @@ export default class StorySheet extends Component {
                 {title}
               </h6>
               <p
-                className="sheet-text"
+                className="sheet-text rich-text-container"
                 // style={{ "--story-body-height": "300px" }}
                 dangerouslySetInnerHTML={{ __html: body }}
               ></p>

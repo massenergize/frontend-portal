@@ -41,15 +41,18 @@ class PoliciesPage extends React.Component {
 		return Object.keys(policies).map((key) => {
 			const policy = policies[key];
 			return (
-				<Card key={key}>
-					<Accordion.Toggle as={Card.Header} eventKey={key}>
-						{policy.name}
-					</Accordion.Toggle>
-					<Accordion.Collapse eventKey={key}>
-						<Card.Body dangerouslySetInnerHTML={{ __html: policy.description }}></Card.Body>
-					</Accordion.Collapse>
-				</Card>
-			);
+        <Card key={key}>
+          <Accordion.Toggle as={Card.Header} eventKey={key}>
+            {policy.name}
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey={key}>
+            <Card.Body
+              dangerouslySetInnerHTML={{ __html: policy.description }}
+              className="rich-text-container"
+            ></Card.Body>
+          </Accordion.Collapse>
+        </Card>
+      );
 		});
 	}
 }

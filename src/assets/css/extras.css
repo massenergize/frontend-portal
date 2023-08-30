@@ -5,6 +5,12 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+.rich-text-container p, .rich-text-container ul, .rich-text-container ol {
+  margin: 1em !important;
+}
+.rich-text-container ul, .rich-text-container ol {
+  padding-left: 2.5em !important ;
+}
 .shared-badge {
   padding: 2px 13px;
   color: var(--app-theme-orange);
