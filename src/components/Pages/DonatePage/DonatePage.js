@@ -68,6 +68,7 @@ class DonatePage extends React.Component {
               <p
                 dangerouslySetInnerHTML={{ __html: description }}
                 style={{ color: "black", flex: "1", textAlign: "justify" }}
+                className="rich-text-container"
               ></p>
             </div>
             <div className="pc-vanish">{this.renderVideo(videoLink)}</div>

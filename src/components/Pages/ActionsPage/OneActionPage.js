@@ -840,7 +840,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <div
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.about),
                       }}
@@ -860,7 +860,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <div
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.steps_to_take),
                       }}
@@ -880,7 +880,7 @@ class OneActionPage extends React.Component {
                 <div className="product-details-content">
                   <div className="desc-content-box">
                     <div
-                      className="cool-font make-me-dark"
+                      className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.deep_dive),
                       }}

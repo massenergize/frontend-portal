@@ -53,16 +53,15 @@ function MERichTextEditor({
           height: 350,
           menubar: false,
           default_link_target: "_blank",
-          force_br_newlines: true,
-          force_p_newlines: false,
-          forced_root_block: "",
+          forced_root_blocks: true,
+          forced_root_block: false,
           plugins: [
             "advlist autolink lists link image charmap print preview anchor forecolor",
             "searchreplace visualblocks code fullscreen",
             "insertdatetime media table paste code help wordcount",
           ],
           toolbar:
-            "undo redo | formatselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify | link | image | bullist numlist outdent indent |  fontselect | fontsizeselect",
+            "undo redo | blocks | formatselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify | link | image | bullist numlist outdent indent | fontfamily | fontsize |",
         }}
         apiKey={TINY_MCE_API_KEY}
       />

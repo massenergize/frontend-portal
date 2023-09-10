@@ -36,6 +36,24 @@ const URLS = {
 const ADDRESS_FIELDS = [
   {
     type: "input",
+    name: "building",
+    hasLabel: true,
+    label: "Building Name",
+    placeholder: 'eg. "Main Building"',
+    required: false,
+    value: "",
+  },
+  {
+    type: "input",
+    name: "room",
+    hasLabel: true,
+    label: "Room",
+    placeholder: 'eg. "2A"',
+    required: false,
+    value: "",
+  },
+  {
+    type: "input",
     name: "address",
     hasLabel: true,
     label: "Street Address",
