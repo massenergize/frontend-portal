@@ -77,7 +77,7 @@ function RenderOptions({
       </MEButton>
 
       <Feature name={FLAGS.COMMUNICATION_PREFS}>
-        {(user?.is_super_admin || user?.is_community_admin) && (
+        {(user?.is_super_admin || user?.is_community_admin)? (
           <MEButton
             onClick={() => {
               apiCall("/downloads.sample.user_report", { community_id }).then(
@@ -102,7 +102,7 @@ function RenderOptions({
           >
             <small>Send yourself a sample email</small>
           </MEButton>
-        )}
+        ): <></>}
       </Feature>
     </div>
   );
