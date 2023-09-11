@@ -50,7 +50,7 @@ export const finaliseNoPasswordAuthentication = (email, cb) => (dispatch) => {
       dispatch(setAuthNotification(makeError(error)));
     }
     let _fbToken = await response?.user?.getIdTokenResult();
-    fetchTokenFromMassEnergize(_fbToken.token, cb);
+    fetchTokenFromMassEnergize({ lat: _fbToken.token, cb, method:"email-only" });
   });
 };
 
@@ -73,12 +73,11 @@ export const completeUserRegistration = (body, cb) => (dispatch, getState) => {
       if (response?.success && response?.data) {
         let _fbToken = await auth?.getIdTokenResult();
         return dispatch(
-          fetchTokenFromMassEnergize(
-            _fbToken.token,
-            (response) => cb && cb(response),
-            { userIsNew: response.data?.is_new }
-          )
-        );
+          fetchTokenFromMassEnergize({
+            lat:_fbToken.token,
+            cb:(response) => cb && cb(response),
+            moreInfo:{ userIsNew: response.data?.is_new }
+          }))
       } else cb && cb(null, response.error);
       console.log(
         "CREATING_ME_USER_ERROR: Sorry, something happened couldnt create user",
@@ -110,11 +109,10 @@ export const cancelMyRegistration = (cb) => (dispatch) => {
   });
 };
 
-export const fetchTokenFromMassEnergize =
-  (lat, cb, moreInfo, justFromGoogleAuth) => (dispatch) => {
+export const fetchTokenFromMassEnergize =({lat, cb, moreInfo, justFromGoogleAuth, method}) => (dispatch) => {
     if (!lat) return console.log("Include user _lat to fetch token from ME...");
-    apiCall("auth.login", { idToken: lat })
-      .then((response) => {
+    let body = method ? { idToken: lat, login_method: method } : { idToken:lat };
+    apiCall("auth.login",body).then((response) => {
         const error = response.error;
         const massUser = { ...response.data, ...(moreInfo || moreInfo) };
         cb && cb(massUser);
@@ -155,7 +153,7 @@ export const authenticateWithGoogle = (cb) => (dispatch) => {
     if (error) return dispatch(setAuthNotification(makeError(error)));
     cb && cb(user);
     let _fbToken = await user?.getIdTokenResult();
-    dispatch(fetchTokenFromMassEnergize(_fbToken.token, null, null, true));
+    dispatch(fetchTokenFromMassEnergize({lat:_fbToken.token, justFromGoogleAuth: true,method:"google" }));
     dispatch(setFirebaseUser(user));
   });
 };
@@ -164,7 +162,7 @@ export const authenticateWithFacebook = (cb) => (dispatch) => {
     if (error) return dispatch(setAuthNotification(makeError(error)));
     cb && cb(user);
     let _fbToken = await user?.getIdTokenResult();
-    dispatch(fetchTokenFromMassEnergize(_fbToken?.token));
+    dispatch(fetchTokenFromMassEnergize({lat:_fbToken?.token, method:"facebook"}));
     dispatch(setFirebaseUser(user));
   });
 };
@@ -209,7 +207,7 @@ export const subscribeToFirebaseAuthChanges = () => (dispatch) => {
     // ------------------------------------------------
     let _fbToken = await user?.getIdTokenResult();
     dispatch(setFirebaseUser(user));
-    dispatch(fetchTokenFromMassEnergize(_fbToken?.token));
+    dispatch(fetchTokenFromMassEnergize({lat:_fbToken.token}));
     dispatch(breakdownFirebaseSettings(user));
   });
 };
@@ -238,7 +236,7 @@ export const firebaseLogin = (data, cb) => (dispatch) => {
     if (cb) cb(auth);
     if (error) return dispatch(setAuthNotification(makeError(error)));
     let _fbToken = await auth.user?.getIdTokenResult();
-    dispatch(fetchTokenFromMassEnergize(_fbToken.token));
+    dispatch(fetchTokenFromMassEnergize({lat:_fbToken.token, method:"email-password"}));
     dispatch(setFirebaseUser(auth?.user));
   });
 };
@@ -252,7 +250,7 @@ export const firebaseRegistration = (data, cb) => (dispatch) => {
       if (error) return dispatch(setAuthNotification(makeError(error)));
       let _fbToken = await auth.user?.getIdTokenResult();
       dispatch(sendVerificationEmail(auth?.user));
-      dispatch(fetchTokenFromMassEnergize(_fbToken.token));
+      dispatch(fetchTokenFromMassEnergize({lat:_fbToken.token}));
       dispatch(setFirebaseUser(auth?.user));
     }
   );

@@ -465,14 +465,15 @@ class AppRouter extends Component {
 
   saveCurrentPageURL() {
     const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
-    const realRoute = window.location.pathname;
-    if (
-      !currentURL?.includes("signin") &&
-      !currentURL?.includes("signup")
-      // Makes way for users to be able to update their preferences from email
-      // &&!currentURL?.includes("profile")
-    )
+    let realRoute = window.location.pathname;
+    const queryString = window.location.search;
+    if (!currentURL?.includes("signin") &&!currentURL?.includes("signup")) {
+      if(queryString){
+        realRoute += queryString
+      }
       window.localStorage.setItem("last_visited", realRoute);
+      
+    } 
   }
 
   render() {

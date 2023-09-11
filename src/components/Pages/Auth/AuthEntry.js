@@ -89,12 +89,8 @@ function AuthEntry({
 
   useEffect(() => {
     //We can go straight to passwordless form, by passing a value in the URL
-    const noPassword = fetchParamsFromURL(
-      window.location,
-      "noPassword"
-    )?.noPassword;
-    const passwordLessValueViaURL =
-      (noPassword || "").trim().toLowerCase() === "true";
+    const noPassword = fetchParamsFromURL(window.location, "noPassword")?.noPassword;
+    const passwordLessValueViaURL =(noPassword || "").trim().toLowerCase() === "true";
     setUsePasswordFree(passwordLessValueViaURL);
   }, [match]);
   // ---------------------------------------------------------------
