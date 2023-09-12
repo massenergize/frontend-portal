@@ -506,12 +506,27 @@ export function locationFormatJSX(location) {
   const state = location.state ? stateAbbreviation(location.state) : "";
   return (
     <span>
-      <b>{firstLine}</b>
-      {location.city ? `, ${location.city}` : ""}
+      {location?.building && (
+        <>
+          <span>
+            {location?.building} {"\n"}
+          </span>{" "}
+          <br />
+        </>
+      )}
+      {location?.room && (
+        <>
+          <span>{location?.room}</span> <br />
+        </>
+      )}
+      <span>{firstLine}</span>
+      <br />
+      {location.city ? `${location.city}` : ""}
       {state ? `, ${state}` : ""}
     </span>
   );
 }
+
 
 export function getCircleGraphData(
   goalObj,
