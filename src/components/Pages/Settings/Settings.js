@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -12,6 +12,8 @@ import { AUTH_STATES } from "../Auth/shared/utils";
 import TabView from "../Widgets/METabView/METabView";
 import RenderOptions from "./RenderOptions";
 import Seo from "../../Shared/Seo";
+import { signMeOut } from "../../../redux/actions/authActions";
+import { fetchParamsFromURL } from "../../Utils";
 
 function Settings({
   user,
@@ -22,8 +24,11 @@ function Settings({
   authState,
   community,
   toggleToast,
+  signMeOut,
+  history,
 }) {
   const [currentTab, setCurrentTab] = useState(null);
+  const [urlData, setURLData] = useState(null);
 
   const userIsNotAuthenticated =
     authState === AUTH_STATES.USER_IS_NOT_AUTHENTICATED;
@@ -31,8 +36,22 @@ function Settings({
   const appIsCheckingMassEnergize =
     authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
 
+  useEffect(() => {
+     const urlUserCred = fetchParamsFromURL(window.location, "cred")?.cred;
+    if (urlUserCred) {
+      let decodedData = JSON.parse(atob(urlUserCred));
+      setURLData(decodedData);
+    }
+    if (user && urlUserCred) {
+      handleEmailAndAccountCheck(urlUserCred);
+    }
+    return;
+    // eslint-disable-next-line
+  }, [user]);
+
   // -------------------------------------------------------------------
-  if (userIsNotAuthenticated) return <Redirect to={links.signin}> </Redirect>;
+  let redirectURL = urlData?.login_method === "email-only" ? `${links.signin}?noPassword=true` : links.signin;
+  if (userIsNotAuthenticated) return <Redirect to={redirectURL}> </Redirect>;
 
   if (appIsCheckingFirebase || appIsCheckingMassEnergize)
     return <LoadingCircle />;
@@ -115,8 +134,8 @@ function Settings({
   return (
     <div>
       {Seo({
-        title: 'User Settings',
-        description: '',
+        title: "User Settings",
+        description: "",
         url: `${window.location.pathname}`,
         site_name: community?.name,
       })}
@@ -151,6 +170,27 @@ function Settings({
       </div>
     </div>
   );
+
+  function handleEmailAndAccountCheck(param) {
+    if (!user) return;
+    let decodedData = JSON.parse(atob(param));
+    if (user?.email !== decodedData?.email) {
+      let confirm = window.confirm(
+        `Hey there! It looks like you're currently logged in with a different email address (${user?.email}). Want to switch and update your communication preferences for ${decodedData?.email} ?`
+      );
+      if (confirm) {
+        apiCall("auth.logout", {}).then((res) => {
+          if (res?.success) {
+            signMeOut();
+            if (decodedData?.login_method === "email-only")  return <Redirect to={`${links?.signin}?noPassword=true`} />;
+            return <Redirect to={links?.signin}> </Redirect>;
+          }
+        });
+      } else {
+        history.push(links.home);
+      }
+    }
+  }
 }
 
 const mapStateToProps = (store) => {
@@ -169,6 +209,7 @@ const mapDispatchToProps = (dispatch) => {
     {
       updateUserInRedux: reduxLogin,
       toggleToast: reduxToggleUniversalToastAction,
+      signMeOut: signMeOut,
     },
     dispatch
   );
