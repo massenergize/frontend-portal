@@ -531,38 +531,20 @@ export function locationFormatJSX(location) {
 export function getCircleGraphData(
   goalObj,
   which,
-  pref_eq = null,
-  display_prefs = {}
+  pref_eq = null
 ) {
   if (goalObj === null) return 0;
-  let value = 0;
+  //let value = 0;
   switch (which) {
     case "households": {
-      if (display_prefs.manual_households)
-        value += goalObj.initial_number_of_households;
-      if (display_prefs.state_households)
-        value += goalObj.attained_number_of_households;
-      if (display_prefs.platform_households)
-        value += goalObj.organic_attained_number_of_households;
-      return value;
+      return goalObj.displayed_number_of_households;
     }
     case "actions-completed": {
-      if (display_prefs.manual_actions)
-        value += goalObj.initial_number_of_actions;
-      if (display_prefs.state_actions)
-        value += goalObj.attained_number_of_actions;
-      if (display_prefs.platform_actions)
-        value += goalObj.organic_attained_number_of_actions;
-      return value;
+      return goalObj.displayed_number_of_actions;
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
-      if (display_prefs.manual_carbon)
-        value += goalObj.initial_carbon_footprint_reduction;
-      if (display_prefs.state_carbon)
-        value += goalObj.attained_carbon_footprint_reduction;
-      if (display_prefs.platform_carbon)
-        value += goalObj.organic_attained_carbon_footprint_reduction;
+      var value = goalObj.displayed_carbon_footprint_reduction;
       value = calcEQ(value, factor);
       return value;
     }
@@ -574,12 +556,11 @@ export function getCircleGraphData(
 export function createCircleGraphData(
   goalObj,
   which,
-  pref_eq = null,
-  display_prefs
+  pref_eq = null
 ) {
   if (goalObj === null) return {};
 
-  const value = getCircleGraphData(goalObj, which, pref_eq, display_prefs);
+  const value = getCircleGraphData(goalObj, which, pref_eq);
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
