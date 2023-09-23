@@ -7,7 +7,7 @@ function ActionMobileStats({ todo, done, user, eq }) {
 
   const doneCount = done?.length || 0;
   const todoCount = todo?.length || 0;
-  console.log("=== eq ==", eq);
+  //console.log("=== eq ==", eq);
   const treeEq = eq?.find((_eq) => _eq.name.toLowerCase().trim() === "trees");
   const doneValue = calcEQ(sumOfCarbonScores(done), treeEq?.value) || 0;
   const todoValue = calcEQ(sumOfCarbonScores(todo), treeEq?.value) || 0;

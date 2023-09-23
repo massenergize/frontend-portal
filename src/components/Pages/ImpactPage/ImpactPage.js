@@ -305,14 +305,14 @@ class ImpactPage extends React.Component {
     const carbon_units = pref_eq.name;
 
     const data = [
-      createCircleGraphData(goal, "households", null, display_prefs),
-      createCircleGraphData(goal, "actions-completed", null, display_prefs),
-      createCircleGraphData(goal, "carbon-reduction", pref_eq, display_prefs),
+      createCircleGraphData(goal, "households", null),
+      createCircleGraphData(goal, "actions-completed", null),
+      createCircleGraphData(goal, "carbon-reduction", pref_eq),
     ];
     const values = [
-      getCircleGraphData(goal, "households", null, display_prefs),
-      getCircleGraphData(goal, "actions-completed", null, display_prefs),
-      getCircleGraphData(goal, "carbon-reduction", pref_eq, display_prefs),
+      getCircleGraphData(goal, "households", null),
+      getCircleGraphData(goal, "actions-completed", null),
+      getCircleGraphData(goal, "carbon-reduction", pref_eq),
     ];
     const percents = [
       parseInt((100 * values[0]) / goal.target_number_of_households),

@@ -14,6 +14,8 @@ import {
 import { ifEnterKeyIsPressed, isInvalid } from "../shared/utils";
 import Seo from "../../../Shared/Seo";
 
+const LAST_VISITED = "last_visited";
+
 export default function LoginAuth(props) {
   const {
     userWantsPasswordFree,
@@ -36,6 +38,20 @@ export default function LoginAuth(props) {
 
   const [form, setForm] = useState({});
   const history = useHistory();
+
+  useEffect(() => {
+    let lastVisited = localStorage.getItem(LAST_VISITED);
+    const param = lastVisited?.split("?cred=")[1];
+    if (param) {
+      let decoded = JSON.parse(atob(param));
+      setForm({
+        email: decoded.email,
+        ...form,
+      });
+    }
+ 
+    // eslint-disable-next-line
+  }, [])
 
   const [
     userContinuedPasswordFreeInDiffEnv,
