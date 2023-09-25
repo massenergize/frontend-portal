@@ -57,7 +57,8 @@ export default class MERadio extends Component {
         squareActive = "me-check-square-active";
         dotActive = "me-floating-check-active";
       }
-      const variantClassName = variant === "horizontal"? "put-me-inline":"put-me-block";
+      const variantClassName =
+        variant === "horizontal" ? "put-me-inline" : "put-me-block";
       return (
         <div
           key={key}
@@ -84,7 +85,10 @@ export default class MERadio extends Component {
   render() {
     const { containerStyle, containerClassName } = this.props;
     return (
-      <div className={containerClassName} style={containerStyle}>
+      <div
+        className={containerClassName}
+        style={{ margin: "6px 0px", ...(containerStyle || {}) }}
+      >
         {this.ejectChildren()}
       </div>
     );
@@ -102,7 +106,7 @@ MERadio.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   onItemSelected: PropTypes.func.isRequired,
-  variant:PropTypes.oneOf(["horizontal", "vertical"]),
+  variant: PropTypes.oneOf(["horizontal", "vertical"]),
 };
 MERadio.defaultProps = {
   data: [],

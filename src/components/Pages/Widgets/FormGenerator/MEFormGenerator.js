@@ -12,6 +12,7 @@ import MECheckBoxes from "../MECheckBoxGroup";
 import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
 import MERichTextEditor from "../MERichTextEditor/MERichTextEditor";
+import UploadQuestionaire from "../UploadQuestionaire";
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -24,8 +25,8 @@ const CHIPS = "chips";
 const FILE = "file";
 const HTMLFIELD = "html-field";
 //added field for date types
-const DATE = "date"
-const DATE_TIME = "datetime-local"
+const DATE = "date";
+const DATE_TIME = "datetime-local";
 
 export const BAD = "bad";
 export const GOOD = "good";
@@ -147,7 +148,7 @@ export default class FormGenerator extends Component {
   getValue = (name, defaultValue = null, field = null) => {
     let { formData } = this.state;
     let val = formData[name];
-    if (field?.fieldType === INPUT && !val) return ""; 
+    if (field?.fieldType === INPUT && !val) return "";
     if (!val) {
       formData = { ...formData, [name]: defaultValue };
       // this.setState({ formData });
@@ -205,7 +206,8 @@ export default class FormGenerator extends Component {
   }
 
   getFileUploader(formObject, key) {
-    const { resetters } = this.state;
+    const { resetters, formData } = this.state;
+    const userHasSelectedImages = formData[formObject.name];
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
@@ -220,6 +222,15 @@ export default class FormGenerator extends Component {
             });
           }}
         />
+        {userHasSelectedImages && (
+          <UploadQuestionaire
+            onStateChange={(data) =>
+              this.setState({
+                formData: { ...this.state.formData, ...(data || {}) },
+              })
+            }
+          />
+        )}
       </div>
     );
   }
@@ -331,7 +342,7 @@ export default class FormGenerator extends Component {
     // const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
-      if (!formItem || formItem === {}) return <i></i>;
+      if (!formItem || Object.keys(formItem).length === 0) return <i></i>;
       switch (formItem?.type?.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
@@ -404,10 +415,32 @@ export default class FormGenerator extends Component {
     return false;
   }
 
+  invalidQuestionaire() {
+    const { has_copyright_permission, underAge, guardian_info } =
+      this.state.formData;
+
+    if (!has_copyright_permission) {
+      this.setError(
+        "Copyright: Please use images you have permission to use. If you do, tick 'Yes'"
+      );
+
+      return true;
+    }
+
+    if (underAge && !guardian_info) {
+      this.setError(
+        "Underage: If images contain under age kids, please add details of their guardians"
+      );
+      return true;
+    }
+
+    return false;
+  }
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
-    if (this.requiredFieldIsEmpty()) {
+
+    if (this.invalidQuestionaire() || this.requiredFieldIsEmpty()) {
       // if any required field is empty
       onSubmit(e, { isNotComplete: true });
       return;
@@ -499,6 +532,8 @@ export default class FormGenerator extends Component {
   render() {
     var { animate, className, style, title, elevate, moreActions, fields } =
       this.props;
+
+    console.log("FORM DATA", this.state.formData);
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
