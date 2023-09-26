@@ -205,6 +205,15 @@ export default class FormGenerator extends Component {
     this.handleFields(formObject.name, file.croppedFile);
   }
 
+  organiseMediaToCheck(obj, file) {
+    const { mediaToCheck } = this.state;
+    const name = obj.name;
+    const rem = (mediaToCheck || []).filter((n) => n !== name);
+    if (!file) return rem;
+
+    return [...rem, name];
+  }
+
   getFileUploader(formObject, key) {
     const { resetters, formData } = this.state;
     const userHasSelectedImages = formData[formObject.name];
@@ -219,6 +228,7 @@ export default class FormGenerator extends Component {
             this.handleFileSelection(formObject, file);
             this.setState({
               resetters: { ...resetters, [formObject.name]: removeFxn },
+              mediaToCheck: this.organiseMediaToCheck(formObject, file), // Just a way to track when images are actually selected
             });
           }}
         />
@@ -419,6 +429,10 @@ export default class FormGenerator extends Component {
     const { has_copyright_permission, underAge, guardian_info } =
       this.state.formData;
 
+    const { mediaToCheck } = this.state;
+
+    if (!mediaToCheck || !mediaToCheck?.length) return false; // No media has been selected
+
     if (!has_copyright_permission) {
       this.setError(
         "Copyright: Please use images you have permission to use. If you do, tick 'Yes'"
@@ -439,7 +453,10 @@ export default class FormGenerator extends Component {
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
-
+    // Note: In terms of image and copyright validation, the current procedure is implemented 
+    // under the assumption that forms only select one image. As we implement more features 
+    // that require multiple images, we wld need to come back and make a few tweaks to validate 
+    // each single image/file selection for copyright...
     if (this.invalidQuestionaire() || this.requiredFieldIsEmpty()) {
       // if any required field is empty
       onSubmit(e, { isNotComplete: true });
@@ -561,7 +578,7 @@ export default class FormGenerator extends Component {
             <button
               style={{ background: "green", color: "white" }}
               className="touchable-opacity me-flat-btn"
-              onClick={() => this.onSubmit()}
+              onClick={(e) => this.onSubmit(e)}
             >
               {this.state.loading && (
                 <i
