@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MERadio from "./MERadio";
 import METextField from "./METextField";
 
@@ -14,7 +14,7 @@ function UploadQuestionaire({ onStateChange }) {
       onStateChange({
         underAge: hasChildren,
         copyright_att: copyrightAtt,
-        has_copyright_permission: hasCopyright,
+        copyright: hasCopyright,
         guardian_info: guardianInfo,
       });
     };

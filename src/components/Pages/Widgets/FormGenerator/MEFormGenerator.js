@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MECard from "../MECard";
 import METextField from "../METextField";
 import METextView from "../METextView";
-import MEButton from "../MEButton";
+// import MEButton from "../MEButton";
 import MEDropdown from "../MEDropdown";
 import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
@@ -71,9 +71,11 @@ export default class FormGenerator extends Component {
     );
   }
 
-  handleFields(name, value) {
+  handleFields(name, value, others = {}) {
     const { formData } = this.state;
-    this.setState({ formData: { ...formData, [name]: value } });
+    this.setState({
+      formData: { ...formData, [name]: value, ...(others || {}) },
+    });
   }
   getAutoComplete(formObject, key) {
     return (
@@ -190,9 +192,28 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
+  cleanup() {
+    const arr = [
+      "size",
+      "size_text",
+      "copyright",
+      "underAge",
+      "copyright_att",
+      "guardian_info",
+    ];
+    const data = this.state.formData || {};
+    for (let field of arr) {
+      delete data[field];
+    }
+
+    this.setState({ formData: data });
+  }
   handleFileSelection(formObject, file) {
+    console.log("WHAT IS THIS", file);
     if (!file) {
       this.setState({ imageInfo: "" });
+      this.cleanup();
       return this.handleFields(formObject.name, file);
     }
     if (file.originalSize.size > 999999) {
@@ -202,7 +223,10 @@ export default class FormGenerator extends Component {
     } else {
       this.setState({ imageInfo: "" });
     }
-    this.handleFields(formObject.name, file.croppedFile);
+    this.handleFields(formObject.name, file.croppedFile, {
+      size_text: file?.croppedSize?.text,
+      size: file?.croppedSize?.size,
+    });
   }
 
   organiseMediaToCheck(obj, file) {
@@ -426,14 +450,13 @@ export default class FormGenerator extends Component {
   }
 
   invalidQuestionaire() {
-    const { has_copyright_permission, underAge, guardian_info } =
-      this.state.formData;
+    const { copyright, underAge, guardian_info } = this.state.formData;
 
     const { mediaToCheck } = this.state;
 
     if (!mediaToCheck || !mediaToCheck?.length) return false; // No media has been selected
 
-    if (!has_copyright_permission) {
+    if (!copyright) {
       this.setError(
         "Copyright: Please use images you have permission to use. If you do, tick 'Yes'"
       );
@@ -453,9 +476,11 @@ export default class FormGenerator extends Component {
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
-    // Note: In terms of image and copyright validation, the current procedure is implemented 
-    // under the assumption that forms only select one image. As we implement more features 
-    // that require multiple images, we wld need to come back and make a few tweaks to validate 
+
+    console.log("LEts see formData", this.state.formData);
+    // Note: In terms of image and copyright validation, the current procedure is implemented
+    // under the assumption that forms only select one image. As we implement more features
+    // that require multiple images, we wld need to come back and make a few tweaks to validate
     // each single image/file selection for copyright...
     if (this.invalidQuestionaire() || this.requiredFieldIsEmpty()) {
       // if any required field is empty
