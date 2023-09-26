@@ -555,12 +555,13 @@ export default class FormGenerator extends Component {
           <div>{this.displayImageWarning()}</div>
         </div>
 
-        <div style={{ display: "flex", background: "#f9f9f9" }}>
+        <div style={{ display: "flex", background: "#f9f9f9", marginTop: 10 }}>
           <div style={{ marginLeft: "auto", display: "flex" }}>
             {moreActions}
             <button
               style={{ background: "green", color: "white" }}
               className="touchable-opacity me-flat-btn"
+              onClick={() => this.onSubmit()}
             >
               {this.state.loading && (
                 <i
@@ -570,7 +571,6 @@ export default class FormGenerator extends Component {
               )}{" "}
               {this.props.actionText}
             </button>
-           
           </div>
         </div>
         {/* </form> */}
