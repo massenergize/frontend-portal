@@ -533,43 +533,47 @@ export default class FormGenerator extends Component {
     var { animate, className, style, title, elevate, moreActions, fields } =
       this.props;
 
-    console.log("FORM DATA", this.state.formData);
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
-      <MECard className={`${animationClass} ${className}`} style={style}>
-        <METextView
-          containerStyle={{ width: "100%" }}
-          style={{ color: "black", fontSize: 18, textAlign: "center" }}
-        >
-          {title}
-        </METextView>
-        <form onSubmit={this.onSubmit}>
+      <MECard
+        className={`${animationClass} ${className}`}
+        style={{ padding: 0, marginBottom: 0, ...(style || {}) }}
+      >
+        <div className="form-gen-inner-wrapper">
+          <METextView
+            containerStyle={{ width: "100%" }}
+            style={{ color: "black", fontSize: 18, textAlign: "center" }}
+          >
+            {title}
+          </METextView>
+          {/* <form onSubmit={this.onSubmit}> */}
           {this.createAndEjectForm(fields)}
 
           <br />
           <div>{this.displayInformation()}</div>
           <div>{this.displayImageWarning()}</div>
-          <div style={{ display: "flex" }}>
-            <div style={{ marginLeft: "auto" }}>
-              {moreActions}
-              <MEButton
-                containerStyle={{
-                  padding: "10px 12px",
-                  fontSize: 18,
-                }}
-              >
-                {this.state.loading && (
-                  <i
-                    className="fa fa-spinner fa-spin"
-                    style={{ marginRight: 5, color: "green" }}
-                  />
-                )}{" "}
-                {this.props.actionText}
-              </MEButton>
-            </div>
+        </div>
+
+        <div style={{ display: "flex", background: "#f9f9f9" }}>
+          <div style={{ marginLeft: "auto", display: "flex" }}>
+            {moreActions}
+            <button
+              style={{ background: "green", color: "white" }}
+              className="touchable-opacity me-flat-btn"
+            >
+              {this.state.loading && (
+                <i
+                  className="fa fa-spinner fa-spin"
+                  style={{ marginRight: 5, color: "white" }}
+                />
+              )}{" "}
+              {this.props.actionText}
+            </button>
+           
           </div>
-        </form>
+        </div>
+        {/* </form> */}
       </MECard>
     );
   }

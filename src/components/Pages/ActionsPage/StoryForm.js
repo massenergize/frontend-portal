@@ -9,7 +9,7 @@ import {
   celebrateWithConfetti,
   reduxLoadTestimonials,
 } from "../../../redux/actions/pageActions";
-import MEButton from "../Widgets/MEButton";
+// import MEButton from "../Widgets/MEButton";
 import { ACTION, EVENT, TESTIMONIAL, VENDOR } from "../../Constants";
 
 /********************************************************************/
@@ -580,39 +580,28 @@ class StoryForm extends React.Component {
         onSubmit={this.onSubmit}
         info={this.state.formNotification}
         onMount={(reset) => this.setState({ formReset: reset })}
+        elevate={false}
+        animate={false}
         moreActions={
           <>
-            <MEButton
-              style={{
-                background: "rgb(209 70 70)",
-                color: "white",
-                borderColor: "rgb(209 70 70)",
-              }}
-              className="touchable-opacity"
-              type="button"
-              onClick={() => {
-                this.props.close && this.props.close();
-              }}
-              containerStyle={{
-                padding: "10px 12px",
-                fontSize: 18,
-              }}
-            >
-              Cancel
-            </MEButton>
-            <MEButton
-              variation="accent"
-              type="button"
+            <button
+              className="touchable-opacity me-flat-btn"
+              style={{ background: "antiquewhite", color: "black" }}
               onClick={() => {
                 this.state.formReset && this.state.formReset();
               }}
-              containerStyle={{
-                padding: "10px 12px",
-                fontSize: 18,
-              }}
             >
               Clear
-            </MEButton>
+            </button>
+            <button
+              className="touchable-opacity me-flat-btn"
+              style={{ background: "maroon", color: "white" }}
+              onClick={() => {
+                this.props.close && this.props.close();
+              }}
+            >
+              Cancel
+            </button>
           </>
         }
       />
