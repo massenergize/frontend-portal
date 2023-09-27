@@ -5,7 +5,6 @@ import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 
-
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
     return console.warn(
@@ -527,12 +526,7 @@ export function locationFormatJSX(location) {
   );
 }
 
-
-export function getCircleGraphData(
-  goalObj,
-  which,
-  pref_eq = null
-) {
+export function getCircleGraphData(goalObj, which, pref_eq = null) {
   if (goalObj === null) return 0;
   //let value = 0;
   switch (which) {
@@ -553,11 +547,7 @@ export function getCircleGraphData(
   }
 }
 
-export function createCircleGraphData(
-  goalObj,
-  which,
-  pref_eq = null
-) {
+export function createCircleGraphData(goalObj, which, pref_eq = null) {
   if (goalObj === null) return {};
 
   const value = getCircleGraphData(goalObj, which, pref_eq);
@@ -659,51 +649,56 @@ export function recurringDetails(event) {
   return recurringDetails;
 }
 
-
 export const commonKeys = (obj, keys) =>
-  Object.fromEntries(
-    Object.entries(obj).filter(([key]) => keys.includes(key))
-  );
+  Object.fromEntries(Object.entries(obj).filter(([key]) => keys.includes(key)));
 
+export const isEmpty = (value) => {
+  if (
+    value === undefined ||
+    value === null ||
+    value === "" ||
+    value?.length === 0 ||
+    value === "null" ||
+    value === "undefined"
+  )
+    return true;
+  return false;
+};
+export const sanitizeValue = (val) => {
+  if (isEmpty(val)) {
+    return null;
+  }
 
-  export const isEmpty = (value) => {
-    if (
-      value === undefined ||
-      value === null ||
-      value === "" ||
-      value?.length === 0 ||
-      value === "null" ||
-      value === "undefined"
-    )
-      return true;
-    return false;
-  };
- export const sanitizeValue = (val) => {
-   if (isEmpty(val)) {
-     return null;
-   }
+  return val;
+};
 
-   return val;
- };
-
- /**
-  * Returns a Javascript object from a string
-  * @param {*} val
-  * @returns
-  */
- export const parseJSON = (val) => {
-   if (typeof val === "object") return val;
-   const sanitizedValue = sanitizeValue("" + val);
-   if (!sanitizedValue) return null;
-   try {
-     return JSON.parse(sanitizedValue);
-   } catch (error) {
-     console.log(`JSON: Error parsing ${val} to JSON`);
-     return {};
-   }
- };
-
+/**
+ * Returns a Javascript object from a string
+ * @param {*} val
+ * @returns
+ */
+export const parseJSON = (val) => {
+  if (typeof val === "object") return val;
+  const sanitizedValue = sanitizeValue("" + val);
+  if (!sanitizedValue) return null;
+  try {
+    return JSON.parse(sanitizedValue);
+  } catch (error) {
+    console.log(`JSON: Error parsing ${val} to JSON`);
+    return {};
+  }
+};
 
 export const capitalizeMe = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
+
+export const fetchCopyrightData = (info) => {
+  if (!info) return {};
+  return {
+    copyright: info?.has_copyright_permission || false,
+    copyright_att: info?.copyright_att || "",
+    underAge: info?.has_children || false,
+    guardian_info: info?.guardian_info || "",
+  };
+};

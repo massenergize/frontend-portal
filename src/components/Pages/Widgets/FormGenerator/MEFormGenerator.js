@@ -258,11 +258,17 @@ export default class FormGenerator extends Component {
         />
         {userHasSelectedImages && (
           <UploadQuestionaire
-            onStateChange={(data) =>
+            data={this.state.formData}
+            onChange={(name, value) => {
               this.setState({
-                formData: { ...this.state.formData, ...(data || {}) },
-              })
-            }
+                formData: { ...this.state.formData, [name]: value },
+              });
+            }}
+            // onStateChange={(data) =>
+            //   this.setState({
+            //     formData: { ...this.state.formData, ...(data || {}) },
+            //   })
+            // }
           />
         )}
       </div>
@@ -476,13 +482,15 @@ export default class FormGenerator extends Component {
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
+    this.setState({ notification: null });
 
-    console.log("LEts see formData", this.state.formData);
+    console.log("FORM GEN DATA", this.state.formData)
     // Note: In terms of image and copyright validation, the current procedure is implemented
     // under the assumption that forms only select one image. As we implement more features
     // that require multiple images, we wld need to come back and make a few tweaks to validate
     // each single image/file selection for copyright...
     if (this.invalidQuestionaire() || this.requiredFieldIsEmpty()) {
+      this.setState({ loading: false });
       // if any required field is empty
       onSubmit(e, { isNotComplete: true });
       return;

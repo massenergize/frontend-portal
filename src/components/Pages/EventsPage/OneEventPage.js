@@ -11,6 +11,7 @@ import {
   locationFormatJSX,
   smartString,
   parseJSON,
+  fetchCopyrightData
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
@@ -85,6 +86,7 @@ class OneEventPage extends React.Component {
       ...(parseJSON(event?.location) || {}),
       end_date_and_time: event?.end_date_and_time?.slice(0, 16),
       start_date_and_time: event?.start_date_and_time?.slice(0, 16),
+      ...fetchCopyrightData(event?.image?.info)
     };
     this.props.toggleModal({
       show: true,
@@ -321,6 +323,7 @@ class OneEventPage extends React.Component {
     );
   };
   renderEvent(event) {
+    console.log("This is the event my gee", event)
     const { user, toggleGuestAuthDialog, pageData } = this.props;
     const isShared = pageData?.community?.id !== event?.community?.id;
 
