@@ -43,7 +43,11 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
-import { handleTourCallback, smartString } from "../../Utils";
+import {
+  handleTourCallback,
+  smartString,
+  fetchCopyrightData,
+} from "../../Utils";
 import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
@@ -468,6 +472,7 @@ class OneActionPage extends React.Component {
   };
 
   onEditButtonClick = (toEdit) => {
+
     this.props.toggleModal({
       show: true,
       title: "Edit Action Form",
@@ -476,7 +481,10 @@ class OneActionPage extends React.Component {
         <StoryForm
           ModalType={ACTION}
           close={() => this.props.toggleModal({ show: false })}
-          draftData={toEdit}
+          draftData={{
+            ...(toEdit || {}),
+            ...fetchCopyrightData(toEdit?.image?.info),
+          }}
           TriggerSuccessNotification={() => ({})}
           updateItemInRedux={this.props.updateActionsInRedux}
           reduxItems={this.props.actions}
