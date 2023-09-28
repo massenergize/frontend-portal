@@ -210,7 +210,6 @@ export default class FormGenerator extends Component {
     this.setState({ formData: data });
   }
   handleFileSelection(formObject, file) {
-    console.log("WHAT IS THIS", file);
     if (!file) {
       this.setState({ imageInfo: "" });
       this.cleanup();

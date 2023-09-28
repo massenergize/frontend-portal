@@ -53,6 +53,7 @@ import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { ACTION, TESTIMONIAL } from "../../Constants";
+import MEImage from "../../Shared/MEImage";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -472,7 +473,6 @@ class OneActionPage extends React.Component {
   };
 
   onEditButtonClick = (toEdit) => {
-
     this.props.toggleModal({
       show: true,
       title: "Edit Action Form",
@@ -734,8 +734,9 @@ class OneActionPage extends React.Component {
               {/* action image */}
               <div className="col-lg-6 col-md-12 mob-reset-padding">
                 <div className="img-box action-pic-fix">
-                  <img
+                  <MEImage
                     src={action.image ? action.image.url : null}
+                    image={action?.image}
                     alt=""
                     data-imagezoom="true"
                     className="img-responsive z-depth-float me-anime-open-in"

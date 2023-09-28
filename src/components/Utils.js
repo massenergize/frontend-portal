@@ -649,8 +649,13 @@ export function recurringDetails(event) {
   return recurringDetails;
 }
 
-export const commonKeys = (obj, keys) =>
-  Object.fromEntries(Object.entries(obj).filter(([key]) => keys.includes(key)));
+export const commonKeys = (obj, keys) => {
+  // create a new object that contains only the key-value pairs where the keys are found in 'keys'
+  const res = Object.fromEntries(
+    Object.entries(obj).filter(([key]) => keys.includes(key))
+  );
+  return res;
+};
 
 export const isEmpty = (value) => {
   if (

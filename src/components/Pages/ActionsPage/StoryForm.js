@@ -572,6 +572,7 @@ class StoryForm extends React.Component {
       );
     if (this.state.vid !== "other" && this.state.vendor !== "")
       this.setState({ vendor: "" });
+    
     return (
       <MEFormGenerator
         TriggerModal={(bool) => this.props.TriggerModal(bool)}

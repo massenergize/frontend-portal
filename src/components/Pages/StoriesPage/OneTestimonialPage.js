@@ -18,6 +18,7 @@ import { TESTIMONIAL } from "../../Constants";
 import { reduxLoadTestimonials, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import MEImage from "../../Shared/MEImage";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -275,7 +276,7 @@ class OneTestimonialPage extends React.Component {
                   className="img-box"
                   style={{ height: 200, borderRadius: 10 }}
                 >
-                  <img
+                  <MEImage
                     style={{
                       width: "100%",
                       height: "100%",
@@ -284,6 +285,7 @@ class OneTestimonialPage extends React.Component {
                     }}
                     className="z-depth-1 me-anime-open-in"
                     src={story && story.file ? story.file.url : notFound}
+                    image = {story?.file}
                     alt=""
                   />
                 </div>
