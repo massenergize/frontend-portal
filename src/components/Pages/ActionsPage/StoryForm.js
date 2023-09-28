@@ -553,7 +553,10 @@ class StoryForm extends React.Component {
         delete body.image;
       }
     }
+    
+    const compulsoryFields = ["copyright", "copyright_att", "guardian_info","underAge"]
     let names = this.getFieldNames(body, formJson);
+    names = [...names, ...compulsoryFields]
     delete body?.ImgToDel;
     let newBody = commonKeys({ ...body }, names);
 
@@ -661,6 +664,7 @@ class StoryForm extends React.Component {
     if (!data || data.isNotComplete) {
       return;
     }
+
     var Url = URLS[this.props.ModalType];
     const communityID = community ? { community_id: community.id } : {};
     const userEmail = user ? { user_email: user.email } : {};
@@ -780,6 +784,7 @@ class StoryForm extends React.Component {
         text: "We are sending now...",
       },
     });
+    
     apiCall(Url, body).then((json) => {
       let name = ModalType?.toLowerCase() + "_id";
       if (json && json.success) {
