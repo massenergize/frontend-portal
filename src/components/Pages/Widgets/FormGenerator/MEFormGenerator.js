@@ -201,6 +201,8 @@ export default class FormGenerator extends Component {
       "underAge",
       "copyright_att",
       "guardian_info",
+      "permission_key",
+      "permission_notes",
     ];
     const data = this.state.formData || {};
     for (let field of arr) {
@@ -258,9 +260,13 @@ export default class FormGenerator extends Component {
         {userHasSelectedImages && (
           <UploadQuestionaire
             data={this.state.formData}
-            onChange={(name, value) => {
+            onChange={(name, value, extras) => {
               this.setState({
-                formData: { ...this.state.formData, [name]: value },
+                formData: {
+                  ...this.state.formData,
+                  [name]: value,
+                  ...(extras || {}),
+                },
               });
             }}
             // onStateChange={(data) =>
@@ -483,7 +489,6 @@ export default class FormGenerator extends Component {
     if (!onSubmit) return;
     this.setState({ notification: null });
 
-    console.log("FORM GEN DATA", this.state.formData)
     // Note: In terms of image and copyright validation, the current procedure is implemented
     // under the assumption that forms only select one image. As we implement more features
     // that require multiple images, we wld need to come back and make a few tweaks to validate

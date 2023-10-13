@@ -4,6 +4,7 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
+import { COPYRIGHT_OPTIONS } from "./Constants";
 
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
@@ -705,5 +706,6 @@ export const fetchCopyrightData = (info) => {
     copyright_att: info?.copyright_att || "",
     underAge: info?.has_children || false,
     guardian_info: info?.guardian_info || "",
+    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key 
   };
 };

@@ -1,16 +1,54 @@
 import React from "react";
 import MERadio from "./MERadio";
 import METextField from "./METextField";
+import { COPYRIGHT_OPTIONS } from "../../Constants";
 
 function UploadQuestionaire({ onChange, data }) {
-  const { underAge, copyright, copyright_att, guardian_info } = data || {};
+  const { underAge, copyright_att, guardian_info, permission_key } =
+    data || {};
+
+  const organiseCopyrightInfo = (key) => {
+    const opt = COPYRIGHT_OPTIONS[key];
+    return {
+      permission_key: key,
+      permission_notes: opt?.notes,
+      copyright: opt?.value,
+    };
+  };
   const handleChange = (name, value) => {
     if (!onChange) return;
-    onChange(name, value);
+    let extras = {};
+    if (name === "copyright") extras = organiseCopyrightInfo(value);
+
+    onChange(name, value, extras);
   };
 
   const boolValue = (bool) => (bool ? "Yes" : "No");
 
+  const copyrightOptions = Object.values(COPYRIGHT_OPTIONS);
+
+  const hasPermission = (key) => {
+    const opt = COPYRIGHT_OPTIONS[key];
+    return opt?.value;
+  };
+
+  const renderLabel = (child) => {
+    if (COPYRIGHT_OPTIONS.YES_CHECKED.key === child?.key)
+      return (
+        <span>
+          {child?.text}{" "}
+          <a
+            href="https://www.pixsy.com/academy/image-user/verify-image-source-copyright-owner/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            How do I check?
+          </a>
+        </span>
+      );
+
+    return <span>{child?.text}</span>;
+  };
   return (
     <div
       style={{
@@ -22,23 +60,24 @@ function UploadQuestionaire({ onChange, data }) {
       }}
     >
       <div>
-        <h5 style={{ fontWeight: "bold", marginBottom: 10 }}>
-          Copyright Information
-        </h5>
+        <h5 style={{ fontWeight: "bold", marginBottom: 10 }}>Permissions</h5>
         <p style={{ fontSize: 17 }}>
-          Do you have permission to use the selected item(s)?{" "}
+          Do you have permission to upload this image?
           <span style={{ fontWeight: "bold", color: "red" }}>*</span>
         </p>
 
         <MERadio
-          value={boolValue(copyright)}
-          onItemSelected={(item) =>
-            // setHasCopyright(item === "Yes" ? true : false)
-            handleChange("copyright", item === "Yes" ? true : false)
-          }
-          data={["Yes", "No"]}
+          value={permission_key}
+          onItemSelected={(key) => {
+            handleChange("copyright", key);
+          }}
+          valueExtractor={(opt) => opt?.key}
+          labelExtractor={(opt) => opt.text}
+          // renderLabel={(child) => <span>{child?.text} gbemi</span>}
+          renderLabel={renderLabel}
+          data={copyrightOptions}
         />
-        {copyright && (
+        {hasPermission(permission_key) && (
           <>
             <p style={{ fontSize: 17, margin: "6px 0px" }}>
               If this item needs to be attributed to someone, please type in the
