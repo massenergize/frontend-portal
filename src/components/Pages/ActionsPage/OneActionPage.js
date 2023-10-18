@@ -43,12 +43,17 @@ import {
 } from "./ActionStateConstants";
 import Seo from "../../Shared/Seo";
 import ProductTour, { ACTIONS, STATUS } from "react-joyride";
-import { handleTourCallback, smartString } from "../../Utils";
+import {
+  handleTourCallback,
+  smartString,
+  fetchCopyrightData,
+} from "../../Utils";
 import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { ACTION, TESTIMONIAL } from "../../Constants";
+import MEImage from "../../Shared/MEImage";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -476,7 +481,10 @@ class OneActionPage extends React.Component {
         <StoryForm
           ModalType={ACTION}
           close={() => this.props.toggleModal({ show: false })}
-          draftData={toEdit}
+          draftData={{
+            ...(toEdit || {}),
+            ...fetchCopyrightData(toEdit?.image?.info),
+          }}
           TriggerSuccessNotification={() => ({})}
           updateItemInRedux={this.props.updateActionsInRedux}
           reduxItems={this.props.actions}
@@ -726,8 +734,9 @@ class OneActionPage extends React.Component {
               {/* action image */}
               <div className="col-lg-6 col-md-12 mob-reset-padding">
                 <div className="img-box action-pic-fix">
-                  <img
+                  <MEImage
                     src={action.image ? action.image.url : null}
+                    image={action?.image}
                     alt=""
                     data-imagezoom="true"
                     className="img-responsive z-depth-float me-anime-open-in"

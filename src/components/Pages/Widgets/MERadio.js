@@ -48,7 +48,7 @@ export default class MERadio extends Component {
   }
 
   ejectChildren() {
-    const { data, className, style, variant } = this.props;
+    const { data, className, style, variant, renderLabel } = this.props;
     if (!data || data.length === 0) return <span></span>;
     return data.map((child, key) => {
       var squareActive = "",
@@ -57,7 +57,9 @@ export default class MERadio extends Component {
         squareActive = "me-check-square-active";
         dotActive = "me-floating-check-active";
       }
-      const variantClassName = variant === "horizontal"? "put-me-inline":"put-me-block";
+
+      const variantClassName =
+        variant === "horizontal" ? "put-me-inline" : "put-me-block";
       return (
         <div
           key={key}
@@ -76,7 +78,11 @@ export default class MERadio extends Component {
           <div
             className={`me-check-square ${squareActive}  me-round-sharp`}
           ></div>
-          <span style={{ marginRight: 7 }}>{this.nameOf(child)}</span>
+          {renderLabel ? (
+            renderLabel(child)
+          ) : (
+            <span style={{ marginRight: 7 }}>{this.nameOf(child)}</span>
+          )}
         </div>
       );
     });
@@ -84,7 +90,10 @@ export default class MERadio extends Component {
   render() {
     const { containerStyle, containerClassName } = this.props;
     return (
-      <div className={containerClassName} style={containerStyle}>
+      <div
+        className={containerClassName}
+        style={{ margin: "6px 0px", ...(containerStyle || {}) }}
+      >
         {this.ejectChildren()}
       </div>
     );
@@ -102,7 +111,7 @@ MERadio.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   onItemSelected: PropTypes.func.isRequired,
-  variant:PropTypes.oneOf(["horizontal", "vertical"]),
+  variant: PropTypes.oneOf(["horizontal", "vertical"]),
 };
 MERadio.defaultProps = {
   data: [],

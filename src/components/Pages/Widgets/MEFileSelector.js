@@ -460,6 +460,7 @@ class MEFileSelector extends Component {
           }}
           id={this.props.name}
           style={{ display: "none" }}
+          accept="image/jpeg, image/png, image/jpg" // TODO: Make dynamic later
         />
       </div>
     );
