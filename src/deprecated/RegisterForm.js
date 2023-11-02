@@ -167,6 +167,7 @@ class RegisterFormBase extends React.Component {
                 : "The Terms of Service failed to load or does not exist",
             }}
             style={{ maxHeight: "50vh", overflowY: "scroll" }}
+            className="rich-text-container"
           ></Modal.Body>
           <Modal.Footer>
             <Button
@@ -192,6 +193,7 @@ class RegisterFormBase extends React.Component {
                 : "The privacy policy failed to load or does not exist",
             }}
             style={{ maxHeight: "50vh", overflowY: "scroll" }}
+            className="rich-text-container"
           ></Modal.Body>
           <Modal.Footer>
             <Button

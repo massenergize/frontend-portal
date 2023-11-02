@@ -16,6 +16,7 @@ import {
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
+  fetchCopyrightData
 } from "../../Utils";
 import { NONE } from "../Widgets/MELightDropDown";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -267,6 +268,7 @@ class ServicesPage extends React.Component {
       image: vendor?.logo,
       key_contact_email: vendor?.key_contact?.email,
       key_contact_name: vendor?.key_contact?.name,
+      ...fetchCopyrightData(vendor?.logo?.info)
     };
     this.props.toggleModal({
       show: true,

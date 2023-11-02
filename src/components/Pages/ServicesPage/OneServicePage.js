@@ -6,13 +6,21 @@ import notFound from "./green-mat.jpg";
 import MESectionWrapper from "../Widgets/MESectionWrapper";
 import ErrorPage from "../Errors/ErrorPage";
 import MECard from "../Widgets/MECard";
-import { extractTextFromHTML, getHumanFriendlyDate } from "../../Utils";
+import {
+  extractTextFromHTML,
+  getHumanFriendlyDate,
+  fetchCopyrightData,
+} from "../../Utils";
 import Seo from "../../Shared/Seo";
 import MEButton from "../Widgets/MEButton";
 import { VENDOR } from "../../Constants";
-import { reduxLoadServiceProviders, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadServiceProviders,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import MEImage from "../../Shared/MEImage";
 
 class OneServicePage extends React.Component {
   constructor(props) {
@@ -33,6 +41,7 @@ class OneServicePage extends React.Component {
       image: vendor?.logo,
       key_contact_email: vendor?.key_contact?.email,
       key_contact_name: vendor?.key_contact?.name,
+      ...fetchCopyrightData(vendor?.logo?.info),
     };
     this.props.toggleModal({
       show: true,
@@ -166,7 +175,7 @@ class OneServicePage extends React.Component {
             <div className="row">
               {/* ------------------------------------------------ VENDOR DETAILS --------------------------------- */}
               <div className="col-md-4 col-lg-4 col-sm-6 col-12">
-                <img
+                <MEImage
                   className="w-100 me-anime-open-in"
                   style={{
                     marginBottom: 6,
@@ -175,6 +184,7 @@ class OneServicePage extends React.Component {
                     objectFit: "contain",
                   }}
                   src={vendor.logo ? vendor.logo.url : notFound}
+                  image={vendor?.logo}
                   alt={vendor.name}
                 />
                 {!vendor?.is_published && <RibbonBanner />}
@@ -301,7 +311,7 @@ class OneServicePage extends React.Component {
                 </h1>
 
                 <p
-                  className="cool-font make-me-dark"
+                  className="cool-font make-me-dark rich-text-container"
                   id="test-vendor-description"
                   data-vendor-description={vendor?.description}
                   dangerouslySetInnerHTML={{ __html: vendor?.description }}
@@ -436,8 +446,7 @@ const mapStoreToProps = (store) => {
   };
 };
 const mapDispatchToProps = {
-    toggleModal: reduxToggleUniversalModal,
-    updateVendorsInRedux: reduxLoadServiceProviders,
-
-  };
+  toggleModal: reduxToggleUniversalModal,
+  updateVendorsInRedux: reduxLoadServiceProviders,
+};
 export default connect(mapStoreToProps, mapDispatchToProps)(OneServicePage);

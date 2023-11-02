@@ -97,7 +97,7 @@ class AboutUsPage extends React.Component {
             ) : null}
             <center>{image && this.renderImage(image)}</center>
             <div
-              className="community-about-text cool-font make-me-dark"
+              className="community-about-text cool-font make-me-dark rich-text-container"
               style={{ fontSize: "large", textAlign: "justify" }}
               dangerouslySetInnerHTML={{ __html: paragraphContent }}
             ></div>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MECard from "../MECard";
 import METextField from "../METextField";
 import METextView from "../METextView";
-import MEButton from "../MEButton";
+// import MEButton from "../MEButton";
 import MEDropdown from "../MEDropdown";
 import MEAutoComplete from "../MEAutoComplete";
 import MERadio from "../MERadio";
@@ -12,6 +12,7 @@ import MECheckBoxes from "../MECheckBoxGroup";
 import MEUploader from "../MEFileSelector";
 import MEChipMaker from "../MEChipMaker";
 import MERichTextEditor from "../MERichTextEditor/MERichTextEditor";
+import UploadQuestionaire from "../UploadQuestionaire";
 
 const INPUT = "input";
 const TEXTAREA = "textarea";
@@ -24,8 +25,8 @@ const CHIPS = "chips";
 const FILE = "file";
 const HTMLFIELD = "html-field";
 //added field for date types
-const DATE = "date"
-const DATE_TIME = "datetime-local"
+const DATE = "date";
+const DATE_TIME = "datetime-local";
 
 export const BAD = "bad";
 export const GOOD = "good";
@@ -70,9 +71,11 @@ export default class FormGenerator extends Component {
     );
   }
 
-  handleFields(name, value) {
+  handleFields(name, value, others = {}) {
     const { formData } = this.state;
-    this.setState({ formData: { ...formData, [name]: value } });
+    this.setState({
+      formData: { ...formData, [name]: value, ...(others || {}) },
+    });
   }
   getAutoComplete(formObject, key) {
     return (
@@ -147,7 +150,7 @@ export default class FormGenerator extends Component {
   getValue = (name, defaultValue = null, field = null) => {
     let { formData } = this.state;
     let val = formData[name];
-    if (field?.fieldType === INPUT && !val) return ""; 
+    if (field?.fieldType === INPUT && !val) return "";
     if (!val) {
       formData = { ...formData, [name]: defaultValue };
       // this.setState({ formData });
@@ -189,9 +192,29 @@ export default class FormGenerator extends Component {
       </div>
     );
   }
+
+  cleanup() {
+    const arr = [
+      "size",
+      "size_text",
+      "copyright",
+      "underAge",
+      "copyright_att",
+      "guardian_info",
+      "permission_key",
+      "permission_notes",
+    ];
+    const data = this.state.formData || {};
+    for (let field of arr) {
+      delete data[field];
+    }
+
+    this.setState({ formData: data });
+  }
   handleFileSelection(formObject, file) {
     if (!file) {
       this.setState({ imageInfo: "" });
+      this.cleanup();
       return this.handleFields(formObject.name, file);
     }
     if (file.originalSize.size > 999999) {
@@ -201,11 +224,24 @@ export default class FormGenerator extends Component {
     } else {
       this.setState({ imageInfo: "" });
     }
-    this.handleFields(formObject.name, file.croppedFile);
+    this.handleFields(formObject.name, file.croppedFile, {
+      size_text: file?.croppedSize?.text,
+      size: file?.croppedSize?.size,
+    });
+  }
+
+  organiseMediaToCheck(obj, file) {
+    const { mediaToCheck } = this.state;
+    const name = obj.name;
+    const rem = (mediaToCheck || []).filter((n) => n !== name);
+    if (!file) return rem;
+
+    return [...rem, name];
   }
 
   getFileUploader(formObject, key) {
-    const { resetters } = this.state;
+    const { resetters, formData } = this.state;
+    const userHasSelectedImages = formData[formObject.name];
     return (
       <div key={key} className="small-form-spacing">
         {this.labelOrNot(formObject)}
@@ -217,9 +253,29 @@ export default class FormGenerator extends Component {
             this.handleFileSelection(formObject, file);
             this.setState({
               resetters: { ...resetters, [formObject.name]: removeFxn },
+              mediaToCheck: this.organiseMediaToCheck(formObject, file), // Just a way to track when images are actually selected
             });
           }}
         />
+        {userHasSelectedImages && (
+          <UploadQuestionaire
+            data={this.state.formData}
+            onChange={(name, value, extras) => {
+              this.setState({
+                formData: {
+                  ...this.state.formData,
+                  [name]: value,
+                  ...(extras || {}),
+                },
+              });
+            }}
+            // onStateChange={(data) =>
+            //   this.setState({
+            //     formData: { ...this.state.formData, ...(data || {}) },
+            //   })
+            // }
+          />
+        )}
       </div>
     );
   }
@@ -331,7 +387,7 @@ export default class FormGenerator extends Component {
     // const { fields } = this.props;
     if (!fields || fields.length === 0) return <small></small>;
     return fields.map((formItem, index) => {
-      if (!formItem || formItem === {}) return <i></i>;
+      if (!formItem || Object.keys(formItem).length === 0) return <i></i>;
       switch (formItem?.type?.toLowerCase()) {
         case INPUT:
           return this.getInput(formItem, index);
@@ -404,10 +460,41 @@ export default class FormGenerator extends Component {
     return false;
   }
 
+  invalidQuestionaire() {
+    const { copyright, underAge, guardian_info } = this.state.formData;
+
+    const { mediaToCheck } = this.state;
+
+    if (!mediaToCheck || !mediaToCheck?.length) return false; // No media has been selected
+
+    if (!copyright) {
+      this.setError(
+        "Copyright: Please use images you have permission to use. If you do, tick 'Yes'"
+      );
+
+      return true;
+    }
+
+    if (underAge && !guardian_info) {
+      this.setError(
+        "Underage: If images contain under age kids, please add details of their guardians"
+      );
+      return true;
+    }
+
+    return false;
+  }
   onSubmit(e) {
     const { onSubmit } = this.props;
     if (!onSubmit) return;
-    if (this.requiredFieldIsEmpty()) {
+    this.setState({ notification: null });
+
+    // Note: In terms of image and copyright validation, the current procedure is implemented
+    // under the assumption that forms only select one image. As we implement more features
+    // that require multiple images, we wld need to come back and make a few tweaks to validate
+    // each single image/file selection for copyright...
+    if (this.invalidQuestionaire() || this.requiredFieldIsEmpty()) {
+      this.setState({ loading: false });
       // if any required field is empty
       onSubmit(e, { isNotComplete: true });
       return;
@@ -499,42 +586,48 @@ export default class FormGenerator extends Component {
   render() {
     var { animate, className, style, title, elevate, moreActions, fields } =
       this.props;
+
     const animationClass = animate ? "me-open-in" : "";
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
-      <MECard className={`${animationClass} ${className}`} style={style}>
-        <METextView
-          containerStyle={{ width: "100%" }}
-          style={{ color: "black", fontSize: 18, textAlign: "center" }}
-        >
-          {title}
-        </METextView>
-        <form onSubmit={this.onSubmit}>
+      <MECard
+        className={`${animationClass} ${className}`}
+        style={{ padding: 0, marginBottom: 0, ...(style || {}) }}
+      >
+        <div className="form-gen-inner-wrapper">
+          <METextView
+            containerStyle={{ width: "100%" }}
+            style={{ color: "black", fontSize: 18, textAlign: "center" }}
+          >
+            {title}
+          </METextView>
+          {/* <form onSubmit={this.onSubmit}> */}
           {this.createAndEjectForm(fields)}
 
           <br />
           <div>{this.displayInformation()}</div>
           <div>{this.displayImageWarning()}</div>
-          <div style={{ display: "flex" }}>
-            <div style={{ marginLeft: "auto" }}>
-              {moreActions}
-              <MEButton
-                containerStyle={{
-                  padding: "10px 12px",
-                  fontSize: 18,
-                }}
-              >
-                {this.state.loading && (
-                  <i
-                    className="fa fa-spinner fa-spin"
-                    style={{ marginRight: 5, color: "green" }}
-                  />
-                )}{" "}
-                {this.props.actionText}
-              </MEButton>
-            </div>
+        </div>
+
+        <div style={{ display: "flex", background: "#f9f9f9", marginTop: 10 }}>
+          <div style={{ marginLeft: "auto", display: "flex" }}>
+            {moreActions}
+            <button
+              style={{ background: "green", color: "white" }}
+              className="touchable-opacity me-flat-btn"
+              onClick={(e) => this.onSubmit(e)}
+            >
+              {this.state.loading && (
+                <i
+                  className="fa fa-spinner fa-spin"
+                  style={{ marginRight: 5, color: "white" }}
+                />
+              )}{" "}
+              {this.props.actionText}
+            </button>
           </div>
-        </form>
+        </div>
+        {/* </form> */}
       </MECard>
     );
   }

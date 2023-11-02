@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./StorySheet.css";
 import DefaultClass from "../../../Shared/Classes/DefaultClass";
-import { getHumanFriendlyDate } from "../../../Utils";
+import { getHumanFriendlyDate, fetchCopyrightData } from "../../../Utils";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 
@@ -96,6 +96,7 @@ export default class StorySheet extends Component {
       is_published,
     } = this.props;
     //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
+    
     var testimonialData = {
       id: id,
       // is_approved: is_approved,
@@ -110,6 +111,8 @@ export default class StorySheet extends Component {
       title: title,
       vendor_id: vendor ? vendor.id : "",
       image: file,
+      ...fetchCopyrightData(file?.info),
+      
     };
     const date = getHumanFriendlyDate(created_at);
     const creatorName = this.getUser();
@@ -171,9 +174,7 @@ export default class StorySheet extends Component {
           )}
 
           <div className="sheet-content-area">
-            <h4>
-              {creatorName}{" "}
-            </h4>
+            <h4>{creatorName} </h4>
             <div className="sheet-details">
               <p>{date}</p>
               <div style={{ display: "flex" }}>
@@ -244,7 +245,7 @@ export default class StorySheet extends Component {
                 {title}
               </h6>
               <p
-                className="sheet-text"
+                className="sheet-text rich-text-container"
                 // style={{ "--story-body-height": "300px" }}
                 dangerouslySetInnerHTML={{ __html: body }}
               ></p>

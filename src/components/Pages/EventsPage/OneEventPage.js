@@ -11,6 +11,7 @@ import {
   locationFormatJSX,
   smartString,
   parseJSON,
+  fetchCopyrightData,
 } from "../../Utils";
 import ShareButtons from "../../Shared/ShareButtons";
 import Seo from "../../Shared/Seo";
@@ -31,6 +32,7 @@ import StoryForm from "../ActionsPage/StoryForm";
 import ICSEventCreator from "./ICSEventCreator";
 import AddToGoogleCalendar from "./AddToGoogleCalendar";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import MEImage from "../../Shared/MEImage";
 // import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -50,6 +52,7 @@ class OneEventPage extends React.Component {
       const json = await apiCall("events.info", { event_id: id });
       if (json.success) {
         this.setState({ event: json.data });
+        console.log("I brought event", json);
       } else {
         this.setState({ error: json.error });
       }
@@ -85,6 +88,7 @@ class OneEventPage extends React.Component {
       ...(parseJSON(event?.location) || {}),
       end_date_and_time: event?.end_date_and_time?.slice(0, 16),
       start_date_and_time: event?.start_date_and_time?.slice(0, 16),
+      ...fetchCopyrightData(event?.image?.info),
     };
     this.props.toggleModal({
       show: true,
@@ -280,7 +284,7 @@ class OneEventPage extends React.Component {
   renderEventLocation = (event) => {
     return (
       <>
-        {(event?.is_published && event?.external_link) && (
+        {event?.is_published && event?.external_link && (
           <MEButton
             onClick={(e) => {
               e.preventDefault();
@@ -358,7 +362,7 @@ class OneEventPage extends React.Component {
           <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
             <div className="row">
               <div className="col-12 col-lg-4" style={{ marginBottom: 15 }}>
-                <img
+                <MEImage
                   style={{
                     width: "100%",
                     maxHeight: "250px",
@@ -367,6 +371,7 @@ class OneEventPage extends React.Component {
                   }}
                   className="test-event-image"
                   src={event.image ? event.image.url : notFound}
+                  image={event?.image}
                   alt=""
                 />
                 {!event?.is_published && <RibbonBanner />}
@@ -528,7 +533,7 @@ class OneEventPage extends React.Component {
               <div className="col-12 col-lg-8">
                 <div className="text">
                   <p
-                    className="cool-font make-me-dark events-about-content test-event-body"
+                    className="cool-font make-me-dark events-about-content test-event-body rich-text-container"
                     dangerouslySetInnerHTML={{ __html: event.description }}
                   ></p>
                   <br />

@@ -87,8 +87,7 @@ class Graphs extends React.Component {
       const value = getCircleGraphData(
         this.props.goals,
         graphPars.key,
-        pref_eq,
-        display_prefs
+        pref_eq
       );
 
       const target = graphPars.target;

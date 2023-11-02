@@ -5,6 +5,17 @@
   --app-theme-orange-lighter: #fba930;
   --app-theme-error: #d44b4b;
 }
+
+
+.form-gen-inner-wrapper{ 
+  padding:0px 30px;
+}
+.rich-text-container p, .rich-text-container ul, .rich-text-container ol {
+  margin: 1em !important;
+}
+.rich-text-container ul, .rich-text-container ol {
+  padding-left: 2.5em !important ;
+}
 .shared-badge {
   padding: 2px 13px;
   color: var(--app-theme-orange);
@@ -2625,6 +2636,9 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .form-gen-inner-wrapper{ 
+    padding: 0px 15px;
+  }
   .new-sign-in {
     padding: 10px;
     font-size: 13px;
@@ -3893,6 +3907,7 @@
   width: var(--modal-width-size);
 }
 .me-modal-title {
+  font-weight: bold;
   text-align: left !important;
 }
 

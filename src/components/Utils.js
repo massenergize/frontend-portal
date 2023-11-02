@@ -4,7 +4,7 @@ import qs from "qs";
 import { ME_STATES } from "./States";
 import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
-
+import { COPYRIGHT_OPTIONS } from "./Constants";
 
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
@@ -506,48 +506,40 @@ export function locationFormatJSX(location) {
   const state = location.state ? stateAbbreviation(location.state) : "";
   return (
     <span>
-      <b>{firstLine}</b>
-      {location.city ? `, ${location.city}` : ""}
+      {location?.building && (
+        <>
+          <span>
+            {location?.building} {"\n"}
+          </span>{" "}
+          <br />
+        </>
+      )}
+      {location?.room && (
+        <>
+          <span>{location?.room}</span> <br />
+        </>
+      )}
+      <span>{firstLine}</span>
+      <br />
+      {location.city ? `${location.city}` : ""}
       {state ? `, ${state}` : ""}
     </span>
   );
 }
 
-export function getCircleGraphData(
-  goalObj,
-  which,
-  pref_eq = null,
-  display_prefs = {}
-) {
+export function getCircleGraphData(goalObj, which, pref_eq = null) {
   if (goalObj === null) return 0;
-  let value = 0;
+  //let value = 0;
   switch (which) {
     case "households": {
-      if (display_prefs.manual_households)
-        value += goalObj.initial_number_of_households;
-      if (display_prefs.state_households)
-        value += goalObj.attained_number_of_households;
-      if (display_prefs.platform_households)
-        value += goalObj.organic_attained_number_of_households;
-      return value;
+      return goalObj.displayed_number_of_households;
     }
     case "actions-completed": {
-      if (display_prefs.manual_actions)
-        value += goalObj.initial_number_of_actions;
-      if (display_prefs.state_actions)
-        value += goalObj.attained_number_of_actions;
-      if (display_prefs.platform_actions)
-        value += goalObj.organic_attained_number_of_actions;
-      return value;
+      return goalObj.displayed_number_of_actions;
     }
     case "carbon-reduction": {
       const factor = pref_eq?.value || PREF_EQ_DEFAULT.value; // hard coding tree equivalence if none chosen
-      if (display_prefs.manual_carbon)
-        value += goalObj.initial_carbon_footprint_reduction;
-      if (display_prefs.state_carbon)
-        value += goalObj.attained_carbon_footprint_reduction;
-      if (display_prefs.platform_carbon)
-        value += goalObj.organic_attained_carbon_footprint_reduction;
+      var value = goalObj.displayed_carbon_footprint_reduction;
       value = calcEQ(value, factor);
       return value;
     }
@@ -556,15 +548,10 @@ export function getCircleGraphData(
   }
 }
 
-export function createCircleGraphData(
-  goalObj,
-  which,
-  pref_eq = null,
-  display_prefs
-) {
+export function createCircleGraphData(goalObj, which, pref_eq = null) {
   if (goalObj === null) return {};
 
-  const value = getCircleGraphData(goalObj, which, pref_eq, display_prefs);
+  const value = getCircleGraphData(goalObj, which, pref_eq);
   switch (which) {
     case "households": {
       // if everything is zero, we dont want the graph to not show, we want a big ball of greyish NOTHING... loool
@@ -663,51 +650,62 @@ export function recurringDetails(event) {
   return recurringDetails;
 }
 
-
-export const commonKeys = (obj, keys) =>
-  Object.fromEntries(
+export const commonKeys = (obj, keys) => {
+  // create a new object that contains only the key-value pairs where the keys are found in 'keys'
+  const res = Object.fromEntries(
     Object.entries(obj).filter(([key]) => keys.includes(key))
   );
+  return res;
+};
 
+export const isEmpty = (value) => {
+  if (
+    value === undefined ||
+    value === null ||
+    value === "" ||
+    value?.length === 0 ||
+    value === "null" ||
+    value === "undefined"
+  )
+    return true;
+  return false;
+};
+export const sanitizeValue = (val) => {
+  if (isEmpty(val)) {
+    return null;
+  }
 
-  export const isEmpty = (value) => {
-    if (
-      value === undefined ||
-      value === null ||
-      value === "" ||
-      value?.length === 0 ||
-      value === "null" ||
-      value === "undefined"
-    )
-      return true;
-    return false;
-  };
- export const sanitizeValue = (val) => {
-   if (isEmpty(val)) {
-     return null;
-   }
+  return val;
+};
 
-   return val;
- };
-
- /**
-  * Returns a Javascript object from a string
-  * @param {*} val
-  * @returns
-  */
- export const parseJSON = (val) => {
-   if (typeof val === "object") return val;
-   const sanitizedValue = sanitizeValue("" + val);
-   if (!sanitizedValue) return null;
-   try {
-     return JSON.parse(sanitizedValue);
-   } catch (error) {
-     console.log(`JSON: Error parsing ${val} to JSON`);
-     return {};
-   }
- };
-
+/**
+ * Returns a Javascript object from a string
+ * @param {*} val
+ * @returns
+ */
+export const parseJSON = (val) => {
+  if (typeof val === "object") return val;
+  const sanitizedValue = sanitizeValue("" + val);
+  if (!sanitizedValue) return null;
+  try {
+    return JSON.parse(sanitizedValue);
+  } catch (error) {
+    console.log(`JSON: Error parsing ${val} to JSON`);
+    return {};
+  }
+};
 
 export const capitalizeMe = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
+
+export const fetchCopyrightData = (info) => {
+  if (!info) return {};
+  return {
+    copyright: info?.has_copyright_permission || false,
+    copyright_att: info?.copyright_att || "",
+    underAge: info?.has_children || false,
+    guardian_info: info?.guardian_info || "",
+    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key 
+  };
+};
