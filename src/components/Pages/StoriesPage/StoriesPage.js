@@ -256,6 +256,9 @@ class StoriesPage extends React.Component {
     if (!this.props.tagCols) {
       return <LoadingCircle />;
     }
+    if (!this.props.stories) {
+      return <LoadingCircle />;
+    }
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
     const sub_title =
