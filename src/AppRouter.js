@@ -185,11 +185,11 @@ class AppRouter extends Component {
       props.setAuthState(isJustFromGoogleAUth[0]);
       return null;
     }
-    if(getTakeTourFromURL() === "true" && !props.showTour){
-      props.setTourState(true)
-      return null
+    if (getTakeTourFromURL() === "true" && !props.showTour) {
+      props.setTourState(true);
+      return null;
     }
-    return null
+    return null;
   }
 
   async fetch() {
@@ -226,6 +226,7 @@ class AppRouter extends Component {
       // for lazy loading: load these first
       Promise.all([
         apiCall("communities.features.flags.list", body),
+        apiCall("communities.features.flags.list", body),
         apiCall("home_page_settings.info", body),
         apiCall("user.portal.menu.list", body),
         apiCall("impact_page_settings.info", body),
@@ -233,10 +234,12 @@ class AppRouter extends Component {
         .then((res) => {
           const [
             communityFeatures,
+            communityFeatures,
             homePageResponse,
             mainMenuResponse,
             impactPageResponse,
           ] = res;
+          this.props.saveCommunityFeatureFlags(communityFeatures.data);
           this.props.saveCommunityFeatureFlags(communityFeatures.data);
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);

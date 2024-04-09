@@ -48,8 +48,8 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
   CELEBRATE,
-  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
-  MARK_REQUEST_AS_DONE,
+  TOGGLE_UNIVERSAL_TOAST,
+  SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
 } from "../actions/types";
 
 import {
@@ -90,7 +90,7 @@ const initialState = {
   communityAdmins: null,
   __is_sandbox: false,
   __is_custom_site: true,
-  pageRequests:{}
+  pageRequests: {},
 };
 
 function alreadyInSubTeam(state, action) {
@@ -109,10 +109,10 @@ export default function pageReducer(state = initialState, action) {
   switch (action.type) {
     /**************************/
     case SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX:
-        return {
-            ...state,
-            communityFeatureFlags: action.payload,
-        };
+      return {
+        ...state,
+        communityFeatureFlags: action.payload,
+      };
 
     case MARK_REQUEST_AS_DONE:
       return {
@@ -500,7 +500,7 @@ export default function pageReducer(state = initialState, action) {
     case TOGGLE_UNIVERSAL_TOAST:
       return {
         ...state,
-        toastOptions:action.payload,
+        toastOptions: action.payload,
       };
 
     /**************************/
@@ -511,10 +511,8 @@ export default function pageReducer(state = initialState, action) {
   }
 }
 
-
 export const reducerForUniversalToast = (state = {}, action = {}) => {
   switch (action.type) {
-
     default:
       return state;
   }
