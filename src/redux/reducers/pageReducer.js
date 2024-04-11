@@ -48,7 +48,7 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
   CELEBRATE,
-  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX
+  TOGGLE_UNIVERSAL_TOAST,
 } from "../actions/types";
 
 import {
@@ -106,11 +106,6 @@ export default function pageReducer(state = initialState, action) {
   var team;
   switch (action.type) {
     /**************************/
-    case SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX:
-      return {
-          ...state,
-          communityFeatureFlags: action.payload,
-      };
 
     case CELEBRATE:
       return {

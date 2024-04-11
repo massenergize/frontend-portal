@@ -64,7 +64,7 @@ import {
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
   reduxLoadSettings,
-  reduxToggleUniversalToastAction, reduxSaveFeatureFlagsAction
+  reduxToggleUniversalToastAction,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -216,7 +216,6 @@ class AppRouter extends Component {
     if (community) {
       // for lazy loading: load these first
       Promise.all([
-        apiCall("communities.features.flags.list", body),
         apiCall("home_page_settings.info", body),
         apiCall("menus.list", body),
         apiCall("about_us_page_settings.info", body),
@@ -235,7 +234,6 @@ class AppRouter extends Component {
       ])
         .then((res) => {
           const [
-            communityFeatures,
             homePageResponse,
             mainMenuResponse,
             aboutUsPageResponse,
@@ -252,7 +250,6 @@ class AppRouter extends Component {
             communityActionList,
             settings,
           ] = res;
-          this.props.saveCommunityFeatureFlags(communityFeatures.data);
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -687,7 +684,6 @@ const mapDispatchToProps = {
   toggleUniversalModal: reduxToggleUniversalModal,
   reduxLoadSettings,
   setAuthState:setAuthStateAction,
-  toggleToast:reduxToggleUniversalToastAction,
-  saveCommunityFeatureFlags: reduxSaveFeatureFlagsAction,
+  toggleToast:reduxToggleUniversalToastAction
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);
