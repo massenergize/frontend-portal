@@ -9,7 +9,7 @@ let firebaseConfig = {};
 
 if (IS_PROD || IS_CANARY) {
   firebaseConfig = {
-    apiKey: PROD_FIREBASE_API_KEY,
+    apiKey: "AIzaSyDgSkiZGtco0b8ntN9Yo7U-urRzXhQNOo8",
     authDomain: "massenergize-prod-auth.firebaseapp.com",
     databaseURL: "https://massenergize-prod-auth.firebaseio.com",
     projectId: "massenergize-prod-auth",
