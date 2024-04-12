@@ -42,18 +42,10 @@ class NavBarBurger extends React.Component {
     this.setState({ menuOpen: !this.state.menuOpen });
   }
   render() {
-    var communitylogo = null;
+    const { links, community, pageData} = this.props;
+    var communitylogo = community?.logo?.url;
     var header = null;
-    var communityName = this.props.pageData
-      ? this.props.pageData.community.name
-      : "communities";
-    if (this.props.pageData) {
-      //header = section(this.props.pageData, 'HomeHeader');
-      communitylogo = this.props.pageData.community.logo
-        ? this.props.pageData.community.logo.url
-        : null;
-    }
-    const { links } = this.props;
+    var communityName = pageData.community.name || "communities";
 
     const styles = {
       container: {
@@ -404,6 +396,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     firebaseAuthSettings: store.firebaseAuthSettings,
     fireAuth: store.fireAuth,
+    community: store.page.community,
   };
 };
 export default connect(mapStoreToProps, {
