@@ -9,7 +9,7 @@ let firebaseConfig = {};
 
 if (IS_PROD || IS_CANARY) {
   firebaseConfig = {
-    apiKey: "AIzaSyDgSkiZGtco0b8ntN9Yo7U-urRzXhQNOo8",
+    apiKey: PROD_FIREBASE_API_KEY,
     authDomain: "massenergize-prod-auth.firebaseapp.com",
     databaseURL: "https://massenergize-prod-auth.firebaseio.com",
     projectId: "massenergize-prod-auth",
@@ -30,6 +30,7 @@ if (IS_PROD || IS_CANARY) {
     appId: "1:72842344535:web:9b1517b1b3d2e818",
   };
 }
+console.log(" co",firebaseConfig );
 
 firebase.initializeApp(firebaseConfig);
 
