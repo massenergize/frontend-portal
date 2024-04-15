@@ -29,7 +29,7 @@ if (IS_PROD || IS_CANARY) {
     appId: "1:72842344535:web:9b1517b1b3d2e818",
   };
 }
-console.log(" co",firebaseConfig );
+console.log("co:"," just checking......" );
 
 firebase.initializeApp(firebaseConfig);
 
