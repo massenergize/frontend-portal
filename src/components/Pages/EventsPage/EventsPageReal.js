@@ -499,6 +499,11 @@ class EventsPage extends React.Component {
         );
         const recurringDetailString = recurringDetails(event);
 
+        const isShared = thisCommunity?.id?.toString() !== event?.community?.id?.toString();
+        console.log("=== COMMUNITY ===", thisCommunity?.id?.toString(), event?.community?.id?.toString())
+
+        console.log("=== IS SHARED ===", isShared)
+
         return (
           // can we format the cancelled message to be an overlay instead of going above?
           <div
@@ -530,7 +535,7 @@ class EventsPage extends React.Component {
               user={this.props.user}
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
-              isShared={thisCommunity?.id !== event?.community?.id}
+              isShared={isShared}
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,
