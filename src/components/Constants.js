@@ -30,3 +30,24 @@ export const COPYRIGHT_OPTIONS = {
     notes: "Image may be protected by copyright, and I don't have permission",
   },
 };
+
+export const PAGE_ESSENTIALS = {
+  HOMEPAGE: {
+    key: "homepage",
+    routes: [
+      "home_page_settings.info",
+      "menus.list",
+      "communities.features.flags.list",
+      "impact_page_settings.info"
+    ],
+  },
+  ACTIONS: {
+    key: "actions",
+    routes: [
+      "home_page_settings.info",
+      "menus.list",
+      "communities.features.flags.list",
+      "impact_page_settings.info"
+    ],
+  },
+};
