@@ -20,10 +20,14 @@ import URLS from "../../../api/urls";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import METabView from "../Widgets/METabView/METabView";
 import MEModal from "../Widgets/MEModal";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadTeams,
+  reduxToggleGuestAuthDialog,
+} from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
-import { PREF_EQ_DEFAULT } from "../../Utils"
+import { PREF_EQ_DEFAULT } from "../../Utils";
 import Seo from "../../Shared/Seo";
+import { PAGE_ESSENTIALS } from "../../Constants.js";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -40,12 +44,10 @@ class OneTeamPage extends React.Component {
     this.itemSelected = this.itemSelected.bind(this);
   }
 
-  async fetch(id) {
+  handleTeamJson = (json) => {
     const { teamsStats } = this.props;
     if (!teamsStats) return;
-
     try {
-      const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
         const teamStats = teamsStats.find(
@@ -61,16 +63,43 @@ class OneTeamPage extends React.Component {
       }
     } catch (err) {
       this.setState({ error: err.toString() });
+    }
+  };
+  async fetch(id) {
+    const { teamsStats } = this.props;
+    if (!teamsStats) return;
+    try {
+      const json = await apiCall("teams.info", { team_id: id });
+      this.handleTeamJson(json);
+    } catch (err) {
+      this.setState({ error: err.toString() });
     } finally {
       this.setState({ loading: false });
     }
   }
 
-  componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "OneTeamPage"});
+  fetchEssentials = () => {
+    const { community } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
     const { id } = this.props.match.params;
-    this.fetch(id);
-    // TODO: get show option from local storage
+    Promise.all([
+      ...PAGE_ESSENTIALS.ONE_TEAM.routes.map((route) => apiCall(route, payload)),
+      apiCall("teams.info", { team_id: id }),
+    ])
+      .then((response) => {
+        const [teamStats, teamJson] = response;
+        this.props.loadTeamStats(teamStats.data);
+        this.handleTeamJson(teamJson)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  componentDidMount() {
+    window.gtag("set", "user_properties", { page_title: "OneTeamPage" });
+    this.fetchEssentials()
     this.setState({ showOption: "Graph" });
   }
 
@@ -588,7 +617,10 @@ const mapStoreToProps = (store) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { toggleGuestAuthDialog: reduxToggleGuestAuthDialog },
+    {
+      toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+      loadTeamStats: reduxLoadTeams,
+    },
     dispatch
   );
 };

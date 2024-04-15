@@ -95,4 +95,18 @@ export const PAGE_ESSENTIALS = {
     key: "contactus",
     routes: ["contact_us_page_settings.info"],
   },
+  TEAMS: {
+    key: "teams",
+    routes: [
+      "teams_page_settings.info",
+      "graphs.actions.completed",
+      "teams.stats",
+    ],
+  },
+  ONE_TEAM: {
+    key: "one-team",
+    routes: [
+      "teams.stats",
+    ],
+  },
 };
