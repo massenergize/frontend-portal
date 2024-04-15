@@ -6,11 +6,33 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import MEButton from "../Widgets/MEButton";
 import Seo from "../../Shared/Seo";
+import { reduxLoadDonatePage } from "../../../redux/actions/pageActions";
+import { bindActionCreators } from "redux";
+import { PAGE_ESSENTIALS } from "../../Constants";
+import { apiCall } from "../../../api/functions";
 //import Tooltip from "../Widgets/CustomTooltip";
 
 class DonatePage extends React.Component {
+  fetchEssentials = () => {
+    const { community } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
+
+    Promise.all(
+      PAGE_ESSENTIALS.DONATE.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData] = response;
+        this.props.loadPageData(pageData.data);
+       
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "DonatePage"});
+    window.gtag("set", "user_properties", { page_title: "DonatePage" });
+    this.fetchEssentials();
   }
 
   renderVideo(videoLink) {
@@ -30,7 +52,7 @@ class DonatePage extends React.Component {
     const sub_title =
       pageData && pageData.sub_title ? pageData.sub_title : null;
     const description = pageData.description ? pageData.description : null;
-    const {community} = this.props
+    const { community } = this.props;
     return (
       <>
         {Seo({
@@ -87,4 +109,7 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
   };
 };
-export default connect(mapStoreToProps, null)(DonatePage);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ loadPageData: reduxLoadDonatePage }, dispatch);
+};
+export default connect(mapStoreToProps, mapDispatchToProps)(DonatePage);

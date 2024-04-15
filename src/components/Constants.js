@@ -40,7 +40,6 @@ export const PAGE_ESSENTIALS = {
       "communities.features.flags.list",
       "impact_page_settings.info",
       // "tag_collections.list",
-      
     ],
   },
   ACTIONS: {
@@ -57,7 +56,7 @@ export const PAGE_ESSENTIALS = {
       "events_page_settings.info",
       "tag_collections.list",
       "events.list",
-      "events.exceptions.list"
+      "events.exceptions.list",
     ],
   },
   TESTIMONIALS: {
@@ -83,5 +82,17 @@ export const PAGE_ESSENTIALS = {
       "tag_collections.list",
       "graphs.actions.completed",
     ],
+  },
+  ABOUT_US: {
+    key: "aboutus",
+    routes: ["about_us_page_settings.info", "donate_page_settings.info"],
+  },
+  DONATE: {
+    key: "donate",
+    routes: ["donate_page_settings.info"],
+  },
+  CONTACT_US: {
+    key: "contactus",
+    routes: ["contact_us_page_settings.info"],
   },
 };
