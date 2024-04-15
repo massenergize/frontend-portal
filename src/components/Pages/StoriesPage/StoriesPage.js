@@ -23,14 +23,21 @@ import MECard from "../Widgets/MECard";
 import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
-import { reduxLoadTestimonials, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadTagCols,
+  reduxLoadTestimonials,
+  reduxLoadTestimonialsPage,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
-import { TESTIMONIAL } from "../../Constants";
+import { PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import AddButton from "../../Shared/AddButton";
 import Seo from "../../Shared/Seo";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import { apiCall } from "../../../api/functions";
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -55,8 +62,30 @@ class StoriesPage extends React.Component {
     this.triggerGuestDialog = this.triggerGuestDialog.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
+    
+
+    Promise.all(
+      PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
+        apiCall(route, payload)
+      )
+    )
+      .then((response) => {
+        const [pageData, tagCols, stories] = response;
+        this.props.loadTestimonialsPage(pageData.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.loadTestimonials(stories.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "TestimonialsPage" });
+    this.fetchEssentials();
   }
 
   addMeToSelected(param, reset = false) {
@@ -119,28 +148,28 @@ class StoriesPage extends React.Component {
   renderAddForm = () => {
     const { user, stories, updateItemInRedux, communityData } = this.props;
     let _props = {};
-    if (!user){
+    if (!user) {
       _props = {
         ..._props,
         overrideOpen: () =>
           this.triggerGuestDialog && this.triggerGuestDialog(),
       };
     }
-      return (
-        <StoryFormButtonModal
-          ModalType={TESTIMONIAL}
-          reduxProps={{
-            reduxItems: stories,
-            updateItemInRedux: updateItemInRedux,
-          }}
-          {..._props}
-        >
-          <AddButton
-            type={"Testimonial"}
-            community={communityData?.community?.name}
-          />
-        </StoryFormButtonModal>
-      );
+    return (
+      <StoryFormButtonModal
+        ModalType={TESTIMONIAL}
+        reduxProps={{
+          reduxItems: stories,
+          updateItemInRedux: updateItemInRedux,
+        }}
+        {..._props}
+      >
+        <AddButton
+          type={"Testimonial"}
+          community={communityData?.community?.name}
+        />
+      </StoryFormButtonModal>
+    );
     //     }
     // return null
   };
@@ -261,10 +290,7 @@ class StoriesPage extends React.Component {
     }
 
     const title = pageData && pageData.title ? pageData.title : "Testimonials";
-    const sub_title =
-      pageData && pageData.sub_title
-        ? pageData.sub_title
-        : "";
+    const sub_title = pageData && pageData.sub_title ? pageData.sub_title : "";
     const description = pageData.description ? pageData.description : "";
 
     const stories =
@@ -455,6 +481,9 @@ const mapStoreToProps = (store) => {
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
-  toggleModal:reduxToggleUniversalModal,
-  updateItemInRedux:reduxLoadTestimonials
+  toggleModal: reduxToggleUniversalModal,
+  updateItemInRedux: reduxLoadTestimonials,
+  loadTestimonials: reduxLoadTestimonials,
+  loadTestimonialsPage: reduxLoadTestimonialsPage,
+  loadTagCollections: reduxLoadTagCols,
 })(StoriesPage);

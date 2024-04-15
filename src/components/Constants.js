@@ -38,7 +38,9 @@ export const PAGE_ESSENTIALS = {
       "home_page_settings.info",
       "menus.list",
       "communities.features.flags.list",
-      "impact_page_settings.info"
+      "impact_page_settings.info",
+      // "tag_collections.list",
+      
     ],
   },
   ACTIONS: {
@@ -56,6 +58,22 @@ export const PAGE_ESSENTIALS = {
       "tag_collections.list",
       "events.list",
       "events.exceptions.list"
+    ],
+  },
+  TESTIMONIALS: {
+    key: "testimonials",
+    routes: [
+      "testimonials_page_settings.info",
+      "tag_collections.list",
+      "testimonials.list",
+    ],
+  },
+  VENDORS: {
+    key: "vendors",
+    routes: [
+      "vendors_page_settings.info",
+      "tag_collections.list",
+      "vendors.list",
     ],
   },
 };
