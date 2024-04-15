@@ -44,10 +44,18 @@ export const PAGE_ESSENTIALS = {
   ACTIONS: {
     key: "actions",
     routes: [
-      "home_page_settings.info",
-      "menus.list",
-      "communities.features.flags.list",
-      "impact_page_settings.info"
+      "actions_page_settings.info",
+      "tag_collections.list",
+      "actions.list",
+    ],
+  },
+  EVENTS: {
+    key: "events",
+    routes: [
+      "events_page_settings.info",
+      "tag_collections.list",
+      "events.list",
+      "events.exceptions.list"
     ],
   },
 };

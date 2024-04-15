@@ -25,15 +25,23 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadEventExceptions,
+  reduxLoadEvents,
+  reduxLoadEventsPage,
+  reduxLoadTagCols,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "../ActionsPage/StoryForm";
-import { EVENT } from "../../Constants";
+import { EVENT, PAGE_ESSENTIALS } from "../../Constants";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import Seo from "../../Shared/Seo";
+import { apiCall } from "../../../api/functions";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -63,8 +71,27 @@ class EventsPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
+    Promise.all(
+      PAGE_ESSENTIALS.EVENTS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, tagCols, events, exceptions] = response;
+        this.props.loadEventsPage(pageData.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.loadEvents(events.data);
+        this.props.loadExceptions(exceptions.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "EventsPage" });
+    this.fetchEssentials();
   }
 
   static getDerivedStateFromProps = (props, state) => {
@@ -121,11 +148,11 @@ class EventsPage extends React.Component {
     const { user, events, updateEventsInRedux, communityData } = this.props;
     let _props = {};
     if (!user) {
-    _props = {
-      ..._props,
-      overrideOpen: () =>
-        this.triggerGuestDialog && this.triggerGuestDialog(),
-    };
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
     }
     return (
       <StoryFormButtonModal
@@ -500,7 +527,7 @@ class EventsPage extends React.Component {
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,
-                  ...(parseJSON(event?.location)) || {},
+                  ...(parseJSON(event?.location) || {}),
                   end_date_and_time: event?.end_date_and_time?.slice(0, 16),
                   start_date_and_time: event?.start_date_and_time?.slice(0, 16),
                 };
@@ -543,6 +570,7 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
+    community: store.page.community,
     homePageData: store.page.homePage,
     collection: store.page.collection,
     user: store.user.info,
@@ -558,5 +586,9 @@ const mapStoreToProps = (store) => {
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
   toggleModal: reduxToggleUniversalModal,
-  updateEventsInRedux:reduxLoadEvents
+  updateEventsInRedux: reduxLoadEvents,
+  loadEventsPage: reduxLoadEventsPage,
+  loadEvents: reduxLoadEvents,
+  loadTagCollections: reduxLoadTagCols,
+  loadExceptions: reduxLoadEventExceptions,
 })(withRouter(EventsPage));
