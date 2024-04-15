@@ -76,4 +76,12 @@ export const PAGE_ESSENTIALS = {
       "vendors.list",
     ],
   },
+  IMPACT_PAGE: {
+    key: "impact",
+    routes: [
+      "graphs.communities.impact",
+      "tag_collections.list",
+      "graphs.actions.completed",
+    ],
+  },
 };
