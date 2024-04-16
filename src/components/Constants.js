@@ -109,4 +109,13 @@ export const PAGE_ESSENTIALS = {
       "teams.stats",
     ],
   },
+  ONE_ACTION: {
+    key: "one-action",
+    routes: [
+      "graphs.actions.completed",
+      "actions.list",
+      "testimonials.list",
+
+    ],
+  },
 };
