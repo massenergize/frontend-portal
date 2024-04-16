@@ -131,9 +131,9 @@ class EventsPage extends React.Component {
       this.state.checked_values,
       this.state.searchText,
       (event, word) =>
-        event.name.toLowerCase().includes(word) ||
-        event.description.toLowerCase().includes(word) ||
-        event.featured_summary.toLowerCase().includes(word)
+        event.name.toLowerCase()?.includes(word) ||
+        event.description.toLowerCase()?.includes(word) ||
+        event.featured_summary.toLowerCase()?.includes(word)
     );
   }
   onSearchTextChange(text) {
@@ -455,7 +455,7 @@ class EventsPage extends React.Component {
     let ids = window.location.href.split("?ids=")[1];
     if (ids) {
       let idsArr = ids.split("-");
-      events = events.filter((event) => idsArr.includes(event.id.toString()));
+      events = events.filter((event) => idsArr?.includes(event.id.toString()));
     }
 
     const thisCommunity = this.props?.pageData?.community;
@@ -487,8 +487,8 @@ class EventsPage extends React.Component {
       );
       const page = sorted_events.map((event) => {
         const dateString = dateFormatString(
-          new Date(event.start_date_and_time),
-          new Date(event.end_date_and_time)
+          new Date(event?.start_date_and_time),
+          new Date(event?.end_date_and_time)
         );
         const recurringDetailString = recurringDetails(event);
 
@@ -497,21 +497,21 @@ class EventsPage extends React.Component {
           <div
             style={{
               opacity:
-                (event.recurring_details &&
-                  event.recurring_details.is_cancelled) ||
-                (exceptions.includes(event.id) ? 0.3 : 1),
+                (event?.recurring_details &&
+                  event?.recurring_details.is_cancelled) ||
+                (exceptions?.includes(event.id) ? 0.3 : 1),
               position: "relative",
             }}
-            key={event.id.toString()}
+            key={event?.id.toString()}
             className="col-md-6 col-lg-6 col-sm-6"
           >
             <p style={{ color: "red" }}>
-              {event.recurring_details && event.recurring_details.is_cancelled
+              {event?.recurring_details && event.recurring_details.is_cancelled
                 ? "This event has been cancelled temporarily."
                 : ""}
             </p>
             <p style={{ color: "red" }}>
-              {exceptions.includes(event.id)
+              {exceptions?.includes(event.id)
                 ? "This event has been rescheduled temporarily. See the rescheduled event."
                 : ""}{" "}
             </p>

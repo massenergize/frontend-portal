@@ -75,6 +75,13 @@ export const PAGE_ESSENTIALS = {
       "vendors.list",
     ],
   },
+  ONE_VENDOR: {
+    key: "vendors",
+    routes: [
+      "vendors.list",
+      "testimonials.list",
+    ],
+  },
   IMPACT_PAGE: {
     key: "impact",
     routes: [
@@ -123,7 +130,6 @@ export const PAGE_ESSENTIALS = {
     routes: [
       "events_page_settings.info",
       "events.list",
-
     ],
   },
 };

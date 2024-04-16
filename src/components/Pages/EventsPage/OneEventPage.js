@@ -55,7 +55,7 @@ class OneEventPage extends React.Component {
     const { id } = this.props.match.params;
 
     Promise.all([
-      ...PAGE_ESSENTIALS.ONE_ACTION.routes.map((route) =>
+      ...PAGE_ESSENTIALS.ONE_EVENT.routes.map((route) =>
         apiCall(route, payload)
       ),
       apiCall("events.info", { event_id: id }),
@@ -63,7 +63,7 @@ class OneEventPage extends React.Component {
       .then((response) => {
         const [pageData, events, eventItem] = response;
         this.props.loadEventsPage(pageData?.data);
-        this.props.updateEventsInRedux(events?.data)
+        this.props.updateEventsInRedux(events?.data);
         this.handleJson(eventItem);
       })
       .catch((err) => {
@@ -73,16 +73,16 @@ class OneEventPage extends React.Component {
 
   handleJson(json) {
     if (json.success) {
-      this.setState({ event: json.data });
+      this.setState({ event: json.data, loading: false });
     } else {
-      this.setState({ error: json.error });
+      this.setState({ error: json.error, loading: false });
     }
   }
 
   async fetch(id) {
     try {
       const json = await apiCall("events.info", { event_id: id });
-      this.handleJson(json)
+      this.handleJson(json);
     } catch (err) {
       this.setState({ error: err.toString() });
     } finally {
@@ -94,7 +94,7 @@ class OneEventPage extends React.Component {
     window.gtag("set", "user_properties", { page_title: "OneEventPage" });
     const { id } = this.props.match.params;
     // this.fetch(id);
-    this.fetchEssentials()
+    this.fetchEssentials();
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
