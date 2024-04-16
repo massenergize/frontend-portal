@@ -118,4 +118,12 @@ export const PAGE_ESSENTIALS = {
 
     ],
   },
+  ONE_EVENT: {
+    key: "one-event",
+    routes: [
+      "events_page_settings.info",
+      "events.list",
+
+    ],
+  },
 };

@@ -22,12 +22,13 @@ import * as moment from "moment";
 import { isMobile } from "react-device-detect";
 import {
   reduxLoadEvents,
+  reduxLoadEventsPage,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import MEButton from "../Widgets/MEButton";
 import CustomTooltip from "../Widgets/CustomTooltip";
-import { EVENT } from "../../Constants";
+import { EVENT, PAGE_ESSENTIALS } from "../../Constants";
 import StoryForm from "../ActionsPage/StoryForm";
 import ICSEventCreator from "./ICSEventCreator";
 import AddToGoogleCalendar from "./AddToGoogleCalendar";
@@ -47,15 +48,41 @@ class OneEventPage extends React.Component {
     };
   }
 
+  fetchEssentials = () => {
+    const { community } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const { id } = this.props.match.params;
+
+    Promise.all([
+      ...PAGE_ESSENTIALS.ONE_ACTION.routes.map((route) =>
+        apiCall(route, payload)
+      ),
+      apiCall("events.info", { event_id: id }),
+    ])
+      .then((response) => {
+        const [pageData, events, eventItem] = response;
+        this.props.loadEventsPage(pageData?.data);
+        this.props.updateEventsInRedux(events?.data)
+        this.handleJson(eventItem);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  handleJson(json) {
+    if (json.success) {
+      this.setState({ event: json.data });
+    } else {
+      this.setState({ error: json.error });
+    }
+  }
+
   async fetch(id) {
     try {
       const json = await apiCall("events.info", { event_id: id });
-      if (json.success) {
-        this.setState({ event: json.data });
-        console.log("I brought event", json);
-      } else {
-        this.setState({ error: json.error });
-      }
+      this.handleJson(json)
     } catch (err) {
       this.setState({ error: err.toString() });
     } finally {
@@ -66,7 +93,8 @@ class OneEventPage extends React.Component {
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "OneEventPage" });
     const { id } = this.props.match.params;
-    this.fetch(id);
+    // this.fetch(id);
+    this.fetchEssentials()
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;
     this.setState({ pastEvent: pastEvent });
@@ -587,4 +615,5 @@ export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
   toggleModal: reduxToggleUniversalModal,
   updateEventsInRedux: reduxLoadEvents,
+  loadEventsPage: reduxLoadEventsPage,
 })(OneEventPage);
