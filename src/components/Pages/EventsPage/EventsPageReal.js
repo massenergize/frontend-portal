@@ -74,7 +74,7 @@ class EventsPage extends React.Component {
   fetchEssentials = () => {
     const { community } = this.props;
     const { subdomain } = community || {};
-    const payload = { subdomain: subdomain };
+    const payload = { subdomain };
     Promise.all(
       PAGE_ESSENTIALS.EVENTS.routes.map((route) => apiCall(route, payload))
     )

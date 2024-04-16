@@ -132,4 +132,10 @@ export const PAGE_ESSENTIALS = {
       "events.list",
     ],
   },
+  PROFILE_PAGE: {
+    key: "profile",
+    routes: [
+      "teams.stats",
+    ],
+  },
 };
