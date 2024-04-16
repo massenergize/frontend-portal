@@ -191,7 +191,7 @@ class AppRouter extends Component {
   async fetch() {
     const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
-    const body = { subdomain: subdomain };
+    const body = { subdomain };
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
