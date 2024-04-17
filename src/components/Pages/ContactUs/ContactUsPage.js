@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {
   reduxLoadCommunityAdmins,
   reduxLoadContactUsPage,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
 import Seo from "../../Shared/Seo";
@@ -13,15 +14,21 @@ import { PAGE_ESSENTIALS } from "../../Constants";
 
 class ContactUsPage extends React.Component {
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain: subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.CONTACT_US.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.CONTACT_US.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
         const [pageData] = response;
         this.props.loadPageData(pageData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.CONTACT_US.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -220,10 +227,12 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
     communityAdmins: store.page.communityAdmins,
     pageData: store.page.contactUsPage,
+    pageRequests: store.page.pageRequests,
   };
 };
 
 export default connect(mapStoreToProps, {
   reduxLoadCommunityAdmins,
   loadPageData: reduxLoadContactUsPage,
+  reduxMarkRequestAsDone
 })(ContactUsPage);

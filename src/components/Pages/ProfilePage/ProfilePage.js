@@ -30,6 +30,7 @@ import {
   reduxTeamAddHouse,
   reduxToggleUniversalModal,
   reduxLoadTeams,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -150,9 +151,12 @@ class ProfilePage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.PROFILE_PAGE.key];
+    if (page?.loaded) return;
 
     Promise.all(
       PAGE_ESSENTIALS.PROFILE_PAGE.routes.map((route) => apiCall(route, payload))
@@ -160,6 +164,10 @@ class ProfilePage extends React.Component {
       .then((response) => {
         const [teams] = response;
         this.props.loadTeams(teams?.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.PROFILE_PAGE.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -908,6 +916,7 @@ const mapStoreToProps = (store) => {
     fireAuth: store.fireAuth,
     authState: store.authState,
     firebaseAuthSettings: store.firebaseAuthSettings,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = {
@@ -927,6 +936,7 @@ const mapDispatchToProps = {
   loadTeams: reduxLoadTeams,
   reduxSetPreferredEquivalence,
   toggleModal: reduxToggleUniversalModal,
+  reduxMarkRequestAsDone
 };
 export default connect(
   mapStoreToProps,
