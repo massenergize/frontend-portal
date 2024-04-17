@@ -35,10 +35,6 @@ class HomePage extends React.Component {
     };
   }
 
-  fetchCoreItems = async () => {
-   // page data, event data, community data, feature flags
-  };
-
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);

@@ -8,6 +8,7 @@ import {
   reduxLoadCommunitiesStats,
   reduxLoadCommunityData,
   reduxLoadTagCols,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import "chartjs-plugin-datalabels";
@@ -29,9 +30,12 @@ import { apiCall } from "../../../api/functions";
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
-    const payload = { subdomain: subdomain };
+    const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.IMPACT_PAGE.key];
+    if (page?.loaded) return;
 
     Promise.all(
       PAGE_ESSENTIALS.IMPACT_PAGE.routes.map((route) => apiCall(route, payload))
@@ -41,6 +45,10 @@ class ImpactPage extends React.Component {
         this.props.reduxLoadCommunitiesStats(stats.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.loadCommunityData(comData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.IMPACT_PAGE.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -435,13 +443,15 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     links: store.links,
     communityActionList: store.page.communityActionList,
+    pageRequests: store.page.pageRequests,
   };
 };
 
 export default connect(mapStoreToProps, {
   reduxLoadCommunitiesStats,
   loadTagCollections: reduxLoadTagCols,
-  loadCommunityData: reduxLoadCommunityData
+  loadCommunityData: reduxLoadCommunityData, 
+  reduxMarkRequestAsDone
 })(withRouter(ImpactPage));
 
 export const ImpactGraphWrapper = ({

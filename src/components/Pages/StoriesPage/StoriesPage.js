@@ -27,6 +27,7 @@ import {
   reduxLoadTagCols,
   reduxLoadTestimonials,
   reduxLoadTestimonialsPage,
+  reduxMarkRequestAsDone,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
@@ -63,11 +64,12 @@ class StoriesPage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain: subdomain };
     
-
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.TESTIMONIALS.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
         apiCall(route, payload)
@@ -78,6 +80,10 @@ class StoriesPage extends React.Component {
         this.props.loadTestimonialsPage(pageData.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.loadTestimonials(stories.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.TESTIMONIALS.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -477,6 +483,7 @@ const mapStoreToProps = (store) => {
     tagCols: filterTagCollections(store.page.testimonials, store.page.tagCols),
     communityData: store.page.communityData,
     community: store.page.community,
+    pageRequests: store.page.pageRequests,
   };
 };
 export default connect(mapStoreToProps, {
@@ -486,4 +493,5 @@ export default connect(mapStoreToProps, {
   loadTestimonials: reduxLoadTestimonials,
   loadTestimonialsPage: reduxLoadTestimonialsPage,
   loadTagCollections: reduxLoadTagCols,
+  reduxMarkRequestAsDone
 })(StoriesPage);

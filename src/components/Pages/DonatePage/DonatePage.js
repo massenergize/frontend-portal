@@ -6,7 +6,7 @@ import LoadingCircle from "../../Shared/LoadingCircle";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import MEButton from "../Widgets/MEButton";
 import Seo from "../../Shared/Seo";
-import { reduxLoadDonatePage } from "../../../redux/actions/pageActions";
+import { reduxLoadDonatePage, reduxMarkRequestAsDone } from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
 import { PAGE_ESSENTIALS } from "../../Constants";
 import { apiCall } from "../../../api/functions";
@@ -14,16 +14,21 @@ import { apiCall } from "../../../api/functions";
 
 class DonatePage extends React.Component {
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain: subdomain };
-
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.DONATE.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.DONATE.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
         const [pageData] = response;
         this.props.loadPageData(pageData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.DONATE.key]: { loaded: true },
+        });
        
       })
       .catch((err) => {
@@ -107,9 +112,10 @@ const mapStoreToProps = (store) => {
     homePageData: store.page.homePageData,
     donatePage: store.page.donatePage,
     community: store.page.community,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ loadPageData: reduxLoadDonatePage }, dispatch);
+  return bindActionCreators({ loadPageData: reduxLoadDonatePage, reduxMarkRequestAsDone }, dispatch);
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(DonatePage);

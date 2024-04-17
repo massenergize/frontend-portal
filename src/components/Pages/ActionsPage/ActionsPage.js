@@ -15,6 +15,7 @@ import {
   reduxLoadActions,
   reduxLoadActionsPage,
   reduxLoadTagCols,
+  reduxMarkRequestAsDone,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
@@ -99,10 +100,11 @@ class ActionsPage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain };
-
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ACTIONS.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.ACTIONS.routes.map((route) => apiCall(route, payload))
     )
@@ -111,6 +113,10 @@ class ActionsPage extends React.Component {
         this.props.loadActionsPage(pageData.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.loadActions(actions.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ACTIONS.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -660,6 +666,7 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    pageRequests: store.page.pageRequests,
   };
 };
 
@@ -674,9 +681,10 @@ const mapDispatchToProps = {
   celebrate: celebrateWithConfetti,
   toggleModal: reduxToggleUniversalModal,
   updateActionsInRedux: reduxLoadActions,
-  loadActionsPage:reduxLoadActionsPage, 
-  loadTagCollections: reduxLoadTagCols, 
-  loadActions: reduxLoadActions
+  loadActionsPage: reduxLoadActionsPage,
+  loadTagCollections: reduxLoadTagCols,
+  loadActions: reduxLoadActions,
+  reduxMarkRequestAsDone,
 };
 export default connect(
   mapStoreToProps,

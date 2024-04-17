@@ -28,6 +28,7 @@ import {
   reduxLoadServiceProviders,
   reduxLoadServiceProvidersPage,
   reduxLoadTagCols,
+  reduxMarkRequestAsDone,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
@@ -54,10 +55,11 @@ class ServicesPage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain: subdomain };
-
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.VENDORS.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.VENDORS.routes.map((route) => apiCall(route, payload))
     )
@@ -66,6 +68,10 @@ class ServicesPage extends React.Component {
         this.props.loadVendorsPage(pageData.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.updateVendorsInRedux(vendors.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.VENDORS.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -427,6 +433,8 @@ const mapStoreToProps = (store) => {
       store.page.serviceProviders,
       store.page.tagCols
     ),
+    pageRequests: store.page.pageRequests,
+    
   };
 };
 const mapDispatchToProps = {
@@ -435,5 +443,6 @@ const mapDispatchToProps = {
   loadVendorsPage: reduxLoadServiceProvidersPage,
   loadTagCollections: reduxLoadTagCols,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
+  reduxMarkRequestAsDone
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ServicesPage);

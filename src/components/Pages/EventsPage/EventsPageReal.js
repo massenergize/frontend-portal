@@ -30,6 +30,7 @@ import {
   reduxLoadEvents,
   reduxLoadEventsPage,
   reduxLoadTagCols,
+  reduxMarkRequestAsDone,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
@@ -72,9 +73,11 @@ class EventsPage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.EVENTS.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.EVENTS.routes.map((route) => apiCall(route, payload))
     )
@@ -84,6 +87,10 @@ class EventsPage extends React.Component {
         this.props.loadTagCollections(tagCols.data);
         this.props.loadEvents(events.data);
         this.props.loadExceptions(exceptions.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.EVENTS.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -581,6 +588,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
     communityData: store.page.communityData,
+    pageRequests: store.page.pageRequests,
   };
 };
 export default connect(mapStoreToProps, {
@@ -591,4 +599,5 @@ export default connect(mapStoreToProps, {
   loadEvents: reduxLoadEvents,
   loadTagCollections: reduxLoadTagCols,
   loadExceptions: reduxLoadEventExceptions,
+  reduxMarkRequestAsDone
 })(withRouter(EventsPage));

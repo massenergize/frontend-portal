@@ -9,6 +9,7 @@ import {
   reduxLoadAboutUsPage,
   reduxLoadCommunityAdmins,
   reduxLoadDonatePage,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 // Carousel from npm react-multi-carousel
 import "react-multi-carousel/lib/styles.css";
@@ -19,9 +20,12 @@ import { apiCall } from "../../../api/functions";
 
 class AboutUsPage extends React.Component {
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
-    const payload = { subdomain: subdomain };
+    const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ABOUT_US.key];
+    if (page?.loaded) return;
 
     Promise.all(
       PAGE_ESSENTIALS.ABOUT_US.routes.map((route) => apiCall(route, payload))
@@ -30,6 +34,10 @@ class AboutUsPage extends React.Component {
         const [pageData, donatePageData] = response;
         this.props.loadPageData(pageData.data);
         this.props.loadDonatePage(donatePageData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ABOUT_US.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -154,6 +162,7 @@ const mapStoreToProps = (store) => {
     donatePageData: store.page.donatePage,
     homePageData: store.page.homePageData,
     links: store.links,
+    pageRequests: store.page.pageRequests,
   };
 };
 
@@ -161,4 +170,5 @@ export default connect(mapStoreToProps, {
   reduxLoadCommunityAdmins,
   loadDonatePage: reduxLoadDonatePage,
   loadPageData: reduxLoadAboutUsPage,
+  reduxMarkRequestAsDone
 })(AboutUsPage);
