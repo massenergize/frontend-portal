@@ -138,4 +138,10 @@ export const PAGE_ESSENTIALS = {
       "teams.stats",
     ],
   },
+  SETTINGS: {
+    key: "settings",
+    routes: [
+      "settings.list",
+    ],
+  },
 };
