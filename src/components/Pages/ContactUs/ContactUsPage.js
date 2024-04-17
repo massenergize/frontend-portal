@@ -16,7 +16,7 @@ class ContactUsPage extends React.Component {
   fetchEssentials = () => {
     const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
-    const payload = { subdomain: subdomain };
+    const payload = { subdomain };
     const page = (pageRequests || {})[PAGE_ESSENTIALS.CONTACT_US.key];
     if (page?.loaded) return;
     Promise.all(

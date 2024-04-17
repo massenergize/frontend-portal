@@ -27,6 +27,7 @@ import {
   reduxLoadActions,
   reduxLoadTestimonials,
   reduxLoadCommunityData,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -88,10 +89,14 @@ class OneActionPage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain };
     const { id } = this.props.match.params;
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_ACTION.key];
+    const loaded = (page || {})[id];
+    if (loaded) return this.handleActionJson(loaded);
 
     Promise.all([
       ...PAGE_ESSENTIALS.ONE_ACTION.routes.map((route) =>
@@ -105,6 +110,13 @@ class OneActionPage extends React.Component {
         this.props.loadTestimonials(stories?.data);
         this.props.updateActionsInRedux(actions?.data);
         this.handleActionJson(actionItem);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ONE_ACTION.key]: {
+            ...(page || {}),
+            [id]: actionItem,
+          },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -1189,6 +1201,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     collection: store.page.collection,
     showTour: store.page.showTour,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = {
@@ -1206,6 +1219,7 @@ const mapDispatchToProps = {
   updateActionsInRedux: reduxLoadActions,
   loadTestimonials: reduxLoadTestimonials,
   loadCommunityData: reduxLoadCommunityData,
+  reduxMarkRequestAsDone,
 };
 
 export default connect(

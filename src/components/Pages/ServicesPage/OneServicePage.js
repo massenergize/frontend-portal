@@ -17,6 +17,7 @@ import { PAGE_ESSENTIALS, VENDOR } from "../../Constants";
 import {
   reduxLoadServiceProviders,
   reduxLoadTestimonials,
+  reduxMarkRequestAsDone,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
@@ -35,9 +36,11 @@ class OneServicePage extends React.Component {
   }
 
   fetchEssentials = () => {
-    const { community } = this.props;
+    const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain: subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_VENDOR.key];
+    if (page?.loaded) return;
     Promise.all(
       PAGE_ESSENTIALS.ONE_VENDOR.routes.map((route) => apiCall(route, payload))
     )
@@ -45,6 +48,10 @@ class OneServicePage extends React.Component {
         const [vendors, stories] = response;
         this.props.updateVendorsInRedux(vendors.data);
         this.props.loadTestimonials(stories.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ONE_VENDOR.key]: { loaded: true },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -463,11 +470,13 @@ const mapStoreToProps = (store) => {
     links: store.links,
     community: store.page.community,
     user: store.user.info,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = {
   toggleModal: reduxToggleUniversalModal,
   updateVendorsInRedux: reduxLoadServiceProviders,
   loadTestimonials: reduxLoadTestimonials,
+  reduxMarkRequestAsDone
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(OneServicePage);
