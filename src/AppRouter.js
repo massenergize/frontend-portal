@@ -426,12 +426,13 @@ class AppRouter extends Component {
     const initialMenu = content?.map(m => this.prependPrefix(m, prefix)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
-    this.setState({ navBarMenu: finalMenu });
+    this.setState({ navBarMenu: content });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    const footerLinks = this.addPrefix(footerContent[0].content.links);
+    // const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerLinks = footerContent[0].content.links || [];
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",

@@ -144,4 +144,10 @@ export const PAGE_ESSENTIALS = {
       "settings.list",
     ],
   },
+  POLICIES: {
+    key: "policies",
+    routes: [
+      "policies.list",
+    ],
+  },
 };
