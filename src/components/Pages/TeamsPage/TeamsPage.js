@@ -90,9 +90,8 @@ class TeamsPage extends React.Component {
   componentDidMount() {
     window.gtag('set', 'user_properties', {page_title: "TeamsPage"});
     const subdomain =
-      this.props.communityData &&
-      this.props.communityData.community &&
-      this.props.communityData.community.subdomain;
+      this.props.community &&
+      this.props.community.subdomain;
     this.getAnyUpdatedTeamChanges(subdomain);
   }
 
@@ -103,7 +102,8 @@ class TeamsPage extends React.Component {
   }
 
   render() {
-    const { teamsStats, communityData, links, pageData, user } = this.props;
+    const { teamsStats, links, pageData, user, community } = this.props;
+
     if (pageData == null) return <LoadingCircle />;
     if (teamsStats === null) {
       return (
@@ -118,7 +118,7 @@ class TeamsPage extends React.Component {
     const title =
       pageData && pageData.title
         ? pageData.title
-        : "Teams in " + communityData.community.name;
+        : "Teams in " +community.name;
     const sub_title =
       pageData && pageData.sub_title
         ? pageData.sub_title
@@ -133,7 +133,7 @@ class TeamsPage extends React.Component {
           title: "Teams",
           description: "",
           url: `${window.location.pathname}`,
-          site_name: communityData.community.name,
+          site_name: community.name,
         })}
         {redirectID && <Redirect to={`${links.teams + "/" + redirectID} `} />}
         {createTeamModalOpen && (
@@ -208,7 +208,7 @@ class TeamsPage extends React.Component {
                       text={"Team"}
                       type={"team"}
                       className="phone-vanish"
-                      community={communityData?.community?.name}
+                      community={community?.name}
                     />
                     // <MEButton
                     //   style={{ width: "100%", margin: 0 }}
@@ -461,6 +461,7 @@ const mapStoreToProps = (store) => {
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
+    community: store.page.community,
   };
 };
 const mapDispatchToProps = {
