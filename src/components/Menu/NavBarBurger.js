@@ -42,10 +42,10 @@ class NavBarBurger extends React.Component {
     this.setState({ menuOpen: !this.state.menuOpen });
   }
   render() {
-    const { links, community, pageData} = this.props;
-    var communitylogo = community?.logo?.url;
+    const { links, community} = this.props;
+    const communitylogo = community?.logo?.url;
     var header = null;
-    var communityName = pageData.community.name || "communities";
+    const communityName = community.name || "communities";
 
     const styles = {
       container: {
