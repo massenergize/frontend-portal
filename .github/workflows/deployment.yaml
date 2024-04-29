@@ -42,7 +42,7 @@ jobs:
          
       - name: Install dependencies  
         run: |
-              npm  install
+            npm  i --legacy-peer-deps
       
       - name: Build App 🏗
         run: |
