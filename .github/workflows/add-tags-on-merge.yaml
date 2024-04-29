@@ -2,7 +2,7 @@ name: Generate Tag & Update Version Number
 on:
   push:
     branches:
-      - development
+      - setup-better-ci-cd
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

@@ -33,7 +33,7 @@ jobs:
             echo "REACT_APP_PROD_FIREBASE_API_KEY=${{ secrets.REACT_APP_PROD_FIREBASE_API_KEY }}" >> $GITHUB_ENV
         
       - name: Set Dev Environment Variables 🚀
-        if:  startsWith(github.ref, 'refs/tags/development') 
+        if:  startsWith(github.ref, 'refs/tags/development') ||  startsWith(github.ref, 'refs/tags/setup-better-ci-cd')
         run: |
             echo "Setting Development branch secrets..."
             echo "Using repository secrets for $BRANCH branch..."
@@ -70,7 +70,7 @@ jobs:
           message: 'Deploying ${{ github.ref }}'
 
       - name: Deploying  to Dev 🚀
-        if: startsWith(github.ref, 'refs/tags/development') 
+        if: startsWith(github.ref, 'refs/tags/development') ||  startsWith(github.ref, 'refs/tags/setup-better-ci-cd')
         uses: data-intuitive/netlify-deploy-site@v1
         with:
           auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
