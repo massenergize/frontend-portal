@@ -21,7 +21,7 @@ jobs:
 
       - name: Read old BUILD_VERSION from config.json
         run: |
-          OLD_VERSION=$(jq -r '.BUILD_VERSION' app/config/config.json)
+          OLD_VERSION=$(jq -r '.BUILD_VERSION' src/config/config.json)
           echo "Github ref: $GITHUB_REF"
           echo "Old BUILD_VERSION: $OLD_VERSION"
 
@@ -86,7 +86,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
-          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < app/config/config.json)
+          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < src/config/config.json)
           MESSAGE="Workflow in $BRANCH_NAME with build version : $BUILD_VERSION has completed with status: *${{ job.status }}*"
           STATUS_EMOJI=":white_check_mark:"  # Use appropriate emoji for success status
           if [[ "${{ job.status }}" != "success" ]]; then

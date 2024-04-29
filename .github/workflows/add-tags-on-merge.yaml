@@ -22,12 +22,12 @@ jobs:
 
       - name: Read old BUILD_VERSION from config.json
         run: |
-          OLD_VERSION=$(jq -r '.BUILD_VERSION' app/config/config.json)
+          OLD_VERSION=$(jq -r '.BUILD_VERSION' src/config/config.json)
           echo "Old BUILD_VERSION: $OLD_VERSION"
   
       - name: Update BUILD_VERSION only when in development branch
         run: |
-          CONFIG_PATH="app/config/config.json"
+          CONFIG_PATH="src/config/config.json"
           # Read the config.json file
           CONFIG=$(<"$CONFIG_PATH")
           # Extract old BUILD_VERSION
@@ -47,7 +47,7 @@ jobs:
 
       - name: Create and push tag
         run: |
-          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < app/config/config.json)
+          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < src/config/config.json)
           BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
           TAG_NAME="$BRANCH_NAME@$BUILD_VERSION"
           echo "BUILD_VERSION: $BUILD_VERSION"
