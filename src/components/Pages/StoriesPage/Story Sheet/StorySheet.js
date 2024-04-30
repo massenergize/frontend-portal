@@ -141,7 +141,7 @@ export default class StorySheet extends Component {
                 src={
                   this.state.fallbackImg ||
                   file?.url ||
-                  DefaultClass.getTestimonialsDefaultPhoto()
+                  DefaultClass.getTestimonialsDefaultPhoto() 
                 }
                 className="sheet-image"
                 alt="sheet media"

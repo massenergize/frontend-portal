@@ -31,6 +31,7 @@ import {
   reduxToggleUniversalModal,
   reduxLoadTeams,
   reduxMarkRequestAsDone,
+  reduxLoadCommunities,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -162,8 +163,9 @@ class ProfilePage extends React.Component {
       PAGE_ESSENTIALS.PROFILE_PAGE.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
-        const [teams] = response;
+        const [teams,communities] = response;
         this.props.loadTeams(teams?.data);
+        this.props.reduxLoadCommunities(communities?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.PROFILE_PAGE.key]: { loaded: true },
@@ -936,7 +938,8 @@ const mapDispatchToProps = {
   loadTeams: reduxLoadTeams,
   reduxSetPreferredEquivalence,
   toggleModal: reduxToggleUniversalModal,
-  reduxMarkRequestAsDone
+  reduxMarkRequestAsDone, 
+  reduxLoadCommunities
 };
 export default connect(
   mapStoreToProps,

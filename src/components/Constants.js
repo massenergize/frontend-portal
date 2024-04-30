@@ -136,6 +136,7 @@ export const PAGE_ESSENTIALS = {
     key: "profile",
     routes: [
       "teams.stats",
+      "communities.list"
     ],
   },
   SETTINGS: {
