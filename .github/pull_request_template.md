@@ -5,9 +5,12 @@ https://github.com/massenergize/massenergize-campaigns/main/.github/CONTRIBUTING
 -->
 ####  Summary / Highlights
 
+
 #### Details (Give details about what this PR accomplishes, include any screenshots etc.)
 
+
 #### Testing Steps (Provide details on how your changes can be tested)
+
 
 #### Requirements
 <!-- (Update "[ ]" to "[x]" to check a box) -->
@@ -20,6 +23,7 @@ https://github.com/massenergize/massenergize-campaigns/main/.github/CONTRIBUTING
 * [ ] I linked this PR to the relevant issue.
 * [ ] I moved the linked issue from the "Sprint backlog" to "In progress" when I started this.
 * [ ] I moved the linked issue to "QA Verification" now that it is ready to merge.
+
 
 **What kind of change does this PR introduce?** (check at least one)
 
@@ -50,3 +54,5 @@ If yes, please describe the impact and migration path for existing applications:
 - [ ] New/updated tests are included
 
 **Other information: Any otherthing we need to know**
+
+

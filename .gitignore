@@ -36,3 +36,4 @@ cypress/videos
 cypress/reports
 
 .netlify/
+.idea/
