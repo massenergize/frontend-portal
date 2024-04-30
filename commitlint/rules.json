@@ -1,0 +1,22 @@
+[
+  {
+    "type": "BRANCH_NAME",
+    "match": "^master|main|dev|develop|test|release|migrate-nextjs-13((feat|fix|refactor|ci|dev|revert)-\\d{8}-[a-zA-Z0-9.]+(-[a-zA-Z0-9.]+)*)|((feat|fix|refactor|ci|dev|revert)-[a-zA-Z0-9.]+)$",
+    "tips": "Invalid branch name, the rules: \n\nTemplate: prefix-yyyyMMdd-description, prefix-description\nPrefix: feat, fix, refactor, ci, dev, revert\nFullName: master, main, dev, develop, test, release"
+  },
+  {
+    "type": "USER_NAME",
+    "match": "^[a-zA-Z0-9.-_]+$",
+    "tips": "Invalid git user.name, please config:\n\ngit config --global user.name <YOUR_NAME>\ngit config --global user.name YOUR_NAME"
+  },
+  {
+    "type": "USER_EMAIL",
+    "match": "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",
+    "tips": "Invalid git user.email, please config:\n\ngit config --global user.name <YOUR_NAME>\ngit config --global user.email YOUR_EMAIL"
+  },
+  {
+    "type": "MESSAGE",
+    "match": "^((feat|fix|docs|style|refactor|perf|build|ci|chore|revert|improvement|test)(\\(\\S+\\))?: \\S+.*(\\n\\n(.+\\n*)+){0,2})|(Initial commit)$",
+    "tips": "Invalid commit message, the rules:\ntype: feat,fix,docs,style,refactor,perf,build,ci,chore,revert,improvement,test\n\ntype(scope): subject\nBLANK LINE\nbody\nBLANK LINE\nfooter"
+  }
+]
