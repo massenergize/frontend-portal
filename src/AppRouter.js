@@ -223,7 +223,7 @@ class AppRouter extends Component {
       Promise.all([
         apiCall("communities.features.flags.list", body),
         apiCall("home_page_settings.info", body),
-        apiCall("menus.list", body),
+        apiCall("user.portal.menu.list", body),
         apiCall("impact_page_settings.info", body),
       ])
         .then((res) => {
