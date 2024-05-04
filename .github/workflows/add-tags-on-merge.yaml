@@ -1,0 +1,62 @@
+name: Generate Tag & Update Version Number
+on:
+  push:
+    branches:
+      - development
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    environment:
+      name: Production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Read old BUILD_VERSION from config.json
+        run: |
+          OLD_VERSION=$(jq -r '.BUILD_VERSION' src/config/config.json)
+          echo "Old BUILD_VERSION: $OLD_VERSION"
+  
+      - name: Update BUILD_VERSION only when in development branch
+        run: |
+          CONFIG_PATH="src/config/config.json"
+          # Read the config.json file
+          CONFIG=$(<"$CONFIG_PATH")
+          # Extract old BUILD_VERSION
+          OLD_VERSION=$(jq -r '.BUILD_VERSION' <<< "$CONFIG")
+          echo "Old BUILD_VERSION: $OLD_VERSION"
+          # Increment the BUILD_VERSION using semantic versioning
+          NEW_VERSION=$(echo "$OLD_VERSION" | awk -F '.' '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+          echo "New BUILD_VERSION: $NEW_VERSION"
+          # Update the config.json file with the new BUILD_VERSION
+          UPDATED_CONFIG=$(echo "$CONFIG" | jq --arg new_version "$NEW_VERSION" '.BUILD_VERSION = $new_version')
+          echo "$UPDATED_CONFIG" > "$CONFIG_PATH"
+          git config --global user.email "me-gh-action-bot@massenergize.org"
+          git config --global user.name "Version Update Bot"
+          git add "$CONFIG_PATH"
+          git commit -m "Bump BUILD_VERSION to $NEW_VERSION"
+          git push origin HEAD:$GITHUB_REF
+
+      - name: Create and push tag
+        run: |
+          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < src/config/config.json)
+          BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
+          TAG_NAME="$BRANCH_NAME@$BUILD_VERSION"
+          echo "BUILD_VERSION: $BUILD_VERSION"
+          echo "Branch name: $BRANCH_NAME"
+          echo "New tag name: $TAG_NAME"
+          git config --global user.email "me-gh-action-bot@massenergize.org"
+          git config --global user.name "Version Update Bot"
+          git tag -a "$TAG_NAME" -m "Version $BUILD_VERSION"
+          git push origin "$TAG_NAME"
+        
+
+    

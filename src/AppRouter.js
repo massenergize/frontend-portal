@@ -64,7 +64,7 @@ import {
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
   reduxLoadSettings,
-  reduxToggleUniversalToastAction, reduxSaveFeatureFlagsAction
+  reduxToggleUniversalToastAction, reduxSaveFeatureFlagsAction,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -147,9 +147,9 @@ class AppRouter extends Component {
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
-    const evaluated = valueFromURL === "true" ? true : false;
+    const evaluated = valueFromURL === "true";
     if (valueFromURL) return this.props.setTourState(evaluated);
-    valueFromStorage = valueFromStorage === "false" ? false : true;
+    valueFromStorage = valueFromStorage !== "false";
     this.props.setTourState(valueFromStorage);
   };
 
@@ -253,6 +253,7 @@ class AppRouter extends Component {
             settings,
           ] = res;
           this.props.saveCommunityFeatureFlags(communityFeatures.data);
+
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
           this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
@@ -440,7 +441,6 @@ class AppRouter extends Component {
           return item.children ? item.children.length > 0 : true;
       }
     });
-
     return this.addPrefix(menu);
   }
 

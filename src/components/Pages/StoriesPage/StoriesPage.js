@@ -212,10 +212,7 @@ class StoriesPage extends React.Component {
 
   renderSideViewStories(stories = []) {
     return (stories || []).map((story, index) => {
-      const creatorName =
-        story && story.preferred_name
-          ? story.preferred_name
-          : story.user.preferred_name; //"...";
+      const creatorName = story?.preferred_name ||story?.user?.preferred_name || story?.user?.full_name; //"...";
       // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
         <div key={index.toString()}>
@@ -254,6 +251,9 @@ class StoriesPage extends React.Component {
     if (pageData == null) return <LoadingCircle />;
 
     if (!this.props.tagCols) {
+      return <LoadingCircle />;
+    }
+    if (!this.props.stories) {
       return <LoadingCircle />;
     }
 
