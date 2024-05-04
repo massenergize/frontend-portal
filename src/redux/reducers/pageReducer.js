@@ -47,14 +47,14 @@ import {
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
-  CELEBRATE
-  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
+  CELEBRATE,
+  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX
 } from "../actions/types";
 
 import {
   getTeamData,
   inSubTeam,
-  inThisTeam,
+  inThisTeam
 } from "../../components/Pages/TeamsPage/utils";
 import { FIRST_SET } from "../actions/pageActions";
 
