@@ -76,32 +76,30 @@ function RenderOptions({
         <small>Save Settings</small>
       </MEButton>
 
-      <Feature name={FLAGS.COMMUNICATION_PREFS}>
-        <MEButton
-          onClick={() => {
-            apiCall("/downloads.sample.user_report", { community_id }).then(
-              (res) => {
-                if (res?.data) {
-                  toggleToast({
-                    open: true,
-                    type: "success",
-                    message: "Your request has been sent to your email.",
-                  });
-                } else {
-                  toggleToast({
-                    type: "error",
-                    open: true,
-                    message:
-                      "An error occurred while processing your request. Try again later.",
-                  });
-                }
+      <MEButton
+        onClick={() => {
+          apiCall("/downloads.sample.user_report", { community_id }).then(
+            (res) => {
+              if (res?.data) {
+                toggleToast({
+                  open: true,
+                  type: "success",
+                  message: "Your request has been sent to your email.",
+                });
+              } else {
+                toggleToast({
+                  type: "error",
+                  open: true,
+                  message:
+                    "An error occurred while processing your request. Try again later.",
+                });
               }
-            );
-          }}
-        >
-          <small>Send yourself a sample email</small>
-        </MEButton>
-      </Feature>
+            }
+          );
+        }}
+      >
+        <small>Send yourself a sample email</small>
+      </MEButton>
     </div>
   );
 }

@@ -69,16 +69,14 @@ function ProfileOptions({
         </div>
       )}
 
-      <Feature name={FLAGS.COMMUNICATION_PREFS}>
-        <div
-          className="link-to touchable-opacity"
-          onClick={() => history.push(`${links.profile}/settings`)}
-        >
-          <span className=" fa fa-bell" />
-          <p>Change communication preferences </p>
-          <i className=" fa fa-long-arrow-right" />
-        </div>
-      </Feature>
+      <div
+        className="link-to touchable-opacity"
+        onClick={() => history.push(`${links.profile}/settings`)}
+      >
+        <span className=" fa fa-bell" />
+        <p>Change communication preferences </p>
+        <i className=" fa fa-long-arrow-right" />
+      </div>
 
       <div
         className="link-to touchable-opacity"
