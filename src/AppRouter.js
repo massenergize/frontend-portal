@@ -180,6 +180,10 @@ class AppRouter extends Component {
       props.setAuthState(isJustFromGoogleAUth[0])
       return null
     }
+    if(getTakeTourFromURL() === "true" && !props.showTour){
+      props.setTourState(true)
+      return null
+    }
     return null
   }
 
