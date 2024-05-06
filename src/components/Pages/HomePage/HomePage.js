@@ -340,7 +340,6 @@ const mapStoreToProps = (store) => {
   return {
     pageData: store.page.homePage,
     events: store.page.events,
-    communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
     is_sandbox: store.page.__is_sandbox,

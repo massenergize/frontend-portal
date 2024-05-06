@@ -309,12 +309,21 @@ class ActionsPage extends React.Component {
     ];
     return (
       <div id="test-actions-main-wrapper">
-        {Seo({
+        {/* {  Seo({
           title: "Actions",
           description: "",
           url: `${window.location.pathname}`,
-          site_name: communityData?.community?.name,
-        })}
+          site_name: this.props?.community?.name,
+        })} */}
+        {
+          <Seo
+            title="Actions"
+            description=""
+            url={window.location.pathname}
+            site_name={this.props?.community?.name}
+          />
+        }
+        
         {this.props.showTour && (
           <ProductTour
             steps={steps}

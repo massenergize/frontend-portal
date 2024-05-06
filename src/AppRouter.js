@@ -423,7 +423,8 @@ class AppRouter extends Component {
       menus.find((menu) => {
         return menu.name === "PortalMainNavLinks";
       }) || {};
-    const initialMenu = content?.map(m => this.prependPrefix(m, prefix)) || [];
+    const initialMenu =
+      content?.map((m) => this.prependPrefix(m, prefix)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
     this.setState({ navBarMenu: content });
@@ -609,7 +610,7 @@ class AppRouter extends Component {
             }}
             message={toastOptions?.message}
           />
-          {Seo({
+          {/* {Seo({
             title: "",
             description: community.about,
             url: `${window.location.pathname}`,
@@ -619,7 +620,18 @@ class AppRouter extends Component {
             created_at: community.updated_at,
             tags: [community.name, community.subdomain],
             site_name: community.name,
-          })}
+          })} */}
+          <Seo
+            title=""
+            description={community.about}
+            site_name={community.name}
+            url={`${window.location.pathname}`}
+            image={community.logo && community.logo.url}
+            keywords={[]}
+            updated_at={community.updated_at}
+            created_at={community.updated_at}
+            tags={[community.name, community.subdomain]}
+          />
 
           {navBarMenu ? (
             <div>
