@@ -25,6 +25,9 @@ import {
   celebrateWithConfetti,
   reduxToggleUniversalModal,
   reduxLoadActions,
+  reduxLoadTestimonials,
+  reduxLoadCommunityData,
+  reduxMarkRequestAsDone,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -52,7 +55,7 @@ import { isMobile } from "react-device-detect";
 import { ACTION_TO_AUTO_START } from "./ActionCard";
 import MEButton from "../Widgets/MEButton";
 import RibbonBanner from "../../Shared/RibbonBanner";
-import { ACTION, TESTIMONIAL } from "../../Constants";
+import { ACTION, PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import MEImage from "../../Shared/MEImage";
 
 /**
@@ -85,11 +88,46 @@ class OneActionPage extends React.Component {
     this.runActionFunction = this.runActionFunction.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const { id } = this.props.match.params;
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_ACTION.key];
+    const loaded = (page || {})[id];
+    if (loaded) return this.handleActionJson(loaded);
+
+    Promise.all([
+      ...PAGE_ESSENTIALS.ONE_ACTION.routes.map((route) =>
+        apiCall(route, payload)
+      ),
+      apiCall("actions.info", { action_id: id }),
+    ])
+      .then((response) => {
+        const [communityData, actions, stories, actionItem] = response;
+        this.props.loadCommunityData(communityData?.data);
+        this.props.loadTestimonials(stories?.data);
+        this.props.updateActionsInRedux(actions?.data);
+        this.handleActionJson(actionItem);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ONE_ACTION.key]: {
+            ...(page || {}),
+            [id]: actionItem,
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "OneActionPage" });
     window.addEventListener("resize", this.chooseFontSize);
-    const { id } = this.props.match.params;
-    this.fetch(id);
+    // const { id } = this.props.match.params;
+    this.fetchEssentials();
+    // this.fetch(id);
     this.chooseFontSize();
   }
   static getDerivedStateFromProps(props, state) {
@@ -101,15 +139,25 @@ class OneActionPage extends React.Component {
     return null;
   }
 
+  handleActionJson(json) {
+    if (json.success) {
+      this.setState({ action: json.data, loading: false });
+      this.checkIfActionShouldStartAutomatically(json.data);
+    } else {
+      this.setState({ error: json.error });
+    }
+  }
+
   async fetch(id) {
     try {
       const json = await apiCall("actions.info", { action_id: id });
-      if (json.success) {
-        this.setState({ action: json.data });
-        this.checkIfActionShouldStartAutomatically(json.data);
-      } else {
-        this.setState({ error: json.error });
-      }
+      this.handleActionJson(json);
+      // if (json.success) {
+      //   this.setState({ action: json.data });
+      //   this.checkIfActionShouldStartAutomatically(json.data);
+      // } else {
+      //   this.setState({ error: json.error });
+      // }
     } catch (err) {
       this.setState({ error: err.toString() });
     } finally {
@@ -1143,6 +1191,7 @@ class OneActionPage extends React.Component {
 }
 const mapStoreToProps = (store) => {
   return {
+    community: store.page.community,
     user: store.user.info,
     todo: store.user.todo,
     done: store.user.done,
@@ -1152,6 +1201,7 @@ const mapStoreToProps = (store) => {
     links: store.links,
     collection: store.page.collection,
     showTour: store.page.showTour,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = {
@@ -1167,6 +1217,9 @@ const mapDispatchToProps = {
   celebrate: celebrateWithConfetti,
   toggleModal: reduxToggleUniversalModal,
   updateActionsInRedux: reduxLoadActions,
+  loadTestimonials: reduxLoadTestimonials,
+  loadCommunityData: reduxLoadCommunityData,
+  reduxMarkRequestAsDone,
 };
 
 export default connect(

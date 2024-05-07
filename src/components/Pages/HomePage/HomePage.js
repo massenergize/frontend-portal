@@ -23,21 +23,32 @@ import {
 import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
 import Seo from "../../Shared/Seo";
+import LoadingCircle from "../../Shared/LoadingCircle";
 /*'
  * The Home Page of the MassEnergize
  */
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
 
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
-    window.gtag('set', 'user_properties', {page_title: "HomePage"});
+    window.gtag("set", "user_properties", { page_title: "HomePage" });
   }
 
   closeTourCompletely() {
     const { setTourValueInRedux } = this.props;
 
-    window.history.replaceState({}, document.title, window.location.href.split("?")[0]);
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.href.split("?")[0]
+    );
 
     setTourValueInRedux(false);
     window.localStorage.setItem(TOUR_STORAGE_KEY, false);
@@ -69,6 +80,8 @@ class HomePage extends React.Component {
     const { subdomain } = community || {};
 
     const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : "";
+    
+    // if(this.state.loading) return (<LoadingCircle />);
 
     if (!this.props.pageData) {
       return (
@@ -219,12 +232,12 @@ class HomePage extends React.Component {
     var steps = { [FIRST_SET]: firstSet, [SECOND_SET]: secondSet };
     return (
       <>
-      {Seo({
-        title: 'Home',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: community?.name,
-      })}
+        {Seo({
+          title: "Home",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: community?.name,
+        })}
         {showTour && (
           <ProductTour
             steps={steps[tourInfo.stage]}
@@ -311,10 +324,10 @@ class HomePage extends React.Component {
           ) : null}
           <br />
           <ShareButtons
-              label="Share this community page!"
-              pageTitle={this.props.community.name}
-              pageDescription={this.props.community.about_community} // maybe revisit and add a better community description
-              url={`${URLS.SHARE}/${subdomain}`}
+            label="Share this community page!"
+            pageTitle={this.props.community.name}
+            pageDescription={this.props.community.about_community} // maybe revisit and add a better community description
+            url={`${URLS.SHARE}/${subdomain}`}
           />
           <br />
         </div>
@@ -327,7 +340,6 @@ const mapStoreToProps = (store) => {
   return {
     pageData: store.page.homePage,
     events: store.page.events,
-    communityData: store.page.communityData,
     community: store.page.community,
     links: store.links,
     is_sandbox: store.page.__is_sandbox,
