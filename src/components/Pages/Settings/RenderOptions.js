@@ -1,7 +1,5 @@
 import React, {useState} from "react";
 import { apiCall } from "../../../api/functions";
-import Feature from "../FeatureFlags/Feature";
-import { FLAGS } from "../FeatureFlags/flags";
 import MEButton from "../Widgets/MEButton";
 import RenderCheckboxes from "./RenderCheckboxes";
 import RenderRadios from "./RenderRadios";

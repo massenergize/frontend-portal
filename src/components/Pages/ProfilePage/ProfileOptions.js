@@ -1,6 +1,4 @@
 import React from "react";
-import { FLAGS } from "../FeatureFlags/flags";
-import Feature from "../FeatureFlags/Feature";
 
 function ProfileOptions({
   pathname,
