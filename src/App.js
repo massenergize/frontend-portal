@@ -42,13 +42,13 @@ function App() {
     // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
+      const pathname = window.location.pathname;
+      const slash = pathname.indexOf("/", 1);
+      const subdomain =
+        slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
+
       let body = {};
       if (URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname)) {
-        const pathname = window.location.pathname;
-        const slash = pathname.indexOf("/", 1);
-        const subdomain =
-          slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
-
         // if no subdomain found, redirect to all communities page (NB: The all communities page does not exist on this side of the application. It is a page on the backend)
         const thereIsNoSubdomain = [undefined, "", "/"].indexOf(subdomain) > -1;
         if (thereIsNoSubdomain) {
@@ -70,11 +70,20 @@ function App() {
               type: LOAD_COMMUNITY_INFORMATION,
               payload: json.data,
             });
+            if (json.data.website) {
+              dispatch({
+                type: SET_IS_CUSTOM_SITE,
+                payload: true,
+              });
+              const newURL = 'https://' + json.data.website + pathname.substring(slash);
+              window.location.href = newURL;
+            }
           } else {
             setError(json.error);
           }
         })
         .catch((err) => setError(err.message));
+
     }
   }, [community, dispatch]);
 
