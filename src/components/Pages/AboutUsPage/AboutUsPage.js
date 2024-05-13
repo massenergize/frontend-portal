@@ -5,35 +5,60 @@ import ReactPlayer from "react-player";
 import ErrorPage from "./../Errors/ErrorPage";
 import DonateBar from "./DonateBar";
 import { connect } from "react-redux";
-import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadAboutUsPage,
+  reduxLoadCommunityAdmins,
+  reduxLoadDonatePage,
+  reduxMarkRequestAsDone,
+} from "../../../redux/actions/pageActions";
 // Carousel from npm react-multi-carousel
 import "react-multi-carousel/lib/styles.css";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import Seo from "../../Shared/Seo";
+import { PAGE_ESSENTIALS } from "../../Constants";
+import { apiCall } from "../../../api/functions";
 
 class AboutUsPage extends React.Component {
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ABOUT_US.key];
+    if (page?.loaded) return;
+
+    Promise.all(
+      PAGE_ESSENTIALS.ABOUT_US.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, donatePageData] = response;
+        this.props.loadPageData(pageData.data);
+        this.props.loadDonatePage(donatePageData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ABOUT_US.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "AboutUsPage"});
+    window.gtag("set", "user_properties", { page_title: "AboutUsPage" });
+    this.fetchEssentials();
   }
 
   renderImage(image) {
     if (!image) return;
     const { url } = image || {};
     return (
-      url && (
-        <img
-        className="about-us-img"
-          alt="about-us media"
-          src={url}
-        />
-      )
+      url && <img className="about-us-img" alt="about-us media" src={url} />
     );
   }
   render() {
-
     if (!this.props.pageData || !this.props.community) {
       return <LoadingCircle />;
-    } else if (this.props.pageData === {} || this.props.community === {}) {
+    } else if (!this.props.pageData || !this.props.community) {
       return (
         <ErrorPage
           errorMessage="Data unavailable"
@@ -63,7 +88,7 @@ class AboutUsPage extends React.Component {
     const donateMessage =
       donatePageData && donatePageData.title ? donatePageData.title : null;
 
-      const {community} = this.props;
+    const { community } = this.props;
 
     return (
       <div className="boxed_wrapper">
@@ -137,9 +162,13 @@ const mapStoreToProps = (store) => {
     donatePageData: store.page.donatePage,
     homePageData: store.page.homePageData,
     links: store.links,
+    pageRequests: store.page.pageRequests,
   };
 };
 
-export default connect(mapStoreToProps, { reduxLoadCommunityAdmins })(
-  AboutUsPage
-);
+export default connect(mapStoreToProps, {
+  reduxLoadCommunityAdmins,
+  loadDonatePage: reduxLoadDonatePage,
+  loadPageData: reduxLoadAboutUsPage,
+  reduxMarkRequestAsDone
+})(AboutUsPage);

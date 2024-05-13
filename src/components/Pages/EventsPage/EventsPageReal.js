@@ -25,15 +25,24 @@ import EventCalendarView from "./calendar/EventCalendarView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
-import { reduxLoadEvents, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadEventExceptions,
+  reduxLoadEvents,
+  reduxLoadEventsPage,
+  reduxLoadTagCols,
+  reduxMarkRequestAsDone,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "../ActionsPage/StoryForm";
-import { EVENT } from "../../Constants";
+import { EVENT, PAGE_ESSENTIALS } from "../../Constants";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import Seo from "../../Shared/Seo";
+import { apiCall } from "../../../api/functions";
 
 const EVENT_VIEW_MODE = "event-view-mode";
 const VIEW_MODES = {
@@ -63,8 +72,33 @@ class EventsPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.EVENTS.key];
+    if (page?.loaded) return;
+    Promise.all(
+      PAGE_ESSENTIALS.EVENTS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, tagCols, events, exceptions] = response;
+        this.props.loadEventsPage(pageData.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.loadEvents(events.data);
+        this.props.loadExceptions(exceptions.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.EVENTS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "EventsPage" });
+    this.fetchEssentials();
   }
 
   static getDerivedStateFromProps = (props, state) => {
@@ -104,9 +138,9 @@ class EventsPage extends React.Component {
       this.state.checked_values,
       this.state.searchText,
       (event, word) =>
-        event.name.toLowerCase().includes(word) ||
-        event.description.toLowerCase().includes(word) ||
-        event.featured_summary.toLowerCase().includes(word)
+        event.name.toLowerCase()?.includes(word) ||
+        event.description.toLowerCase()?.includes(word) ||
+        event.featured_summary.toLowerCase()?.includes(word)
     );
   }
   onSearchTextChange(text) {
@@ -121,11 +155,11 @@ class EventsPage extends React.Component {
     const { user, events, updateEventsInRedux, communityData } = this.props;
     let _props = {};
     if (!user) {
-    _props = {
-      ..._props,
-      overrideOpen: () =>
-        this.triggerGuestDialog && this.triggerGuestDialog(),
-    };
+      _props = {
+        ..._props,
+        overrideOpen: () =>
+          this.triggerGuestDialog && this.triggerGuestDialog(),
+      };
     }
     return (
       <StoryFormButtonModal
@@ -428,7 +462,7 @@ class EventsPage extends React.Component {
     let ids = window.location.href.split("?ids=")[1];
     if (ids) {
       let idsArr = ids.split("-");
-      events = events.filter((event) => idsArr.includes(event.id.toString()));
+      events = events.filter((event) => idsArr?.includes(event.id.toString()));
     }
 
     const thisCommunity = this.props?.pageData?.community;
@@ -460,8 +494,8 @@ class EventsPage extends React.Component {
       );
       const page = sorted_events.map((event) => {
         const dateString = dateFormatString(
-          new Date(event.start_date_and_time),
-          new Date(event.end_date_and_time)
+          new Date(event?.start_date_and_time),
+          new Date(event?.end_date_and_time)
         );
         const recurringDetailString = recurringDetails(event);
 
@@ -470,21 +504,21 @@ class EventsPage extends React.Component {
           <div
             style={{
               opacity:
-                (event.recurring_details &&
-                  event.recurring_details.is_cancelled) ||
-                (exceptions.includes(event.id) ? 0.3 : 1),
+                (event?.recurring_details &&
+                  event?.recurring_details.is_cancelled) ||
+                (exceptions?.includes(event.id) ? 0.3 : 1),
               position: "relative",
             }}
-            key={event.id.toString()}
+            key={event?.id.toString()}
             className="col-md-6 col-lg-6 col-sm-6"
           >
             <p style={{ color: "red" }}>
-              {event.recurring_details && event.recurring_details.is_cancelled
+              {event?.recurring_details && event.recurring_details.is_cancelled
                 ? "This event has been cancelled temporarily."
                 : ""}
             </p>
             <p style={{ color: "red" }}>
-              {exceptions.includes(event.id)
+              {exceptions?.includes(event.id)
                 ? "This event has been rescheduled temporarily. See the rescheduled event."
                 : ""}{" "}
             </p>
@@ -500,7 +534,7 @@ class EventsPage extends React.Component {
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,
-                  ...(parseJSON(event?.location)) || {},
+                  ...(parseJSON(event?.location) || {}),
                   end_date_and_time: event?.end_date_and_time?.slice(0, 16),
                   start_date_and_time: event?.start_date_and_time?.slice(0, 16),
                 };
@@ -543,6 +577,7 @@ class EventsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
+    community: store.page.community,
     homePageData: store.page.homePage,
     collection: store.page.collection,
     user: store.user.info,
@@ -553,10 +588,16 @@ const mapStoreToProps = (store) => {
     links: store.links,
     tagCols: filterTagCollections(store.page.events, store.page.tagCols),
     communityData: store.page.communityData,
+    pageRequests: store.page.pageRequests,
   };
 };
 export default connect(mapStoreToProps, {
   toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
   toggleModal: reduxToggleUniversalModal,
-  updateEventsInRedux:reduxLoadEvents
+  updateEventsInRedux: reduxLoadEvents,
+  loadEventsPage: reduxLoadEventsPage,
+  loadEvents: reduxLoadEvents,
+  loadTagCollections: reduxLoadTagCols,
+  loadExceptions: reduxLoadEventExceptions,
+  reduxMarkRequestAsDone
 })(withRouter(EventsPage));

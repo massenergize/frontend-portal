@@ -16,7 +16,7 @@ import {
   processFiltersAndUpdateURL,
   recreateFiltersForState,
   searchIsActiveFindContent,
-  fetchCopyrightData
+  fetchCopyrightData,
 } from "../../Utils";
 import { NONE } from "../Widgets/MELightDropDown";
 import HorizontalFilterBox from "../EventsPage/HorizontalFilterBox";
@@ -24,9 +24,16 @@ import Tooltip from "../Widgets/CustomTooltip";
 // import Funnel from "../EventsPage/Funnel";
 // import METextView from "../Widgets/METextView";
 import MEAnimation from "../../Shared/Classes/MEAnimation";
-import { reduxLoadServiceProviders, reduxToggleGuestAuthDialog, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadServiceProviders,
+  reduxLoadServiceProvidersPage,
+  reduxLoadTagCols,
+  reduxMarkRequestAsDone,
+  reduxToggleGuestAuthDialog,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
-import { VENDOR } from "../../Constants";
+import { PAGE_ESSENTIALS, VENDOR } from "../../Constants";
 // import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
 import AddButton from "../../Shared/AddButton";
@@ -35,6 +42,7 @@ import { FLAGS } from "../FeatureFlags/flags";
 import Seo from "../../Shared/Seo";
 import METooltip from "../../Shared/METooltip";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import { apiCall } from "../../../api/functions";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -46,8 +54,32 @@ class ServicesPage extends React.Component {
     this.addMeToSelected = this.addMeToSelected.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.VENDORS.key];
+    if (page?.loaded) return;
+    Promise.all(
+      PAGE_ESSENTIALS.VENDORS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, tagCols, vendors] = response;
+        this.props.loadVendorsPage(pageData.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.updateVendorsInRedux(vendors.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.VENDORS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "ServicesPage" });
+    this.fetchEssentials();
   }
 
   addMeToSelected(param, reset = false) {
@@ -268,7 +300,7 @@ class ServicesPage extends React.Component {
       image: vendor?.logo,
       key_contact_email: vendor?.key_contact?.email,
       key_contact_name: vendor?.key_contact?.name,
-      ...fetchCopyrightData(vendor?.logo?.info)
+      ...fetchCopyrightData(vendor?.logo?.info),
     };
     this.props.toggleModal({
       show: true,
@@ -338,10 +370,8 @@ class ServicesPage extends React.Component {
               position: "relative",
               paddingBottom: 40,
             }}
-            >
-            {!vendor?.is_published && (
-              <RibbonBanner/>
-            )}
+          >
+            {!vendor?.is_published && <RibbonBanner />}
             {/* <div className="card  spacing " style={{ borderTopRightRadius: 12, borderTopLeftRadius: 12 }}> */}
             <div
               className="card-body pref-height "
@@ -398,16 +428,21 @@ const mapStoreToProps = (store) => {
     serviceProviders: store.page.serviceProviders,
     communityData: store.page.communityData,
     links: store.links,
-     community: store.page.community,
+    community: store.page.community,
     tagCols: filterTagCollections(
       store.page.serviceProviders,
       store.page.tagCols
     ),
+    pageRequests: store.page.pageRequests,
+    
   };
 };
 const mapDispatchToProps = {
   toggleModal: reduxToggleUniversalModal,
   updateVendorsInRedux: reduxLoadServiceProviders,
+  loadVendorsPage: reduxLoadServiceProvidersPage,
+  loadTagCollections: reduxLoadTagCols,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
+  reduxMarkRequestAsDone
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(ServicesPage);
