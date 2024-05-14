@@ -194,7 +194,7 @@ class AppRouter extends Component {
     // save as a custom property for Google Analytics
     window.gtag('set', 'user_properties', { community: community.subdomain });
 
-    const prefix = !__is_custom_site ? `/${subdomain}` : "/";
+    const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
     this.props.reduxLoadLinks({
       home: `${prefix}/`,
