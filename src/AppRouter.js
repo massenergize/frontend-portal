@@ -86,7 +86,12 @@ import {
   setAuthStateAction,
   subscribeToFirebaseAuthChanges,
 } from "./redux/actions/authActions";
-import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
+import {
+  addLeadingSlashToLinks,
+  getTakeTourFromURL,
+  replaceAllOccurrences,
+  TOUR_STORAGE_KEY,
+} from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
 import {
@@ -203,7 +208,7 @@ class AppRouter extends Component {
     // save as a custom property for Google Analytics
     window.gtag("set", "user_properties", { community: community.subdomain });
 
-    const prefix = !__is_custom_site ? `/${subdomain}` : "";
+    const prefix = !__is_custom_site ? `/${subdomain}` : "/";
 
     this.props.reduxLoadLinks({
       home: `${prefix}/`,
@@ -439,8 +444,9 @@ class AppRouter extends Component {
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    // const footerLinks = this.addPrefix(footerContent[0].content.links);
-    const footerLinks = footerContent[0].content.links || [];
+
+    let links = footerContent[0]?.content?.links;
+    const footerLinks = this.addPrefix(addLeadingSlashToLinks(links));
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -529,7 +535,8 @@ class AppRouter extends Component {
         !isValidUrl(m.link) &&
         !m.link.startsWith(this.state.prefix)
       ) {
-        m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+        m.link = `/${this.state.prefix}/${m.link}`;
+        m.link = replaceAllOccurrences(m.link, "//", "/");
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);

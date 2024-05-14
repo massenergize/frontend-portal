@@ -6,6 +6,30 @@ import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 import { COPYRIGHT_OPTIONS } from "./Constants";
 
+export const replaceAllOccurrences = (str, oldValue, newValue) => {
+  return str.replace(new RegExp(oldValue, "g"), newValue);
+};
+export const addLeadingSlashToLinks = (links) => {
+  return links?.map((link) => {
+    if (!link?.link?.startsWith("/")) {
+      link.link = "/" + link?.link;
+    }
+    return link;
+  });
+};
+
+export const replaceAllOccurrences = (str, oldValue, newValue) => {
+  return str.replace(new RegExp(oldValue, "g"), newValue);
+};
+export const addLeadingSlashToLinks = (links) => {
+  return links?.map((link) => {
+    if (!link?.link?.startsWith("/")) {
+      link.link = "/" + link?.link;
+    }
+    return link;
+  });
+};
+
 export function getSubdomainFromURL(url) {
   const urlObj = new URL(changeToProperURL(url));
   const pathname = urlObj.pathname;
@@ -753,6 +777,7 @@ export const fetchCopyrightData = (info) => {
     copyright_att: info?.copyright_att || "",
     underAge: info?.has_children || false,
     guardian_info: info?.guardian_info || "",
+    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key,
     permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key,
   };
 };
