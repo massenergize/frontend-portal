@@ -6,13 +6,12 @@ import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 import { COPYRIGHT_OPTIONS } from "./Constants";
 
-
 export const replaceAllOccurrences = (str, oldValue, newValue) => {
-  return str.replace(new RegExp(oldValue, 'g'), newValue);
+  return str.replace(new RegExp(oldValue, "g"), newValue);
 };
 export const addLeadingSlashToLinks = (links) => {
   return links?.map((link) => {
-    if (!link?.link?.startsWith("/")) {
+    if (!link?.link?.startsWith("/") && !isAProperURL(link?.link)) {
       link.link = "/" + link?.link;
     }
     return link;
