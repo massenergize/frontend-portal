@@ -82,7 +82,7 @@ import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
 import { setAuthStateAction, subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
-import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
+import { addLeadingSlashToLinks, getTakeTourFromURL, replaceAllOccurrences, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
 import {
@@ -371,7 +371,9 @@ class AppRouter extends Component {
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    const footerLinks =  this.addPrefix(footerContent[0].content.links);
+    
+    let links = footerContent[0]?.content?.links
+    const footerLinks =  this.addPrefix(addLeadingSlashToLinks(links));
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -455,7 +457,8 @@ class AppRouter extends Component {
     }
     let menus = menu.map((m) => {
       if ( this.state.prefix !== "" && m.link && !isValidUrl(m.link) && !m.link.startsWith(this.state.prefix)){
-        m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+        m.link = `/${this.state.prefix}/${m.link}`;
+        m.link = replaceAllOccurrences(m.link, "//", "/")
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
