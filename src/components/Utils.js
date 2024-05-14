@@ -11,7 +11,7 @@ export const replaceAllOccurrences = (str, oldValue, newValue) => {
 };
 export const addLeadingSlashToLinks = (links) => {
   return links?.map((link) => {
-    if (!link?.link?.startsWith("/")) {
+    if (!link?.link?.startsWith("/") && !isAProperURL(link?.link)) {
       link.link = "/" + link?.link;
     }
     return link;
