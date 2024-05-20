@@ -97,7 +97,6 @@ class EventsPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "EventsPage" });
     this.fetchEssentials();
   }
 

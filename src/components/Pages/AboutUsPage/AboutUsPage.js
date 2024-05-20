@@ -44,7 +44,6 @@ class AboutUsPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "AboutUsPage" });
     this.fetchEssentials();
   }
 

@@ -36,7 +36,6 @@ class DonatePage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "DonatePage" });
     this.fetchEssentials();
   }
 

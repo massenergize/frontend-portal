@@ -120,7 +120,6 @@ class TeamsPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "TeamsPage" });
     this.fetchEssentials();
     // const subdomain =
     //   this.props.communityData &&

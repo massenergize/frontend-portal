@@ -123,7 +123,6 @@ class ActionsPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "ActionsPage" });
     this.fetchEssentials();
   }
   triggerGuestDialog(e) {
@@ -264,7 +263,6 @@ class ActionsPage extends React.Component {
 
   render() {
     const pageData = this.props.pageData;
-    const { communityData } = this.props;
     const filterDescription = makeFilterDescription(this.state.checked_values);
     if (pageData == null) return <LoadingCircle />;
 

@@ -23,7 +23,6 @@ import {
 import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
 import Seo from "../../Shared/Seo";
-import LoadingCircle from "../../Shared/LoadingCircle";
 /*'
  * The Home Page of the MassEnergize
  */
@@ -38,7 +37,6 @@ class HomePage extends React.Component {
   componentDidMount() {
     const version = getFilterVersionFromURL(this.props.location);
     if (version) window.sessionStorage.setItem(FILTER_BAR_VERSION, version);
-    window.gtag("set", "user_properties", { page_title: "HomePage" });
   }
 
   closeTourCompletely() {

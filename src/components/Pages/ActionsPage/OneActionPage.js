@@ -123,11 +123,8 @@ class OneActionPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "OneActionPage" });
     window.addEventListener("resize", this.chooseFontSize);
-    // const { id } = this.props.match.params;
     this.fetchEssentials();
-    // this.fetch(id);
     this.chooseFontSize();
   }
   static getDerivedStateFromProps(props, state) {
@@ -148,22 +145,22 @@ class OneActionPage extends React.Component {
     }
   }
 
-  async fetch(id) {
-    try {
-      const json = await apiCall("actions.info", { action_id: id });
-      this.handleActionJson(json);
-      // if (json.success) {
-      //   this.setState({ action: json.data });
-      //   this.checkIfActionShouldStartAutomatically(json.data);
-      // } else {
-      //   this.setState({ error: json.error });
-      // }
-    } catch (err) {
-      this.setState({ error: err.toString() });
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
+  //async fetch(id) {
+  //  try {
+  //    const json = await apiCall("actions.info", { action_id: id });
+  //    this.handleActionJson(json);
+  //    // if (json.success) {
+  //    //   this.setState({ action: json.data });
+  //    //   this.checkIfActionShouldStartAutomatically(json.data);
+  //    // } else {
+  //    //   this.setState({ error: json.error });
+  //    // }
+  //  } catch (err) {
+  //    this.setState({ error: err.toString() });
+  //  } finally {
+  //    this.setState({ loading: false });
+  //  }
+  //}
 
   render() {
     const action = this.getMyAction();

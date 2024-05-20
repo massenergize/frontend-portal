@@ -90,7 +90,6 @@ class StoriesPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "TestimonialsPage" });
     this.fetchEssentials();
   }
 

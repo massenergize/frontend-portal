@@ -177,7 +177,6 @@ class ProfilePage extends React.Component {
   };
 
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "ProfilePage" });
     this.fetchEssentials();
     const { mode } = fetchParamsFromURL(this.props.location, "mode");
     if (mode === "become-valid")

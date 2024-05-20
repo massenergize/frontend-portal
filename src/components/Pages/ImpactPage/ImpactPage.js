@@ -55,7 +55,6 @@ class ImpactPage extends React.Component {
       });
   };
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "ImpactPage" });
     this.fetchEssentials()
   }
 

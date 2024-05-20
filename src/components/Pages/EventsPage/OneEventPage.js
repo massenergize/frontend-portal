@@ -88,21 +88,8 @@ class OneEventPage extends React.Component {
     }
   }
 
-  async fetch(id) {
-    try {
-      const json = await apiCall("events.info", { event_id: id });
-      this.handleJson(json);
-    } catch (err) {
-      this.setState({ error: err.toString() });
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
-
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "OneEventPage" });
     const { id } = this.props.match.params;
-    // this.fetch(id);
     this.fetchEssentials();
     const rightNow = moment().format();
     const pastEvent = rightNow > this.props.start_date_and_time;

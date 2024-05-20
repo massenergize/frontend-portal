@@ -110,7 +110,6 @@ class OneTeamPage extends React.Component {
   };
 
   componentDidMount() {
-    window.gtag("set", "user_properties", { page_title: "OneTeamPage" });
     this.fetchEssentials();
     this.setState({ showOption: "Graph" });
   }
