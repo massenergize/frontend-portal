@@ -29,6 +29,9 @@ import {
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
   reduxToggleUniversalModal,
+  reduxLoadTeams,
+  reduxMarkRequestAsDone,
+  reduxLoadCommunities,
 } from "../../../redux/actions/pageActions";
 import JoiningCommunityForm from "./JoiningCommunityForm";
 import PrintCart from "../../Shared/PrintCart";
@@ -54,6 +57,7 @@ import { AUTH_STATES } from "../Auth/shared/utils";
 import BecomeAValidUser from "./BecomeAValidUser";
 import HouseholdDeleteConfirmation from "./HouseholdDeleteConfirmation";
 import Seo from "../../Shared/Seo";
+import { PAGE_ESSENTIALS } from "../../Constants";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -73,7 +77,6 @@ class ProfilePage extends React.Component {
     };
     this.handleEQSelection = this.handleEQSelection.bind(this);
   }
-
 
   getEqData() {
     const { eq } = this.props;
@@ -148,8 +151,34 @@ class ProfilePage extends React.Component {
     );
   }
 
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.PROFILE_PAGE.key];
+    if (page?.loaded) return;
+
+    Promise.all(
+      PAGE_ESSENTIALS.PROFILE_PAGE.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [teams,communities] = response;
+        this.props.loadTeams(teams?.data);
+        this.props.reduxLoadCommunities(communities?.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.PROFILE_PAGE.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "ProfilePage"});
+    window.gtag("set", "user_properties", { page_title: "ProfilePage" });
+    this.fetchEssentials();
     const { mode } = fetchParamsFromURL(this.props.location, "mode");
     if (mode === "become-valid")
       this.setState({ wantsToBecomeValidUser: true });
@@ -166,7 +195,7 @@ class ProfilePage extends React.Component {
     return { editingProfileForm: state.editingProfileForm };
   }
   render() {
-    const { fireAuth ,} = this.props;
+    const { fireAuth } = this.props;
     const wantsToBecomeValidUser =
       this.state.editingProfileForm === "become-valid";
     const userIsNotAuthenticated =
@@ -203,12 +232,12 @@ class ProfilePage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: 'Profile',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: this.props?.community?.name,
-      })}
+        {Seo({
+          title: "Profile",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props?.community?.name,
+        })}
         <div
           className="boxed_wrapper"
           onClick={this.clearError}
@@ -392,7 +421,7 @@ class ProfilePage extends React.Component {
                       </MEButton>
                     )}
                   </div>
-                  
+
                   {!this.state.editingHH && this.state.addingHH && (
                     <MECard className="me-anime-open-in">
                       <AddingHouseholdForm
@@ -889,6 +918,7 @@ const mapStoreToProps = (store) => {
     fireAuth: store.fireAuth,
     authState: store.authState,
     firebaseAuthSettings: store.firebaseAuthSettings,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = {
@@ -905,8 +935,11 @@ const mapDispatchToProps = {
   reduxTeamRemoveHouse,
   reduxTeamRemoveAction,
   reduxTeamAddHouse,
+  loadTeams: reduxLoadTeams,
   reduxSetPreferredEquivalence,
   toggleModal: reduxToggleUniversalModal,
+  reduxMarkRequestAsDone, 
+  reduxLoadCommunities
 };
 export default connect(
   mapStoreToProps,

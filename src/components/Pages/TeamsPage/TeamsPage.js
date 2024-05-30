@@ -11,12 +11,18 @@ import { getRandomIntegerInRange, PREF_EQ_DEFAULT } from "../../Utils";
 // import MEButton from "./../Widgets/MEButton";
 import METextField from "../Widgets/METextField";
 import { apiCall } from "../../../api/functions";
-import { reduxLoadTeams } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadCommunityData,
+  reduxLoadTeams,
+  reduxLoadTeamsPage,
+  reduxMarkRequestAsDone,
+} from "../../../redux/actions/pageActions";
 import METextView from "../Widgets/METextView";
 import Tooltip from "../Widgets/CustomTooltip";
 import Subtitle from "../Widgets/Subtitle";
 import Seo from "../../Shared/Seo";
 import AddButton from "../../Shared/AddButton";
+import { PAGE_ESSENTIALS } from "../../Constants.js";
 
 class TeamsPage extends React.Component {
   constructor(props) {
@@ -29,6 +35,32 @@ class TeamsPage extends React.Component {
       teamsData: getTeamsData(teamsStats),
     };
   }
+
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+  
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.TEAMS.key];
+    if (page?.loaded) return;
+
+    Promise.all(
+      PAGE_ESSENTIALS.TEAMS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, communityData, teamStats] = response;
+        this.props.loadPageData(pageData.data);
+        this.props.loadCommunityData(communityData.data);
+        this.props.reduxLoadTeams(teamStats.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.TEAMS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   handleSearch(event) {
     const { teamsData } = this.state;
@@ -88,11 +120,9 @@ class TeamsPage extends React.Component {
   }
 
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "TeamsPage"});
-    const subdomain =
-      this.props.community &&
-      this.props.community.subdomain;
-    this.getAnyUpdatedTeamChanges(subdomain);
+    window.gtag("set", "user_properties", { page_title: "TeamsPage" });
+    this.fetchEssentials();
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -455,16 +485,21 @@ class TeamsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
+    community: store.page.community,
     user: store.user.info,
     teamsStats: store.page.teams,
     links: store.links,
     communityData: store.page.homePage,
     pageData: store.page.teamsPage,
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
-    community: store.page.community,
+    pageRequests: store.page.pageRequests,
+
   };
 };
 const mapDispatchToProps = {
   reduxLoadTeams,
+  loadCommunityData: reduxLoadCommunityData,
+  loadPageData: reduxLoadTeamsPage,
+  reduxMarkRequestAsDone
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(TeamsPage);

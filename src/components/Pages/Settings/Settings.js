@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { apiCall } from "../../../api/functions";
-import { reduxToggleUniversalToastAction } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadSettings,
+  reduxMarkRequestAsDone,
+  reduxToggleUniversalToastAction,
+} from "../../../redux/actions/pageActions";
 import { reduxLogin } from "../../../redux/actions/userActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import LoadingCircle from "../../Shared/LoadingCircle";
@@ -14,6 +18,7 @@ import RenderOptions from "./RenderOptions";
 import Seo from "../../Shared/Seo";
 import { signMeOut } from "../../../redux/actions/authActions";
 import { fetchParamsFromURL } from "../../Utils";
+import { PAGE_ESSENTIALS } from "../../Constants";
 
 function Settings({
   user,
@@ -26,6 +31,9 @@ function Settings({
   toggleToast,
   signMeOut,
   history,
+  reduxLoadSettings,
+  reduxMarkRequestAsDone,
+  ...props
 }) {
   const [currentTab, setCurrentTab] = useState(null);
   const [urlData, setURLData] = useState(null);
@@ -36,8 +44,33 @@ function Settings({
   const appIsCheckingMassEnergize =
     authState === AUTH_STATES.CHECK_MASS_ENERGIZE;
 
+  const fetchEssentials = () => {
+    const { community, pageRequests } = props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.SETTINGS.key];
+    if (page?.loaded) return;
+    Promise.all(
+      PAGE_ESSENTIALS.SETTINGS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData] = response;
+        reduxLoadSettings(pageData.data);
+        reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.SETTINGS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
-     const urlUserCred = fetchParamsFromURL(window.location, "cred")?.cred;
+    fetchEssentials();
+  }, []);
+
+  useEffect(() => {
+    const urlUserCred = fetchParamsFromURL(window.location, "cred")?.cred;
     if (urlUserCred) {
       let decodedData = JSON.parse(atob(urlUserCred));
       setURLData(decodedData);
@@ -50,7 +83,10 @@ function Settings({
   }, [user]);
 
   // -------------------------------------------------------------------
-  let redirectURL = urlData?.login_method === "email-only" ? `${links.signin}?noPassword=true` : links.signin;
+  let redirectURL =
+    urlData?.login_method === "email-only"
+      ? `${links.signin}?noPassword=true`
+      : links.signin;
   if (userIsNotAuthenticated) return <Redirect to={redirectURL}> </Redirect>;
 
   if (appIsCheckingFirebase || appIsCheckingMassEnergize)
@@ -95,7 +131,7 @@ function Settings({
       );
   };
 
-  var TABS = Object.entries(settings).map(([key, { name, live, options }]) => {
+  var TABS = Object.entries(settings)?.map(([key, { name, live, options }]) => {
     if (live)
       return {
         key,
@@ -182,7 +218,8 @@ function Settings({
         apiCall("auth.logout", {}).then((res) => {
           if (res?.success) {
             signMeOut();
-            if (decodedData?.login_method === "email-only")  return <Redirect to={`${links?.signin}?noPassword=true`} />;
+            if (decodedData?.login_method === "email-only")
+              return <Redirect to={`${links?.signin}?noPassword=true`} />;
             return <Redirect to={links?.signin}> </Redirect>;
           }
         });
@@ -202,6 +239,7 @@ const mapStateToProps = (store) => {
     fireAuth: store.fireAuth,
     authState: store.authState,
     community: store.page.community,
+    pageRequest: store.page.pageRequest,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -210,6 +248,8 @@ const mapDispatchToProps = (dispatch) => {
       updateUserInRedux: reduxLogin,
       toggleToast: reduxToggleUniversalToastAction,
       signMeOut: signMeOut,
+      reduxMarkRequestAsDone,
+      reduxLoadSettings,
     },
     dispatch
   );

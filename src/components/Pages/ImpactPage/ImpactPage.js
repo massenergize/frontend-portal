@@ -4,7 +4,12 @@ import PageTitle from "../../Shared/PageTitle";
 import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
-import { reduxLoadCommunitiesStats } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadCommunitiesStats,
+  reduxLoadCommunityData,
+  reduxLoadTagCols,
+  reduxMarkRequestAsDone,
+} from "../../../redux/actions/pageActions";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import "chartjs-plugin-datalabels";
 import { HorizontalBar, Doughnut } from "react-chartjs-2";
@@ -19,12 +24,39 @@ import ImpactCommunityActionList from "./ImpactCommunityActionList";
 import TabView from "../Widgets/METabView/METabView";
 import { withRouter } from "react-router-dom";
 import Seo from "../../Shared/Seo";
+import { PAGE_ESSENTIALS } from "../../Constants";
+import { apiCall } from "../../../api/functions";
 
 // Replace Households Engaged by Categories with Actions Completed by Category
 class ImpactPage extends React.Component {
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
 
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.IMPACT_PAGE.key];
+    if (page?.loaded) return;
+
+    Promise.all(
+      PAGE_ESSENTIALS.IMPACT_PAGE.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [stats, tagCols, comData] = response;
+        this.props.reduxLoadCommunitiesStats(stats.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.loadCommunityData(comData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.IMPACT_PAGE.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "ImpactPage"});
+    window.gtag("set", "user_properties", { page_title: "ImpactPage" });
+    this.fetchEssentials()
   }
 
   shortenWords(word) {
@@ -301,7 +333,7 @@ class ImpactPage extends React.Component {
       }
     });
 
-    const pref_eq = this.props.pref_eq ; // hardcode Tree equivalence if none chosen
+    const pref_eq = this.props.pref_eq; // hardcode Tree equivalence if none chosen
     const carbon_units = pref_eq.name;
 
     const data = [
@@ -325,12 +357,12 @@ class ImpactPage extends React.Component {
 
     return (
       <>
-      {Seo({
-        title: 'Impact',
-        description: '',
-        url: `${window.location.pathname}`,
-        site_name: this.props.community?.name,
-      })}
+        {Seo({
+          title: "Impact",
+          description: "",
+          url: `${window.location.pathname}`,
+          site_name: this.props.community?.name,
+        })}
         <div className="boxed_wrapper">
           <BreadCrumbBar links={[{ name: "Impact" }]} />
           <div
@@ -411,12 +443,16 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     links: store.links,
     communityActionList: store.page.communityActionList,
+    pageRequests: store.page.pageRequests,
   };
 };
 
-export default connect(mapStoreToProps, { reduxLoadCommunitiesStats })(
-  withRouter(ImpactPage)
-);
+export default connect(mapStoreToProps, {
+  reduxLoadCommunitiesStats,
+  loadTagCollections: reduxLoadTagCols,
+  loadCommunityData: reduxLoadCommunityData, 
+  reduxMarkRequestAsDone
+})(withRouter(ImpactPage));
 
 export const ImpactGraphWrapper = ({
   graph2Series,
