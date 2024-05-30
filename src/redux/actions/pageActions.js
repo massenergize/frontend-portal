@@ -55,6 +55,7 @@ import {
   CELEBRATE,
   TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
   MARK_REQUEST_AS_DONE,
+
 } from "./types";
 import { reduxSetPreferredEquivalence } from "./userActions";
 import AuthenticationOptions from "../../components/Pages/Auth/Components/authentication options/AuthenticationOptions";
@@ -446,7 +447,6 @@ export const reduxToggleUniversalToastAction = (data = {}) => ({
   type: TOGGLE_UNIVERSAL_TOAST,
   payload: data,
 });
-
 
 export const reduxSaveFeatureFlagsAction = (data = []) => ({
   type: SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,

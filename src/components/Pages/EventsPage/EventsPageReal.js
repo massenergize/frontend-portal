@@ -152,7 +152,7 @@ class EventsPage extends React.Component {
     this.props.toggleGuestAuthDialog(true);
   }
   renderAddForm = () => {
-    const { user, events, updateEventsInRedux, communityData } = this.props;
+    const { user, events, updateEventsInRedux, community } = this.props;
     let _props = {};
     if (!user) {
       _props = {
@@ -170,7 +170,7 @@ class EventsPage extends React.Component {
         }}
         {..._props}
       >
-        <AddButton type={EVENT} community={communityData?.community?.name} />
+        <AddButton type={EVENT} community={community?.name} />
       </StoryFormButtonModal>
     );
   };
@@ -253,14 +253,14 @@ class EventsPage extends React.Component {
       return 0;
     };
 
-    const { communityData } = this.props;
+    const { community } = this.props;
     return (
       <>
         {Seo({
           title: "Events",
           description: "",
           url: `${window.location.pathname}`,
-          site_name: communityData?.community?.name,
+          site_name: community?.name,
         })}
         <div
           className="boxed_wrapper test-events-page-wrapper"
@@ -464,8 +464,7 @@ class EventsPage extends React.Component {
       let idsArr = ids.split("-");
       events = events.filter((event) => idsArr?.includes(event.id.toString()));
     }
-
-    const thisCommunity = this.props?.pageData?.community;
+    const thisCommunity = this.props?.community;
     if (this.state.mirror_events.length === 0) {
       events = this.state.check_values === null ? this.props.events : events;
     }
@@ -499,6 +498,7 @@ class EventsPage extends React.Component {
         );
         const recurringDetailString = recurringDetails(event);
 
+        const isShared = thisCommunity?.id?.toString() !== event?.community?.id?.toString();
         return (
           // can we format the cancelled message to be an overlay instead of going above?
           <div
@@ -530,7 +530,7 @@ class EventsPage extends React.Component {
               user={this.props.user}
               dropDirection="up"
               toggleGuestAuthDialog={this.props.toggleGuestAuthDialog}
-              isShared={thisCommunity?.id !== event?.community?.id}
+              isShared={isShared}
               onEditButtonClicked={() => {
                 let reConstEvent = {
                   ...event,

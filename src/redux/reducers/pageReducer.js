@@ -47,7 +47,7 @@ import {
   LOAD_COMMUNITY_ACTION_LIST,
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
-  CELEBRATE,
+  CELEBRATE
   TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
   MARK_REQUEST_AS_DONE,
 } from "../actions/types";
@@ -109,10 +109,10 @@ export default function pageReducer(state = initialState, action) {
   switch (action.type) {
     /**************************/
     case SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX:
-        return {
-            ...state,
-            communityFeatureFlags: action.payload,
-        };
+      return {
+          ...state,
+          communityFeatureFlags: action.payload,
+      };
 
     case MARK_REQUEST_AS_DONE:
       return {

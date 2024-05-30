@@ -362,8 +362,8 @@ class OneEventPage extends React.Component {
     );
   };
   renderEvent(event) {
-    const { user, toggleGuestAuthDialog, pageData } = this.props;
-    const isShared = pageData?.community?.id !== event?.community?.id;
+    const { user, toggleGuestAuthDialog,community } = this.props;
+    const isShared = community?.id !== event?.community?.id;
 
     let dateString = dateFormatString(
       new Date(event.start_date_and_time),
@@ -616,7 +616,6 @@ const mapStoreToProps = (store) => {
     user: store.user.info,
     events: store.page.events,
     links: store.links,
-    pageData: store.page.eventsPage,
     community: store.page.community,
     pageRequests: store.page.pageRequests,
   };
