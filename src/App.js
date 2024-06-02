@@ -69,21 +69,20 @@ function App() {
               type: LOAD_COMMUNITY_INFORMATION,
               payload: json.data,
             });
-            if (json.data.website) {
+            const customDomain = json?.data?.website;
+            if (customDomain) {
               dispatch({
                 type: SET_IS_CUSTOM_SITE,
                 payload: true,
               });
-              console.log(
-                "Lets see website, and hostname",
-                json.data.website,
-                hostname
+              const userIsNotAlreadyOnCustomDomain = !domainsAreTheSame(
+                customDomain,
+                window.location.href
               );
-              const website = json?.data?.website;
               // Only redirect to custom domain if a community has one, and the user is not already on the custom domain
-              if (website && !domainsAreTheSame(website, window.location.href)) {
+              if (userIsNotAlreadyOnCustomDomain) {
                 const newURL =
-                  "https://" + json.data.website + pathname.substring(slash);
+                  "https://" + customDomain + pathname.substring(slash);
                 window.location.href = newURL;
               }
             }
