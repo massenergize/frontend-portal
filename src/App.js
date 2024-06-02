@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import * as Sentry from "@sentry/react";
 
-
 import "./assets/css/style.css";
 import AppRouter from "./AppRouter";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { apiCall } from "./api/functions";
 import LoadingCircle from "./components/Shared/LoadingCircle";
-import { getIsSandboxFromURL } from "./components/Utils";
+import { domainsAreTheSame, getIsSandboxFromURL } from "./components/Utils";
 import {
   LOAD_COMMUNITY_INFORMATION,
   SET_IS_CUSTOM_SITE,
@@ -75,15 +74,24 @@ function App() {
                 type: SET_IS_CUSTOM_SITE,
                 payload: true,
               });
-              const newURL = 'https://' + json.data.website + pathname.substring(slash);
-              window.location.href = newURL;
+              console.log(
+                "Lets see website, and hostname",
+                json.data.website,
+                hostname
+              );
+              const website = json?.data?.website;
+              // Only redirect to custom domain if a community has one, and the user is not already on the custom domain
+              if (website && !domainsAreTheSame(website, window.location.href)) {
+                const newURL =
+                  "https://" + json.data.website + pathname.substring(slash);
+                window.location.href = newURL;
+              }
             }
           } else {
             setError(json.error);
           }
         })
         .catch((err) => setError(err.message));
-
     }
   }, [community, dispatch]);
 
