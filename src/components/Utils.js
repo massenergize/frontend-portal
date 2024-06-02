@@ -6,6 +6,22 @@ import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 import { COPYRIGHT_OPTIONS } from "./Constants";
 
+
+export function domainsAreTheSame(url1, url2) {
+  try {
+      let parsedUrl1 = new URL(url1);
+      let parsedUrl2 = new URL(url2);
+
+      // Remove 'www.' prefix if present
+      let domain1 = parsedUrl1.hostname.replace(/^www\./, '');
+      let domain2 = parsedUrl2.hostname.replace(/^www\./, '');
+
+      return domain1 === domain2;
+  } catch (e) {
+      console.error(e);
+      return false;
+  }
+}
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
     return console.warn(
