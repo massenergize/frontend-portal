@@ -26,6 +26,7 @@ import MEAnimation from "../../Shared/Classes/MEAnimation";
 import { withRouter } from "react-router-dom";
 import ShareButtons from "../../Shared/ShareButtons";
 import {
+  reduxLoadActions,
   reduxLoadEventExceptions,
   reduxLoadEvents,
   reduxLoadEventsPage,
@@ -82,11 +83,12 @@ class EventsPage extends React.Component {
       PAGE_ESSENTIALS.EVENTS.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
-        const [pageData, tagCols, events, exceptions] = response;
-        this.props.loadEventsPage(pageData.data);
-        this.props.loadTagCollections(tagCols.data);
-        this.props.loadEvents(events.data);
-        this.props.loadExceptions(exceptions.data);
+        const [pageData, tagCols, events, exceptions, actions] = response;
+        this.props.loadEventsPage(pageData?.data);
+        this.props.loadTagCollections(tagCols?.data);
+        this.props.loadEvents(events?.data);
+        this.props.loadExceptions(exceptions?.data);
+        this.props.loadActions(actions?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.EVENTS.key]: { loaded: true },
@@ -600,4 +602,5 @@ export default connect(mapStoreToProps, {
   loadTagCollections: reduxLoadTagCols,
   loadExceptions: reduxLoadEventExceptions,
   reduxMarkRequestAsDone,
+  loadActions: reduxLoadActions,
 })(withRouter(EventsPage));
