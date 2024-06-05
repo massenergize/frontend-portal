@@ -6,20 +6,28 @@ import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 import { COPYRIGHT_OPTIONS } from "./Constants";
 
+export function getSubdomainFromURL(url) {
+  const urlObj = new URL(changeToProperURL(url));
+  const pathname = urlObj.pathname;
+  const slash = pathname.indexOf("/", 1);
+  const subdomain =
+    slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
+  return subdomain;
+}
 
 export function domainsAreTheSame(url1, url2) {
   try {
-      let parsedUrl1 = new URL(url1);
-      let parsedUrl2 = new URL(url2);
+    let parsedUrl1 = new URL(changeToProperURL(url1));
+    let parsedUrl2 = new URL(changeToProperURL(url2));
 
-      // Remove 'www.' prefix if present
-      let domain1 = parsedUrl1.hostname.replace(/^www\./, '');
-      let domain2 = parsedUrl2.hostname.replace(/^www\./, '');
+    // Remove 'www.' prefix if present
+    let domain1 = parsedUrl1.hostname.replace(/^www\./, "");
+    let domain2 = parsedUrl2.hostname.replace(/^www\./, "");
 
-      return domain1 === domain2;
+    return domain1 === domain2;
   } catch (e) {
-      console.error(e);
-      return false;
+    console.log(e, url1, url2);
+    return false;
   }
 }
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
@@ -97,7 +105,8 @@ const makeNewUrlWithFilters = (
 ) => {
   return (
     props.location.pathname +
-    `?${(filterString && identifier + "=" + filterString) || ""}${qs ? "&" : ""
+    `?${(filterString && identifier + "=" + filterString) || ""}${
+      qs ? "&" : ""
     }${qs || ""}`
   );
 };
@@ -434,7 +443,9 @@ export const getRandomIntegerInRange = (range = 99999999) => {
 
 function generateRandomEmail() {
   const name = Math.random().toString(36).substring(2, 7); // Generate random alphanumeric string
-  const domain = ["gmail.com", "yahoo.com", "hotmail.com"][Math.floor(Math.random() * 3)]; // Pick a random domain
+  const domain = ["gmail.com", "yahoo.com", "hotmail.com"][
+    Math.floor(Math.random() * 3)
+  ]; // Pick a random domain
   return `${name}@${domain}`;
 }
 
@@ -444,15 +455,14 @@ export function get50RandomEmails() {
     emailList.push(generateRandomEmail());
   }
 
-  return emailList
+  return emailList;
 }
-
 
 export const pickAtRandom = (arr) => {
   const arrLength = arr.length;
   const randomIndex = Math.floor(Math.random() * arrLength);
   return arr[randomIndex];
-}
+};
 export function getPropsArrayFromJsonArray(array, property) {
   if (!array || !property) return [];
   const toGo = [];
@@ -743,6 +753,6 @@ export const fetchCopyrightData = (info) => {
     copyright_att: info?.copyright_att || "",
     underAge: info?.has_children || false,
     guardian_info: info?.guardian_info || "",
-    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key
+    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key,
   };
 };
