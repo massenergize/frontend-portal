@@ -82,7 +82,9 @@ function App() {
               );
               // Only redirect to custom domain if a community has one, and the user is not already on the custom domain
               if (userIsNotAlreadyOnCustomDomain && !IS_LOCAL)
-                window.location.href = changeToProperURL(customDomain);
+                window.location.href = `${changeToProperURL(
+                  customDomain
+                )}/${subdomain}`;
             }
           } else {
             setError(json.error);
