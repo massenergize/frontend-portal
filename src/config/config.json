@@ -1,6 +1,6 @@
 {
   "IS_LOCAL": false,
   "IS_PROD": false,
-  "IS_CANARY": false,
+  "IS_CANARY": true,
   "BUILD_VERSION": "4.13.12"
 }
