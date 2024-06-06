@@ -24,6 +24,7 @@ import MEButton from "../Widgets/MEButton";
 import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
 import {
+  reduxLoadActions,
   reduxLoadTagCols,
   reduxLoadTestimonials,
   reduxLoadTestimonialsPage,
@@ -66,8 +67,8 @@ class StoriesPage extends React.Component {
   fetchEssentials = () => {
     const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
-    const payload = { subdomain: subdomain };
-    
+    const payload = { subdomain };
+
     const page = (pageRequests || {})[PAGE_ESSENTIALS.TESTIMONIALS.key];
     if (page?.loaded) return;
     Promise.all(
@@ -76,10 +77,11 @@ class StoriesPage extends React.Component {
       )
     )
       .then((response) => {
-        const [pageData, tagCols, stories] = response;
-        this.props.loadTestimonialsPage(pageData.data);
-        this.props.loadTagCollections(tagCols.data);
-        this.props.loadTestimonials(stories.data);
+        const [pageData, tagCols, stories, actions] = response;
+        this.props.loadTestimonialsPage(pageData?.data);
+        this.props.loadTagCollections(tagCols?.data);
+        this.props.loadTestimonials(stories?.data);
+        this.props.loadActions(actions?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.TESTIMONIALS.key]: { loaded: true },
@@ -247,7 +249,10 @@ class StoriesPage extends React.Component {
 
   renderSideViewStories(stories = []) {
     return (stories || []).map((story, index) => {
-      const creatorName = story?.preferred_name ||story?.user?.preferred_name || story?.user?.full_name; //"...";
+      const creatorName =
+        story?.preferred_name ||
+        story?.user?.preferred_name ||
+        story?.user?.full_name; //"...";
       // no anonymous testimonials   if (story?.anonymous) creatorName = "Anonymous";
       return (
         <div key={index.toString()}>
@@ -490,5 +495,6 @@ export default connect(mapStoreToProps, {
   loadTestimonials: reduxLoadTestimonials,
   loadTestimonialsPage: reduxLoadTestimonialsPage,
   loadTagCollections: reduxLoadTagCols,
-  reduxMarkRequestAsDone
+  reduxMarkRequestAsDone,
+  loadActions: reduxLoadActions,
 })(StoriesPage);
