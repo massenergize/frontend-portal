@@ -57,6 +57,7 @@ export const PAGE_ESSENTIALS = {
       "tag_collections.list",
       "events.list",
       "events.exceptions.list",
+      "actions.list",
     ],
   },
   TESTIMONIALS: {
@@ -65,6 +66,7 @@ export const PAGE_ESSENTIALS = {
       "testimonials_page_settings.info",
       "tag_collections.list",
       "testimonials.list",
+      "actions.list",
     ],
   },
   VENDORS: {
