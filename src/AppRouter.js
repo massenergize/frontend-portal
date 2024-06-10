@@ -64,7 +64,8 @@ import {
   reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
   reduxLoadSettings,
-  reduxToggleUniversalToastAction, reduxSaveFeatureFlagsAction,
+  reduxToggleUniversalToastAction,
+  reduxSaveFeatureFlagsAction,
 } from "./redux/actions/pageActions";
 import {
   reduxLogout,
@@ -81,8 +82,11 @@ import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
-import { setAuthStateAction, subscribeToFirebaseAuthChanges } from "./redux/actions/authActions";
-import { addLeadingSlashToLinks, getTakeTourFromURL, replaceAllOccurrences, TOUR_STORAGE_KEY } from "./components/Utils";
+import {
+  setAuthStateAction,
+  subscribeToFirebaseAuthChanges,
+} from "./redux/actions/authActions";
+import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
 import {
@@ -94,6 +98,7 @@ import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
 import METoast from "./components/Pages/Widgets/METoast/METoast";
+import { child } from "firebase/database";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -119,13 +124,15 @@ class AppRouter extends Component {
     // let cpy = JSON.parse(JSON.stringify(menu));
     const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
     if (!main) return false;
-    const content = [...main.content]
+    const content = [...main.content];
     const homeFxn = (m) => m.name === "Home";
     const homeGroup = content.find(homeFxn);
-  
+
     const home = homeGroup?.children?.find(homeFxn);
     var location = this.cleanURL(window.location.href);
-    var rebuilt = this.cleanURL(window.location.protocol + window.location.host + home.link);
+    var rebuilt = this.cleanURL(
+      window.location.protocol + window.location.host + home.link
+    );
     return location === rebuilt;
   }
 
@@ -143,7 +150,7 @@ class AppRouter extends Component {
    * @returns
    */
   checkTourState = (menu) => {
-    if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back 
+    if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back
     var valueFromURL = getTakeTourFromURL();
     var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
     //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
@@ -171,13 +178,15 @@ class AppRouter extends Component {
     this.fetch();
   }
 
-
-
   static getDerivedStateFromProps(props, state) {
-    const isJustFromGoogleAUth =  props.authState?.split("::")
-    if (isJustFromGoogleAUth[1]=== AUTH_STATES.JUST_FROM_GOOGLE_AUTH){
-      props.history.push(props.links.signup)
-      props.setAuthState(isJustFromGoogleAUth[0])
+    const isJustFromGoogleAUth = props.authState?.split("::");
+    if (isJustFromGoogleAUth[1] === AUTH_STATES.JUST_FROM_GOOGLE_AUTH) {
+      props.history.push(props.links.signup);
+      props.setAuthState(isJustFromGoogleAUth[0]);
+      return null;
+    }
+    if(getTakeTourFromURL() === "true" && !props.showTour){
+      props.setTourState(true)
       return null
     }
     return null
@@ -186,13 +195,13 @@ class AppRouter extends Component {
   async fetch() {
     const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
-    const body = { subdomain: subdomain };
+    const body = { subdomain };
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
 
     // save as a custom property for Google Analytics
-    window.gtag('set', 'user_properties', { community: community.subdomain });
+    window.gtag("set", "user_properties", { community: community.subdomain });
 
     const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
@@ -218,136 +227,179 @@ class AppRouter extends Component {
       Promise.all([
         apiCall("communities.features.flags.list", body),
         apiCall("home_page_settings.info", body),
-        apiCall("menus.list", body),
-        apiCall("about_us_page_settings.info", body),
-        apiCall("actions_page_settings.info", body),
-        apiCall("contact_us_page_settings.info", body),
-        apiCall("donate_page_settings.info", body),
-        apiCall("events_page_settings.info", body),
+        apiCall("user.portal.menu.list", body),
         apiCall("impact_page_settings.info", body),
-        apiCall("register_page_settings.info", body),
-        apiCall("signin_page_settings.info", body),
-        apiCall("teams_page_settings.info", body),
-        apiCall("testimonials_page_settings.info", body),
-        apiCall("vendors_page_settings.info", body),
-        apiCall("communities.actions.completed", body),
-        apiCall("settings.list", body),
       ])
         .then((res) => {
           const [
             communityFeatures,
             homePageResponse,
             mainMenuResponse,
-            aboutUsPageResponse,
-            actionsPageResponse,
-            contactUsPageResponse,
-            donatePageResponse,
-            eventsPageResponse,
             impactPageResponse,
-            registerPageResponse,
-            signinPageResponse,
-            teamsPageResponse,
-            testimonialsPageResponse,
-            vendorsPageResponse,
-            communityActionList,
-            settings,
           ] = res;
           this.props.saveCommunityFeatureFlags(communityFeatures.data);
-
           this.props.reduxLoadHomePage(homePageResponse.data);
           this.props.reduxLoadMenu(mainMenuResponse.data);
-          this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
-          this.props.reduxLoadActionsPage(actionsPageResponse.data);
-          this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
-          this.props.reduxLoadDonatePage(donatePageResponse.data);
-          this.props.reduxLoadEventsPage(eventsPageResponse.data);
           this.props.reduxLoadImpactPage(impactPageResponse.data);
-          this.props.reduxLoadRegisterPage(registerPageResponse.data);
-          this.props.reduxLoadSigninPage(signinPageResponse.data);
-          this.props.reduxLoadTeamsPage(teamsPageResponse.data);
-          this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
-          this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
-          this.props.setCommunityActionListInRedux(communityActionList?.data);
-          this.props.reduxLoadSettings(settings.data);
-          this.setState({
-            pagesEnabled: {
-              aboutUsPage: aboutUsPageResponse.data.is_published,
-              actionsPage: actionsPageResponse.data.is_published,
-              contactUsPage: contactUsPageResponse.data.is_published,
-              donatePage: donatePageResponse.data.is_published,
-              eventsPage: eventsPageResponse.data.is_published,
-              impactPage: impactPageResponse.data.is_published,
-              vendorsPage: vendorsPageResponse.data.is_published,
-              testimonialsPage: testimonialsPageResponse.data.is_published,
-              teamsPage: teamsPageResponse.data.is_published,
-            },
-            prefix,
-          });
-          this.loadMenu(mainMenuResponse.data);
-          this.checkTourState(mainMenuResponse.data);
-        })
-        .catch((err) => {
-          this.setState({ error: err });
-          console.log(err);
-        });
 
-      apiCall("events.date.update", body)
-        .then((json) => {
-          if (json.success) {
-          } else {
-            console.log(json.error);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      Promise.all([
-        apiCall("actions.list", body),
-        apiCall("graphs.actions.completed", body),
-        apiCall("graphs.communities.impact", body),
-        apiCall("events.list", body),
-        apiCall("events.exceptions.list", body),
-        apiCall("policies.list", body),
-        apiCall("teams.stats", body),
-        apiCall("tag_collections.list", body),
-        apiCall("testimonials.list", body),
-        apiCall("vendors.list", body),
-        apiCall("data.carbonEquivalency.get", body),
-        apiCall("communities.list", body),
-      ])
-        .then((res) => {
-          const [
-            actionsResponse,
-            actionsCompletedResponse,
-            communityStatsResponse,
-            eventsResponse,
-            eventExceptionsResponse,
-            policiesResponse,
-            teamResponse,
-            tagCollectionsResponse,
-            testimonialsResponse,
-            vendorsResponse,
-            eqResponse,
-            listOfCommunitiesResponse,
-          ] = res;
-          this.props.reduxLoadEvents(eventsResponse.data);
-          this.props.reduxLoadEventExceptions(eventExceptionsResponse);
-          this.props.reduxLoadActions(actionsResponse.data);
-          this.props.reduxLoadServiceProviders(vendorsResponse.data);
-          this.props.reduxLoadTestimonials(testimonialsResponse.data);
-          this.props.reduxLoadPolicies(policiesResponse.data);
-          this.props.reduxLoadTeams(teamResponse.data);
-          this.props.reduxLoadTagCols(tagCollectionsResponse.data);
-          this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
-          this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
-          this.props.reduxLoadEquivalences(eqResponse.data);
-          this.props.reduxLoadCommunities(listOfCommunitiesResponse.data);
+          // this.setState({
+          //   pagesEnabled: {
+          //     aboutUsPage: aboutUsPageResponse.data.is_published,
+          //     actionsPage: actionsPageResponse.data.is_published,
+          //     contactUsPage: contactUsPageResponse.data.is_published,
+          //     donatePage: donatePageResponse.data.is_published,
+          //     eventsPage: eventsPageResponse.data.is_published,
+          //     impactPage: impactPageResponse.data.is_published,
+          //     vendorsPage: vendorsPageResponse.data.is_published,
+          //     testimonialsPage: testimonialsPageResponse.data.is_published,
+          //     teamsPage: teamsPageResponse.data.is_published,
+          //   },
+          //   prefix,
+          // });
+          this.loadMenu(mainMenuResponse.data, prefix);
+          // this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
           console.log(err);
         });
     }
+
+    // if (community) {
+    //   // for lazy loading: load these first
+    //   Promise.all([
+    //     apiCall("communities.features.flags.list", body),
+    //     apiCall("home_page_settings.info", body),
+    //     apiCall("menus.list", body),
+    //     apiCall("about_us_page_settings.info", body),
+    //     apiCall("actions_page_settings.info", body),
+    //     apiCall("contact_us_page_settings.info", body),
+    //     apiCall("donate_page_settings.info", body),
+    //     apiCall("events_page_settings.info", body),
+    //     apiCall("impact_page_settings.info", body),
+    //     apiCall("register_page_settings.info", body),
+    //     apiCall("signin_page_settings.info", body),
+    //     apiCall("teams_page_settings.info", body),
+    //     apiCall("testimonials_page_settings.info", body),
+    //     apiCall("vendors_page_settings.info", body),
+    //     apiCall("communities.actions.completed", body),
+    //     apiCall("settings.list", body),
+    //   ])
+    //     .then((res) => {
+    //       const [
+    //         communityFeatures,
+    //         homePageResponse,
+    //         mainMenuResponse,
+    //         aboutUsPageResponse,
+    //         actionsPageResponse,
+    //         contactUsPageResponse,
+    //         donatePageResponse,
+    //         eventsPageResponse,
+    //         impactPageResponse,
+    //         registerPageResponse,
+    //         signinPageResponse,
+    //         teamsPageResponse,
+    //         testimonialsPageResponse,
+    //         vendorsPageResponse,
+    //         communityActionList,
+    //         settings,
+    //       ] = res;
+    //       this.props.saveCommunityFeatureFlags(communityFeatures.data);
+
+    //       this.props.reduxLoadHomePage(homePageResponse.data);
+    //       this.props.reduxLoadMenu(mainMenuResponse.data);
+    //       this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
+    //       this.props.reduxLoadActionsPage(actionsPageResponse.data);
+    //       this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
+    //       this.props.reduxLoadDonatePage(donatePageResponse.data);
+    //       this.props.reduxLoadEventsPage(eventsPageResponse.data);
+    //       this.props.reduxLoadImpactPage(impactPageResponse.data);
+    //       this.props.reduxLoadRegisterPage(registerPageResponse.data);
+    //       this.props.reduxLoadSigninPage(signinPageResponse.data);
+    //       this.props.reduxLoadTeamsPage(teamsPageResponse.data);
+    //       this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
+    //       this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
+    //       this.props.setCommunityActionListInRedux(communityActionList?.data);
+    //       this.props.reduxLoadSettings(settings.data);
+    //       this.setState({
+    //         pagesEnabled: {
+    //           aboutUsPage: aboutUsPageResponse.data.is_published,
+    //           actionsPage: actionsPageResponse.data.is_published,
+    //           contactUsPage: contactUsPageResponse.data.is_published,
+    //           donatePage: donatePageResponse.data.is_published,
+    //           eventsPage: eventsPageResponse.data.is_published,
+    //           impactPage: impactPageResponse.data.is_published,
+    //           vendorsPage: vendorsPageResponse.data.is_published,
+    //           testimonialsPage: testimonialsPageResponse.data.is_published,
+    //           teamsPage: teamsPageResponse.data.is_published,
+    //         },
+    //         prefix,
+    //       });
+    //       this.loadMenu(mainMenuResponse.data);
+    //       this.checkTourState(mainMenuResponse.data);
+    //     })
+    //     .catch((err) => {
+    //       this.setState({ error: err });
+    //       console.log(err);
+    //     });
+
+    //   apiCall("events.date.update", body)
+    //     .then((json) => {
+    //       if (json.success) {
+    //       } else {
+    //         console.log(json.error);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    //   Promise.all([
+    //     apiCall("actions.list", body),
+    //     apiCall("graphs.actions.completed", body),
+    //     apiCall("graphs.communities.impact", body),
+    //     apiCall("events.list", body),
+    //     apiCall("events.exceptions.list", body),
+    //     apiCall("policies.list", body),
+    //     apiCall("teams.stats", body),
+    //     apiCall("tag_collections.list", body),
+    //     apiCall("testimonials.list", body),
+    //     apiCall("vendors.list", body),
+    //     apiCall("data.carbonEquivalency.get", body),
+    //     apiCall("communities.list", body),
+    //   ])
+    //     .then((res) => {
+    //       const [
+    //         actionsResponse,
+    //         actionsCompletedResponse,
+    //         communityStatsResponse,
+    //         eventsResponse,
+    //         eventExceptionsResponse,
+    //         policiesResponse,
+    //         teamResponse,
+    //         tagCollectionsResponse,
+    //         testimonialsResponse,
+    //         vendorsResponse,
+    //         eqResponse,
+    //         listOfCommunitiesResponse,
+    //       ] = res;
+    //       this.props.reduxLoadEvents(eventsResponse.data);
+    //       this.props.reduxLoadEventExceptions(eventExceptionsResponse);
+    //       this.props.reduxLoadActions(actionsResponse.data);
+    //       this.props.reduxLoadServiceProviders(vendorsResponse.data);
+    //       this.props.reduxLoadTestimonials(testimonialsResponse.data);
+    //       this.props.reduxLoadPolicies(policiesResponse.data);
+    //       this.props.reduxLoadTeams(teamResponse.data);
+    //       this.props.reduxLoadTagCols(tagCollectionsResponse.data);
+    //       this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
+    //       this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
+    //       this.props.reduxLoadEquivalences(eqResponse.data);
+    //       this.props.reduxLoadCommunities(listOfCommunitiesResponse.data);
+    //     })
+    //     .catch((err) => {
+    //       this.setState({ error: err });
+    //       console.log(err);
+    //     });
+    // }
   }
 
   setStateAsync(state) {
@@ -356,24 +408,36 @@ class AppRouter extends Component {
     });
   }
 
-  loadMenu(menus) {
+  prependPrefix(linkObj, prefix) {
+    if (!linkObj) return "";
+    let { children, link, ...rest } = linkObj;
+    if (children && children.length > 0) {
+      children = children.map((child) => this.prependPrefix(child, prefix));
+    }
+    return { ...rest, link: `${prefix}${link}`, children };
+  }
+
+  loadMenu(menus, prefix) {
     if (!menus) {
       console.log("Menus not loaded!");
       return;
     }
 
-    const { content } = menus.find((menu) => {return menu.name === "PortalMainNavLinks"; }) || {};
-    const initialMenu = content;
-
-    const finalMenu = this.modifiedMenu(initialMenu);
-    this.setState({ navBarMenu: finalMenu });
+    const { content } =
+      menus.find((menu) => {
+        return menu.name === "PortalMainNavLinks";
+      }) || {};
+    const initialMenu =
+      content?.map((m) => this.prependPrefix(m, prefix)) || [];
+    // const finalMenu = this.modifiedMenu(initialMenu);
+    const finalMenu = initialMenu;
+    this.setState({ navBarMenu: content });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-    
-    let links = footerContent[0]?.content?.links
-    const footerLinks =  this.addPrefix(addLeadingSlashToLinks(links));
+    // const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerLinks = footerContent[0].content.links || [];
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -392,59 +456,59 @@ class AppRouter extends Component {
    *
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
-  modifiedMenu(menu) {
-    var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
-    var actionsMenu = menu.find((menu) => menu.name === "Actions" ) || {};
+  // modifiedMenu(menu) {
+  //   var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
+  //   var actionsMenu = menu.find((menu) => menu.name === "Actions") || {};
 
-    if (aboutMenu) {
-      aboutMenu.children = aboutMenu.children.filter((item) => {
-        switch (item.link) {
-          case "/impact":
-            return this.state.pagesEnabled.impactPage;
-          case "/aboutus":
-            return this.state.pagesEnabled.aboutUsPage;
-          case "/donate":
-            return this.state.pagesEnabled.donatePage;
-          case "/contactus":
-            return this.state.pagesEnabled.contactUsPage;
-          default:
-            return true;
-        }
-      });
-      menu[-1] = aboutMenu;
-    }
+  //   if (aboutMenu) {
+  //     aboutMenu.children = aboutMenu.children.filter((item) => {
+  //       switch (item.link) {
+  //         case "/impact":
+  //           return this.state.pagesEnabled.impactPage;
+  //         case "/aboutus":
+  //           return this.state.pagesEnabled.aboutUsPage;
+  //         case "/donate":
+  //           return this.state.pagesEnabled.donatePage;
+  //         case "/contactus":
+  //           return this.state.pagesEnabled.contactUsPage;
+  //         default:
+  //           return true;
+  //       }
+  //     });
+  //     menu[-1] = aboutMenu;
+  //   }
 
-    if (actionsMenu) {
-      actionsMenu.children = actionsMenu.children.filter((item) => {
-        switch (item.link) {
-          case "/actions":
-            return this.state.pagesEnabled.actionsPage;
-          case "/services":
-            return this.state.pagesEnabled.vendorsPage;
-          case "/testimonials":
-            return this.state.pagesEnabled.testimonialsPage;
-          default:
-            return true;
-        }
-      });
-      menu[1] = actionsMenu;
-    }
+  //   if (actionsMenu) {
+  //     actionsMenu.children = actionsMenu.children.filter((item) => {
+  //       switch (item.link) {
+  //         case "/actions":
+  //           return this.state.pagesEnabled.actionsPage;
+  //         case "/services":
+  //           return this.state.pagesEnabled.vendorsPage;
+  //         case "/testimonials":
+  //           return this.state.pagesEnabled.testimonialsPage;
+  //         default:
+  //           return true;
+  //       }
+  //     });
+  //     menu[1] = actionsMenu;
+  //   }
 
-    // remove menu items for pages which cadmins have selected as not enabled
-    menu = menu.filter((item) => {
-      switch (item.link) {
-        case "/teams":
-          return this.state.pagesEnabled.teamsPage;
-        case "/events":
-          return this.state.pagesEnabled.eventsPage;
-        case "/home":
-          return true;
-        default:
-          return item.children ? item.children.length > 0 : true;
-      }
-    });
-    return this.addPrefix(menu);
-  }
+  //   // remove menu items for pages which cadmins have selected as not enabled
+  //   menu = menu.filter((item) => {
+  //     switch (item.link) {
+  //       case "/teams":
+  //         return this.state.pagesEnabled.teamsPage;
+  //       case "/events":
+  //         return this.state.pagesEnabled.eventsPage;
+  //       case "/home":
+  //         return true;
+  //       default:
+  //         return item.children ? item.children.length > 0 : true;
+  //     }
+  //   });
+  //   return this.addPrefix(menu);
+  // }
 
   /**
    * Adds the prefix to the subdomains where possible
@@ -452,13 +516,18 @@ class AppRouter extends Component {
    * @returns
    */
   addPrefix(menu) {
-    if(!menu) {
+    if (!menu) {
       return [];
     }
     let menus = menu.map((m) => {
-      if ( this.state.prefix !== "" && m.link && !isValidUrl(m.link) && !m.link.startsWith(this.state.prefix)){
-        m.link = `/${this.state.prefix}/${m.link}`;
-        m.link = replaceAllOccurrences(m.link, "//", "/")
+      if (
+        this.state.prefix !== "" &&
+        m.link &&
+        !isValidUrl(m.link) &&
+        !m.link.startsWith(this.state.prefix)
+      ) {
+        m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
@@ -473,13 +542,12 @@ class AppRouter extends Component {
     const currentURL = window.location.href.split("//")[1]; //just remove the "https or http from the url and return the remaining"
     let realRoute = window.location.pathname;
     const queryString = window.location.search;
-    if (!currentURL?.includes("signin") &&!currentURL?.includes("signup")) {
-      if(queryString){
-        realRoute += queryString
+    if (!currentURL?.includes("signin") && !currentURL?.includes("signup")) {
+      if (queryString) {
+        realRoute += queryString;
       }
       window.localStorage.setItem("last_visited", realRoute);
-      
-    } 
+    }
   }
 
   render() {
@@ -547,7 +615,7 @@ class AppRouter extends Component {
             }}
             message={toastOptions?.message}
           />
-          {Seo({
+          {/* {Seo({
             title: "",
             description: community.about,
             url: `${window.location.pathname}`,
@@ -556,8 +624,19 @@ class AppRouter extends Component {
             updated_at: community.updated_at,
             created_at: community.updated_at,
             tags: [community.name, community.subdomain],
-            site_name:community.name
-          })}
+            site_name: community.name,
+          })} */}
+          <Seo
+            title=""
+            description={community.about}
+            site_name={community.name}
+            url={`${window.location.pathname}`}
+            image={community.logo && community.logo.url}
+            keywords={[]}
+            updated_at={community.updated_at}
+            created_at={community.updated_at}
+            tags={[community.name, community.subdomain]}
+          />
 
           {navBarMenu ? (
             <div>
@@ -689,8 +768,8 @@ const mapDispatchToProps = {
   toggleGuestDialog: reduxToggleGuestAuthDialog,
   toggleUniversalModal: reduxToggleUniversalModal,
   reduxLoadSettings,
-  setAuthState:setAuthStateAction,
-  toggleToast:reduxToggleUniversalToastAction,
+  setAuthState: setAuthStateAction,
+  toggleToast: reduxToggleUniversalToastAction,
   saveCommunityFeatureFlags: reduxSaveFeatureFlagsAction,
 };
 export default connect(mapStoreToProps, mapDispatchToProps)(AppRouter);

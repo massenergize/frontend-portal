@@ -20,10 +20,15 @@ import URLS from "../../../api/urls";
 import MELightDropDown from "../Widgets/MELightDropDown";
 import METabView from "../Widgets/METabView/METabView";
 import MEModal from "../Widgets/MEModal";
-import { reduxToggleGuestAuthDialog } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadTeams,
+  reduxMarkRequestAsDone,
+  reduxToggleGuestAuthDialog,
+} from "../../../redux/actions/pageActions";
 import { bindActionCreators } from "redux";
-import { PREF_EQ_DEFAULT } from "../../Utils"
+import { PREF_EQ_DEFAULT } from "../../Utils";
 import Seo from "../../Shared/Seo";
+import { PAGE_ESSENTIALS } from "../../Constants.js";
 
 class OneTeamPage extends React.Component {
   constructor(props) {
@@ -40,12 +45,10 @@ class OneTeamPage extends React.Component {
     this.itemSelected = this.itemSelected.bind(this);
   }
 
-  async fetch(id) {
+  handleTeamJson = (json) => {
     const { teamsStats } = this.props;
     if (!teamsStats) return;
-
     try {
-      const json = await apiCall("teams.info", { team_id: id });
       if (json.success) {
         const team = json.data;
         const teamStats = teamsStats.find(
@@ -55,10 +58,21 @@ class OneTeamPage extends React.Component {
         this.setState({
           team: team,
           teamData: teamData,
+          loading: false,
         });
       } else {
-        this.setState({ error: json.error });
+        this.setState({ error: json.error, loading: false });
       }
+    } catch (err) {
+      this.setState({ error: err.toString(), loading: false });
+    }
+  };
+  async fetch(id) {
+    const { teamsStats } = this.props;
+    if (!teamsStats) return;
+    try {
+      const json = await apiCall("teams.info", { team_id: id });
+      this.handleTeamJson(json);
     } catch (err) {
       this.setState({ error: err.toString() });
     } finally {
@@ -66,11 +80,38 @@ class OneTeamPage extends React.Component {
     }
   }
 
-  componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "OneTeamPage"});
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain: subdomain };
     const { id } = this.props.match.params;
-    this.fetch(id);
-    // TODO: get show option from local storage
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_TEAM.key];
+    const loaded = (page || {})[id];
+    if (loaded) return this.handleTeamJson(loaded);
+    Promise.all([
+      ...PAGE_ESSENTIALS.ONE_TEAM.routes.map((route) =>
+        apiCall(route, payload)
+      ),
+      apiCall("teams.info", { team_id: id }),
+    ])
+      .then((response) => {
+        const [teamStats, teamJson] = response;
+        this.props.loadTeamStats(teamStats.data);
+        this.handleTeamJson(teamJson);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ONE_TEAM.key]: { ...(page || {}), [id]: teamJson },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  componentDidMount() {
+    window.gtag("set", "user_properties", { page_title: "OneTeamPage" });
+    this.fetchEssentials();
     this.setState({ showOption: "Graph" });
   }
 
@@ -584,11 +625,16 @@ const mapStoreToProps = (store) => {
     links: store.links,
     teamsStats: store.page.teams,
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
+    pageRequests: store.page.pageRequests,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { toggleGuestAuthDialog: reduxToggleGuestAuthDialog },
+    {
+      toggleGuestAuthDialog: reduxToggleGuestAuthDialog,
+      loadTeamStats: reduxLoadTeams,
+      reduxMarkRequestAsDone,
+    },
     dispatch
   );
 };

@@ -2,21 +2,56 @@ import React from "react";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 
 import { connect } from "react-redux";
-import { reduxLoadCommunityAdmins } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadCommunityAdmins,
+  reduxLoadContactUsPage,
+  reduxMarkRequestAsDone,
+} from "../../../redux/actions/pageActions";
 import ContactPageForm from "./ContactPageForm";
 import Seo from "../../Shared/Seo";
+import { apiCall } from "../../../api/functions";
+import { PAGE_ESSENTIALS } from "../../Constants";
 
 class ContactUsPage extends React.Component {
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.CONTACT_US.key];
+    if (page?.loaded) return;
+    Promise.all(
+      PAGE_ESSENTIALS.CONTACT_US.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData] = response;
+        this.props.loadPageData(pageData.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.CONTACT_US.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
-    window.gtag('set', 'user_properties', {page_title: "ContactUsPage"});
+    window.gtag("set", "user_properties", { page_title: "ContactUsPage" });
+    this.fetchEssentials();
   }
 
   prepareLocationText = (location) => {
     let locationText = "";
     if (location) {
-      locationText = location.address? location.address +`${location.city || location.state || location.zipcode ? ", " : ""}`: "";
-      locationText += location.city? location.city + `${location.state || location.zipcode ? ", " : ""}`: "";
-      locationText += location.state? location.state + `${location.zipcode ? ", " : ""}` : "";
+      locationText = location.address
+        ? location.address +
+          `${location.city || location.state || location.zipcode ? ", " : ""}`
+        : "";
+      locationText += location.city
+        ? location.city + `${location.state || location.zipcode ? ", " : ""}`
+        : "";
+      locationText += location.state
+        ? location.state + `${location.zipcode ? ", " : ""}`
+        : "";
       locationText += location.zipcode ? location.zipcode : "";
     }
     return locationText;
@@ -192,9 +227,12 @@ const mapStoreToProps = (store) => {
     community: store.page.community,
     communityAdmins: store.page.communityAdmins,
     pageData: store.page.contactUsPage,
+    pageRequests: store.page.pageRequests,
   };
 };
 
-export default connect(mapStoreToProps, { reduxLoadCommunityAdmins })(
-  ContactUsPage
-);
+export default connect(mapStoreToProps, {
+  reduxLoadCommunityAdmins,
+  loadPageData: reduxLoadContactUsPage,
+  reduxMarkRequestAsDone
+})(ContactUsPage);

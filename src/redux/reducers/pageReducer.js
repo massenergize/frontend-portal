@@ -48,7 +48,9 @@ import {
   TOGGLE_UNIVERSAL_MODAL,
   LOAD_SETTINGS,
   CELEBRATE,
-  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX
+  TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
+  MARK_REQUEST_AS_DONE,
+
 } from "../actions/types";
 
 import {
@@ -89,6 +91,7 @@ const initialState = {
   communityAdmins: null,
   __is_sandbox: false,
   __is_custom_site: true,
+  pageRequests:{}
 };
 
 function alreadyInSubTeam(state, action) {
@@ -112,6 +115,11 @@ export default function pageReducer(state = initialState, action) {
           communityFeatureFlags: action.payload,
       };
 
+    case MARK_REQUEST_AS_DONE:
+      return {
+        ...state,
+        pageRequests: action.payload,
+      };
     case CELEBRATE:
       return {
         ...state,

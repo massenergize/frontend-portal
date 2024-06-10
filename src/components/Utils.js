@@ -6,6 +6,31 @@ import { STATUS, ACTIONS } from "react-joyride";
 import { NONE } from "./Pages/Widgets/MELightDropDown";
 import { COPYRIGHT_OPTIONS } from "./Constants";
 
+export function getSubdomainFromURL(url) {
+  const urlObj = new URL(changeToProperURL(url));
+  const pathname = urlObj.pathname;
+  const slash = pathname.indexOf("/", 1);
+  const subdomain =
+    slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
+  return subdomain;
+}
+
+export function domainsAreTheSame(url1, url2) {
+  try {
+    let parsedUrl1 = new URL(changeToProperURL(url1));
+    let parsedUrl2 = new URL(changeToProperURL(url2));
+
+    // Remove 'www.' prefix if present
+    let domain1 = parsedUrl1.hostname.replace(/^www\./, "");
+    let domain2 = parsedUrl2.hostname.replace(/^www\./, "");
+
+    return domain1 === domain2;
+  } catch (e) {
+    console.log(e, url1, url2);
+    return false;
+  }
+}
+
 export const replaceAllOccurrences = (str, oldValue, newValue) => {
   return str.replace(new RegExp(oldValue, "g"), newValue);
 };

@@ -13,6 +13,9 @@ import {
   celebrateWithConfetti,
   reduxChangeData,
   reduxLoadActions,
+  reduxLoadActionsPage,
+  reduxLoadTagCols,
+  reduxMarkRequestAsDone,
   reduxTeamAddAction,
   reduxToggleGuestAuthDialog,
   reduxToggleUniversalModal,
@@ -46,7 +49,7 @@ import ShareButtons from "../../Shared/ShareButtons";
 import ActionMobileStats from "./ActionMobileStats";
 import Subtitle from "../Widgets/Subtitle";
 import StoryForm from "./StoryForm";
-import { ACTION } from "../../Constants";
+import { ACTION, PAGE_ESSENTIALS } from "../../Constants";
 import Feature from "../FeatureFlags/Feature";
 import { FLAGS } from "../FeatureFlags/flags";
 import StoryFormButtonModal from "../StoriesPage/StoryFormButtonModal";
@@ -96,8 +99,32 @@ class ActionsPage extends React.Component {
     this.toggleEQModal = this.toggleEQModal.bind(this);
   }
 
+  fetchEssentials = () => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ACTIONS.key];
+    if (page?.loaded) return;
+    Promise.all(
+      PAGE_ESSENTIALS.ACTIONS.routes.map((route) => apiCall(route, payload))
+    )
+      .then((response) => {
+        const [pageData, tagCols, actions] = response;
+        this.props.loadActionsPage(pageData.data);
+        this.props.loadTagCollections(tagCols.data);
+        this.props.loadActions(actions.data);
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ACTIONS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "ActionsPage" });
+    this.fetchEssentials();
   }
   triggerGuestDialog(e) {
     e && e.preventDefault();
@@ -282,12 +309,21 @@ class ActionsPage extends React.Component {
     ];
     return (
       <div id="test-actions-main-wrapper">
-        {Seo({
+        {/* {  Seo({
           title: "Actions",
           description: "",
           url: `${window.location.pathname}`,
-          site_name: communityData?.community?.name,
-        })}
+          site_name: this.props?.community?.name,
+        })} */}
+        {
+          <Seo
+            title="Actions"
+            description=""
+            url={window.location.pathname}
+            site_name={this.props?.community?.name}
+          />
+        }
+        
         {this.props.showTour && (
           <ProductTour
             steps={steps}
@@ -393,10 +429,7 @@ class ActionsPage extends React.Component {
                         <PageTitle style={{ fontSize: 24 }}>{title}</PageTitle>
                       )}
                       <center>
-                        <Subtitle>
-                          {pageData.sub_title ||
-                            ""}
-                        </Subtitle>
+                        <Subtitle>{pageData.sub_title || ""}</Subtitle>
                       </center>
                     </div>
 
@@ -628,6 +661,7 @@ class ActionsPage extends React.Component {
 
 const mapStoreToProps = (store) => {
   return {
+    community: store.page.community,
     homePageData: store.page.homePage,
     user: store.user.info,
     todo: store.user.todo,
@@ -641,6 +675,7 @@ const mapStoreToProps = (store) => {
     pref_eq: store.user.pref_equivalence || PREF_EQ_DEFAULT,
     eq: store.page.equivalences,
     showTour: store.page.showTour,
+    pageRequests: store.page.pageRequests,
   };
 };
 
@@ -653,8 +688,12 @@ const mapDispatchToProps = {
   reduxSetPreferredEquivalence,
   signInWithAuthenticationDialog: () => reduxToggleGuestAuthDialog(true),
   celebrate: celebrateWithConfetti,
-  toggleModal:reduxToggleUniversalModal,
-  updateActionsInRedux:reduxLoadActions
+  toggleModal: reduxToggleUniversalModal,
+  updateActionsInRedux: reduxLoadActions,
+  loadActionsPage: reduxLoadActionsPage,
+  loadTagCollections: reduxLoadTagCols,
+  loadActions: reduxLoadActions,
+  reduxMarkRequestAsDone,
 };
 export default connect(
   mapStoreToProps,

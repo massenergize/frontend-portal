@@ -59,7 +59,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "cypress open",
     "all-tests": "cypress run",
     "test-and-record": "cypress run --record --key bc66b892-4075-42c4-8180-2c7259c6c246",

@@ -30,3 +30,127 @@ export const COPYRIGHT_OPTIONS = {
     notes: "Image may be protected by copyright, and I don't have permission",
   },
 };
+
+export const PAGE_ESSENTIALS = {
+  HOMEPAGE: {
+    key: "homepage",
+    routes: [
+      "home_page_settings.info",
+      "menus.list",
+      "communities.features.flags.list",
+      "impact_page_settings.info",
+      // "tag_collections.list",
+    ],
+  },
+  ACTIONS: {
+    key: "actions",
+    routes: [
+      "actions_page_settings.info",
+      "tag_collections.list",
+      "actions.list",
+    ],
+  },
+  EVENTS: {
+    key: "events",
+    routes: [
+      "events_page_settings.info",
+      "tag_collections.list",
+      "events.list",
+      "events.exceptions.list",
+      "actions.list",
+    ],
+  },
+  TESTIMONIALS: {
+    key: "testimonials",
+    routes: [
+      "testimonials_page_settings.info",
+      "tag_collections.list",
+      "testimonials.list",
+      "actions.list",
+    ],
+  },
+  VENDORS: {
+    key: "vendors",
+    routes: [
+      "vendors_page_settings.info",
+      "tag_collections.list",
+      "vendors.list",
+    ],
+  },
+  ONE_VENDOR: {
+    key: "vendors",
+    routes: [
+      "vendors.list",
+      "testimonials.list",
+    ],
+  },
+  IMPACT_PAGE: {
+    key: "impact",
+    routes: [
+      "graphs.communities.impact",
+      "tag_collections.list",
+      "graphs.actions.completed",
+    ],
+  },
+  ABOUT_US: {
+    key: "aboutus",
+    routes: ["about_us_page_settings.info", "donate_page_settings.info"],
+  },
+  DONATE: {
+    key: "donate",
+    routes: ["donate_page_settings.info"],
+  },
+  CONTACT_US: {
+    key: "contactus",
+    routes: ["contact_us_page_settings.info"],
+  },
+  TEAMS: {
+    key: "teams",
+    routes: [
+      "teams_page_settings.info",
+      "graphs.actions.completed",
+      "teams.stats",
+    ],
+  },
+  ONE_TEAM: {
+    key: "one-team",
+    routes: [
+      "teams.stats",
+    ],
+  },
+  ONE_ACTION: {
+    key: "one-action",
+    routes: [
+      "graphs.actions.completed",
+      "actions.list",
+      "testimonials.list",
+
+    ],
+  },
+  ONE_EVENT: {
+    key: "one-event",
+    routes: [
+      "events_page_settings.info",
+      "events.list",
+    ],
+  },
+  PROFILE_PAGE: {
+    key: "profile",
+    routes: [
+      "teams.stats",
+      "communities.list"
+    ],
+  },
+  SETTINGS: {
+    key: "settings",
+    routes: [
+      "settings.list",
+    ],
+  },
+  POLICIES: {
+    key: "policies",
+    routes: [
+      "policies.list",
+    ],
+  },
+};

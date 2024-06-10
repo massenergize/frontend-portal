@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import * as Sentry from "@sentry/react";
 
-
 import "./assets/css/style.css";
 import AppRouter from "./AppRouter";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { apiCall } from "./api/functions";
 import LoadingCircle from "./components/Shared/LoadingCircle";
-import { getIsSandboxFromURL } from "./components/Utils";
+import {
+  changeToProperURL,
+  domainsAreTheSame,
+  getIsSandboxFromURL,
+  getSubdomainFromURL,
+} from "./components/Utils";
 import {
   LOAD_COMMUNITY_INFORMATION,
   SET_IS_CUSTOM_SITE,
@@ -39,16 +43,12 @@ function App() {
       payload: is_sandbox,
     });
 
-    // Update the document title using the browser API
     if (!community) {
       const hostname = window.location.hostname;
+      const subdomain = getSubdomainFromURL(window.location.href);
       let body = {};
-      if (URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname)) {
-        const pathname = window.location.pathname;
-        const slash = pathname.indexOf("/", 1);
-        const subdomain =
-          slash > 0 ? pathname.substring(1, slash) : pathname.substring(1);
-
+      const isAMassenergizeDomain = URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
+      if (isAMassenergizeDomain) {
         // if no subdomain found, redirect to all communities page (NB: The all communities page does not exist on this side of the application. It is a page on the backend)
         const thereIsNoSubdomain = [undefined, "", "/"].indexOf(subdomain) > -1;
         if (thereIsNoSubdomain) {
@@ -56,7 +56,7 @@ function App() {
           return;
         }
 
-        body = subdomain ? { subdomain: subdomain } : {};
+        body = subdomain ? { subdomain } : {};
         dispatch({
           type: SET_IS_CUSTOM_SITE,
           payload: false,
@@ -70,6 +70,20 @@ function App() {
               type: LOAD_COMMUNITY_INFORMATION,
               payload: json.data,
             });
+            const customDomain = json?.data?.website;
+            if (customDomain) {
+              dispatch({
+                type: SET_IS_CUSTOM_SITE,
+                payload: true,
+              });
+              const userIsNotAlreadyOnCustomDomain = !domainsAreTheSame(
+                customDomain,
+                window.location.href
+              );
+              // Only redirect to custom domain if a community has one, and the user is not already on the custom domain
+              if (userIsNotAlreadyOnCustomDomain && !IS_LOCAL)
+                window.location.href = changeToProperURL(customDomain);
+            }
           } else {
             setError(json.error);
           }
