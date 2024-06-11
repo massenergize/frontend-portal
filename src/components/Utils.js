@@ -48,6 +48,8 @@ export function domainsAreTheSame(url1, url2) {
     let domain1 = parsedUrl1.hostname.replace(/^www\./, "");
     let domain2 = parsedUrl2.hostname.replace(/^www\./, "");
 
+    console.log("Track domain1, domain2", domain1, domain2)
+
     return domain1 === domain2;
   } catch (e) {
     console.log(e, url1, url2);
