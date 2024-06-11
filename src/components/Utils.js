@@ -30,6 +30,19 @@ export function domainsAreTheSame(url1, url2) {
     return false;
   }
 }
+
+export const replaceAllOccurrences = (str, oldValue, newValue) => {
+  return str.replace(new RegExp(oldValue, "g"), newValue);
+};
+export const addLeadingSlashToLinks = (links) => {
+  return links?.map((link) => {
+    if (!link?.link?.startsWith("/") && !isAProperURL(link?.link)) {
+      link.link = "/" + link?.link;
+    }
+    return link;
+  });
+};
+
 export const makeStringFromArrOfObjects = (arr, func, separator = ",") => {
   if (!func)
     return console.warn(
