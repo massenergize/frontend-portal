@@ -131,7 +131,7 @@ function Settings({
       );
   };
 
-  var TABS = Object.entries(settings)?.map(([key, { name, live, options }]) => {
+  var TABS = Object.entries(settings ||{})?.map(([key, { name, live, options }]) => {
     if (live)
       return {
         key,
