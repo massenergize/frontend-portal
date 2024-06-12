@@ -80,9 +80,10 @@ function App() {
                 customDomain,
                 window.location.href
               );
+
               // Only redirect to custom domain if a community has one, and the user is not already on the custom domain
-              if (userIsNotAlreadyOnCustomDomain && !IS_LOCAL)
-                window.location.href = changeToProperURL(customDomain);
+              //   if (userIsNotAlreadyOnCustomDomain && !IS_LOCAL)
+              //     window.location.href = changeToProperURL(customDomain);
             }
           } else {
             setError(json.error);
