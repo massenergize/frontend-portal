@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import NavBarBurger from "./components/Menu/NavBarBurger";
 import Footer from "./components/Menu/Footer";
 import LoadingCircle from "./components/Shared/LoadingCircle";
 import "./assets/css/style.css";
-import URLS, { isValidUrl, MASSENERGIZE_PRODUCTION_URL } from "./api/urls";
+import URLS, { isValidUrl } from "./api/urls";
 
 import HomePage from "./components/Pages/HomePage/HomePage";
 import ActionsPage from "./components/Pages/ActionsPage/ActionsPage";
@@ -24,81 +24,71 @@ import PoliciesPage from "./components/Pages/PoliciesPage/PoliciesPage";
 import DonatePage from "./components/Pages/DonatePage/DonatePage";
 import ContactPage from "./components/Pages/ContactUs/ContactUsPage";
 import Cookies from "universal-cookie";
-import { device_checkin } from "./api/functions";
+import { apiCall, device_checkin } from "./api/functions";
 
 import ErrorPage from "./components/Pages/Errors/ErrorPage";
 
 import {
-  reduxLoadCommunity,
-  reduxLoadHomePage,
-  reduxLoadActionsPage,
-  reduxLoadServiceProvidersPage,
-  reduxLoadTestimonialsPage,
-  reduxLoadTeamsPage,
-  reduxLoadTeams,
   reduxLoadAboutUsPage,
+  reduxLoadActions,
+  reduxLoadActionsPage,
+  reduxLoadCollection,
+  reduxLoadCommunities,
   reduxLoadCommunitiesStats,
+  reduxLoadCommunity,
+  reduxLoadCommunityActionList,
+  reduxLoadCommunityAdmins,
+  reduxLoadCommunityData,
+  reduxLoadCommunityInformation,
   reduxLoadContactUsPage,
   reduxLoadDonatePage,
+  reduxLoadEquivalences,
+  reduxLoadEventExceptions,
+  reduxLoadEvents,
   reduxLoadEventsPage,
+  reduxLoadHomePage,
   reduxLoadImpactPage,
-  reduxLoadRegisterPage,
-  reduxLoadSigninPage,
   reduxLoadMenu,
   reduxLoadPolicies,
-  reduxLoadActions,
-  reduxLoadEvents,
-  reduxLoadEventExceptions,
-  reduxLoadServiceProviders,
-  reduxLoadTestimonials,
-  reduxLoadCommunities,
+  reduxLoadRegisterPage,
   reduxLoadRSVPs,
+  reduxLoadServiceProviders,
+  reduxLoadServiceProvidersPage,
+  reduxLoadSettings,
+  reduxLoadSigninPage,
   reduxLoadTagCols,
-  reduxLoadCommunityData,
-  reduxLoadCollection,
-  reduxLoadCommunityInformation,
-  reduxLoadCommunityAdmins,
-  reduxLoadEquivalences,
+  reduxLoadTeams,
+  reduxLoadTeamsPage,
+  reduxLoadTestimonials,
+  reduxLoadTestimonialsPage,
+  reduxSaveFeatureFlagsAction,
   reduxSetTourState,
   reduxToggleGuestAuthDialog,
-  reduxLoadCommunityActionList,
   reduxToggleUniversalModal,
-  reduxLoadSettings,
   reduxToggleUniversalToastAction,
-  reduxSaveFeatureFlagsAction,
 } from "./redux/actions/pageActions";
 import {
-  reduxLogout,
-  reduxLogin,
-  reduxLoadTodo,
   reduxLoadDone,
+  reduxLoadTodo,
+  reduxLogin,
+  reduxLogout,
   reduxSetPreferredEquivalence,
 } from "./redux/actions/userActions";
 import { reduxLoadLinks } from "./redux/actions/linkActions";
-
-import { apiCall } from "./api/functions";
 import { connect } from "react-redux";
 import Help from "./components/Pages/Help/Help";
 import Seo from "./components/Shared/Seo";
 import CookieBanner from "./components/Shared/CookieBanner";
 import AuthEntry from "./components/Pages/Auth/AuthEntry";
-import {
-  setAuthStateAction,
-  subscribeToFirebaseAuthChanges,
-} from "./redux/actions/authActions";
-import { getTakeTourFromURL, TOUR_STORAGE_KEY } from "./components/Utils";
+import { setAuthStateAction, subscribeToFirebaseAuthChanges, } from "./redux/actions/authActions";
+import { getTakeTourFromURL } from "./components/Utils";
 import ProfilePasswordlessRedirectPage from "./components/Pages/ProfilePage/ProfilePasswordlessRedirectPage";
 import UniversalModal from "./components/Shared/UniversalModal";
-import {
-  AUTH_STATES,
-  browswerIsSafari,
-  siteUsesCustomDomain,
-} from "./components/Pages/Auth/shared/utils";
+import { AUTH_STATES } from "./components/Pages/Auth/shared/utils";
 import Settings from "./components/Pages/Settings/Settings";
 import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
 import METoast from "./components/Pages/Widgets/METoast/METoast";
-import { child } from "firebase/database";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -114,63 +104,8 @@ class AppRouter extends Component {
     };
   }
 
-  cleanURL(string) {
-    if (!string) return "";
-    const noSlash = string.split("/").join("");
-    return noSlash.split("?")[0];
-  }
-
-  isHomepage(menu) {
-    // let cpy = JSON.parse(JSON.stringify(menu));
-    const main = (menu || []).find((m) => m.name === "PortalMainNavLinks");
-    if (!main) return false;
-    const content = [...main.content];
-    const homeFxn = (m) => m.name === "Home";
-    const homeGroup = content.find(homeFxn);
-
-    const home = homeGroup?.children?.find(homeFxn);
-    var location = this.cleanURL(window.location.href);
-    var rebuilt = this.cleanURL(
-      window.location.protocol + window.location.host + home.link
-    );
-    return location === rebuilt;
-  }
-
-  /**
-   * IDEA: The idea is that we use this function to determine the value of the tour
-   * The first time the site loads. Only the first time!
-   * So, we check where the user is currently entering from first. If the user is not entering
-   * through the homepage, we wont bother finding the state of the tour, from the url or local storage,
-   * the tour will be set to never display inside redux.
-   * Otherwise, we go ahead and determine the tour state;
-   * By initially checking if anything is passed via url, or  checking local storage if nothing.
-   * In the end we either get a value of the current tour state from (url or localStorage), or we get nothing.
-   * Nothing means user is new, so show tour!
-   * @param {*} menu
-   * @returns
-   */
-  checkTourState = (menu) => {
-    if (!this.isHomepage(menu)) return this.props.setTourState(false); // TODO: will be back
-    var valueFromURL = getTakeTourFromURL();
-    var valueFromStorage = window.localStorage.getItem(TOUR_STORAGE_KEY);
-    //----- value passed via url should take precedence over one in storage if provided, and should overwrite local storage value -------
-    const evaluated = valueFromURL === "true";
-    if (valueFromURL) return this.props.setTourState(evaluated);
-    valueFromStorage = valueFromStorage !== "false";
-    this.props.setTourState(valueFromStorage);
-  };
-
   componentDidMount() {
     const { community } = this.props;
-    const subdomain = community?.subdomain || "undefined";
-    const { pathname } = new URL(window.location.href);
-    if (browswerIsSafari() && siteUsesCustomDomain()) {
-      const subd =
-        pathname.toLowerCase().indexOf(subdomain.toLowerCase()) > -1
-          ? ""
-          : "/" + subdomain;
-      window.location.href = MASSENERGIZE_PRODUCTION_URL + subd + pathname;
-    }
     const community_id = community?.id;
     const cookies = new Cookies();
     device_checkin(cookies, community_id).then(null, (err) => console.log(err));
@@ -242,170 +177,13 @@ class AppRouter extends Component {
           this.props.reduxLoadMenu(mainMenuResponse.data);
           this.props.reduxLoadImpactPage(impactPageResponse.data);
 
-          // this.setState({
-          //   pagesEnabled: {
-          //     aboutUsPage: aboutUsPageResponse.data.is_published,
-          //     actionsPage: actionsPageResponse.data.is_published,
-          //     contactUsPage: contactUsPageResponse.data.is_published,
-          //     donatePage: donatePageResponse.data.is_published,
-          //     eventsPage: eventsPageResponse.data.is_published,
-          //     impactPage: impactPageResponse.data.is_published,
-          //     vendorsPage: vendorsPageResponse.data.is_published,
-          //     testimonialsPage: testimonialsPageResponse.data.is_published,
-          //     teamsPage: teamsPageResponse.data.is_published,
-          //   },
-          //   prefix,
-          // });
           this.loadMenu(mainMenuResponse.data, prefix);
-          // this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
           this.setState({ error: err });
           console.log(err);
         });
     }
-
-    // if (community) {
-    //   // for lazy loading: load these first
-    //   Promise.all([
-    //     apiCall("communities.features.flags.list", body),
-    //     apiCall("home_page_settings.info", body),
-    //     apiCall("menus.list", body),
-    //     apiCall("about_us_page_settings.info", body),
-    //     apiCall("actions_page_settings.info", body),
-    //     apiCall("contact_us_page_settings.info", body),
-    //     apiCall("donate_page_settings.info", body),
-    //     apiCall("events_page_settings.info", body),
-    //     apiCall("impact_page_settings.info", body),
-    //     apiCall("register_page_settings.info", body),
-    //     apiCall("signin_page_settings.info", body),
-    //     apiCall("teams_page_settings.info", body),
-    //     apiCall("testimonials_page_settings.info", body),
-    //     apiCall("vendors_page_settings.info", body),
-    //     apiCall("communities.actions.completed", body),
-    //     apiCall("settings.list", body),
-    //   ])
-    //     .then((res) => {
-    //       const [
-    //         communityFeatures,
-    //         homePageResponse,
-    //         mainMenuResponse,
-    //         aboutUsPageResponse,
-    //         actionsPageResponse,
-    //         contactUsPageResponse,
-    //         donatePageResponse,
-    //         eventsPageResponse,
-    //         impactPageResponse,
-    //         registerPageResponse,
-    //         signinPageResponse,
-    //         teamsPageResponse,
-    //         testimonialsPageResponse,
-    //         vendorsPageResponse,
-    //         communityActionList,
-    //         settings,
-    //       ] = res;
-    //       this.props.saveCommunityFeatureFlags(communityFeatures.data);
-
-    //       this.props.reduxLoadHomePage(homePageResponse.data);
-    //       this.props.reduxLoadMenu(mainMenuResponse.data);
-    //       this.props.reduxLoadAboutUsPage(aboutUsPageResponse.data);
-    //       this.props.reduxLoadActionsPage(actionsPageResponse.data);
-    //       this.props.reduxLoadContactUsPage(contactUsPageResponse.data);
-    //       this.props.reduxLoadDonatePage(donatePageResponse.data);
-    //       this.props.reduxLoadEventsPage(eventsPageResponse.data);
-    //       this.props.reduxLoadImpactPage(impactPageResponse.data);
-    //       this.props.reduxLoadRegisterPage(registerPageResponse.data);
-    //       this.props.reduxLoadSigninPage(signinPageResponse.data);
-    //       this.props.reduxLoadTeamsPage(teamsPageResponse.data);
-    //       this.props.reduxLoadTestimonialsPage(testimonialsPageResponse.data);
-    //       this.props.reduxLoadServiceProvidersPage(vendorsPageResponse.data);
-    //       this.props.setCommunityActionListInRedux(communityActionList?.data);
-    //       this.props.reduxLoadSettings(settings.data);
-    //       this.setState({
-    //         pagesEnabled: {
-    //           aboutUsPage: aboutUsPageResponse.data.is_published,
-    //           actionsPage: actionsPageResponse.data.is_published,
-    //           contactUsPage: contactUsPageResponse.data.is_published,
-    //           donatePage: donatePageResponse.data.is_published,
-    //           eventsPage: eventsPageResponse.data.is_published,
-    //           impactPage: impactPageResponse.data.is_published,
-    //           vendorsPage: vendorsPageResponse.data.is_published,
-    //           testimonialsPage: testimonialsPageResponse.data.is_published,
-    //           teamsPage: teamsPageResponse.data.is_published,
-    //         },
-    //         prefix,
-    //       });
-    //       this.loadMenu(mainMenuResponse.data);
-    //       this.checkTourState(mainMenuResponse.data);
-    //     })
-    //     .catch((err) => {
-    //       this.setState({ error: err });
-    //       console.log(err);
-    //     });
-
-    //   apiCall("events.date.update", body)
-    //     .then((json) => {
-    //       if (json.success) {
-    //       } else {
-    //         console.log(json.error);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    //   Promise.all([
-    //     apiCall("actions.list", body),
-    //     apiCall("graphs.actions.completed", body),
-    //     apiCall("graphs.communities.impact", body),
-    //     apiCall("events.list", body),
-    //     apiCall("events.exceptions.list", body),
-    //     apiCall("policies.list", body),
-    //     apiCall("teams.stats", body),
-    //     apiCall("tag_collections.list", body),
-    //     apiCall("testimonials.list", body),
-    //     apiCall("vendors.list", body),
-    //     apiCall("data.carbonEquivalency.get", body),
-    //     apiCall("communities.list", body),
-    //   ])
-    //     .then((res) => {
-    //       const [
-    //         actionsResponse,
-    //         actionsCompletedResponse,
-    //         communityStatsResponse,
-    //         eventsResponse,
-    //         eventExceptionsResponse,
-    //         policiesResponse,
-    //         teamResponse,
-    //         tagCollectionsResponse,
-    //         testimonialsResponse,
-    //         vendorsResponse,
-    //         eqResponse,
-    //         listOfCommunitiesResponse,
-    //       ] = res;
-    //       this.props.reduxLoadEvents(eventsResponse.data);
-    //       this.props.reduxLoadEventExceptions(eventExceptionsResponse);
-    //       this.props.reduxLoadActions(actionsResponse.data);
-    //       this.props.reduxLoadServiceProviders(vendorsResponse.data);
-    //       this.props.reduxLoadTestimonials(testimonialsResponse.data);
-    //       this.props.reduxLoadPolicies(policiesResponse.data);
-    //       this.props.reduxLoadTeams(teamResponse.data);
-    //       this.props.reduxLoadTagCols(tagCollectionsResponse.data);
-    //       this.props.reduxLoadCommunityData(actionsCompletedResponse.data);
-    //       this.props.reduxLoadCommunitiesStats(communityStatsResponse.data);
-    //       this.props.reduxLoadEquivalences(eqResponse.data);
-    //       this.props.reduxLoadCommunities(listOfCommunitiesResponse.data);
-    //     })
-    //     .catch((err) => {
-    //       this.setState({ error: err });
-    //       console.log(err);
-    //     });
-    // }
-  }
-
-  setStateAsync(state) {
-    return new Promise((resolve) => {
-      this.setState(state, resolve);
-    });
   }
 
   prependPrefix(linkObj, prefix) {
@@ -417,26 +195,16 @@ class AppRouter extends Component {
     return { ...rest, link: `${prefix}${link}`, children };
   }
 
-  loadMenu(menus, prefix) {
+  loadMenu(menus) {
     if (!menus) {
       console.log("Menus not loaded!");
       return;
     }
 
-    const { content } =
-      menus.find((menu) => {
-        return menu.name === "PortalMainNavLinks";
-      }) || {};
-    const initialMenu =
-      content?.map((m) => this.prependPrefix(m, prefix)) || [];
-    // const finalMenu = this.modifiedMenu(initialMenu);
-    const finalMenu = initialMenu;
+    const { content } = menus.find((menu) => {return menu.name === "PortalMainNavLinks";}) || {};
     this.setState({ navBarMenu: content });
 
-    const footerContent = menus.filter((menu) => {
-      return menu.name === "PortalFooterQuickLinks";
-    });
-    // const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerContent = menus.filter((menu) => {return menu.name === "PortalFooterQuickLinks";});
     const footerLinks = footerContent[0].content.links || [];
 
     const communitiesLink = {
@@ -456,59 +224,6 @@ class AppRouter extends Component {
    *
    * @TODO change things here after BE changes have been made, so this is more efficient.
    */
-  // modifiedMenu(menu) {
-  //   var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
-  //   var actionsMenu = menu.find((menu) => menu.name === "Actions") || {};
-
-  //   if (aboutMenu) {
-  //     aboutMenu.children = aboutMenu.children.filter((item) => {
-  //       switch (item.link) {
-  //         case "/impact":
-  //           return this.state.pagesEnabled.impactPage;
-  //         case "/aboutus":
-  //           return this.state.pagesEnabled.aboutUsPage;
-  //         case "/donate":
-  //           return this.state.pagesEnabled.donatePage;
-  //         case "/contactus":
-  //           return this.state.pagesEnabled.contactUsPage;
-  //         default:
-  //           return true;
-  //       }
-  //     });
-  //     menu[-1] = aboutMenu;
-  //   }
-
-  //   if (actionsMenu) {
-  //     actionsMenu.children = actionsMenu.children.filter((item) => {
-  //       switch (item.link) {
-  //         case "/actions":
-  //           return this.state.pagesEnabled.actionsPage;
-  //         case "/services":
-  //           return this.state.pagesEnabled.vendorsPage;
-  //         case "/testimonials":
-  //           return this.state.pagesEnabled.testimonialsPage;
-  //         default:
-  //           return true;
-  //       }
-  //     });
-  //     menu[1] = actionsMenu;
-  //   }
-
-  //   // remove menu items for pages which cadmins have selected as not enabled
-  //   menu = menu.filter((item) => {
-  //     switch (item.link) {
-  //       case "/teams":
-  //         return this.state.pagesEnabled.teamsPage;
-  //       case "/events":
-  //         return this.state.pagesEnabled.eventsPage;
-  //       case "/home":
-  //         return true;
-  //       default:
-  //         return item.children ? item.children.length > 0 : true;
-  //     }
-  //   });
-  //   return this.addPrefix(menu);
-  // }
 
   /**
    * Adds the prefix to the subdomains where possible
@@ -519,7 +234,8 @@ class AppRouter extends Component {
     if (!menu) {
       return [];
     }
-    let menus = menu.map((m) => {
+
+    return menu.map((m) => {
       if (
         this.state.prefix !== "" &&
         m.link &&
@@ -533,8 +249,6 @@ class AppRouter extends Component {
       }
       return m;
     });
-
-    return menus;
   }
 
   saveCurrentPageURL() {
@@ -578,6 +292,7 @@ class AppRouter extends Component {
     if (!this.state.navBarMenu) {
       return <LoadingCircle />;
     }
+
     const navBarMenu = this.state.navBarMenu;
     const footerLinks = this.state.footerLinks;
     const footerInfo = {
@@ -614,17 +329,6 @@ class AppRouter extends Component {
             }}
             message={toastOptions?.message}
           />
-          {/* {Seo({
-            title: "",
-            description: community.about,
-            url: `${window.location.pathname}`,
-            image: community.logo && community.logo.url,
-            keywords: [],
-            updated_at: community.updated_at,
-            created_at: community.updated_at,
-            tags: [community.name, community.subdomain],
-            site_name: community.name,
-          })} */}
           <Seo
             title=""
             description={community.about}
@@ -695,9 +399,9 @@ class AppRouter extends Component {
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
               <Route component={HomePage} />
-              {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
+              {/* This was something for completeing registration for invited users, not needed?
+              <Route path="/completeRegistration?" component={RegisterPage} />*/}
             </Switch>
-            // )
           }
           {footerLinks ? (
             <Footer footerLinks={footerLinks} footerInfo={footerInfo} />
@@ -708,6 +412,7 @@ class AppRouter extends Component {
     );
   }
 }
+
 const mapStoreToProps = (store) => {
   return {
     user: store.user.info,
@@ -724,6 +429,7 @@ const mapStoreToProps = (store) => {
     toastOptions: store.page.toastOptions,
   };
 };
+
 const mapDispatchToProps = {
   reduxLogout,
   reduxLoadCommunity,
