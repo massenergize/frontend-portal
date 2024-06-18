@@ -82,8 +82,6 @@ class HomePage extends React.Component {
     const { hostname } = new URL(window.location.href);
     const isNotCustom = URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
 
-    console.log("Lets see something", isNotCustom);
-
     const prefix =
       (isNotCustom || !__is_custom_site) && subdomain ? `/${subdomain}` : "";
 
