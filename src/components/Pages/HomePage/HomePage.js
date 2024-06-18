@@ -79,8 +79,14 @@ class HomePage extends React.Component {
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
-    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : "";
-    
+    const { hostname } = new URL(window.location.href);
+    const isNotCustom = URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
+
+    console.log("Lets see something", isNotCustom);
+
+    const prefix =
+      (isNotCustom || !__is_custom_site) && subdomain ? `/${subdomain}` : "";
+
     // if(this.state.loading) return (<LoadingCircle />);
 
     if (!this.props.pageData) {
@@ -302,6 +308,7 @@ class HomePage extends React.Component {
                 title="Get started - See your local options!"
                 boxes={iconQuickLinks}
                 prefix={prefix}
+                is_custom_site={__is_custom_site}
               />
             </div>
           ) : null}
