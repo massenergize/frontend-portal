@@ -305,7 +305,6 @@ class HomePage extends React.Component {
                 title="Get started - See your local options!"
                 boxes={iconQuickLinks}
                 prefix={prefix}
-                is_custom_site={__is_custom_site}
               />
             </div>
           ) : null}
