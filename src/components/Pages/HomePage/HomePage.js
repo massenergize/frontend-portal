@@ -79,9 +79,9 @@ class HomePage extends React.Component {
     const { __is_custom_site, community } = this.props;
     const { subdomain } = community || {};
 
-    const { hostname } = new URL(window.location.href);
-    const isNotCustom = URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
-    const prefix = isNotCustom && subdomain ? `/${subdomain}` : "";
+    const prefix = !__is_custom_site && subdomain ? `/${subdomain}` : "";
+
+    // if(this.state.loading) return (<LoadingCircle />);
 
     if (!this.props.pageData) {
       return (
