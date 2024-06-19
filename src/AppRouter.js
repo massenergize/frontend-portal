@@ -243,6 +243,7 @@ class AppRouter extends Component {
         !m.link.startsWith(this.state.prefix)
       ) {
         m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
+
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);

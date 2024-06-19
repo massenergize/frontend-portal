@@ -50,12 +50,13 @@ import {
   CELEBRATE,
   TOGGLE_UNIVERSAL_TOAST, SAVE_COMMUNITY_FEATURE_FLAGS_TO_REDUX,
   MARK_REQUEST_AS_DONE,
+
 } from "../actions/types";
 
 import {
   getTeamData,
   inSubTeam,
-  inThisTeam,
+  inThisTeam
 } from "../../components/Pages/TeamsPage/utils";
 import { FIRST_SET } from "../actions/pageActions";
 
