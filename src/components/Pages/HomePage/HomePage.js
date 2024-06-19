@@ -76,7 +76,7 @@ class HomePage extends React.Component {
 
   render() {
     const { showTour, tourInfo } = this.props;
-    const { __is_custom_site, community } = this.props;
+    const { community } = this.props;
     const { subdomain } = community || {};
     const { hostname } = new URL(window.location.href);
     const isNotCustom = URLS.NONE_CUSTOM_WEBSITE_LIST.has(hostname);
