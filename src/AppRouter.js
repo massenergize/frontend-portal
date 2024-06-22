@@ -193,7 +193,11 @@ class AppRouter extends Component {
     if (getTakeTourFromURL() === "true" && !props.showTour) {
       props.setTourState(true);
       return null;
+    if (getTakeTourFromURL() === "true" && !props.showTour) {
+      props.setTourState(true);
+      return null;
     }
+    return null;
     return null;
   }
 
@@ -422,7 +426,11 @@ class AppRouter extends Component {
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
-    return { ...rest, link: `${prefix}${link}`, children };
+    return {
+      ...rest,
+      link: rest?.is_link_external ? link : `${prefix}${link}`,
+      children,
+    };
   }
 
   loadMenu(menus, prefix) {
@@ -439,14 +447,14 @@ class AppRouter extends Component {
       content?.map((m) => this.prependPrefix(m, prefix)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
-    this.setState({ navBarMenu: content });
+
+    this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
-
-    let links = footerContent[0]?.content?.links;
-    const footerLinks = this.addPrefix(addLeadingSlashToLinks(links));
+    // const footerLinks = this.addPrefix(footerContent[0].content.links);
+    const footerLinks = footerContent[0]?.content?.links || [];
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -535,8 +543,7 @@ class AppRouter extends Component {
         !isValidUrl(m.link) &&
         !m.link.startsWith(this.state.prefix)
       ) {
-        m.link = `/${this.state.prefix}/${m.link}`;
-        m.link = replaceAllOccurrences(m.link, "//", "/");
+        m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
