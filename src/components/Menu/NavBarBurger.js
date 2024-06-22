@@ -265,14 +265,16 @@ class NavBarBurger extends React.Component {
         );
 
       return (
-        <Nav.Link className={`${isChild ? "child-link" : ""}`}>
+        <Nav.Link
+          onClick={(e) => {
+            e.preventDefault();
+            if (is_link_external) window.location = link;
+            else this.props.history.push(link);
+            document.dispatchEvent(new MouseEvent("click"));
+          }}
+          className={`${isChild ? "child-link" : ""}`}
+        >
           <Link
-            onClick={(e) => {
-              e.preventDefault();
-              if (is_link_external) window.location = link;
-              else this.props.history.push(link);
-              document.dispatchEvent(new MouseEvent("click"));
-            }}
             className={`n-l-item`}
             // to={navLink.link}
           >
