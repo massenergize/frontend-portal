@@ -42,6 +42,45 @@ class NavBarBurger extends React.Component {
   handleLinkClick() {
     this.setState({ menuOpen: !this.state.menuOpen });
   }
+
+  renderMenuForBurgeredState(menuItems, options) {
+    const { links, community } = this.props;
+    const communityName = community.name || "communities";
+    const { isChild } = options || {};
+    return menuItems?.map((val, index) => {
+      if (val.children) {
+        return (
+          <SubMenuItem
+            key={index}
+            communityName={communityName}
+            customRender={(links) =>
+              this.renderMenuForBurgeredState(links, { isChild: true })
+            }
+            navlink={val}
+            links={links}
+            index={index}
+            clickHandler={this.handleLinkClick}
+          ></SubMenuItem>
+        );
+      }
+      return (
+        <MenuItem
+          key={index}
+          delay={`${index * 0.1}s`}
+          onClick={(e) => {
+            e.preventDefault();
+            this.handleLinkClick();
+            if (val?.is_link_external) window.location = val?.link;
+            else this.props.history.push(val?.link);
+          }}
+          href={val?.link}
+        >
+          {val?.name}
+        </MenuItem>
+      );
+    });
+  }
+
   render() {
     const { links, community } = this.props;
     const communitylogo = community?.logo?.url;
@@ -150,7 +189,12 @@ class NavBarBurger extends React.Component {
                       />
                       {this.renderLogin()}
                     </div>
-                    <Menu open={this.state.menuOpen}>{menuItems}</Menu>
+                    {/* <Menu open={this.state.menuOpen}>{menuItems}</Menu> */}
+                    <Menu open={this.state.menuOpen}>
+                      {" "}
+                      {/* {this.renderMenuItems(this.props.navLinks)} */}
+                      {this.renderMenuForBurgeredState(this.props.navLinks)}
+                    </Menu>
                   </div>
                 </div>
               ) : (
@@ -220,7 +264,7 @@ class NavBarBurger extends React.Component {
         <Nav.Link>
           <Link
             onClick={(e) => {
-              e.preventDefault()
+              e.preventDefault();
               if (is_link_external) window.location = link;
               else this.props.history.push(link);
               document.dispatchEvent(new MouseEvent("click"));
@@ -235,97 +279,97 @@ class NavBarBurger extends React.Component {
     });
   };
 
-  renderNavLinks(navLinks, options = {}) {
-    // return this.renderMenuItems(navLinks);
-    // if (!navLinks) {
-    //   return <li key="noLinks">No PageLinks to Display</li>;
-    // }
-    const style = {
-      borderTop: "5px solid #8dc63f",
-      borderRadius: "0",
-      padding: "0",
-      minwidth: "100px",
-    };
-    const { isChild } = options;
+  // renderNavLinks(navLinks, options = {}) {
+  //   // return this.renderMenuItems(navLinks);
+  //   // if (!navLinks) {
+  //   //   return <li key="noLinks">No PageLinks to Display</li>;
+  //   // }
+  //   const style = {
+  //     borderTop: "5px solid #8dc63f",
+  //     borderRadius: "0",
+  //     padding: "0",
+  //     minwidth: "100px",
+  //   };
+  //   const { isChild } = options;
 
-    const classes = isChild
-      ? "l-c-item"
-      : "d-flex flex-column justify-content-center test-me-nav-menu-item";
+  //   const classes = isChild
+  //     ? "l-c-item"
+  //     : "d-flex flex-column justify-content-center test-me-nav-menu-item";
 
-    return Object.keys(navLinks).map((key) => {
-      var navLink = navLinks[key];
+  //   return Object.keys(navLinks).map((key) => {
+  //     var navLink = navLinks[key];
 
-      const name = navLink?.name?.toLowerCase()?.replace(" ", "-");
-      const linkId = `menu-${name}-id`;
-      if (navLink.children) {
-        const CustomNavLink = React.forwardRef((props, ref) => (
-          <Link
-            ref={ref}
-            className="cool-font"
-            to=""
-            onClick={(e) => {
-              e.preventDefault();
-              props.onClick(e);
-            }}
-            {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            {" "}
-            {props.navLink.name}{" "}
-            <span
-              style={isChild ? { marginLeft: "auto" } : { marginLeft: 5 }}
-              className={`font-normal fa ${
-                isChild ? "fa-caret-right" : "fa-angle-down"
-              }`}
-            ></span>
-          </Link>
-        ));
+  //     const name = navLink?.name?.toLowerCase()?.replace(" ", "-");
+  //     const linkId = `menu-${name}-id`;
+  //     if (navLink.children) {
+  //       const CustomNavLink = React.forwardRef((props, ref) => (
+  //         <Link
+  //           ref={ref}
+  //           className="cool-font"
+  //           to=""
+  //           onClick={(e) => {
+  //             e.preventDefault();
+  //             props.onClick(e);
+  //           }}
+  //           {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
+  //           style={{
+  //             display: "flex",
+  //             flexDirection: "row",
+  //             alignItems: "center",
+  //           }}
+  //         >
+  //           {" "}
+  //           {props.navLink.name}{" "}
+  //           <span
+  //             style={isChild ? { marginLeft: "auto" } : { marginLeft: 5 }}
+  //             className={`font-normal fa ${
+  //               isChild ? "fa-caret-right" : "fa-angle-down"
+  //             }`}
+  //           ></span>
+  //         </Link>
+  //       ));
 
-        return (
-          <li
-            // className={`d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`}
-            className={
-              isChild
-                ? "d-flex flex-column justify-content-center cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
-                : `d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`
-            }
-            id={linkId}
-            key={navLink.name}
-          >
-            <Dropdown onSelect={() => null}>
-              <Dropdown.Toggle
-                as={CustomNavLink}
-                navLink={navLink}
-                id="dropdown-custom-components"
-              ></Dropdown.Toggle>
-              <Dropdown.Menu
-                style={style}
-                // className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
-                className="me-dropdown-theme me-anime-show-up-from-top-end-right z-depth-1"
-              >
-                {/* {this.renderDropdownItems(navLink.children)} */}
-                {this.renderNavLinks(navLink.children, { isChild: true })}
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
-        );
-      }
-      return (
-        <li
-          className={`d-flex flex-column justify-content-center test-me-nav-menu-item`}
-          key={navLink.name}
-          {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
-          id={linkId}
-        >
-          <Link to={`${navLink.link}`}>{navLink.name}</Link>
-        </li>
-      );
-    });
-  }
+  //       return (
+  //         <li
+  //           // className={`d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`}
+  //           className={
+  //             isChild
+  //               ? "d-flex flex-column justify-content-center cool-font p-3 small dropdown-item me-dropdown-theme-item test-me-nav-drop-item"
+  //               : `d-flex flex-column justify-content-center test-me-nav-menu-item-with-drop`
+  //           }
+  //           id={linkId}
+  //           key={navLink.name}
+  //         >
+  //           <Dropdown onSelect={() => null}>
+  //             <Dropdown.Toggle
+  //               as={CustomNavLink}
+  //               navLink={navLink}
+  //               id="dropdown-custom-components"
+  //             ></Dropdown.Toggle>
+  //             <Dropdown.Menu
+  //               style={style}
+  //               // className="me-dropdown-theme me-anime-show-up-from-top z-depth-1"
+  //               className="me-dropdown-theme me-anime-show-up-from-top-end-right z-depth-1"
+  //             >
+  //               {/* {this.renderDropdownItems(navLink.children)} */}
+  //               {this.renderNavLinks(navLink.children, { isChild: true })}
+  //             </Dropdown.Menu>
+  //           </Dropdown>
+  //         </li>
+  //       );
+  //     }
+  //     return (
+  //       <li
+  //         className={`d-flex flex-column justify-content-center test-me-nav-menu-item`}
+  //         key={navLink.name}
+  //         {...(navLink?.navItemId ? { id: navLink.navItemId } : {})}
+  //         id={linkId}
+  //       >
+  //         <Link to={`${navLink.link}`}>{navLink.name}</Link>
+  //       </li>
+  //     );
+  //   });
+  // }
 
   //----------- AREA TO PLAY WITH WEIRD MENU ITEMS --------
   renderDropdownItems(children) {
@@ -535,6 +579,7 @@ class SubMenuItem extends React.Component {
   }
 
   render() {
+    const { customRender } = this.props;
     return (
       <>
         <MenuItem
@@ -545,9 +590,11 @@ class SubMenuItem extends React.Component {
         >
           {this.props.navlink.name}
         </MenuItem>
-        <div style={{ marginLeft: "1em" }}>
+        <div style={{ marginLeft: ".3em" }}>
           <Menu open={this.state.open} submenu={true}>
-            {this.renderSubmenuItems(this.props.navlink.children)}
+            {customRender
+              ? customRender(this.props.navlink?.children)
+              : this.renderSubmenuItems(this.props.navlink.children)}
           </Menu>
         </div>
       </>
