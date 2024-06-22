@@ -251,9 +251,13 @@ class NavBarBurger extends React.Component {
       if (navLink.children && navLink.children.length > 0)
         return (
           <NavDropdown
-            className="c-d-t"
+            className={`c-d-t ${isChild ? "c-d-t-as-child" : ""}`}
             key={linkId}
-            title={<span className="n-l-item">{navLink?.name}</span>}
+            title={
+              <span className={`n-l-item ${isChild ? "child-link" : ""}`}>
+                {navLink?.name}
+              </span>
+            }
             {...(isChild ? { drop: "right" } : {})}
           >
             {this.renderMenuItems(navLink.children, { isChild: true })}
@@ -261,7 +265,7 @@ class NavBarBurger extends React.Component {
         );
 
       return (
-        <Nav.Link>
+        <Nav.Link className={`${isChild ? "child-link" : ""}`}>
           <Link
             onClick={(e) => {
               e.preventDefault();
@@ -269,7 +273,7 @@ class NavBarBurger extends React.Component {
               else this.props.history.push(link);
               document.dispatchEvent(new MouseEvent("click"));
             }}
-            className="n-l-item"
+            className={`n-l-item`}
             // to={navLink.link}
           >
             {navLink?.name}
