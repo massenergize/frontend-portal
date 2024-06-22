@@ -202,6 +202,7 @@ class NavBarBurger extends React.Component {
       var navLink = navLinks[key];
       const name = navLink?.name?.toLowerCase()?.replace(" ", "-");
       const linkId = `menu-${name}-id`;
+      const { is_link_external, link } = navLink || {};
 
       if (navLink.children && navLink.children.length > 0)
         return (
@@ -218,9 +219,14 @@ class NavBarBurger extends React.Component {
       return (
         <Nav.Link>
           <Link
-            onClick={() => document.dispatchEvent(new MouseEvent("click"))}
+            onClick={(e) => {
+              e.preventDefault()
+              if (is_link_external) window.location = link;
+              else this.props.history.push(link);
+              document.dispatchEvent(new MouseEvent("click"));
+            }}
             className="n-l-item"
-            to={`${navLink.link}`}
+            // to={navLink.link}
           >
             {navLink?.name}
           </Link>
