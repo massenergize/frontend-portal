@@ -157,7 +157,14 @@ class NavBarBurger extends React.Component {
                 className="col-lg-4 col-md-8 col-sm-6 col-6 d-flex"
                 style={{ display: "flex", alignItems: "center" }}
               >
-                <Link to={communityLogoLink ? communityLogoLink : links.home}>
+                <Link
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (communityLogoLink) window.location = communityLogoLink;
+                    else this.props.history.push(links.home);
+                  }}
+                  // to={communityLogoLink ? communityLogoLink : links.home}
+                >
                   <div
                     style={{
                       display: "flex",
