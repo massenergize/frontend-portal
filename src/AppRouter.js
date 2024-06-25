@@ -99,6 +99,7 @@ import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
 import METoast from "./components/Pages/Widgets/METoast/METoast";
 import { child } from "firebase/database";
+import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -220,6 +221,7 @@ class AppRouter extends Component {
       profile: `${prefix}/profile`,
       policies: `${prefix}/policies`,
       contactus: `${prefix}/contactus`,
+      rewiring_america: `${prefix}/rewiring-america`,
     });
 
     if (community) {
@@ -699,6 +701,11 @@ class AppRouter extends Component {
               <Route exact path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
+              {/* <Route path={links.rewiring_america} component={RewiringAmerica} /> */}
+              <Route
+                path={links.rewiring_america}
+                component={RewiringAmerica}
+              />
               <Route component={HomePage} />
               {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
             </Switch>
