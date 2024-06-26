@@ -15,7 +15,7 @@ function RewiringAmerica() {
       })}
       <div style={{ width: "100%", height: "100vh", background: "white" }}>
         <iframe
-          src={`${URLS.ROOT}/rewiring_america`}
+          src={`${URLS.ROOT}/api/rewiring_america`}
           title="Rewiring America"
           style={{
             width: "100%",
