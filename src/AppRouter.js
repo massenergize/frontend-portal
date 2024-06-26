@@ -99,6 +99,7 @@ import ProfileSettings from "./components/Pages/ProfilePage/ProfileSettings";
 import Celebrate from "./components/Pages/Widgets/Celebrate";
 import METoast from "./components/Pages/Widgets/METoast/METoast";
 import { child } from "firebase/database";
+import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -185,11 +186,11 @@ class AppRouter extends Component {
       props.setAuthState(isJustFromGoogleAUth[0]);
       return null;
     }
-    if(getTakeTourFromURL() === "true" && !props.showTour){
-      props.setTourState(true)
-      return null
+    if (getTakeTourFromURL() === "true" && !props.showTour) {
+      props.setTourState(true);
+      return null;
     }
-    return null
+    return null;
   }
 
   async fetch() {
@@ -220,6 +221,7 @@ class AppRouter extends Component {
       profile: `${prefix}/profile`,
       policies: `${prefix}/policies`,
       contactus: `${prefix}/contactus`,
+      rewiring_america: `${prefix}/rewiring-america`,
     });
 
     if (community) {
@@ -414,7 +416,11 @@ class AppRouter extends Component {
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
-    return { ...rest, link: `${prefix}${link}`, children };
+    return {
+      ...rest,
+      link: rest?.is_link_external ? link : `${prefix}${link}`,
+      children,
+    };
   }
 
   loadMenu(menus, prefix) {
@@ -431,13 +437,14 @@ class AppRouter extends Component {
       content?.map((m) => this.prependPrefix(m, prefix)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
-    this.setState({ navBarMenu: content });
+
+    this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
     });
     // const footerLinks = this.addPrefix(footerContent[0].content.links);
-    const footerLinks = footerContent[0].content.links || [];
+    const footerLinks = footerContent[0]?.content?.links || [];
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
@@ -527,7 +534,6 @@ class AppRouter extends Component {
         !m.link.startsWith(this.state.prefix)
       ) {
         m.link = `${this.state.prefix}/${m.link}`.replace("//", "/");
-
       }
       if (m.children && m.children.length > 0) {
         m.children = this.addPrefix(m.children);
@@ -695,6 +701,11 @@ class AppRouter extends Component {
               <Route exact path={links.profile} component={ProfilePage} />
               <Route path={links.policies} component={PoliciesPage} />
               <Route path={links.contactus} component={ContactPage} />
+              {/* <Route path={links.rewiring_america} component={RewiringAmerica} /> */}
+              <Route
+                path={links.rewiring_america}
+                component={RewiringAmerica}
+              />
               <Route component={HomePage} />
               {/* This was something for completeing registration for invited users, not needed? <Route path="/completeRegistration?" component={RegisterPage} />*/}
             </Switch>
