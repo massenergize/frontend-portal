@@ -125,6 +125,7 @@ var ActionFormData = [
     placeholder: "Add a name... *",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     name: "featured_summary",
@@ -183,6 +184,7 @@ var EventsFormData = [
     placeholder: "Add a name... *",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     name: "featured_summary",
@@ -274,6 +276,7 @@ var VendorFormData = [
     placeholder: "Add a name... *",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     type: "input",
