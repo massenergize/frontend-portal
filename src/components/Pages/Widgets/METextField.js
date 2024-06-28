@@ -60,7 +60,8 @@ class METextField extends Component {
       history,
       readonly,
       genericProps,
-      onBlur
+      onBlur,
+        ...inputProps
     } = this.props;
     const defaultClasses = `form-control form-field-font-size`;
     const styles = style ? { resize: "none", ...style } : null;
@@ -81,6 +82,7 @@ class METextField extends Component {
           onBlur={onBlur}
           autoComplete={history ? "on" : "off"}
           readOnly={readonly}
+          {...inputProps}
           {...(genericProps || {})}
         />
       );
