@@ -11,11 +11,10 @@ module.exports = (on, config) => {
           {
             test: /\.ts$/,
             exclude: [/node_modules/],
-            use: [
-              {
-                loader: "ts-loader",
-              },
-            ],
+            use: "ts-loader",
+            options: {
+              module: true,
+            },
           },
         ],
       },

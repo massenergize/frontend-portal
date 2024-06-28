@@ -8,7 +8,7 @@ describe("Filtering on all events page works well", function () {
     cy.get(".test-event-card-title")
       .first()
       .then(($el) =>{
-        return (title = $el.text().split("...")[0]);
+        return (title = $el.text().split(" ")[0]);
       });
   });
   it("Typed content into filterbox", () => {

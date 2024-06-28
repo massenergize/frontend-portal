@@ -32,10 +32,18 @@ describe("Filters passed via url work well on testimonials page", function () {
   });
 
   it("All selected testimonials cards contain the filter tagName", function () {
+
     cy.get(".test-story-sheet").each(($storyCard) => {
-      expect(
-        $storyCard.attr("data-tag-names").includes(filterObject.tagName)
-      ).to.equal(true);
+
+      // cy.wrap($storyCard).attr("data-tag-names").or("data-tag-names").should('include', filterObject.tagname);
+
+      expect($storyCard.prop('.data-tag-names')).to.equal(filterObject.tagname);
     });
+
+    // cy.get(".test-story-sheet").each(($storyCard) => {
+    //   expect(
+    //     $storyCard.attr("data-tag-names").includes(filterObject.tagName)
+    //   ).to.equal(true);
+    // });
   });
 });

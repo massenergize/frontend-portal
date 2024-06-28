@@ -2,7 +2,7 @@ import { IS_LOCAL } from "../../../src/config";
 import URLS from "../../../src/api/urls";
 
 // this change  is made to allow us run tests on the branch making a PR to dev on github.
-var DOMAIN = "http://localhost:3000/";
+var DOMAIN = "http://community.massenergize.dev/";
 var COMMUNITY = "wayland"; // Only Change this to a community that exists in your DB (wayland exists everywhere, so this should work everywhere)
 const BASE_URL = DOMAIN + COMMUNITY + "/";
 const urlParams = "?tour=false"; // useful, dont remove
