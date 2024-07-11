@@ -33,6 +33,7 @@ class TeamsPage extends React.Component {
       createTeamModalOpen: false,
       redirectID: null,
       teamsData: getTeamsData(teamsStats),
+      searchText: "",
     };
   }
 
@@ -64,6 +65,7 @@ class TeamsPage extends React.Component {
 
   handleSearch(event) {
     const { teamsData } = this.state;
+    this.setState({ searchText: event.target.value.trim() });
 
     const query = event.target.value.trim();
     if (query === "" || teamsData.length === 0) {
@@ -211,6 +213,7 @@ class TeamsPage extends React.Component {
                   <METextField
                     onChange={(event) => this.handleSearch(event)}
                     type="text"
+                    value={this.state.searchText}
                     placeholder="Search for a team..."
                   />
                 </div>
