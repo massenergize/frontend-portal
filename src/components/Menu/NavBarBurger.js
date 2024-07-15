@@ -47,6 +47,7 @@ class NavBarBurger extends React.Component {
     const { links, community } = this.props;
     const communityName = community.name || "communities";
     const { isChild } = options || {};
+    if (!menuItems || !menuItems.length) return null;
     return menuItems?.map((val, index) => {
       if (val.children) {
         return (
@@ -136,6 +137,8 @@ class NavBarBurger extends React.Component {
         </MenuItem>
       );
     });
+
+    const noMenus = this.props.navLinks?.length === 0;
     return (
       <div>
         <nav
@@ -190,16 +193,16 @@ class NavBarBurger extends React.Component {
                   <div style={{ margin: "auto 0 auto auto" }}>
                     <div style={styles.container}>
                       <MenuButton
+                        hide={noMenus}
                         open={this.state.menuOpen}
                         onClick={() => this.handleMenuClick()}
                         color="#333"
+                        style={{ display: noMenus ? "none" : "flex" }}
                       />
                       {this.renderLogin()}
                     </div>
                     {/* <Menu open={this.state.menuOpen}>{menuItems}</Menu> */}
                     <Menu open={this.state.menuOpen}>
-                      {" "}
-                      {/* {this.renderMenuItems(this.props.navLinks)} */}
                       {this.renderMenuForBurgeredState(this.props.navLinks)}
                     </Menu>
                   </div>
@@ -790,6 +793,7 @@ class MenuButton extends React.Component {
         marginTop: "8px",
       },
     };
+    if (this.props.hide) return <></>;
     return (
       <div
         style={styles.container}

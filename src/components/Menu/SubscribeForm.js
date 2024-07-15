@@ -45,7 +45,7 @@ class SubscribeForm extends React.Component {
                     />
                     <button type="submit"><i className="fa fa-paper-plane"></i></button>
                 </form>
-                <p className="cool-font" >{this.state.message}</p>
+                <p className="cool-font" style = {{color:"white"}} >{this.state.message}</p>
             </div>
         );
     }

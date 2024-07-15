@@ -20,7 +20,7 @@ export const COPYRIGHT_OPTIONS = {
   YES_CHECKED: {
     value: true,
     key: "YES_CHECKED",
-    text: "Yes. I have checked that the image is nto copyright protected.",
+    text: "Yes. I have checked that the image is not copyright protected.",
     notes: "Checked that the image is not copyright protected",
   },
   NO: {
