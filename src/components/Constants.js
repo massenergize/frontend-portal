@@ -90,6 +90,7 @@ export const PAGE_ESSENTIALS = {
       "graphs.communities.impact",
       "tag_collections.list",
       "graphs.actions.completed",
+        "communities.actions.completed"
     ],
   },
   ABOUT_US: {
