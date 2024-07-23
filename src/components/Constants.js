@@ -139,7 +139,8 @@ export const PAGE_ESSENTIALS = {
     key: "profile",
     routes: [
       "teams.stats",
-      "communities.list"
+      "communities.list", 
+      "data.carbonEquivalency.get"
     ],
   },
   SETTINGS: {
