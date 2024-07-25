@@ -81,8 +81,7 @@ const makeNewUrlWithFilters = (
 ) => {
   return (
     props.location.pathname +
-    `?${(filterString && identifier + "=" + filterString) || ""}${
-      qs ? "&" : ""
+    `?${(filterString && identifier + "=" + filterString) || ""}${qs ? "&" : ""
     }${qs || ""}`
   );
 };
@@ -416,6 +415,28 @@ export const moveToPage = (data, pageNumber, perPage) => {
 export const getRandomIntegerInRange = (range = 99999999) => {
   return Math.floor(Math.random() * Math.floor(range));
 };
+
+function generateRandomEmail() {
+  const name = Math.random().toString(36).substring(2, 7); // Generate random alphanumeric string
+  const domain = ["gmail.com", "yahoo.com", "hotmail.com"][Math.floor(Math.random() * 3)]; // Pick a random domain
+  return `${name}@${domain}`;
+}
+
+export function get50RandomEmails() {
+  const emailList = [];
+  for (let i = 0; i < 50; i++) {
+    emailList.push(generateRandomEmail());
+  }
+
+  return emailList
+}
+
+
+export const pickAtRandom = (arr) => {
+  const arrLength = arr.length;
+  const randomIndex = Math.floor(Math.random() * arrLength);
+  return arr[randomIndex];
+}
 export function getPropsArrayFromJsonArray(array, property) {
   if (!array || !property) return [];
   const toGo = [];
@@ -706,6 +727,6 @@ export const fetchCopyrightData = (info) => {
     copyright_att: info?.copyright_att || "",
     underAge: info?.has_children || false,
     guardian_info: info?.guardian_info || "",
-    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key 
+    permission_key: info?.permission_key || COPYRIGHT_OPTIONS.YES.key
   };
 };

@@ -20,7 +20,8 @@ if (IS_PROD || IS_CANARY) {
   };
 } else {
   firebaseConfig = {
-    apiKey: LOCAL_FIREBASE_API_KEY,
+    // apiKey: LOCAL_FIREBASE_API_KEY,
+    apiKey: "AIzaSyBjcwjC_0H1bgGKqPyqKnbWaGmAtzc4BJQ",
     authDomain: "massenergize-auth.firebaseapp.com",
     databaseURL: "https://massenergize-auth.firebaseio.com",
     projectId: "massenergize-auth",

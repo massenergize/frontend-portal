@@ -1,3 +1,5 @@
+import '@foreachbe/cypress-tinymce'
+
 declare namespace Cypress {
 	interface Chainable {
 		/**

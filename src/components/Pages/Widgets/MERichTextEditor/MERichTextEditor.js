@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY
+const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY;
 
 function MERichTextEditor({
   onChange,
@@ -9,6 +9,7 @@ function MERichTextEditor({
   initialValue,
   onMount,
   _generics,
+  id,
 }) {
   const editorRef = useRef(null);
   const [content, setContent] = useState(undefined);
@@ -63,6 +64,7 @@ function MERichTextEditor({
           toolbar:
             "undo redo | blocks | formatselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify | link | image | bullist numlist outdent indent | fontfamily | fontsize |",
         }}
+        id={id || "tiny-react_00001"}
         apiKey={TINY_MCE_API_KEY}
       />
     </>
