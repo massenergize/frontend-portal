@@ -171,7 +171,7 @@ class OneTestimonialPage extends React.Component {
                 display: "inline-block",
                 height: 100,
                 width: 100,
-                objectFit: "cover",
+                objectFit: "contain", marginLeft: 10,
               }}
               alt="testimonial"
             />
