@@ -16,6 +16,13 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+// Cypress.on('test:after:run', (test, runnable) => {
+//     if (test.state === 'failed') {
+//         const screenshot = `assets/images/${Cypress.spec.name}/${runnable.parent.title} -- ${test.title} (failed).png`;
+//         addContext({ test }, screenshot);
+//     }
+// });
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 

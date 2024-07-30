@@ -29,6 +29,7 @@ export const loadTestimonials = () => {
 };
 export const loadEvents = () => {
   return apiCall("events.list", { subdomain }).then(
+
     (response) => response.data
   );
 };

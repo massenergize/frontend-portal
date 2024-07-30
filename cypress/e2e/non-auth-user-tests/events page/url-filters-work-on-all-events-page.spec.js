@@ -25,18 +25,29 @@ describe("Filters passed via url work well on events page", function () {
   });
 
   it("Visits all events page with filter url", function () {
-
     cy.visit(
       fields.urls.events.raw + "/" + "?filters=" + filterObject.filterString
     );
     cy.removeBanner();
+
   });
 
+
   it("All selected events cards contain the filter tagName", function () {
-    cy.get(".test-one-event-card").each(($eventCard) => {
-      expect(
-        $eventCard.attr("data-tag-names").includes(filterObject.tagName)
-      ).to.equal(true);
+    cy.log(filterObject)
+
+    cy.get('.test-one-event-card').each(($eventCard) => {
+
+      // cy.wrap($eventCard).attr("data-tag-names").or("data-tag-names").should('include', filterObject.tagname);
+
+      expect($eventCard.prop('.data-tag-names')).to.equal(filterObject.tagname);
     });
+
+    // cy.get(".test-one-event-card").each(($eventCard) => {
+    //   // expect(
+    //   $eventCard.attr("data-tag-names").should('include', filterObject.tagname)
+    //   // )
+    //   // .to.equal(true);
+    // });
   });
 });
