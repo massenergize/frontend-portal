@@ -266,7 +266,7 @@ class TeamsPage extends React.Component {
               <center>
                 <p className="phone-font-15 ">
                   There are no teams in this community yet. You can start one by
-                  clicking the start team button above!
+                  logging in first, and clicking the "Start team button above."
                 </p>
               </center>
             )}
