@@ -47,6 +47,7 @@ class NavBarBurger extends React.Component {
     const { links, community } = this.props;
     const communityName = community.name || "communities";
     const { isChild } = options || {};
+    if (!menuItems || !menuItems.length) return null;
     return menuItems?.map((val, index) => {
       if (val.children) {
         return (
@@ -136,6 +137,8 @@ class NavBarBurger extends React.Component {
         </MenuItem>
       );
     });
+
+    const noMenus = this.props.navLinks?.length === 0;
     return (
       <div>
         <nav
@@ -190,16 +193,16 @@ class NavBarBurger extends React.Component {
                   <div style={{ margin: "auto 0 auto auto" }}>
                     <div style={styles.container}>
                       <MenuButton
+                        hide={noMenus}
                         open={this.state.menuOpen}
                         onClick={() => this.handleMenuClick()}
                         color="#333"
+                        style={{ display: noMenus ? "none" : "flex" }}
                       />
                       {this.renderLogin()}
                     </div>
                     {/* <Menu open={this.state.menuOpen}>{menuItems}</Menu> */}
                     <Menu open={this.state.menuOpen}>
-                      {" "}
-                      {/* {this.renderMenuItems(this.props.navLinks)} */}
                       {this.renderMenuForBurgeredState(this.props.navLinks)}
                     </Menu>
                   </div>
@@ -258,6 +261,7 @@ class NavBarBurger extends React.Component {
       if (navLink.children && navLink.children.length > 0)
         return (
           <NavDropdown
+            id={linkId}
             className={`c-d-t ${isChild ? "c-d-t-as-child" : ""}`}
             key={linkId}
             title={
@@ -273,6 +277,7 @@ class NavBarBurger extends React.Component {
 
       return (
         <Nav.Link
+          id={linkId}
           onClick={(e) => {
             e.preventDefault();
             if (is_link_external) window.location = link;
@@ -564,6 +569,7 @@ class SubMenuItem extends React.Component {
       if (item.special) {
         return (
           <MenuItem
+            id={item?.id}
             key={key}
             onClick={(e) => {
               e.preventDefault();
@@ -580,6 +586,7 @@ class SubMenuItem extends React.Component {
           : "My Community 2";
         return (
           <MenuItem
+            id={item?.id}
             key={key}
             href={item.link}
             onClick={this.props.clickHandler}
@@ -658,6 +665,7 @@ class MenuItem extends React.Component {
     return (
       <div style={styles.container}>
         <Link
+          id={this.props.id}
           className="width-100"
           style={styles.menuItem}
           onMouseEnter={() => {
@@ -790,6 +798,7 @@ class MenuButton extends React.Component {
         marginTop: "8px",
       },
     };
+    if (this.props.hide) return <></>;
     return (
       <div
         style={styles.container}
