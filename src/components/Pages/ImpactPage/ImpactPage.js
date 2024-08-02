@@ -5,7 +5,7 @@ import ErrorPage from "./../Errors/ErrorPage";
 import { connect } from "react-redux";
 import LoadingCircle from "../../Shared/LoadingCircle";
 import {
-  reduxLoadCommunitiesStats,
+  reduxLoadCommunitiesStats, reduxLoadCommunityActionList,
   reduxLoadCommunityData,
   reduxLoadTagCols,
   reduxMarkRequestAsDone,
@@ -41,10 +41,11 @@ class ImpactPage extends React.Component {
       PAGE_ESSENTIALS.IMPACT_PAGE.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
-        const [stats, tagCols, comData] = response;
+        const [stats, tagCols, comData,communityActionList] = response;
         this.props.reduxLoadCommunitiesStats(stats.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.loadCommunityData(comData.data);
+        this.props.setCommunityActionListInRedux(communityActionList?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.IMPACT_PAGE.key]: { loaded: true },
@@ -450,7 +451,8 @@ const mapStoreToProps = (store) => {
 export default connect(mapStoreToProps, {
   reduxLoadCommunitiesStats,
   loadTagCollections: reduxLoadTagCols,
-  loadCommunityData: reduxLoadCommunityData, 
+  loadCommunityData: reduxLoadCommunityData,
+  setCommunityActionListInRedux: reduxLoadCommunityActionList,
   reduxMarkRequestAsDone
 })(withRouter(ImpactPage));
 

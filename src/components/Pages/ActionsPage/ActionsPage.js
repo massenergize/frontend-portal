@@ -14,6 +14,7 @@ import {
   reduxChangeData,
   reduxLoadActions,
   reduxLoadActionsPage,
+  reduxLoadEquivalences,
   reduxLoadTagCols,
   reduxMarkRequestAsDone,
   reduxTeamAddAction,
@@ -109,10 +110,11 @@ class ActionsPage extends React.Component {
       PAGE_ESSENTIALS.ACTIONS.routes.map((route) => apiCall(route, payload))
     )
       .then((response) => {
-        const [pageData, tagCols, actions] = response;
+        const [pageData, tagCols, actions, eq] = response;
         this.props.loadActionsPage(pageData.data);
         this.props.loadTagCollections(tagCols.data);
         this.props.loadActions(actions.data);
+        this.props.loadEquivalences(eq.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.ACTIONS.key]: { loaded: true },
@@ -323,7 +325,7 @@ class ActionsPage extends React.Component {
             site_name={this.props?.community?.name}
           />
         }
-        
+
         {this.props.showTour && (
           <ProductTour
             steps={steps}
@@ -694,6 +696,7 @@ const mapDispatchToProps = {
   loadTagCollections: reduxLoadTagCols,
   loadActions: reduxLoadActions,
   reduxMarkRequestAsDone,
+  loadEquivalences: reduxLoadEquivalences,
 };
 export default connect(
   mapStoreToProps,
