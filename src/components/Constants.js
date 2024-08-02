@@ -20,7 +20,7 @@ export const COPYRIGHT_OPTIONS = {
   YES_CHECKED: {
     value: true,
     key: "YES_CHECKED",
-    text: "Yes. I have checked that the image is nto copyright protected.",
+    text: "Yes. I have checked that the image is not copyright protected.",
     notes: "Checked that the image is not copyright protected",
   },
   NO: {
@@ -48,6 +48,7 @@ export const PAGE_ESSENTIALS = {
       "actions_page_settings.info",
       "tag_collections.list",
       "actions.list",
+       "data.carbonEquivalency.get"
     ],
   },
   EVENTS: {
@@ -90,6 +91,7 @@ export const PAGE_ESSENTIALS = {
       "graphs.communities.impact",
       "tag_collections.list",
       "graphs.actions.completed",
+        "communities.actions.completed"
     ],
   },
   ABOUT_US: {
@@ -138,7 +140,8 @@ export const PAGE_ESSENTIALS = {
     key: "profile",
     routes: [
       "teams.stats",
-      "communities.list"
+      "communities.list", 
+      "data.carbonEquivalency.get"
     ],
   },
   SETTINGS: {

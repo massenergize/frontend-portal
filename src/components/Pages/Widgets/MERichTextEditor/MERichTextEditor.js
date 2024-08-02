@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY
+const TINY_MCE_API_KEY = process.env.REACT_APP_TINY_MCE_KEY;
 
 function MERichTextEditor({
   onChange,
@@ -11,24 +11,24 @@ function MERichTextEditor({
   _generics,
 }) {
   const editorRef = useRef(null);
-  const [content, setContent] = useState(undefined);
+  // const [content, setContent] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text) => {
-    setContent(text);
+    // controlled && setContent(text);
     onChange && onChange(text);
   };
   const resetEditor = () => {
-    setContent("");
+    // controlled && setContent("");
   };
 
   useEffect(() => {
     onMount && onMount(resetEditor);
   }, [onMount]);
 
-  useEffect(() => {
-    if (!content) setContent(value || defaultValue || initialValue || "");
-  }, [value, defaultValue, initialValue, content]);
+
+  const content = value || defaultValue || initialValue;
+
   return (
     <>
       {loading && (

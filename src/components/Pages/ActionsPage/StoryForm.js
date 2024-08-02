@@ -122,17 +122,18 @@ var ActionFormData = [
     name: "title",
     hasLabel: true,
     label: "Action Name *",
-    placeholder: "Add a name... *",
+    placeholder: "Add a name...",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     name: "featured_summary",
-    label: "Featured Summary",
+    label: "Featured Summary *",
     placeholder: "Short sentence promoting the action",
     type: "textarea",
     hasLabel: true,
-    isRequired: false,
+    required: true,
   },
   {
     type: "html-field",
@@ -180,17 +181,19 @@ var EventsFormData = [
     name: "name",
     hasLabel: true,
     label: "Event Name *",
-    placeholder: "Add a name... *",
+    placeholder: "Add a name... ",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     name: "featured_summary",
-    label: "One sentence that describes this event",
-    placeholder: "One sentence that describes this event",
-    fieldType: "textarea",
+    label: "Featured Summary *",
+    placeholder: "Enter a brief description of the event...",
+    type: "textarea",
     hasLabel: true,
-    isRequired: false,
+    required: true,
+    value: ""
   },
   {
     type: "datetime-local",
@@ -271,9 +274,10 @@ var VendorFormData = [
     name: "name",
     hasLabel: true,
     label: "Service Provider's Name *",
-    placeholder: "Add a name... *",
+    placeholder: "Add a name... ",
     required: true,
     value: "",
+    maxlength:100
   },
   {
     type: "input",
