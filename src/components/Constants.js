@@ -48,6 +48,7 @@ export const PAGE_ESSENTIALS = {
       "actions_page_settings.info",
       "tag_collections.list",
       "actions.list",
+       "data.carbonEquivalency.get"
     ],
   },
   EVENTS: {
