@@ -68,6 +68,7 @@ export const PAGE_ESSENTIALS = {
       "tag_collections.list",
       "testimonials.list",
       "actions.list",
+      "vendors.list",
     ],
   },
   VENDORS: {
