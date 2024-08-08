@@ -27,7 +27,10 @@ import {
 } from "../../../redux/actions/pageActions";
 import METooltip from "../../Shared/METooltip";
 import RibbonBanner from "../../Shared/RibbonBanner";
+import fallback from "./../../../assets/images/fb.svg";
+import SmartImage from "../../Shared/SmartImage";
 export const ACTION_TO_AUTO_START = "AUTO_START-";
+
 /**
  * Action Component is a single action for the action page,
  * the action displays conditionally based on the filters on the page
@@ -199,7 +202,7 @@ class ActionCard extends React.Component {
         key={this.props.key?.toString()}
         data-action-state={actionStateCase}
         data-action-auth-state={this.props.user && "authenticated"}
-        style={{paddingRight:0}}
+        style={{ paddingRight: 0 }}
       >
         {!action?.is_published && <RibbonBanner />}
         <div
@@ -213,7 +216,7 @@ class ActionCard extends React.Component {
           <div className="img-and-btns-container every-day-flex" style={{}}>
             <div style={{ width: "100%" }}>
               {action?.is_published ? (
-                <img
+                <SmartImage
                   onClick={() =>
                     this.props.history.push(
                       this.props.links.actions + "/" + this.props.action.id
@@ -221,7 +224,9 @@ class ActionCard extends React.Component {
                   }
                   className="sensitive-photo"
                   src={
-                    this.props.action.image ? this.props.action.image.url : null
+                    this.props.action.image
+                      ? this.props.action.image.url
+                      : fallback
                   }
                   alt="action"
                   style={{ flex: "9" }}
@@ -238,7 +243,7 @@ class ActionCard extends React.Component {
                     src={
                       this.props.action.image
                         ? this.props.action.image.url
-                        : null
+                        : fallback
                     }
                     alt="action"
                     style={{ flex: "9" }}
