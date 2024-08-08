@@ -28,6 +28,7 @@ import {
 import METooltip from "../../Shared/METooltip";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import fallback from "./../../../assets/images/fb.svg";
+import SmartImage from "../../Shared/SmartImage";
 export const ACTION_TO_AUTO_START = "AUTO_START-";
 
 /**
@@ -215,7 +216,7 @@ class ActionCard extends React.Component {
           <div className="img-and-btns-container every-day-flex" style={{}}>
             <div style={{ width: "100%" }}>
               {action?.is_published ? (
-                <img
+                <SmartImage
                   onClick={() =>
                     this.props.history.push(
                       this.props.links.actions + "/" + this.props.action.id
