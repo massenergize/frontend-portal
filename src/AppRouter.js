@@ -416,6 +416,9 @@ class AppRouter extends Component {
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
+    if(!rest?.is_link_external && !link?.startsWith("/")){
+      link = `/${link}`;
+    }
     return {
       ...rest,
       link: rest?.is_link_external ? link : `${prefix}${link}`,
@@ -444,13 +447,14 @@ class AppRouter extends Component {
       return menu.name === "PortalFooterQuickLinks";
     });
     // const footerLinks = this.addPrefix(footerContent[0].content.links);
-    const footerLinks = footerContent[0]?.content?.links || [];
+    let footerLinks = footerContent[0]?.content?.links || [];
 
     const communitiesLink = {
       name: "All MassEnergize Community Sites",
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
+    footerLinks = footerLinks.map(m => this.prependPrefix(m, prefix));
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
