@@ -416,6 +416,9 @@ class AppRouter extends Component {
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
+    if(!rest?.is_link_external && !link?.startsWith("/")){
+      link = `/${link}`;
+    }
     return {
       ...rest,
       link: rest?.is_link_external ? link : `${prefix}${link}`,
