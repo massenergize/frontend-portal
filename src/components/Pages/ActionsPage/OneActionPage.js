@@ -787,7 +787,7 @@ class OneActionPage extends React.Component {
                     image={action?.image}
                     alt=""
                     data-imagezoom="true"
-                    className="img-responsive z-depth-float me-anime-open-in"
+                    className="img-responsive  me-anime-open-in"
                     style={{ marginTop: "20px", borderRadius: 9 }}
                   />
                 </div>
