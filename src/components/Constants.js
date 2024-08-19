@@ -127,6 +127,7 @@ export const PAGE_ESSENTIALS = {
       "graphs.actions.completed",
       "actions.list",
       "testimonials.list",
+      "vendors.list",
 
     ],
   },
