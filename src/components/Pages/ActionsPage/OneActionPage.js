@@ -28,6 +28,7 @@ import {
   reduxLoadTestimonials,
   reduxLoadCommunityData,
   reduxMarkRequestAsDone,
+  reduxLoadServiceProviders,
 } from "../../../redux/actions/pageActions";
 import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
@@ -105,11 +106,12 @@ class OneActionPage extends React.Component {
       apiCall("actions.info", { action_id: id }),
     ])
       .then((response) => {
-        const [communityData, actions, stories, actionItem] = response;
+        const [communityData, actions, stories, vendors, actionItem] = response;
         this.props.loadCommunityData(communityData?.data);
         this.props.loadTestimonials(stories?.data);
         this.props.updateActionsInRedux(actions?.data);
         this.handleActionJson(actionItem);
+        this.props.loadVendors(vendors?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.ONE_ACTION.key]: {
@@ -1202,6 +1204,7 @@ const mapStoreToProps = (store) => {
     collection: store.page.collection,
     showTour: store.page.showTour,
     pageRequests: store.page.pageRequests,
+    vendors: store.page.vendors,
   };
 };
 const mapDispatchToProps = {
@@ -1220,6 +1223,7 @@ const mapDispatchToProps = {
   loadTestimonials: reduxLoadTestimonials,
   loadCommunityData: reduxLoadCommunityData,
   reduxMarkRequestAsDone,
+  loadVendors: reduxLoadServiceProviders,
 };
 
 export default connect(
