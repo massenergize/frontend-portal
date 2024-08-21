@@ -68,6 +68,7 @@ export const PAGE_ESSENTIALS = {
       "tag_collections.list",
       "testimonials.list",
       "actions.list",
+      "vendors.list",
     ],
   },
   VENDORS: {
@@ -126,6 +127,7 @@ export const PAGE_ESSENTIALS = {
       "graphs.actions.completed",
       "actions.list",
       "testimonials.list",
+      "vendors.list",
 
     ],
   },
