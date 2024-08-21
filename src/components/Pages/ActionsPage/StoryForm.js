@@ -797,12 +797,6 @@ class StoryForm extends React.Component {
       },
     });
 
-    body = {
-      ...body,
-      vendor_id: body?.vendor_id === "--" ? null : body?.vendor_id,
-      action_id: body?.action_id === "--" ? null : body?.action_id,
-    };
-    console.log("Lets see body", body)
     apiCall(Url, body).then((json) => {
       let name = ModalType?.toLowerCase() + "_id";
       if (json && json.success) {
