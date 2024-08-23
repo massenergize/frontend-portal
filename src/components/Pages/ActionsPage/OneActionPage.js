@@ -58,6 +58,7 @@ import MEButton from "../Widgets/MEButton";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { ACTION, PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import MEImage from "../../Shared/MEImage";
+import { processBeforeFlight } from "../StoriesPage/StoriesPage";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -1001,6 +1002,7 @@ class OneActionPage extends React.Component {
                   {this.props.user ? (
                     <div id="testimonials-form">
                       <StoryForm
+                        processBeforeFlight={processBeforeFlight}
                         ModalType={TESTIMONIAL}
                         uid={this.props.user.id}
                         aid={action.id}
