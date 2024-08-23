@@ -15,10 +15,14 @@ import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
 import { TESTIMONIAL } from "../../Constants";
-import { reduxLoadTestimonials, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadTestimonials,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import MEImage from "../../Shared/MEImage";
+import { processBeforeFlight } from "./StoriesPage";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -49,10 +53,13 @@ class OneTestimonialPage extends React.Component {
     const { id } = this.props.match.params;
     this.fetch(id);
   }
-//  trigger whenever props.stories change
+  //  trigger whenever props.stories change
   static getDerivedStateFromProps(props, state) {
-    let {id} = props?.match?.params
-    if (props.stories && id) return { story: props.stories?.filter((story) => story.id?.toString() === id)[0] };
+    let { id } = props?.match?.params;
+    if (props.stories && id)
+      return {
+        story: props.stories?.filter((story) => story.id?.toString() === id)[0],
+      };
     return null;
   }
 
@@ -141,11 +148,12 @@ class OneTestimonialPage extends React.Component {
       size: "md",
       component: (
         <StoryForm
+          processBeforeFlight={processBeforeFlight}
           ModalType={TESTIMONIAL}
           close={() => this.props.toggleModal({ show: false })}
           draftData={toEdit}
           TriggerSuccessNotification={(bool) => ({})}
-          updateItemInRedux={(data)=>this.props.updateItemInRedux(data)}
+          updateItemInRedux={(data) => this.props.updateItemInRedux(data)}
           reduxItems={this.props.stories}
         />
       ),
@@ -171,7 +179,8 @@ class OneTestimonialPage extends React.Component {
                 display: "inline-block",
                 height: 100,
                 width: 100,
-                objectFit: "contain", marginLeft: 10,
+                objectFit: "contain",
+                marginLeft: 10,
               }}
               alt="testimonial"
             />
@@ -285,7 +294,7 @@ class OneTestimonialPage extends React.Component {
                     }}
                     className="z-depth-1 me-anime-open-in"
                     src={story && story.file ? story.file.url : notFound}
-                    image = {story?.file}
+                    image={story?.file}
                     alt=""
                   />
                 </div>
