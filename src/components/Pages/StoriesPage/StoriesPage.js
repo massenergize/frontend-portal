@@ -25,6 +25,7 @@ import StoryFormButtonModal from "./StoryFormButtonModal";
 import ShareButtons from "./../../Shared/ShareButtons";
 import {
   reduxLoadActions,
+  reduxLoadServiceProviders,
   reduxLoadTagCols,
   reduxLoadTestimonials,
   reduxLoadTestimonialsPage,
@@ -40,6 +41,14 @@ import AddButton from "../../Shared/AddButton";
 import Seo from "../../Shared/Seo";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { apiCall } from "../../../api/functions";
+
+export const processBeforeFlight = (body) => {
+  return {
+    ...(body || {}),
+    vendor_id: body?.vendor_id === "--" ? null : body?.vendor_id,
+    action_id: body?.action_id === "--" ? null : body?.action_id,
+  };
+};
 class StoriesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -77,11 +86,12 @@ class StoriesPage extends React.Component {
       )
     )
       .then((response) => {
-        const [pageData, tagCols, stories, actions] = response;
+        const [pageData, tagCols, stories, actions, vendors] = response;
         this.props.loadTestimonialsPage(pageData?.data);
         this.props.loadTagCollections(tagCols?.data);
         this.props.loadTestimonials(stories?.data);
         this.props.loadActions(actions?.data);
+        this.props.loadVendors(vendors?.data);
         this.props.reduxMarkRequestAsDone({
           ...pageRequests,
           [PAGE_ESSENTIALS.TESTIMONIALS.key]: { loaded: true },
@@ -143,6 +153,7 @@ class StoriesPage extends React.Component {
       size: "md",
       component: (
         <StoryForm
+          processBeforeFlight={processBeforeFlight}
           ModalType={TESTIMONIAL}
           close={() => this.props.toggleModal({ show: false })}
           draftData={data}
@@ -165,6 +176,7 @@ class StoriesPage extends React.Component {
     }
     return (
       <StoryFormButtonModal
+        processBeforeFlight={processBeforeFlight}
         ModalType={TESTIMONIAL}
         reduxProps={{
           reduxItems: stories,
@@ -497,4 +509,5 @@ export default connect(mapStoreToProps, {
   loadTagCollections: reduxLoadTagCols,
   reduxMarkRequestAsDone,
   loadActions: reduxLoadActions,
+  loadVendors: reduxLoadServiceProviders,
 })(StoriesPage);
