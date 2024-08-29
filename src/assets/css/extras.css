@@ -1424,10 +1424,7 @@
   left: 7px;
   border-radius: 2px;
 }
-.small-form-spacing {
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
+
 
 .reset-margin {
   margin: 0;
@@ -2291,6 +2288,10 @@
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .small-form-spacing {
+    margin:20px 0px;
+    /* margin-bottom: 20px; */
+  }
   .new-sign-in {
     padding: 10px 15px;
     font-size: 14px;
@@ -2713,6 +2714,10 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .small-form-spacing {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
   .form-gen-inner-wrapper {
     padding: 0px 15px;
   }

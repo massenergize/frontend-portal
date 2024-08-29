@@ -125,7 +125,7 @@ var ActionFormData = [
     placeholder: "Add a name...",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     name: "featured_summary",
@@ -184,7 +184,7 @@ var EventsFormData = [
     placeholder: "Add a name... ",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     name: "featured_summary",
@@ -193,7 +193,7 @@ var EventsFormData = [
     type: "textarea",
     hasLabel: true,
     required: true,
-    value: ""
+    value: "",
   },
   {
     type: "datetime-local",
@@ -277,7 +277,7 @@ var VendorFormData = [
     placeholder: "Add a name... ",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     type: "input",
@@ -523,6 +523,39 @@ class StoryForm extends React.Component {
         placeholder: "Your story...*",
         value: "",
         required: true,
+      },
+      {
+        type: "radio-group",
+        name: "event_type",
+        hasLabel: true,
+        label: "Can this testimonial be shared on other community websites?",
+        required: false,
+        value: "",
+        data: [
+          { id: "yes", value: "Yes" },
+          { id: "no", value: "No" },
+          { id: "specific", value: "Specific Communities" },
+        ],
+        valueExtractor: (e) => e.id,
+        labelExtractor: (e) => e.value,
+        conditionalDisplays: [
+          {
+            valueToCheck: "specific",
+            fields: [
+              {
+                type: "dropdown",
+                name: "community_ids",
+                hasLabel: true,
+                label:
+                  "Select the communities that are allowed to share this testimonial",
+                // placeholder: "link",
+                required: false,
+                value: "",
+                data: ["Wayland", "Ablekuma"],
+              },
+            ],
+          },
+        ],
       },
     ];
   }
