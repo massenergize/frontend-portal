@@ -100,6 +100,7 @@ import Celebrate from "./components/Pages/Widgets/Celebrate";
 import METoast from "./components/Pages/Widgets/METoast/METoast";
 import { child } from "firebase/database";
 import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
+import OneTestimonialV2 from "./components/Pages/StoriesPage/OneTestimonialV2.js";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -454,68 +455,7 @@ class AppRouter extends Component {
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
-  /**
-   * Only effect: Remove all menu links that have been deactivated by admins
-   * Menu organization set in database
-   *
-   * @param {*} menu
-   * @returns
-   *
-   * @TODO change things here after BE changes have been made, so this is more efficient.
-   */
-  // modifiedMenu(menu) {
-  //   var aboutMenu = menu.find((menu) => menu.name === "About Us") || {};
-  //   var actionsMenu = menu.find((menu) => menu.name === "Actions") || {};
 
-  //   if (aboutMenu) {
-  //     aboutMenu.children = aboutMenu.children.filter((item) => {
-  //       switch (item.link) {
-  //         case "/impact":
-  //           return this.state.pagesEnabled.impactPage;
-  //         case "/aboutus":
-  //           return this.state.pagesEnabled.aboutUsPage;
-  //         case "/donate":
-  //           return this.state.pagesEnabled.donatePage;
-  //         case "/contactus":
-  //           return this.state.pagesEnabled.contactUsPage;
-  //         default:
-  //           return true;
-  //       }
-  //     });
-  //     menu[-1] = aboutMenu;
-  //   }
-
-  //   if (actionsMenu) {
-  //     actionsMenu.children = actionsMenu.children.filter((item) => {
-  //       switch (item.link) {
-  //         case "/actions":
-  //           return this.state.pagesEnabled.actionsPage;
-  //         case "/services":
-  //           return this.state.pagesEnabled.vendorsPage;
-  //         case "/testimonials":
-  //           return this.state.pagesEnabled.testimonialsPage;
-  //         default:
-  //           return true;
-  //       }
-  //     });
-  //     menu[1] = actionsMenu;
-  //   }
-
-  //   // remove menu items for pages which cadmins have selected as not enabled
-  //   menu = menu.filter((item) => {
-  //     switch (item.link) {
-  //       case "/teams":
-  //         return this.state.pagesEnabled.teamsPage;
-  //       case "/events":
-  //         return this.state.pagesEnabled.eventsPage;
-  //       case "/home":
-  //         return true;
-  //       default:
-  //         return item.children ? item.children.length > 0 : true;
-  //     }
-  //   });
-  //   return this.addPrefix(menu);
-  // }
 
   /**
    * Adds the prefix to the subdomains where possible
@@ -678,7 +618,7 @@ class AppRouter extends Component {
               <Route exact path={links.testimonials} component={StoriesPage} />
               <Route
                 path={`${links.testimonials}/:id`}
-                component={OneTestimonialPage}
+                component={OneTestimonialV2}
               />
               <Route exact path={links.teams} component={TeamsPage} />
               <Route path={`${links.teams}/:id`} component={OneTeamPage} />
