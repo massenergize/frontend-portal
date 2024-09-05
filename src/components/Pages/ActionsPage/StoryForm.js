@@ -534,7 +534,7 @@ class StoryForm extends React.Component {
         data: [
           { id: "yes", value: "Yes" },
           { id: "no", value: "No" },
-          { id: "specific", value: "Specific Communities" },
+          // { id: "specific", value: "Specific Communities" },
         ],
         valueExtractor: (e) => e.id,
         labelExtractor: (e) => e.value,

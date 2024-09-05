@@ -12,6 +12,8 @@ import ShareButton from "react-share/lib/ShareButton";
 import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
 import PageTitle from "../../Shared/PageTitle";
+import RelatedActionInTestmionial from "./RelatedActionInTestmionial";
+import { TestimonialsCardLite } from "./TestimonialsCardV2";
 
 function OneTestimonialV2() {
   const params = useParams();
@@ -85,6 +87,75 @@ function OneTestimonialV2() {
           className="one-story-html-view test-story-body rich-text-container"
           dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
         />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {/* <div style={{ marginRight: 15 }}>
+            <h5 style={{ color: "rgb(167 167 167)" }}>Vendor</h5>
+            <br />
+            <img
+              src="https://via.placeholder.com/150"
+              alt="vendor"
+              style={{
+                width: 50,
+                height: 50,
+                objectFit: "cover",
+                borderRadius: 5,
+              }}
+            />
+          </div> */}
+          <div style={{ marginTop: 10, width: "100%" }}>
+            <h5
+              style={{
+                color: "rgb(167 167 167)",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <span style={{ marginRight: 50 }}>Vendor</span>
+              <span>Related Action</span>
+            </h5>
+            <br />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src="https://via.placeholder.com/150"
+                alt="vendor"
+                style={{
+                  width: 100,
+                  height: 100,
+                  objectFit: "cover",
+                  borderRadius: 5,
+                  marginRight: 15,
+                }}
+              />
+              <RelatedActionInTestmionial />
+            </div>
+          </div>
+        </div>
+        <br />
+        <div style={{ marginTop: 10 }}>
+          <h5 style={{ color: "rgb(167 167 167)" }}>Read other testimonials</h5>
+          <br />
+          <div
+            style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+          >
+            {[2, 3, 4, 5, 6, 4, 4].map((story) => {
+              return <TestimonialsCardLite />;
+            })}
+          </div>
+        </div>
+        <br />
         <ShareButtons
           label="Share this testimonial!"
           pageTitle={story?.name}
@@ -106,10 +177,11 @@ const InteractionPanel = () => {
         border: "solid 1px #E8E8E8",
         borderRadius: 5,
         margin: "10px 0px",
+        fontSize: 18,
       }}
     >
       <div
-        style={{ padding: "10px 30px", display: "flex", alignItems: "center" }}
+        style={{ padding: "10px 25px", display: "flex", alignItems: "center" }}
       >
         <small>
           Posted By <b>Frimpong Opoku Agyemang</b>
@@ -137,7 +209,7 @@ const InteractionPanel = () => {
           alignItems: "center",
           backgroundColor: "#EB5D0B",
           padding: "10px 20px",
-          height: 40,
+          height: 42,
           fontSize: 16,
           color: "white",
           borderTopRightRadius: 5,
