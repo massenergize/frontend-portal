@@ -1425,7 +1425,6 @@
   border-radius: 2px;
 }
 
-
 .reset-margin {
   margin: 0;
 }
@@ -2285,11 +2284,40 @@
   margin: 0px;
   height: auto;
 }
+.me-standard-img {
+  background: rgb(251, 251, 251);
+  object-fit: contain;
+  border-radius: 10px;
+  width: 100%;
+}
+.t-area-title {
+  color: rgb(167, 167, 167);
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.rel-action { 
+  
+}
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .related-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .me-standard-img {
+    height: 400px;
+  }
   .small-form-spacing {
-    margin:20px 0px;
+    margin: 20px 0px;
     /* margin-bottom: 20px; */
   }
   .new-sign-in {
@@ -2714,6 +2742,17 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .related-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .t-area-title {
+    font-size: large;
+  }
+  .me-standard-img {
+    height: 230px;
+  }
   .small-form-spacing {
     margin-top: 10px;
     margin-bottom: 20px;

@@ -3,7 +3,7 @@ import React from "react";
 function RelatedActionInTestmionial() {
   return (
     <div
-      className="touchable-opacity"
+      className="touchable-opacity rel-action"
       style={{
         display: "flex",
         flexDirection: "row",

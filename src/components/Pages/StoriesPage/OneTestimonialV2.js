@@ -54,6 +54,7 @@ function OneTestimonialV2() {
   }
   if (loading) return <LoadingCircle />;
 
+  console.log("Here is the story", story);
   return (
     <div
       className="boxed_wrapper"
@@ -70,13 +71,7 @@ function OneTestimonialV2() {
         <h2 style={{ display: "block", margin: "20px 0px" }}>{story?.title}</h2>
         <InteractionPanel />
         <img
-          style={{
-            background: "#fbfbfb",
-            objectFit: "contain",
-            borderRadius: 10,
-            width: "100%",
-            height: 400,
-          }}
+          className="me-standard-img"
           src={
             "https://massenergize-prod-files.s3.amazonaws.com/media/tempImagenlb0uh-231116-044959.jpg"
           }
@@ -88,47 +83,23 @@ function OneTestimonialV2() {
           dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
         />
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          {/* <div style={{ marginRight: 15 }}>
-            <h5 style={{ color: "rgb(167 167 167)" }}>Vendor</h5>
-            <br />
-            <img
-              src="https://via.placeholder.com/150"
-              alt="vendor"
-              style={{
-                width: 50,
-                height: 50,
-                objectFit: "cover",
-                borderRadius: 5,
-              }}
-            />
-          </div> */}
+        <div className="related-area">
           <div style={{ marginTop: 10, width: "100%" }}>
-            <h5
-              style={{
-                color: "rgb(167 167 167)",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <span style={{ marginRight: 50 }}>Vendor</span>
+            <h5 className="t-area-title flex-row">
+              {/* <span style={{ marginRight: 50 }}>Vendor</span> */}
               <span>Related Action</span>
             </h5>
             <br />
             <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+              className="related-area"
+              // style={{
+              //   display: "flex",
+              //   flexDirection: "row",
+              //   alignItems: "center",
+              // }}
             >
-              <img
+              {/* <img
+               
                 src="https://via.placeholder.com/150"
                 alt="vendor"
                 style={{
@@ -138,7 +109,7 @@ function OneTestimonialV2() {
                   borderRadius: 5,
                   marginRight: 15,
                 }}
-              />
+              /> */}
               <RelatedActionInTestmionial />
             </div>
           </div>
@@ -169,27 +140,14 @@ function OneTestimonialV2() {
 
 const InteractionPanel = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-
-        border: "solid 1px #E8E8E8",
-        borderRadius: 5,
-        margin: "10px 0px",
-        fontSize: 18,
-      }}
-    >
-      <div
-        style={{ padding: "10px 25px", display: "flex", alignItems: "center" }}
-      >
-        <small>
-          Posted By <b>Frimpong Opoku Agyemang</b>
-        </small>
-
-        <small style={{ margin: "0px 10px", color: "#E8E8E8" }}>
-          22nd March 2024
-        </small>
+    <>
+      <div className="pc-vanish" style={{ marginBottom: 15 }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <small>
+            Posted By <b>Frimpong Opoku Agyemang</b>
+          </small>
+        </div>
+        <small style={{ color: "grey" }}>22nd March 2024</small>
         <small
           style={{ margin: "0px 10px", fontWeight: "bold", color: "#EB5D0B" }}
         >
@@ -200,28 +158,64 @@ const InteractionPanel = () => {
           Shared from Wayland
         </small>
       </div>
-
       <div
-        className="touchable-opacity"
+        className="phone-vanish"
         style={{
-          marginLeft: "auto",
           display: "flex",
           alignItems: "center",
-          backgroundColor: "#EB5D0B",
-          padding: "10px 20px",
-          height: 42,
-          fontSize: 16,
-          color: "white",
-          borderTopRightRadius: 5,
-          borderBottomRightRadius: 5,
+          border: "solid 1px #E8E8E8",
+          borderRadius: 5,
+          margin: "10px 0px",
+          fontSize: 18,
         }}
       >
-        <i className="fa fa-plus" style={{ marginRight: 5 }} />{" "}
-        <p style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-          New Testimonial
-        </p>
+        <div
+          style={{
+            padding: "10px 25px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <small>
+            Posted By <b>Frimpong Opoku Agyemang</b>
+          </small>
+
+          <small style={{ margin: "0px 10px", color: "#E8E8E8" }}>
+            22nd March 2024
+          </small>
+          <small
+            style={{ margin: "0px 10px", fontWeight: "bold", color: "#EB5D0B" }}
+          >
+            <i
+              className="fa fa-share"
+              style={{ color: "#EB5D0B", marginRight: 5 }}
+            />{" "}
+            Shared from Wayland
+          </small>
+        </div>
+
+        <div
+          className="touchable-opacity phone-vanish"
+          style={{
+            marginLeft: "auto",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#EB5D0B",
+            padding: "10px 20px",
+            height: 42,
+            fontSize: 16,
+            color: "white",
+            borderTopRightRadius: 5,
+            borderBottomRightRadius: 5,
+          }}
+        >
+          <i className="fa fa-plus" style={{ marginRight: 5 }} />{" "}
+          <p style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
+            New Testimonial
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
