@@ -1,4 +1,5 @@
 import React from "react";
+import { getHumanFriendlyDate } from "../../Utils";
 
 function TestimonialsCardV2() {
   return <div>TestimonialsCardV2</div>;
@@ -6,7 +7,7 @@ function TestimonialsCardV2() {
 
 export default TestimonialsCardV2;
 
-export const TestimonialsCardLite = () => {
+export const TestimonialsCardLite = ({ story }) => {
   return (
     <div
       className="touchable-opacity"
@@ -29,7 +30,7 @@ export const TestimonialsCardLite = () => {
         }}
       >
         <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
-          Had all my complicated lights switched to LED!{" "}
+          {story?.title}
           <i className="fa fa-long-arrow-right" style={{ marginLeft: 5 }} />
         </span>
 
@@ -60,7 +61,7 @@ export const TestimonialsCardLite = () => {
       >
         <b>Brad Hubbard-Nelson</b>
         <span style={{ marginLeft: "auto", fontWeight: "normal" }}>
-          22-03-2024
+          {getHumanFriendlyDate(story?.created_at)}
         </span>
       </div>
     </div>

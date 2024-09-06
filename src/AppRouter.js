@@ -618,7 +618,8 @@ class AppRouter extends Component {
               <Route exact path={links.testimonials} component={StoriesPage} />
               <Route
                 path={`${links.testimonials}/:id`}
-                component={OneTestimonialV2}
+                // component={OneTestimonialV2}
+                component={OneTestimonialPage}
               />
               <Route exact path={links.teams} component={TeamsPage} />
               <Route path={`${links.teams}/:id`} component={OneTeamPage} />

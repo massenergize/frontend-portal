@@ -15,10 +15,14 @@ import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
 import { TESTIMONIAL } from "../../Constants";
-import { reduxLoadTestimonials, reduxToggleUniversalModal } from "../../../redux/actions/pageActions";
+import {
+  reduxLoadTestimonials,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import MEImage from "../../Shared/MEImage";
+import OneTestimonialV2 from "./OneTestimonialV2";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -49,10 +53,13 @@ class OneTestimonialPage extends React.Component {
     const { id } = this.props.match.params;
     this.fetch(id);
   }
-//  trigger whenever props.stories change
+  //  trigger whenever props.stories change
   static getDerivedStateFromProps(props, state) {
-    let {id} = props?.match?.params
-    if (props.stories && id) return { story: props.stories?.filter((story) => story.id?.toString() === id)[0] };
+    let { id } = props?.match?.params;
+    if (props.stories && id)
+      return {
+        story: props.stories?.filter((story) => story.id?.toString() === id)[0],
+      };
     return null;
   }
 
@@ -145,7 +152,7 @@ class OneTestimonialPage extends React.Component {
           close={() => this.props.toggleModal({ show: false })}
           draftData={toEdit}
           TriggerSuccessNotification={(bool) => ({})}
-          updateItemInRedux={(data)=>this.props.updateItemInRedux(data)}
+          updateItemInRedux={(data) => this.props.updateItemInRedux(data)}
           reduxItems={this.props.stories}
         />
       ),
@@ -171,7 +178,8 @@ class OneTestimonialPage extends React.Component {
                 display: "inline-block",
                 height: 100,
                 width: 100,
-                objectFit: "contain", marginLeft: 10,
+                objectFit: "contain",
+                marginLeft: 10,
               }}
               alt="testimonial"
             />
@@ -240,6 +248,8 @@ class OneTestimonialPage extends React.Component {
               <div className="single-products-details">
                 {this.renderStory(story)}
               </div>
+              <br />
+              <br />
               <ShareButtons
                 label="Share this testimonial!"
                 pageTitle={story.name}
@@ -254,137 +264,25 @@ class OneTestimonialPage extends React.Component {
   }
 
   renderStory(story = {}) {
-    let dateString = getHumanFriendlyDate(story.created_at);
     const creatorName =
       story.preferred_name ||
       story?.user?.preferred_name ||
       story?.user?.full_name ||
       "...";
+
     return (
-      <section className="event-section style-3">
-        <div className="container">
-          <h3
-            className="cool-font text-center test-story-title"
-            data-story-title={story?.title}
-          >
-            {story?.title}
-          </h3>
-          <div className="single-event sec-padd" style={{ borderWidth: 0 }}>
-            <div className="row">
-              <div className="col-12 col-lg-4 col-mg-4 col-sm-12">
-                <div
-                  className="img-box"
-                  style={{ height: 200, borderRadius: 10 }}
-                >
-                  <MEImage
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: 10,
-                    }}
-                    className="z-depth-1 me-anime-open-in"
-                    src={story && story.file ? story.file.url : notFound}
-                    image = {story?.file}
-                    alt=""
-                  />
-                </div>
-                {!story?.is_published && <RibbonBanner />}
-                <div
-                  className="ripped-border me-anime-show-up"
-                  style={{ margin: "10px 0px" }}
-                >
-                  <METextView
-                    mediaType="icon"
-                    icon="fa fa-user"
-                    style={{
-                      color: "black",
-                      marginBottom: 0,
-                      fontSize: "medium",
-                    }}
-                  >
-                    <span
-                      className="test-story-user-name"
-                      data-user-name={creatorName}
-                    >
-                      By {creatorName}
-                    </span>
-                  </METextView>
-                  <METextView
-                    mediaType="icon"
-                    icon="fa fa-clock-o"
-                    containerStyle={{ display: "block" }}
-                    style={{
-                      color: "black",
-                      marginBottom: 0,
-                      fontSize: "medium",
-                    }}
-                  >
-                    {dateString}
-                  </METextView>
-                </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <p
-                    className="testimonial-add-btn-text phone-vanish"
-                    // to={this.props.links.testimonials}
-                    onClick={() =>
-                      this.props.history.push(this.props.links.testimonials)
-                    }
-                  >
-                    <i className="fa fa-plus" /> Testimonial
-                  </p>
-
-                  {!story?.is_published && this.props?.user && (
-                    <p
-                      onClick={() => this.onEditButtonClick(story)}
-                      className="testimonial-edit-btn-text"
-                    >
-                      Edit
-                    </p>
-                  )}
-                </div>
-                {this.renderOtherTestimonials()}
-                {this.renderRelatedVendor(story)}
-              </div>
-              <div className="col-12 col-lg-8 col-md-8">
-                <div className="text">
-                  <div
-                    className="one-story-html-view test-story-body rich-text-container"
-                    dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
-                  />
-                  {/* <p
-                    className="cool-font test-story-body"
-                    data-story-body={story?.body}
-                    style={{ color: "black", textAlign: "justify" }}
-                  >
-                    {story && story.body}
-                  </p> */}
-                  {this.renderRelatedAction()}
-                </div>
-              </div>
-            </div>
-
-            <div className="content">
-              <div className="row">
-                <div className="col-md-6 col-sm-6 col-xs-12"></div>
-                {story.details ? (
-                  <div className="col-md-6 col-sm-6 col-xs-12">
-                    <div className="section-title style-2">
-                      <h3>Event Details</h3>
-                    </div>
-
-                    <ul className="list2">
-                      {/* {this.renderDetails(story.details)} */}
-                    </ul>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <OneTestimonialV2
+        creatorName={creatorName}
+        story={story}
+        stories={this.props.stories}
+        otherStories={this.getSomeOtherTestimonials()}
+        community={this.props.community}
+        edit={this.onEditButtonClick.bind(this)}
+        newTestimonial={() =>
+          this.props.history.push(this.props.links.testimonials)
+        }
+        user={this.props.user}
+      />
     );
   }
   renderRelatedVendor(story = {}) {

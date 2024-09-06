@@ -14,69 +14,40 @@ import URLS from "../../../api/urls";
 import PageTitle from "../../Shared/PageTitle";
 import RelatedActionInTestmionial from "./RelatedActionInTestmionial";
 import { TestimonialsCardLite } from "./TestimonialsCardV2";
+import { isMobile } from "react-device-detect";
+import { getHumanFriendlyDate } from "../../Utils";
 
-function OneTestimonialV2() {
-  const params = useParams();
-  const links = useSelector((state) => state.links);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [story, setStory] = useState("");
-
-  const { community } = story || {};
-  const { subdomain } = community || {};
-
-  const fetchTestimonial = (id) => {
-    // Make it fetch from redux after the first time
-    setLoading(true);
-    apiCall("testimonials.info", { testimonial_id: id }).then((response) => {
-      console.log("This is the response", response);
-      setLoading(false);
-      if (!response.success) {
-        setError(response.error);
-        return;
-      }
-      setStory(response.data);
-    });
-  };
-
-  useEffect(() => {
-    window.gtag("set", "user_properties", { page_title: "OneTestimonialPage" });
-    const { id } = params;
-    fetchTestimonial(id);
-  }, []);
-  if (!story || error) {
-    return (
-      <ErrorPage
-        errorMessage="Unable to load this Testimonial"
-        errorDescription={error ? error : "Unknown cause"}
-      />
-    );
-  }
-  if (loading) return <LoadingCircle />;
-
-  console.log("Here is the story", story);
+function OneTestimonialV2({
+  story,
+  stories,
+  otherStories,
+  community,
+  creatorName,
+  newTestimonial,
+  edit,
+  user,
+}) {
+  let isShared = community?.id !== story?.community?.id;
+  const inEditMode = !story?.is_published && user;
   return (
-    <div
-      className="boxed_wrapper"
-      style={{ marginBottom: 70, minHeight: window.screen.height - 200 }}
-    >
-      <BreadCrumbBar
-        links={[
-          { link: links.testimonials, name: "Testimonials" },
-          { name: story ? story.title : "..." },
-        ]}
-      />
-
+    <div>
       <div className="container">
         <h2 style={{ display: "block", margin: "20px 0px" }}>{story?.title}</h2>
-        <InteractionPanel />
-        <img
-          className="me-standard-img"
-          src={
-            "https://massenergize-prod-files.s3.amazonaws.com/media/tempImagenlb0uh-231116-044959.jpg"
-          }
-          alt="Testimonial Media"
+        <InteractionPanel
+          story={story}
+          creatorName={creatorName}
+          inEditMode={inEditMode}
+          isShared={isShared}
+          edit={edit}
+          newTestimonial={newTestimonial}
         />
+        {story?.file && (
+          <img
+            className="me-standard-img"
+            src={story?.file?.url}
+            alt="Testimonial Media"
+          />
+        )}
         <div
           style={{ margin: "20px 0px" }}
           className="one-story-html-view test-story-body rich-text-container"
@@ -90,27 +61,8 @@ function OneTestimonialV2() {
               <span>Related Action</span>
             </h5>
             <br />
-            <div
-              className="related-area"
-              // style={{
-              //   display: "flex",
-              //   flexDirection: "row",
-              //   alignItems: "center",
-              // }}
-            >
-              {/* <img
-               
-                src="https://via.placeholder.com/150"
-                alt="vendor"
-                style={{
-                  width: 100,
-                  height: 100,
-                  objectFit: "cover",
-                  borderRadius: 5,
-                  marginRight: 15,
-                }}
-              /> */}
-              <RelatedActionInTestmionial />
+            <div className="related-area">
+              <RelatedActionInTestmionial action={story?.action} />
             </div>
           </div>
         </div>
@@ -119,44 +71,51 @@ function OneTestimonialV2() {
           <h5 style={{ color: "rgb(167 167 167)" }}>Read other testimonials</h5>
           <br />
           <div
-            style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+            className={"other-t-area"}
+            // style={{ flex: "wrap" }}
+            // style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
           >
-            {[2, 3, 4, 5, 6, 4, 4].map((story) => {
-              return <TestimonialsCardLite />;
+            {otherStories?.map((story) => {
+              return <TestimonialsCardLite story={story} />;
             })}
           </div>
         </div>
-        <br />
-        <ShareButtons
-          label="Share this testimonial!"
-          pageTitle={story?.name}
-          pageDescription={story?.featured_summary}
-          url={`${URLS.SHARE}/${subdomain}/testimonial/${story.id}`}
-        />
       </div>
     </div>
   );
 }
 
-const InteractionPanel = () => {
+const InteractionPanel = ({
+  story,
+  isShared,
+  creatorName,
+  inEditMode,
+  edit,
+  newTestimonial,
+}) => {
+  const { user } = story || {};
+  const date = getHumanFriendlyDate(story?.created_at);
+
   return (
     <>
       <div className="pc-vanish" style={{ marginBottom: 15 }}>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <small>
-            Posted By <b>Frimpong Opoku Agyemang</b>
+            Posted By <b>{creatorName} </b>
           </small>
         </div>
-        <small style={{ color: "grey" }}>22nd March 2024</small>
-        <small
-          style={{ margin: "0px 10px", fontWeight: "bold", color: "#EB5D0B" }}
-        >
-          <i
-            className="fa fa-share"
-            style={{ color: "#EB5D0B", marginRight: 5 }}
-          />{" "}
-          Shared from Wayland
-        </small>
+        <small style={{ color: "grey" }}>{date}</small>
+        {isShared && (
+          <small
+            style={{ margin: "0px 10px", fontWeight: "bold", color: "#EB5D0B" }}
+          >
+            <i
+              className="fa fa-share"
+              style={{ color: "#EB5D0B", marginRight: 5 }}
+            />{" "}
+            Shared from {story?.community?.name}
+          </small>
+        )}
       </div>
       <div
         className="phone-vanish"
@@ -177,21 +136,25 @@ const InteractionPanel = () => {
           }}
         >
           <small>
-            Posted By <b>Frimpong Opoku Agyemang</b>
+            Posted By <b>{creatorName}</b>
           </small>
 
-          <small style={{ margin: "0px 10px", color: "#E8E8E8" }}>
-            22nd March 2024
-          </small>
-          <small
-            style={{ margin: "0px 10px", fontWeight: "bold", color: "#EB5D0B" }}
-          >
-            <i
-              className="fa fa-share"
-              style={{ color: "#EB5D0B", marginRight: 5 }}
-            />{" "}
-            Shared from Wayland
-          </small>
+          <small style={{ margin: "0px 10px", color: "grey" }}>{date}</small>
+          {isShared && (
+            <small
+              style={{
+                margin: "0px 10px",
+                fontWeight: "bold",
+                color: "#EB5D0B",
+              }}
+            >
+              <i
+                className="fa fa-share"
+                style={{ color: "#EB5D0B", marginRight: 5 }}
+              />{" "}
+              Shared from {story?.community?.name}
+            </small>
+          )}
         </div>
 
         <div
@@ -208,10 +171,11 @@ const InteractionPanel = () => {
             borderTopRightRadius: 5,
             borderBottomRightRadius: 5,
           }}
+          onClick={() => (inEditMode ? edit(story) : newTestimonial())}
         >
           <i className="fa fa-plus" style={{ marginRight: 5 }} />{" "}
           <p style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            New Testimonial
+            {inEditMode ? "Edit" : "New Testimonial"}
           </p>
         </div>
       </div>

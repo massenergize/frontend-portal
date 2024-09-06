@@ -1,6 +1,8 @@
 import React from "react";
+import { getHumanFriendlyDate } from "../../Utils";
+import SmartImage from "../../Shared/SmartImage";
 
-function RelatedActionInTestmionial() {
+function RelatedActionInTestmionial({ action }) {
   return (
     <div
       className="touchable-opacity rel-action"
@@ -14,8 +16,8 @@ function RelatedActionInTestmionial() {
         width: "100%",
       }}
     >
-      <img
-        src="https://via.placeholder.com/150"
+      <SmartImage
+        src={action?.image?.url || "/backup"}
         alt="related action"
         style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 5 }}
       />
@@ -34,14 +36,14 @@ function RelatedActionInTestmionial() {
               fontWeight: "bold",
             }}
           >
-            Heat Pump Hot Water Works Great!
+            {action?.title || "..."}
           </h5>
           {/* <i className=" fa fa-long-arrow-right" /> */}
         </div>
         <div style={{ fontSize: 14, marginTop: 5, color: "grey" }}>
-          <b>Wayland</b>{" "}
+          <b>{action?.community?.name || "..."}</b>{" "}
           <span style={{ margin: "0px 8px", fontWeight: "normal" }}>
-            22-03-1998
+            {getHumanFriendlyDate(action?.created_at)}
           </span>
         </div>
       </div>

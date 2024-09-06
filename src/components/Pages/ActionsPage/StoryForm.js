@@ -526,14 +526,14 @@ class StoryForm extends React.Component {
       },
       {
         type: "radio-group",
-        name: "event_type",
+        name: "sharing_type",
         hasLabel: true,
         label: "Can this testimonial be shared on other community websites?",
         required: false,
         value: "",
         data: [
-          { id: "yes", value: "Yes" },
-          { id: "no", value: "No" },
+          { id: "yes", value: "OPEN" },
+          { id: "no", value: "CLOSED" },
           // { id: "specific", value: "Specific Communities" },
         ],
         valueExtractor: (e) => e.id,
