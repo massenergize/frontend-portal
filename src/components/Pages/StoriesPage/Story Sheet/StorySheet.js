@@ -4,7 +4,9 @@ import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate, fetchCopyrightData } from "../../../Utils";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
-import TestimonialsCardV2 from "../TestimonialsCardV2";
+import TestimonialsCardV2, {
+  TestimonialsCardLite,
+} from "../TestimonialsCardV2";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -115,7 +117,16 @@ export default class StorySheet extends Component {
       ...fetchCopyrightData(file?.info),
     };
 
-    return <TestimonialsCardV2 story={this.props} />;
+    return (
+      <div>
+        <div className="phone-vanish">
+          <TestimonialsCardV2 story={this.props} />
+        </div>
+        <div className="pc-vanish" style={{ padding: "0px 10px" }}>
+          <TestimonialsCardLite story={this.props} />
+        </div>
+      </div>
+    );
     const date = getHumanFriendlyDate(created_at);
     const creatorName = this.getUser();
 

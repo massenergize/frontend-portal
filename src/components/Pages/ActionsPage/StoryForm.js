@@ -532,12 +532,12 @@ class StoryForm extends React.Component {
         required: false,
         value: "",
         data: [
-          { id: "yes", value: "OPEN" },
-          { id: "no", value: "CLOSED" },
+          { id: "Yes", value: "OPEN" },
+          { id: "No", value: "CLOSED" },
           // { id: "specific", value: "Specific Communities" },
         ],
-        valueExtractor: (e) => e.id,
-        labelExtractor: (e) => e.value,
+        valueExtractor: (e) => e.value,
+        labelExtractor: (e) => e.id,
         conditionalDisplays: [
           {
             valueToCheck: "specific",

@@ -370,7 +370,7 @@ class StoriesPage extends React.Component {
                 )}
               />
 
-              <div className="row stories-row" style={{ paddingTop: 60 }}>
+              <div className="row stories-row" style={{}}>
                 {/* <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>
                     <h5>Jump to story</h5>
