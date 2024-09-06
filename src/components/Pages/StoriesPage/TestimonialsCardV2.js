@@ -31,7 +31,12 @@ function TestimonialsCardV2({ story }) {
       <SmartImage
         disableIfError
         src={story?.file?.url || "/backup"}
-        style={{ width: 80, height: 80, marginRight: 30, objectFit: "contain" }}
+        style={{
+          width: 80,
+          height: 80,
+          marginRight: 30,
+          objectFit: "contain",
+        }}
       />
       <div style={{ width: "100%" }}>
         <h3
@@ -140,8 +145,16 @@ function TestimonialsCardV2({ story }) {
 export default TestimonialsCardV2;
 
 export const TestimonialsCardLite = ({ story }) => {
+  const history = useHistory();
+  const links = useSelector((state) => state.links);
+  const creatorName =
+    story?.preferred_name ||
+    story?.user?.preferred_name ||
+    story?.user?.full_name ||
+    "...";
   return (
     <div
+      onClick={() => history.push(`${links?.testimonials}/${story?.id}`)}
       className="touchable-opacity"
       style={{
         flexBasis: "30%",
@@ -188,10 +201,10 @@ export const TestimonialsCardLite = ({ story }) => {
           display: "flex",
           flexDirection: "row",
           color: "grey",
-          marginTop: 8,
+          marginTop: 12,
         }}
       >
-        <b>Brad Hubbard-Nelson</b>
+        By <b style={{ marginLeft: 5 }}>{creatorName}</b>
         <span style={{ marginLeft: "auto", fontWeight: "normal" }}>
           {getHumanFriendlyDate(story?.created_at)}
         </span>

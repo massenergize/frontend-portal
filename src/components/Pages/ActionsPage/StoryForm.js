@@ -622,7 +622,7 @@ class StoryForm extends React.Component {
         TriggerModal={(bool) => this.props.TriggerModal(bool)}
         inputData={this.props.draftData}
         style={{ background: "white", borderRadius: 10 }}
-        className="z-depth-1"
+        // className="z-depth-1"
         fields={this.getNeededFormFields()}
         title={this.state.message}
         onSubmit={this.onSubmit}

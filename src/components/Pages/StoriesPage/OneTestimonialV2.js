@@ -177,9 +177,9 @@ const InteractionPanel = ({
           }}
           onClick={() => (inEditMode ? edit(story) : newTestimonial())}
         >
-          <i className="fa fa-plus" style={{ marginRight: 5 }} />{" "}
           <p style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            {inEditMode ? "Edit" : "New Testimonial"}
+            {inEditMode ? "Edit" : "New Testimonial"}{" "}
+            <i className="fa fa-long-arrow-right" style={{ marginLeft: 5 }} />
           </p>
         </div>
       </div>

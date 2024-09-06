@@ -57,6 +57,7 @@ import MEButton from "../Widgets/MEButton";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { ACTION, PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import MEImage from "../../Shared/MEImage";
+import { TestimonialsCardLite } from "../StoriesPage/TestimonialsCardV2";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -783,6 +784,7 @@ class OneActionPage extends React.Component {
               <div className="col-lg-6 col-md-12 mob-reset-padding">
                 <div className="img-box action-pic-fix">
                   <MEImage
+                    disableIfError
                     src={action.image ? action.image.url : null}
                     image={action?.image}
                     alt=""
@@ -997,7 +999,7 @@ class OneActionPage extends React.Component {
                   </div>
                   {/* form to fill out to tell your own story */}
                   {this.props.user ? (
-                    <div id="testimonials-form">
+                    <div id="testimonials-form" style={{ marginTop: 20 }}>
                       <StoryForm
                         ModalType={TESTIMONIAL}
                         uid={this.props.user.id}
@@ -1056,8 +1058,9 @@ class OneActionPage extends React.Component {
         {Object.keys(stories).map((key) => {
           const story = stories[key];
           return (
-            <div key={key}>
-              <MiniTestimonial story={story} links={this.props.links} />
+            <div key={key} style={{ marginBottom: 10 }}>
+              <TestimonialsCardLite story={story} />
+              {/* <MiniTestimonial story={story} links={this.props.links} /> */}
             </div>
           );
         })}

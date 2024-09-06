@@ -1,10 +1,16 @@
 import React from "react";
 import { getHumanFriendlyDate } from "../../Utils";
 import SmartImage from "../../Shared/SmartImage";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector } from "react-redux";
 
 function RelatedActionInTestmionial({ action }) {
+  const history = useHistory();
+  const links = useSelector((state) => state.links);
+
   return (
     <div
+      onClick={() => history.push(`${links?.actions}/${action?.id}`)}
       className="touchable-opacity rel-action"
       style={{
         display: "flex",
@@ -17,6 +23,7 @@ function RelatedActionInTestmionial({ action }) {
       }}
     >
       <SmartImage
+        disableIfError
         src={action?.image?.url || "/backup"}
         alt="related action"
         style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 5 }}
