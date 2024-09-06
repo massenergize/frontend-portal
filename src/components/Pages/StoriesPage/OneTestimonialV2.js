@@ -16,6 +16,7 @@ import RelatedActionInTestmionial from "./RelatedActionInTestmionial";
 import { TestimonialsCardLite } from "./TestimonialsCardV2";
 import { isMobile } from "react-device-detect";
 import { getHumanFriendlyDate } from "../../Utils";
+import SmartImage from "../../Shared/SmartImage";
 
 function OneTestimonialV2({
   story,
@@ -42,7 +43,8 @@ function OneTestimonialV2({
           newTestimonial={newTestimonial}
         />
         {story?.file && (
-          <img
+          <SmartImage
+            disableIfError
             className="me-standard-img"
             src={story?.file?.url}
             alt="Testimonial Media"

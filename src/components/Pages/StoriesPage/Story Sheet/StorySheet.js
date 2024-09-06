@@ -4,6 +4,7 @@ import DefaultClass from "../../../Shared/Classes/DefaultClass";
 import { getHumanFriendlyDate, fetchCopyrightData } from "../../../Utils";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import TestimonialsCardV2 from "../TestimonialsCardV2";
 
 const hasLargeText = (body) => {
   if (!body) return [false, "...", "..."];
@@ -96,7 +97,7 @@ export default class StorySheet extends Component {
       is_published,
     } = this.props;
     //builds out the edit testimonial data to be passed down to the submit testimonial form when edit button is clicked
-    
+
     var testimonialData = {
       id: id,
       // is_approved: is_approved,
@@ -112,8 +113,9 @@ export default class StorySheet extends Component {
       vendor_id: vendor ? vendor.id : "",
       image: file,
       ...fetchCopyrightData(file?.info),
-      
     };
+
+    return <TestimonialsCardV2 story={this.props} />;
     const date = getHumanFriendlyDate(created_at);
     const creatorName = this.getUser();
 
@@ -141,7 +143,7 @@ export default class StorySheet extends Component {
                 src={
                   this.state.fallbackImg ||
                   file?.url ||
-                  DefaultClass.getTestimonialsDefaultPhoto() 
+                  DefaultClass.getTestimonialsDefaultPhoto()
                 }
                 className="sheet-image"
                 alt="sheet media"
