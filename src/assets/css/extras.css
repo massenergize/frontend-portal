@@ -4130,7 +4130,7 @@
 
 .ribbon-container {
   --d: 6px; /* folded part */
-  --c: tomato; /* color */
+  --c: #f57b34; /* color */
   --f: 0.8rem; /* ribbon font-size */
   z-index: 1000;
 }

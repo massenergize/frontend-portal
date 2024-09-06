@@ -56,18 +56,20 @@ function OneTestimonialV2({
           dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
         />
 
-        <div className="related-area">
-          <div style={{ marginTop: 10, width: "100%" }}>
-            <h5 className="t-area-title flex-row">
-              {/* <span style={{ marginRight: 50 }}>Vendor</span> */}
-              <span>Related Action</span>
-            </h5>
-            <br />
-            <div className="related-area">
-              <RelatedActionInTestmionial action={story?.action} />
+        {story?.action && (
+          <div className="related-area">
+            <div style={{ marginTop: 10, width: "100%" }}>
+              <h5 className="t-area-title flex-row">
+                {/* <span style={{ marginRight: 50 }}>Vendor</span> */}
+                <span>Related Action</span>
+              </h5>
+              <br />
+              <div className="related-area">
+                <RelatedActionInTestmionial action={story?.action} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <br />
         <div style={{ marginTop: 10 }}>
           <h5 style={{ color: "rgb(167 167 167)" }}>Read other testimonials</h5>
