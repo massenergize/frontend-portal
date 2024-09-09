@@ -14,9 +14,13 @@ import ShareButtons from "../../Shared/ShareButtons";
 import URLS from "../../../api/urls";
 import { Link } from "react-router-dom";
 import Seo from "../../Shared/Seo";
-import { TESTIMONIAL } from "../../Constants";
+import { PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import {
+  reduxLoadActions,
+  reduxLoadTagCols,
   reduxLoadTestimonials,
+  reduxLoadTestimonialsPage,
+  reduxMarkRequestAsDone,
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
@@ -51,7 +55,8 @@ class OneTestimonialPage extends React.Component {
   componentDidMount() {
     window.gtag("set", "user_properties", { page_title: "OneTestimonialPage" });
     const { id } = this.props.match.params;
-    this.fetch(id);
+    // this.fetch(id);
+    this.fetchEssentials(id);
   }
   //  trigger whenever props.stories change
   static getDerivedStateFromProps(props, state) {
@@ -263,6 +268,41 @@ class OneTestimonialPage extends React.Component {
     );
   }
 
+  fetchEssentials = (id) => {
+    const { community, pageRequests } = this.props;
+    const { subdomain } = community || {};
+    const payload = { subdomain };
+
+    const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_TESTIMONIALS.key];
+    if (page?.loaded) return;
+    Promise.all([
+      ...PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
+        apiCall(route, payload)
+      ),
+      apiCall("testimonials.info", { testimonial_id: id }),
+    ])
+      .then((response) => {
+        const [pageData, tagCols, stories, actions, story] = response;
+        this.setState({
+          story: story?.data,
+          error: story?.error,
+          loading: false,
+        });
+        this.props.loadTestimonialsPage(pageData?.data);
+        this.props.loadTagCollections(tagCols?.data);
+        this.props.loadTestimonials(stories?.data);
+        this.props.loadActions(actions?.data);
+
+        this.props.reduxMarkRequestAsDone({
+          ...pageRequests,
+          [PAGE_ESSENTIALS.ONE_TESTIMONIALS.key]: { loaded: true },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   renderStory(story = {}) {
     const creatorName =
       story.preferred_name ||
@@ -345,4 +385,10 @@ const mapStoreToProps = (store) => {
 export default connect(mapStoreToProps, {
   toggleModal: reduxToggleUniversalModal,
   updateItemInRedux: reduxLoadTestimonials,
+  updateItemInRedux: reduxLoadTestimonials,
+  loadTestimonials: reduxLoadTestimonials,
+  loadTestimonialsPage: reduxLoadTestimonialsPage,
+  loadTagCollections: reduxLoadTagCols,
+  reduxMarkRequestAsDone,
+  loadActions: reduxLoadActions,
 })(OneTestimonialPage);
