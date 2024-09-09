@@ -463,12 +463,14 @@ class StoriesPage extends React.Component {
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
-        style={{
-          width: "100%",
-          "--sheet-anime-delay": getRandomIntegerInRange(500),
-          "--sheet-anime-duration": getRandomIntegerInRange(500),
-        }}
-        className="animate-testimonial-sheet test-story-sheet"
+        style={
+          {
+            width: "100%",
+            // "--sheet-anime-delay": getRandomIntegerInRange(500),
+            // "--sheet-anime-duration": getRandomIntegerInRange(500),
+          }
+        }
+        className=" test-story-sheet"
       >
         {!story?.is_published && <RibbonBanner />}
         <StorySheet

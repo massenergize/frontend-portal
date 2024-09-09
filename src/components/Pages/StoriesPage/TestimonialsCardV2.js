@@ -46,6 +46,7 @@ function TestimonialsCardV2({ story }) {
             alignItems: "center",
             position: "relative",
             width: "95%",
+            fontSize: 22,
           }}
         >
           <span
