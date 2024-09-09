@@ -38,6 +38,9 @@ class OneTestimonialPage extends React.Component {
   }
 
   async fetch(id) {
+    const { stories } = this.props;
+    const story = stories?.find((story) => story.id === id);
+    if (story) return this.setState({ story, loading: false });
     try {
       const json = await apiCall("testimonials.info", { testimonial_id: id });
       if (json.success) {
@@ -272,15 +275,20 @@ class OneTestimonialPage extends React.Component {
     const { community, pageRequests } = this.props;
     const { subdomain } = community || {};
     const payload = { subdomain };
-
+    this.fetch(id);
     const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_TESTIMONIALS.key];
     if (page?.loaded) return;
-    Promise.all([
-      ...PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
+    // Promise.all([
+    //   ...PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
+    //     apiCall(route, payload)
+    //   ),
+    //   apiCall("testimonials.info", { testimonial_id: id }),
+    // ])
+    Promise.all(
+      PAGE_ESSENTIALS.TESTIMONIALS.routes.map((route) =>
         apiCall(route, payload)
-      ),
-      apiCall("testimonials.info", { testimonial_id: id }),
-    ])
+      )
+    )
       .then((response) => {
         const [pageData, tagCols, stories, actions, story] = response;
         this.setState({
@@ -380,6 +388,7 @@ const mapStoreToProps = (store) => {
     stories: store.page.testimonials,
     links: store.links,
     community: store.page.community,
+    pageRequests: store.page.pageRequests,
   };
 };
 export default connect(mapStoreToProps, {
