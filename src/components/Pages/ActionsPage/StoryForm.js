@@ -125,7 +125,7 @@ var ActionFormData = [
     placeholder: "Add a name...",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     name: "featured_summary",
@@ -184,7 +184,7 @@ var EventsFormData = [
     placeholder: "Add a name... ",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     name: "featured_summary",
@@ -193,7 +193,7 @@ var EventsFormData = [
     type: "textarea",
     hasLabel: true,
     required: true,
-    value: ""
+    value: "",
   },
   {
     type: "datetime-local",
@@ -277,7 +277,7 @@ var VendorFormData = [
     placeholder: "Add a name... ",
     required: true,
     value: "",
-    maxlength:100
+    maxlength: 100,
   },
   {
     type: "input",
@@ -524,6 +524,39 @@ class StoryForm extends React.Component {
         value: "",
         required: true,
       },
+      {
+        type: "radio-group",
+        name: "sharing_type",
+        hasLabel: true,
+        label: "Can this testimonial be shared on other community websites?",
+        required: false,
+        value: "OPEN",
+        data: [
+          { id: "Yes", value: "OPEN" },
+          { id: "No", value: "CLOSED" },
+          // { id: "specific", value: "Specific Communities" },
+        ],
+        valueExtractor: (e) => e.value,
+        labelExtractor: (e) => e.id,
+        conditionalDisplays: [
+          {
+            valueToCheck: "specific",
+            fields: [
+              {
+                type: "dropdown",
+                name: "community_ids",
+                hasLabel: true,
+                label:
+                  "Select the communities that are allowed to share this testimonial",
+                // placeholder: "link",
+                required: false,
+                value: "",
+                data: ["Wayland", "Ablekuma"],
+              },
+            ],
+          },
+        ],
+      },
     ];
   }
 
@@ -589,7 +622,7 @@ class StoryForm extends React.Component {
         TriggerModal={(bool) => this.props.TriggerModal(bool)}
         inputData={this.props.draftData}
         style={{ background: "white", borderRadius: 10 }}
-        className="z-depth-1"
+        // className="z-depth-1"
         fields={this.getNeededFormFields()}
         title={this.state.message}
         onSubmit={this.onSubmit}

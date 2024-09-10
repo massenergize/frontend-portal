@@ -70,6 +70,15 @@ export const PAGE_ESSENTIALS = {
       "actions.list",
     ],
   },
+  ONE_TESTIMONIALS: {
+    key: "one-testimonial",
+    routes: [
+      "testimonials_page_settings.info",
+      "tag_collections.list",
+      "testimonials.list",
+      "actions.list",
+    ],
+  },
   VENDORS: {
     key: "vendors",
     routes: [

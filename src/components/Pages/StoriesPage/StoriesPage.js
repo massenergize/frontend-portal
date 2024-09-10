@@ -370,16 +370,20 @@ class StoriesPage extends React.Component {
                 )}
               />
 
-              <div className="row stories-row" style={{ paddingTop: 60 }}>
-                <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
+              <div className="row stories-row" style={{}}>
+                {/* <div className="col-md-3 phone-vanish" style={{ marginTop: 0 }}>
                   <center>
                     <h5>Jump to story</h5>
                   </center>
 
                   {this.renderSideViewStories(stories)}
-                </div>
-                <div
+                </div> */}
+                {/* <div
                   className="col-md-9 col-lg-9  col-sm-12 test-stories-wrapper"
+                  data-number-of-stories={stories?.length || 0}
+                > */}
+                <div
+                  className="col-md-12 col-lg-12  col-sm-12 test-stories-wrapper"
                   data-number-of-stories={stories?.length || 0}
                 >
                   <div
@@ -459,12 +463,14 @@ class StoriesPage extends React.Component {
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
-        style={{
-          width: "100%",
-          "--sheet-anime-delay": getRandomIntegerInRange(500),
-          "--sheet-anime-duration": getRandomIntegerInRange(500),
-        }}
-        className="animate-testimonial-sheet test-story-sheet"
+        style={
+          {
+            width: "100%",
+            // "--sheet-anime-delay": getRandomIntegerInRange(500),
+            // "--sheet-anime-duration": getRandomIntegerInRange(500),
+          }
+        }
+        className=" test-story-sheet"
       >
         {!story?.is_published && <RibbonBanner />}
         <StorySheet

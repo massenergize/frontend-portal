@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import fallbackImage from "../../assets/images/fb.svg";
 function SmartImage({
-  src,
+  src = "...",
   alt = "Image",
   customFallbackSrc,
   style,
