@@ -530,7 +530,7 @@ class StoryForm extends React.Component {
         hasLabel: true,
         label: "Can this testimonial be shared on other community websites?",
         required: false,
-        value: "",
+        value: "OPEN",
         data: [
           { id: "Yes", value: "OPEN" },
           { id: "No", value: "CLOSED" },
