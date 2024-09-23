@@ -470,7 +470,8 @@ class StoriesPage extends React.Component {
     let sortedStories = stories.sort((a, b) =>
       a.is_published === b.is_published ? 0 : a.is_published ? 1 : -1
     );
-    return sortedStories.map((story, index) => (
+    let sortedByRank = sortedStories.sort((a, b) => a?.rank - b?.rank);
+    return sortedByRank?.map((story, index) => (
       <div
         key={index.toString()}
         data-tag-names={makeStringFromArrOfObjects(story?.tags, (s) => s.name)}
