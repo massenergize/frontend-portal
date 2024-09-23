@@ -9,7 +9,6 @@ import {
   collectSearchTextValueFromURL,
   filterTagCollections,
   getHumanFriendlyDate,
-  getRandomIntegerInRange,
   makeStringFromArrOfObjects,
   processFiltersAndUpdateURL,
   recreateFiltersForState,

@@ -1,20 +1,6 @@
-import React, { useEffect, useState } from "react";
-import LoadingCircle from "../../Shared/LoadingCircle";
-import ErrorPage from "../Errors/ErrorPage";
-import BreadCrumbBar from "../../Shared/BreadCrumbBar";
-import { apiCall } from "../../../api/functions";
-import {
-  useHistory,
-  useParams,
-} from "react-router-dom/cjs/react-router-dom.min";
-import { useSelector } from "react-redux";
-import ShareButton from "react-share/lib/ShareButton";
-import ShareButtons from "../../Shared/ShareButtons";
-import URLS from "../../../api/urls";
-import PageTitle from "../../Shared/PageTitle";
+import React from "react";
 import RelatedActionInTestmionial from "./RelatedActionInTestmionial";
 import { TestimonialsCardLite } from "./TestimonialsCardV2";
-import { isMobile } from "react-device-detect";
 import { getHumanFriendlyDate } from "../../Utils";
 import SmartImage from "../../Shared/SmartImage";
 

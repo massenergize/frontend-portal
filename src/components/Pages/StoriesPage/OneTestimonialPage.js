@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ErrorPage from "./../Errors/ErrorPage";
 import { apiCall } from "../../../api/functions";
-import notFound from "./me_energy_default.png";
 import { getHumanFriendlyDate, getRandomIntegerInRange } from "../../Utils";
 import photo from "./../ActionsPage/try.png";
-import METextView from "../Widgets/METextView";
 import MELink from "../Widgets/MELink";
 import MECard from "../Widgets/MECard";
 import ShareButtons from "../../Shared/ShareButtons";
@@ -24,8 +22,6 @@ import {
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
-import RibbonBanner from "../../Shared/RibbonBanner";
-import MEImage from "../../Shared/MEImage";
 
 import OneTestimonialV2 from "./OneTestimonialV2";
 import { processBeforeFlight } from "./StoriesPage";
@@ -396,7 +392,6 @@ const mapStoreToProps = (store) => {
 };
 export default connect(mapStoreToProps, {
   toggleModal: reduxToggleUniversalModal,
-  updateItemInRedux: reduxLoadTestimonials,
   updateItemInRedux: reduxLoadTestimonials,
   loadTestimonials: reduxLoadTestimonials,
   loadTestimonialsPage: reduxLoadTestimonialsPage,

@@ -34,7 +34,6 @@ import Tooltip from "../../Shared/Tooltip";
 import BreadCrumbBar from "../../Shared/BreadCrumbBar";
 import ShareButtons from "../../Shared/ShareButtons";
 import { getHTMLContent } from "../HTML/HTMLShop";
-import MiniTestimonial from "../StoriesPage/MiniTestimonial";
 import MELink from "../Widgets/MELink";
 import MECameleonButton from "./MEChameleonButton";
 import {
@@ -60,6 +59,7 @@ import { ACTION, PAGE_ESSENTIALS, TESTIMONIAL } from "../../Constants";
 import MEImage from "../../Shared/MEImage";
 
 import { TestimonialsCardLite } from "../StoriesPage/TestimonialsCardV2";
+import {processBeforeFlight} from "../StoriesPage/StoriesPage";
 
 
 /**
