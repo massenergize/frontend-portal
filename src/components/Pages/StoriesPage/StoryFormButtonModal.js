@@ -3,7 +3,6 @@ import Toast from "react-bootstrap/Toast";
 import React, { Component } from "react";
 import MEModal from "../Widgets/MEModal";
 
-
 //refactored the submit testimonial form so now you can have a modal version of it
 // TODO: We will have to refactor again, some structures and names cld work better in diff way. (Do when there is time)
 class StoryFormButtonModal extends Component {
@@ -21,11 +20,10 @@ class StoryFormButtonModal extends Component {
     });
   };
 
-  getTitle = (formType)=>{
-    if(!formType) return ""
-    return `Create ${formType} Form`
-  }
-
+  getTitle = (formType) => {
+    if (!formType) return "";
+    return `Create ${formType} Form`;
+  };
 
   //opens modal for the testimonial to be submitted
   TriggerModal = (bool) => {
@@ -36,7 +34,7 @@ class StoryFormButtonModal extends Component {
     this.setState({ OpenModal: false });
   }
   render() {
-    const { overrideOpen, reduxProps} = this.props;
+    const { overrideOpen, reduxProps } = this.props;
     return (
       <>
         <div
@@ -58,10 +56,13 @@ class StoryFormButtonModal extends Component {
         >
           <div style={{ textAlign: "left" }}>
             <StoryForm
+              processBeforeFlight={this.props.processBeforeFlight}
               ModalType={this.props.ModalType}
               close={this.closeModal.bind(this)}
               draftData={this.props.draftTestimonialData}
-              TriggerSuccessNotification={(bool) =>this.TriggerSuccessNotification(bool)}
+              TriggerSuccessNotification={(bool) =>
+                this.TriggerSuccessNotification(bool)
+              }
               TriggerModal={this.closeModal.bind(this)}
               updateItemInRedux={reduxProps?.updateItemInRedux}
               reduxItems={reduxProps?.reduxItems}

@@ -368,8 +368,8 @@ class StoryForm extends React.Component {
 
     this.state = {
       ...INITIAL_STATE,
-      vid: props.vid ? props.vid : "--",
-      aid: props.aid ? props.aid : "--",
+      vid: props.vid ? props.vid : null,
+      aid: props.aid ? props.aid : null,
       captchaConfirmed: false,
       message: "",
       picFile: null,
@@ -704,6 +704,7 @@ class StoryForm extends React.Component {
       close,
       TriggerModal,
       TriggerSuccessNotification,
+      processBeforeFlight,
     } = this.props;
     e.preventDefault();
     if (!data || data.isNotComplete) {
@@ -830,6 +831,8 @@ class StoryForm extends React.Component {
       },
     });
 
+    if (processBeforeFlight) body = processBeforeFlight(body);
+    
     apiCall(Url, body).then((json) => {
       let name = ModalType?.toLowerCase() + "_id";
       if (json && json.success) {

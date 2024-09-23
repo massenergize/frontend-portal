@@ -26,7 +26,9 @@ import {
 import StoryForm from "../ActionsPage/StoryForm";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import MEImage from "../../Shared/MEImage";
+
 import OneTestimonialV2 from "./OneTestimonialV2";
+import { processBeforeFlight } from "./StoriesPage";
 
 class OneTestimonialPage extends React.Component {
   constructor(props) {
@@ -156,6 +158,7 @@ class OneTestimonialPage extends React.Component {
       size: "md",
       component: (
         <StoryForm
+          processBeforeFlight={processBeforeFlight}
           ModalType={TESTIMONIAL}
           close={() => this.props.toggleModal({ show: false })}
           draftData={toEdit}
