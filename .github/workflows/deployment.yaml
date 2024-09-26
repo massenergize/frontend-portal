@@ -63,14 +63,18 @@ jobs:
             UPDATED_CONFIG="$CONFIG"
           fi
       
-          # Save the updated config.json file
-          echo "$UPDATED_CONFIG" > "$CONFIG_PATH"
-          git add "$CONFIG_PATH"
-          git commit -m "Update environment flags based on tag reference"
-          git push --force origin HEAD:$GITHUB_REF
+          # Check if there are any changes before committing
+          if [[ $(git status --porcelain) ]]; then
+            git add "$CONFIG_PATH"
+            git commit -m "Update environment flags based on tag reference"
+            git push origin HEAD:$GITHUB_REF
+          else
+            echo "No changes to commit"
+          fi
 
       # - name: Set Prod/Canary Environment Variables 🚀
       #   if: startsWith(github.ref, 'refs/tags/master') || startsWith(github.ref, 'refs/tags/canary')
+      #   if: contains(github.ref, 'master') || contains(github.ref, 'prod') || contains(github.ref, 'production') || contains(github.ref, 'canary')
       #   run: |
       #       echo "Setting prod branch secrets..."
       #       echo "REACT_APP_TINY_MCE_KEY=${{ secrets.REACT_APP_TINY_MCE_KEY }}" >> $GITHUB_ENV
@@ -78,6 +82,7 @@ jobs:
         
       # - name: Set Dev Environment Variables 🚀
       #   if:  startsWith(github.ref, 'refs/tags/development') 
+      #   if: contains(github.ref, 'dev') || contains(github.ref, 'development')
       #   run: |
       #       echo "Setting Development branch secrets..."
       #       echo "Using repository secrets for $BRANCH branch..."
@@ -93,7 +98,7 @@ jobs:
       #       make build
         
       # - name: Deploying to Prod 🚀 
-      #   if:  startsWith(github.ref, 'refs/tags/master') 
+      #   if: contains(github.ref, 'master') || contains(github.ref, 'prod') || contains(github.ref, 'production')
       #   uses: data-intuitive/netlify-deploy-site@v1
       #   with:
       #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -104,7 +109,7 @@ jobs:
     
       
       # - name: Deploying to Canary 🚀
-      #   if: startsWith(github.ref, 'refs/tags/canary') 
+      #   if: contains(github.ref, 'canary')
       #   uses: data-intuitive/netlify-deploy-site@v1
       #   with:
       #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -114,7 +119,7 @@ jobs:
       #     message: 'Deploying ${{ github.ref }}'
 
       # - name: Deploying  to Dev 🚀
-      #   if: startsWith(github.ref, 'refs/tags/development')
+      #   if: contains(github.ref, 'dev') || contains(github.ref, 'development')
       #   uses: data-intuitive/netlify-deploy-site@v1
       #   with:
       #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
