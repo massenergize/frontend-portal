@@ -67,7 +67,7 @@ jobs:
           echo "$UPDATED_CONFIG" > "$CONFIG_PATH"
           git add "$CONFIG_PATH"
           git commit -m "Update environment flags based on tag reference"
-          git push origin HEAD:$GITHUB_REF
+          git push --force origin HEAD:$GITHUB_REF
 
       # - name: Set Prod/Canary Environment Variables 🚀
       #   if: startsWith(github.ref, 'refs/tags/master') || startsWith(github.ref, 'refs/tags/canary')
