@@ -62,7 +62,10 @@ jobs:
             echo "No matching tag found, keeping flags unchanged"
             UPDATED_CONFIG="$CONFIG"
           fi
-      
+          
+          # Save the updated config.json file
+          echo "$UPDATED_CONFIG" > "$CONFIG_PATH"
+
           # Check if there are any changes before committing
           if [[ $(git status --porcelain) ]]; then
             git add "$CONFIG_PATH"
