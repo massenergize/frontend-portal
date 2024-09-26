@@ -43,6 +43,7 @@ import Seo from "../../Shared/Seo";
 import METooltip from "../../Shared/METooltip";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import { apiCall } from "../../../api/functions";
+import SmartImage from "../../Shared/SmartImage";
 class ServicesPage extends React.Component {
   constructor(props) {
     super(props);
@@ -384,14 +385,14 @@ class ServicesPage extends React.Component {
               <div className="col-12 text-center" style={{ padding: 0 }}>
                 <Link to={`${this.props.links.services}/${vendor.id}`}>
                   {vendor?.is_published ? (
-                    <img
+                    <SmartImage
                       className="w-100 service-prov-img"
                       src={vendor.logo ? vendor.logo.url : notFound}
                       alt={vendor.name}
                     />
                   ) : (
                     <METooltip text={tooltipText}>
-                      <img
+                      <SmartImage
                         className="w-100 service-prov-img"
                         src={vendor.logo ? vendor.logo.url : notFound}
                         alt={vendor.name}

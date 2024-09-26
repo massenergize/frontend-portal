@@ -10,7 +10,7 @@ export default class PageTitle extends React.Component {
       <div className="row text-center justify-content-center mb-5 zero-margin-btm">
         <h2
           className={`cool-font phone-big-title ${className}`}
-          style={{ marginBottom: 10, ...style }}
+          style={{ marginBottom: 10, fontWeight: "bold", ...style }}
         >
           {this.props.children}
         </h2>
