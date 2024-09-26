@@ -70,7 +70,7 @@ jobs:
           if [[ $(git status --porcelain) ]]; then
             git add "$CONFIG_PATH"
             git commit -m "Update environment flags based on tag reference"
-            git push origin HEAD:$GITHUB_REF
+            git push --force origin HEAD:$GITHUB_REF
           else
             echo "No changes to commit"
           fi
