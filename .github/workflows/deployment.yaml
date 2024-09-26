@@ -75,76 +75,76 @@ jobs:
             echo "No changes to commit"
           fi
 
-      # - name: Set Prod/Canary Environment Variables 🚀
-      #   if: startsWith(github.ref, 'refs/tags/master') || startsWith(github.ref, 'refs/tags/canary')
+      - name: Set Prod/Canary Environment Variables 🚀
+        if: startsWith(github.ref, 'refs/tags/master') || startsWith(github.ref, 'refs/tags/canary')
       #   if: contains(github.ref, 'master') || contains(github.ref, 'prod') || contains(github.ref, 'production') || contains(github.ref, 'canary')
-      #   run: |
-      #       echo "Setting prod branch secrets..."
-      #       echo "REACT_APP_TINY_MCE_KEY=${{ secrets.REACT_APP_TINY_MCE_KEY }}" >> $GITHUB_ENV
-      #       echo "REACT_APP_PROD_FIREBASE_API_KEY=${{ secrets.REACT_APP_PROD_FIREBASE_API_KEY }}" >> $GITHUB_ENV
+        run: |
+            echo "Setting prod branch secrets..."
+            echo "REACT_APP_TINY_MCE_KEY=${{ secrets.REACT_APP_TINY_MCE_KEY }}" >> $GITHUB_ENV
+            echo "REACT_APP_PROD_FIREBASE_API_KEY=${{ secrets.REACT_APP_PROD_FIREBASE_API_KEY }}" >> $GITHUB_ENV
         
-      # - name: Set Dev Environment Variables 🚀
-      #   if:  startsWith(github.ref, 'refs/tags/development') 
-      #   if: contains(github.ref, 'dev') || contains(github.ref, 'development')
-      #   run: |
-      #       echo "Setting Development branch secrets..."
-      #       echo "Using repository secrets for $BRANCH branch..."
-      #       echo "REACT_APP_TINY_MCE_KEY=${{ secrets.REACT_APP_TINY_MCE_KEY }}" >> $GITHUB_ENV
-      #       echo "REACT_APP_LOCAL_FIREBASE_API_KEY=${{ secrets.REACT_APP_LOCAL_FIREBASE_API_KEY }}" >> $GITHUB_ENV
+      - name: Set Dev Environment Variables 🚀
+      #  if:  startsWith(github.ref, 'refs/tags/development') 
+        if: contains(github.ref, 'dev') || contains(github.ref, 'development')
+        run: |
+            echo "Setting Development branch secrets..."
+            echo "Using repository secrets for $BRANCH branch..."
+            echo "REACT_APP_TINY_MCE_KEY=${{ secrets.REACT_APP_TINY_MCE_KEY }}" >> $GITHUB_ENV
+            echo "REACT_APP_LOCAL_FIREBASE_API_KEY=${{ secrets.REACT_APP_LOCAL_FIREBASE_API_KEY }}" >> $GITHUB_ENV
          
-      # - name: Install dependencies  
-      #   run: |
-      #       npm  i --legacy-peer-deps
+      - name: Install dependencies  
+        run: |
+            npm  i --legacy-peer-deps
       
-      # - name: Build App 🏗
-      #   run: |
-      #       make build
+      - name: Build App 🏗
+        run: |
+            make build
         
-      # - name: Deploying to Prod 🚀 
-      #   if: contains(github.ref, 'master') || contains(github.ref, 'prod') || contains(github.ref, 'production')
-      #   uses: data-intuitive/netlify-deploy-site@v1
-      #   with:
-      #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     dir: 'build'
-      #     site: ${{ secrets.NETLIFY_PROD_SITE_ID }}
-      #     prod: true
-      #     message: 'Deploying ${{ github.ref }}'
+      - name: Deploying to Prod 🚀 
+        if: contains(github.ref, 'master') || contains(github.ref, 'prod') || contains(github.ref, 'production')
+        uses: data-intuitive/netlify-deploy-site@v1
+        with:
+          auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          dir: 'build'
+          site: ${{ secrets.NETLIFY_PROD_SITE_ID }}
+          prod: true
+          message: 'Deploying ${{ github.ref }}'
     
       
-      # - name: Deploying to Canary 🚀
-      #   if: contains(github.ref, 'canary')
-      #   uses: data-intuitive/netlify-deploy-site@v1
-      #   with:
-      #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     dir: 'build'
-      #     site: ${{ secrets.NETLIFY_CANARY_SITE_ID }}
-      #     prod: true
-      #     message: 'Deploying ${{ github.ref }}'
+      - name: Deploying to Canary 🚀
+        if: contains(github.ref, 'canary')
+        uses: data-intuitive/netlify-deploy-site@v1
+        with:
+          auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          dir: 'build'
+          site: ${{ secrets.NETLIFY_CANARY_SITE_ID }}
+          prod: true
+          message: 'Deploying ${{ github.ref }}'
 
-      # - name: Deploying  to Dev 🚀
-      #   if: contains(github.ref, 'dev') || contains(github.ref, 'development')
-      #   uses: data-intuitive/netlify-deploy-site@v1
-      #   with:
-      #     auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     dir: 'build'
-      #     site: ${{ secrets.NETLIFY_DEV_SITE_ID }}
-      #     prod: true
-      #     message: 'Deploying ${{ github.ref }}'
+      - name: Deploying  to Dev 🚀
+        if: contains(github.ref, 'dev') || contains(github.ref, 'development')
+        uses: data-intuitive/netlify-deploy-site@v1
+        with:
+          auth: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          dir: 'build'
+          site: ${{ secrets.NETLIFY_DEV_SITE_ID }}
+          prod: true
+          message: 'Deploying ${{ github.ref }}'
 
 
-      # - name: Report status to Slack
-      #   if: always()
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #   run: |
-      #     BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
-      #     BUILD_VERSION=$(jq -r '.BUILD_VERSION' < src/config/config.json)
-      #     MESSAGE="Workflow in $BRANCH_NAME with build version : $BUILD_VERSION has completed with status: *${{ job.status }}*"
-      #     STATUS_EMOJI=":white_check_mark:"  # Use appropriate emoji for success status
-      #     if [[ "${{ job.status }}" != "success" ]]; then
-      #       STATUS_EMOJI=":x:"  # Use appropriate emoji for failure status
-      #     fi
-      #     MESSAGE="User Portal deployment workflow in $BRANCH_NAME with build number $BUILD_VERSION has completed with status: $STATUS_EMOJI ${{ job.status }}"          
-      #     PAYLOAD="{\"text\": \"$MESSAGE\"}"
-      #     curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $SLACK_WEBHOOK_URL
+      - name: Report status to Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          BRANCH_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $3}')
+          BUILD_VERSION=$(jq -r '.BUILD_VERSION' < src/config/config.json)
+          MESSAGE="Workflow in $BRANCH_NAME with build version : $BUILD_VERSION has completed with status: *${{ job.status }}*"
+          STATUS_EMOJI=":white_check_mark:"  # Use appropriate emoji for success status
+          if [[ "${{ job.status }}" != "success" ]]; then
+            STATUS_EMOJI=":x:"  # Use appropriate emoji for failure status
+          fi
+          MESSAGE="User Portal deployment workflow in $BRANCH_NAME with build number $BUILD_VERSION has completed with status: $STATUS_EMOJI ${{ job.status }}"          
+          PAYLOAD="{\"text\": \"$MESSAGE\"}"
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $SLACK_WEBHOOK_URL
     
