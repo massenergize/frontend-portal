@@ -22,8 +22,15 @@ import {
   reduxToggleUniversalModal,
 } from "../../../redux/actions/pageActions";
 import StoryForm from "../ActionsPage/StoryForm";
-
 import OneTestimonialV2 from "./OneTestimonialV2";
+import { TESTIMONIAL } from "../../Constants";
+import {
+  reduxLoadTestimonials,
+  reduxToggleUniversalModal,
+} from "../../../redux/actions/pageActions";
+import StoryForm from "../ActionsPage/StoryForm";
+import RibbonBanner from "../../Shared/RibbonBanner";
+import MEImage from "../../Shared/MEImage";
 import { processBeforeFlight } from "./StoriesPage";
 
 class OneTestimonialPage extends React.Component {
