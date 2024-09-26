@@ -25,7 +25,7 @@ jobs:
           OLD_VERSION=$(jq -r '.BUILD_VERSION' src/config/config.json)
           echo "Old BUILD_VERSION: $OLD_VERSION"
   
-      - name: Update BUILD_VERSION only when in development branch
+      - name: Update BUILD_VERSION
         run: |
           CONFIG_PATH="src/config/config.json"
           # Read the config.json file
