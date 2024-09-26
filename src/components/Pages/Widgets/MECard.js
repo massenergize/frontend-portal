@@ -12,11 +12,14 @@ import { Link } from "react-router-dom";
  */
 export default class MECard extends Component {
   ejectComponent() {
-    const { to, href, onClick, style, className } = this.props;
+    const { to, href, onClick, style, className, elevate } = this.props;
     var hoverable = "me-card-hover";
-    const classes = `me-card z-depth-float-half ${className}`;
+    const classes = `me-card ${
+      elevate ? "z-depth-float-half" : ""
+    } ${className}`;
     if (to || href) {
-      if (href) { // if you really need that <a> tag instead of the react-router link, then use "href" instead of "to"
+      if (href) {
+        // if you really need that <a> tag instead of the react-router link, then use "href" instead of "to"
         return (
           <>
             <a

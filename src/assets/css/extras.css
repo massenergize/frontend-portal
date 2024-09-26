@@ -1424,10 +1424,6 @@
   left: 7px;
   border-radius: 2px;
 }
-.small-form-spacing {
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
 
 .reset-margin {
   margin: 0;
@@ -2288,9 +2284,60 @@
   margin: 0px;
   height: auto;
 }
+.me-standard-img {
+  background: rgb(251, 251, 251);
+  object-fit: contain;
+  border-radius: 10px;
+  width: 100%;
+}
+.t-area-title {
+  color: rgb(167, 167, 167);
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.rel-action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid rgb(237, 237, 237);
+  border-radius: 5px;
+}
+
+.other-t-area {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* ========= PC EXCLUSIVE ===== */
 
 @media only screen and (min-width: 768px) {
+  .other-t-area {
+    flex-direction: row;
+  }
+  .rel-action {
+    padding: 10px 15px;
+    width: 100%;
+  }
+  .related-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .me-standard-img {
+    height: 400px;
+  }
+  .small-form-spacing {
+    margin: 20px 0px;
+    /* margin-bottom: 20px; */
+  }
   .new-sign-in {
     padding: 10px 15px;
     font-size: 14px;
@@ -2713,6 +2760,38 @@
 
 /* ------------------------ MOBILE PHONE AREA ------------------------- */
 @media only screen and (max-width: 767px) {
+  .other-t-area {
+    flex-direction: column;
+  }
+  .rel-action {
+    padding: 4px 10px;
+    width: 100%;
+  }
+  .rel-action img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 5px;
+  }
+
+  .rel-action h5 {
+    font-size: 16px;
+  }
+  .related-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .t-area-title {
+    font-size: large;
+  }
+  .me-standard-img {
+    height: 230px;
+  }
+  .small-form-spacing {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
   .form-gen-inner-wrapper {
     padding: 0px 15px;
   }
@@ -4051,7 +4130,7 @@
 
 .ribbon-container {
   --d: 6px; /* folded part */
-  --c: tomato; /* color */
+  --c: #f57b34; /* color */
   --f: 0.8rem; /* ribbon font-size */
   z-index: 1000;
 }

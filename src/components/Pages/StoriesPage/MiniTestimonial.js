@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DefaultClass from "../../Shared/Classes/DefaultClass";
 import MECard from "../Widgets/MECard";
 import MELink from "../Widgets/MELink";
+import SmartImage from "../../Shared/SmartImage";
 
 export default class MiniTestimonial extends Component {
   constructor(props) {
@@ -24,19 +25,24 @@ export default class MiniTestimonial extends Component {
     if (!story.anononymous) {
       creatorName = story.preferred_name ? story.preferred_name : creatorName;
     }
-    const url = story ? this.props.links.testimonials+"/" + story.id :""; 
-    var body =  story.body 
-    //creates div element 
-    var div = document.createElement("div")
+    const url = story ? this.props.links.testimonials + "/" + story.id : "";
+    var body = story.body;
+    //creates div element
+    var div = document.createElement("div");
     //browser parses the html string
-    div.innerHTML = body
+    div.innerHTML = body;
     //modify text accordingly
-    body = div.innerText.substring(0, this.state.limit) 
+    body = div.innerText.substring(0, this.state.limit);
     return (
       <div style={{ padding: 0 }}>
-        <MECard className="me-anime-open-in" style={{ borderRadius: 10 }} to={url}>
+        <MECard
+          className="me-anime-open-in"
+          style={{ borderRadius: 10 }}
+          to={url}
+        >
           <div>
-            <img
+            <SmartImage
+              disableIfError
               src={image.url}
               className="v-story-img phone-vanish"
               alt="testimonial media"
@@ -55,7 +61,7 @@ export default class MiniTestimonial extends Component {
                 </div>
               </div>
               <div className="text">
-                <h6>
+                <h6 style={{ margin: "10px 0px" }}>
                   <small className="story-name">{creatorName}</small>
                   <small className="m-label round-me">{date}</small>
                   {this.state.expanded && this.state.expanded === story.id ? (
@@ -72,21 +78,20 @@ export default class MiniTestimonial extends Component {
                 </h6>
                 <p>
                   {this.state.expanded && this.state.expanded === story.id
-                    ? 
-                    story.body
+                    ? story.body
                     : body}
                   {this.state.limit < story.body.length &&
-                    this.state.expanded !== story.id ? (
-                      <button
-                        className="as-link"
-                        style={{ float: "right" }}
-                        onClick={() => {
-                          this.setState({ expanded: story.id });
-                        }}
-                      >
-                        Read More...
-                      </button>
-                    ) : null}
+                  this.state.expanded !== story.id ? (
+                    <button
+                      className="as-link"
+                      style={{ float: "right" }}
+                      onClick={() => {
+                        this.setState({ expanded: story.id });
+                      }}
+                    >
+                      Read More...
+                    </button>
+                  ) : null}
                 </p>
               </div>
               {story.action ? (

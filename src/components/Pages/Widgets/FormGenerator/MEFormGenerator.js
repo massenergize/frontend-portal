@@ -591,6 +591,7 @@ export default class FormGenerator extends Component {
     style = elevate ? style : { boxShadow: "0 0 black", ...style };
     return (
       <MECard
+        elevate={elevate}
         className={`${animationClass} ${className}`}
         style={{ padding: 0, marginBottom: 0, ...(style || {}) }}
       >
