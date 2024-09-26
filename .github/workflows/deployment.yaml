@@ -39,6 +39,9 @@ jobs:
           echo "Current IS_PROD: $IS_PROD"
           echo "Current IS_LOCAL: $IS_LOCAL"
           echo "Current IS_CANARY: $IS_CANARY"
+
+          git config --global user.email "me-gh-action-bot@massenergize.org"
+          git config --global user.name "Version Update Bot"
       
           # Check if the tag contains 'master', 'main', or 'production'
           if [[ "$GITHUB_REF" == *"master"* || "$GITHUB_REF" == *"main"* || "$GITHUB_REF" == *"production"* ]]; then
