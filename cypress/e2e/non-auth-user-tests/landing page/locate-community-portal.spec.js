@@ -8,6 +8,6 @@ describe("Locates user portal", function () {
 
   it("Found community dropdown items", () => {
     cy.get(".select-envelope")
-    cy.get(".custom-select>option").should("exist");
+    cy.get(".community-name").should("exist");
   });
 });
