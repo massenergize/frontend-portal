@@ -40,7 +40,7 @@ function RenderCustomPage() {
         </p>
       </div>
     );
-  console.log("THE PAGE ID", pageId);
+
   return (
     <div style={{ height: "100vh" }}>
       <PBPublishedRender sections={data?.content || []} />
