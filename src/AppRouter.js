@@ -101,6 +101,7 @@ import METoast from "./components/Pages/Widgets/METoast/METoast";
 import { child } from "firebase/database";
 import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
 import OneTestimonialV2 from "./components/Pages/StoriesPage/OneTestimonialV2.js";
+import RenderCustomPage from "./components/Pages/Custom Pages/RenderCustomPage.js";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -417,7 +418,7 @@ class AppRouter extends Component {
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
-    if(!rest?.is_link_external && !link?.startsWith("/")){
+    if (!rest?.is_link_external && !link?.startsWith("/")) {
       link = `/${link}`;
     }
     return {
@@ -455,11 +456,10 @@ class AppRouter extends Component {
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
-    footerLinks = footerLinks.map(m => this.prependPrefix(m, prefix));
+    footerLinks = footerLinks.map((m) => this.prependPrefix(m, prefix));
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
-
 
   /**
    * Adds the prefix to the subdomains where possible
@@ -597,6 +597,11 @@ class AppRouter extends Component {
             <Switch>
               {/* ---- This route is a facebook app requirement. -------- */}
               <Route path={`/how-to-delete-my-data`} component={Help} />
+              <Route
+                exact
+                path={`/${community?.subdomain}/c/:pageId`}
+                component={RenderCustomPage}
+              />
               <Route
                 exact
                 path={`${links.profile}/password-less/manage`}
