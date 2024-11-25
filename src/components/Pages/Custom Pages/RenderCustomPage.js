@@ -18,7 +18,7 @@ function RenderCustomPage() {
 
   useEffect(() => {
     fetchPageInfo({ id: pageId });
-  }, []);
+  }, [pageId]);
 
   if (loading) return <LoadingCircle />;
 
