@@ -103,7 +103,7 @@ import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
 import OneTestimonialV2 from "./components/Pages/StoriesPage/OneTestimonialV2.js";
 import RenderCustomPage from "./components/Pages/Custom Pages/RenderCustomPage.js";
 
-const C_PAGE_IDENTIFIER = "c/";
+const C_PAGE_IDENTIFIER = "/c/";
 class AppRouter extends Component {
   constructor(props) {
     super(props);
@@ -200,7 +200,7 @@ class AppRouter extends Component {
     const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
     const body = { subdomain };
-    console.log("LE COMMUNITY", community)
+    console.log("LE COMMUNITY", community);
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
@@ -208,7 +208,7 @@ class AppRouter extends Component {
     // save as a custom property for Google Analytics
     window.gtag("set", "user_properties", { community: community.subdomain });
 
-    const prefix = !__is_custom_site ? `/${subdomain || community?.subdomain}` : "";
+    const prefix = !__is_custom_site ? `/${subdomain}` : "";
 
     this.props.reduxLoadLinks({
       home: `${prefix}/`,
@@ -262,7 +262,10 @@ class AppRouter extends Component {
           //   },
           //   prefix,
           // });
-          this.loadMenu(mainMenuResponse.data, prefix, __is_custom_site);
+          this.loadMenu(mainMenuResponse.data, prefix, {
+            usesCustomWebsite: __is_custom_site,
+            subdomain,
+          });
           // this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
@@ -414,13 +417,20 @@ class AppRouter extends Component {
     });
   }
 
-  prependPrefix(linkObj, prefix, usesCustomWebsite) {
-    console.log("LOGGING PREFIX", prefix)
+  prependPrefix(linkObj, prefix, options) {
+    const { usesCustomWebsite, subdomain } = options || {};
+
+    console.log("OPTIONS", options);
+
+    console.log("LOGGING PREFIX", prefix);
+
     // TODO: Clean this up later
     if (!linkObj) return "";
     let { children, link, ...rest } = linkObj;
     if (children && children.length > 0) {
-      children = children.map((child) => this.prependPrefix(child, prefix));
+      children = children.map((child) =>
+        this.prependPrefix(child, prefix, options)
+      );
     }
 
     const isInternalLink = !rest?.is_link_external;
@@ -433,7 +443,7 @@ class AppRouter extends Component {
       const linkIsCustom = link?.split(C_PAGE_IDENTIFIER)?.[1];
       if (rest?.is_link_external) return link;
       if (usesCustomWebsite && !linkIsCustom) return link;
-      return `${prefix}${link}`;
+      return `${prefix || subdomain || ""}${link}`;
     };
 
     // if (isInternalLink) {
@@ -458,7 +468,7 @@ class AppRouter extends Component {
   //   return menu;
   // };
 
-  loadMenu(menus, prefix, isCustomSite = false) {
+  loadMenu(menus, prefix, options) {
     if (!menus) {
       console.log("Menus not loaded!");
       return;
@@ -469,18 +479,12 @@ class AppRouter extends Component {
         return menu.name === "PortalMainNavLinks";
       }) || {};
     const initialMenu =
-      content?.map((m) => this.prependPrefix(m, prefix, isCustomSite)) || [];
+      content?.map((m) => this.prependPrefix(m, prefix, options)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
 
     console.log("SEE FINAL BOSS", finalMenu);
-    this.setState({
-      navBarMenu: finalMenu,
-      // navBarMenu: this.handleCustomPagesOnCustomDomains(
-      //   finalMenu,
-      //   isCustomSite
-      // ),
-    });
+    this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
       return menu.name === "PortalFooterQuickLinks";
@@ -493,7 +497,9 @@ class AppRouter extends Component {
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
-    footerLinks = footerLinks.map((m) => this.prependPrefix(m, prefix));
+    footerLinks = footerLinks.map((m) =>
+      this.prependPrefix(m, prefix, options)
+    );
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
