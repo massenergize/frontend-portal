@@ -200,7 +200,6 @@ class AppRouter extends Component {
     const { community, __is_custom_site } = this.props;
     const { subdomain } = community || {};
     const body = { subdomain };
-    console.log("LE COMMUNITY", community);
 
     // // first set the domain for the current community
     this.props.reduxLoadCommunity(community);
@@ -419,11 +418,6 @@ class AppRouter extends Component {
 
   prependPrefix(linkObj, prefix, options) {
     const { usesCustomWebsite, subdomain } = options || {};
-
-    console.log("OPTIONS", options);
-
-    console.log("LOGGING PREFIX", prefix);
-
     // TODO: Clean this up later
     if (!linkObj) return "";
     let { children, link, ...rest } = linkObj;
@@ -445,10 +439,6 @@ class AppRouter extends Component {
       if (usesCustomWebsite && !linkIsCustom) return link;
       return `${prefix || subdomain || ""}${link}`;
     };
-
-    // if (isInternalLink) {
-    //   link = `${prefix}${link}`;
-    // }
 
     return {
       ...rest,
@@ -483,7 +473,6 @@ class AppRouter extends Component {
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
 
-    console.log("SEE FINAL BOSS", finalMenu);
     this.setState({ navBarMenu: finalMenu });
 
     const footerContent = menus.filter((menu) => {
