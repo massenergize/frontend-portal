@@ -414,24 +414,27 @@ class AppRouter extends Component {
   }
 
   prependPrefix(linkObj, prefix, usesCustomWebsite) {
+    console.log("LOGGING PREFIX", prefix)
     // TODO: Clean this up later
     if (!linkObj) return "";
     let { children, link, ...rest } = linkObj;
     if (children && children.length > 0) {
       children = children.map((child) => this.prependPrefix(child, prefix));
     }
+
     const isInternalLink = !rest?.is_link_external;
     // END NOTES: the problem is that the function you are using might not be called when you are on a custom domain
     if (isInternalLink && !link?.startsWith("/")) {
       link = `/${link}`;
     }
-    usesCustomWebsite = false;
+
     const makeLink = (link) => {
       const linkIsCustom = link?.split(C_PAGE_IDENTIFIER)?.[1];
       if (rest?.is_link_external) return link;
       if (usesCustomWebsite && !linkIsCustom) return link;
       return `${prefix}${link}`;
     };
+
     // if (isInternalLink) {
     //   link = `${prefix}${link}`;
     // }
