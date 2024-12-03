@@ -448,15 +448,6 @@ class AppRouter extends Component {
     };
   }
 
-  // prependForCustomPag(menu) {
-  //   if (!menu) return [];
-  // }
-  // handleCustomPagesOnCustomDomains = (menu, isCustomSite) => {
-  //   console.log("Menu,isCustomSite", menu, isCustomSite);
-
-  //   if (!isCustomSite) return menu;
-  //   return menu;
-  // };
 
   loadMenu(menus, prefix, options) {
     if (!menus) {
