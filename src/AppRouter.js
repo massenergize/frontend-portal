@@ -434,7 +434,7 @@ class AppRouter extends Component {
     }
 
     const makeLink = (link) => {
-      const linkIsCustom = link?.split(C_PAGE_IDENTIFIER)?.[1];
+      const linkIsCustom = link?.split(C_PAGE_IDENTIFIER).length === 2;
       if (rest?.is_link_external) return link;
       if (usesCustomWebsite && !linkIsCustom) return link;
       return `${prefix || subdomain || ""}${link}`;
