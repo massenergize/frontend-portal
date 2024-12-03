@@ -103,6 +103,7 @@ import RewiringAmerica from "./components/Pages/RewiringAmerica.js";
 import OneTestimonialV2 from "./components/Pages/StoriesPage/OneTestimonialV2.js";
 import RenderCustomPage from "./components/Pages/Custom Pages/RenderCustomPage.js";
 
+const C_PAGE_IDENTIFIER = "/c/";
 class AppRouter extends Component {
   constructor(props) {
     super(props);
@@ -260,7 +261,10 @@ class AppRouter extends Component {
           //   },
           //   prefix,
           // });
-          this.loadMenu(mainMenuResponse.data, prefix);
+          this.loadMenu(mainMenuResponse.data, prefix, {
+            usesCustomWebsite: __is_custom_site,
+            subdomain,
+          });
           // this.checkTourState(mainMenuResponse.data);
         })
         .catch((err) => {
@@ -412,23 +416,40 @@ class AppRouter extends Component {
     });
   }
 
-  prependPrefix(linkObj, prefix) {
+  prependPrefix(linkObj, prefix, options) {
+    const { usesCustomWebsite, subdomain } = options || {};
+    // TODO: Clean this up later
     if (!linkObj) return "";
     let { children, link, ...rest } = linkObj;
     if (children && children.length > 0) {
-      children = children.map((child) => this.prependPrefix(child, prefix));
+      children = children.map((child) =>
+        this.prependPrefix(child, prefix, options)
+      );
     }
-    if (!rest?.is_link_external && !link?.startsWith("/")) {
+
+    const isInternalLink = !rest?.is_link_external;
+    // END NOTES: the problem is that the function you are using might not be called when you are on a custom domain
+    if (isInternalLink && !link?.startsWith("/")) {
       link = `/${link}`;
     }
+
+    const makeLink = (link) => {
+      const linkIsCustom = link?.split(C_PAGE_IDENTIFIER).length === 2;
+      if (rest?.is_link_external) return link;
+      if (usesCustomWebsite && !linkIsCustom) return link;
+      return `${prefix || subdomain || ""}${link}`;
+    };
+
     return {
       ...rest,
-      link: rest?.is_link_external ? link : `${prefix}${link}`,
+      // link: rest?.is_link_external ? link : `${prefix}${link}`,
+      link: makeLink(link),
       children,
     };
   }
 
-  loadMenu(menus, prefix) {
+
+  loadMenu(menus, prefix, options) {
     if (!menus) {
       console.log("Menus not loaded!");
       return;
@@ -439,7 +460,7 @@ class AppRouter extends Component {
         return menu.name === "PortalMainNavLinks";
       }) || {};
     const initialMenu =
-      content?.map((m) => this.prependPrefix(m, prefix)) || [];
+      content?.map((m) => this.prependPrefix(m, prefix, options)) || [];
     // const finalMenu = this.modifiedMenu(initialMenu);
     const finalMenu = initialMenu;
 
@@ -456,7 +477,9 @@ class AppRouter extends Component {
       link: URLS.COMMUNITIES, //"http://" + window.location.host,
       special: true,
     };
-    footerLinks = footerLinks.map((m) => this.prependPrefix(m, prefix));
+    footerLinks = footerLinks.map((m) =>
+      this.prependPrefix(m, prefix, options)
+    );
     footerLinks.push(communitiesLink);
     this.setState({ footerLinks: footerLinks });
   }
