@@ -60,7 +60,7 @@ import MEImage from "../../Shared/MEImage";
 import { processBeforeFlight } from "../StoriesPage/StoriesPage";
 
 import { TestimonialsCardLite } from "../StoriesPage/TestimonialsCardV2";
-
+import RichTextView from "../../Shared/RichTextView";
 
 /**
  * This page displays a single action and the cart of actions that have been added to todo and have been completed
@@ -902,12 +902,16 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <div
+                    {/* <div
                       className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.about),
                       }}
-                    ></div>
+                    ></div> */}
+                    <RichTextView
+                      html={action?.about}
+                      // html={getHTMLContent(action.about)}
+                    />
                   </div>
                 </div>
               </div>
@@ -922,12 +926,16 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <div
+                    {/* <div
                       className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.steps_to_take),
                       }}
-                    ></div>
+                    ></div> */}
+                    <RichTextView
+                      html={action?.steps_to_take}
+                      // html={getHTMLContent(action?.steps_to_take)}
+                    />
                   </div>
                 </div>
               </div>
@@ -942,12 +950,17 @@ class OneActionPage extends React.Component {
               >
                 <div className="product-details-content">
                   <div className="desc-content-box">
-                    <div
+                    {/* <div
                       className="cool-font make-me-dark rich-text-container"
                       dangerouslySetInnerHTML={{
                         __html: getHTMLContent(action.deep_dive),
                       }}
-                    ></div>
+                    ></div> */}
+                    <RichTextView
+                      // html={getHTMLContent(action?.deep_dive)}
+                      key="deep_dive"
+                      html={action?.deep_dive}
+                    />
                     {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
                   </div>
                 </div>

@@ -35,6 +35,7 @@ import ICSEventCreator from "./ICSEventCreator";
 import AddToGoogleCalendar from "./AddToGoogleCalendar";
 import RibbonBanner from "../../Shared/RibbonBanner";
 import MEImage from "../../Shared/MEImage";
+import RichTextView from "../../Shared/RichTextView";
 // import METooltip from "../../Shared/METooltip";
 class OneEventPage extends React.Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class OneEventPage extends React.Component {
 
     const page = (pageRequests || {})[PAGE_ESSENTIALS.ONE_EVENT.key];
     const loaded = (page || {})[id];
-    if (loaded) return this.handleJson(loaded);       
+    if (loaded) return this.handleJson(loaded);
 
     Promise.all([
       ...PAGE_ESSENTIALS.ONE_EVENT.routes.map((route) =>
@@ -362,7 +363,7 @@ class OneEventPage extends React.Component {
     );
   };
   renderEvent(event) {
-    const { user, toggleGuestAuthDialog,community } = this.props;
+    const { user, toggleGuestAuthDialog, community } = this.props;
     const isShared = community?.id !== event?.community?.id;
 
     let dateString = dateFormatString(
@@ -569,11 +570,13 @@ class OneEventPage extends React.Component {
               </div>
               <div className="col-12 col-lg-8">
                 <div className="text">
-                  <p
+                  {/* <p
                     className="cool-font make-me-dark events-about-content test-event-body rich-text-container"
-                    dangerouslySetInnerHTML={{ __html: event.description }}
+                    // dangerouslySetInnerHTML={{ __html: event.description }}
+
                   ></p>
-                  <br />
+                  <br /> */}
+                  <RichTextView html={event?.description} />
                   <p className="cool-font">{event.moreinfo}</p>
                 </div>
               </div>
