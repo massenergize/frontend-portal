@@ -892,79 +892,51 @@ class OneActionPage extends React.Component {
             </ul>
             <div className="tab-content">
               {/* description */}
-              <div
-                className={
-                  this.state.tab === "description"
-                    ? "tab-pane active cool-font"
-                    : "tab-pane cool-font"
-                }
-                id="desc"
-              >
-                <div className="product-details-content">
-                  <div className="desc-content-box">
-                    {/* <div
-                      className="cool-font make-me-dark rich-text-container"
-                      dangerouslySetInnerHTML={{
-                        __html: getHTMLContent(action.about),
-                      }}
-                    ></div> */}
-                    <RichTextView
-                      html={action?.about}
-                      // html={getHTMLContent(action.about)}
-                    />
+             
+              {this.state.tab === "description" && (
+                <div className={"tab-pane active cool-font"} id="desc">
+                  <div className="product-details-content">
+                    <div className="desc-content-box">
+                  
+                      <RichTextView
+                        // html={action?.about}
+                        html={getHTMLContent(action.about)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* steps to take */}
-              <div
-                className={
-                  this.state.tab === "steps"
-                    ? "tab-pane active cool-font"
-                    : "tab-pane cool-font"
-                }
-                id="steps"
-              >
-                <div className="product-details-content">
-                  <div className="desc-content-box">
-                    {/* <div
-                      className="cool-font make-me-dark rich-text-container"
-                      dangerouslySetInnerHTML={{
-                        __html: getHTMLContent(action.steps_to_take),
-                      }}
-                    ></div> */}
-                    <RichTextView
-                      html={action?.steps_to_take}
-                      // html={getHTMLContent(action?.steps_to_take)}
-                    />
+            
+              {this.state.tab === "steps" && (
+                <div className={"tab-pane active cool-font"} id="steps">
+                  <div className="product-details-content">
+                    <div className="desc-content-box">
+                    
+                      <RichTextView
+                        // html={action?.steps_to_take}
+                        html={getHTMLContent(action?.steps_to_take)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* if it has deep dive */}
-              <div
-                className={
-                  this.state.tab === "deep"
-                    ? "tab-pane active cool-font"
-                    : "tab-pane cool-font"
-                }
-                id="deep"
-              >
-                <div className="product-details-content">
-                  <div className="desc-content-box">
-                    {/* <div
-                      className="cool-font make-me-dark rich-text-container"
-                      dangerouslySetInnerHTML={{
-                        __html: getHTMLContent(action.deep_dive),
-                      }}
-                    ></div> */}
-                    <RichTextView
-                      // html={getHTMLContent(action?.deep_dive)}
-                      key="deep_dive"
-                      html={action?.deep_dive}
-                    />
-                    {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
+          
+              {this.state.tab === "deep" && (
+                <div className={"tab-pane active cool-font"} id="deep">
+                  <div className="product-details-content">
+                    <div className="desc-content-box">
+                     
+                      <RichTextView
+                        html={getHTMLContent(action?.deep_dive)}
+                        key="deep_dive"
+                      />
+                      {/* <p className="cool-font" > <center>Coming Soon...!</center></p> */}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               <div
                 className={
                   this.state.tab === "question"
