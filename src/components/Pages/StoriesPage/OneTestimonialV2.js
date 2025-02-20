@@ -3,6 +3,7 @@ import RelatedActionInTestmionial from "./RelatedActionInTestmionial";
 import { TestimonialsCardLite } from "./TestimonialsCardV2";
 import { getHumanFriendlyDate } from "../../Utils";
 import SmartImage from "../../Shared/SmartImage";
+import RichTextView from "../../Shared/RichTextView";
 
 function OneTestimonialV2({
   story,
@@ -39,8 +40,9 @@ function OneTestimonialV2({
         <div
           style={{ margin: "20px 0px" }}
           className="one-story-html-view test-story-body rich-text-container"
-          dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
+          // dangerouslySetInnerHTML={{ __html: story?.body || <></> }}
         />
+        <RichTextView html={story?.body} />
 
         {story?.action && (
           <div className="related-area">
