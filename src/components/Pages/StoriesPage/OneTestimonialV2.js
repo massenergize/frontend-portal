@@ -16,6 +16,8 @@ function OneTestimonialV2({
   user,
 }) {
   let isShared = community?.id !== story?.community?.id;
+
+  
   const inEditMode = !story?.is_published && user;
   return (
     <div>
@@ -44,7 +46,7 @@ function OneTestimonialV2({
         />
         <RichTextView html={story?.body} />
 
-        {story?.action && (
+        {story?.action && !isShared &&  (
           <div className="related-area">
             <div style={{ marginTop: 10, width: "100%" }}>
               <h5 className="t-area-title flex-row">

@@ -88,7 +88,7 @@ function TestimonialsCardV2({ story }) {
             {getHumanFriendlyDate(story?.created_at)}
           </span>
 
-          {action?.title && (
+          {action?.title && !isShared && (
             <span>
               Action:
               <Link
